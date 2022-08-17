@@ -14,10 +14,10 @@
 import 'package:auto_route/auto_route.dart' as _i5;
 import 'package:flutter/material.dart' as _i6;
 
-import '../../pages/articles_page.dart' as _i2;
-import '../../pages/news_page.dart' as _i3;
-import '../../pages/settings_page.dart' as _i4;
-import '../../pages/wrapper_widget.dart' as _i1;
+import '../../page/articles_page.dart' as _i2;
+import '../../page/news_page.dart' as _i3;
+import '../../page/settings_page.dart' as _i4;
+import '../../page/wrapper_widget.dart' as _i1;
 
 class AppRouter extends _i5.RootStackRouter {
   AppRouter([_i6.GlobalKey<_i6.NavigatorState>? navigatorKey])
@@ -31,7 +31,7 @@ class AppRouter extends _i5.RootStackRouter {
     },
     ArticlesRoute.name: (routeData) {
       return _i5.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i2.ArticlesPage());
+          routeData: routeData, child: _i2.ArticlesPage());
     },
     NewsRoute.name: (routeData) {
       return _i5.MaterialPageX<dynamic>(
@@ -47,7 +47,7 @@ class AppRouter extends _i5.RootStackRouter {
   List<_i5.RouteConfig> get routes => [
         _i5.RouteConfig(WrapperRoute.name, path: '/', children: [
           _i5.RouteConfig(ArticlesRoute.name,
-              path: 'articles', parent: WrapperRoute.name),
+              path: 'article', parent: WrapperRoute.name),
           _i5.RouteConfig(NewsRoute.name,
               path: 'news', parent: WrapperRoute.name),
           _i5.RouteConfig(SettingsRoute.name,
@@ -68,7 +68,7 @@ class WrapperRoute extends _i5.PageRouteInfo<void> {
 /// generated route for
 /// [_i2.ArticlesPage]
 class ArticlesRoute extends _i5.PageRouteInfo<void> {
-  const ArticlesRoute() : super(ArticlesRoute.name, path: 'articles');
+  const ArticlesRoute() : super(ArticlesRoute.name, path: 'article');
 
   static const String name = 'ArticlesRoute';
 }
