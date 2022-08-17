@@ -26,6 +26,25 @@ class ArticleService {
     return result;
   }
 
+  /// todo: unimplemented
+  Future<List<ArticleModel>> fetchFeed() async {
+    final raw = await repository.fetchFeed();
+
+    final refs =
+        raw.entries.firstWhere((e) => e.key == 'articleRefs').value as Map;
+
+    final result = refs.entries
+
+        /// только статьи, новости откидываем
+        .where((e) => e.value['postType'] == 'article')
+        .map((e) => ArticleModel.fromMap(e.value))
+        .toList();
+
+    cached = result;
+
+    return result;
+  }
+
   Future<List<ArticleModel>> fetchNews() async {
     final raw = await repository.fetchNews();
 

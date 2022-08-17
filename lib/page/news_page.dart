@@ -1,4 +1,3 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flabr/common/widget/progress_indicator.dart';
 import 'package:flabr/feature/article/model/article_model.dart';
 import 'package:flutter/material.dart';
@@ -7,12 +6,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../components/di/dependencies.dart';
 import '../feature/article/cubit/articles_cubit.dart';
 import '../feature/article/service/article_service.dart';
-
-class NewsRoute extends PageRouteInfo {
-  const NewsRoute() : super(name, path: '/news/');
-
-  static const String name = 'NewsRoute';
-}
 
 class NewsPage extends StatelessWidget {
   const NewsPage({Key? key}) : super(key: key);

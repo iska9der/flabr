@@ -41,4 +41,9 @@ class ArticleRepository {
       throw FetchException();
     }
   }
+
+  /// todo: unimplemented
+  Future<Map<String, dynamic>> fetchFeed() async {
+    return fetchAll();
+  }
 }

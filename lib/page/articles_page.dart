@@ -1,5 +1,7 @@
-import 'package:auto_route/auto_route.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flabr/common/widget/progress_indicator.dart';
+import 'package:flabr/config/constants.dart';
+import 'package:flabr/feature/article/model/article_type.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -9,26 +11,16 @@ import '../feature/article/cubit/articles_cubit.dart';
 import '../feature/article/model/article_model.dart';
 import '../feature/article/service/article_service.dart';
 
-class ArticlesRoute extends PageRouteInfo {
-  const ArticlesRoute() : super(name, path: '/article/');
-
-  static const String name = 'ArticlesRoute';
-}
-
 class ArticlesPage extends StatelessWidget {
   const ArticlesPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: BlocProvider(
-          create: (c) => ArticlesCubit(
-            getIt.get<ArticleService>(),
-          )..fetchAll(),
-          child: const ArticlesView(),
-        ),
-      ),
+    return BlocProvider(
+      create: (c) => ArticlesCubit(
+        getIt.get<ArticleService>(),
+      )..fetchArticles(),
+      child: const ArticlesView(),
     );
   }
 }
@@ -38,28 +30,70 @@ class ArticlesView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<ArticlesCubit, ArticlesState>(
-      listenWhen: (p, c) =>
-          c.status == ArticlesStatus.error && c.error.isNotEmpty,
-      listener: (c, s) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(s.error)),
-        );
-      },
-      builder: (context, state) {
-        if (state.status == ArticlesStatus.loading) {
-          return const CircleIndicator();
-        }
+    return Scaffold(
+      drawer: Drawer(
+        width: MediaQuery.of(context).size.width * .6,
+        child: ListView(
+          physics: const NeverScrollableScrollPhysics(),
+          children: [
+            ListTile(
+              title: const Text('Все потоки'),
+              onTap: () {
+                context.read<ArticlesCubit>().changeType(ArticleType.all);
 
-        var articles = state.articles;
+                Navigator.of(context).pop();
+              },
+            ),
 
-        return ListView.builder(
-          itemCount: articles.length,
-          itemBuilder: (c, i) {
-            return _Card(article: articles[i]);
-          },
-        );
-      },
+            /// todo как появится авторизация, сделать вывод условным
+            ListTile(
+              title: const Text('Моя лента'),
+              onTap: () {
+                context.read<ArticlesCubit>().changeType(ArticleType.feed);
+
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        ),
+      ),
+      body: SafeArea(
+        child: CustomScrollView(
+          slivers: [
+            const SliverAppBar(
+              surfaceTintColor: Colors.transparent,
+              floating: true,
+            ),
+            BlocConsumer<ArticlesCubit, ArticlesState>(
+              listenWhen: (p, c) =>
+                  c.status == ArticlesStatus.error && c.error.isNotEmpty,
+              listener: (c, s) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text(s.error)),
+                );
+              },
+              builder: (context, state) {
+                if (state.status == ArticlesStatus.loading) {
+                  return const SliverFillRemaining(
+                    child: CircleIndicator(),
+                  );
+                }
+
+                var articles = state.articles;
+
+                return SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    (c, i) {
+                      return _Card(article: articles[i]);
+                    },
+                    childCount: articles.length,
+                  ),
+                );
+              },
+            )
+          ],
+        ),
+      ),
     );
   }
 }
@@ -80,6 +114,7 @@ class _Card extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(12.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Row(
               children: [
@@ -91,11 +126,19 @@ class _Card extends StatelessWidget {
             ),
             if (article.leadData.image != null) ...[
               const SizedBox(height: 12),
-              Image.network(article.leadData.image!.url)
+              CachedNetworkImage(
+                placeholder: (c, url) => const SizedBox(
+                  height: postImageHeight,
+                  child: CircleIndicator.small(),
+                ),
+                height: postImageHeight,
+                imageUrl: article.leadData.image!.url,
+              )
             ],
             const SizedBox(height: 12),
             Text(
               article.titleHtml,
+              textAlign: TextAlign.left,
               style: Theme.of(context).textTheme.headline6,
             ),
           ],

@@ -1,13 +1,6 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flabr/components/theme/cubit/theme_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-class SettingsRoute extends PageRouteInfo {
-  const SettingsRoute() : super(name, path: '/settings/');
-
-  static const String name = 'SettingsRoute';
-}
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({Key? key}) : super(key: key);

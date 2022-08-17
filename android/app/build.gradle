@@ -45,7 +45,7 @@ android {
     defaultConfig {
         applicationId "ru.iska9der.flabr"
         minSdkVersion 18
-        targetSdkVersion flutter.targetSdkVersion
+        targetSdkVersion 32
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }

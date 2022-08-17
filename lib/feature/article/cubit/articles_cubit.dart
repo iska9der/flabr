@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flabr/feature/article/model/article_type.dart';
 
 import '../model/article_model.dart';
 import '../service/article_service.dart';
@@ -13,7 +14,7 @@ class ArticlesCubit extends Cubit<ArticlesState> {
 
   final ArticleService _service;
 
-  void fetchAll() async {
+  void fetchArticles() async {
     emit(state.copyWith(status: ArticlesStatus.loading));
 
     try {
@@ -47,5 +48,13 @@ class ArticlesCubit extends Cubit<ArticlesState> {
         status: ArticlesStatus.error,
       ));
     }
+  }
+
+  void changeType(ArticleType type) {
+    if (state.type == type) return;
+
+    emit(ArticlesState(type: type));
+
+    fetchArticles();
   }
 }
