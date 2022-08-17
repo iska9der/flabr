@@ -17,6 +17,7 @@ dependencies:
   flutter_bloc: ^8.0.1
   equatable: ^2.0.3
   intl: ^0.17.0
+  flutter_secure_storage: ^6.0.0
 
 dev_dependencies:
   flutter_test:
