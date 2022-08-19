@@ -24,6 +24,8 @@ class ArticleService {
         /// только статьи, новости откидываем
         .where((e) => e.value['postType'] == 'article')
         .map((e) => ArticleModel.fromMap(e.value))
+        .toList()
+        .reversed
         .toList();
 
     cached = result;

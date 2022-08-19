@@ -169,9 +169,63 @@ class _Card extends StatelessWidget {
               textAlign: TextAlign.left,
               style: Theme.of(context).textTheme.headline6,
             ),
+            const SizedBox(height: 18),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                IconText(
+                  icon: Icons.thumbs_up_down,
+                  text: article.statistics.score.toString(),
+                  color:
+                      article.statistics.score >= 0 ? Colors.green : Colors.red,
+                ),
+                IconText(
+                  icon: Icons.mode_comment,
+                  text: article.statistics.commentsCount.toString(),
+                ),
+                IconText(
+                  icon: Icons.bookmark_border,
+                  text: article.statistics.favoritesCount.toString(),
+                ),
+                IconText(
+                  icon: Icons.remove_red_eye,
+                  text: article.statistics.readingCount.toString(),
+                ),
+              ],
+            )
           ],
         ),
       ),
+    );
+  }
+}
+
+class IconText extends StatelessWidget {
+  const IconText({
+    Key? key,
+    required this.icon,
+    required this.text,
+    this.color,
+  }) : super(key: key);
+
+  final IconData icon;
+  final String text;
+  final Color? color;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Icon(icon, size: 14, color: color),
+        const SizedBox(width: 6),
+        Text(
+          text,
+          style: Theme.of(context).textTheme.caption?.copyWith(
+                color: color,
+                fontWeight: FontWeight.w600,
+              ),
+        ),
+      ],
     );
   }
 }
