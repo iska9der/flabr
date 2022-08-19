@@ -9,6 +9,7 @@ import 'package:intl/intl.dart';
 import '../components/di/dependencies.dart';
 import '../feature/article/cubit/articles_cubit.dart';
 import '../feature/article/model/article_model.dart';
+import '../feature/article/model/sort/sort_enum.dart';
 import '../feature/article/service/article_service.dart';
 
 class ArticlesPage extends StatelessWidget {
@@ -25,8 +26,19 @@ class ArticlesPage extends StatelessWidget {
   }
 }
 
-class ArticlesView extends StatelessWidget {
+class ArticlesView extends StatefulWidget {
   const ArticlesView({Key? key}) : super(key: key);
+
+  @override
+  State<ArticlesView> createState() => _ArticlesViewState();
+}
+
+class _ArticlesViewState extends State<ArticlesView>
+    with TickerProviderStateMixin {
+  late final TabController tabController = TabController(
+    length: SortEnum.values.length,
+    vsync: this,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -63,6 +75,21 @@ class ArticlesView extends StatelessWidget {
             const SliverAppBar(
               surfaceTintColor: Colors.transparent,
               floating: true,
+            ),
+            BlocBuilder<ArticlesCubit, ArticlesState>(
+              builder: (context, state) {
+                return SliverToBoxAdapter(
+                  child: TabBar(
+                    onTap: (value) =>
+                        context.read<ArticlesCubit>().changeSort(value),
+                    controller: tabController,
+                    tabs: const [
+                      Tab(text: 'По дням'),
+                      Tab(text: 'По рейтингу'),
+                    ],
+                  ),
+                );
+              },
             ),
             BlocConsumer<ArticlesCubit, ArticlesState>(
               listenWhen: (p, c) =>
@@ -105,7 +132,8 @@ class _Card extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final timePub = DateFormat.yMMMEd().format(article.timePublished);
+    final timePub =
+        "${DateFormat.yMMMMd().format(article.timePublished)}, ${DateFormat.Hm().format(article.timePublished)}";
 
     return Card(
       elevation: 0.2,

@@ -12,14 +12,20 @@ class ArticleRepository {
 
   final HttpClient _client;
 
-  Future<Map<String, dynamic>> fetchAll({String page = '1'}) async {
+  Future<Map<String, dynamic>> fetchAll({
+    required SortEnum sort,
+    required String page,
+    PeriodEnum period = PeriodEnum.daily,
+    String score = "0",
+  }) async {
     try {
       final body = MakeRequest(
         method: 'articles',
         requestParams: RequestParams(
           params: ArticlesParams(
-            sort: SortEnum.date,
-            period: PeriodEnum.daily,
+            sort: sort,
+            period: sort == SortEnum.date ? PeriodEnum.daily : null,
+            score: sort == SortEnum.rating ? score : null,
             page: page,
           ),
         ),
@@ -51,7 +57,10 @@ class ArticleRepository {
   }
 
   /// todo: unimplemented
-  Future<Map<String, dynamic>> fetchFeed() async {
-    return fetchAll();
+  Future<Map<String, dynamic>> fetchFeed({
+    required SortEnum sort,
+    required String page,
+  }) async {
+    return fetchAll(sort: sort, page: page);
   }
 }

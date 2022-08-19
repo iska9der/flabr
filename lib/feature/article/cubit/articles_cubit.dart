@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flabr/common/exception/displayable_exception.dart';
 import 'package:flabr/feature/article/model/article_type.dart';
+import 'package:flabr/feature/article/model/sort/sort_enum.dart';
 
 import '../model/article_model.dart';
 import '../service/article_service.dart';
@@ -20,7 +21,10 @@ class ArticlesCubit extends Cubit<ArticlesState> {
     emit(state.copyWith(status: ArticlesStatus.loading));
 
     try {
-      var articles = await _service.fetchAll();
+      var articles = await _service.fetchAll(
+        sort: state.sort,
+        page: state.page,
+      );
 
       emit(state.copyWith(
         status: ArticlesStatus.success,
@@ -56,6 +60,15 @@ class ArticlesCubit extends Cubit<ArticlesState> {
     if (state.type == type) return;
 
     emit(ArticlesState(type: type));
+
+    fetchArticles();
+  }
+
+  void changeSort(int value) {
+    emit(state.copyWith(
+      sort: value == 0 ? SortEnum.date : SortEnum.rating,
+      articles: [],
+    ));
 
     fetchArticles();
   }

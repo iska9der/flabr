@@ -1,3 +1,5 @@
+import 'package:flabr/feature/article/model/sort/sort_enum.dart';
+
 import '../model/article_model.dart';
 import '../repository/article_repository.dart';
 
@@ -8,8 +10,11 @@ class ArticleService {
 
   List<ArticleModel> cached = const [];
 
-  Future<List<ArticleModel>> fetchAll() async {
-    final raw = await repository.fetchAll();
+  Future<List<ArticleModel>> fetchAll({
+    required SortEnum sort,
+    required String page,
+  }) async {
+    final raw = await repository.fetchAll(sort: sort, page: page);
 
     final refs =
         raw.entries.firstWhere((e) => e.key == 'articleRefs').value as Map;
@@ -27,8 +32,11 @@ class ArticleService {
   }
 
   /// todo: unimplemented
-  Future<List<ArticleModel>> fetchFeed() async {
-    final raw = await repository.fetchFeed();
+  Future<List<ArticleModel>> fetchFeed({
+    required SortEnum sort,
+    required String page,
+  }) async {
+    final raw = await repository.fetchFeed(sort: sort, page: page);
 
     final refs =
         raw.entries.firstWhere((e) => e.key == 'articleRefs').value as Map;
