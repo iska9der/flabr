@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flabr/common/exception/displayable_exception.dart';
 import 'package:flabr/feature/article/model/article_type.dart';
 
 import '../model/article_model.dart';
@@ -14,6 +15,7 @@ class ArticlesCubit extends Cubit<ArticlesState> {
 
   final ArticleService _service;
 
+  /// todo: реализовать получение по выбранному типу [ArticleType]
   void fetchArticles() async {
     emit(state.copyWith(status: ArticlesStatus.loading));
 
@@ -24,9 +26,9 @@ class ArticlesCubit extends Cubit<ArticlesState> {
         status: ArticlesStatus.success,
         articles: [...state.articles, ...articles],
       ));
-    } catch (e) {
+    } on DisplayableException catch (e) {
       emit(state.copyWith(
-        error: 'Не удалось получить статьи',
+        error: e.toString(),
         status: ArticlesStatus.error,
       ));
     }

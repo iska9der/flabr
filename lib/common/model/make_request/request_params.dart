@@ -4,7 +4,7 @@ import 'params.dart';
 
 class RequestParams extends Equatable {
   const RequestParams({
-    this.params = const Params(),
+    required this.params,
   });
 
   final Params params;

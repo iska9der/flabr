@@ -1,9 +1,9 @@
 import 'displayable_exception.dart';
 
-class FetchException implements DisplayableException {
+class ValueException implements DisplayableException {
   final dynamic message;
 
-  FetchException([this.message]);
+  ValueException([this.message]);
 
   String toString() {
     Object? message = this.message;
