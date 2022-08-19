@@ -1,6 +1,6 @@
 enum SortEnum {
-  date('По дням'),
-  rating('По рейтингу');
+  rating('Новые'),
+  date('Лучшие');
 
   const SortEnum(this.label);
 

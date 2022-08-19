@@ -7,7 +7,7 @@ import 'package:flabr/feature/article/model/sort/sort_enum.dart';
 import 'package:flabr/feature/article/model/sort/sort_option_model.dart';
 
 import '../model/article_model.dart';
-import '../model/sort/period_enum.dart';
+import '../model/sort/date_period_enum.dart';
 import '../service/article_service.dart';
 
 part 'articles_state.dart';
@@ -86,11 +86,9 @@ class ArticlesCubit extends Cubit<ArticlesState> {
         emit(state.copyWith(articles: [], period: option.value));
         break;
       case SortEnum.rating:
-        if (state.score == option.value) {
-          emit(state.copyWith(articles: [], score: ""));
-        } else {
-          emit(state.copyWith(articles: [], score: option.value));
-        }
+        if (state.score == option.value) return;
+
+        emit(state.copyWith(articles: [], score: option.value));
 
         break;
       default:

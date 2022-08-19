@@ -1,16 +1,16 @@
-enum PeriodEnum {
+enum DatePeriodEnum {
   daily('Сутки'),
   weekly('Неделя'),
   monthly('Месяц'),
   yearly('Год'),
   alltime('Все время');
 
-  const PeriodEnum(this.label);
+  const DatePeriodEnum(this.label);
 
   final String label;
 
-  factory PeriodEnum.fromString(String value) {
-    PeriodEnum.values.map((element) {
+  factory DatePeriodEnum.fromString(String value) {
+    DatePeriodEnum.values.map((element) {
       if (element.name == value) {
         return element;
       }
@@ -19,8 +19,8 @@ enum PeriodEnum {
     throw Exception('Неизвестное значение периода');
   }
 
-  factory PeriodEnum.fromLabel(String value) {
-    PeriodEnum.values.map((element) {
+  factory DatePeriodEnum.fromLabel(String value) {
+    DatePeriodEnum.values.map((element) {
       if (element.label == value) {
         return element;
       }

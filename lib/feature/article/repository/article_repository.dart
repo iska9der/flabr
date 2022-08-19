@@ -4,7 +4,7 @@ import '../../../common/model/make_request/make_request.dart';
 import '../../../common/model/make_request/request_params.dart';
 import '../../../components/http/http_client.dart';
 import '../model/request/article_params.dart';
-import '../model/sort/period_enum.dart';
+import '../model/sort/date_period_enum.dart';
 import '../model/sort/sort_enum.dart';
 
 class ArticleRepository {
@@ -15,7 +15,7 @@ class ArticleRepository {
   Future<Map<String, dynamic>> fetchAll({
     required SortEnum sort,
     required String page,
-    required PeriodEnum period,
+    required DatePeriodEnum period,
     required String score,
   }) async {
     try {

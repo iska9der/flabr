@@ -1,7 +1,7 @@
 import 'package:flabr/feature/article/model/sort/sort_enum.dart';
 
 import '../model/article_model.dart';
-import '../model/sort/period_enum.dart';
+import '../model/sort/date_period_enum.dart';
 import '../repository/article_repository.dart';
 
 class ArticleService {
@@ -13,7 +13,7 @@ class ArticleService {
 
   Future<List<ArticleModel>> fetchAll({
     required SortEnum sort,
-    required PeriodEnum period,
+    required DatePeriodEnum period,
     required String score,
     required String page,
   }) async {

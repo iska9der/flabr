@@ -7,8 +7,8 @@ class ArticlesState extends Equatable {
     this.status = ArticlesStatus.initial,
     this.error = '',
     this.type = ArticleType.all,
-    this.sort = SortEnum.date,
-    this.period = PeriodEnum.daily,
+    this.sort = SortEnum.rating,
+    this.period = DatePeriodEnum.daily,
     this.score = '',
     this.page = '1',
     this.articles = const [],
@@ -18,7 +18,7 @@ class ArticlesState extends Equatable {
   final String error;
   final ArticleType type;
   final SortEnum sort;
-  final PeriodEnum period;
+  final DatePeriodEnum period;
   final String score;
   final String page;
   final List<ArticleModel> articles;
@@ -28,7 +28,7 @@ class ArticlesState extends Equatable {
     String? error,
     ArticleType? type,
     SortEnum? sort,
-    PeriodEnum? period,
+    DatePeriodEnum? period,
     String? score,
     String? page,
     List<ArticleModel>? articles,

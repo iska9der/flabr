@@ -2,7 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flabr/common/widget/progress_indicator.dart';
 import 'package:flabr/config/constants.dart';
 import 'package:flabr/feature/article/model/article_type.dart';
-import 'package:flabr/feature/article/model/sort/period_enum.dart';
+import 'package:flabr/feature/article/model/sort/date_period_enum.dart';
+import 'package:flabr/feature/article/model/sort/rating_score_enum.dart';
 import 'package:flabr/feature/article/model/sort/sort_option_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -76,16 +77,16 @@ class ArticlesView extends StatelessWidget {
                               ),
                               SortOptionsWidget(
                                 options: state.sort == SortEnum.date
-                                    ? PeriodEnum.values
+                                    ? DatePeriodEnum.values
                                         .map((period) => SortOptionModel(
                                               label: period.label,
                                               value: period,
                                             ))
                                         .toList()
-                                    : ["+0", "+10", "+25", "+50", "+100"]
+                                    : RatingScoreEnum.values
                                         .map((score) => SortOptionModel(
-                                              label: score,
-                                              value: score,
+                                              label: score.label,
+                                              value: score.value,
                                             ))
                                         .toList(),
                                 currentValue: state.sort == SortEnum.date

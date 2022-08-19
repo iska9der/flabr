@@ -1,6 +1,6 @@
 import '../../../../common/exception/value_exception.dart';
 import '../../../../common/model/make_request/params.dart';
-import '../sort/period_enum.dart';
+import '../sort/date_period_enum.dart';
 import '../sort/sort_enum.dart';
 
 class ArticlesParams extends Params {
@@ -11,7 +11,7 @@ class ArticlesParams extends Params {
 
   /// Sorting
   final SortEnum? sort;
-  final PeriodEnum? period;
+  final DatePeriodEnum? period;
   final String? score;
 
   ArticlesParams({
@@ -25,7 +25,7 @@ class ArticlesParams extends Params {
     this.period,
     this.score,
   }) {
-    if (sort == SortEnum.date && period is! PeriodEnum) {
+    if (sort == SortEnum.date && period is! DatePeriodEnum) {
       throw ValueException('Нужно указать период сортировки');
     }
     if (sort == SortEnum.rating && score == null) {
@@ -58,7 +58,7 @@ class ArticlesParams extends Params {
       custom: map['custom'] as String,
       page: map['page'] as String,
       sort: SortEnum.fromString(map['sort']),
-      period: PeriodEnum.fromString(map['period']),
+      period: DatePeriodEnum.fromString(map['period']),
       score: map['score'] as String,
     );
   }
