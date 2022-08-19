@@ -40,24 +40,16 @@ class ArticlesView extends StatelessWidget {
         child: ListView(
           physics: const NeverScrollableScrollPhysics(),
           children: [
-            ListTile(
-              title: const Text('Все потоки'),
-              onTap: () {
-                context.read<ArticlesCubit>().changeType(ArticleType.all);
+            ...ArticleType.values
+                .map((type) => ListTile(
+                      title: Text(type.label),
+                      onTap: () {
+                        context.read<ArticlesCubit>().changeType(type);
 
-                Navigator.of(context).pop();
-              },
-            ),
-
-            /// todo как появится авторизация, сделать вывод условным
-            ListTile(
-              title: const Text('Моя лента'),
-              onTap: () {
-                context.read<ArticlesCubit>().changeType(ArticleType.feed);
-
-                Navigator.of(context).pop();
-              },
-            ),
+                        Navigator.of(context).pop();
+                      },
+                    ))
+                .toList(),
           ],
         ),
       ),
