@@ -1,11 +1,9 @@
 import 'package:dio/dio.dart';
-import 'package:flabr/config/constants.dart';
 
 class HttpClient {
   HttpClient(this.client) {
-    client.options = BaseOptions(
-      baseUrl: apiUrl,
-      connectTimeout: 5000,
+    client.options = client.options.copyWith(
+      connectTimeout: 10000,
       receiveTimeout: 10000,
     );
   }

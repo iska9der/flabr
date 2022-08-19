@@ -1,19 +1,16 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flabr/common/widget/progress_indicator.dart';
-import 'package:flabr/config/constants.dart';
 import 'package:flabr/feature/article/model/article_type.dart';
 import 'package:flabr/feature/article/model/sort/date_period_enum.dart';
 import 'package:flabr/feature/article/model/sort/rating_score_enum.dart';
 import 'package:flabr/feature/article/model/sort/sort_option_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 
 import '../components/di/dependencies.dart';
 import '../feature/article/cubit/articles_cubit.dart';
-import '../feature/article/model/article_model.dart';
 import '../feature/article/model/sort/sort_enum.dart';
 import '../feature/article/service/article_service.dart';
+import '../feature/article/widget/article_card_widget.dart';
 import '../feature/article/widget/sort_widget.dart';
 
 class ArticlesPage extends StatelessWidget {
@@ -122,9 +119,7 @@ class ArticlesView extends StatelessWidget {
 
                 return SliverList(
                   delegate: SliverChildBuilderDelegate(
-                    (c, i) {
-                      return _Card(article: articles[i]);
-                    },
+                    (c, i) => ArticleCardWidget(article: articles[i]),
                     childCount: articles.length,
                   ),
                 );
@@ -133,108 +128,6 @@ class ArticlesView extends StatelessWidget {
           ],
         ),
       ),
-    );
-  }
-}
-
-class _Card extends StatelessWidget {
-  const _Card({Key? key, required this.article}) : super(key: key);
-
-  final ArticleModel article;
-
-  @override
-  Widget build(BuildContext context) {
-    final timePub =
-        "${DateFormat.yMMMMd().format(article.timePublished)}, ${DateFormat.Hm().format(article.timePublished)}";
-
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Row(
-              children: [
-                Text(
-                  timePub,
-                  style: Theme.of(context).textTheme.caption,
-                ),
-              ],
-            ),
-            if (article.leadData.image != null) ...[
-              const SizedBox(height: 12),
-              CachedNetworkImage(
-                placeholder: (c, url) => const SizedBox(
-                  height: postImageHeight,
-                  child: CircleIndicator.small(),
-                ),
-                height: postImageHeight,
-                imageUrl: article.leadData.image!.url,
-              )
-            ],
-            const SizedBox(height: 12),
-            Text(
-              article.titleHtml,
-              textAlign: TextAlign.left,
-              style: Theme.of(context).textTheme.headline6,
-            ),
-            const SizedBox(height: 18),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                IconText(
-                  icon: Icons.thumbs_up_down,
-                  text: article.statistics.score.toString(),
-                  color:
-                      article.statistics.score >= 0 ? Colors.green : Colors.red,
-                ),
-                IconText(
-                  icon: Icons.mode_comment,
-                  text: article.statistics.commentsCount.toString(),
-                ),
-                IconText(
-                  icon: Icons.bookmark_border,
-                  text: article.statistics.favoritesCount.toString(),
-                ),
-                IconText(
-                  icon: Icons.remove_red_eye,
-                  text: article.statistics.readingCount.toString(),
-                ),
-              ],
-            )
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class IconText extends StatelessWidget {
-  const IconText({
-    Key? key,
-    required this.icon,
-    required this.text,
-    this.color,
-  }) : super(key: key);
-
-  final IconData icon;
-  final String text;
-  final Color? color;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Icon(icon, size: 14, color: color),
-        const SizedBox(width: 6),
-        Text(
-          text,
-          style: Theme.of(context).textTheme.caption?.copyWith(
-                color: color,
-                fontWeight: FontWeight.w600,
-              ),
-        ),
-      ],
     );
   }
 }

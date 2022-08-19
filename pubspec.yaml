@@ -19,6 +19,7 @@ dependencies:
   intl: ^0.17.0
   flutter_secure_storage: ^5.1.2
   cached_network_image: ^3.2.1
+  flutter_html: ^3.0.0-alpha.5
 
 dev_dependencies:
   flutter_test:

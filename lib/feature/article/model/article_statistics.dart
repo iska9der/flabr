@@ -8,11 +8,11 @@ class ArticleStatistics extends Equatable {
   final int votesCount;
 
   const ArticleStatistics({
-    required this.commentsCount,
-    required this.favoritesCount,
-    required this.readingCount,
-    required this.score,
-    required this.votesCount,
+    this.commentsCount = 0,
+    this.favoritesCount = 0,
+    this.readingCount = 0,
+    this.score = 0,
+    this.votesCount = 0,
   });
 
   factory ArticleStatistics.fromMap(Map<String, dynamic> map) {
@@ -24,6 +24,8 @@ class ArticleStatistics extends Equatable {
       votesCount: map['votesCount'],
     );
   }
+
+  static const empty = ArticleStatistics();
 
   @override
   List<Object> get props => [

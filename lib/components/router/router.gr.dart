@@ -12,15 +12,16 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:auto_route/auto_route.dart' as _i2;
-import 'package:flutter/material.dart' as _i6;
+import 'package:flutter/material.dart' as _i7;
 
+import '../../page/article_page.dart' as _i6;
 import '../../page/articles_page.dart' as _i5;
 import '../../page/dashboard_page.dart' as _i1;
 import '../../page/news_page.dart' as _i3;
 import '../../page/settings_page.dart' as _i4;
 
 class AppRouter extends _i2.RootStackRouter {
-  AppRouter([_i6.GlobalKey<_i6.NavigatorState>? navigatorKey])
+  AppRouter([_i7.GlobalKey<_i7.NavigatorState>? navigatorKey])
       : super(navigatorKey);
 
   @override
@@ -44,6 +45,14 @@ class AppRouter extends _i2.RootStackRouter {
     AllArticlesRoute.name: (routeData) {
       return _i2.MaterialPageX<dynamic>(
           routeData: routeData, child: const _i5.ArticlesPage());
+    },
+    ArticleRoute.name: (routeData) {
+      final pathParams = routeData.inheritedPathParams;
+      final args = routeData.argsAs<ArticleRouteArgs>(
+          orElse: () => ArticleRouteArgs(id: pathParams.getString('id')));
+      return _i2.MaterialPageX<dynamic>(
+          routeData: routeData,
+          child: _i6.ArticlePage(key: args.key, id: args.id));
     }
   };
 
@@ -55,7 +64,9 @@ class AppRouter extends _i2.RootStackRouter {
               parent: DashboardRoute.name,
               children: [
                 _i2.RouteConfig(AllArticlesRoute.name,
-                    path: '', parent: ArticlesRoute.name)
+                    path: '', parent: ArticlesRoute.name),
+                _i2.RouteConfig(ArticleRoute.name,
+                    path: ':id', parent: ArticlesRoute.name)
               ]),
           _i2.RouteConfig(NewsRoute.name,
               path: 'news', parent: DashboardRoute.name),
@@ -105,4 +116,29 @@ class AllArticlesRoute extends _i2.PageRouteInfo<void> {
   const AllArticlesRoute() : super(AllArticlesRoute.name, path: '');
 
   static const String name = 'AllArticlesRoute';
+}
+
+/// generated route for
+/// [_i6.ArticlePage]
+class ArticleRoute extends _i2.PageRouteInfo<ArticleRouteArgs> {
+  ArticleRoute({_i7.Key? key, required String id})
+      : super(ArticleRoute.name,
+            path: ':id',
+            args: ArticleRouteArgs(key: key, id: id),
+            rawPathParams: {'id': id});
+
+  static const String name = 'ArticleRoute';
+}
+
+class ArticleRouteArgs {
+  const ArticleRouteArgs({this.key, required this.id});
+
+  final _i7.Key? key;
+
+  final String id;
+
+  @override
+  String toString() {
+    return 'ArticleRouteArgs{key: $key, id: $id}';
+  }
 }

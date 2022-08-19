@@ -1,8 +1,9 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:flabr/page/news_page.dart';
 
+import '../../page/article_page.dart';
 import '../../page/articles_page.dart';
 import '../../page/dashboard_page.dart';
+import '../../page/news_page.dart';
 import '../../page/settings_page.dart';
 
 @MaterialAutoRouter(
@@ -21,6 +22,11 @@ import '../../page/settings_page.dart';
               path: '',
               name: 'AllArticlesRoute',
               page: ArticlesPage,
+            ),
+            AutoRoute(
+              path: ':id',
+              name: 'ArticleRoute',
+              page: ArticlePage,
             ),
           ],
         ),

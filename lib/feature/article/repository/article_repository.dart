@@ -8,9 +8,10 @@ import '../model/sort/date_period_enum.dart';
 import '../model/sort/sort_enum.dart';
 
 class ArticleRepository {
-  const ArticleRepository(this._client);
+  const ArticleRepository(this._baseClient, this._proxyClient);
 
-  final HttpClient _client;
+  final HttpClient _baseClient;
+  final HttpClient _proxyClient;
 
   Future<Map<String, dynamic>> fetchAll({
     required SortEnum sort,
@@ -32,7 +33,10 @@ class ArticleRepository {
       );
 
       final map = body.toMap();
-      final response = await _client.post('makeRequest', body: map);
+      final response = await _proxyClient.post(
+        '/makeRequest',
+        body: map,
+      );
 
       return response.data;
     } on DisplayableException {
@@ -48,7 +52,10 @@ class ArticleRepository {
       );
 
       final map = body.toMap();
-      final response = await _client.post('makeRequest', body: map);
+      final response = await _proxyClient.post(
+        '/makeRequest',
+        body: map,
+      );
 
       return response.data;
     } catch (e) {
@@ -58,4 +65,14 @@ class ArticleRepository {
 
   /// todo: unimplemented
   void fetchFeed() {}
+
+  Future<Map<String, dynamic>> fetchById(String id) async {
+    try {
+      final response = await _baseClient.get('/articles/$id');
+
+      return response.data;
+    } catch (e) {
+      throw FetchException();
+    }
+  }
 }

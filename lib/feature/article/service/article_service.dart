@@ -63,4 +63,12 @@ class ArticleService {
 
     return result;
   }
+
+  Future<ArticleModel> fetchById(String id) async {
+    final rawData = await repository.fetchById(id);
+
+    final article = ArticleModel.fromMap(rawData);
+
+    return article;
+  }
 }
