@@ -5,6 +5,8 @@ ThemeData darkTheme() {
 
   themeData = themeData.copyWith(
     useMaterial3: true,
+    cardTheme: buildCardTheme(),
+    appBarTheme: buildAppBarTheme().copyWith(shadowColor: Colors.black),
   );
 
   return themeData;

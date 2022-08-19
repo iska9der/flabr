@@ -2,6 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flabr/common/widget/progress_indicator.dart';
 import 'package:flabr/config/constants.dart';
 import 'package:flabr/feature/article/model/article_type.dart';
+import 'package:flabr/feature/article/model/sort/period_enum.dart';
+import 'package:flabr/feature/article/model/sort/sort_option_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -11,6 +13,7 @@ import '../feature/article/cubit/articles_cubit.dart';
 import '../feature/article/model/article_model.dart';
 import '../feature/article/model/sort/sort_enum.dart';
 import '../feature/article/service/article_service.dart';
+import '../feature/article/widget/sort_widget.dart';
 
 class ArticlesPage extends StatelessWidget {
   const ArticlesPage({Key? key}) : super(key: key);
@@ -26,19 +29,8 @@ class ArticlesPage extends StatelessWidget {
   }
 }
 
-class ArticlesView extends StatefulWidget {
+class ArticlesView extends StatelessWidget {
   const ArticlesView({Key? key}) : super(key: key);
-
-  @override
-  State<ArticlesView> createState() => _ArticlesViewState();
-}
-
-class _ArticlesViewState extends State<ArticlesView>
-    with TickerProviderStateMixin {
-  late final TabController tabController = TabController(
-    length: SortEnum.values.length,
-    vsync: this,
-  );
 
   @override
   Widget build(BuildContext context) {
@@ -72,22 +64,49 @@ class _ArticlesViewState extends State<ArticlesView>
       body: SafeArea(
         child: CustomScrollView(
           slivers: [
-            const SliverAppBar(
-              surfaceTintColor: Colors.transparent,
-              floating: true,
-            ),
             BlocBuilder<ArticlesCubit, ArticlesState>(
               builder: (context, state) {
-                return SliverToBoxAdapter(
-                  child: TabBar(
-                    onTap: (value) =>
-                        context.read<ArticlesCubit>().changeSort(value),
-                    controller: tabController,
-                    tabs: const [
-                      Tab(text: 'По дням'),
-                      Tab(text: 'По рейтингу'),
-                    ],
-                  ),
+                return SliverAppBar(
+                  title: Text(state.type.label),
+                  floating: true,
+                  automaticallyImplyLeading: true,
+                  expandedHeight: state.type == ArticleType.all ? 130 : null,
+                  flexibleSpace: state.type == ArticleType.all
+                      ? FlexibleSpaceBar(
+                          background: Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              SortWidget(
+                                currentValue: state.sort,
+                                onTap: (value) => context
+                                    .read<ArticlesCubit>()
+                                    .changeSort(value),
+                              ),
+                              SortOptionsWidget(
+                                options: state.sort == SortEnum.date
+                                    ? PeriodEnum.values
+                                        .map((period) => SortOptionModel(
+                                              label: period.label,
+                                              value: period,
+                                            ))
+                                        .toList()
+                                    : ["+0", "+10", "+25", "+50", "+100"]
+                                        .map((score) => SortOptionModel(
+                                              label: score,
+                                              value: score,
+                                            ))
+                                        .toList(),
+                                currentValue: state.sort == SortEnum.date
+                                    ? state.period
+                                    : state.score,
+                                onTap: (value) => context
+                                    .read<ArticlesCubit>()
+                                    .changeVariant(state.sort, value),
+                              ),
+                            ],
+                          ),
+                        )
+                      : null,
                 );
               },
             ),
@@ -136,9 +155,6 @@ class _Card extends StatelessWidget {
         "${DateFormat.yMMMMd().format(article.timePublished)}, ${DateFormat.Hm().format(article.timePublished)}";
 
     return Card(
-      elevation: 0.2,
-      shadowColor: Colors.transparent,
-      margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 6),
       child: Padding(
         padding: const EdgeInsets.all(12.0),
         child: Column(

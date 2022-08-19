@@ -5,6 +5,7 @@ class ValueException implements DisplayableException {
 
   ValueException([this.message]);
 
+  @override
   String toString() {
     Object? message = this.message;
     if (message == null) return "Exception";

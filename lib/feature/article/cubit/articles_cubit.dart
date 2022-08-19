@@ -1,10 +1,13 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flabr/common/exception/displayable_exception.dart';
+import 'package:flabr/common/exception/value_exception.dart';
 import 'package:flabr/feature/article/model/article_type.dart';
 import 'package:flabr/feature/article/model/sort/sort_enum.dart';
+import 'package:flabr/feature/article/model/sort/sort_option_model.dart';
 
 import '../model/article_model.dart';
+import '../model/sort/period_enum.dart';
 import '../service/article_service.dart';
 
 part 'articles_state.dart';
@@ -23,6 +26,8 @@ class ArticlesCubit extends Cubit<ArticlesState> {
     try {
       var articles = await _service.fetchAll(
         sort: state.sort,
+        period: state.period,
+        score: state.score,
         page: state.page,
       );
 
@@ -64,11 +69,33 @@ class ArticlesCubit extends Cubit<ArticlesState> {
     fetchArticles();
   }
 
-  void changeSort(int value) {
+  void changeSort(SortEnum value) {
     emit(state.copyWith(
-      sort: value == 0 ? SortEnum.date : SortEnum.rating,
+      sort: value,
       articles: [],
     ));
+
+    fetchArticles();
+  }
+
+  void changeVariant(SortEnum sort, SortOptionModel option) {
+    switch (sort) {
+      case SortEnum.date:
+        if (state.period == option.value) return;
+
+        emit(state.copyWith(articles: [], period: option.value));
+        break;
+      case SortEnum.rating:
+        if (state.score == option.value) {
+          emit(state.copyWith(articles: [], score: ""));
+        } else {
+          emit(state.copyWith(articles: [], score: option.value));
+        }
+
+        break;
+      default:
+        throw ValueException('Неизвестный вариант сортировки статей');
+    }
 
     fetchArticles();
   }

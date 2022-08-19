@@ -15,8 +15,8 @@ class ArticleRepository {
   Future<Map<String, dynamic>> fetchAll({
     required SortEnum sort,
     required String page,
-    PeriodEnum period = PeriodEnum.daily,
-    String score = "0",
+    required PeriodEnum period,
+    required String score,
   }) async {
     try {
       final body = MakeRequest(
@@ -24,7 +24,7 @@ class ArticleRepository {
         requestParams: RequestParams(
           params: ArticlesParams(
             sort: sort,
-            period: sort == SortEnum.date ? PeriodEnum.daily : null,
+            period: sort == SortEnum.date ? period : null,
             score: sort == SortEnum.rating ? score : null,
             page: page,
           ),
@@ -57,10 +57,5 @@ class ArticleRepository {
   }
 
   /// todo: unimplemented
-  Future<Map<String, dynamic>> fetchFeed({
-    required SortEnum sort,
-    required String page,
-  }) async {
-    return fetchAll(sort: sort, page: page);
-  }
+  void fetchFeed() {}
 }
