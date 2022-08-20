@@ -8,10 +8,12 @@ class SortWidget extends StatelessWidget {
     Key? key,
     required this.currentValue,
     required this.onTap,
+    this.isEnabled = true,
   }) : super(key: key);
 
   final SortEnum currentValue;
   final ValueChanged<SortEnum> onTap;
+  final bool isEnabled;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +27,7 @@ class SortWidget extends StatelessWidget {
             child: Material(
               color: Colors.transparent,
               child: InkWell(
-                onTap: () => onTap(type),
+                onTap: isEnabled ? () => onTap(type) : null,
                 child: Container(
                   decoration: BoxDecoration(
                     color: currentValue == type
@@ -53,11 +55,14 @@ class SortOptionsWidget extends StatelessWidget {
     required this.currentValue,
     required this.options,
     required this.onTap,
+    this.isEnabled = true,
   }) : super(key: key);
 
   final dynamic currentValue;
   final ValueChanged<SortOptionModel> onTap;
   final List<SortOptionModel> options;
+
+  final bool isEnabled;
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +77,7 @@ class SortOptionsWidget extends StatelessWidget {
                 child: Material(
                   color: Colors.transparent,
                   child: InkWell(
-                    onTap: () => onTap(option),
+                    onTap: isEnabled ? () => onTap(option) : null,
                     splashColor: Theme.of(context).splashColor,
                     child: Container(
                       decoration: BoxDecoration(
@@ -81,16 +86,13 @@ class SortOptionsWidget extends StatelessWidget {
                             : null,
                       ),
                       padding: const EdgeInsets.symmetric(
-                        horizontal: 14,
+                        horizontal: 0,
                         vertical: 6,
                       ),
-                      child: FittedBox(
-                        fit: BoxFit.scaleDown,
-                        child: Text(
-                          option.label,
-                          textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.caption,
-                        ),
+                      child: Text(
+                        option.label,
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.caption,
                       ),
                     ),
                   ),

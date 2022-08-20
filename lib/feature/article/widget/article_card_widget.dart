@@ -3,7 +3,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import '../../../common/widget/progress_indicator.dart';
+import '../../../common/utils/utils.dart';
+import '../../../components/di/dependencies.dart';
 import '../../../components/router/router.gr.dart';
 import '../../../config/constants.dart';
 import '../model/article_model.dart';
@@ -24,25 +25,31 @@ class ArticleCardWidget extends StatelessWidget {
           children: [
             ArticleAuthorWidget(article),
             Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 if (article.leadData.image.isNotEmpty) ...[
                   const SizedBox(height: 12),
                   CachedNetworkImage(
-                    placeholder: (c, url) => const SizedBox(
-                      height: postImageHeight,
-                      child: CircleIndicator.small(),
-                    ),
+                    placeholder: getIt.get<Utils>().image.placeholder,
                     height: postImageHeight,
                     imageUrl: article.leadData.image.url,
                   )
                 ],
                 const SizedBox(height: 12),
                 TextButton(
-                  onPressed: () =>
-                      context.router.push(ArticleRoute(id: article.id)),
+                  onPressed: () => context.router.push(
+                    ArticleRoute(id: article.id),
+                  ),
+                  style: ButtonStyle(
+                    alignment: Alignment.centerLeft,
+                    shape: MaterialStateProperty.all<OutlinedBorder>(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5.0),
+                      ),
+                    ),
+                  ),
                   child: Text(
                     article.titleHtml,
-                    textAlign: TextAlign.left,
                     style: Theme.of(context).textTheme.headline6,
                   ),
                 ),

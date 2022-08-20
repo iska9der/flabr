@@ -20,6 +20,9 @@ dependencies:
   flutter_secure_storage: ^5.1.2
   cached_network_image: ^3.2.1
   flutter_html: ^3.0.0-alpha.5
+  webview_flutter: ^3.0.4
+  collection: ^1.16.0
+  url_launcher: ^6.1.5
 
 dev_dependencies:
   flutter_test:

@@ -1,14 +1,14 @@
-import 'package:flabr/common/widget/progress_indicator.dart';
-import 'package:flabr/feature/article/model/article_type.dart';
-import 'package:flabr/feature/article/model/sort/date_period_enum.dart';
-import 'package:flabr/feature/article/model/sort/rating_score_enum.dart';
-import 'package:flabr/feature/article/model/sort/sort_option_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../common/widget/progress_indicator.dart';
 import '../components/di/dependencies.dart';
 import '../feature/article/cubit/articles_cubit.dart';
+import '../feature/article/model/article_type.dart';
+import '../feature/article/model/sort/date_period_enum.dart';
+import '../feature/article/model/sort/rating_score_enum.dart';
 import '../feature/article/model/sort/sort_enum.dart';
+import '../feature/article/model/sort/sort_option_model.dart';
 import '../feature/article/service/article_service.dart';
 import '../feature/article/widget/article_card_widget.dart';
 import '../feature/article/widget/sort_widget.dart';
@@ -58,43 +58,49 @@ class ArticlesView extends StatelessWidget {
               builder: (context, state) {
                 return SliverAppBar(
                   title: Text(state.type.label),
+                );
+              },
+            ),
+            BlocBuilder<ArticlesCubit, ArticlesState>(
+              builder: (context, state) {
+                return SliverAppBar(
+                  automaticallyImplyLeading: false,
                   floating: true,
-                  automaticallyImplyLeading: true,
-                  expandedHeight: state.type == ArticleType.all ? 130 : null,
-                  flexibleSpace: state.type == ArticleType.all
-                      ? FlexibleSpaceBar(
-                          background: Column(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              SortWidget(
-                                currentValue: state.sort,
-                                onTap: (value) => context
-                                    .read<ArticlesCubit>()
-                                    .changeSort(value),
-                              ),
-                              SortOptionsWidget(
-                                options: state.sort == SortEnum.date
-                                    ? DatePeriodEnum.values
-                                        .map((period) => SortOptionModel(
-                                              label: period.label,
-                                              value: period,
-                                            ))
-                                        .toList()
-                                    : RatingScoreEnum.values
-                                        .map((score) => SortOptionModel(
-                                              label: score.label,
-                                              value: score.value,
-                                            ))
-                                        .toList(),
-                                currentValue: state.sort == SortEnum.date
-                                    ? state.period
-                                    : state.score,
-                                onTap: (value) => context
-                                    .read<ArticlesCubit>()
-                                    .changeVariant(state.sort, value),
-                              ),
-                            ],
-                          ),
+                  toolbarHeight: state.type == ArticleType.all ? 80 : 0,
+                  title: state.type == ArticleType.all
+                      ? Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            SortWidget(
+                              isEnabled: state.status != ArticlesStatus.loading,
+                              currentValue: state.sort,
+                              onTap: (value) => context
+                                  .read<ArticlesCubit>()
+                                  .changeSort(value),
+                            ),
+                            SortOptionsWidget(
+                              isEnabled: state.status != ArticlesStatus.loading,
+                              options: state.sort == SortEnum.date
+                                  ? DatePeriodEnum.values
+                                      .map((period) => SortOptionModel(
+                                            label: period.label,
+                                            value: period,
+                                          ))
+                                      .toList()
+                                  : RatingScoreEnum.values
+                                      .map((score) => SortOptionModel(
+                                            label: score.label,
+                                            value: score.value,
+                                          ))
+                                      .toList(),
+                              currentValue: state.sort == SortEnum.date
+                                  ? state.period
+                                  : state.score,
+                              onTap: (value) => context
+                                  .read<ArticlesCubit>()
+                                  .changeVariant(state.sort, value),
+                            ),
+                          ],
                         )
                       : null,
                 );
