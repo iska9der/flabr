@@ -1,5 +1,5 @@
 import '../../../../common/exception/value_exception.dart';
-import '../../../../common/model/make_request/params.dart';
+import '../../../../common/model/network/params.dart';
 import '../sort/date_period_enum.dart';
 import '../sort/sort_enum.dart';
 

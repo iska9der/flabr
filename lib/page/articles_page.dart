@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../common/cubit/scroll_controller_cubit.dart';
+import '../common/utils/utils.dart';
 import '../common/widget/progress_indicator.dart';
 import '../component/di/dependencies.dart';
 import '../feature/article/cubit/articles_cubit.dart';
@@ -145,10 +146,11 @@ class ArticlesPageView extends StatelessWidget {
               BlocConsumer<ArticlesCubit, ArticlesState>(
                 listenWhen: (p, c) =>
                     c.status == ArticlesStatus.error && c.error.isNotEmpty,
-                listener: (c, s) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text(s.error)),
-                  );
+                listener: (c, state) {
+                  getIt.get<Utils>().showNotification(
+                        context: context,
+                        content: Text(state.error),
+                      );
                 },
                 builder: (context, state) {
                   if (state.status == ArticlesStatus.loading &&

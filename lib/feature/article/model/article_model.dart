@@ -1,51 +1,58 @@
 import 'package:equatable/equatable.dart';
 
+import '../../../common/model/author_model.dart';
 import 'article_lead_data_model.dart';
 import 'article_statistics_model.dart';
 
 class ArticleModel extends Equatable {
   const ArticleModel({
     required this.id,
+    this.timePublished = '',
     this.titleHtml = '',
     this.textHtml = '',
-    this.timePublished = '',
-    this.leadData = ArticleLeadDataModel.empty,
+    this.author = AuthorModel.empty,
     this.statistics = ArticleStatisticsModel.empty,
+    this.leadData = ArticleLeadDataModel.empty,
   });
 
   final String id;
+  final String timePublished;
 
   /// Заголовок
   final String titleHtml;
 
   /// Полный текст статьи
+  /// прилетает, только если получаем конкретную статью по id
   final String textHtml;
-  final String timePublished;
-  final ArticleLeadDataModel leadData;
+  final AuthorModel author;
   final ArticleStatisticsModel statistics;
+  final ArticleLeadDataModel leadData;
 
   DateTime get publishedAt => DateTime.parse(timePublished);
 
   factory ArticleModel.fromMap(Map<String, dynamic> map) {
     return ArticleModel(
-      id: map['id'] as String,
-      titleHtml: map['titleHtml'] as String,
-      textHtml: map['textHtml'] ?? '',
+      id: map['id'],
       timePublished: map['timePublished'],
-      leadData: ArticleLeadDataModel.fromMap(map['leadData']),
+      titleHtml: map['titleHtml'],
+      textHtml: map['textHtml'] ?? '',
+      author: AuthorModel.fromMap(map['author']),
       statistics: ArticleStatisticsModel.fromMap(map['statistics']),
+      leadData: ArticleLeadDataModel.fromMap(map['leadData']),
     );
   }
 
   static const empty = ArticleModel(id: '0');
+  bool get isEmpty => this == empty;
 
   @override
   List<Object> get props => [
         id,
+        timePublished,
         titleHtml,
         textHtml,
-        timePublished,
-        leadData,
+        author,
         statistics,
+        leadData,
       ];
 }

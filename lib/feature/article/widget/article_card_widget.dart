@@ -6,6 +6,7 @@ import '../../../common/widget/network_image_widget.dart';
 import '../../../component/router/router.gr.dart';
 import '../../../config/constants.dart';
 import '../model/article_model.dart';
+import 'article_author_widget.dart';
 import 'article_statistics_widget.dart';
 
 class ArticleCardWidget extends StatelessWidget {
@@ -21,7 +22,7 @@ class ArticleCardWidget extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            ArticleAuthorWidget(article),
+            ArticleTopRow(article),
             Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
@@ -61,8 +62,8 @@ class ArticleCardWidget extends StatelessWidget {
   }
 }
 
-class ArticleAuthorWidget extends StatelessWidget {
-  const ArticleAuthorWidget(this.article, {Key? key}) : super(key: key);
+class ArticleTopRow extends StatelessWidget {
+  const ArticleTopRow(this.article, {Key? key}) : super(key: key);
 
   final ArticleModel article;
 
@@ -73,6 +74,8 @@ class ArticleAuthorWidget extends StatelessWidget {
 
     return Row(
       children: [
+        ArticleAuthorWidget(article.author),
+        const SizedBox(width: 4),
         Text(
           timePub,
           style: Theme.of(context).textTheme.caption,

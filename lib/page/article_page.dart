@@ -85,7 +85,7 @@ class ArticleView extends StatelessWidget {
                     horizontal: hPadding,
                     vertical: 16.0,
                   ),
-                  child: ArticleAuthorWidget(article),
+                  child: ArticleTopRow(article),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(

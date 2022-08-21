@@ -1,7 +1,7 @@
 import '../../../common/exception/displayable_exception.dart';
 import '../../../common/exception/fetch_exception.dart';
-import '../../../common/model/make_request/make_request.dart';
-import '../../../common/model/make_request/request_params.dart';
+import '../../../common/model/network/make_request.dart';
+import '../../../common/model/network/request_params.dart';
 import '../../../component/http/http_client.dart';
 import '../model/network/articles_params.dart';
 import '../model/network/articles_response.dart';
