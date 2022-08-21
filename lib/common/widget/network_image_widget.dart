@@ -19,7 +19,8 @@ class NetworkImageWidget extends StatelessWidget {
     return CachedNetworkImage(
       imageUrl: url,
       height: height,
-      placeholder: getIt.get<Utils>().image.placeholder,
+      placeholder: getIt.get<Utils>().image.onLoading,
+      errorWidget: getIt.get<Utils>().image.onError,
     );
   }
 }
