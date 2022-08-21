@@ -1,8 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flabr/common/exception/displayable_exception.dart';
-import 'package:flabr/feature/article/model/article_model.dart';
-import 'package:flabr/feature/article/service/article_service.dart';
+import '../../../common/exception/displayable_exception.dart';
+import '../model/article_model.dart';
+import '../service/article_service.dart';
 
 part 'article_state.dart';
 

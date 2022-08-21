@@ -1,5 +1,5 @@
 import 'package:bloc/bloc.dart';
-import 'package:flabr/components/storage/cache_storage.dart';
+import '../../storage/cache_storage.dart';
 
 const isDarkCacheKey = 'isDarkTheme';
 

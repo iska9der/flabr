@@ -1,10 +1,10 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flabr/common/exception/displayable_exception.dart';
-import 'package:flabr/common/exception/value_exception.dart';
-import 'package:flabr/feature/article/model/article_type.dart';
-import 'package:flabr/feature/article/model/sort/sort_enum.dart';
-import 'package:flabr/feature/article/model/sort/sort_option_model.dart';
+import '../../../common/exception/displayable_exception.dart';
+import '../../../common/exception/value_exception.dart';
+import '../model/article_type.dart';
+import '../model/sort/sort_enum.dart';
+import '../model/sort/sort_option_model.dart';
 
 import '../model/article_model.dart';
 import '../model/sort/date_period_enum.dart';

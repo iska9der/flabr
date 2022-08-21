@@ -85,10 +85,7 @@ class SortOptionsWidget extends StatelessWidget {
                             ? Theme.of(context).focusColor
                             : null,
                       ),
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 0,
-                        vertical: 6,
-                      ),
+                      padding: const EdgeInsets.symmetric(vertical: 6),
                       child: Text(
                         option.label,
                         textAlign: TextAlign.center,

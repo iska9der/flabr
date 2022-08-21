@@ -1,5 +1,4 @@
-import 'package:flabr/feature/article/model/sort/sort_enum.dart';
-
+import '../model/sort/sort_enum.dart';
 import '../model/article_model.dart';
 import '../model/sort/date_period_enum.dart';
 import '../repository/article_repository.dart';

@@ -96,10 +96,7 @@ class ArticleView extends StatelessWidget {
                   style: {
                     'blockquote': Style(
                       backgroundColor: Theme.of(context).colorScheme.background,
-                      margin: const EdgeInsets.symmetric(
-                        horizontal: 8,
-                        vertical: 0,
-                      ),
+                      margin: const EdgeInsets.symmetric(horizontal: 8),
                       padding: const EdgeInsets.symmetric(
                         horizontal: hPadding,
                         vertical: 6,
@@ -130,7 +127,6 @@ class ArticleView extends StatelessWidget {
                                 tag.element!.attributes['data-src'] ?? '';
 
                             return Align(
-                              alignment: Alignment.center,
                               child: CachedNetworkImage(
                                 imageUrl: imgUrl,
                                 placeholder:
@@ -206,7 +202,6 @@ class ArticleView extends StatelessWidget {
                         }
 
                         return Align(
-                          alignment: Alignment.center,
                           child: CachedNetworkImage(
                             imageUrl: fullImg,
                             placeholder: getIt.get<Utils>().image.placeholder,

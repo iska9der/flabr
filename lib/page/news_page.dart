@@ -1,8 +1,8 @@
-import 'package:flabr/common/widget/progress_indicator.dart';
-import 'package:flabr/feature/article/model/article_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../common/widget/progress_indicator.dart';
+import '../feature/article/model/article_model.dart';
 import '../components/di/dependencies.dart';
 import '../feature/article/cubit/articles_cubit.dart';
 import '../feature/article/service/article_service.dart';

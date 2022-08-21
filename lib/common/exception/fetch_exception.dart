@@ -8,7 +8,7 @@ class FetchException implements DisplayableException {
   @override
   String toString() {
     Object? message = this.message;
-    if (message == null) return "Exception";
-    return "$message";
+    if (message == null) return 'Exception';
+    return '$message';
   }
 }

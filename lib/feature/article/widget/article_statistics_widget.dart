@@ -1,5 +1,6 @@
-import 'package:flabr/feature/article/model/article_statistics.dart';
 import 'package:flutter/material.dart';
+
+import '../model/article_statistics.dart';
 
 class ArticleStatisticsWidget extends StatelessWidget {
   const ArticleStatisticsWidget({Key? key, required this.statistics})

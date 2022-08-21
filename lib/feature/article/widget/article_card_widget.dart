@@ -72,7 +72,7 @@ class ArticleAuthorWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final timePub =
-        "${DateFormat.yMMMMd().format(article.publishedAt)}, ${DateFormat.Hm().format(article.publishedAt)}";
+        '${DateFormat.yMMMMd().format(article.publishedAt)}, ${DateFormat.Hm().format(article.publishedAt)}';
 
     return Row(
       children: [

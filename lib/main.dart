@@ -1,14 +1,15 @@
 import 'dart:async';
 
-import 'package:flabr/components/di/dependencies.dart';
-import 'package:flabr/components/router/router.gr.dart';
-import 'package:flabr/components/storage/cache_storage.dart';
-import 'package:flabr/components/theme/cubit/theme_cubit.dart';
-import 'package:flabr/components/theme/theme.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'components/di/dependencies.dart';
+import 'components/router/router.gr.dart';
+import 'components/storage/cache_storage.dart';
+import 'components/theme/cubit/theme_cubit.dart';
+import 'components/theme/theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

@@ -48,7 +48,7 @@ class ArticleRepository {
     try {
       final body = MakeRequest(
         method: 'articles',
-        requestParams: RequestParams(params: ArticlesParams(news: "true")),
+        requestParams: RequestParams(params: ArticlesParams(news: 'true')),
       );
 
       final map = body.toMap();
