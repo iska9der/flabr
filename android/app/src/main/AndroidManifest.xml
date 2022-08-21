@@ -4,6 +4,18 @@
     <!-- Permissions -->
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <!-- For url_launcher -->
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="https" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="http" />
+        </intent>
+    </queries>
+
     <!-- Application -->
    <application
         android:label="flabr"
