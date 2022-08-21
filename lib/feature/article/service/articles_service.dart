@@ -1,17 +1,17 @@
-import '../model/network/article_response.dart';
+import '../model/network/articles_response.dart';
 import '../model/sort/sort_enum.dart';
 import '../model/article_model.dart';
 import '../model/sort/date_period_enum.dart';
-import '../repository/article_repository.dart';
+import '../repository/articles_repository.dart';
 
-class ArticleService {
-  ArticleService(this.repository);
+class ArticlesService {
+  ArticlesService(this.repository);
 
-  final ArticleRepository repository;
+  final ArticlesRepository repository;
 
-  ArticleResponse cached = ArticleResponse.empty;
+  ArticlesResponse cached = ArticlesResponse.empty;
 
-  Future<ArticleResponse> fetchAll({
+  Future<ArticlesResponse> fetchAll({
     required SortEnum sort,
     required DatePeriodEnum period,
     required String score,

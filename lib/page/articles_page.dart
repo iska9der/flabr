@@ -7,14 +7,14 @@ import '../common/cubit/scroll_controller_cubit.dart';
 import '../common/widget/progress_indicator.dart';
 import '../component/di/dependencies.dart';
 import '../feature/article/cubit/articles_cubit.dart';
-import '../feature/article/model/article_type.dart';
+import '../feature/article/model/articles_enum.dart';
 import '../feature/article/model/sort/date_period_enum.dart';
 import '../feature/article/model/sort/rating_score_enum.dart';
 import '../feature/article/model/sort/sort_enum.dart';
 import '../feature/article/model/sort/sort_option_model.dart';
-import '../feature/article/service/article_service.dart';
+import '../feature/article/service/articles_service.dart';
 import '../feature/article/widget/article_card_widget.dart';
-import '../feature/article/widget/sort_widget.dart';
+import '../feature/article/widget/articles_sort_widget.dart';
 
 class ArticlesPage extends StatelessWidget {
   const ArticlesPage({Key? key}) : super(key: key);
@@ -25,7 +25,7 @@ class ArticlesPage extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (c) => ArticlesCubit(
-            getIt.get<ArticleService>(),
+            getIt.get<ArticlesService>(),
           )..fetchArticles(),
         ),
         BlocProvider(
@@ -56,7 +56,7 @@ class ArticlesPageView extends StatelessWidget {
           child: ListView(
             physics: const NeverScrollableScrollPhysics(),
             children: [
-              ...ArticleType.values
+              ...ArticlesEnum.values
                   .map((type) => ListTile(
                         title: Text(type.label),
                         onTap: () {
@@ -100,8 +100,8 @@ class ArticlesPageView extends StatelessWidget {
                   return SliverAppBar(
                     automaticallyImplyLeading: false,
                     floating: true,
-                    toolbarHeight: state.type == ArticleType.all ? 80 : 0,
-                    title: state.type == ArticleType.all
+                    toolbarHeight: state.type == ArticlesEnum.all ? 80 : 0,
+                    title: state.type == ArticlesEnum.all
                         ? Column(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [

@@ -2,27 +2,27 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import '../../../common/exception/displayable_exception.dart';
 import '../../../common/exception/value_exception.dart';
-import '../model/article_type.dart';
+import '../model/articles_enum.dart';
 import '../model/sort/sort_enum.dart';
 import '../model/sort/sort_option_model.dart';
 
 import '../model/article_model.dart';
 import '../model/sort/date_period_enum.dart';
-import '../service/article_service.dart';
+import '../service/articles_service.dart';
 
 part 'articles_state.dart';
 
 class ArticlesCubit extends Cubit<ArticlesState> {
-  ArticlesCubit(ArticleService service)
+  ArticlesCubit(ArticlesService service)
       : _service = service,
         super(const ArticlesState());
 
-  final ArticleService _service;
+  final ArticlesService _service;
 
   bool get isFirstFetch => state.page == 1;
   bool get isLastPage => state.page >= state.pagesCount;
 
-  /// todo: реализовать получение по выбранному типу [ArticleType]
+  /// todo: реализовать получение по выбранному типу [ArticlesEnum]
   ///
   /// todo: реализовать бесконечную загрузку постов
   void fetchArticles() async {
@@ -72,7 +72,7 @@ class ArticlesCubit extends Cubit<ArticlesState> {
     }
   }
 
-  void changeType(ArticleType type) {
+  void changeType(ArticlesEnum type) {
     if (state.type == type) return;
 
     emit(ArticlesState(type: type));

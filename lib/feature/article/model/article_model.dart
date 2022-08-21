@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
-import 'article_lead_data.dart';
-import 'article_statistics.dart';
+import 'article_lead_data_model.dart';
+import 'article_statistics_model.dart';
 
 class ArticleModel extends Equatable {
   const ArticleModel({
@@ -9,8 +9,8 @@ class ArticleModel extends Equatable {
     this.titleHtml = '',
     this.textHtml = '',
     this.timePublished = '',
-    this.leadData = ArticleLeadData.empty,
-    this.statistics = ArticleStatistics.empty,
+    this.leadData = ArticleLeadDataModel.empty,
+    this.statistics = ArticleStatisticsModel.empty,
   });
 
   final String id;
@@ -21,8 +21,8 @@ class ArticleModel extends Equatable {
   /// Полный текст статьи
   final String textHtml;
   final String timePublished;
-  final ArticleLeadData leadData;
-  final ArticleStatistics statistics;
+  final ArticleLeadDataModel leadData;
+  final ArticleStatisticsModel statistics;
 
   DateTime get publishedAt => DateTime.parse(timePublished);
 
@@ -32,8 +32,8 @@ class ArticleModel extends Equatable {
       titleHtml: map['titleHtml'] as String,
       textHtml: map['textHtml'] ?? '',
       timePublished: map['timePublished'],
-      leadData: ArticleLeadData.fromMap(map['leadData']),
-      statistics: ArticleStatistics.fromMap(map['statistics']),
+      leadData: ArticleLeadDataModel.fromMap(map['leadData']),
+      statistics: ArticleStatisticsModel.fromMap(map['statistics']),
     );
   }
 

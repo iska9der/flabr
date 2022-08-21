@@ -7,8 +7,8 @@ import '../http/http_client.dart';
 import '../router/router.gr.dart';
 import '../storage/cache_storage.dart';
 import '../../config/constants.dart';
-import '../../feature/article/repository/article_repository.dart';
-import '../../feature/article/service/article_service.dart';
+import '../../feature/article/repository/articles_repository.dart';
+import '../../feature/article/service/articles_service.dart';
 
 final getIt = GetIt.instance;
 
@@ -31,13 +31,13 @@ void setDependencies() {
     () => CacheStorage(const FlutterSecureStorage()),
   );
 
-  getIt.registerLazySingleton<ArticleRepository>(
-    () => ArticleRepository(
+  getIt.registerLazySingleton<ArticlesRepository>(
+    () => ArticlesRepository(
       getIt(instanceName: 'baseClient'),
       getIt(instanceName: 'proxyClient'),
     ),
   );
-  getIt.registerLazySingleton<ArticleService>(
-    () => ArticleService(getIt()),
+  getIt.registerLazySingleton<ArticlesService>(
+    () => ArticlesService(getIt()),
   );
 }

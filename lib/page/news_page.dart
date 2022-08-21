@@ -5,7 +5,7 @@ import '../common/widget/progress_indicator.dart';
 import '../feature/article/model/article_model.dart';
 import '../component/di/dependencies.dart';
 import '../feature/article/cubit/articles_cubit.dart';
-import '../feature/article/service/article_service.dart';
+import '../feature/article/service/articles_service.dart';
 
 class NewsPage extends StatelessWidget {
   const NewsPage({Key? key}) : super(key: key);
@@ -16,7 +16,7 @@ class NewsPage extends StatelessWidget {
       body: SafeArea(
         child: BlocProvider(
           create: (c) => ArticlesCubit(
-            getIt.get<ArticleService>(),
+            getIt.get<ArticlesService>(),
           )..fetchNews(),
           child: const NewsView(),
         ),

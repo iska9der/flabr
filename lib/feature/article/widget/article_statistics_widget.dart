@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-import '../model/article_statistics.dart';
+import '../model/article_statistics_model.dart';
 
 class ArticleStatisticsWidget extends StatelessWidget {
   const ArticleStatisticsWidget({Key? key, required this.statistics})
       : super(key: key);
 
-  final ArticleStatistics statistics;
+  final ArticleStatisticsModel statistics;
 
   @override
   Widget build(BuildContext context) {

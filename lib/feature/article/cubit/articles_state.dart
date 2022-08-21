@@ -6,7 +6,7 @@ class ArticlesState extends Equatable {
   const ArticlesState({
     this.status = ArticlesStatus.initial,
     this.error = '',
-    this.type = ArticleType.all,
+    this.type = ArticlesEnum.all,
     this.sort = SortEnum.rating,
     this.period = DatePeriodEnum.daily,
     this.score = '',
@@ -17,7 +17,7 @@ class ArticlesState extends Equatable {
 
   final ArticlesStatus status;
   final String error;
-  final ArticleType type;
+  final ArticlesEnum type;
   final SortEnum sort;
   final DatePeriodEnum period;
   final String score;
@@ -28,7 +28,7 @@ class ArticlesState extends Equatable {
   ArticlesState copyWith({
     ArticlesStatus? status,
     String? error,
-    ArticleType? type,
+    ArticlesEnum? type,
     SortEnum? sort,
     DatePeriodEnum? period,
     String? score,

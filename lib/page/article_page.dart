@@ -10,7 +10,7 @@ import '../common/widget/progress_indicator.dart';
 import '../component/di/dependencies.dart';
 import '../config/constants.dart';
 import '../feature/article/cubit/article_cubit.dart';
-import '../feature/article/service/article_service.dart';
+import '../feature/article/service/articles_service.dart';
 import '../feature/article/widget/article_card_widget.dart';
 
 class ArticlePage extends StatelessWidget {
@@ -26,7 +26,7 @@ class ArticlePage extends StatelessWidget {
     return BlocProvider(
       create: (context) => ArticleCubit(
         id,
-        service: getIt.get<ArticleService>(),
+        service: getIt.get<ArticlesService>(),
       )..fetch(),
       child: const Scaffold(
         body: SafeArea(child: ArticleView()),

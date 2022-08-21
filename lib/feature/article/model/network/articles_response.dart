@@ -5,8 +5,8 @@ import 'package:equatable/equatable.dart';
 
 import '../article_model.dart';
 
-class ArticleResponse extends Equatable {
-  const ArticleResponse({
+class ArticlesResponse extends Equatable {
+  const ArticlesResponse({
     required this.pagesCount,
     required this.articleIds,
     required this.articles,
@@ -16,12 +16,12 @@ class ArticleResponse extends Equatable {
   final List<String> articleIds;
   final List<ArticleModel> articles;
 
-  ArticleResponse copyWith({
+  ArticlesResponse copyWith({
     int? pagesCount,
     List<String>? articleIds,
     List<ArticleModel>? articles,
   }) {
-    return ArticleResponse(
+    return ArticlesResponse(
       pagesCount: pagesCount ?? this.pagesCount,
       articleIds: articleIds ?? this.articleIds,
       articles: articles ?? this.articles,
@@ -36,8 +36,8 @@ class ArticleResponse extends Equatable {
     };
   }
 
-  factory ArticleResponse.fromMap(Map<String, dynamic> map) {
-    return ArticleResponse(
+  factory ArticlesResponse.fromMap(Map<String, dynamic> map) {
+    return ArticlesResponse(
       pagesCount: map['pagesCount'] ?? 0,
       articleIds: List<String>.from((map['articleIds'])),
       articles: Map.from((map['articleRefs'] as Map))
@@ -54,10 +54,10 @@ class ArticleResponse extends Equatable {
 
   String toJson() => json.encode(toMap());
 
-  factory ArticleResponse.fromJson(String source) =>
-      ArticleResponse.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory ArticlesResponse.fromJson(String source) =>
+      ArticlesResponse.fromMap(json.decode(source) as Map<String, dynamic>);
 
-  static const empty = ArticleResponse(
+  static const empty = ArticlesResponse(
     pagesCount: 0,
     articleIds: [],
     articles: [],

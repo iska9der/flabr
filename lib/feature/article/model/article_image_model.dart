@@ -1,20 +1,20 @@
 import 'package:equatable/equatable.dart';
 
-class ArticleImage extends Equatable {
+class ArticleImageModel extends Equatable {
   final String url;
   final String fit;
   final double positionY;
   final double positionX;
 
-  const ArticleImage({
+  const ArticleImageModel({
     required this.url,
     this.fit = '',
     this.positionY = 0.00,
     this.positionX = 0.00,
   });
 
-  factory ArticleImage.fromMap(Map<String, dynamic> map) {
-    return ArticleImage(
+  factory ArticleImageModel.fromMap(Map<String, dynamic> map) {
+    return ArticleImageModel(
       url: map['url'] as String,
       fit: map['fit'] ?? '',
       positionY: map['positionY'] != null
@@ -26,7 +26,7 @@ class ArticleImage extends Equatable {
     );
   }
 
-  static const empty = ArticleImage(url: '');
+  static const empty = ArticleImageModel(url: '');
 
   get isNotEmpty => this != empty;
 

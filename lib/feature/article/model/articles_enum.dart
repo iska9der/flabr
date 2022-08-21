@@ -1,8 +1,8 @@
-enum ArticleType {
+enum ArticlesEnum {
   all('Все потоки'),
   feed('Моя лента');
 
-  const ArticleType(this.label);
+  const ArticlesEnum(this.label);
 
   final String label;
 }
