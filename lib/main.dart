@@ -5,11 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'components/di/dependencies.dart';
-import 'components/router/router.gr.dart';
-import 'components/storage/cache_storage.dart';
-import 'components/theme/cubit/theme_cubit.dart';
-import 'components/theme/theme.dart';
+import 'component/di/dependencies.dart';
+import 'component/router/router.gr.dart';
+import 'component/storage/cache_storage.dart';
+import 'component/theme/cubit/theme_cubit.dart';
+import 'component/theme/theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

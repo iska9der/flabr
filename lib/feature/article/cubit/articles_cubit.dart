@@ -19,23 +19,32 @@ class ArticlesCubit extends Cubit<ArticlesState> {
 
   final ArticleService _service;
 
+  bool get isFirstFetch => state.page == 1;
+  bool get isLastPage => state.page >= state.pagesCount;
+
   /// todo: реализовать получение по выбранному типу [ArticleType]
   ///
   /// todo: реализовать бесконечную загрузку постов
   void fetchArticles() async {
+    if (state.status == ArticlesStatus.loading || !isFirstFetch && isLastPage) {
+      return;
+    }
+
     emit(state.copyWith(status: ArticlesStatus.loading));
 
     try {
-      var articles = await _service.fetchAll(
+      var response = await _service.fetchAll(
         sort: state.sort,
         period: state.period,
         score: state.score,
-        page: state.page,
+        page: state.page.toString(),
       );
 
       emit(state.copyWith(
         status: ArticlesStatus.success,
-        articles: [...state.articles, ...articles],
+        articles: [...state.articles, ...response.articles],
+        page: state.page + 1,
+        pagesCount: response.pagesCount,
       ));
     } on DisplayableException catch (e) {
       emit(state.copyWith(
@@ -72,26 +81,22 @@ class ArticlesCubit extends Cubit<ArticlesState> {
   }
 
   void changeSort(SortEnum value) {
-    emit(state.copyWith(
-      sort: value,
-      articles: [],
-    ));
+    emit(ArticlesState(sort: value));
 
     fetchArticles();
   }
 
-  void changeVariant(SortEnum sort, SortOptionModel option) {
+  void changeSortOption(SortEnum sort, SortOptionModel option) {
     switch (sort) {
       case SortEnum.date:
         if (state.period == option.value) return;
 
-        emit(state.copyWith(articles: [], period: option.value));
+        emit(ArticlesState(sort: sort, period: option.value));
         break;
       case SortEnum.rating:
         if (state.score == option.value) return;
 
-        emit(state.copyWith(articles: [], score: option.value));
-
+        emit(ArticlesState(sort: sort, score: option.value));
         break;
       default:
         throw ValueException('Неизвестный вариант сортировки статей');

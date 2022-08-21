@@ -1,12 +1,9 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import '../../../common/utils/utils.dart';
 import '../../../common/widget/network_image_widget.dart';
-import '../../../components/di/dependencies.dart';
-import '../../../components/router/router.gr.dart';
+import '../../../component/router/router.gr.dart';
 import '../../../config/constants.dart';
 import '../model/article_model.dart';
 import 'article_statistics_widget.dart';

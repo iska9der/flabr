@@ -2,8 +2,9 @@ import '../../../common/exception/displayable_exception.dart';
 import '../../../common/exception/fetch_exception.dart';
 import '../../../common/model/make_request/make_request.dart';
 import '../../../common/model/make_request/request_params.dart';
-import '../../../components/http/http_client.dart';
-import '../model/request/article_params.dart';
+import '../../../component/http/http_client.dart';
+import '../model/network/article_params.dart';
+import '../model/network/article_response.dart';
 import '../model/sort/date_period_enum.dart';
 import '../model/sort/sort_enum.dart';
 
@@ -13,7 +14,7 @@ class ArticleRepository {
   final HttpClient _baseClient;
   final HttpClient _proxyClient;
 
-  Future<Map<String, dynamic>> fetchAll({
+  Future<ArticleResponse> fetchAll({
     required SortEnum sort,
     required String page,
     required DatePeriodEnum period,
@@ -38,7 +39,7 @@ class ArticleRepository {
         body: map,
       );
 
-      return response.data;
+      return ArticleResponse.fromMap(response.data);
     } on DisplayableException {
       rethrow;
     }

@@ -14,6 +14,9 @@ ThemeData lightTheme() {
             color: Colors.black87,
           ),
     ),
+    floatingActionButtonTheme: FloatingActionButtonThemeData(
+      backgroundColor: themeData.colorScheme.background,
+    ),
   );
 
   return themeData;

@@ -1,3 +1,4 @@
+import '../model/network/article_response.dart';
 import '../model/sort/sort_enum.dart';
 import '../model/article_model.dart';
 import '../model/sort/date_period_enum.dart';
@@ -8,36 +9,24 @@ class ArticleService {
 
   final ArticleRepository repository;
 
-  List<ArticleModel> cached = const [];
+  ArticleResponse cached = ArticleResponse.empty;
 
-  Future<List<ArticleModel>> fetchAll({
+  Future<ArticleResponse> fetchAll({
     required SortEnum sort,
     required DatePeriodEnum period,
     required String score,
     required String page,
   }) async {
-    final raw = await repository.fetchAll(
+    final response = await repository.fetchAll(
       sort: sort,
       period: period,
       score: score,
       page: page,
     );
 
-    final refs =
-        raw.entries.firstWhere((e) => e.key == 'articleRefs').value as Map;
+    cached = response;
 
-    final result = refs.entries
-
-        /// только статьи, новости откидываем
-        .where((e) => e.value['postType'] == 'article')
-        .map((e) => ArticleModel.fromMap(e.value))
-        .toList()
-        .reversed
-        .toList();
-
-    cached = result;
-
-    return result;
+    return cached;
   }
 
   /// todo: unimplemented
@@ -57,8 +46,6 @@ class ArticleService {
         .where((e) => e.value['postType'] == 'news')
         .map((e) => ArticleModel.fromMap(e.value))
         .toList();
-
-    cached = result;
 
     return result;
   }

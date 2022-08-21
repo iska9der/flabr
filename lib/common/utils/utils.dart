@@ -1,4 +1,4 @@
-import '../../components/router/router.gr.dart';
+import '../../component/router/router.gr.dart';
 import 'image_utils.dart';
 import 'launch_utils.dart';
 

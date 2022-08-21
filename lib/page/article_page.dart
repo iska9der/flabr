@@ -1,6 +1,4 @@
-import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -9,7 +7,7 @@ import 'package:webview_flutter/webview_flutter.dart';
 import '../common/utils/utils.dart';
 import '../common/widget/network_image_widget.dart';
 import '../common/widget/progress_indicator.dart';
-import '../components/di/dependencies.dart';
+import '../component/di/dependencies.dart';
 import '../config/constants.dart';
 import '../feature/article/cubit/article_cubit.dart';
 import '../feature/article/service/article_service.dart';

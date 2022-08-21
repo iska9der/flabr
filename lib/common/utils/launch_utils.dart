@@ -1,4 +1,4 @@
-import '../../components/router/router.gr.dart';
+import '../../component/router/router.gr.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class LaunchUtils {
