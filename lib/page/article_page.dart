@@ -1,4 +1,5 @@
 import 'package:auto_route/annotations.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,6 +7,7 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import '../common/utils/utils.dart';
+import '../common/widget/network_image_widget.dart';
 import '../common/widget/progress_indicator.dart';
 import '../components/di/dependencies.dart';
 import '../config/constants.dart';
@@ -57,10 +59,27 @@ class ArticleView extends StatelessWidget {
           physics: const BouncingScrollPhysics(),
           slivers: [
             SliverAppBar(
-                title: Text(
-              article.titleHtml,
-              style: const TextStyle(fontSize: 14),
-            )),
+              automaticallyImplyLeading: false,
+              pinned: true,
+              toolbarHeight: 40,
+              titleSpacing: 0,
+              title: FlexibleSpaceBar(
+                titlePadding: EdgeInsets.zero,
+                expandedTitleScale: 1,
+                title: Row(
+                  children: [
+                    const AutoLeadingButton(),
+                    Expanded(
+                      child: Text(
+                        article.titleHtml,
+                        overflow: TextOverflow.ellipsis,
+                        style: Theme.of(context).appBarTheme.titleTextStyle!,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
             SliverList(
               delegate: SliverChildListDelegate.fixed([
                 Padding(
@@ -82,10 +101,6 @@ class ArticleView extends StatelessWidget {
                     style: Theme.of(context).textTheme.headline6,
                   ),
                 ),
-                // Padding(
-                //   padding: const EdgeInsets.symmetric(horizontal: hPadding),
-                //   child: Text(article.textHtml),
-                // )
                 Html(
                   data: article.textHtml,
                   onLinkTap: (url, context, attributes, element) async {
@@ -124,15 +139,15 @@ class ArticleView extends StatelessWidget {
                         for (final tag in context.tree.children) {
                           if (tag.name == 'img') {
                             String imgUrl =
-                                tag.element!.attributes['data-src'] ?? '';
+                                tag.element!.attributes['data-src'] ??
+                                    tag.element!.attributes['src'] ??
+                                    '';
 
-                            return Align(
-                              child: CachedNetworkImage(
-                                imageUrl: imgUrl,
-                                placeholder:
-                                    getIt.get<Utils>().image.placeholder,
-                              ),
-                            );
+                            if (imgUrl.isNotEmpty) {
+                              return Align(
+                                child: NetworkImageWidget(url: imgUrl),
+                              );
+                            }
                           }
                         }
 
@@ -202,10 +217,7 @@ class ArticleView extends StatelessWidget {
                         }
 
                         return Align(
-                          child: CachedNetworkImage(
-                            imageUrl: fullImg,
-                            placeholder: getIt.get<Utils>().image.placeholder,
-                          ),
+                          child: NetworkImageWidget(url: fullImg),
                         );
                       },
                     ),

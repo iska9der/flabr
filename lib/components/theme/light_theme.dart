@@ -10,6 +10,9 @@ ThemeData lightTheme() {
     appBarTheme: buildAppBarTheme().copyWith(
       shadowColor: Colors.black87,
       backgroundColor: themeData.scaffoldBackgroundColor,
+      titleTextStyle: buildAppBarTheme().titleTextStyle?.copyWith(
+            color: Colors.black87,
+          ),
     ),
   );
 

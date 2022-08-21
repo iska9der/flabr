@@ -17,7 +17,7 @@ class LaunchUtils {
       }
     }
 
-    return await launchUrlString(url);
+    return await launchUrlString(url, mode: LaunchMode.externalApplication);
   }
 
   String parsePostId(String url) {

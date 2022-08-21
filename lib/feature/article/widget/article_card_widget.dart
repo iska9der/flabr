@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../../../common/utils/utils.dart';
+import '../../../common/widget/network_image_widget.dart';
 import '../../../components/di/dependencies.dart';
 import '../../../components/router/router.gr.dart';
 import '../../../config/constants.dart';
@@ -29,10 +30,9 @@ class ArticleCardWidget extends StatelessWidget {
               children: [
                 if (article.leadData.image.isNotEmpty) ...[
                   const SizedBox(height: 12),
-                  CachedNetworkImage(
-                    placeholder: getIt.get<Utils>().image.placeholder,
+                  NetworkImageWidget(
+                    url: article.leadData.image.url,
                     height: postImageHeight,
-                    imageUrl: article.leadData.image.url,
                   )
                 ],
                 const SizedBox(height: 12),

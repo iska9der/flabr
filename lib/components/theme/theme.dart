@@ -16,5 +16,7 @@ AppBarTheme buildAppBarTheme() {
     surfaceTintColor: Colors.transparent,
     elevation: 0,
     scrolledUnderElevation: 20,
+    toolbarHeight: 60,
+    titleTextStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
   );
 }

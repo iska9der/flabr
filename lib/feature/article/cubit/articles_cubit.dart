@@ -20,6 +20,8 @@ class ArticlesCubit extends Cubit<ArticlesState> {
   final ArticleService _service;
 
   /// todo: реализовать получение по выбранному типу [ArticleType]
+  ///
+  /// todo: реализовать бесконечную загрузку постов
   void fetchArticles() async {
     emit(state.copyWith(status: ArticlesStatus.loading));
 
