@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../common/utils/utils.dart';
-import '../common/widget/progress_indicator.dart';
-import '../feature/article/model/article_model.dart';
-import '../component/di/dependencies.dart';
-import '../feature/article/cubit/articles_cubit.dart';
-import '../feature/article/service/articles_service.dart';
+import '../../common/utils/utils.dart';
+import '../../common/widget/progress_indicator.dart';
+import '../../feature/article/cubit/articles_cubit.dart';
+import '../../feature/article/model/article_model.dart';
+import '../../component/di/dependencies.dart';
+import '../../feature/article/service/articles_service.dart';
 
-class NewsPage extends StatelessWidget {
-  const NewsPage({Key? key}) : super(key: key);
+class NewsListPage extends StatelessWidget {
+  const NewsListPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,15 +19,15 @@ class NewsPage extends StatelessWidget {
           create: (c) => ArticlesCubit(
             getIt.get<ArticlesService>(),
           )..fetchNews(),
-          child: const NewsView(),
+          child: const NewsListPageView(),
         ),
       ),
     );
   }
 }
 
-class NewsView extends StatelessWidget {
-  const NewsView({Key? key}) : super(key: key);
+class NewsListPageView extends StatelessWidget {
+  const NewsListPageView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

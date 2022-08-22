@@ -14,20 +14,20 @@ class ArticleStatisticsWidget extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         IconText(
-          icon: Icons.thumbs_up_down,
+          icon: Icons.insert_chart_rounded,
           text: statistics.score.toString(),
           color: statistics.score >= 0 ? Colors.green : Colors.red,
         ),
         IconText(
-          icon: Icons.mode_comment,
+          icon: Icons.chat_bubble_rounded,
           text: statistics.commentsCount.toString(),
         ),
         IconText(
-          icon: Icons.bookmark_border,
+          icon: Icons.bookmark_rounded,
           text: statistics.favoritesCount.toString(),
         ),
         IconText(
-          icon: Icons.remove_red_eye,
+          icon: Icons.remove_red_eye_rounded,
           text: statistics.readingCount.toString(),
         ),
       ],

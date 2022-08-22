@@ -36,7 +36,7 @@ class ArticleCardWidget extends StatelessWidget {
                 const SizedBox(height: 12),
                 TextButton(
                   onPressed: () => context.router.push(
-                    ArticleRoute(id: article.id),
+                    ArticleDetailRoute(id: article.id),
                   ),
                   style: ButtonStyle(
                     alignment: Alignment.centerLeft,

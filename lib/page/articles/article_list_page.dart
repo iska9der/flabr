@@ -17,10 +17,10 @@ import '../../feature/article/service/articles_service.dart';
 import '../../feature/article/widget/article_card_widget.dart';
 import '../../feature/article/widget/articles_sort_widget.dart';
 
-class ArticlesPage extends StatelessWidget {
-  const ArticlesPage({Key? key}) : super(key: key);
+class ArticleListPage extends StatelessWidget {
+  const ArticleListPage({Key? key}) : super(key: key);
 
-  static const String routeName = 'ArticlesRoute';
+  static const String routeName = 'ArticleListRoute';
   static const String routePath = 'all';
 
   @override
@@ -36,13 +36,13 @@ class ArticlesPage extends StatelessWidget {
           create: (c) => ScrollControllerCubit()..setUpEdgeListeners(),
         ),
       ],
-      child: const ArticlesPageView(),
+      child: const ArticleListPageView(),
     );
   }
 }
 
-class ArticlesPageView extends StatelessWidget {
-  const ArticlesPageView({Key? key}) : super(key: key);
+class ArticleListPageView extends StatelessWidget {
+  const ArticleListPageView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

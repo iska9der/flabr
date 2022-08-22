@@ -7,8 +7,8 @@ import '../../component/di/dependencies.dart';
 import '../../feature/user/cubit/user_cubit.dart';
 import '../../feature/user/service/users_service.dart';
 
-class UserPage extends StatelessWidget {
-  const UserPage({
+class UserDetailPage extends StatelessWidget {
+  const UserDetailPage({
     Key? key,
     @PathParam() required this.login,
   }) : super(key: key);
@@ -16,22 +16,22 @@ class UserPage extends StatelessWidget {
   final String login;
 
   static const String routePath = ':login';
-  static const String routeName = 'UserRoute';
+  static const String routeName = 'UserDetailRoute';
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => UserCubit(
+      create: (c) => UserCubit(
         login,
         service: getIt.get<UsersService>(),
       )..fetchByLogin(),
-      child: const UserPageView(),
+      child: const UserDetailPageView(),
     );
   }
 }
 
-class UserPageView extends StatelessWidget {
-  const UserPageView({Key? key}) : super(key: key);
+class UserDetailPageView extends StatelessWidget {
+  const UserDetailPageView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

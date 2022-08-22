@@ -14,14 +14,14 @@
 import 'package:auto_route/auto_route.dart' as _i2;
 import 'package:flutter/material.dart' as _i10;
 
-import '../../page/articles/article_page.dart' as _i6;
-import '../../page/articles/articles_page.dart' as _i5;
+import '../../page/articles/article_detail_page.dart' as _i6;
+import '../../page/articles/article_list_page.dart' as _i5;
 import '../../page/dashboard_page.dart' as _i1;
-import '../../page/news_page.dart' as _i3;
+import '../../page/news/news_list_page.dart' as _i3;
 import '../../page/services_page.dart' as _i7;
 import '../../page/settings_page.dart' as _i4;
-import '../../page/users/user_page.dart' as _i9;
-import '../../page/users/users_page.dart' as _i8;
+import '../../page/users/user_detail_page.dart' as _i9;
+import '../../page/users/user_list_page.dart' as _i8;
 
 class AppRouter extends _i2.RootStackRouter {
   AppRouter([_i10.GlobalKey<_i10.NavigatorState>? navigatorKey])
@@ -43,39 +43,40 @@ class AppRouter extends _i2.RootStackRouter {
     },
     NewsRoute.name: (routeData) {
       return _i2.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i3.NewsPage());
+          routeData: routeData, child: const _i3.NewsListPage());
     },
     SettingsRoute.name: (routeData) {
       return _i2.MaterialPageX<dynamic>(
           routeData: routeData, child: const _i4.SettingsPage());
     },
-    ArticlesRoute.name: (routeData) {
+    ArticleListRoute.name: (routeData) {
       return _i2.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i5.ArticlesPage());
+          routeData: routeData, child: const _i5.ArticleListPage());
     },
-    ArticleRoute.name: (routeData) {
+    ArticleDetailRoute.name: (routeData) {
       final pathParams = routeData.inheritedPathParams;
-      final args = routeData.argsAs<ArticleRouteArgs>(
-          orElse: () => ArticleRouteArgs(id: pathParams.getString('id')));
+      final args = routeData.argsAs<ArticleDetailRouteArgs>(
+          orElse: () => ArticleDetailRouteArgs(id: pathParams.getString('id')));
       return _i2.MaterialPageX<dynamic>(
           routeData: routeData,
-          child: _i6.ArticlePage(key: args.key, id: args.id));
+          child: _i6.ArticleDetailPage(key: args.key, id: args.id));
     },
     AllServicesRoute.name: (routeData) {
       return _i2.MaterialPageX<dynamic>(
           routeData: routeData, child: const _i7.ServicesPage());
     },
-    UsersRoute.name: (routeData) {
+    UserListRoute.name: (routeData) {
       return _i2.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i8.UsersPage());
+          routeData: routeData, child: const _i8.UserListPage());
     },
-    UserRoute.name: (routeData) {
+    UserDetailRoute.name: (routeData) {
       final pathParams = routeData.inheritedPathParams;
-      final args = routeData.argsAs<UserRouteArgs>(
-          orElse: () => UserRouteArgs(login: pathParams.getString('login')));
+      final args = routeData.argsAs<UserDetailRouteArgs>(
+          orElse: () =>
+              UserDetailRouteArgs(login: pathParams.getString('login')));
       return _i2.MaterialPageX<dynamic>(
           routeData: routeData,
-          child: _i9.UserPage(key: args.key, login: args.login));
+          child: _i9.UserDetailPage(key: args.key, login: args.login));
     }
   };
 
@@ -91,9 +92,9 @@ class AppRouter extends _i2.RootStackRouter {
                     parent: FlowsRoute.name,
                     redirectTo: 'all',
                     fullMatch: true),
-                _i2.RouteConfig(ArticlesRoute.name,
+                _i2.RouteConfig(ArticleListRoute.name,
                     path: 'all', parent: FlowsRoute.name),
-                _i2.RouteConfig(ArticleRoute.name,
+                _i2.RouteConfig(ArticleDetailRoute.name,
                     path: 'articles/:id', parent: FlowsRoute.name)
               ]),
           _i2.RouteConfig(ServicesRoute.name,
@@ -102,9 +103,9 @@ class AppRouter extends _i2.RootStackRouter {
               children: [
                 _i2.RouteConfig(AllServicesRoute.name,
                     path: '', parent: ServicesRoute.name),
-                _i2.RouteConfig(UsersRoute.name,
+                _i2.RouteConfig(UserListRoute.name,
                     path: 'users', parent: ServicesRoute.name),
-                _i2.RouteConfig(UserRoute.name,
+                _i2.RouteConfig(UserDetailRoute.name,
                     path: ':login', parent: ServicesRoute.name)
               ]),
           _i2.RouteConfig(NewsRoute.name,
@@ -143,7 +144,7 @@ class ServicesRoute extends _i2.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i3.NewsPage]
+/// [_i3.NewsListPage]
 class NewsRoute extends _i2.PageRouteInfo<void> {
   const NewsRoute() : super(NewsRoute.name, path: 'news');
 
@@ -159,27 +160,27 @@ class SettingsRoute extends _i2.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i5.ArticlesPage]
-class ArticlesRoute extends _i2.PageRouteInfo<void> {
-  const ArticlesRoute() : super(ArticlesRoute.name, path: 'all');
+/// [_i5.ArticleListPage]
+class ArticleListRoute extends _i2.PageRouteInfo<void> {
+  const ArticleListRoute() : super(ArticleListRoute.name, path: 'all');
 
-  static const String name = 'ArticlesRoute';
+  static const String name = 'ArticleListRoute';
 }
 
 /// generated route for
-/// [_i6.ArticlePage]
-class ArticleRoute extends _i2.PageRouteInfo<ArticleRouteArgs> {
-  ArticleRoute({_i10.Key? key, required String id})
-      : super(ArticleRoute.name,
+/// [_i6.ArticleDetailPage]
+class ArticleDetailRoute extends _i2.PageRouteInfo<ArticleDetailRouteArgs> {
+  ArticleDetailRoute({_i10.Key? key, required String id})
+      : super(ArticleDetailRoute.name,
             path: 'articles/:id',
-            args: ArticleRouteArgs(key: key, id: id),
+            args: ArticleDetailRouteArgs(key: key, id: id),
             rawPathParams: {'id': id});
 
-  static const String name = 'ArticleRoute';
+  static const String name = 'ArticleDetailRoute';
 }
 
-class ArticleRouteArgs {
-  const ArticleRouteArgs({this.key, required this.id});
+class ArticleDetailRouteArgs {
+  const ArticleDetailRouteArgs({this.key, required this.id});
 
   final _i10.Key? key;
 
@@ -187,7 +188,7 @@ class ArticleRouteArgs {
 
   @override
   String toString() {
-    return 'ArticleRouteArgs{key: $key, id: $id}';
+    return 'ArticleDetailRouteArgs{key: $key, id: $id}';
   }
 }
 
@@ -200,27 +201,27 @@ class AllServicesRoute extends _i2.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i8.UsersPage]
-class UsersRoute extends _i2.PageRouteInfo<void> {
-  const UsersRoute() : super(UsersRoute.name, path: 'users');
+/// [_i8.UserListPage]
+class UserListRoute extends _i2.PageRouteInfo<void> {
+  const UserListRoute() : super(UserListRoute.name, path: 'users');
 
-  static const String name = 'UsersRoute';
+  static const String name = 'UserListRoute';
 }
 
 /// generated route for
-/// [_i9.UserPage]
-class UserRoute extends _i2.PageRouteInfo<UserRouteArgs> {
-  UserRoute({_i10.Key? key, required String login})
-      : super(UserRoute.name,
+/// [_i9.UserDetailPage]
+class UserDetailRoute extends _i2.PageRouteInfo<UserDetailRouteArgs> {
+  UserDetailRoute({_i10.Key? key, required String login})
+      : super(UserDetailRoute.name,
             path: ':login',
-            args: UserRouteArgs(key: key, login: login),
+            args: UserDetailRouteArgs(key: key, login: login),
             rawPathParams: {'login': login});
 
-  static const String name = 'UserRoute';
+  static const String name = 'UserDetailRoute';
 }
 
-class UserRouteArgs {
-  const UserRouteArgs({this.key, required this.login});
+class UserDetailRouteArgs {
+  const UserDetailRouteArgs({this.key, required this.login});
 
   final _i10.Key? key;
 
@@ -228,6 +229,6 @@ class UserRouteArgs {
 
   @override
   String toString() {
-    return 'UserRouteArgs{key: $key, login: $login}';
+    return 'UserDetailRouteArgs{key: $key, login: $login}';
   }
 }

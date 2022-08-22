@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../component/theme/cubit/theme_cubit.dart';
+import '../feature/settings/cubit/settings_cubit.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({Key? key}) : super(key: key);
@@ -23,13 +23,13 @@ class SettingsView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView(
       children: [
-        BlocBuilder<ThemeCubit, bool>(
+        BlocBuilder<SettingsCubit, SettingsState>(
           builder: (context, state) {
             return SwitchListTile.adaptive(
               title: const Text('Темная тема'),
-              value: state,
+              value: state.isDarkTheme,
               onChanged: (val) {
-                context.read<ThemeCubit>().toggle(value: val);
+                context.read<SettingsCubit>().changeTheme(isDarkTheme: val);
               },
             );
           },

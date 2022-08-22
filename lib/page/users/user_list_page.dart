@@ -12,11 +12,11 @@ import '../../feature/user/cubit/users_cubit.dart';
 import '../../feature/user/model/user_model.dart';
 import '../../feature/user/service/users_service.dart';
 
-class UsersPage extends StatelessWidget {
-  const UsersPage({Key? key}) : super(key: key);
+class UserListPage extends StatelessWidget {
+  const UserListPage({Key? key}) : super(key: key);
 
-  static const String routeName = 'UsersRoute';
   static const String routePath = 'users';
+  static const String routeName = 'UserListRoute';
 
   @override
   Widget build(BuildContext context) {
@@ -29,13 +29,13 @@ class UsersPage extends StatelessWidget {
           create: (c) => ScrollControllerCubit()..setUpEdgeListeners(),
         ),
       ],
-      child: const UsersPageView(),
+      child: const UserListPageView(),
     );
   }
 }
 
-class UsersPageView extends StatelessWidget {
-  const UsersPageView({Key? key}) : super(key: key);
+class UserListPageView extends StatelessWidget {
+  const UserListPageView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -101,7 +101,12 @@ class UserCard extends StatelessWidget {
       child: ListTile(
         title: Text(model.alias),
         tileColor: Colors.amber,
-        onTap: () => context.router.push(UserRoute(login: model.alias)),
+        onTap: () => context.router.push(
+          UserDetailRoute(
+            key: ValueKey('user-${model.id}'),
+            login: model.alias,
+          ),
+        ),
       ),
     );
   }

@@ -13,7 +13,7 @@ class LaunchUtils {
           url.contains('news')) {
         String id = parsePostId(url);
 
-        return await router.push(ArticleRoute(id: id));
+        return await router.push(ArticleDetailRoute(id: id));
       }
     }
 

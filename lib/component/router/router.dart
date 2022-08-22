@@ -1,13 +1,13 @@
 import 'package:auto_route/auto_route.dart';
 
-import '../../page/articles/article_page.dart';
-import '../../page/articles/articles_page.dart';
+import '../../page/articles/article_detail_page.dart';
+import '../../page/articles/article_list_page.dart';
 import '../../page/dashboard_page.dart';
-import '../../page/news_page.dart';
+import '../../page/news/news_list_page.dart';
 import '../../page/services_page.dart';
 import '../../page/settings_page.dart';
-import '../../page/users/user_page.dart';
-import '../../page/users/users_page.dart';
+import '../../page/users/user_detail_page.dart';
+import '../../page/users/user_list_page.dart';
 import 'routes/flows_route.dart';
 import 'routes/services_route.dart';
 
@@ -25,14 +25,14 @@ import 'routes/services_route.dart';
           children: [
             AutoRoute(
               initial: true,
-              path: ArticlesPage.routePath,
-              name: ArticlesPage.routeName,
-              page: ArticlesPage,
+              path: ArticleListPage.routePath,
+              name: ArticleListPage.routeName,
+              page: ArticleListPage,
             ),
             AutoRoute(
-              path: ArticlePage.routePath,
-              name: ArticlePage.routeName,
-              page: ArticlePage,
+              path: ArticleDetailPage.routePath,
+              name: ArticleDetailPage.routeName,
+              page: ArticleDetailPage,
             ),
           ],
         ),
@@ -48,21 +48,21 @@ import 'routes/services_route.dart';
               page: ServicesPage,
             ),
             AutoRoute(
-              path: UsersPage.routePath,
-              name: UsersPage.routeName,
-              page: UsersPage,
+              path: UserListPage.routePath,
+              name: UserListPage.routeName,
+              page: UserListPage,
             ),
             AutoRoute(
-              path: UserPage.routePath,
-              name: UserPage.routeName,
-              page: UserPage,
+              path: UserDetailPage.routePath,
+              name: UserDetailPage.routeName,
+              page: UserDetailPage,
             ),
           ],
         ),
         AutoRoute(
           path: 'news',
           name: 'NewsRoute',
-          page: NewsPage,
+          page: NewsListPage,
         ),
         AutoRoute(
           path: 'settings',

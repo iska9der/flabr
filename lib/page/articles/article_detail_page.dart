@@ -13,8 +13,8 @@ import '../../feature/article/cubit/article_cubit.dart';
 import '../../feature/article/service/articles_service.dart';
 import '../../feature/article/widget/article_card_widget.dart';
 
-class ArticlePage extends StatelessWidget {
-  const ArticlePage({
+class ArticleDetailPage extends StatelessWidget {
+  const ArticleDetailPage({
     Key? key,
     @PathParam() required this.id,
   }) : super(key: key);
@@ -22,24 +22,24 @@ class ArticlePage extends StatelessWidget {
   final String id;
 
   static const String routePath = 'articles/:id';
-  static const String routeName = 'ArticleRoute';
+  static const String routeName = 'ArticleDetailRoute';
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => ArticleCubit(
+      create: (c) => ArticleCubit(
         id,
         service: getIt.get<ArticlesService>(),
       )..fetch(),
       child: const Scaffold(
-        body: SafeArea(child: ArticleView()),
+        body: SafeArea(child: ArticleDetailPageView()),
       ),
     );
   }
 }
 
-class ArticleView extends StatelessWidget {
-  const ArticleView({Key? key}) : super(key: key);
+class ArticleDetailPageView extends StatelessWidget {
+  const ArticleDetailPageView({Key? key}) : super(key: key);
 
   static const hPadding = 12.0;
 

@@ -24,8 +24,11 @@ class ArticleAuthorWidget extends StatelessWidget {
         context.navigateTo(ServicesRoute(
           children: [
             const AllServicesRoute(),
-            const UsersRoute(),
-            UserRoute(login: author.alias),
+            const UserListRoute(),
+            UserDetailRoute(
+              key: ValueKey('user-${author.id}'),
+              login: author.alias,
+            ),
           ],
         ));
       },
