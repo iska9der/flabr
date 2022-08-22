@@ -2,7 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import '../../../common/exception/displayable_exception.dart';
 import '../../../common/exception/value_exception.dart';
-import '../model/articles_enum.dart';
+import '../model/flow_enum.dart';
 import '../model/sort/sort_enum.dart';
 import '../model/sort/sort_option_model.dart';
 
@@ -22,9 +22,7 @@ class ArticlesCubit extends Cubit<ArticlesState> {
   bool get isFirstFetch => state.page == 1;
   bool get isLastPage => state.page >= state.pagesCount;
 
-  /// todo: реализовать получение по выбранному типу [ArticlesEnum]
-  ///
-  /// todo: реализовать бесконечную загрузку постов
+  /// todo: реализовать получение по выбранному типу [FlowEnum]
   void fetchArticles() async {
     if (state.status == ArticlesStatus.loading || !isFirstFetch && isLastPage) {
       return;
@@ -42,14 +40,14 @@ class ArticlesCubit extends Cubit<ArticlesState> {
 
       emit(state.copyWith(
         status: ArticlesStatus.success,
-        articles: [...state.articles, ...response.articles],
+        articles: [...state.articles, ...response.models],
         page: state.page + 1,
         pagesCount: response.pagesCount,
       ));
     } on DisplayableException catch (e) {
       emit(state.copyWith(
         error: e.toString(),
-        status: ArticlesStatus.error,
+        status: ArticlesStatus.failure,
       ));
     }
   }
@@ -67,15 +65,15 @@ class ArticlesCubit extends Cubit<ArticlesState> {
     } catch (e) {
       emit(state.copyWith(
         error: 'Не удалось получить новости',
-        status: ArticlesStatus.error,
+        status: ArticlesStatus.failure,
       ));
     }
   }
 
-  void changeType(ArticlesEnum type) {
-    if (state.type == type) return;
+  void changeType(FlowEnum type) {
+    if (state.flow == type) return;
 
-    emit(ArticlesState(type: type));
+    emit(ArticlesState(flow: type));
 
     fetchArticles();
   }

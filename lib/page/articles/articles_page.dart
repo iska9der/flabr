@@ -3,22 +3,25 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../common/cubit/scroll_controller_cubit.dart';
-import '../common/utils/utils.dart';
-import '../common/widget/progress_indicator.dart';
-import '../component/di/dependencies.dart';
-import '../feature/article/cubit/articles_cubit.dart';
-import '../feature/article/model/articles_enum.dart';
-import '../feature/article/model/sort/date_period_enum.dart';
-import '../feature/article/model/sort/rating_score_enum.dart';
-import '../feature/article/model/sort/sort_enum.dart';
-import '../feature/article/model/sort/sort_option_model.dart';
-import '../feature/article/service/articles_service.dart';
-import '../feature/article/widget/article_card_widget.dart';
-import '../feature/article/widget/articles_sort_widget.dart';
+import '../../common/cubit/scroll_controller_cubit.dart';
+import '../../common/utils/utils.dart';
+import '../../common/widget/progress_indicator.dart';
+import '../../component/di/dependencies.dart';
+import '../../feature/article/cubit/articles_cubit.dart';
+import '../../feature/article/model/flow_enum.dart';
+import '../../feature/article/model/sort/date_period_enum.dart';
+import '../../feature/article/model/sort/rating_score_enum.dart';
+import '../../feature/article/model/sort/sort_enum.dart';
+import '../../feature/article/model/sort/sort_option_model.dart';
+import '../../feature/article/service/articles_service.dart';
+import '../../feature/article/widget/article_card_widget.dart';
+import '../../feature/article/widget/articles_sort_widget.dart';
 
 class ArticlesPage extends StatelessWidget {
   const ArticlesPage({Key? key}) : super(key: key);
+
+  static const String routeName = 'ArticlesRoute';
+  static const String routePath = 'all';
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +60,7 @@ class ArticlesPageView extends StatelessWidget {
           child: ListView(
             physics: const NeverScrollableScrollPhysics(),
             children: [
-              ...ArticlesEnum.values
+              ...FlowEnum.values
                   .map((type) => ListTile(
                         title: Text(type.label),
                         onTap: () {
@@ -92,7 +95,7 @@ class ArticlesPageView extends StatelessWidget {
               BlocBuilder<ArticlesCubit, ArticlesState>(
                 builder: (context, state) {
                   return SliverAppBar(
-                    title: Text(state.type.label),
+                    title: Text(state.flow.label),
                   );
                 },
               ),
@@ -101,8 +104,8 @@ class ArticlesPageView extends StatelessWidget {
                   return SliverAppBar(
                     automaticallyImplyLeading: false,
                     floating: true,
-                    toolbarHeight: state.type == ArticlesEnum.all ? 80 : 0,
-                    title: state.type == ArticlesEnum.all
+                    toolbarHeight: state.flow == FlowEnum.all ? 80 : 0,
+                    title: state.flow == FlowEnum.all
                         ? Column(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
@@ -145,7 +148,7 @@ class ArticlesPageView extends StatelessWidget {
               ),
               BlocConsumer<ArticlesCubit, ArticlesState>(
                 listenWhen: (p, c) =>
-                    c.status == ArticlesStatus.error && c.error.isNotEmpty,
+                    c.status == ArticlesStatus.failure && c.error.isNotEmpty,
                 listener: (c, state) {
                   getIt.get<Utils>().showNotification(
                         context: context,
@@ -174,6 +177,7 @@ class ArticlesPageView extends StatelessWidget {
                                 .read<ScrollControllerCubit>()
                                 .animateToBottom(),
                           );
+
                           return const SizedBox(
                             height: 60,
                             child: CircleIndicator.medium(),

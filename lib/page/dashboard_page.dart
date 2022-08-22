@@ -10,14 +10,23 @@ class DashboardPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return AutoTabsScaffold(
       routes: const [
-        ArticlesRoute(),
+        FlowsRoute(),
         NewsRoute(),
+        ServicesRoute(),
         SettingsRoute(),
       ],
       bottomNavigationBuilder: (_, tabsRouter) {
         return BottomNavigationBar(
+          type: BottomNavigationBarType.fixed,
           currentIndex: tabsRouter.activeIndex,
-          onTap: tabsRouter.setActiveIndex,
+          onTap: (i) {
+            tabsRouter.setActiveIndex(i);
+
+            /// todo: сделать так, чтобы при нажатию на таб, в котором
+            /// мы уже находимся - выходила в корень
+            print(tabsRouter.currentUrl);
+            print(tabsRouter.current.path);
+          },
           items: const [
             BottomNavigationBarItem(
               label: 'Статьи',
@@ -26,6 +35,10 @@ class DashboardPage extends StatelessWidget {
             BottomNavigationBarItem(
               label: 'Новости',
               icon: Icon(Icons.newspaper_outlined),
+            ),
+            BottomNavigationBarItem(
+              label: 'Сервисы',
+              icon: Icon(Icons.widgets_outlined),
             ),
             BottomNavigationBarItem(
               label: 'Настройки',

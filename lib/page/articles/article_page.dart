@@ -4,14 +4,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-import '../common/utils/utils.dart';
-import '../common/widget/network_image_widget.dart';
-import '../common/widget/progress_indicator.dart';
-import '../component/di/dependencies.dart';
-import '../config/constants.dart';
-import '../feature/article/cubit/article_cubit.dart';
-import '../feature/article/service/articles_service.dart';
-import '../feature/article/widget/article_card_widget.dart';
+import '../../common/utils/utils.dart';
+import '../../common/widget/network_image_widget.dart';
+import '../../common/widget/progress_indicator.dart';
+import '../../component/di/dependencies.dart';
+import '../../config/constants.dart';
+import '../../feature/article/cubit/article_cubit.dart';
+import '../../feature/article/service/articles_service.dart';
+import '../../feature/article/widget/article_card_widget.dart';
 
 class ArticlePage extends StatelessWidget {
   const ArticlePage({
@@ -20,6 +20,9 @@ class ArticlePage extends StatelessWidget {
   }) : super(key: key);
 
   final String id;
+
+  static const String routePath = 'articles/:id';
+  static const String routeName = 'ArticleRoute';
 
   @override
   Widget build(BuildContext context) {

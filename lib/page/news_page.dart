@@ -33,7 +33,7 @@ class NewsView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<ArticlesCubit, ArticlesState>(
       listenWhen: (p, c) =>
-          c.status == ArticlesStatus.error && c.error.isNotEmpty,
+          c.status == ArticlesStatus.failure && c.error.isNotEmpty,
       listener: (c, state) {
         getIt.get<Utils>().showNotification(
               context: context,

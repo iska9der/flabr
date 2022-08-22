@@ -1,9 +1,9 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
 import '../../../common/model/author_model.dart';
-import '../../../common/utils/utils.dart';
 import '../../../common/widget/network_image_widget.dart';
-import '../../../component/di/dependencies.dart';
+import '../../../component/router/router.gr.dart';
 import '../../../config/constants.dart';
 
 class ArticleAuthorWidget extends StatelessWidget {
@@ -21,11 +21,13 @@ class ArticleAuthorWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextButton(
       onPressed: () {
-        /// todo: navigate to user
-        getIt.get<Utils>().showNotification(
-              context: context,
-              content: const Text('Тишинаааа...'),
-            );
+        context.navigateTo(ServicesRoute(
+          children: [
+            const AllServicesRoute(),
+            const UsersRoute(),
+            UserRoute(login: author.alias),
+          ],
+        ));
       },
       child: Row(
         children: [

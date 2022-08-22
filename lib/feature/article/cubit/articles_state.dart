@@ -1,12 +1,12 @@
 part of 'articles_cubit.dart';
 
-enum ArticlesStatus { initial, loading, success, error }
+enum ArticlesStatus { initial, loading, success, failure }
 
 class ArticlesState extends Equatable {
   const ArticlesState({
     this.status = ArticlesStatus.initial,
     this.error = '',
-    this.type = ArticlesEnum.all,
+    this.flow = FlowEnum.all,
     this.sort = SortEnum.rating,
     this.period = DatePeriodEnum.daily,
     this.score = '',
@@ -17,7 +17,7 @@ class ArticlesState extends Equatable {
 
   final ArticlesStatus status;
   final String error;
-  final ArticlesEnum type;
+  final FlowEnum flow;
   final SortEnum sort;
   final DatePeriodEnum period;
   final String score;
@@ -28,7 +28,7 @@ class ArticlesState extends Equatable {
   ArticlesState copyWith({
     ArticlesStatus? status,
     String? error,
-    ArticlesEnum? type,
+    FlowEnum? flow,
     SortEnum? sort,
     DatePeriodEnum? period,
     String? score,
@@ -39,7 +39,7 @@ class ArticlesState extends Equatable {
     return ArticlesState(
       status: status ?? this.status,
       error: error ?? this.error,
-      type: type ?? this.type,
+      flow: flow ?? this.flow,
       sort: sort ?? this.sort,
       period: period ?? this.period,
       score: score ?? this.score,
@@ -56,7 +56,7 @@ class ArticlesState extends Equatable {
   List<Object> get props => [
         status,
         error,
-        type,
+        flow,
         sort,
         period,
         score,
