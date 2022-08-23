@@ -1,11 +1,13 @@
 import 'dart:async';
 
+import 'package:app_links/app_links.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'common/widget/progress_indicator.dart';
 import 'component/di/dependencies.dart';
 import 'component/router/router.gr.dart';
 import 'component/storage/cache_storage.dart';
@@ -41,12 +43,25 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (c) => SettingsCubit(getIt.get<CacheStorage>())..init(),
+      create: (c) => SettingsCubit(
+        storage: getIt.get<CacheStorage>(),
+        appLinks: getIt.get<AppLinks>(),
+      )..init(),
       child: BlocBuilder<SettingsCubit, SettingsState>(
         builder: (context, state) {
+          if (state.status == SettingsStatus.loading) {
+            /// todo: Splash Page
+            return const Material(
+              child: CircleIndicator(),
+            );
+          }
+
           return MaterialApp.router(
             title: 'Flabr',
-            routerDelegate: AutoRouterDelegate(router),
+            routerDelegate: AutoRouterDelegate(
+              router,
+              initialDeepLink: state.initialDeepLink,
+            ),
             routeInformationParser: router.defaultRouteParser(),
             theme: lightTheme(),
             darkTheme: darkTheme(),

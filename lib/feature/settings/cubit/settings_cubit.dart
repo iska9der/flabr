@@ -1,3 +1,4 @@
+import 'package:app_links/app_links.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
@@ -8,17 +9,27 @@ part 'settings_state.dart';
 const isDarkThemeCacheKey = 'isDarkTheme';
 
 class SettingsCubit extends Cubit<SettingsState> {
-  SettingsCubit(CacheStorage storage)
-      : _storage = storage,
+  SettingsCubit({
+    required CacheStorage storage,
+    required AppLinks appLinks,
+  })  : _storage = storage,
+        _appLinks = appLinks,
         super(const SettingsState());
 
   final CacheStorage _storage;
+  final AppLinks _appLinks;
 
   void init() async {
     emit(state.copyWith(status: SettingsStatus.loading));
 
+    await initTheme();
+    await initDeepLink();
+
+    emit(state.copyWith(status: SettingsStatus.success));
+  }
+
+  Future<void> initTheme() async {
     /// Получаем кэшированные данные
-    /// Theme
     String? raw = await _storage.read(isDarkThemeCacheKey);
 
     /// Если в кэше есть заданное значение, присваиваем его,
@@ -30,13 +41,19 @@ class SettingsCubit extends Cubit<SettingsState> {
       _storage.write(isDarkThemeCacheKey, 'false');
       changeTheme(isDarkTheme: false);
     }
-
-    emit(state.copyWith(status: SettingsStatus.success));
   }
 
   void changeTheme({required bool isDarkTheme}) {
     _storage.write(isDarkThemeCacheKey, isDarkTheme.toString());
 
     emit(state.copyWith(isDarkTheme: isDarkTheme));
+  }
+
+  Future<void> initDeepLink() async {
+    final uri = await _appLinks.getInitialAppLink();
+
+    if (uri != null) {
+      emit(state.copyWith(initialDeepLink: uri.path));
+    }
   }
 }

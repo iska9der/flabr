@@ -1,3 +1,4 @@
+import 'package:app_links/app_links.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
@@ -17,6 +18,7 @@ final getIt = GetIt.instance;
 void setDependencies() {
   /// Router
   getIt.registerSingleton<AppRouter>(AppRouter());
+  getIt.registerSingleton<AppLinks>(AppLinks());
 
   /// Utils
   getIt.registerSingleton<Utils>(Utils(router: getIt()));
