@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
 part 'dark_theme.dart';
@@ -19,4 +20,13 @@ AppBarTheme buildAppBarTheme() {
     toolbarHeight: 60,
     titleTextStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
   );
+}
+
+/// issue: https://pub.dev/packages/auto_route#remove-shadow-from-nested-routers
+PageTransitionsTheme buildPageTransitionsTheme() {
+  return const PageTransitionsTheme(builders: {
+    // replace default CupertinoPageTransitionsBuilder with this
+    TargetPlatform.iOS: NoShadowCupertinoPageTransitionsBuilder(),
+    TargetPlatform.android: FadeUpwardsPageTransitionsBuilder(),
+  });
 }

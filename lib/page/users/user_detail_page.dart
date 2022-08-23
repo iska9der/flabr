@@ -15,7 +15,7 @@ class UserDetailPage extends StatelessWidget {
 
   final String login;
 
-  static const String routePath = ':login';
+  static const String routePath = 'users/:login';
   static const String routeName = 'UserDetailRoute';
 
   @override
@@ -25,7 +25,7 @@ class UserDetailPage extends StatelessWidget {
         login,
         service: getIt.get<UsersService>(),
       )..fetchByLogin(),
-      child: const UserDetailPageView(),
+      child: UserDetailPageView(key: ValueKey('user-$login')),
     );
   }
 }
@@ -36,6 +36,7 @@ class UserDetailPageView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(leading: const AutoLeadingButton()),
       body: SafeArea(
         child: BlocBuilder<UserCubit, UserState>(
           builder: (context, state) {

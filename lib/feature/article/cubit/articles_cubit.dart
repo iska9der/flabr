@@ -49,6 +49,11 @@ class ArticlesCubit extends Cubit<ArticlesState> {
         error: e.toString(),
         status: ArticlesStatus.failure,
       ));
+    } catch (e) {
+      emit(state.copyWith(
+        error: 'Не удалось получить статьи',
+        status: ArticlesStatus.failure,
+      ));
     }
   }
 
@@ -61,6 +66,11 @@ class ArticlesCubit extends Cubit<ArticlesState> {
       emit(state.copyWith(
         status: ArticlesStatus.success,
         articles: [...state.articles, ...articles],
+      ));
+    } on DisplayableException catch (e) {
+      emit(state.copyWith(
+        error: e.toString(),
+        status: ArticlesStatus.failure,
       ));
     } catch (e) {
       emit(state.copyWith(

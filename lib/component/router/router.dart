@@ -8,8 +8,7 @@ import '../../page/services_page.dart';
 import '../../page/settings_page.dart';
 import '../../page/users/user_detail_page.dart';
 import '../../page/users/user_list_page.dart';
-import 'routes/flows_route.dart';
-import 'routes/services_route.dart';
+import 'routes.dart';
 
 @MaterialAutoRouter(
   replaceInRouteName: 'Page,Route',
@@ -19,12 +18,12 @@ import 'routes/services_route.dart';
       path: '/',
       children: [
         AutoRoute(
-          path: FlowsRoute.routePath,
-          name: FlowsRoute.routeName,
+          initial: true,
+          path: ArticlesRoute.routePath,
+          name: ArticlesRoute.routeName,
           page: EmptyRouterPage,
           children: [
             AutoRoute(
-              initial: true,
               path: ArticleListPage.routePath,
               name: ArticleListPage.routeName,
               page: ArticleListPage,
@@ -69,9 +68,34 @@ import 'routes/services_route.dart';
           name: 'SettingsRoute',
           page: SettingsPage,
         ),
+
+        /// todo: кривые редиректы
+        /// deeplinks на autoroute помойка, по идее.
+        /// спустя убитый на эту шляпу день,
+        /// скорее всего ты переедешь на go_router
+        ///
+        ///
+        RedirectRoute(path: '*/post/:id', redirectTo: 'articles/:id'),
+        RedirectRoute(
+          path: '*/flows/:flow',
+          redirectTo: 'articles?flow=:flow',
+        ),
+        RedirectRoute(
+          path: '*/users',
+          redirectTo: 'services/users',
+        ),
+        RedirectRoute(
+          path: '*/users/:login',
+          redirectTo: 'services/users/:login',
+        ),
+        RedirectRoute(
+          path: '*/news',
+          redirectTo: 'news',
+        ),
       ],
     ),
   ],
 )
+
 // extend the generated private router
 class $AppRouter {}

@@ -7,10 +7,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../common/cubit/scroll_controller_cubit.dart';
 import '../../common/widget/progress_indicator.dart';
 import '../../component/di/dependencies.dart';
-import '../../component/router/router.gr.dart';
 import '../../feature/user/cubit/users_cubit.dart';
 import '../../feature/user/model/user_model.dart';
 import '../../feature/user/service/users_service.dart';
+import 'user_detail_page.dart';
 
 class UserListPage extends StatelessWidget {
   const UserListPage({Key? key}) : super(key: key);
@@ -48,7 +48,10 @@ class UserListPageView extends StatelessWidget {
         }
       },
       child: Scaffold(
-        appBar: AppBar(title: const Text('Пользователи')),
+        appBar: AppBar(
+          leading: const AutoLeadingButton(),
+          title: const Text('Пользователи'),
+        ),
         body: SafeArea(
           child: BlocBuilder<UsersCubit, UsersState>(
             builder: (context, state) {
@@ -101,12 +104,8 @@ class UserCard extends StatelessWidget {
       child: ListTile(
         title: Text(model.alias),
         tileColor: Colors.amber,
-        onTap: () => context.router.push(
-          UserDetailRoute(
-            key: ValueKey('user-${model.id}'),
-            login: model.alias,
-          ),
-        ),
+        onTap: () =>
+            context.router.pushWidget(UserDetailPage(login: model.alias)),
       ),
     );
   }

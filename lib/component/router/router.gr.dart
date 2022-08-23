@@ -33,7 +33,7 @@ class AppRouter extends _i2.RootStackRouter {
       return _i2.MaterialPageX<dynamic>(
           routeData: routeData, child: const _i1.DashboardPage());
     },
-    FlowsRoute.name: (routeData) {
+    ArticlesRoute.name: (routeData) {
       return _i2.MaterialPageX<dynamic>(
           routeData: routeData, child: const _i2.EmptyRouterPage());
     },
@@ -50,8 +50,13 @@ class AppRouter extends _i2.RootStackRouter {
           routeData: routeData, child: const _i4.SettingsPage());
     },
     ArticleListRoute.name: (routeData) {
+      final queryParams = routeData.queryParams;
+      final args = routeData.argsAs<ArticleListRouteArgs>(
+          orElse: () =>
+              ArticleListRouteArgs(flow: queryParams.getString('flow', 'all')));
       return _i2.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i5.ArticleListPage());
+          routeData: routeData,
+          child: _i5.ArticleListPage(key: args.key, flow: args.flow));
     },
     ArticleDetailRoute.name: (routeData) {
       final pathParams = routeData.inheritedPathParams;
@@ -83,19 +88,19 @@ class AppRouter extends _i2.RootStackRouter {
   @override
   List<_i2.RouteConfig> get routes => [
         _i2.RouteConfig(DashboardRoute.name, path: '/', children: [
-          _i2.RouteConfig(FlowsRoute.name,
-              path: 'flows',
+          _i2.RouteConfig('#redirect',
+              path: '',
+              parent: DashboardRoute.name,
+              redirectTo: 'articles',
+              fullMatch: true),
+          _i2.RouteConfig(ArticlesRoute.name,
+              path: 'articles',
               parent: DashboardRoute.name,
               children: [
-                _i2.RouteConfig('#redirect',
-                    path: '',
-                    parent: FlowsRoute.name,
-                    redirectTo: 'all',
-                    fullMatch: true),
                 _i2.RouteConfig(ArticleListRoute.name,
-                    path: 'all', parent: FlowsRoute.name),
+                    path: '', parent: ArticlesRoute.name),
                 _i2.RouteConfig(ArticleDetailRoute.name,
-                    path: 'articles/:id', parent: FlowsRoute.name)
+                    path: ':id', parent: ArticlesRoute.name)
               ]),
           _i2.RouteConfig(ServicesRoute.name,
               path: 'services',
@@ -106,12 +111,37 @@ class AppRouter extends _i2.RootStackRouter {
                 _i2.RouteConfig(UserListRoute.name,
                     path: 'users', parent: ServicesRoute.name),
                 _i2.RouteConfig(UserDetailRoute.name,
-                    path: ':login', parent: ServicesRoute.name)
+                    path: 'users/:login', parent: ServicesRoute.name)
               ]),
           _i2.RouteConfig(NewsRoute.name,
               path: 'news', parent: DashboardRoute.name),
           _i2.RouteConfig(SettingsRoute.name,
-              path: 'settings', parent: DashboardRoute.name)
+              path: 'settings', parent: DashboardRoute.name),
+          _i2.RouteConfig('*/post/:id#redirect',
+              path: '*/post/:id',
+              parent: DashboardRoute.name,
+              redirectTo: 'articles/:id',
+              fullMatch: true),
+          _i2.RouteConfig('*/flows/:flow#redirect',
+              path: '*/flows/:flow',
+              parent: DashboardRoute.name,
+              redirectTo: 'articles?flow=:flow',
+              fullMatch: true),
+          _i2.RouteConfig('*/users#redirect',
+              path: '*/users',
+              parent: DashboardRoute.name,
+              redirectTo: 'services/users',
+              fullMatch: true),
+          _i2.RouteConfig('*/users/:login#redirect',
+              path: '*/users/:login',
+              parent: DashboardRoute.name,
+              redirectTo: 'services/users/:login',
+              fullMatch: true),
+          _i2.RouteConfig('*/news#redirect',
+              path: '*/news',
+              parent: DashboardRoute.name,
+              redirectTo: 'news',
+              fullMatch: true)
         ])
       ];
 }
@@ -127,11 +157,11 @@ class DashboardRoute extends _i2.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i2.EmptyRouterPage]
-class FlowsRoute extends _i2.PageRouteInfo<void> {
-  const FlowsRoute({List<_i2.PageRouteInfo>? children})
-      : super(FlowsRoute.name, path: 'flows', initialChildren: children);
+class ArticlesRoute extends _i2.PageRouteInfo<void> {
+  const ArticlesRoute({List<_i2.PageRouteInfo>? children})
+      : super(ArticlesRoute.name, path: 'articles', initialChildren: children);
 
-  static const String name = 'FlowsRoute';
+  static const String name = 'ArticlesRoute';
 }
 
 /// generated route for
@@ -161,10 +191,27 @@ class SettingsRoute extends _i2.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i5.ArticleListPage]
-class ArticleListRoute extends _i2.PageRouteInfo<void> {
-  const ArticleListRoute() : super(ArticleListRoute.name, path: 'all');
+class ArticleListRoute extends _i2.PageRouteInfo<ArticleListRouteArgs> {
+  ArticleListRoute({_i10.Key? key, String flow = 'all'})
+      : super(ArticleListRoute.name,
+            path: '',
+            args: ArticleListRouteArgs(key: key, flow: flow),
+            rawQueryParams: {'flow': flow});
 
   static const String name = 'ArticleListRoute';
+}
+
+class ArticleListRouteArgs {
+  const ArticleListRouteArgs({this.key, this.flow = 'all'});
+
+  final _i10.Key? key;
+
+  final String flow;
+
+  @override
+  String toString() {
+    return 'ArticleListRouteArgs{key: $key, flow: $flow}';
+  }
 }
 
 /// generated route for
@@ -172,7 +219,7 @@ class ArticleListRoute extends _i2.PageRouteInfo<void> {
 class ArticleDetailRoute extends _i2.PageRouteInfo<ArticleDetailRouteArgs> {
   ArticleDetailRoute({_i10.Key? key, required String id})
       : super(ArticleDetailRoute.name,
-            path: 'articles/:id',
+            path: ':id',
             args: ArticleDetailRouteArgs(key: key, id: id),
             rawPathParams: {'id': id});
 
@@ -213,7 +260,7 @@ class UserListRoute extends _i2.PageRouteInfo<void> {
 class UserDetailRoute extends _i2.PageRouteInfo<UserDetailRouteArgs> {
   UserDetailRoute({_i10.Key? key, required String login})
       : super(UserDetailRoute.name,
-            path: ':login',
+            path: 'users/:login',
             args: UserDetailRouteArgs(key: key, login: login),
             rawPathParams: {'login': login});
 

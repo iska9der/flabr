@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -7,6 +8,7 @@ import '../../common/cubit/scroll_controller_cubit.dart';
 import '../../common/utils/utils.dart';
 import '../../common/widget/progress_indicator.dart';
 import '../../component/di/dependencies.dart';
+import '../../feature/article/cubit/article_cubit.dart';
 import '../../feature/article/cubit/articles_cubit.dart';
 import '../../feature/article/model/flow_enum.dart';
 import '../../feature/article/model/sort/date_period_enum.dart';
@@ -18,13 +20,17 @@ import '../../feature/article/widget/article_card_widget.dart';
 import '../../feature/article/widget/articles_sort_widget.dart';
 
 class ArticleListPage extends StatelessWidget {
-  const ArticleListPage({Key? key}) : super(key: key);
+  const ArticleListPage({Key? key, @QueryParam() String flow = 'all'})
+      : super(key: key);
 
   static const String routeName = 'ArticleListRoute';
-  static const String routePath = 'all';
+  static const String routePath = '';
 
   @override
   Widget build(BuildContext context) {
+    /// remove line todo: - вывод параметров
+    print(context.routeData.queryParams);
+
     return MultiBlocProvider(
       providers: [
         BlocProvider(
@@ -160,6 +166,12 @@ class ArticleListPageView extends StatelessWidget {
                       context.read<ArticlesCubit>().isFirstFetch) {
                     return const SliverFillRemaining(
                       child: CircleIndicator(),
+                    );
+                  }
+
+                  if (state.status == ArticleStatus.failure) {
+                    return SliverFillRemaining(
+                      child: Text(state.error),
                     );
                   }
 

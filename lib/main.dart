@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'common/widget/progress_indicator.dart';
 import 'component/di/dependencies.dart';
 import 'component/router/router.gr.dart';
 import 'component/storage/cache_storage.dart';
@@ -37,19 +36,14 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  // This widget is the root of your application.
+  final router = getIt.get<AppRouter>();
+
   @override
   Widget build(BuildContext context) {
-    final router = getIt.get<AppRouter>();
-
     return BlocProvider(
       create: (c) => SettingsCubit(getIt.get<CacheStorage>())..init(),
       child: BlocBuilder<SettingsCubit, SettingsState>(
         builder: (context, state) {
-          if (state.status == SettingsStatus.loading) {
-            return const Material(child: CircleIndicator());
-          }
-
           return MaterialApp.router(
             title: 'Flabr',
             routerDelegate: AutoRouterDelegate(router),

@@ -17,6 +17,7 @@ ThemeData lightTheme() {
     floatingActionButtonTheme: FloatingActionButtonThemeData(
       backgroundColor: themeData.colorScheme.background,
     ),
+    pageTransitionsTheme: buildPageTransitionsTheme(),
   );
 
   return themeData;
