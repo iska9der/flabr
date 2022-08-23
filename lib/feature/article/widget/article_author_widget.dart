@@ -36,7 +36,9 @@ class ArticleAuthorWidget extends StatelessWidget {
         children: [
           ClipRRect(
             clipBehavior: Clip.hardEdge,
-            borderRadius: const BorderRadius.all(Radius.circular(4)),
+            borderRadius: const BorderRadius.all(
+              Radius.circular(defaultBorderRadius),
+            ),
             child: author.avatarUrl.isNotEmpty
                 ? NetworkImageWidget(
                     url: 'https:${author.avatarUrl}',

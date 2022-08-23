@@ -42,7 +42,8 @@ class ArticleCardWidget extends StatelessWidget {
                     alignment: Alignment.centerLeft,
                     shape: MaterialStateProperty.all<OutlinedBorder>(
                       RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5.0),
+                        borderRadius:
+                            BorderRadius.circular(defaultBorderRadius),
                       ),
                     ),
                   ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../config/constants.dart';
 import '../model/sort/sort_enum.dart';
 import '../model/sort/sort_option_model.dart';
 
@@ -19,7 +20,9 @@ class SortWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       clipBehavior: Clip.antiAlias,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(defaultBorderRadius),
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: SortEnum.values.map((type) {
@@ -68,7 +71,9 @@ class SortOptionsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       clipBehavior: Clip.antiAlias,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(2)),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(defaultBorderRadius),
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: options
