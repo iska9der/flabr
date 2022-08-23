@@ -38,6 +38,11 @@ class UsersCubit extends Cubit<UsersState> {
         error: e.toString(),
         status: UsersStatus.failure,
       ));
+    } catch (e) {
+      emit(state.copyWith(
+        error: 'Не удалось получить пользователей',
+        status: UsersStatus.failure,
+      ));
     }
   }
 }

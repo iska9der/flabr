@@ -8,7 +8,6 @@ import '../../common/cubit/scroll_controller_cubit.dart';
 import '../../common/utils/utils.dart';
 import '../../common/widget/progress_indicator.dart';
 import '../../component/di/dependencies.dart';
-import '../../feature/article/cubit/article_cubit.dart';
 import '../../feature/article/cubit/articles_cubit.dart';
 import '../../feature/article/model/flow_enum.dart';
 import '../../feature/article/model/sort/date_period_enum.dart';
@@ -154,7 +153,7 @@ class ArticleListPageView extends StatelessWidget {
               ),
               BlocConsumer<ArticlesCubit, ArticlesState>(
                 listenWhen: (p, c) =>
-                    c.status == ArticlesStatus.failure && c.error.isNotEmpty,
+                    p.page != 1 && c.status == ArticlesStatus.failure,
                 listener: (c, state) {
                   getIt.get<Utils>().showNotification(
                         context: context,
@@ -162,17 +161,17 @@ class ArticleListPageView extends StatelessWidget {
                       );
                 },
                 builder: (context, state) {
-                  if (state.status == ArticlesStatus.loading &&
-                      context.read<ArticlesCubit>().isFirstFetch) {
-                    return const SliverFillRemaining(
-                      child: CircleIndicator(),
-                    );
-                  }
-
-                  if (state.status == ArticleStatus.failure) {
-                    return SliverFillRemaining(
-                      child: Text(state.error),
-                    );
+                  if (context.read<ArticlesCubit>().isFirstFetch) {
+                    if (state.status == ArticlesStatus.loading) {
+                      return const SliverFillRemaining(
+                        child: CircleIndicator(),
+                      );
+                    }
+                    if (state.status == ArticlesStatus.failure) {
+                      return SliverFillRemaining(
+                        child: Center(child: Text(state.error)),
+                      );
+                    }
                   }
 
                   var articles = state.articles;

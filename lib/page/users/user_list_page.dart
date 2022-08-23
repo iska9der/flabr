@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../common/cubit/scroll_controller_cubit.dart';
+import '../../common/utils/utils.dart';
 import '../../common/widget/progress_indicator.dart';
 import '../../component/di/dependencies.dart';
 import '../../feature/user/cubit/users_cubit.dart';
@@ -48,16 +49,24 @@ class UserListPageView extends StatelessWidget {
         }
       },
       child: Scaffold(
-        appBar: AppBar(
-          leading: const AutoLeadingButton(),
-          title: const Text('Пользователи'),
-        ),
         body: SafeArea(
-          child: BlocBuilder<UsersCubit, UsersState>(
+          child: BlocConsumer<UsersCubit, UsersState>(
+            listenWhen: (p, c) =>
+                p.page != 1 && c.status == UsersStatus.failure,
+            listener: (context, state) {
+              getIt.get<Utils>().showNotification(
+                    context: context,
+                    content: Text(state.error),
+                  );
+            },
             builder: (context, state) {
-              if (state.status == UsersStatus.loading &&
-                  context.read<UsersCubit>().isFirstFetch) {
-                return const CircleIndicator();
+              if (context.read<UsersCubit>().isFirstFetch) {
+                if (state.status == UsersStatus.loading) {
+                  return const CircleIndicator();
+                }
+                if (state.status == UsersStatus.failure) {
+                  return Center(child: Text(state.error));
+                }
               }
 
               var users = state.users;
