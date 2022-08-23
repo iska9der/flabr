@@ -1,14 +1,15 @@
 enum SortEnum {
-  rating('Новые'),
-  date('Лучшие');
+  byNew('Новые', 'rating'),
+  byBest('Лучшие', 'date');
 
-  const SortEnum(this.label);
+  const SortEnum(this.label, this.value);
 
   final String label;
+  final String value;
 
   factory SortEnum.fromString(String value) {
     SortEnum.values.map((element) {
-      if (element.name == value) {
+      if (element.value == value) {
         return element;
       }
     });

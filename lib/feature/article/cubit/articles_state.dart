@@ -7,7 +7,7 @@ class ArticlesState extends Equatable {
     this.status = ArticlesStatus.initial,
     this.error = '',
     this.flow = FlowEnum.all,
-    this.sort = SortEnum.rating,
+    this.sort = SortEnum.byNew,
     this.period = DatePeriodEnum.daily,
     this.score = '',
     this.page = 1,

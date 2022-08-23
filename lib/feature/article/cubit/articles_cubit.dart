@@ -32,6 +32,7 @@ class ArticlesCubit extends Cubit<ArticlesState> {
 
     try {
       var response = await _service.fetchAll(
+        flow: state.flow,
         sort: state.sort,
         period: state.period,
         score: state.score,
@@ -80,35 +81,38 @@ class ArticlesCubit extends Cubit<ArticlesState> {
     }
   }
 
-  void changeType(FlowEnum type) {
-    if (state.flow == type) return;
+  void changeFlow(FlowEnum value) {
+    if (state.flow == value) return;
 
-    emit(ArticlesState(flow: type));
+    emit(ArticlesState(flow: value));
 
     fetchArticles();
   }
 
   void changeSort(SortEnum value) {
-    emit(ArticlesState(sort: value));
+    emit(ArticlesState(sort: value, flow: state.flow));
 
     fetchArticles();
   }
 
   void changeSortOption(SortEnum sort, SortOptionModel option) {
+    ArticlesState newState;
     switch (sort) {
-      case SortEnum.date:
+      case SortEnum.byBest:
         if (state.period == option.value) return;
 
-        emit(ArticlesState(sort: sort, period: option.value));
+        newState = ArticlesState(period: option.value);
         break;
-      case SortEnum.rating:
+      case SortEnum.byNew:
         if (state.score == option.value) return;
 
-        emit(ArticlesState(sort: sort, score: option.value));
+        newState = ArticlesState(score: option.value);
         break;
       default:
         throw ValueException('Неизвестный вариант сортировки статей');
     }
+
+    emit(newState.copyWith(sort: sort, flow: state.flow));
 
     fetchArticles();
   }

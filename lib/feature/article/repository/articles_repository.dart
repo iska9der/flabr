@@ -3,6 +3,7 @@ import '../../../common/exception/fetch_exception.dart';
 import '../../../common/model/network/make_request.dart';
 import '../../../common/model/network/request_params.dart';
 import '../../../component/http/http_client.dart';
+import '../model/flow_enum.dart';
 import '../model/network/articles_params.dart';
 import '../model/network/articles_response.dart';
 import '../model/sort/date_period_enum.dart';
@@ -15,6 +16,7 @@ class ArticlesRepository {
   final HttpClient _proxyClient;
 
   Future<ArticlesResponse> fetchAll({
+    required FlowEnum flow,
     required SortEnum sort,
     required String page,
     required DatePeriodEnum period,
@@ -25,9 +27,13 @@ class ArticlesRepository {
         method: 'articles',
         requestParams: RequestParams(
           params: ArticlesParams(
-            sort: sort,
-            period: sort == SortEnum.date ? period : null,
-            score: sort == SortEnum.rating ? score : null,
+            flow: flow.path,
+
+            /// если мы находимся не во "Все потоки", в значение sort, по завету
+            /// костыльного api хабра, нужно передавать значение 'all'
+            sort: flow == FlowEnum.all ? sort.value : 'all',
+            period: sort == SortEnum.byBest ? period : null,
+            score: sort == SortEnum.byNew ? score : null,
             page: page,
           ),
         ),

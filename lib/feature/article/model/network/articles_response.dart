@@ -13,6 +13,18 @@ class ArticlesResponse extends Equatable {
   final List<String> articleIds;
   final List<ArticleModel> models;
 
+  ArticlesResponse copyWith({
+    int? pagesCount,
+    List<String>? articleIds,
+    List<ArticleModel>? models,
+  }) {
+    return ArticlesResponse(
+      pagesCount: pagesCount ?? this.pagesCount,
+      articleIds: articleIds ?? this.articleIds,
+      models: models ?? this.models,
+    );
+  }
+
   factory ArticlesResponse.fromMap(Map<String, dynamic> map) {
     return ArticlesResponse(
       pagesCount: map['pagesCount'] ?? 0,
@@ -23,8 +35,6 @@ class ArticlesResponse extends Equatable {
           /// только статьи, новости откидываем
           .where((e) => e.value['postType'] == 'article')
           .map((e) => ArticleModel.fromMap(e.value))
-          .toList()
-          .reversed
           .toList(),
     );
   }
