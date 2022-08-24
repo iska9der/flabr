@@ -92,7 +92,7 @@ class ServiceCard extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(vertical: 4),
                 margin: const EdgeInsets.symmetric(horizontal: 20),
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(defaultBorderRadius),
+                  borderRadius: BorderRadius.circular(kBorderRadiusDefault),
                   color: onTap != null
                       ? Theme.of(context).colorScheme.onSurface.withOpacity(.7)
                       : Theme.of(context)

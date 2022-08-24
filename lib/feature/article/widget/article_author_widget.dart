@@ -37,12 +37,12 @@ class ArticleAuthorWidget extends StatelessWidget {
           ClipRRect(
             clipBehavior: Clip.hardEdge,
             borderRadius: const BorderRadius.all(
-              Radius.circular(defaultBorderRadius),
+              Radius.circular(kBorderRadiusDefault),
             ),
             child: author.avatarUrl.isNotEmpty
                 ? NetworkImageWidget(
-                    url: 'https:${author.avatarUrl}',
-                    height: avatarHeight,
+                    imageUrl: 'https:${author.avatarUrl}',
+                    height: kAvatarHeight,
                     placeholderWidget: onLoading,
                     errorWidget: onError,
                   )
@@ -65,7 +65,7 @@ class _PlaceholderAvatar extends StatelessWidget {
       child: Icon(
         Icons.account_box_rounded,
         color: Theme.of(context).colorScheme.onSurface,
-        size: avatarHeight,
+        size: kAvatarHeight,
       ),
     );
   }

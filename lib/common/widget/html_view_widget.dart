@@ -1,4 +1,3 @@
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
@@ -47,7 +46,10 @@ class HtmlView extends StatelessWidget {
           if (imgExt == '.svg') return null;
 
           return Align(
-            child: NetworkImageWidget(url: imgSrc),
+            child: NetworkImageWidget(
+              imageUrl: imgSrc,
+              isTapable: true,
+            ),
           );
         }
 

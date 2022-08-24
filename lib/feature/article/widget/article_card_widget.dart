@@ -22,34 +22,23 @@ class ArticleCardWidget extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            ArticleTopRow(article),
+            ArticleInfoWidget(article),
             Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 if (article.leadData.image.isNotEmpty) ...[
                   const SizedBox(height: 12),
                   NetworkImageWidget(
-                    url: article.leadData.image.url,
-                    height: postImageHeight,
+                    imageUrl: article.leadData.image.url,
+                    isTapable: true,
+                    height: kImageHeightDefault,
                   )
                 ],
                 const SizedBox(height: 12),
-                TextButton(
+                ArticleTitleButton(
+                  title: article.titleHtml,
                   onPressed: () => context.router.push(
                     ArticleDetailRoute(id: article.id),
-                  ),
-                  style: ButtonStyle(
-                    alignment: Alignment.centerLeft,
-                    shape: MaterialStateProperty.all<OutlinedBorder>(
-                      RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.circular(defaultBorderRadius),
-                      ),
-                    ),
-                  ),
-                  child: Text(
-                    article.titleHtml,
-                    style: Theme.of(context).textTheme.headline6,
                   ),
                 ),
               ],
@@ -63,8 +52,8 @@ class ArticleCardWidget extends StatelessWidget {
   }
 }
 
-class ArticleTopRow extends StatelessWidget {
-  const ArticleTopRow(this.article, {Key? key}) : super(key: key);
+class ArticleInfoWidget extends StatelessWidget {
+  const ArticleInfoWidget(this.article, {Key? key}) : super(key: key);
 
   final ArticleModel article;
 
@@ -82,6 +71,38 @@ class ArticleTopRow extends StatelessWidget {
           style: Theme.of(context).textTheme.caption,
         ),
       ],
+    );
+  }
+}
+
+class ArticleTitleButton extends StatelessWidget {
+  const ArticleTitleButton({
+    Key? key,
+    required this.title,
+    required this.onPressed,
+  }) : super(key: key);
+
+  final String title;
+  final void Function()? onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+      onPressed: onPressed,
+      style: ButtonStyle(
+        alignment: Alignment.centerLeft,
+        shape: MaterialStateProperty.all<OutlinedBorder>(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(
+              kBorderRadiusDefault,
+            ),
+          ),
+        ),
+      ),
+      child: Text(
+        title,
+        style: Theme.of(context).textTheme.headline6,
+      ),
     );
   }
 }

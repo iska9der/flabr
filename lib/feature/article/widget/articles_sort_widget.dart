@@ -21,7 +21,7 @@ class SortWidget extends StatelessWidget {
     return Card(
       clipBehavior: Clip.antiAlias,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(defaultBorderRadius),
+        borderRadius: BorderRadius.circular(kBorderRadiusDefault),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -72,7 +72,7 @@ class SortOptionsWidget extends StatelessWidget {
     return Card(
       clipBehavior: Clip.antiAlias,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(defaultBorderRadius),
+        borderRadius: BorderRadius.circular(kBorderRadiusDefault),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,

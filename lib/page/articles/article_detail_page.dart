@@ -83,7 +83,7 @@ class ArticleDetailPageView extends StatelessWidget {
                       horizontal: hPadding,
                       vertical: 16.0,
                     ),
-                    child: ArticleTopRow(article),
+                    child: ArticleInfoWidget(article),
                   ),
                 ),
                 SliverToBoxAdapter(
