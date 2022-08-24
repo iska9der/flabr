@@ -53,7 +53,7 @@ class ArticlesRepository {
 
   Future<Map<String, dynamic>> fetchNews() async {
     try {
-      final body = MakeRequest(
+      const body = MakeRequest(
         method: 'articles',
         requestParams: RequestParams(params: ArticlesParams(news: 'true')),
       );

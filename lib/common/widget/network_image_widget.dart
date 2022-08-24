@@ -21,6 +21,7 @@ class NetworkImageWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CachedNetworkImage(
+      key: ValueKey(url),
       imageUrl: url,
       height: height,
       placeholder: placeholderWidget ?? getIt.get<Utils>().image.onLoading,

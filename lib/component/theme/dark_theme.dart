@@ -5,6 +5,7 @@ ThemeData darkTheme() {
 
   themeData = themeData.copyWith(
     useMaterial3: true,
+    colorScheme: ColorScheme.fromSwatch(brightness: Brightness.dark),
     cardTheme: buildCardTheme(),
     appBarTheme: buildAppBarTheme().copyWith(shadowColor: Colors.black),
     floatingActionButtonTheme: FloatingActionButtonThemeData(
