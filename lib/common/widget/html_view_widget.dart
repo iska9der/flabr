@@ -21,6 +21,7 @@ class HtmlView extends StatelessWidget {
   Widget build(BuildContext context) {
     return HtmlWidget(
       textHtml,
+      key: ValueKey(Theme.of(context).brightness),
       renderMode: RenderMode.sliverList,
       onTapUrl: (url) async => await getIt.get<Utils>().launcher.launchUrl(url),
       onLoadingBuilder: (ctx, el, prgrs) => const CircleIndicator.small(),

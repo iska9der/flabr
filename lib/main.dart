@@ -11,7 +11,7 @@ import 'common/widget/progress_indicator.dart';
 import 'component/di/dependencies.dart';
 import 'component/router/router.gr.dart';
 import 'component/storage/cache_storage.dart';
-import 'component/theme/theme.dart';
+import 'component/theme.dart';
 import 'feature/settings/cubit/settings_cubit.dart';
 
 void main() async {
@@ -23,22 +23,17 @@ void main() async {
   setDependencies();
 
   runZonedGuarded(
-    () => runApp(const MyApp()),
+    () => runApp(MyApp()),
     (error, stack) {
       if (kDebugMode) print(error.toString());
     },
   );
 }
 
-class MyApp extends StatefulWidget {
-  const MyApp({Key? key}) : super(key: key);
+class MyApp extends StatelessWidget {
+  MyApp({Key? key}) : super(key: key);
 
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  final router = getIt.get<AppRouter>();
+  final AppRouter router = getIt.get<AppRouter>();
 
   @override
   Widget build(BuildContext context) {

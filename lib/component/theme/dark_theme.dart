@@ -1,4 +1,6 @@
-part of 'theme.dart';
+import 'package:flutter/material.dart';
+
+import 'common.dart';
 
 ThemeData darkTheme() {
   var themeData = ThemeData.dark();
@@ -12,6 +14,7 @@ ThemeData darkTheme() {
       backgroundColor: themeData.colorScheme.background,
     ),
     pageTransitionsTheme: buildPageTransitionsTheme(),
+    scrollbarTheme: buildScrollBarThemeData(),
   );
 
   return themeData;

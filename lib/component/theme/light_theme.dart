@@ -1,4 +1,6 @@
-part of 'theme.dart';
+import 'package:flutter/material.dart';
+
+import 'common.dart';
 
 ThemeData lightTheme() {
   var themeData = ThemeData.light();

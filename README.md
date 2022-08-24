@@ -5,10 +5,11 @@ Habra mobile client on Flutter
 
 ### Testing app links
 
+
 Android: 
 
 ```
-adb shell am start -a android.intent.action.VIEW -d "https://habr.com/ru/users/Sagidullin"
+adb shell am start -a android.intent.action.VIEW -d "<URI>"
 ```
 
 IOS:

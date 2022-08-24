@@ -1,8 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
-part 'dark_theme.dart';
-part 'light_theme.dart';
+import 'constants.dart';
 
 CardTheme buildCardTheme() {
   return const CardTheme(
@@ -16,8 +15,8 @@ AppBarTheme buildAppBarTheme() {
   return const AppBarTheme(
     surfaceTintColor: Colors.transparent,
     elevation: 0,
-    scrolledUnderElevation: 20,
-    toolbarHeight: 60,
+    scrolledUnderElevation: kScrolledUnderElevation,
+    toolbarHeight: kToolBarHeight,
     titleTextStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
   );
 }
@@ -29,4 +28,12 @@ PageTransitionsTheme buildPageTransitionsTheme() {
     TargetPlatform.iOS: NoShadowCupertinoPageTransitionsBuilder(),
     TargetPlatform.android: FadeUpwardsPageTransitionsBuilder(),
   });
+}
+
+ScrollbarThemeData buildScrollBarThemeData() {
+  return ScrollbarThemeData(
+    thumbVisibility: MaterialStateProperty.all(true),
+    interactive: true,
+    thickness: MaterialStateProperty.all(6),
+  );
 }
