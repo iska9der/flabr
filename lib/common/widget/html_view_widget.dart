@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
@@ -25,6 +26,13 @@ class HtmlView extends StatelessWidget {
       onTapUrl: (url) async => await getIt.get<Utils>().launcher.launchUrl(url),
       onLoadingBuilder: (ctx, el, prgrs) => const CircleIndicator.small(),
       factoryBuilder: () => CustomFactory(context),
+      customStylesBuilder: ((element) {
+        if (element.localName == 'div' && element.parent == null) {
+          return {'margin-left': '20px', 'margin-right': '20px'};
+        }
+
+        return null;
+      }),
       customWidgetBuilder: (element) {
         if (element.localName == 'img') {
           String imgSrc =
@@ -60,15 +68,15 @@ class CustomFactory extends WidgetFactory
 
   @override
   Widget? buildImageWidget(BuildMetadata meta, ImageSource src) {
-    SvgPicture widget = super.buildImageWidget(meta, src) as SvgPicture;
-
     /// меняем цвет выделения svg
-    widget = widget.copyWith(
+    SvgPicture? widget = super.buildImageWidget(meta, src) as SvgPicture?;
+
+    widget = widget?.copyWith(
         theme: SvgTheme(
       currentColor: Theme.of(context).colorScheme.onSurface,
     ));
 
-    return widget;
+    return widget ?? super.buildImageWidget(meta, src);
   }
 
   @override
@@ -104,33 +112,27 @@ class CustomFactory extends WidgetFactory
         /// плагин сам его обработает
         /// todo: добавить обводку
         if (el.parent?.localName == 'p') {
+          final op = BuildOp(
+            onTree: (meta, tree) {
+              tree.bits.firstWhere((element) => element.tsb == tree.tsb);
+              WidgetBit.inline(tree.parent!, buildInlineCodeWidget(el.text))
+                  .insertBefore(tree);
+
+              tree.detach();
+            },
+          );
+          meta.register(op);
           break;
         }
-
-        final ScrollController controller = ScrollController();
-
-        var widget = Container(
-          width: MediaQuery.of(context).size.width,
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.background,
-          ),
-          child: Scrollbar(
-            controller: controller,
-            thumbVisibility: true,
-            child: SingleChildScrollView(
-              controller: controller,
-              scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.all(12),
-              child: SelectableText(el.text),
-            ),
-          ),
-        );
 
         meta.register(
           BuildOp(
             onTree: (_, tree) {
               tree.bits.firstWhere((element) => element.tsb == tree.tsb);
-              WidgetBit.block(tree.parent!, widget).insertBefore(tree);
+              WidgetBit.block(
+                tree.parent!,
+                buildBlockCodeWidget(el.text),
+              ).insertBefore(tree);
 
               tree.detach();
             },
@@ -141,5 +143,33 @@ class CustomFactory extends WidgetFactory
     }
 
     return super.parse(meta);
+  }
+
+  Container buildBlockCodeWidget(String text) {
+    final ScrollController controller = ScrollController();
+
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.background,
+      ),
+      child: Scrollbar(
+        controller: controller,
+        thumbVisibility: true,
+        child: SingleChildScrollView(
+          controller: controller,
+          scrollDirection: Axis.horizontal,
+          padding: const EdgeInsets.all(12),
+          child: SelectableText(text),
+        ),
+      ),
+    );
+  }
+
+  Container buildInlineCodeWidget(String text) {
+    return Container(
+      color: Theme.of(context).colorScheme.background,
+      child: SelectableText(text),
+    );
   }
 }
