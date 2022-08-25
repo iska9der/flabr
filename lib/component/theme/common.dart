@@ -35,5 +35,6 @@ ScrollbarThemeData buildScrollBarThemeData() {
     thumbVisibility: MaterialStateProperty.all(true),
     interactive: true,
     thickness: MaterialStateProperty.all(6),
+    minThumbLength: kToolBarHeightOnScroll,
   );
 }

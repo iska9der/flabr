@@ -16,36 +16,39 @@ class ArticleCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            ArticleInfoWidget(article),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                if (article.leadData.image.isNotEmpty) ...[
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 6),
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              ArticleInfoWidget(article),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  if (article.leadData.image.isNotEmpty) ...[
+                    const SizedBox(height: 12),
+                    NetworkImageWidget(
+                      imageUrl: article.leadData.image.url,
+                      isTapable: true,
+                      height: kImageHeightDefault,
+                    )
+                  ],
                   const SizedBox(height: 12),
-                  NetworkImageWidget(
-                    imageUrl: article.leadData.image.url,
-                    isTapable: true,
-                    height: kImageHeightDefault,
-                  )
-                ],
-                const SizedBox(height: 12),
-                ArticleTitleButton(
-                  title: article.titleHtml,
-                  onPressed: () => context.router.push(
-                    ArticleDetailRoute(id: article.id),
+                  ArticleTitleButton(
+                    title: article.titleHtml,
+                    onPressed: () => context.router.push(
+                      ArticleDetailRoute(id: article.id),
+                    ),
                   ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 18),
-            ArticleStatisticsWidget(statistics: article.statistics),
-          ],
+                ],
+              ),
+              const SizedBox(height: 18),
+              ArticleStatisticsWidget(statistics: article.statistics),
+            ],
+          ),
         ),
       ),
     );

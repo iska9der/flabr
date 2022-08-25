@@ -94,109 +94,112 @@ class ArticleListPageView extends StatelessWidget {
           },
         ),
         body: SafeArea(
-          child: CustomScrollView(
+          child: Scrollbar(
             controller: controller,
-            slivers: [
-              BlocBuilder<ArticlesCubit, ArticlesState>(
-                builder: (context, state) {
-                  return SliverAppBar(
-                    title: Text(state.flow.label),
-                  );
-                },
-              ),
-              BlocBuilder<ArticlesCubit, ArticlesState>(
-                builder: (context, state) {
-                  return SliverAppBar(
-                    automaticallyImplyLeading: false,
-                    floating: true,
-                    toolbarHeight: 80,
-                    title: Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        SortWidget(
-                          isEnabled: state.status != ArticlesStatus.loading,
-                          currentValue: state.sort,
-                          onTap: (value) =>
-                              context.read<ArticlesCubit>().changeSort(value),
-                        ),
-                        SortOptionsWidget(
-                          isEnabled: state.status != ArticlesStatus.loading,
-                          options: state.sort == SortEnum.byBest
-                              ? DatePeriodEnum.values
-                                  .map((period) => SortOptionModel(
-                                        label: period.label,
-                                        value: period,
-                                      ))
-                                  .toList()
-                              : RatingScoreEnum.values
-                                  .map((score) => SortOptionModel(
-                                        label: score.label,
-                                        value: score.value,
-                                      ))
-                                  .toList(),
-                          currentValue: state.sort == SortEnum.byBest
-                              ? state.period
-                              : state.score,
-                          onTap: (value) => context
-                              .read<ArticlesCubit>()
-                              .changeSortOption(state.sort, value),
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              ),
-              BlocConsumer<ArticlesCubit, ArticlesState>(
-                listenWhen: (p, c) =>
-                    p.page != 1 && c.status == ArticlesStatus.failure,
-                listener: (c, state) {
-                  getIt.get<Utils>().showNotification(
-                        context: context,
-                        content: Text(state.error),
-                      );
-                },
-                builder: (context, state) {
-                  if (context.read<ArticlesCubit>().isFirstFetch) {
-                    if (state.status == ArticlesStatus.loading) {
-                      return const SliverFillRemaining(
-                        child: CircleIndicator(),
-                      );
+            child: CustomScrollView(
+              controller: controller,
+              slivers: [
+                BlocBuilder<ArticlesCubit, ArticlesState>(
+                  builder: (context, state) {
+                    return SliverAppBar(
+                      title: Text(state.flow.label),
+                    );
+                  },
+                ),
+                BlocBuilder<ArticlesCubit, ArticlesState>(
+                  builder: (context, state) {
+                    return SliverAppBar(
+                      automaticallyImplyLeading: false,
+                      floating: true,
+                      toolbarHeight: 80,
+                      title: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          SortWidget(
+                            isEnabled: state.status != ArticlesStatus.loading,
+                            currentValue: state.sort,
+                            onTap: (value) =>
+                                context.read<ArticlesCubit>().changeSort(value),
+                          ),
+                          SortOptionsWidget(
+                            isEnabled: state.status != ArticlesStatus.loading,
+                            options: state.sort == SortEnum.byBest
+                                ? DatePeriodEnum.values
+                                    .map((period) => SortOptionModel(
+                                          label: period.label,
+                                          value: period,
+                                        ))
+                                    .toList()
+                                : RatingScoreEnum.values
+                                    .map((score) => SortOptionModel(
+                                          label: score.label,
+                                          value: score.value,
+                                        ))
+                                    .toList(),
+                            currentValue: state.sort == SortEnum.byBest
+                                ? state.period
+                                : state.score,
+                            onTap: (value) => context
+                                .read<ArticlesCubit>()
+                                .changeSortOption(state.sort, value),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+                BlocConsumer<ArticlesCubit, ArticlesState>(
+                  listenWhen: (p, c) =>
+                      p.page != 1 && c.status == ArticlesStatus.failure,
+                  listener: (c, state) {
+                    getIt.get<Utils>().showNotification(
+                          context: context,
+                          content: Text(state.error),
+                        );
+                  },
+                  builder: (context, state) {
+                    if (context.read<ArticlesCubit>().isFirstFetch) {
+                      if (state.status == ArticlesStatus.loading) {
+                        return const SliverFillRemaining(
+                          child: CircleIndicator(),
+                        );
+                      }
+                      if (state.status == ArticlesStatus.failure) {
+                        return SliverFillRemaining(
+                          child: Center(child: Text(state.error)),
+                        );
+                      }
                     }
-                    if (state.status == ArticlesStatus.failure) {
-                      return SliverFillRemaining(
-                        child: Center(child: Text(state.error)),
-                      );
-                    }
-                  }
 
-                  var articles = state.articles;
+                    var articles = state.articles;
 
-                  return SliverList(
-                    delegate: SliverChildBuilderDelegate(
-                      (c, i) {
-                        if (i < articles.length) {
-                          return ArticleCardWidget(article: articles[i]);
-                        } else {
-                          Timer(
-                            const Duration(milliseconds: 30),
-                            () => context
-                                .read<ScrollControllerCubit>()
-                                .animateToBottom(),
-                          );
+                    return SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                        (c, i) {
+                          if (i < articles.length) {
+                            return ArticleCardWidget(article: articles[i]);
+                          } else {
+                            Timer(
+                              const Duration(milliseconds: 30),
+                              () => context
+                                  .read<ScrollControllerCubit>()
+                                  .animateToBottom(),
+                            );
 
-                          return const SizedBox(
-                            height: 60,
-                            child: CircleIndicator.medium(),
-                          );
-                        }
-                      },
-                      childCount: articles.length +
-                          (state.status == ArticlesStatus.loading ? 1 : 0),
-                    ),
-                  );
-                },
-              )
-            ],
+                            return const SizedBox(
+                              height: 60,
+                              child: CircleIndicator.medium(),
+                            );
+                          }
+                        },
+                        childCount: articles.length +
+                            (state.status == ArticlesStatus.loading ? 1 : 0),
+                      ),
+                    );
+                  },
+                )
+              ],
+            ),
           ),
         ),
       ),
