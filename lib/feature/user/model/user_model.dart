@@ -1,5 +1,7 @@
 import 'package:equatable/equatable.dart';
 
+import '../../article/model/article_model.dart';
+
 class UserModel extends Equatable {
   const UserModel({
     required this.id,
@@ -11,6 +13,7 @@ class UserModel extends Equatable {
     this.score = 0,
     this.rating = 0,
     this.ratingPosition = 0,
+    this.lastPost = ArticleModel.empty,
   });
 
   final String id;
@@ -19,6 +22,7 @@ class UserModel extends Equatable {
   final String avatar;
   final String fullName;
   final String speciality;
+  final ArticleModel lastPost;
 
   /// "карма" -> очки
   final int score;
@@ -35,6 +39,7 @@ class UserModel extends Equatable {
     int? score,
     double? rating,
     int? ratingPosition,
+    ArticleModel? lastPost,
   }) {
     return UserModel(
       id: id ?? this.id,
@@ -46,6 +51,7 @@ class UserModel extends Equatable {
       score: score ?? this.score,
       rating: rating ?? this.rating,
       ratingPosition: ratingPosition ?? this.ratingPosition,
+      lastPost: lastPost ?? this.lastPost,
     );
   }
 
@@ -62,6 +68,9 @@ class UserModel extends Equatable {
           map['rating'] != null ? double.parse(map['rating'].toString()) : 0.00,
       ratingPosition:
           map['ratingPos'] != null ? int.parse(map['ratingPos'].toString()) : 1,
+      lastPost: map['lastPost'] != null
+          ? ArticleModel.fromMap(map['lastPost'])
+          : ArticleModel.empty,
     );
   }
 
@@ -83,6 +92,7 @@ class UserModel extends Equatable {
       score,
       rating,
       ratingPosition,
+      lastPost,
     ];
   }
 }

@@ -7,7 +7,11 @@ ThemeData lightTheme() {
 
   themeData = themeData.copyWith(
     useMaterial3: true,
-    scaffoldBackgroundColor: Colors.grey.shade200,
+    colorScheme: ColorScheme.fromSwatch(
+      accentColor: Colors.blue.shade500,
+      backgroundColor: Colors.grey.shade300,
+    ),
+    scaffoldBackgroundColor: Colors.grey.shade300,
     cardTheme: buildCardTheme(),
     appBarTheme: buildAppBarTheme().copyWith(
       shadowColor: Colors.black87,
@@ -17,9 +21,12 @@ ThemeData lightTheme() {
           ),
     ),
     floatingActionButtonTheme: FloatingActionButtonThemeData(
-      backgroundColor: themeData.colorScheme.background,
+      backgroundColor: Colors.grey.shade200,
+      elevation: 5,
+      foregroundColor: themeData.colorScheme.primary.withOpacity(.5),
     ),
     pageTransitionsTheme: buildPageTransitionsTheme(),
+    textButtonTheme: buildTextButtonThemeData(),
   );
 
   return themeData;

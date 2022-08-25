@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
+import '../../config/constants.dart';
 import 'constants.dart';
 
 CardTheme buildCardTheme() {
@@ -37,4 +38,18 @@ ScrollbarThemeData buildScrollBarThemeData() {
     thickness: MaterialStateProperty.all(6),
     minThumbLength: kToolBarHeightOnScroll,
   );
+}
+
+TextButtonThemeData buildTextButtonThemeData() {
+  return TextButtonThemeData(
+      style: ButtonStyle(
+    alignment: Alignment.centerLeft,
+    shape: MaterialStateProperty.all<OutlinedBorder>(
+      RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(
+          kBorderRadiusDefault,
+        ),
+      ),
+    ),
+  ));
 }

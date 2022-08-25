@@ -9,9 +9,8 @@ import '../../common/utils/utils.dart';
 import '../../common/widget/progress_indicator.dart';
 import '../../component/di/dependencies.dart';
 import '../../feature/user/cubit/users_cubit.dart';
-import '../../feature/user/model/user_model.dart';
 import '../../feature/user/service/users_service.dart';
-import 'user_detail_page.dart';
+import '../../feature/user/widget/user_card_widget.dart';
 
 class UserListPage extends StatelessWidget {
   const UserListPage({Key? key}) : super(key: key);
@@ -49,6 +48,10 @@ class UserListPageView extends StatelessWidget {
         }
       },
       child: Scaffold(
+        appBar: AppBar(
+          leading: const AutoLeadingButton(),
+          title: const Text('Авторы'),
+        ),
         body: SafeArea(
           child: BlocConsumer<UsersCubit, UsersState>(
             listenWhen: (p, c) =>
@@ -77,7 +80,7 @@ class UserListPageView extends StatelessWidget {
                     (state.status == UsersStatus.loading ? 1 : 0),
                 itemBuilder: (context, i) {
                   if (i < users.length) {
-                    return UserCard(state.users[i]);
+                    return UserCardWidget(state.users[i]);
                   } else {
                     Timer(
                       const Duration(milliseconds: 30),
@@ -96,25 +99,6 @@ class UserListPageView extends StatelessWidget {
             },
           ),
         ),
-      ),
-    );
-  }
-}
-
-class UserCard extends StatelessWidget {
-  const UserCard(this.model, {Key? key}) : super(key: key);
-
-  final UserModel model;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 4),
-      child: ListTile(
-        title: Text(model.alias),
-        tileColor: Colors.amber,
-        onTap: () =>
-            context.router.pushWidget(UserDetailPage(login: model.alias)),
       ),
     );
   }

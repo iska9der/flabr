@@ -31,12 +31,12 @@ class DashboardPage extends StatelessWidget {
             /// то не нужно отлетать в корень,
             /// так как пользователь может находиться
             /// в процессе чтения статьи
-            if (i == 0 || i == 1) {
-              return;
-            }
+            // if (i == 0 || i == 1) {
+            //   return;
+            // }
 
-            var rootOfIndex = tabsRouter.stackRouterOfIndex(i);
-            rootOfIndex?.popUntilRoot();
+            // var rootOfIndex = tabsRouter.stackRouterOfIndex(i);
+            // rootOfIndex?.popUntilRoot();
           },
           items: const [
             BottomNavigationBarItem(

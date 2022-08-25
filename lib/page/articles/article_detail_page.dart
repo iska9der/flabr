@@ -214,6 +214,8 @@ class ArticleFloatingButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
@@ -227,16 +229,17 @@ class ArticleFloatingButton extends StatelessWidget {
               child: icon,
             ),
             Positioned(
-              bottom: 4,
+              bottom: 2,
               child: Text(
                 text,
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.button?.copyWith(
+                style: theme.textTheme.button?.copyWith(
+                  color: theme.colorScheme.onBackground.withOpacity(.7),
                   shadows: [
                     Shadow(
-                      color: Colors.black.withOpacity(.8),
+                      color: theme.colorScheme.background.withOpacity(.8),
                       offset: const Offset(2, 2),
-                      blurRadius: 3,
+                      blurRadius: 4,
                     ),
                   ],
                 ),

@@ -36,9 +36,15 @@ class ArticleModel extends Equatable {
       timePublished: map['timePublished'],
       titleHtml: map['titleHtml'],
       textHtml: map['textHtml'] ?? '',
-      author: AuthorModel.fromMap(map['author']),
-      statistics: ArticleStatisticsModel.fromMap(map['statistics']),
-      leadData: ArticleLeadDataModel.fromMap(map['leadData']),
+      author: map['author'] != null
+          ? AuthorModel.fromMap(map['author'])
+          : AuthorModel.empty,
+      statistics: map['statistics'] != null
+          ? ArticleStatisticsModel.fromMap(map['statistics'])
+          : ArticleStatisticsModel.empty,
+      leadData: map['leadData'] != null
+          ? ArticleLeadDataModel.fromMap(map['leadData'])
+          : ArticleLeadDataModel.empty,
     );
   }
 

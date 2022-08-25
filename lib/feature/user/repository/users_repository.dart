@@ -9,7 +9,7 @@ class UsersRepository {
 
   Future<UsersResponse> fetchAll({required String page}) async {
     try {
-      final response = await _client.get('/users?page=$page');
+      final response = await _client.get('/users?page=$page&fl=ru&hl=ru');
 
       return UsersResponse.fromMap(response.data);
     } on DisplayableException {

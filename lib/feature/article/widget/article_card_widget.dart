@@ -17,10 +17,10 @@ class ArticleCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 6),
+      padding: const EdgeInsets.symmetric(horizontal: kCardOuterPadding),
       child: Card(
         child: Padding(
-          padding: const EdgeInsets.all(12.0),
+          padding: const EdgeInsets.all(kCardInnerPadding),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -92,16 +92,6 @@ class ArticleTitleButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextButton(
       onPressed: onPressed,
-      style: ButtonStyle(
-        alignment: Alignment.centerLeft,
-        shape: MaterialStateProperty.all<OutlinedBorder>(
-          RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(
-              kBorderRadiusDefault,
-            ),
-          ),
-        ),
-      ),
       child: Text(
         title,
         style: Theme.of(context).textTheme.headline6,
