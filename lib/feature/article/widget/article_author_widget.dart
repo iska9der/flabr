@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../../../common/model/author_model.dart';
 import '../../../common/widget/network_image_widget.dart';
-import '../../../component/router/router.gr.dart';
+import '../../../component/router/router.dart';
 import '../../../config/constants.dart';
 
 class ArticleAuthorWidget extends StatelessWidget {

@@ -1,4 +1,6 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 import '../../page/articles/article_detail_page.dart';
 import '../../page/articles/article_list_page.dart';
@@ -8,7 +10,10 @@ import '../../page/services_page.dart';
 import '../../page/settings_page.dart';
 import '../../page/users/user_detail_page.dart';
 import '../../page/users/user_list_page.dart';
+
 import 'routes.dart';
+
+part 'router.gr.dart';
 
 @MaterialAutoRouter(
   replaceInRouteName: 'Page,Route',
@@ -19,8 +24,8 @@ import 'routes.dart';
       children: [
         AutoRoute(
           initial: true,
-          path: ArticlesRoute.routePath,
-          name: ArticlesRoute.routeName,
+          path: MyArticlesRoute.routePath,
+          name: MyArticlesRoute.routeName,
           page: EmptyRouterPage,
           children: [
             AutoRoute(
@@ -36,8 +41,8 @@ import 'routes.dart';
           ],
         ),
         AutoRoute(
-          path: ServicesRoute.routePath,
-          name: ServicesRoute.routeName,
+          path: MyServicesRoute.routePath,
+          name: MyServicesRoute.routeName,
           page: EmptyRouterPage,
           children: [
             AutoRoute(
@@ -98,4 +103,47 @@ import 'routes.dart';
 )
 
 // extend the generated private router
-class $AppRouter {}
+class AppRouter extends _$AppRouter {
+  /// Открыть статью в приложении, либо открыть внешнюю ссылку в браузере
+  Future pushArticleOrExternal(Uri url) async {
+    String id = parseId(url);
+
+    if (isArticleUrl(url)) {
+      return await push(ArticleDetailRoute(id: id));
+    } else if (isUserUrl(url)) {
+      return await push(UserDetailRoute(login: id));
+    }
+
+    return await launchUrlString(
+      url.origin,
+      mode: LaunchMode.externalApplication,
+    );
+  }
+
+  String parseId(Uri url) {
+    Iterable<String> parts =
+        url.pathSegments.where((element) => element.isNotEmpty);
+
+    return parts.last;
+  }
+
+  bool isArticleUrl(Uri url) {
+    if (url.host.contains('habr.com')) {
+      if (url.path.contains('post/') ||
+          url.path.contains('blog/') ||
+          url.path.contains('news/')) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  bool isUserUrl(Uri url) {
+    if (url.host.contains('habr.com') && url.path.contains('user/')) {
+      return true;
+    }
+
+    return false;
+  }
+}

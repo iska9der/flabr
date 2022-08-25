@@ -1,14 +1,14 @@
-class ServicesRoute {
+class MyServicesRoute {
   static const String routeName = 'ServicesRoute';
   static const String routePath = 'services';
 }
 
-class ArticlesRoute {
+class MyArticlesRoute {
   static const String routeName = 'ArticlesRoute';
   static const String routePath = 'articles';
 }
 
-class UsersRoute {
+class MyUsersRoute {
   static const String routeName = 'UsersRoute';
   static const String routePath = 'users';
 }

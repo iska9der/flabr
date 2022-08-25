@@ -2,6 +2,7 @@ import 'package:app_links/app_links.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
+import '../../../component/router/router.dart';
 import '../../../component/storage/cache_storage.dart';
 
 part 'settings_state.dart';
@@ -11,13 +12,16 @@ const isDarkThemeCacheKey = 'isDarkTheme';
 class SettingsCubit extends Cubit<SettingsState> {
   SettingsCubit({
     required CacheStorage storage,
+    required AppRouter router,
     required AppLinks appLinks,
   })  : _storage = storage,
+        _router = router,
         _appLinks = appLinks,
         super(const SettingsState());
 
   final CacheStorage _storage;
   final AppLinks _appLinks;
+  final AppRouter _router;
 
   void init() async {
     emit(state.copyWith(status: SettingsStatus.loading));
@@ -50,10 +54,16 @@ class SettingsCubit extends Cubit<SettingsState> {
   }
 
   Future<void> initDeepLink() async {
-    final uri = await _appLinks.getInitialAppLink();
+    final lastUri = await _appLinks.getLatestAppLink();
 
-    if (uri != null) {
-      emit(state.copyWith(initialDeepLink: uri.path));
+    if (lastUri != null) {
+      emit(state.copyWith(initialDeepLink: lastUri.path));
     }
+
+    _appLinks.uriLinkStream.listen((event) {
+      String path = event.path;
+
+      _router.pushNamed(path);
+    });
   }
 }

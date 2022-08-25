@@ -55,41 +55,7 @@ class _ArticleDetailPageViewState extends State<ArticleDetailPageView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: BlocBuilder<ArticleCubit, ArticleState>(
-        builder: (context, state) {
-          var stats = state.article.statistics;
-
-          return AnimatedSlide(
-            duration: const Duration(milliseconds: 300),
-            curve: Curves.easeInOutCubicEmphasized,
-            offset: isFabVisible ? const Offset(0, 0) : const Offset(0, 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                ArticleFloatingButton(
-                  text: stats.score.toString(),
-                  icon: Icon(
-                    Icons.insert_chart_rounded,
-                    color: stats.score >= 0 ? Colors.green : Colors.red,
-                  ),
-                ),
-                ArticleFloatingButton(
-                  text: stats.commentsCount.toString(),
-                  icon: const Icon(Icons.chat_bubble_rounded),
-                ),
-                ArticleFloatingButton(
-                  text: stats.favoritesCount.toString(),
-                  icon: const Icon(Icons.bookmark_rounded),
-                ),
-                ArticleFloatingButton(
-                  text: stats.readingCount.toString(),
-                  icon: const Icon(Icons.remove_red_eye_rounded),
-                ),
-              ],
-            ),
-          );
-        },
-      ),
+      floatingActionButton: _FloatingActionButtons(isVisible: isFabVisible),
       floatingActionButtonLocation:
           FloatingActionButtonLocation.miniCenterFloat,
       body: SafeArea(
@@ -188,6 +154,52 @@ class _ArticleDetailPageViewState extends State<ArticleDetailPageView> {
   }
 }
 
+class _FloatingActionButtons extends StatelessWidget {
+  const _FloatingActionButtons({Key? key, this.isVisible = true})
+      : super(key: key);
+
+  final bool isVisible;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<ArticleCubit, ArticleState>(
+      builder: (context, state) {
+        var stats = state.article.statistics;
+
+        return AnimatedSlide(
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeInOutCubicEmphasized,
+          offset: isVisible ? const Offset(0, 0) : const Offset(0, 10),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              ArticleFloatingButton(
+                text: stats.score.toString(),
+                icon: Icon(
+                  Icons.insert_chart_rounded,
+                  color: stats.score >= 0 ? Colors.green : Colors.red,
+                ),
+              ),
+              ArticleFloatingButton(
+                text: stats.commentsCount.toString(),
+                icon: const Icon(Icons.chat_bubble_rounded),
+              ),
+              ArticleFloatingButton(
+                text: stats.favoritesCount.toString(),
+                icon: const Icon(Icons.bookmark_rounded),
+              ),
+              ArticleFloatingButton(
+                text: stats.readingCount.toString(),
+                icon: const Icon(Icons.remove_red_eye_rounded),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
+
 class ArticleFloatingButton extends StatelessWidget {
   const ArticleFloatingButton({
     Key? key,
@@ -210,6 +222,7 @@ class ArticleFloatingButton extends StatelessWidget {
           alignment: Alignment.bottomCenter,
           children: [
             FloatingActionButton.small(
+              heroTag: UniqueKey(),
               onPressed: onPressed,
               child: icon,
             ),

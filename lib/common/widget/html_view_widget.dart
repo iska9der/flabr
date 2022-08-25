@@ -6,10 +6,10 @@ import 'package:fwfh_svg/fwfh_svg.dart';
 import 'package:fwfh_webview/fwfh_webview.dart';
 import 'package:path/path.dart' as p;
 
-import '../../common/utils/utils.dart';
 import '../../common/widget/extension/extension.dart';
 import '../../common/widget/network_image_widget.dart';
 import '../../component/di/dependencies.dart';
+import '../../component/router/router.dart';
 import 'progress_indicator.dart';
 
 class HtmlView extends StatelessWidget {
@@ -23,7 +23,11 @@ class HtmlView extends StatelessWidget {
       textHtml,
       key: ValueKey(Theme.of(context).brightness),
       renderMode: RenderMode.sliverList,
-      onTapUrl: (url) async => await getIt.get<Utils>().launcher.launchUrl(url),
+      onTapUrl: (String url) async {
+        await getIt.get<AppRouter>().pushArticleOrExternal(Uri.parse(url));
+
+        return true;
+      },
       onLoadingBuilder: (ctx, el, prgrs) => const CircleIndicator.small(),
       factoryBuilder: () => CustomFactory(context),
       customStylesBuilder: ((element) {

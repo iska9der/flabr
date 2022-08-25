@@ -7,7 +7,7 @@ import '../../common/utils/utils.dart';
 import '../../feature/user/repository/users_repository.dart';
 import '../../feature/user/service/users_service.dart';
 import '../http/http_client.dart';
-import '../router/router.gr.dart';
+import '../router/router.dart';
 import '../storage/cache_storage.dart';
 import '../../config/constants.dart';
 import '../../feature/article/repository/articles_repository.dart';

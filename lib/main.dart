@@ -9,7 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'common/widget/progress_indicator.dart';
 import 'component/di/dependencies.dart';
-import 'component/router/router.gr.dart';
+import 'component/router/router.dart';
 import 'component/storage/cache_storage.dart';
 import 'component/theme.dart';
 import 'feature/settings/cubit/settings_cubit.dart';
@@ -40,6 +40,7 @@ class MyApp extends StatelessWidget {
     return BlocProvider(
       create: (c) => SettingsCubit(
         storage: getIt.get<CacheStorage>(),
+        router: getIt.get<AppRouter>(),
         appLinks: getIt.get<AppLinks>(),
       )..init(),
       child: BlocBuilder<SettingsCubit, SettingsState>(
@@ -57,7 +58,10 @@ class MyApp extends StatelessWidget {
               router,
               initialDeepLink: state.initialDeepLink,
             ),
-            routeInformationParser: router.defaultRouteParser(),
+            routeInformationParser: router.defaultRouteParser(
+              includePrefixMatches: true,
+            ),
+            routeInformationProvider: router.routeInfoProvider(),
             theme: lightTheme(),
             darkTheme: darkTheme(),
             themeMode: state.isDarkTheme ? ThemeMode.dark : ThemeMode.light,
