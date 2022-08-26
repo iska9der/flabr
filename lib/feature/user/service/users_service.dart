@@ -12,12 +12,12 @@ class UsersService {
 
   Future<UsersResponse> fetchAll({
     required LanguageEnum langUI,
-    required List<LanguageEnum> langPosts,
+    required List<LanguageEnum> langArticles,
     required String page,
   }) async {
     final response = await _repository.fetchAll(
       langUI: langUI.name,
-      langPosts: encodeLangs(langPosts),
+      langArticles: encodeLangs(langArticles),
       page: page,
     );
 

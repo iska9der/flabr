@@ -29,7 +29,7 @@ class SettingsView extends StatelessWidget {
         SizedBox(height: 12),
         UILangWidget(),
         SizedBox(height: 12),
-        PostsLangWidget(),
+        ArticlesLangWidget(),
       ],
     );
   }
@@ -93,8 +93,8 @@ class UILangWidget extends StatelessWidget {
   }
 }
 
-class PostsLangWidget extends StatelessWidget {
-  const PostsLangWidget({Key? key}) : super(key: key);
+class ArticlesLangWidget extends StatelessWidget {
+  const ArticlesLangWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

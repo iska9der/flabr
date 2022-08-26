@@ -20,20 +20,18 @@ import '../../feature/article/widget/articles_sort_widget.dart';
 import '../../feature/settings/cubit/settings_cubit.dart';
 
 class ArticleListPage extends StatelessWidget {
-  const ArticleListPage({Key? key, @QueryParam() this.flow = 'all'})
+  const ArticleListPage({Key? key, @PathParam() required this.flow})
       : super(key: key);
 
   final String flow;
 
+  static const String routePath = 'list/:flow';
   static const String routeName = 'ArticleListRoute';
-  static const String routePath = '';
 
   @override
   Widget build(BuildContext context) {
-    /// remove line todo: - вывод параметров
-    print(context.routeData.queryParams);
-
     return MultiBlocProvider(
+      key: ValueKey('articles-$flow-flow'),
       providers: [
         BlocProvider(
           create: (c) => ArticlesCubit(
@@ -74,7 +72,7 @@ class ArticleListPageView extends StatelessWidget {
           listener: (context, state) {
             context.read<ArticlesCubit>().changeLanguage(
                   langUI: state.langUI,
-                  langPosts: state.langArticles,
+                  langArticles: state.langArticles,
                 );
           },
         ),

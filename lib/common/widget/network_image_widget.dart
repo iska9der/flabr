@@ -37,7 +37,7 @@ class NetworkImageWidget extends StatelessWidget {
               )
           : null,
       child: CachedNetworkImage(
-        key: ValueKey(imageUrl),
+        cacheKey: imageUrl,
         imageUrl: imageUrl,
         height: height,
         memCacheHeight: cacheHeight,

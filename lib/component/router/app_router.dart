@@ -1,9 +1,7 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
-import '../../feature/article/model/flow_enum.dart';
 import '../../page/articles/article_detail_page.dart';
 import '../../page/articles/article_list_page.dart';
 import '../../page/dashboard_page.dart';
@@ -15,7 +13,7 @@ import '../../page/users/user_list_page.dart';
 
 import 'routes.dart';
 
-part 'router.gr.dart';
+part 'app_router.gr.dart';
 
 @MaterialAutoRouter(
   replaceInRouteName: 'Page,Route',
@@ -30,6 +28,7 @@ part 'router.gr.dart';
           name: MyArticlesRoute.routeName,
           page: EmptyRouterPage,
           children: [
+            RedirectRoute(path: '', redirectTo: 'list/all'),
             AutoRoute(
               path: ArticleListPage.routePath,
               name: ArticleListPage.routeName,
@@ -75,7 +74,6 @@ part 'router.gr.dart';
           name: 'SettingsRoute',
           page: SettingsPage,
         ),
-
         RedirectRoute(path: '*/post/:id', redirectTo: 'articles/:id'),
         RedirectRoute(
           path: '*/users',
@@ -89,20 +87,9 @@ part 'router.gr.dart';
           path: '*/news',
           redirectTo: 'news',
         ),
-
-        /// todo: кривые редиректы
-        /// deeplinks на autoroute помойка, по идее.
-        /// спустя убитый на эту шляпу день,
-        /// скорее всего ты переедешь на go_router
-        ///
-        /// upd: скорее всего уже не перейду
-        ///
-        /// нужно пронюхать, как пробросить в параметры
-        /// прилетающий flow
-        ///
         RedirectRoute(
-          path: '*/flows/:flow',
-          redirectTo: 'articles?flow=:flow',
+          path: '*/flows/:flow/',
+          redirectTo: 'articles/list/:flow',
         ),
       ],
     ),
@@ -125,25 +112,6 @@ class AppRouter extends _$AppRouter {
       url.origin,
       mode: LaunchMode.externalApplication,
     );
-  }
-
-  bool isFlowUrl(Uri url) {
-    if (url.path.contains('flows/')) {
-      return true;
-    }
-
-    return false;
-  }
-
-  FlowEnum? parseFlow(Uri url) {
-    FlowEnum? flow;
-
-    if (isFlowUrl(url)) {
-      flow = FlowEnum.values
-          .firstWhereOrNull((element) => url.path.contains(element.name));
-    }
-
-    return flow;
   }
 
   String parseId(Uri url) {

@@ -137,11 +137,14 @@ class ArticlesCubit extends Cubit<ArticlesState> {
     ));
   }
 
-  void changeLanguage({LanguageEnum? langUI, List<LanguageEnum>? langPosts}) {
+  void changeLanguage({
+    LanguageEnum? langUI,
+    List<LanguageEnum>? langArticles,
+  }) {
     emit(ArticlesState(
       flow: state.flow,
       langUI: langUI ?? state.langUI,
-      langArticles: langPosts ?? state.langArticles,
+      langArticles: langArticles ?? state.langArticles,
     ));
   }
 }

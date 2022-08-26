@@ -25,6 +25,7 @@ class ArticleDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
+      key: ValueKey('article-$id-detail'),
       create: (c) => ArticleCubit(
         id,
         service: getIt.get<ArticlesService>(),

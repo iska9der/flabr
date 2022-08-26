@@ -21,11 +21,12 @@ class UserDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
+      key: ValueKey('user-$login-detail'),
       create: (c) => UserCubit(
         login,
         service: getIt.get<UsersService>(),
       )..fetchByLogin(),
-      child: UserDetailPageView(key: ValueKey('user-$login')),
+      child: const UserDetailPageView(),
     );
   }
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../component/router/router.dart';
+import '../../component/router/app_router.dart';
 import 'image_utils.dart';
 
 class Utils {

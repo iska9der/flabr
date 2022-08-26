@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../../../common/widget/network_image_widget.dart';
-import '../../../component/router/router.dart';
+import '../../../component/router/app_router.dart';
 import '../../../config/constants.dart';
 import '../model/article_model.dart';
 import 'article_author_widget.dart';

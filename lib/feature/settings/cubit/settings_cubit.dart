@@ -1,13 +1,11 @@
 import 'package:app_links/app_links.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/cupertino.dart';
 
 import '../../../component/language.dart';
 import '../../../common/exception/value_exception.dart';
-import '../../../component/router/router.dart';
+import '../../../component/router/app_router.dart';
 import '../../../component/storage/cache_storage.dart';
-import '../../article/model/flow_enum.dart';
 
 part 'settings_state.dart';
 
@@ -131,22 +129,7 @@ class SettingsCubit extends Cubit<SettingsState> {
     _appLinks.uriLinkStream.listen((uri) {
       String path = uri.path;
 
-      FlowEnum? flow = _router.parseFlow(uri);
-
-      if (flow != null) {
-        _router.navigate(
-          DashboardRoute(children: [
-            ArticlesRoute(children: [
-              ArticleListRoute(
-                key: ValueKey('articles-${flow.name}'),
-                flow: flow.name,
-              ),
-            ])
-          ]),
-        );
-      } else {
-        _router.pushNamed(path);
-      }
+      _router.navigateNamed(path);
     });
   }
 }

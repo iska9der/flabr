@@ -1,7 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
-import '../../../component/router/router.dart';
 import '../../../config/constants.dart';
 import '../../../page/users/user_detail_page.dart';
 import '../model/user_model.dart';
@@ -88,13 +87,8 @@ class _UserCard extends StatelessWidget {
                       const SizedBox(height: 12),
                       TextButton(
                         onPressed: () {
-                          context.navigateTo(
-                            ArticlesRoute(children: [
-                              ArticleDetailRoute(
-                                key: ValueKey('article-${model.lastPost.id}'),
-                                id: model.lastPost.id,
-                              ),
-                            ]),
+                          context.navigateNamedTo(
+                            'articles/${model.lastPost.id}',
                           );
                         },
                         child: Text(model.lastPost.titleHtml),

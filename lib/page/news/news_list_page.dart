@@ -40,7 +40,7 @@ class NewsListPageView extends StatelessWidget {
       listener: (context, state) {
         context.read<ArticlesCubit>().changeLanguage(
               langUI: state.langUI,
-              langPosts: state.langArticles,
+              langArticles: state.langArticles,
             );
       },
       child: BlocConsumer<ArticlesCubit, ArticlesState>(

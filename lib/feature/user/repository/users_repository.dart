@@ -9,12 +9,12 @@ class UsersRepository {
 
   Future<UsersResponse> fetchAll({
     required String langUI,
-    required String langPosts,
+    required String langArticles,
     required String page,
   }) async {
     try {
       final response = await _client.get(
-        '/users?page=$page&fl=$langPosts&hl=$langUI',
+        '/users?page=$page&fl=$langArticles&hl=$langUI',
       );
 
       return UsersResponse.fromMap(response.data);

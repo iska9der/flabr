@@ -31,7 +31,7 @@ class UsersCubit extends Cubit<UsersState> {
     try {
       var response = await _service.fetchAll(
         langUI: state.langUI,
-        langPosts: state.langArticles,
+        langArticles: state.langArticles,
         page: state.page.toString(),
       );
 

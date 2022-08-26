@@ -10,7 +10,7 @@
 //
 // ignore_for_file: type=lint
 
-part of 'router.dart';
+part of 'app_router.dart';
 
 class _$AppRouter extends RootStackRouter {
   _$AppRouter([GlobalKey<NavigatorState>? navigatorKey]) : super(navigatorKey);
@@ -38,10 +38,10 @@ class _$AppRouter extends RootStackRouter {
           routeData: routeData, child: const SettingsPage());
     },
     ArticleListRoute.name: (routeData) {
-      final queryParams = routeData.queryParams;
+      final pathParams = routeData.inheritedPathParams;
       final args = routeData.argsAs<ArticleListRouteArgs>(
           orElse: () =>
-              ArticleListRouteArgs(flow: queryParams.getString('flow', 'all')));
+              ArticleListRouteArgs(flow: pathParams.getString('flow')));
       return MaterialPageX<dynamic>(
           routeData: routeData,
           child: ArticleListPage(key: args.key, flow: args.flow));
@@ -85,8 +85,13 @@ class _$AppRouter extends RootStackRouter {
               path: 'articles',
               parent: DashboardRoute.name,
               children: [
+                RouteConfig('#redirect',
+                    path: '',
+                    parent: ArticlesRoute.name,
+                    redirectTo: 'list/all',
+                    fullMatch: true),
                 RouteConfig(ArticleListRoute.name,
-                    path: '', parent: ArticlesRoute.name),
+                    path: 'list/:flow', parent: ArticlesRoute.name),
                 RouteConfig(ArticleDetailRoute.name,
                     path: ':id', parent: ArticlesRoute.name)
               ]),
@@ -110,11 +115,6 @@ class _$AppRouter extends RootStackRouter {
               parent: DashboardRoute.name,
               redirectTo: 'articles/:id',
               fullMatch: true),
-          RouteConfig('*/flows/:flow#redirect',
-              path: '*/flows/:flow',
-              parent: DashboardRoute.name,
-              redirectTo: 'articles?flow=:flow',
-              fullMatch: true),
           RouteConfig('*/users#redirect',
               path: '*/users',
               parent: DashboardRoute.name,
@@ -129,6 +129,11 @@ class _$AppRouter extends RootStackRouter {
               path: '*/news',
               parent: DashboardRoute.name,
               redirectTo: 'news',
+              fullMatch: true),
+          RouteConfig('*/flows/:flow/#redirect',
+              path: '*/flows/:flow/',
+              parent: DashboardRoute.name,
+              redirectTo: 'articles/list/:flow',
               fullMatch: true)
         ])
       ];
@@ -180,17 +185,17 @@ class SettingsRoute extends PageRouteInfo<void> {
 /// generated route for
 /// [ArticleListPage]
 class ArticleListRoute extends PageRouteInfo<ArticleListRouteArgs> {
-  ArticleListRoute({Key? key, String flow = 'all'})
+  ArticleListRoute({Key? key, required String flow})
       : super(ArticleListRoute.name,
-            path: '',
+            path: 'list/:flow',
             args: ArticleListRouteArgs(key: key, flow: flow),
-            rawQueryParams: {'flow': flow});
+            rawPathParams: {'flow': flow});
 
   static const String name = 'ArticleListRoute';
 }
 
 class ArticleListRouteArgs {
-  const ArticleListRouteArgs({this.key, this.flow = 'all'});
+  const ArticleListRouteArgs({this.key, required this.flow});
 
   final Key? key;
 

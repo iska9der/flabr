@@ -9,7 +9,7 @@ import 'package:path/path.dart' as p;
 import '../../common/widget/extension/extension.dart';
 import '../../common/widget/network_image_widget.dart';
 import '../../component/di/dependencies.dart';
-import '../../component/router/router.dart';
+import '../../component/router/app_router.dart';
 import 'progress_indicator.dart';
 
 class HtmlView extends StatelessWidget {
@@ -115,9 +115,7 @@ class CustomFactory extends WidgetFactory
         break;
       case 'code':
 
-        /// если родитель "p", то это инлайновый фрагмент кода,
-        /// плагин сам его обработает
-        /// todo: добавить обводку
+        /// если родитель "p", то это инлайновый фрагмент кода
         if (el.parent?.localName == 'p') {
           final op = BuildOp(
             onTree: (meta, tree) {
@@ -153,12 +151,12 @@ class CustomFactory extends WidgetFactory
   }
 
   Container buildBlockCodeWidget(String text) {
-    final ScrollController controller = ScrollController();
+    ScrollController controller = ScrollController();
 
     return Container(
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.background,
+        color: Theme.of(context).colorScheme.surface,
       ),
       child: Scrollbar(
         controller: controller,
@@ -175,7 +173,7 @@ class CustomFactory extends WidgetFactory
 
   Container buildInlineCodeWidget(String text) {
     return Container(
-      color: Theme.of(context).colorScheme.background,
+      color: Theme.of(context).colorScheme.surface,
       child: SelectableText(text),
     );
   }
