@@ -7,6 +7,7 @@ import '../../feature/article/cubit/articles_cubit.dart';
 import '../../feature/article/model/article_model.dart';
 import '../../component/di/dependencies.dart';
 import '../../feature/article/service/articles_service.dart';
+import '../../feature/settings/cubit/settings_cubit.dart';
 
 class NewsListPage extends StatelessWidget {
   const NewsListPage({Key? key}) : super(key: key);
@@ -18,7 +19,9 @@ class NewsListPage extends StatelessWidget {
         child: BlocProvider(
           create: (c) => ArticlesCubit(
             getIt.get<ArticlesService>(),
-          )..fetchNews(),
+            langUI: context.read<SettingsCubit>().state.langUI,
+            langArticles: context.read<SettingsCubit>().state.langArticles,
+          ),
           child: const NewsListPageView(),
         ),
       ),
@@ -31,29 +34,45 @@ class NewsListPageView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<ArticlesCubit, ArticlesState>(
+    return BlocListener<SettingsCubit, SettingsState>(
       listenWhen: (p, c) =>
-          c.status == ArticlesStatus.failure && c.error.isNotEmpty,
-      listener: (c, state) {
-        getIt.get<Utils>().showNotification(
-              context: context,
-              content: Text(state.error),
+          p.langUI != c.langUI || p.langArticles != c.langArticles,
+      listener: (context, state) {
+        context.read<ArticlesCubit>().changeLanguage(
+              langUI: state.langUI,
+              langPosts: state.langArticles,
             );
       },
-      builder: (context, state) {
-        if (state.status == ArticlesStatus.loading) {
-          return const CircleIndicator();
-        }
+      child: BlocConsumer<ArticlesCubit, ArticlesState>(
+        listenWhen: (p, c) =>
+            c.status == ArticlesStatus.failure && c.error.isNotEmpty,
+        listener: (c, state) {
+          getIt.get<Utils>().showNotification(
+                context: context,
+                content: Text(state.error),
+              );
+        },
+        builder: (context, state) {
+          if (state.status == ArticlesStatus.initial) {
+            context.read<ArticlesCubit>().fetchNews();
 
-        var news = state.articles;
+            return const CircleIndicator();
+          }
 
-        return ListView.builder(
-          itemCount: news.length,
-          itemBuilder: (c, i) {
-            return _Card(article: news[i]);
-          },
-        );
-      },
+          if (state.status == ArticlesStatus.loading) {
+            return const CircleIndicator();
+          }
+
+          var news = state.articles;
+
+          return ListView.builder(
+            itemCount: news.length,
+            itemBuilder: (c, i) {
+              return _Card(article: news[i]);
+            },
+          );
+        },
+      ),
     );
   }
 }

@@ -8,6 +8,7 @@ import '../../common/cubit/scroll_controller_cubit.dart';
 import '../../common/utils/utils.dart';
 import '../../common/widget/progress_indicator.dart';
 import '../../component/di/dependencies.dart';
+import '../../feature/settings/cubit/settings_cubit.dart';
 import '../../feature/user/cubit/users_cubit.dart';
 import '../../feature/user/service/users_service.dart';
 import '../../feature/user/widget/user_card_widget.dart';
@@ -23,7 +24,11 @@ class UserListPage extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (c) => UsersCubit(getIt.get<UsersService>())..fetchAll(),
+          create: (c) => UsersCubit(
+            getIt.get<UsersService>(),
+            langUI: context.read<SettingsCubit>().state.langUI,
+            langArticles: context.read<SettingsCubit>().state.langArticles,
+          ),
         ),
         BlocProvider(
           create: (c) => ScrollControllerCubit()..setUpEdgeListeners(),
@@ -41,12 +46,26 @@ class UserListPageView extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = context.read<ScrollControllerCubit>().state.controller;
 
-    return BlocListener<ScrollControllerCubit, ScrollControllerState>(
-      listener: (c, state) {
-        if (state.isBottomEdge) {
-          context.read<UsersCubit>().fetchAll();
-        }
-      },
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<ScrollControllerCubit, ScrollControllerState>(
+          listener: (c, state) {
+            if (state.isBottomEdge) {
+              context.read<UsersCubit>().fetchAll();
+            }
+          },
+        ),
+        BlocListener<SettingsCubit, SettingsState>(
+          listenWhen: (p, c) =>
+              p.langArticles != c.langArticles || p.langUI != c.langUI,
+          listener: (context, state) {
+            context.read<UsersCubit>().changeLanguages(
+                  langUI: state.langUI,
+                  langArticles: state.langArticles,
+                );
+          },
+        ),
+      ],
       child: Scaffold(
         appBar: AppBar(
           leading: const AutoLeadingButton(),
@@ -63,6 +82,12 @@ class UserListPageView extends StatelessWidget {
                   );
             },
             builder: (context, state) {
+              if (state.status == UsersStatus.initial) {
+                context.read<UsersCubit>().fetchAll();
+
+                return const CircleIndicator();
+              }
+
               if (context.read<UsersCubit>().isFirstFetch) {
                 if (state.status == UsersStatus.loading) {
                   return const CircleIndicator();

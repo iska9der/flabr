@@ -43,7 +43,10 @@ class MyApp extends StatelessWidget {
         router: getIt.get<AppRouter>(),
         appLinks: getIt.get<AppLinks>(),
       )..init(),
-      child: BlocBuilder<SettingsCubit, SettingsState>(
+      child: BlocConsumer<SettingsCubit, SettingsState>(
+        listener: (context, state) {
+          if (state.initialDeepLink.isNotEmpty) {}
+        },
         builder: (context, state) {
           if (state.status == SettingsStatus.loading) {
             /// todo: Splash Page
@@ -54,10 +57,7 @@ class MyApp extends StatelessWidget {
 
           return MaterialApp.router(
             title: 'Flabr',
-            routerDelegate: AutoRouterDelegate(
-              router,
-              initialDeepLink: state.initialDeepLink,
-            ),
+            routerDelegate: AutoRouterDelegate(router),
             routeInformationParser: router.defaultRouteParser(
               includePrefixMatches: true,
             ),

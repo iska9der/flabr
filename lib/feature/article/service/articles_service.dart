@@ -1,3 +1,4 @@
+import '../../../component/language.dart';
 import '../model/flow_enum.dart';
 import '../model/network/articles_response.dart';
 import '../model/sort/sort_enum.dart';
@@ -19,6 +20,8 @@ class ArticlesService {
   /// если по новым [SortEnum.byNew], сортируем по дате публикации
   ///
   Future<ArticlesResponse> fetchAll({
+    required LanguageEnum langUI,
+    required List<LanguageEnum> langArticles,
     required FlowEnum flow,
     required SortEnum sort,
     required DatePeriodEnum period,
@@ -26,6 +29,8 @@ class ArticlesService {
     required String page,
   }) async {
     final response = await repository.fetchAll(
+      langUI: langUI.name,
+      langArticles: encodeLangs(langArticles),
       flow: flow,
       sort: sort,
       period: period,
@@ -53,8 +58,16 @@ class ArticlesService {
     repository.fetchFeed();
   }
 
-  Future<List<ArticleModel>> fetchNews() async {
-    final raw = await repository.fetchNews();
+  Future<List<ArticleModel>> fetchNews({
+    required LanguageEnum langUI,
+    required List<LanguageEnum> langArticles,
+    required String page,
+  }) async {
+    final raw = await repository.fetchNews(
+      langUI: langUI,
+      langArticles: encodeLangs(langArticles),
+      page: page,
+    );
 
     final refs =
         raw.entries.firstWhere((e) => e.key == 'articleRefs').value as Map;

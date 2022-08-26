@@ -17,10 +17,13 @@ import '../../feature/article/model/sort/sort_option_model.dart';
 import '../../feature/article/service/articles_service.dart';
 import '../../feature/article/widget/article_card_widget.dart';
 import '../../feature/article/widget/articles_sort_widget.dart';
+import '../../feature/settings/cubit/settings_cubit.dart';
 
 class ArticleListPage extends StatelessWidget {
-  const ArticleListPage({Key? key, @QueryParam() String flow = 'all'})
+  const ArticleListPage({Key? key, @QueryParam() this.flow = 'all'})
       : super(key: key);
+
+  final String flow;
 
   static const String routeName = 'ArticleListRoute';
   static const String routePath = '';
@@ -35,7 +38,10 @@ class ArticleListPage extends StatelessWidget {
         BlocProvider(
           create: (c) => ArticlesCubit(
             getIt.get<ArticlesService>(),
-          )..fetchArticles(),
+            flow: FlowEnum.fromString(flow),
+            langUI: context.read<SettingsCubit>().state.langUI,
+            langArticles: context.read<SettingsCubit>().state.langArticles,
+          ),
         ),
         BlocProvider(
           create: (c) => ScrollControllerCubit()..setUpEdgeListeners(),
@@ -53,12 +59,26 @@ class ArticleListPageView extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = context.read<ScrollControllerCubit>().state.controller;
 
-    return BlocListener<ScrollControllerCubit, ScrollControllerState>(
-      listener: (c, state) {
-        if (state.isBottomEdge) {
-          context.read<ArticlesCubit>().fetchArticles();
-        }
-      },
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<ScrollControllerCubit, ScrollControllerState>(
+          listener: (c, state) {
+            if (state.isBottomEdge) {
+              context.read<ArticlesCubit>().fetchArticles();
+            }
+          },
+        ),
+        BlocListener<SettingsCubit, SettingsState>(
+          listenWhen: (p, c) =>
+              p.langUI != c.langUI || p.langArticles != c.langArticles,
+          listener: (context, state) {
+            context.read<ArticlesCubit>().changeLanguage(
+                  langUI: state.langUI,
+                  langPosts: state.langArticles,
+                );
+          },
+        ),
+      ],
       child: Scaffold(
         drawer: Drawer(
           width: MediaQuery.of(context).size.width * .6,
@@ -148,6 +168,8 @@ class ArticleListPageView extends StatelessWidget {
                     );
                   },
                 ),
+
+                /// Список новостей
                 BlocConsumer<ArticlesCubit, ArticlesState>(
                   listenWhen: (p, c) =>
                       p.page != 1 && c.status == ArticlesStatus.failure,
@@ -158,6 +180,14 @@ class ArticleListPageView extends StatelessWidget {
                         );
                   },
                   builder: (context, state) {
+                    if (state.status == ArticlesStatus.initial) {
+                      context.read<ArticlesCubit>().fetchArticles();
+
+                      return const SliverFillRemaining(
+                        child: CircleIndicator(),
+                      );
+                    }
+
                     if (context.read<ArticlesCubit>().isFirstFetch) {
                       if (state.status == ArticlesStatus.loading) {
                         return const SliverFillRemaining(

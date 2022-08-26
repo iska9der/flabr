@@ -1,14 +1,47 @@
+import '../../../common/exception/value_exception.dart';
+
 enum FlowEnum {
-  all('Все потоки', ''),
-  develop('Разработка', 'develop'),
-  admin('Администрирование', 'admin'),
-  design('Дизайн', 'design'),
-  management('Менеджмент', 'management'),
-  marketing('Маркетинг', 'marketing'),
-  popsci('Научпоп', 'popsci');
+  all,
+  develop,
+  admin,
+  design,
+  management,
+  marketing,
+  popsci;
 
-  const FlowEnum(this.label, this.path);
+  static FlowEnum fromString(String value) {
+    return FlowEnum.values.firstWhere(
+      (e) => e.name == value,
+      orElse: () {
+        throw ValueException('Неизвестное значение');
+      },
+    );
+  }
+}
 
-  final String label;
-  final String path;
+extension FlowX on FlowEnum {
+  String get label {
+    switch (this) {
+      case FlowEnum.all:
+        return 'Все';
+
+      case FlowEnum.develop:
+        return 'Разработка';
+
+      case FlowEnum.admin:
+        return 'Администрирование';
+
+      case FlowEnum.design:
+        return 'Дизайн';
+
+      case FlowEnum.management:
+        return 'Менеджмент';
+
+      case FlowEnum.marketing:
+        return 'Маркетинг';
+
+      case FlowEnum.popsci:
+        return 'Научпоп';
+    }
+  }
 }

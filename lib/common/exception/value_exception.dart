@@ -8,7 +8,7 @@ class ValueException implements DisplayableException {
   @override
   String toString() {
     Object? message = this.message;
-    if (message == null) return 'Exception';
+    if (message == null) return 'Ошибка значения';
     return '$message';
   }
 }

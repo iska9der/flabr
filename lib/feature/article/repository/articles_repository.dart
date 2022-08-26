@@ -3,6 +3,7 @@ import '../../../common/exception/fetch_exception.dart';
 import '../../../common/model/network/make_request.dart';
 import '../../../common/model/network/request_params.dart';
 import '../../../component/http/http_client.dart';
+import '../../../component/language.dart';
 import '../model/flow_enum.dart';
 import '../model/network/articles_params.dart';
 import '../model/network/articles_response.dart';
@@ -16,6 +17,8 @@ class ArticlesRepository {
   final HttpClient _proxyClient;
 
   Future<ArticlesResponse> fetchAll({
+    required String langUI,
+    required String langArticles,
     required FlowEnum flow,
     required SortEnum sort,
     required String page,
@@ -27,7 +30,9 @@ class ArticlesRepository {
         method: 'articles',
         requestParams: RequestParams(
           params: ArticlesParams(
-            flow: flow.path,
+            fl: langArticles,
+            hl: langUI,
+            flow: flow == FlowEnum.all ? '' : flow.name,
 
             /// если мы находимся не во "Все потоки", в значение sort, по завету
             /// костыльного api хабра, нужно передавать значение 'all'
@@ -51,11 +56,21 @@ class ArticlesRepository {
     }
   }
 
-  Future<Map<String, dynamic>> fetchNews() async {
+  Future<Map<String, dynamic>> fetchNews({
+    required LanguageEnum langUI,
+    required String langArticles,
+    required String page,
+  }) async {
     try {
-      const body = MakeRequest(
+      final body = MakeRequest(
         method: 'articles',
-        requestParams: RequestParams(params: ArticlesParams(news: 'true')),
+        requestParams: RequestParams(
+            params: ArticlesParams(
+          fl: langArticles,
+          hl: langUI.name,
+          news: 'true',
+          page: page,
+        )),
       );
 
       final map = body.toMap();

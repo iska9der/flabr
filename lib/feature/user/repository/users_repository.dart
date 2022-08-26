@@ -7,9 +7,15 @@ class UsersRepository {
 
   final HttpClient _client;
 
-  Future<UsersResponse> fetchAll({required String page}) async {
+  Future<UsersResponse> fetchAll({
+    required String langUI,
+    required String langPosts,
+    required String page,
+  }) async {
     try {
-      final response = await _client.get('/users?page=$page&fl=ru&hl=ru');
+      final response = await _client.get(
+        '/users?page=$page&fl=$langPosts&hl=$langUI',
+      );
 
       return UsersResponse.fromMap(response.data);
     } on DisplayableException {

@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import '../../../common/exception/displayable_exception.dart';
 import '../../../common/exception/value_exception.dart';
+import '../../../component/localization/language_enum.dart';
 import '../model/flow_enum.dart';
 import '../model/sort/sort_enum.dart';
 import '../model/sort/sort_option_model.dart';
@@ -13,9 +14,14 @@ import '../service/articles_service.dart';
 part 'articles_state.dart';
 
 class ArticlesCubit extends Cubit<ArticlesState> {
-  ArticlesCubit(ArticlesService service)
-      : _service = service,
-        super(const ArticlesState());
+  ArticlesCubit(
+    ArticlesService service, {
+    flow = FlowEnum.all,
+    required LanguageEnum langUI,
+    required List<LanguageEnum> langArticles,
+  })  : _service = service,
+        super(ArticlesState(
+            flow: flow, langUI: langUI, langArticles: langArticles));
 
   final ArticlesService _service;
 
@@ -32,6 +38,8 @@ class ArticlesCubit extends Cubit<ArticlesState> {
 
     try {
       var response = await _service.fetchAll(
+        langUI: state.langUI,
+        langArticles: state.langArticles,
         flow: state.flow,
         sort: state.sort,
         period: state.period,
@@ -62,7 +70,11 @@ class ArticlesCubit extends Cubit<ArticlesState> {
     emit(state.copyWith(status: ArticlesStatus.loading));
 
     try {
-      var articles = await _service.fetchNews();
+      var articles = await _service.fetchNews(
+        langUI: state.langUI,
+        langArticles: state.langArticles,
+        page: state.page.toString(),
+      );
 
       emit(state.copyWith(
         status: ArticlesStatus.success,
@@ -84,15 +96,20 @@ class ArticlesCubit extends Cubit<ArticlesState> {
   void changeFlow(FlowEnum value) {
     if (state.flow == value) return;
 
-    emit(ArticlesState(flow: value));
-
-    fetchArticles();
+    emit(ArticlesState(
+      langUI: state.langUI,
+      langArticles: state.langArticles,
+      flow: value,
+    ));
   }
 
   void changeSort(SortEnum value) {
-    emit(ArticlesState(sort: value, flow: state.flow));
-
-    fetchArticles();
+    emit(ArticlesState(
+      langUI: state.langUI,
+      langArticles: state.langArticles,
+      flow: state.flow,
+      sort: value,
+    ));
   }
 
   void changeSortOption(SortEnum sort, SortOptionModel option) {
@@ -112,8 +129,19 @@ class ArticlesCubit extends Cubit<ArticlesState> {
         throw ValueException('Неизвестный вариант сортировки статей');
     }
 
-    emit(newState.copyWith(sort: sort, flow: state.flow));
+    emit(newState.copyWith(
+      langUI: state.langUI,
+      langArticles: state.langArticles,
+      sort: sort,
+      flow: state.flow,
+    ));
+  }
 
-    fetchArticles();
+  void changeLanguage({LanguageEnum? langUI, List<LanguageEnum>? langPosts}) {
+    emit(ArticlesState(
+      flow: state.flow,
+      langUI: langUI ?? state.langUI,
+      langArticles: langPosts ?? state.langArticles,
+    ));
   }
 }
