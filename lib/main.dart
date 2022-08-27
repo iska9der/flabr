@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'common/widget/progress_indicator.dart';
+import 'widget/progress_indicator.dart';
 import 'component/di/dependencies.dart';
 import 'component/router/app_router.dart';
 import 'component/storage/cache_storage.dart';

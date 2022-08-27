@@ -6,8 +6,8 @@ import 'package:fwfh_svg/fwfh_svg.dart';
 import 'package:fwfh_webview/fwfh_webview.dart';
 import 'package:path/path.dart' as p;
 
-import '../../common/widget/extension/extension.dart';
-import '../../common/widget/network_image_widget.dart';
+import '../../widget/extension/extension.dart';
+import '../../widget/network_image_widget.dart';
 import '../../component/di/dependencies.dart';
 import '../../component/router/app_router.dart';
 import 'progress_indicator.dart';

@@ -1,6 +1,8 @@
 import 'package:equatable/equatable.dart';
+import 'user_location_model.dart';
 
 import '../../article/model/article_model.dart';
+import 'user_workplace_model.dart';
 
 class UserModel extends Equatable {
   const UserModel({
@@ -13,6 +15,8 @@ class UserModel extends Equatable {
     this.score = 0,
     this.rating = 0,
     this.ratingPosition = 0,
+    this.location = UserLocationModel.empty,
+    this.workplace = const [],
     this.lastPost = ArticleModel.empty,
   });
 
@@ -22,6 +26,8 @@ class UserModel extends Equatable {
   final String avatar;
   final String fullName;
   final String speciality;
+  final UserLocationModel location;
+  final List<UserWorkplaceModel> workplace;
   final ArticleModel lastPost;
 
   /// "карма" -> очки
@@ -39,6 +45,8 @@ class UserModel extends Equatable {
     int? score,
     double? rating,
     int? ratingPosition,
+    UserLocationModel? location,
+    List<UserWorkplaceModel>? workplace,
     ArticleModel? lastPost,
   }) {
     return UserModel(
@@ -51,6 +59,8 @@ class UserModel extends Equatable {
       score: score ?? this.score,
       rating: rating ?? this.rating,
       ratingPosition: ratingPosition ?? this.ratingPosition,
+      location: location ?? this.location,
+      workplace: workplace ?? this.workplace,
       lastPost: lastPost ?? this.lastPost,
     );
   }
@@ -68,6 +78,14 @@ class UserModel extends Equatable {
           map['rating'] != null ? double.parse(map['rating'].toString()) : 0.00,
       ratingPosition:
           map['ratingPos'] != null ? int.parse(map['ratingPos'].toString()) : 1,
+      location: map['location'] != null
+          ? UserLocationModel.fromMap(map['location'])
+          : UserLocationModel.empty,
+      workplace: map['workplace'] != null
+          ? List<UserWorkplaceModel>.from(
+              map['workplace'].map((e) => UserWorkplaceModel.fromMap(e)),
+            )
+          : const [],
       lastPost: map['lastPost'] != null
           ? ArticleModel.fromMap(map['lastPost'])
           : ArticleModel.empty,
@@ -92,6 +110,8 @@ class UserModel extends Equatable {
       score,
       rating,
       ratingPosition,
+      location,
+      workplace,
       lastPost,
     ];
   }

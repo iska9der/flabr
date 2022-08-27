@@ -6,7 +6,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../common/cubit/scroll_controller_cubit.dart';
 import '../../common/utils/utils.dart';
-import '../../common/widget/progress_indicator.dart';
+import '../../config/constants.dart';
+import '../../widget/progress_indicator.dart';
 import '../../component/di/dependencies.dart';
 import '../../feature/settings/cubit/settings_cubit.dart';
 import '../../feature/user/cubit/users_cubit.dart';
@@ -100,12 +101,20 @@ class UserListPageView extends StatelessWidget {
               var users = state.users;
 
               return ListView.builder(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: kScreenHPadding,
+                ),
                 controller: controller,
                 itemCount: users.length +
                     (state.status == UsersStatus.loading ? 1 : 0),
                 itemBuilder: (context, i) {
                   if (i < users.length) {
-                    return UserCardWidget(state.users[i]);
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: kCardBetweenPadding,
+                      ),
+                      child: UserCardWidget(state.users[i]),
+                    );
                   } else {
                     Timer(
                       const Duration(milliseconds: 30),

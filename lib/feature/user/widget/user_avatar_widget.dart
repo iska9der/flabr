@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 
-import '../../../common/widget/network_image_widget.dart';
+import '../../../widget/network_image_widget.dart';
 import '../../../config/constants.dart';
 
 class UserAvatarWidget extends StatelessWidget {
-  const UserAvatarWidget({Key? key, required this.imageUrl}) : super(key: key);
+  const UserAvatarWidget({
+    Key? key,
+    required this.imageUrl,
+    this.height = kAvatarHeight,
+  }) : super(key: key);
 
   final String imageUrl;
+  final double height;
 
   Widget onLoading(BuildContext context, String url) =>
       const _PlaceholderAvatar();
@@ -17,11 +22,17 @@ class UserAvatarWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return imageUrl.isNotEmpty
-        ? NetworkImageWidget(
-            imageUrl: 'https:$imageUrl',
-            height: kAvatarHeight,
-            placeholderWidget: onLoading,
-            errorWidget: onError,
+        ? ClipRRect(
+            clipBehavior: Clip.hardEdge,
+            borderRadius: const BorderRadius.all(
+              Radius.circular(kBorderRadiusDefault),
+            ),
+            child: NetworkImageWidget(
+              imageUrl: 'https:$imageUrl',
+              height: height,
+              placeholderWidget: onLoading,
+              errorWidget: onError,
+            ),
           )
         : const _PlaceholderAvatar();
   }

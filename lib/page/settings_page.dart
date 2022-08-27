@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../component/language.dart';
+import '../config/constants.dart';
 import '../feature/settings/cubit/settings_cubit.dart';
+import '../widget/card_widget.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({Key? key}) : super(key: key);
@@ -23,12 +25,12 @@ class SettingsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.symmetric(horizontal: kScreenHPadding),
       children: const [
         UIThemeWidget(),
-        SizedBox(height: 12),
+        SizedBox(height: kCardBetweenPadding),
         UILangWidget(),
-        SizedBox(height: 12),
+        SizedBox(height: kCardBetweenPadding),
         ArticlesLangWidget(),
       ],
     );
@@ -143,11 +145,9 @@ class _SettingCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Card(
-          child: Padding(
-            padding: padding,
-            child: child,
-          ),
+        FlabrCard(
+          padding: padding,
+          child: child,
         ),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,

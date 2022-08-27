@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../common/utils/utils.dart';
-import '../../common/widget/progress_indicator.dart';
+import '../../config/constants.dart';
+import '../../widget/card_widget.dart';
+import '../../widget/progress_indicator.dart';
 import '../../feature/article/cubit/articles_cubit.dart';
 import '../../feature/article/model/article_model.dart';
 import '../../component/di/dependencies.dart';
@@ -67,6 +69,9 @@ class NewsListPageView extends StatelessWidget {
               var news = state.articles;
 
               return ListView.builder(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: kScreenHPadding,
+                ),
                 itemCount: news.length,
                 itemBuilder: (c, i) {
                   return _Card(article: news[i]);
@@ -87,14 +92,9 @@ class _Card extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 0.2,
-      shadowColor: Colors.transparent,
-      margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 6),
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Text(article.titleHtml),
-      ),
+    return FlabrCard(
+      padding: const EdgeInsets.all(8.0),
+      child: Text(article.titleHtml),
     );
   }
 }

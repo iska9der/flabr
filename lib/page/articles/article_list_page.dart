@@ -6,7 +6,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../common/cubit/scroll_controller_cubit.dart';
 import '../../common/utils/utils.dart';
-import '../../common/widget/progress_indicator.dart';
+import '../../config/constants.dart';
+import '../../widget/progress_indicator.dart';
 import '../../component/di/dependencies.dart';
 import '../../feature/article/cubit/articles_cubit.dart';
 import '../../feature/article/model/flow_enum.dart';
@@ -80,20 +81,22 @@ class ArticleListPageView extends StatelessWidget {
       child: Scaffold(
         drawer: Drawer(
           width: MediaQuery.of(context).size.width * .6,
-          child: ListView(
-            physics: const NeverScrollableScrollPhysics(),
-            children: [
-              ...FlowEnum.values
-                  .map((type) => ListTile(
-                        title: Text(type.label),
-                        onTap: () {
-                          context.read<ArticlesCubit>().changeFlow(type);
+          child: SafeArea(
+            child: ListView(
+              physics: const NeverScrollableScrollPhysics(),
+              children: [
+                ...FlowEnum.values
+                    .map((type) => ListTile(
+                          title: Text(type.label),
+                          onTap: () {
+                            context.read<ArticlesCubit>().changeFlow(type);
 
-                          Navigator.of(context).pop();
-                        },
-                      ))
-                  .toList(),
-            ],
+                            Navigator.of(context).pop();
+                          },
+                        ))
+                    .toList(),
+              ],
+            ),
           ),
         ),
         floatingActionButton:
@@ -186,6 +189,7 @@ class ArticleListPageView extends StatelessWidget {
                       );
                     }
 
+                    /// Если происходит загрузка первой страницы
                     if (context.read<ArticlesCubit>().isFirstFetch) {
                       if (state.status == ArticlesStatus.loading) {
                         return const SliverFillRemaining(
@@ -205,7 +209,12 @@ class ArticleListPageView extends StatelessWidget {
                       delegate: SliverChildBuilderDelegate(
                         (c, i) {
                           if (i < articles.length) {
-                            return ArticleCardWidget(article: articles[i]);
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: kScreenHPadding,
+                              ),
+                              child: ArticleCardWidget(article: articles[i]),
+                            );
                           } else {
                             Timer(
                               const Duration(milliseconds: 30),

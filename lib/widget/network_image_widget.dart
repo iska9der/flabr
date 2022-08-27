@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 
 import '../../component/di/dependencies.dart';
-import '../utils/utils.dart';
+import '../common/utils/utils.dart';
 
 class NetworkImageWidget extends StatelessWidget {
   const NetworkImageWidget({

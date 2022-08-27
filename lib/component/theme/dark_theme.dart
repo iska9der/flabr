@@ -15,6 +15,7 @@ ThemeData darkTheme() {
     scaffoldBackgroundColor: Colors.grey.shade900,
     cardTheme: buildCardTheme(),
     appBarTheme: buildAppBarTheme().copyWith(shadowColor: Colors.black),
+    drawerTheme: buildDrawerThemeData(),
     floatingActionButtonTheme: FloatingActionButtonThemeData(
       backgroundColor: themeData.colorScheme.background,
     ),

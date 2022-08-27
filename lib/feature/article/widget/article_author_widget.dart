@@ -2,7 +2,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
 import '../../../common/model/author_model.dart';
-import '../../../config/constants.dart';
 import '../../user/widget/user_avatar_widget.dart';
 
 class ArticleAuthorWidget extends StatelessWidget {
@@ -18,13 +17,7 @@ class ArticleAuthorWidget extends StatelessWidget {
       },
       child: Row(
         children: [
-          ClipRRect(
-            clipBehavior: Clip.hardEdge,
-            borderRadius: const BorderRadius.all(
-              Radius.circular(kBorderRadiusDefault),
-            ),
-            child: UserAvatarWidget(imageUrl: author.avatarUrl),
-          ),
+          UserAvatarWidget(imageUrl: author.avatarUrl),
           const SizedBox(width: 8),
           Text(author.alias),
         ],

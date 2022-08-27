@@ -8,7 +8,13 @@ CardTheme buildCardTheme() {
   return const CardTheme(
     elevation: 0.8,
     surfaceTintColor: Colors.transparent,
-    margin: EdgeInsets.symmetric(horizontal: 4, vertical: 6),
+    margin: EdgeInsets.symmetric(
+      horizontal: kCardMargin,
+      vertical: kCardVMargin,
+    ),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.circular(kBorderRadiusDefault)),
+    ),
   );
 }
 
@@ -52,4 +58,8 @@ TextButtonThemeData buildTextButtonThemeData() {
       ),
     ),
   ));
+}
+
+DrawerThemeData buildDrawerThemeData() {
+  return const DrawerThemeData(width: 180);
 }

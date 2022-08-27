@@ -20,6 +20,7 @@ ThemeData lightTheme() {
             color: Colors.black87,
           ),
     ),
+    drawerTheme: buildDrawerThemeData(),
     floatingActionButtonTheme: FloatingActionButtonThemeData(
       backgroundColor: Colors.grey.shade200,
       elevation: 5,

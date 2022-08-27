@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../config/constants.dart';
+import '../../../widget/card_widget.dart';
 import '../model/sort/sort_enum.dart';
 import '../model/sort/sort_option_model.dart';
 
@@ -18,11 +18,7 @@ class SortWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      clipBehavior: Clip.antiAlias,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(kBorderRadiusDefault),
-      ),
+    return FlabrCard(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: SortEnum.values.map((type) {
@@ -71,9 +67,6 @@ class SortOptionsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       clipBehavior: Clip.antiAlias,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(kBorderRadiusDefault),
-      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: options
