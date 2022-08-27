@@ -16,7 +16,9 @@ class ArticleModel extends Equatable {
   });
 
   final String id;
+
   final String timePublished;
+  DateTime get publishedAt => DateTime.parse(timePublished);
 
   /// Заголовок
   final String titleHtml;
@@ -27,8 +29,6 @@ class ArticleModel extends Equatable {
   final AuthorModel author;
   final ArticleStatisticsModel statistics;
   final ArticleLeadDataModel leadData;
-
-  DateTime get publishedAt => DateTime.parse(timePublished);
 
   factory ArticleModel.fromMap(Map<String, dynamic> map) {
     return ArticleModel(

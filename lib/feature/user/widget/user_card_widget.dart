@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 import '../../../component/router/app_router.dart';
 import '../../../config/constants.dart';
-import '../../../page/users/user_detail_page.dart';
 import '../../../widget/card_widget.dart';
 import '../model/user_model.dart';
 import 'user_avatar_widget.dart';
@@ -28,7 +27,9 @@ class _UserCard extends StatelessWidget {
   const _UserCard({Key? key}) : super(key: key);
 
   void _pushDetails(BuildContext context, String alias) {
-    context.router.pushWidget(UserDetailPage(login: alias));
+    context.router.push(
+      UserDashboardRoute(login: alias, children: const [UserDetailRoute()]),
+    );
   }
 
   @override

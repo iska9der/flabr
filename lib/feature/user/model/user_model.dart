@@ -8,7 +8,8 @@ class UserModel extends Equatable {
   const UserModel({
     required this.id,
     this.alias = '',
-    this.timeRegistered = '',
+    this.registerDateTime = '',
+    this.lastActivityDateTime = '',
     this.avatar = '',
     this.fullName = '',
     this.speciality = '',
@@ -22,7 +23,12 @@ class UserModel extends Equatable {
 
   final String id;
   final String alias;
-  final String timeRegistered;
+
+  final String registerDateTime;
+  DateTime get registeredAt => DateTime.parse(registerDateTime);
+  final String lastActivityDateTime;
+  DateTime get lastActivityAt => DateTime.parse(lastActivityDateTime);
+
   final String avatar;
   final String fullName;
   final String speciality;
@@ -38,7 +44,8 @@ class UserModel extends Equatable {
   UserModel copyWith({
     String? id,
     String? alias,
-    String? timeRegistered,
+    String? registerDateTime,
+    String? lastActivityDateTime,
     String? avatar,
     String? fullName,
     String? speciality,
@@ -52,7 +59,8 @@ class UserModel extends Equatable {
     return UserModel(
       id: id ?? this.id,
       alias: alias ?? this.alias,
-      timeRegistered: timeRegistered ?? this.timeRegistered,
+      registerDateTime: registerDateTime ?? this.registerDateTime,
+      lastActivityDateTime: lastActivityDateTime ?? this.lastActivityDateTime,
       avatar: avatar ?? this.avatar,
       fullName: fullName ?? this.fullName,
       speciality: speciality ?? this.speciality,
@@ -69,7 +77,8 @@ class UserModel extends Equatable {
     return UserModel(
       id: map['id'] ?? '',
       alias: map['alias'],
-      timeRegistered: map['registerDateTime'] ?? '',
+      registerDateTime: map['registerDateTime'] ?? '',
+      lastActivityDateTime: map['lastActivityDateTime'] ?? '',
       avatar: map['avatarUrl'] ?? '',
       fullName: map['fullname'] ?? '',
       speciality: map['speciality'] ?? '',
@@ -77,7 +86,7 @@ class UserModel extends Equatable {
       rating:
           map['rating'] != null ? double.parse(map['rating'].toString()) : 0.00,
       ratingPosition:
-          map['ratingPos'] != null ? int.parse(map['ratingPos'].toString()) : 1,
+          map['ratingPos'] != null ? int.parse(map['ratingPos'].toString()) : 0,
       location: map['location'] != null
           ? UserLocationModel.fromMap(map['location'])
           : UserLocationModel.empty,
@@ -103,7 +112,8 @@ class UserModel extends Equatable {
     return [
       id,
       alias,
-      timeRegistered,
+      registerDateTime,
+      lastActivityDateTime,
       avatar,
       fullName,
       speciality,

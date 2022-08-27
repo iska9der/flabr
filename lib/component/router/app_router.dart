@@ -9,6 +9,8 @@ import '../../page/dashboard_page.dart';
 import '../../page/news/news_list_page.dart';
 import '../../page/services_page.dart';
 import '../../page/settings_page.dart';
+import '../../page/users/user_article_page.dart';
+import '../../page/users/user_dashboard_page.dart';
 import '../../page/users/user_detail_page.dart';
 import '../../page/users/user_list_page.dart';
 
@@ -23,6 +25,7 @@ part 'app_router.gr.dart';
       page: DashboardPage,
       path: '/',
       children: [
+        /// Таб "статьи"
         AutoRoute(
           initial: true,
           path: MyArticlesRoute.routePath,
@@ -42,6 +45,8 @@ part 'app_router.gr.dart';
             ),
           ],
         ),
+
+        /// Таб "сервисы"
         AutoRoute(
           path: MyServicesRoute.routePath,
           name: MyServicesRoute.routeName,
@@ -58,10 +63,24 @@ part 'app_router.gr.dart';
               name: UserListPage.routeName,
               page: UserListPage,
             ),
+
+            /// Вложенная навигация в деталях пользователя
             AutoRoute(
-              path: UserDetailPage.routePath,
-              name: UserDetailPage.routeName,
-              page: UserDetailPage,
+              path: UserDashboardPage.routePath,
+              name: UserDashboardPage.routeName,
+              page: UserDashboardPage,
+              children: [
+                AutoRoute(
+                  path: UserDetailPage.routePath,
+                  name: UserDetailPage.routeName,
+                  page: UserDetailPage,
+                ),
+                AutoRoute(
+                  path: UserArticlePage.routePath,
+                  name: UserArticlePage.routeName,
+                  page: UserArticlePage,
+                ),
+              ],
             ),
           ],
         ),
@@ -85,11 +104,17 @@ part 'app_router.gr.dart';
         ),
 
         /// Редиректы с хабропутей
+        ///
+        ///
+
+        /// Флоу, статьи
         RedirectRoute(
           path: '*/flows/:flow/',
           redirectTo: 'articles/flows/:flow',
         ),
         RedirectRoute(path: '*/post/:id', redirectTo: 'articles/details/:id'),
+
+        /// Пользователи/Авторы
         RedirectRoute(
           path: '*/users',
           redirectTo: 'services/users',
@@ -98,6 +123,13 @@ part 'app_router.gr.dart';
           path: '*/users/:login',
           redirectTo: 'services/users/:login',
         ),
+        RedirectRoute(
+          path: '*/users/:login/*',
+          redirectTo: 'services/users/:login/detail',
+        ),
+
+        /// Новости
+        /// todo: не работает
         RedirectRoute(
           path: '*/news/',
           redirectTo: 'news',
@@ -116,7 +148,9 @@ class AppRouter extends _$AppRouter {
     if (isArticleUrl(url)) {
       return await navigate(ArticleDetailRoute(id: id));
     } else if (isUserUrl(url)) {
-      return await navigate(UserDetailRoute(login: id));
+      return await navigate(
+        UserDashboardRoute(login: id, children: const [UserDetailRoute()]),
+      );
     }
 
     return await launchUrlString(

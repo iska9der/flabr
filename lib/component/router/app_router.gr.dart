@@ -62,14 +62,22 @@ class _$AppRouter extends RootStackRouter {
       return MaterialPageX<dynamic>(
           routeData: routeData, child: const UserListPage());
     },
-    UserDetailRoute.name: (routeData) {
+    UserDashboardRoute.name: (routeData) {
       final pathParams = routeData.inheritedPathParams;
-      final args = routeData.argsAs<UserDetailRouteArgs>(
+      final args = routeData.argsAs<UserDashboardRouteArgs>(
           orElse: () =>
-              UserDetailRouteArgs(login: pathParams.getString('login')));
+              UserDashboardRouteArgs(login: pathParams.getString('login')));
       return MaterialPageX<dynamic>(
           routeData: routeData,
-          child: UserDetailPage(key: args.key, login: args.login));
+          child: UserDashboardPage(key: args.key, login: args.login));
+    },
+    UserDetailRoute.name: (routeData) {
+      return MaterialPageX<dynamic>(
+          routeData: routeData, child: const UserDetailPage());
+    },
+    UserArticleRoute.name: (routeData) {
+      return MaterialPageX<dynamic>(
+          routeData: routeData, child: const UserArticlePage());
     },
     NewsListRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
@@ -107,8 +115,15 @@ class _$AppRouter extends RootStackRouter {
                     path: '', parent: ServicesEmptyRoute.name),
                 RouteConfig(UserListRoute.name,
                     path: 'users', parent: ServicesEmptyRoute.name),
-                RouteConfig(UserDetailRoute.name,
-                    path: 'users/:login', parent: ServicesEmptyRoute.name)
+                RouteConfig(UserDashboardRoute.name,
+                    path: 'users/:login',
+                    parent: ServicesEmptyRoute.name,
+                    children: [
+                      RouteConfig(UserDetailRoute.name,
+                          path: 'detail', parent: UserDashboardRoute.name),
+                      RouteConfig(UserArticleRoute.name,
+                          path: 'article', parent: UserDashboardRoute.name)
+                    ])
               ]),
           RouteConfig(NewsEmptyRoute.name,
               path: 'news',
@@ -138,6 +153,11 @@ class _$AppRouter extends RootStackRouter {
               path: '*/users/:login',
               parent: DashboardRoute.name,
               redirectTo: 'services/users/:login',
+              fullMatch: true),
+          RouteConfig('*/users/:login/*#redirect',
+              path: '*/users/:login/*',
+              parent: DashboardRoute.name,
+              redirectTo: 'services/users/:login/detail',
               fullMatch: true),
           RouteConfig('*/news/#redirect',
               path: '*/news/',
@@ -261,19 +281,21 @@ class UserListRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [UserDetailPage]
-class UserDetailRoute extends PageRouteInfo<UserDetailRouteArgs> {
-  UserDetailRoute({Key? key, required String login})
-      : super(UserDetailRoute.name,
+/// [UserDashboardPage]
+class UserDashboardRoute extends PageRouteInfo<UserDashboardRouteArgs> {
+  UserDashboardRoute(
+      {Key? key, required String login, List<PageRouteInfo>? children})
+      : super(UserDashboardRoute.name,
             path: 'users/:login',
-            args: UserDetailRouteArgs(key: key, login: login),
-            rawPathParams: {'login': login});
+            args: UserDashboardRouteArgs(key: key, login: login),
+            rawPathParams: {'login': login},
+            initialChildren: children);
 
-  static const String name = 'UserDetailRoute';
+  static const String name = 'UserDashboardRoute';
 }
 
-class UserDetailRouteArgs {
-  const UserDetailRouteArgs({this.key, required this.login});
+class UserDashboardRouteArgs {
+  const UserDashboardRouteArgs({this.key, required this.login});
 
   final Key? key;
 
@@ -281,8 +303,24 @@ class UserDetailRouteArgs {
 
   @override
   String toString() {
-    return 'UserDetailRouteArgs{key: $key, login: $login}';
+    return 'UserDashboardRouteArgs{key: $key, login: $login}';
   }
+}
+
+/// generated route for
+/// [UserDetailPage]
+class UserDetailRoute extends PageRouteInfo<void> {
+  const UserDetailRoute() : super(UserDetailRoute.name, path: 'detail');
+
+  static const String name = 'UserDetailRoute';
+}
+
+/// generated route for
+/// [UserArticlePage]
+class UserArticleRoute extends PageRouteInfo<void> {
+  const UserArticleRoute() : super(UserArticleRoute.name, path: 'article');
+
+  static const String name = 'UserArticleRoute';
 }
 
 /// generated route for

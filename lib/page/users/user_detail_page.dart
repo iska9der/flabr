@@ -1,36 +1,33 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 
 import '../../common/utils/utils.dart';
 import '../../config/constants.dart';
+import '../../feature/user/widget/section_container_widget.dart';
 import '../../widget/card_widget.dart';
 import '../../widget/progress_indicator.dart';
 import '../../component/di/dependencies.dart';
 import '../../feature/user/cubit/user_cubit.dart';
-import '../../feature/user/service/users_service.dart';
 import '../../feature/user/widget/user_avatar_widget.dart';
+import 'user_about_page.dart';
 
 class UserDetailPage extends StatelessWidget {
   const UserDetailPage({
     Key? key,
-    @PathParam() required this.login,
   }) : super(key: key);
 
-  final String login;
-
-  static const String routePath = 'users/:login';
+  static const String title = 'Профиль';
+  static const String routePath = 'detail';
   static const String routeName = 'UserDetailRoute';
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      key: ValueKey('user-$login-detail'),
-      create: (c) => UserCubit(
-        login,
-        service: getIt.get<UsersService>(),
-      )..fetchByLogin(),
-      child: const UserDetailPageView(),
+    final cubit = context.read<UserCubit>();
+    cubit.fetchByLogin();
+
+    return UserDetailPageView(
+      key: ValueKey('user-${cubit.state.login}-detail'),
     );
   }
 }
@@ -40,118 +37,101 @@ class UserDetailPageView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: SafeArea(
-        child: BlocBuilder<UserCubit, UserState>(
-          builder: (context, state) {
-            if (state.status == UserStatus.loading) {
-              return const CircleIndicator();
-            }
+    return BlocBuilder<UserCubit, UserState>(
+      builder: (context, state) {
+        if (state.status == UserStatus.loading) {
+          return const CircleIndicator();
+        }
 
-            if (state.status == UserStatus.failure) {
-              return const Center(
-                child: Text('Не удалось найти пользователя'),
-              );
-            }
+        if (state.status == UserStatus.failure) {
+          return const Center(
+            child: Text('Не удалось найти пользователя'),
+          );
+        }
 
-            var model = state.model;
+        var model = state.model;
 
-            return ListView(
-              padding: const EdgeInsets.all(kScreenHPadding),
-              children: [
-                FlabrCard(
-                  padding: const EdgeInsets.all(kCardPadding),
-                  child: Row(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(right: 20),
-                        child: UserAvatarWidget(
-                          imageUrl: model.avatar,
-                          height: 50,
-                        ),
-                      ),
-                      const Expanded(child: _UserScores())
-                    ],
-                  ),
-                ),
-                Text(
-                  model.alias,
-                  style: Theme.of(context).textTheme.headline3,
-                ),
-                Text(
-                  model.speciality.isNotEmpty
-                      ? model.speciality
-                      : 'Пользователь',
-                  style: Theme.of(context).textTheme.labelLarge,
-                ),
-                const SizedBox(height: 60),
-                _Section(
-                  title: 'В рейтинге',
-                  child: Text('${model.ratingPosition.toString()}-й'),
-                ),
-                if (model.location.fullLocation.isNotEmpty)
-                  _Section(
-                    title: 'Откуда',
-                    child: Text(model.location.fullLocation),
-                  ),
-                if (model.workplace.isNotEmpty) ...[
-                  _Section(
-                    title: 'Работает в',
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: model.workplace.map((e) {
-                        return TextButton(
-                          onPressed: () => getIt.get<Utils>().showNotification(
-                                context: context,
-                                content: const Text('Здесь так тихо...'),
-                              ),
-                          child: Text(e.title),
-                        );
-                      }).toList(),
+        return ListView(
+          padding: const EdgeInsets.all(kScreenHPadding),
+          children: [
+            FlabrCard(
+              padding: const EdgeInsets.all(kCardPadding),
+              child: Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(right: 20),
+                    child: UserAvatarWidget(
+                      imageUrl: model.avatar,
+                      height: 50,
                     ),
                   ),
-                ]
-              ],
-            );
-          },
-        ),
-      ),
+                  const Expanded(child: _UserScoresWidget())
+                ],
+              ),
+            ),
+            const Divider(),
+            if (model.fullName.isNotEmpty)
+              FittedBox(
+                fit: BoxFit.scaleDown,
+                alignment: Alignment.topLeft,
+                child: Text(
+                  model.fullName,
+                  style: Theme.of(context).textTheme.headline4,
+                ),
+              ),
+            Text(
+              model.speciality.isNotEmpty ? model.speciality : 'Пользователь',
+              style: Theme.of(context).textTheme.labelLarge,
+            ),
+            const Divider(),
+            SectionContainerWidget(
+              title: 'В рейтинге',
+              child: Text(
+                model.ratingPosition == 0
+                    ? 'Не участвует'
+                    : '${model.ratingPosition.toString()}-й',
+              ),
+            ),
+            if (model.location.fullLocation.isNotEmpty)
+              SectionContainerWidget(
+                title: 'Откуда',
+                child: Text(model.location.fullLocation),
+              ),
+            if (model.workplace.isNotEmpty) ...[
+              SectionContainerWidget(
+                title: 'Работает в',
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: model.workplace.map((e) {
+                    return TextButton(
+                      onPressed: () => getIt.get<Utils>().showNotification(
+                            context: context,
+                            content: const Text('Здесь так тихо...'),
+                          ),
+                      child: Text(e.title),
+                    );
+                  }).toList(),
+                ),
+              ),
+            ],
+            SectionContainerWidget(
+              title: 'Зарегистрирован',
+              child: Text(DateFormat.yMMMMEEEEd().format(model.registeredAt)),
+            ),
+            SectionContainerWidget(
+              title: 'Активность',
+              child: Text(DateFormat.yMMMMEEEEd().format(model.lastActivityAt)),
+            ),
+            const UserAboutPage(),
+          ],
+        );
+      },
     );
   }
 }
 
-class _Section extends StatelessWidget {
-  const _Section({
-    Key? key,
-    required this.title,
-    required this.child,
-  }) : super(key: key);
-
-  final String title;
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Text(
-            title,
-            style: Theme.of(context).textTheme.headline6,
-          ),
-          const SizedBox(height: 6),
-          child,
-        ],
-      ),
-    );
-  }
-}
-
-class _UserScores extends StatelessWidget {
-  const _UserScores({Key? key}) : super(key: key);
+class _UserScoresWidget extends StatelessWidget {
+  const _UserScoresWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

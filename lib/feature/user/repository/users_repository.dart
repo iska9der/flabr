@@ -23,9 +23,31 @@ class UsersRepository {
     }
   }
 
-  Future<Map<String, dynamic>> fetchByLogin(String login) async {
+  Future<Map<String, dynamic>> fetchByLogin({
+    required String login,
+    required String langUI,
+    required String langArticles,
+  }) async {
     try {
-      final response = await _client.get('/users/$login/card');
+      final response = await _client.get(
+        '/users/$login/card?fl=$langArticles&hl=$langUI',
+      );
+
+      return response.data;
+    } on DisplayableException {
+      rethrow;
+    }
+  }
+
+  Future<Map<String, dynamic>> fetchWhois({
+    required String login,
+    required String langUI,
+    required String langArticles,
+  }) async {
+    try {
+      final response = await _client.get(
+        '/users/$login/whois?fl=$langArticles&hl=$langUI',
+      );
 
       return response.data;
     } on DisplayableException {

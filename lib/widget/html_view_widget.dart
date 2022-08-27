@@ -13,16 +13,21 @@ import '../../component/router/app_router.dart';
 import 'progress_indicator.dart';
 
 class HtmlView extends StatelessWidget {
-  const HtmlView({Key? key, required this.textHtml}) : super(key: key);
+  const HtmlView({
+    Key? key,
+    required this.textHtml,
+    this.renderMode = RenderMode.sliverList,
+  }) : super(key: key);
 
   final String textHtml;
+  final RenderMode renderMode;
 
   @override
   Widget build(BuildContext context) {
     return HtmlWidget(
       textHtml,
       key: ValueKey(Theme.of(context).brightness),
-      renderMode: RenderMode.sliverList,
+      renderMode: renderMode,
       onTapUrl: (String url) async {
         await getIt.get<AppRouter>().pushArticleOrExternal(Uri.parse(url));
 

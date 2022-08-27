@@ -1,5 +1,6 @@
 import '../../../component/language.dart';
 import '../model/user_model.dart';
+import '../model/user_whois_model.dart';
 import '../model/users_response.dart';
 import '../repository/users_repository.dart';
 
@@ -26,8 +27,16 @@ class UsersService {
     return response;
   }
 
-  Future<UserModel> fetchByLogin(String login) async {
-    final raw = await _repository.fetchByLogin(login);
+  Future<UserModel> fetchByLogin({
+    required String login,
+    required LanguageEnum langUI,
+    required List<LanguageEnum> langArticles,
+  }) async {
+    final raw = await _repository.fetchByLogin(
+      login: login,
+      langUI: langUI.name,
+      langArticles: encodeLangs(langArticles),
+    );
 
     UserModel model = UserModel.fromMap(raw);
 
@@ -36,5 +45,21 @@ class UsersService {
 
   UserModel getByLogin(String login) {
     return cached.models.firstWhere((element) => element.alias == login);
+  }
+
+  Future<UserWhoisModel> fetchWhois({
+    required String login,
+    required LanguageEnum langUI,
+    required List<LanguageEnum> langArticles,
+  }) async {
+    final raw = await _repository.fetchWhois(
+      login: login,
+      langUI: langUI.name,
+      langArticles: encodeLangs(langArticles),
+    );
+
+    UserWhoisModel model = UserWhoisModel.fromMap(raw);
+
+    return model;
   }
 }
