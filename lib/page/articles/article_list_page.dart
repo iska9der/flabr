@@ -25,7 +25,7 @@ class ArticleListPage extends StatelessWidget {
 
   final String flow;
 
-  static const String routePath = 'list/:flow';
+  static const String routePath = 'flows/:flow';
   static const String routeName = 'ArticleListRoute';
 
   @override

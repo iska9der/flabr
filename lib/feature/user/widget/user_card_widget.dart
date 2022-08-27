@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
+import '../../../component/router/app_router.dart';
 import '../../../config/constants.dart';
 import '../../../page/users/user_detail_page.dart';
 import '../model/user_model.dart';
@@ -86,11 +87,9 @@ class _UserCard extends StatelessWidget {
                     if (!model.lastPost.isEmpty) ...[
                       const SizedBox(height: 12),
                       TextButton(
-                        onPressed: () {
-                          context.navigateNamedTo(
-                            'articles/${model.lastPost.id}',
-                          );
-                        },
+                        onPressed: () => context.navigateTo(ArticlesEmptyRoute(
+                          children: [ArticleDetailRoute(id: model.lastPost.id)],
+                        )),
                         child: Text(model.lastPost.titleHtml),
                       ),
                     ],

@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:auto_route/empty_router_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
@@ -28,7 +29,7 @@ part 'app_router.gr.dart';
           name: MyArticlesRoute.routeName,
           page: EmptyRouterPage,
           children: [
-            RedirectRoute(path: '', redirectTo: 'list/all'),
+            RedirectRoute(path: '', redirectTo: 'flows/all'),
             AutoRoute(
               path: ArticleListPage.routePath,
               name: ArticleListPage.routeName,
@@ -65,16 +66,30 @@ part 'app_router.gr.dart';
           ],
         ),
         AutoRoute(
-          path: 'news',
-          name: 'NewsRoute',
-          page: NewsListPage,
+          path: MyNewsRoute.routePath,
+          name: MyNewsRoute.routeName,
+          page: EmptyRouterPage,
+          children: [
+            AutoRoute(
+              initial: true,
+              path: NewsListPage.routePath,
+              name: NewsListPage.routeName,
+              page: NewsListPage,
+            ),
+          ],
         ),
         AutoRoute(
           path: 'settings',
           name: 'SettingsRoute',
           page: SettingsPage,
         ),
-        RedirectRoute(path: '*/post/:id', redirectTo: 'articles/:id'),
+
+        /// Редиректы с хабропутей
+        RedirectRoute(
+          path: '*/flows/:flow/',
+          redirectTo: 'articles/flows/:flow',
+        ),
+        RedirectRoute(path: '*/post/:id', redirectTo: 'articles/details/:id'),
         RedirectRoute(
           path: '*/users',
           redirectTo: 'services/users',
@@ -84,12 +99,8 @@ part 'app_router.gr.dart';
           redirectTo: 'services/users/:login',
         ),
         RedirectRoute(
-          path: '*/news',
+          path: '*/news/',
           redirectTo: 'news',
-        ),
-        RedirectRoute(
-          path: '*/flows/:flow/',
-          redirectTo: 'articles/list/:flow',
         ),
       ],
     ),
@@ -103,9 +114,9 @@ class AppRouter extends _$AppRouter {
     String id = parseId(url);
 
     if (isArticleUrl(url)) {
-      return await push(ArticleDetailRoute(id: id));
+      return await navigate(ArticleDetailRoute(id: id));
     } else if (isUserUrl(url)) {
-      return await push(UserDetailRoute(login: id));
+      return await navigate(UserDetailRoute(login: id));
     }
 
     return await launchUrlString(

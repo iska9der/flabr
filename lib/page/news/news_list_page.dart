@@ -12,19 +12,18 @@ import '../../feature/settings/cubit/settings_cubit.dart';
 class NewsListPage extends StatelessWidget {
   const NewsListPage({Key? key}) : super(key: key);
 
+  static const String routePath = '';
+  static const String routeName = 'NewsListRoute';
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: BlocProvider(
-          create: (c) => ArticlesCubit(
-            getIt.get<ArticlesService>(),
-            langUI: context.read<SettingsCubit>().state.langUI,
-            langArticles: context.read<SettingsCubit>().state.langArticles,
-          ),
-          child: const NewsListPageView(),
-        ),
+    return BlocProvider(
+      create: (c) => ArticlesCubit(
+        getIt.get<ArticlesService>(),
+        langUI: context.read<SettingsCubit>().state.langUI,
+        langArticles: context.read<SettingsCubit>().state.langArticles,
       ),
+      child: const NewsListPageView(),
     );
   }
 }
@@ -34,44 +33,48 @@ class NewsListPageView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<SettingsCubit, SettingsState>(
-      listenWhen: (p, c) =>
-          p.langUI != c.langUI || p.langArticles != c.langArticles,
-      listener: (context, state) {
-        context.read<ArticlesCubit>().changeLanguage(
-              langUI: state.langUI,
-              langArticles: state.langArticles,
-            );
-      },
-      child: BlocConsumer<ArticlesCubit, ArticlesState>(
-        listenWhen: (p, c) =>
-            c.status == ArticlesStatus.failure && c.error.isNotEmpty,
-        listener: (c, state) {
-          getIt.get<Utils>().showNotification(
-                context: context,
-                content: Text(state.error),
-              );
-        },
-        builder: (context, state) {
-          if (state.status == ArticlesStatus.initial) {
-            context.read<ArticlesCubit>().fetchNews();
-
-            return const CircleIndicator();
-          }
-
-          if (state.status == ArticlesStatus.loading) {
-            return const CircleIndicator();
-          }
-
-          var news = state.articles;
-
-          return ListView.builder(
-            itemCount: news.length,
-            itemBuilder: (c, i) {
-              return _Card(article: news[i]);
+    return Scaffold(
+      body: SafeArea(
+        child: BlocListener<SettingsCubit, SettingsState>(
+          listenWhen: (p, c) =>
+              p.langUI != c.langUI || p.langArticles != c.langArticles,
+          listener: (context, state) {
+            context.read<ArticlesCubit>().changeLanguage(
+                  langUI: state.langUI,
+                  langArticles: state.langArticles,
+                );
+          },
+          child: BlocConsumer<ArticlesCubit, ArticlesState>(
+            listenWhen: (p, c) =>
+                c.status == ArticlesStatus.failure && c.error.isNotEmpty,
+            listener: (c, state) {
+              getIt.get<Utils>().showNotification(
+                    context: context,
+                    content: Text(state.error),
+                  );
             },
-          );
-        },
+            builder: (context, state) {
+              if (state.status == ArticlesStatus.initial) {
+                context.read<ArticlesCubit>().fetchNews();
+
+                return const CircleIndicator();
+              }
+
+              if (state.status == ArticlesStatus.loading) {
+                return const CircleIndicator();
+              }
+
+              var news = state.articles;
+
+              return ListView.builder(
+                itemCount: news.length,
+                itemBuilder: (c, i) {
+                  return _Card(article: news[i]);
+                },
+              );
+            },
+          ),
+        ),
       ),
     );
   }

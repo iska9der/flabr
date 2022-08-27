@@ -21,17 +21,17 @@ class _$AppRouter extends RootStackRouter {
       return MaterialPageX<dynamic>(
           routeData: routeData, child: const DashboardPage());
     },
-    ArticlesRoute.name: (routeData) {
+    ArticlesEmptyRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
           routeData: routeData, child: const EmptyRouterPage());
     },
-    ServicesRoute.name: (routeData) {
+    ServicesEmptyRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
           routeData: routeData, child: const EmptyRouterPage());
     },
-    NewsRoute.name: (routeData) {
+    NewsEmptyRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
-          routeData: routeData, child: const NewsListPage());
+          routeData: routeData, child: const EmptyRouterPage());
     },
     SettingsRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
@@ -54,7 +54,7 @@ class _$AppRouter extends RootStackRouter {
           routeData: routeData,
           child: ArticleDetailPage(key: args.key, id: args.id));
     },
-    AllServicesRoute.name: (routeData) {
+    ServicesRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
           routeData: routeData, child: const ServicesPage());
     },
@@ -70,6 +70,10 @@ class _$AppRouter extends RootStackRouter {
       return MaterialPageX<dynamic>(
           routeData: routeData,
           child: UserDetailPage(key: args.key, login: args.login));
+    },
+    NewsListRoute.name: (routeData) {
+      return MaterialPageX<dynamic>(
+          routeData: routeData, child: const NewsListPage());
     }
   };
 
@@ -81,39 +85,49 @@ class _$AppRouter extends RootStackRouter {
               parent: DashboardRoute.name,
               redirectTo: 'articles',
               fullMatch: true),
-          RouteConfig(ArticlesRoute.name,
+          RouteConfig(ArticlesEmptyRoute.name,
               path: 'articles',
               parent: DashboardRoute.name,
               children: [
                 RouteConfig('#redirect',
                     path: '',
-                    parent: ArticlesRoute.name,
-                    redirectTo: 'list/all',
+                    parent: ArticlesEmptyRoute.name,
+                    redirectTo: 'flows/all',
                     fullMatch: true),
                 RouteConfig(ArticleListRoute.name,
-                    path: 'list/:flow', parent: ArticlesRoute.name),
+                    path: 'flows/:flow', parent: ArticlesEmptyRoute.name),
                 RouteConfig(ArticleDetailRoute.name,
-                    path: ':id', parent: ArticlesRoute.name)
+                    path: 'details/:id', parent: ArticlesEmptyRoute.name)
               ]),
-          RouteConfig(ServicesRoute.name,
+          RouteConfig(ServicesEmptyRoute.name,
               path: 'services',
               parent: DashboardRoute.name,
               children: [
-                RouteConfig(AllServicesRoute.name,
-                    path: '', parent: ServicesRoute.name),
+                RouteConfig(ServicesRoute.name,
+                    path: '', parent: ServicesEmptyRoute.name),
                 RouteConfig(UserListRoute.name,
-                    path: 'users', parent: ServicesRoute.name),
+                    path: 'users', parent: ServicesEmptyRoute.name),
                 RouteConfig(UserDetailRoute.name,
-                    path: 'users/:login', parent: ServicesRoute.name)
+                    path: 'users/:login', parent: ServicesEmptyRoute.name)
               ]),
-          RouteConfig(NewsRoute.name,
-              path: 'news', parent: DashboardRoute.name),
+          RouteConfig(NewsEmptyRoute.name,
+              path: 'news',
+              parent: DashboardRoute.name,
+              children: [
+                RouteConfig(NewsListRoute.name,
+                    path: '', parent: NewsEmptyRoute.name)
+              ]),
           RouteConfig(SettingsRoute.name,
               path: 'settings', parent: DashboardRoute.name),
+          RouteConfig('*/flows/:flow/#redirect',
+              path: '*/flows/:flow/',
+              parent: DashboardRoute.name,
+              redirectTo: 'articles/flows/:flow',
+              fullMatch: true),
           RouteConfig('*/post/:id#redirect',
               path: '*/post/:id',
               parent: DashboardRoute.name,
-              redirectTo: 'articles/:id',
+              redirectTo: 'articles/details/:id',
               fullMatch: true),
           RouteConfig('*/users#redirect',
               path: '*/users',
@@ -125,15 +139,10 @@ class _$AppRouter extends RootStackRouter {
               parent: DashboardRoute.name,
               redirectTo: 'services/users/:login',
               fullMatch: true),
-          RouteConfig('*/news#redirect',
-              path: '*/news',
+          RouteConfig('*/news/#redirect',
+              path: '*/news/',
               parent: DashboardRoute.name,
               redirectTo: 'news',
-              fullMatch: true),
-          RouteConfig('*/flows/:flow/#redirect',
-              path: '*/flows/:flow/',
-              parent: DashboardRoute.name,
-              redirectTo: 'articles/list/:flow',
               fullMatch: true)
         ])
       ];
@@ -150,28 +159,31 @@ class DashboardRoute extends PageRouteInfo<void> {
 
 /// generated route for
 /// [EmptyRouterPage]
-class ArticlesRoute extends PageRouteInfo<void> {
-  const ArticlesRoute({List<PageRouteInfo>? children})
-      : super(ArticlesRoute.name, path: 'articles', initialChildren: children);
+class ArticlesEmptyRoute extends PageRouteInfo<void> {
+  const ArticlesEmptyRoute({List<PageRouteInfo>? children})
+      : super(ArticlesEmptyRoute.name,
+            path: 'articles', initialChildren: children);
 
-  static const String name = 'ArticlesRoute';
+  static const String name = 'ArticlesEmptyRoute';
 }
 
 /// generated route for
 /// [EmptyRouterPage]
-class ServicesRoute extends PageRouteInfo<void> {
-  const ServicesRoute({List<PageRouteInfo>? children})
-      : super(ServicesRoute.name, path: 'services', initialChildren: children);
+class ServicesEmptyRoute extends PageRouteInfo<void> {
+  const ServicesEmptyRoute({List<PageRouteInfo>? children})
+      : super(ServicesEmptyRoute.name,
+            path: 'services', initialChildren: children);
 
-  static const String name = 'ServicesRoute';
+  static const String name = 'ServicesEmptyRoute';
 }
 
 /// generated route for
-/// [NewsListPage]
-class NewsRoute extends PageRouteInfo<void> {
-  const NewsRoute() : super(NewsRoute.name, path: 'news');
+/// [EmptyRouterPage]
+class NewsEmptyRoute extends PageRouteInfo<void> {
+  const NewsEmptyRoute({List<PageRouteInfo>? children})
+      : super(NewsEmptyRoute.name, path: 'news', initialChildren: children);
 
-  static const String name = 'NewsRoute';
+  static const String name = 'NewsEmptyRoute';
 }
 
 /// generated route for
@@ -187,7 +199,7 @@ class SettingsRoute extends PageRouteInfo<void> {
 class ArticleListRoute extends PageRouteInfo<ArticleListRouteArgs> {
   ArticleListRoute({Key? key, required String flow})
       : super(ArticleListRoute.name,
-            path: 'list/:flow',
+            path: 'flows/:flow',
             args: ArticleListRouteArgs(key: key, flow: flow),
             rawPathParams: {'flow': flow});
 
@@ -212,7 +224,7 @@ class ArticleListRouteArgs {
 class ArticleDetailRoute extends PageRouteInfo<ArticleDetailRouteArgs> {
   ArticleDetailRoute({Key? key, required String id})
       : super(ArticleDetailRoute.name,
-            path: ':id',
+            path: 'details/:id',
             args: ArticleDetailRouteArgs(key: key, id: id),
             rawPathParams: {'id': id});
 
@@ -234,10 +246,10 @@ class ArticleDetailRouteArgs {
 
 /// generated route for
 /// [ServicesPage]
-class AllServicesRoute extends PageRouteInfo<void> {
-  const AllServicesRoute() : super(AllServicesRoute.name, path: '');
+class ServicesRoute extends PageRouteInfo<void> {
+  const ServicesRoute() : super(ServicesRoute.name, path: '');
 
-  static const String name = 'AllServicesRoute';
+  static const String name = 'ServicesRoute';
 }
 
 /// generated route for
@@ -271,4 +283,12 @@ class UserDetailRouteArgs {
   String toString() {
     return 'UserDetailRouteArgs{key: $key, login: $login}';
   }
+}
+
+/// generated route for
+/// [NewsListPage]
+class NewsListRoute extends PageRouteInfo<void> {
+  const NewsListRoute() : super(NewsListRoute.name, path: '');
+
+  static const String name = 'NewsListRoute';
 }

@@ -11,9 +11,9 @@ class DashboardPage extends StatelessWidget {
     return AutoTabsScaffold(
       lazyLoad: false,
       routes: const [
-        ArticlesRoute(),
-        NewsRoute(),
-        ServicesRoute(),
+        ArticlesEmptyRoute(),
+        NewsEmptyRoute(),
+        ServicesEmptyRoute(),
         SettingsRoute(),
       ],
       bottomNavigationBuilder: (_, tabsRouter) {
@@ -21,22 +21,14 @@ class DashboardPage extends StatelessWidget {
           type: BottomNavigationBarType.fixed,
           currentIndex: tabsRouter.activeIndex,
           onTap: (i) {
-            tabsRouter.setActiveIndex(i);
-
-            /// todo: сделать так, чтобы при нажатию на таб, в котором
-            /// мы уже находимся - выходила в корень
-            /// upd: сделано ниже, но неуверенно
-
-            /// если это статьи или новости
-            /// то не нужно отлетать в корень,
-            /// так как пользователь может находиться
-            /// в процессе чтения статьи
-            // if (i == 0 || i == 1) {
-            //   return;
-            // }
-
-            // var rootOfIndex = tabsRouter.stackRouterOfIndex(i);
-            // rootOfIndex?.popUntilRoot();
+            /// при нажатию на таб, в котором
+            /// мы уже находимся - выходим в корень
+            if (tabsRouter.activeIndex == i) {
+              var rootOfIndex = tabsRouter.stackRouterOfIndex(i);
+              rootOfIndex?.popUntilRoot();
+            } else {
+              tabsRouter.setActiveIndex(i);
+            }
           },
           items: const [
             BottomNavigationBarItem(

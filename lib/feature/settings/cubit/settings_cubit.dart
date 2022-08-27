@@ -1,6 +1,6 @@
 import 'package:app_links/app_links.dart';
-import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../component/language.dart';
 import '../../../common/exception/value_exception.dart';
@@ -16,16 +16,15 @@ const langArticlesCacheKey = 'langArticles';
 class SettingsCubit extends Cubit<SettingsState> {
   SettingsCubit({
     required CacheStorage storage,
-    required AppRouter router,
+    required this.router,
     required AppLinks appLinks,
   })  : _storage = storage,
-        _router = router,
         _appLinks = appLinks,
         super(const SettingsState());
 
   final CacheStorage _storage;
   final AppLinks _appLinks;
-  final AppRouter _router;
+  final AppRouter router;
 
   void init() async {
     emit(state.copyWith(status: SettingsStatus.loading));
@@ -129,7 +128,7 @@ class SettingsCubit extends Cubit<SettingsState> {
     _appLinks.uriLinkStream.listen((uri) {
       String path = uri.path;
 
-      _router.navigateNamed(path);
+      router.navigateNamed(path);
     });
   }
 }

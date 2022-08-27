@@ -8,7 +8,7 @@ class SettingsState extends Equatable {
     this.langUI = LanguageEnum.ru,
     this.langArticles = const [LanguageEnum.ru],
     this.isDarkTheme = false,
-    this.initialDeepLink = '/',
+    this.initialDeepLink = '',
   });
 
   final SettingsStatus status;

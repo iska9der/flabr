@@ -43,7 +43,21 @@ class MyApp extends StatelessWidget {
         router: getIt.get<AppRouter>(),
         appLinks: getIt.get<AppLinks>(),
       )..init(),
-      child: BlocBuilder<SettingsCubit, SettingsState>(
+      child: BlocConsumer<SettingsCubit, SettingsState>(
+        listenWhen: (p, current) => current.status == SettingsStatus.success,
+        listener: (context, state) {
+          if (state.initialDeepLink.isNotEmpty) {
+            /// Auto route delegate? криво шлет нас по путям с холодного
+            /// старта, не подставляя корректный стэк в навигацию,
+            /// поэтому в AutoRouterDelegate указываем initialDeepLink
+            /// как "/", и в кубите через AppLinks получаем линк и с задержкой
+            /// шлем по пути вот прямо тут, под этим комментарием
+            Future.delayed(
+              const Duration(milliseconds: 1500),
+              () => router.navigateNamed(state.initialDeepLink),
+            );
+          }
+        },
         builder: (context, state) {
           if (state.status == SettingsStatus.loading) {
             /// todo: Splash Page
@@ -54,10 +68,7 @@ class MyApp extends StatelessWidget {
 
           return MaterialApp.router(
             title: 'Flabr',
-            routerDelegate: AutoRouterDelegate(
-              router,
-              initialDeepLink: state.initialDeepLink,
-            ),
+            routerDelegate: AutoRouterDelegate(router, initialDeepLink: '/'),
             routeInformationParser: router.defaultRouteParser(
               includePrefixMatches: true,
             ),

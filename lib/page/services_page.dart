@@ -1,13 +1,13 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
-import '../component/router/app_router.dart';
 import '../config/constants.dart';
+import 'users/user_list_page.dart';
 
 class ServicesPage extends StatelessWidget {
   const ServicesPage({Key? key}) : super(key: key);
 
-  static const routeName = 'AllServicesRoute';
+  static const routeName = 'ServicesRoute';
   static const routePath = '';
 
   @override
@@ -37,9 +37,7 @@ class ServicesPageView extends StatelessWidget {
           ServiceCard(
             title: 'Авторы',
             icon: Icons.supervisor_account_sharp,
-            onTap: () {
-              context.router.push(const UserListRoute());
-            },
+            onTap: () => context.router.pushWidget(const UserListPage()),
           ),
           const ServiceCard(
             title: 'Компании',

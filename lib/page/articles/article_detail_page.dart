@@ -19,7 +19,7 @@ class ArticleDetailPage extends StatelessWidget {
 
   final String id;
 
-  static const String routePath = ':id';
+  static const String routePath = 'details/:id';
   static const String routeName = 'ArticleDetailRoute';
 
   @override
