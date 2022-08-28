@@ -44,7 +44,9 @@ class MyApp extends StatelessWidget {
         appLinks: getIt.get<AppLinks>(),
       )..init(),
       child: BlocConsumer<SettingsCubit, SettingsState>(
-        listenWhen: (p, current) => current.status == SettingsStatus.success,
+        listenWhen: (p, current) =>
+            p.status == SettingsStatus.loading &&
+            current.status == SettingsStatus.success,
         listener: (context, state) {
           if (state.initialDeepLink.isNotEmpty) {
             /// Auto route delegate? криво шлет нас по путям с холодного
