@@ -8,6 +8,7 @@ import '../../../component/router/app_router.dart';
 import '../../../config/constants.dart';
 import '../model/article_model.dart';
 import 'article_author_widget.dart';
+import 'article_hub_widget.dart';
 import 'article_statistics_widget.dart';
 
 class ArticleCardWidget extends StatelessWidget {
@@ -23,6 +24,7 @@ class ArticleCardWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           ArticleInfoWidget(article),
+          ArticleHubsWidget(hubs: article.hubs),
           Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -43,7 +45,7 @@ class ArticleCardWidget extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 18),
+          const SizedBox(height: 30),
           ArticleStatisticsWidget(statistics: article.statistics),
         ],
       ),

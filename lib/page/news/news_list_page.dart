@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../common/utils/utils.dart';
 import '../../feature/article/model/article_type.dart';
 import '../../feature/scroll/cubit/scroll_controller_cubit.dart';
 import '../../feature/article/cubit/articles_cubit.dart';

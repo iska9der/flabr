@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../feature/article/widget/article_hub_widget.dart';
 import '../../widget/html_view_widget.dart';
 import '../../widget/progress_indicator.dart';
 import '../../component/di/dependencies.dart';
@@ -10,6 +11,7 @@ import '../../feature/article/service/articles_service.dart';
 import '../../feature/article/widget/article_card_widget.dart';
 
 const double hPadding = 12.0;
+const double vPadding = 6.0;
 
 class ArticleDetailPage extends StatelessWidget {
   const ArticleDetailPage({
@@ -122,9 +124,10 @@ class _ArticleDetailPageViewState extends State<ArticleDetailPageView> {
                     ),
                     SliverToBoxAdapter(
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: hPadding,
-                          vertical: 16.0,
+                        padding: const EdgeInsets.only(
+                          top: vPadding,
+                          left: hPadding,
+                          right: hPadding,
                         ),
                         child: ArticleInfoWidget(article),
                       ),
@@ -132,15 +135,26 @@ class _ArticleDetailPageViewState extends State<ArticleDetailPageView> {
                     SliverToBoxAdapter(
                       child: Padding(
                         padding: const EdgeInsets.only(
+                          top: vPadding,
                           left: hPadding,
                           right: hPadding,
-                          bottom: hPadding,
                         ),
                         child: SelectableText(
                           article.titleHtml,
                           textAlign: TextAlign.left,
                           style: Theme.of(context).textTheme.headline6,
                         ),
+                      ),
+                    ),
+                    SliverToBoxAdapter(
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                          top: vPadding,
+                          left: hPadding,
+                          right: hPadding,
+                          bottom: vPadding,
+                        ),
+                        child: ArticleHubsWidget(hubs: article.hubs),
                       ),
                     ),
                     HtmlView(textHtml: article.textHtml),
