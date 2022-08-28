@@ -3,31 +3,44 @@ import 'package:flutter/material.dart';
 import 'common.dart';
 
 ThemeData lightTheme() {
+  MaterialColor primaryColor = Colors.blue;
+  Color backgroundColor = Colors.grey.shade200;
+  Color accentColor = Colors.lightBlue.shade100;
+
   var themeData = ThemeData.light();
 
   themeData = themeData.copyWith(
     useMaterial3: true,
     colorScheme: ColorScheme.fromSwatch(
-      accentColor: Colors.blue.shade500,
-      backgroundColor: Colors.grey.shade300,
+      primarySwatch: primaryColor,
+      backgroundColor: backgroundColor,
+      accentColor: accentColor,
     ),
-    scaffoldBackgroundColor: Colors.grey.shade300,
-    cardTheme: buildCardTheme(),
-    appBarTheme: buildAppBarTheme().copyWith(
+    primaryColor: Colors.blue.shade500,
+    scaffoldBackgroundColor: backgroundColor,
+    cardTheme: appCardTheme.copyWith(surfaceTintColor: accentColor),
+    appBarTheme: appAppBarTheme.copyWith(
       shadowColor: Colors.black87,
-      backgroundColor: themeData.scaffoldBackgroundColor,
-      titleTextStyle: buildAppBarTheme().titleTextStyle?.copyWith(
-            color: Colors.black87,
-          ),
+      backgroundColor: backgroundColor,
+      titleTextStyle: appAppBarTheme.titleTextStyle?.copyWith(
+        color: Colors.black87,
+      ),
     ),
-    drawerTheme: buildDrawerThemeData(),
+    drawerTheme: appDrawerThemeData,
     floatingActionButtonTheme: FloatingActionButtonThemeData(
       backgroundColor: Colors.grey.shade200,
       elevation: 5,
-      foregroundColor: themeData.colorScheme.primary.withOpacity(.5),
+      foregroundColor: Colors.black87,
     ),
-    pageTransitionsTheme: buildPageTransitionsTheme(),
-    textButtonTheme: buildTextButtonThemeData(),
+    pageTransitionsTheme: appPageTransitionsTheme,
+    textButtonTheme: appTextButtonThemeData,
+    checkboxTheme: appCheckboxThemeData.copyWith(
+      fillColor: MaterialStateProperty.all(primaryColor),
+    ),
+    switchTheme: appSwitchThemeData.copyWith(
+      trackColor: MaterialStateProperty.all(primaryColor),
+      thumbColor: MaterialStateProperty.all(accentColor),
+    ),
   );
 
   return themeData;

@@ -72,9 +72,7 @@ class MyApp extends StatelessWidget {
             routeInformationParser: router.defaultRouteParser(
               includePrefixMatches: true,
             ),
-            theme: lightTheme(),
-            darkTheme: darkTheme(),
-            themeMode: state.isDarkTheme ? ThemeMode.dark : ThemeMode.light,
+            theme: state.isDarkTheme ? darkTheme() : lightTheme(),
           );
         },
       ),

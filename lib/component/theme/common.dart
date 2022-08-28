@@ -4,62 +4,54 @@ import 'package:flutter/material.dart';
 import '../../config/constants.dart';
 import 'constants.dart';
 
-CardTheme buildCardTheme() {
-  return const CardTheme(
-    elevation: 0.8,
-    surfaceTintColor: Colors.transparent,
-    margin: EdgeInsets.symmetric(
-      horizontal: kCardMargin,
-      vertical: kCardVMargin,
-    ),
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.all(Radius.circular(kBorderRadiusDefault)),
-    ),
-  );
-}
+const appCardTheme = CardTheme(
+  elevation: 0.8,
+  margin: EdgeInsets.symmetric(
+    horizontal: kCardMargin,
+    vertical: kCardVMargin,
+  ),
+  shape: RoundedRectangleBorder(
+    borderRadius: BorderRadius.all(Radius.circular(kBorderRadiusDefault)),
+  ),
+);
 
-AppBarTheme buildAppBarTheme() {
-  return const AppBarTheme(
-    surfaceTintColor: Colors.transparent,
-    elevation: 0,
-    scrolledUnderElevation: kScrolledUnderElevation,
-    toolbarHeight: kToolBarHeight,
-    titleTextStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
-  );
-}
+const AppBarTheme appAppBarTheme = AppBarTheme(
+  surfaceTintColor: Colors.transparent,
+  elevation: 0,
+  scrolledUnderElevation: kScrolledUnderElevation,
+  toolbarHeight: kToolBarHeight,
+  titleTextStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+);
 
 /// issue: https://pub.dev/packages/auto_route#remove-shadow-from-nested-routers
-PageTransitionsTheme buildPageTransitionsTheme() {
-  return const PageTransitionsTheme(builders: {
-    // replace default CupertinoPageTransitionsBuilder with this
-    TargetPlatform.iOS: NoShadowCupertinoPageTransitionsBuilder(),
-    TargetPlatform.android: FadeUpwardsPageTransitionsBuilder(),
-  });
-}
+const PageTransitionsTheme appPageTransitionsTheme =
+    PageTransitionsTheme(builders: {
+  // replace default CupertinoPageTransitionsBuilder with this
+  TargetPlatform.iOS: NoShadowCupertinoPageTransitionsBuilder(),
+  TargetPlatform.android: FadeUpwardsPageTransitionsBuilder(),
+});
 
-ScrollbarThemeData buildScrollBarThemeData() {
-  return ScrollbarThemeData(
-    thumbVisibility: MaterialStateProperty.all(true),
-    interactive: true,
-    thickness: MaterialStateProperty.all(6),
-    minThumbLength: kToolBarHeightOnScroll,
-  );
-}
+ScrollbarThemeData appScrollBarThemeData = ScrollbarThemeData(
+  thumbVisibility: MaterialStateProperty.all(true),
+  interactive: true,
+  thickness: MaterialStateProperty.all(6),
+  minThumbLength: kToolBarHeightOnScroll,
+);
 
-TextButtonThemeData buildTextButtonThemeData() {
-  return TextButtonThemeData(
-      style: ButtonStyle(
-    alignment: Alignment.centerLeft,
-    shape: MaterialStateProperty.all<OutlinedBorder>(
-      RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(
-          kBorderRadiusDefault,
-        ),
+TextButtonThemeData appTextButtonThemeData = TextButtonThemeData(
+    style: ButtonStyle(
+  alignment: Alignment.centerLeft,
+  shape: MaterialStateProperty.all<OutlinedBorder>(
+    RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(
+        kBorderRadiusDefault,
       ),
     ),
-  ));
-}
+  ),
+));
 
-DrawerThemeData buildDrawerThemeData() {
-  return const DrawerThemeData(width: 180);
-}
+const DrawerThemeData appDrawerThemeData = DrawerThemeData(width: 200);
+
+const CheckboxThemeData appCheckboxThemeData = CheckboxThemeData();
+
+const SwitchThemeData appSwitchThemeData = SwitchThemeData();

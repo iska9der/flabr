@@ -112,7 +112,7 @@ class _ArticleDetailPageViewState extends State<ArticleDetailPageView> {
                                 overflow: TextOverflow.ellipsis,
                                 style: Theme.of(context)
                                     .appBarTheme
-                                    .titleTextStyle!,
+                                    .titleTextStyle,
                               ),
                             ),
                             const SizedBox(width: 14),
@@ -217,36 +217,24 @@ class ArticleFloatingButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    return Stack(
+      clipBehavior: Clip.none,
+      alignment: Alignment.bottomCenter,
       children: [
-        Stack(
-          clipBehavior: Clip.none,
-          alignment: Alignment.bottomCenter,
-          children: [
-            FloatingActionButton.small(
-              heroTag: UniqueKey(),
-              onPressed: onPressed,
-              child: icon,
+        FloatingActionButton.small(
+          heroTag: UniqueKey(),
+          onPressed: onPressed,
+          child: icon,
+        ),
+        Positioned(
+          bottom: 4,
+          child: Text(
+            text,
+            textAlign: TextAlign.center,
+            style: theme.textTheme.labelSmall?.copyWith(
+              fontWeight: FontWeight.w800,
             ),
-            Positioned(
-              bottom: 2,
-              child: Text(
-                text,
-                textAlign: TextAlign.center,
-                style: theme.textTheme.button?.copyWith(
-                  color: theme.colorScheme.onBackground.withOpacity(.7),
-                  shadows: [
-                    Shadow(
-                      color: theme.colorScheme.background.withOpacity(.8),
-                      offset: const Offset(2, 2),
-                      blurRadius: 4,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
+          ),
         ),
       ],
     );
