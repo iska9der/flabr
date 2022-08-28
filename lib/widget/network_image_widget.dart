@@ -41,8 +41,8 @@ class NetworkImageWidget extends StatelessWidget {
         imageUrl: imageUrl,
         height: height,
         memCacheHeight: cacheHeight,
-        placeholder: placeholderWidget ?? getIt.get<Utils>().image.onLoading,
-        errorWidget: errorWidget ?? getIt.get<Utils>().image.onError,
+        placeholder: placeholderWidget ?? getIt.get<Utils>().onLoading,
+        errorWidget: errorWidget ?? getIt.get<Utils>().onError,
       ),
     );
   }
