@@ -1,4 +1,5 @@
 import '../../../common/exception/displayable_exception.dart';
+import '../../../common/model/network/params.dart';
 import '../../../component/http/http_client.dart';
 import '../model/users_response.dart';
 
@@ -13,8 +14,10 @@ class UsersRepository {
     required String page,
   }) async {
     try {
+      final params = Params(fl: langArticles, hl: langUI, page: page);
+
       final response = await _client.get(
-        '/users?page=$page&fl=$langArticles&hl=$langUI',
+        '/users?${params.toQueryString()}',
       );
 
       return UsersResponse.fromMap(response.data);
@@ -29,8 +32,10 @@ class UsersRepository {
     required String langArticles,
   }) async {
     try {
+      final params = Params(fl: langArticles, hl: langUI);
+
       final response = await _client.get(
-        '/users/$login/card?fl=$langArticles&hl=$langUI',
+        '/users/$login/card?${params.toQueryString()}',
       );
 
       return response.data;
@@ -45,8 +50,10 @@ class UsersRepository {
     required String langArticles,
   }) async {
     try {
+      final params = Params(fl: langArticles, hl: langUI);
+
       final response = await _client.get(
-        '/users/$login/whois?fl=$langArticles&hl=$langUI',
+        '/users/$login/whois?${params.toQueryString()}',
       );
 
       return response.data;

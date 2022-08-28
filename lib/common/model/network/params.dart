@@ -1,6 +1,12 @@
 import 'package:equatable/equatable.dart';
 
-abstract class Params extends Equatable {
+class Params extends Equatable {
+  const Params({
+    this.fl = 'ru',
+    this.hl = 'ru',
+    this.page = '',
+  });
+
   /// Язык постов
   /// перечисляется через запятую
   final String fl;
@@ -8,12 +14,28 @@ abstract class Params extends Equatable {
   /// Язык интерфейса
   final String hl;
 
-  const Params({
-    this.fl = 'ru',
-    this.hl = 'ru',
-  });
+  final String page;
 
-  Map<String, dynamic> toMap();
+  Map<String, dynamic> toMap() {
+    return {
+      'fl': fl,
+      'hl': hl,
+      'page': page,
+    };
+  }
 
-  static fromMap(map) {}
+  factory Params.fromMap(map) {
+    return Params(
+      fl: map['fl'] ?? 'ru',
+      hl: map['hl'] ?? 'ru',
+      page: map['page'] ?? '',
+    );
+  }
+
+  String toQueryString() {
+    return 'fl=$fl&hl=$hl&page=$page';
+  }
+
+  @override
+  List<Object?> get props => [fl, hl, page];
 }

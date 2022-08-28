@@ -2,27 +2,26 @@ import '../../../../common/model/network/params.dart';
 import '../sort/date_period_enum.dart';
 
 class ArticlesParams extends Params {
-  final String? news;
-  final String? flow;
-  final String? custom;
-  final String? page;
-
-  /// Sorting
-  final String? sort;
-  final DatePeriodEnum? period;
-  final String? score;
-
   const ArticlesParams({
     super.fl = 'ru',
     super.hl = 'ru',
     this.news,
     this.flow,
     this.custom,
-    this.page,
+    super.page = '',
     this.sort,
     this.period,
     this.score,
   });
+
+  final String? news;
+  final String? flow;
+  final String? custom;
+
+  /// Sorting
+  final String? sort;
+  final DatePeriodEnum? period;
+  final String? score;
 
   @override
   Map<String, dynamic> toMap() {
@@ -52,6 +51,11 @@ class ArticlesParams extends Params {
       period: DatePeriodEnum.fromString(map['period']),
       score: map['score'] as String,
     );
+  }
+
+  @override
+  String toQueryString() {
+    throw UnimplementedError();
   }
 
   @override
