@@ -24,13 +24,16 @@ class SettingsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const ownPadding = 22.0;
+
     return ListView(
       padding: const EdgeInsets.symmetric(horizontal: kScreenHPadding),
       children: const [
+        SizedBox(height: ownPadding),
         UIThemeWidget(),
-        SizedBox(height: kCardBetweenPadding),
+        SizedBox(height: ownPadding),
         UILangWidget(),
-        SizedBox(height: kCardBetweenPadding),
+        SizedBox(height: ownPadding),
         ArticlesLangWidget(),
       ],
     );
@@ -71,7 +74,6 @@ class UILangWidget extends StatelessWidget {
           title: 'Язык интерфейса',
           child: DropdownButton(
             hint: const Text('Язык'),
-            isDense: true,
             isExpanded: true,
             underline: Container(),
             value: state.langUI,
@@ -103,7 +105,7 @@ class ArticlesLangWidget extends StatelessWidget {
     return BlocBuilder<SettingsCubit, SettingsState>(
       builder: (context, state) {
         return _SettingCard(
-          title: 'Язык постов',
+          title: 'Язык публикаций',
           subtitle: 'должен быть выбран хотя бы один',
           child: Column(
             children: LanguageEnum.values
@@ -144,21 +146,26 @@ class _SettingCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Stack(
+      clipBehavior: Clip.none,
       children: [
         FlabrCard(
           padding: padding,
           child: child,
         ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            if (title != null) Text(title!),
-            if (subtitle != null)
-              Text(
-                subtitle!,
-                style: Theme.of(context).textTheme.caption,
-              ),
-          ],
+        Positioned(
+          left: 6,
+          top: -10,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (title != null) Text(title!),
+              if (subtitle != null)
+                Text(
+                  subtitle!,
+                  style: Theme.of(context).textTheme.caption,
+                ),
+            ],
+          ),
         ),
       ],
     );

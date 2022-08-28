@@ -34,11 +34,11 @@ ThemeData lightTheme() {
     ),
     pageTransitionsTheme: appPageTransitionsTheme,
     textButtonTheme: appTextButtonThemeData,
+    toggleableActiveColor: primaryColor,
     checkboxTheme: appCheckboxThemeData.copyWith(
       fillColor: MaterialStateProperty.all(primaryColor),
     ),
     switchTheme: appSwitchThemeData.copyWith(
-      trackColor: MaterialStateProperty.all(primaryColor),
       thumbColor: MaterialStateProperty.all(accentColor),
     ),
   );

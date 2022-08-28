@@ -1,7 +1,7 @@
 import '../../../common/exception/displayable_exception.dart';
 import '../../../common/exception/fetch_exception.dart';
 import '../../../component/http/http_client.dart';
-import '../../../component/language.dart';
+import '../model/article_type.dart';
 import '../model/flow_enum.dart';
 import '../model/network/articles_params.dart';
 import '../model/network/articles_response.dart';
@@ -19,6 +19,7 @@ class ArticlesRepository {
   Future<ArticlesResponse> fetchAll({
     required String langUI,
     required String langArticles,
+    required ArticleType type,
     required FlowEnum flow,
     required SortEnum sort,
     required String page,
@@ -30,6 +31,7 @@ class ArticlesRepository {
         fl: langArticles,
         hl: langUI,
         flow: flow == FlowEnum.all ? null : flow.name,
+        news: type == ArticleType.news,
 
         /// если мы находимся не во "Все потоки", в значение sort, по завету
         /// костыльного api хабра, нужно передавать значение 'all'
@@ -42,31 +44,11 @@ class ArticlesRepository {
       final queryString = params.toQueryString();
       final response = await _baseClient.get('/articles/?$queryString');
 
-      return ArticlesResponse.fromMap(response.data, 'article');
+      return ArticlesResponse.fromMap(
+        response.data,
+      );
     } on DisplayableException {
       rethrow;
-    } catch (e) {
-      throw FetchException();
-    }
-  }
-
-  Future<ArticlesResponse> fetchNews({
-    required LanguageEnum langUI,
-    required String langArticles,
-    required String page,
-  }) async {
-    try {
-      final params = ArticlesParams(
-        fl: langArticles,
-        hl: langUI.name,
-        news: 'true',
-        page: page,
-      );
-
-      final queryString = params.toQueryString();
-      final response = await _baseClient.get('/articles/?$queryString');
-
-      return ArticlesResponse.fromMap(response.data, 'news');
     } catch (e) {
       throw FetchException();
     }

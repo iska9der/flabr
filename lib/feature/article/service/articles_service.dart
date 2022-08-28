@@ -1,4 +1,5 @@
 import '../../../component/language.dart';
+import '../model/article_type.dart';
 import '../model/flow_enum.dart';
 import '../model/network/articles_response.dart';
 import '../model/sort/sort_enum.dart';
@@ -13,7 +14,7 @@ class ArticlesService {
 
   ArticlesResponse cached = ArticlesResponse.empty;
 
-  /// Получение статей
+  /// Получение статей/новостей
   ///
   /// Сортировка полученных статей происходит как на сайте:
   /// если сортировка по лучшим [SortEnum.byBest], то надо сортировать по рейтингу;
@@ -22,6 +23,7 @@ class ArticlesService {
   Future<ArticlesResponse> fetchAll({
     required LanguageEnum langUI,
     required List<LanguageEnum> langArticles,
+    required ArticleType type,
     required FlowEnum flow,
     required SortEnum sort,
     required DatePeriodEnum period,
@@ -31,6 +33,7 @@ class ArticlesService {
     final response = await repository.fetchAll(
       langUI: langUI.name,
       langArticles: encodeLangs(langArticles),
+      type: type,
       flow: flow,
       sort: sort,
       period: period,
@@ -56,20 +59,6 @@ class ArticlesService {
   /// todo: unimplemented
   void fetchFeed() {
     repository.fetchFeed();
-  }
-
-  Future<ArticlesResponse> fetchNews({
-    required LanguageEnum langUI,
-    required List<LanguageEnum> langArticles,
-    required String page,
-  }) async {
-    final response = await repository.fetchNews(
-      langUI: langUI,
-      langArticles: encodeLangs(langArticles),
-      page: page,
-    );
-
-    return response;
   }
 
   Future<ArticleModel> fetchById(String id) async {

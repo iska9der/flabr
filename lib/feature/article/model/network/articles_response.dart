@@ -25,13 +25,15 @@ class ArticlesResponse extends Equatable {
     );
   }
 
-  factory ArticlesResponse.fromMap(Map<String, dynamic> map, String postType) {
+  factory ArticlesResponse.fromMap(Map<String, dynamic> map) {
+    var idsMap = map['articleIds'] ?? map['newsIds'];
+    Map refsMap = map['articleRefs'] ?? map['newsRefs'];
+
     return ArticlesResponse(
       pagesCount: map['pagesCount'] ?? 0,
-      articleIds: List<String>.from((map['articleIds'])),
-      models: Map.from((map['articleRefs'] as Map))
+      articleIds: List<String>.from(idsMap),
+      models: Map.from(refsMap)
           .entries
-          .where((e) => e.value['postType'] == postType)
           .map((e) => ArticleModel.fromMap(e.value))
           .toList(),
     );

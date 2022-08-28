@@ -47,32 +47,7 @@ class ArticleListPage extends StatelessWidget {
           create: (c) => ScrollControllerCubit()..setUpEdgeListeners(),
         ),
       ],
-      child: Builder(builder: (context) {
-        var articlesCubit = context.read<ArticlesCubit>();
-        var scrollCubit = context.read<ScrollControllerCubit>();
-
-        return MultiBlocListener(
-          listeners: [
-            BlocListener<ScrollControllerCubit, ScrollControllerState>(
-              listenWhen: (p, c) => c.isBottomEdge,
-              listener: (c, state) => articlesCubit.fetchArticles(),
-            ),
-            BlocListener<SettingsCubit, SettingsState>(
-              listenWhen: (p, c) =>
-                  p.langUI != c.langUI || p.langArticles != c.langArticles,
-              listener: (context, state) {
-                articlesCubit.changeLanguage(
-                  langUI: state.langUI,
-                  langArticles: state.langArticles,
-                );
-
-                scrollCubit.animateToTop();
-              },
-            ),
-          ],
-          child: const ArticleListPageView(),
-        );
-      }),
+      child: const ArticleListPageView(),
     );
   }
 }
@@ -86,146 +61,166 @@ class ArticleListPageView extends StatelessWidget {
     var scrollCubit = context.read<ScrollControllerCubit>();
     var controller = scrollCubit.state.controller;
 
-    return Scaffold(
-      floatingActionButton: const FloatingScrollToTopButton(),
-      drawer: Drawer(
-        width: MediaQuery.of(context).size.width * .6,
-        child: SafeArea(
-          child: ListView(
-            physics: const NeverScrollableScrollPhysics(),
-            children: [
-              ...FlowEnum.values
-                  .map((type) => ListTile(
-                        title: Text(type.label),
-                        onTap: () {
-                          articlesCubit.changeFlow(type);
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<ScrollControllerCubit, ScrollControllerState>(
+          listenWhen: (p, c) => c.isBottomEdge,
+          listener: (c, state) => articlesCubit.fetchArticles(),
+        ),
+        BlocListener<SettingsCubit, SettingsState>(
+          listenWhen: (p, c) =>
+              p.langUI != c.langUI || p.langArticles != c.langArticles,
+          listener: (context, state) {
+            articlesCubit.changeLanguage(
+              langUI: state.langUI,
+              langArticles: state.langArticles,
+            );
 
-                          Navigator.of(context).pop();
-                        },
-                      ))
-                  .toList(),
-            ],
+            scrollCubit.animateToTop();
+          },
+        ),
+      ],
+      child: Scaffold(
+        floatingActionButton: const FloatingScrollToTopButton(),
+        drawer: Drawer(
+          width: MediaQuery.of(context).size.width * .6,
+          child: SafeArea(
+            child: ListView(
+              physics: const NeverScrollableScrollPhysics(),
+              children: [
+                ...FlowEnum.values
+                    .map((type) => ListTile(
+                          title: Text(type.label),
+                          onTap: () {
+                            articlesCubit.changeFlow(type);
+
+                            Navigator.of(context).pop();
+                          },
+                        ))
+                    .toList(),
+              ],
+            ),
           ),
         ),
-      ),
-      body: SafeArea(
-        child: Scrollbar(
-          controller: controller,
-          child: CustomScrollView(
+        body: SafeArea(
+          child: Scrollbar(
             controller: controller,
-            slivers: [
-              BlocBuilder<ArticlesCubit, ArticlesState>(
-                builder: (context, state) => SliverAppBar(
-                  title: Text(state.flow.label),
+            child: CustomScrollView(
+              controller: controller,
+              slivers: [
+                BlocBuilder<ArticlesCubit, ArticlesState>(
+                  builder: (context, state) => SliverAppBar(
+                    title: Text(state.flow.label),
+                  ),
                 ),
-              ),
-              BlocBuilder<ArticlesCubit, ArticlesState>(
-                builder: (context, state) {
-                  return SliverAppBar(
-                    automaticallyImplyLeading: false,
-                    floating: true,
-                    toolbarHeight: 80,
-                    title: Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        SortWidget(
-                          isEnabled: state.status != ArticlesStatus.loading,
-                          currentValue: state.sort,
-                          onTap: (value) => articlesCubit.changeSort(value),
-                        ),
-                        SortOptionsWidget(
-                          isEnabled: state.status != ArticlesStatus.loading,
-                          options: state.sort == SortEnum.byBest
-                              ? DatePeriodEnum.values
-                                  .map((period) => SortOptionModel(
-                                        label: period.label,
-                                        value: period,
-                                      ))
-                                  .toList()
-                              : RatingScoreEnum.values
-                                  .map((score) => SortOptionModel(
-                                        label: score.label,
-                                        value: score.value,
-                                      ))
-                                  .toList(),
-                          currentValue: state.sort == SortEnum.byBest
-                              ? state.period
-                              : state.score,
-                          onTap: (value) => articlesCubit.changeSortOption(
-                            state.sort,
-                            value,
+                BlocBuilder<ArticlesCubit, ArticlesState>(
+                  builder: (context, state) {
+                    return SliverAppBar(
+                      automaticallyImplyLeading: false,
+                      floating: true,
+                      toolbarHeight: 80,
+                      title: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          SortWidget(
+                            isEnabled: state.status != ArticlesStatus.loading,
+                            currentValue: state.sort,
+                            onTap: (value) => articlesCubit.changeSort(value),
                           ),
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              ),
-
-              /// Список новостей
-              BlocConsumer<ArticlesCubit, ArticlesState>(
-                listenWhen: (p, c) =>
-                    p.page != 1 && c.status == ArticlesStatus.failure,
-                listener: (c, state) {
-                  getIt.get<Utils>().showNotification(
-                        context: context,
-                        content: Text(state.error),
-                      );
-                },
-                builder: (context, state) {
-                  if (state.status == ArticlesStatus.initial) {
-                    articlesCubit.fetchArticles();
-
-                    return const SliverFillRemaining(
-                      child: CircleIndicator(),
+                          SortOptionsWidget(
+                            isEnabled: state.status != ArticlesStatus.loading,
+                            options: state.sort == SortEnum.byBest
+                                ? DatePeriodEnum.values
+                                    .map((period) => SortOptionModel(
+                                          label: period.label,
+                                          value: period,
+                                        ))
+                                    .toList()
+                                : RatingScoreEnum.values
+                                    .map((score) => SortOptionModel(
+                                          label: score.label,
+                                          value: score.value,
+                                        ))
+                                    .toList(),
+                            currentValue: state.sort == SortEnum.byBest
+                                ? state.period
+                                : state.score,
+                            onTap: (value) => articlesCubit.changeSortOption(
+                              state.sort,
+                              value,
+                            ),
+                          ),
+                        ],
+                      ),
                     );
-                  }
+                  },
+                ),
 
-                  /// Если происходит загрузка первой страницы
-                  if (articlesCubit.isFirstFetch) {
-                    if (state.status == ArticlesStatus.loading) {
+                /// Список новостей
+                BlocConsumer<ArticlesCubit, ArticlesState>(
+                  listenWhen: (p, c) =>
+                      p.page != 1 && c.status == ArticlesStatus.failure,
+                  listener: (c, state) {
+                    getIt.get<Utils>().showNotification(
+                          context: context,
+                          content: Text(state.error),
+                        );
+                  },
+                  builder: (context, state) {
+                    if (state.status == ArticlesStatus.initial) {
+                      articlesCubit.fetchArticles();
+
                       return const SliverFillRemaining(
                         child: CircleIndicator(),
                       );
                     }
-                    if (state.status == ArticlesStatus.failure) {
-                      return SliverFillRemaining(
-                        child: Center(child: Text(state.error)),
-                      );
+
+                    /// Если происходит загрузка первой страницы
+                    if (articlesCubit.isFirstFetch) {
+                      if (state.status == ArticlesStatus.loading) {
+                        return const SliverFillRemaining(
+                          child: CircleIndicator(),
+                        );
+                      }
+                      if (state.status == ArticlesStatus.failure) {
+                        return SliverFillRemaining(
+                          child: Center(child: Text(state.error)),
+                        );
+                      }
                     }
-                  }
 
-                  var articles = state.articles;
+                    var articles = state.articles;
 
-                  return SliverList(
-                    delegate: SliverChildBuilderDelegate(
-                      (c, i) {
-                        if (i < articles.length) {
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: kScreenHPadding,
-                            ),
-                            child: ArticleCardWidget(article: articles[i]),
+                    return SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                        (c, i) {
+                          if (i < articles.length) {
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: kScreenHPadding,
+                              ),
+                              child: ArticleCardWidget(article: articles[i]),
+                            );
+                          }
+
+                          Timer(
+                            const Duration(milliseconds: 30),
+                            () => scrollCubit.animateToBottom(),
                           );
-                        }
 
-                        Timer(
-                          const Duration(milliseconds: 30),
-                          () => scrollCubit.animateToBottom(),
-                        );
-
-                        return const SizedBox(
-                          height: 60,
-                          child: CircleIndicator.medium(),
-                        );
-                      },
-                      childCount: articles.length +
-                          (state.status == ArticlesStatus.loading ? 1 : 0),
-                    ),
-                  );
-                },
-              )
-            ],
+                          return const SizedBox(
+                            height: 60,
+                            child: CircleIndicator.medium(),
+                          );
+                        },
+                        childCount: articles.length +
+                            (state.status == ArticlesStatus.loading ? 1 : 0),
+                      ),
+                    );
+                  },
+                )
+              ],
+            ),
           ),
         ),
       ),

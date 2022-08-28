@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../common/exception/displayable_exception.dart';
 import '../../../common/exception/value_exception.dart';
 import '../../../component/localization/language_enum.dart';
+import '../model/article_type.dart';
 import '../model/flow_enum.dart';
 import '../model/sort/sort_enum.dart';
 import '../model/sort/sort_option_model.dart';
@@ -17,10 +18,12 @@ class ArticlesCubit extends Cubit<ArticlesState> {
   ArticlesCubit(
     ArticlesService service, {
     flow = FlowEnum.all,
+    type = ArticleType.article,
     required LanguageEnum langUI,
     required List<LanguageEnum> langArticles,
   })  : _service = service,
         super(ArticlesState(
+          type: type,
           flow: flow,
           langUI: langUI,
           langArticles: langArticles,
@@ -31,7 +34,6 @@ class ArticlesCubit extends Cubit<ArticlesState> {
   bool get isFirstFetch => state.page == 1;
   bool get isLastPage => state.page >= state.pagesCount;
 
-  /// todo: реализовать получение по выбранному типу [FlowEnum]
   void fetchArticles() async {
     if (state.status == ArticlesStatus.loading || !isFirstFetch && isLastPage) {
       return;
@@ -43,6 +45,7 @@ class ArticlesCubit extends Cubit<ArticlesState> {
       var response = await _service.fetchAll(
         langUI: state.langUI,
         langArticles: state.langArticles,
+        type: state.type,
         flow: state.flow,
         sort: state.sort,
         period: state.period,
@@ -69,43 +72,11 @@ class ArticlesCubit extends Cubit<ArticlesState> {
     }
   }
 
-  fetchNews() async {
-    if (state.status == ArticlesStatus.loading || !isFirstFetch && isLastPage) {
-      return;
-    }
-
-    emit(state.copyWith(status: ArticlesStatus.loading));
-
-    try {
-      var response = await _service.fetchNews(
-        langUI: state.langUI,
-        langArticles: state.langArticles,
-        page: state.page.toString(),
-      );
-
-      emit(state.copyWith(
-        status: ArticlesStatus.success,
-        articles: [...state.articles, ...response.models],
-        page: state.page + 1,
-        pagesCount: response.pagesCount,
-      ));
-    } on DisplayableException catch (e) {
-      emit(state.copyWith(
-        error: e.toString(),
-        status: ArticlesStatus.failure,
-      ));
-    } catch (e) {
-      emit(state.copyWith(
-        error: 'Не удалось получить новости',
-        status: ArticlesStatus.failure,
-      ));
-    }
-  }
-
   void changeFlow(FlowEnum value) {
     if (state.flow == value) return;
 
     emit(ArticlesState(
+      type: state.type,
       langUI: state.langUI,
       langArticles: state.langArticles,
       flow: value,
@@ -114,6 +85,7 @@ class ArticlesCubit extends Cubit<ArticlesState> {
 
   void changeSort(SortEnum value) {
     emit(ArticlesState(
+      type: state.type,
       langUI: state.langUI,
       langArticles: state.langArticles,
       flow: state.flow,
@@ -139,6 +111,7 @@ class ArticlesCubit extends Cubit<ArticlesState> {
     }
 
     emit(newState.copyWith(
+      type: state.type,
       langUI: state.langUI,
       langArticles: state.langArticles,
       sort: sort,
@@ -151,6 +124,7 @@ class ArticlesCubit extends Cubit<ArticlesState> {
     List<LanguageEnum>? langArticles,
   }) {
     emit(ArticlesState(
+      type: state.type,
       flow: state.flow,
       langUI: langUI ?? state.langUI,
       langArticles: langArticles ?? state.langArticles,

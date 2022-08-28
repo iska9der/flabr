@@ -4,7 +4,7 @@ class ArticlesParams extends Params {
   const ArticlesParams({
     super.fl = 'ru',
     super.hl = 'ru',
-    this.news,
+    this.news = false,
     this.flow,
     this.custom,
     super.page = '',
@@ -13,7 +13,7 @@ class ArticlesParams extends Params {
     this.score,
   });
 
-  final String? news;
+  final bool news;
   final String? flow;
   final String? custom;
 
@@ -42,7 +42,7 @@ class ArticlesParams extends Params {
     return ArticlesParams(
       fl: map['fl'] as String,
       hl: map['hl'] as String,
-      news: map['news'] as String,
+      news: map['news'] ? map['news'] == 'true' : false,
       flow: map['flow'] as String,
       custom: map['custom'] as String,
       page: map['page'] as String,
@@ -54,9 +54,19 @@ class ArticlesParams extends Params {
 
   @override
   String toQueryString() {
-    String? lNews = news != null ? '&news=$news' : '';
-    String? lFlow = flow != null ? '&flow=$flow' : '';
     String? lSort = sort != null ? '&sort=$sort' : '';
+
+    String lNews = '';
+    if (news) {
+      lSort = '';
+      if (flow != null) {
+        lNews = '&flowNews=true';
+      } else {
+        lNews = '&news=true';
+      }
+    }
+
+    String? lFlow = flow != null ? '&flow=$flow' : '';
     String? lPeriod = period != null ? '&period=$period' : '';
     String? lScore = score != null ? '&score=$score' : '';
 

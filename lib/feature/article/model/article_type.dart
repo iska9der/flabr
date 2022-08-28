@@ -1,0 +1,1 @@
+enum ArticleType { article, news }
