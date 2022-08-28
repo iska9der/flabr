@@ -21,7 +21,10 @@ class ArticlesCubit extends Cubit<ArticlesState> {
     required List<LanguageEnum> langArticles,
   })  : _service = service,
         super(ArticlesState(
-            flow: flow, langUI: langUI, langArticles: langArticles));
+          flow: flow,
+          langUI: langUI,
+          langArticles: langArticles,
+        ));
 
   final ArticlesService _service;
 
@@ -67,10 +70,14 @@ class ArticlesCubit extends Cubit<ArticlesState> {
   }
 
   fetchNews() async {
+    if (state.status == ArticlesStatus.loading || !isFirstFetch && isLastPage) {
+      return;
+    }
+
     emit(state.copyWith(status: ArticlesStatus.loading));
 
     try {
-      var articles = await _service.fetchNews(
+      var response = await _service.fetchNews(
         langUI: state.langUI,
         langArticles: state.langArticles,
         page: state.page.toString(),
@@ -78,7 +85,9 @@ class ArticlesCubit extends Cubit<ArticlesState> {
 
       emit(state.copyWith(
         status: ArticlesStatus.success,
-        articles: [...state.articles, ...articles],
+        articles: [...state.articles, ...response.models],
+        page: state.page + 1,
+        pagesCount: response.pagesCount,
       ));
     } on DisplayableException catch (e) {
       emit(state.copyWith(

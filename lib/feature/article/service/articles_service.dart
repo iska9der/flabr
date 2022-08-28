@@ -58,28 +58,18 @@ class ArticlesService {
     repository.fetchFeed();
   }
 
-  Future<List<ArticleModel>> fetchNews({
+  Future<ArticlesResponse> fetchNews({
     required LanguageEnum langUI,
     required List<LanguageEnum> langArticles,
     required String page,
   }) async {
-    final raw = await repository.fetchNews(
+    final response = await repository.fetchNews(
       langUI: langUI,
       langArticles: encodeLangs(langArticles),
       page: page,
     );
 
-    final refs =
-        raw.entries.firstWhere((e) => e.key == 'articleRefs').value as Map;
-
-    final result = refs.entries
-
-        /// только статьи, новости откидываем
-        .where((e) => e.value['postType'] == 'news')
-        .map((e) => ArticleModel.fromMap(e.value))
-        .toList();
-
-    return result;
+    return response;
   }
 
   Future<ArticleModel> fetchById(String id) async {

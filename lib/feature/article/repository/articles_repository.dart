@@ -42,7 +42,7 @@ class ArticlesRepository {
       final queryString = params.toQueryString();
       final response = await _baseClient.get('/articles/?$queryString');
 
-      return ArticlesResponse.fromMap(response.data);
+      return ArticlesResponse.fromMap(response.data, 'article');
     } on DisplayableException {
       rethrow;
     } catch (e) {
@@ -50,7 +50,7 @@ class ArticlesRepository {
     }
   }
 
-  Future<Map<String, dynamic>> fetchNews({
+  Future<ArticlesResponse> fetchNews({
     required LanguageEnum langUI,
     required String langArticles,
     required String page,
@@ -66,7 +66,7 @@ class ArticlesRepository {
       final queryString = params.toQueryString();
       final response = await _baseClient.get('/articles/?$queryString');
 
-      return response.data;
+      return ArticlesResponse.fromMap(response.data, 'news');
     } catch (e) {
       throw FetchException();
     }

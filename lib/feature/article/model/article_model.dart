@@ -13,6 +13,7 @@ class ArticleModel extends Equatable {
     this.author = ArticleAuthorModel.empty,
     this.statistics = ArticleStatisticsModel.empty,
     this.leadData = ArticleLeadDataModel.empty,
+    this.postType = '',
   });
 
   final String id;
@@ -29,6 +30,7 @@ class ArticleModel extends Equatable {
   final ArticleAuthorModel author;
   final ArticleStatisticsModel statistics;
   final ArticleLeadDataModel leadData;
+  final String postType;
 
   factory ArticleModel.fromMap(Map<String, dynamic> map) {
     return ArticleModel(
@@ -45,6 +47,7 @@ class ArticleModel extends Equatable {
       leadData: map['leadData'] != null
           ? ArticleLeadDataModel.fromMap(map['leadData'])
           : ArticleLeadDataModel.empty,
+      postType: map['postType'] ?? '',
     );
   }
 
@@ -60,5 +63,6 @@ class ArticleModel extends Equatable {
         author,
         statistics,
         leadData,
+        postType,
       ];
 }
