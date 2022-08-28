@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'package:equatable/equatable.dart';
 
-class AuthorModel extends Equatable {
-  const AuthorModel({
+class ArticleAuthorModel extends Equatable {
+  const ArticleAuthorModel({
     required this.id,
     this.alias = '',
     this.fullname = '',
@@ -26,8 +26,8 @@ class AuthorModel extends Equatable {
     };
   }
 
-  factory AuthorModel.fromMap(Map<String, dynamic> map) {
-    return AuthorModel(
+  factory ArticleAuthorModel.fromMap(Map<String, dynamic> map) {
+    return ArticleAuthorModel(
       id: map['id'],
       alias: map['alias'],
       fullname: map['fullname'] ?? '',
@@ -38,10 +38,10 @@ class AuthorModel extends Equatable {
 
   String toJson() => json.encode(toMap());
 
-  factory AuthorModel.fromJson(String source) =>
-      AuthorModel.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory ArticleAuthorModel.fromJson(String source) =>
+      ArticleAuthorModel.fromMap(json.decode(source) as Map<String, dynamic>);
 
-  static const empty = AuthorModel(id: '0');
+  static const empty = ArticleAuthorModel(id: '0');
   bool get isEmpty => this == empty;
 
   @override

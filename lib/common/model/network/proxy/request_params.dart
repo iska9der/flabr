@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import 'params.dart';
+import '../params.dart';
 
 class RequestParams extends Equatable {
   const RequestParams({

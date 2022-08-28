@@ -1,8 +1,8 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
-class NavLink extends StatelessWidget {
-  const NavLink({Key? key, required this.title, required this.route})
+class NavLinkWidget extends StatelessWidget {
+  const NavLinkWidget({Key? key, required this.title, required this.route})
       : super(key: key);
 
   final String title;

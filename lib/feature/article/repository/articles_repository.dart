@@ -1,7 +1,5 @@
 import '../../../common/exception/displayable_exception.dart';
 import '../../../common/exception/fetch_exception.dart';
-import '../../../common/model/network/make_request.dart';
-import '../../../common/model/network/request_params.dart';
 import '../../../component/http/http_client.dart';
 import '../../../component/language.dart';
 import '../model/flow_enum.dart';
@@ -10,6 +8,8 @@ import '../model/network/articles_response.dart';
 import '../model/sort/date_period_enum.dart';
 import '../model/sort/sort_enum.dart';
 
+/// todo: [_proxyClient] пока не используется, но, с появлением
+/// авторизации, возможно он пригодится
 class ArticlesRepository {
   const ArticlesRepository(this._baseClient, this._proxyClient);
 
@@ -26,33 +26,27 @@ class ArticlesRepository {
     required String score,
   }) async {
     try {
-      final body = MakeRequest(
-        method: 'articles',
-        requestParams: RequestParams(
-          params: ArticlesParams(
-            fl: langArticles,
-            hl: langUI,
-            flow: flow == FlowEnum.all ? '' : flow.name,
+      final params = ArticlesParams(
+        fl: langArticles,
+        hl: langUI,
+        flow: flow == FlowEnum.all ? null : flow.name,
 
-            /// если мы находимся не во "Все потоки", в значение sort, по завету
-            /// костыльного api хабра, нужно передавать значение 'all'
-            sort: flow == FlowEnum.all ? sort.value : 'all',
-            period: sort == SortEnum.byBest ? period : null,
-            score: sort == SortEnum.byNew ? score : null,
-            page: page,
-          ),
-        ),
+        /// если мы находимся не во "Все потоки", в значение sort, по завету
+        /// костыльного api хабра, нужно передавать значение 'all'
+        sort: flow == FlowEnum.all ? sort.value : 'all',
+        period: sort == SortEnum.byBest ? period.name : null,
+        score: sort == SortEnum.byNew ? score : null,
+        page: page,
       );
 
-      final map = body.toMap();
-      final response = await _proxyClient.post(
-        '/makeRequest',
-        body: map,
-      );
+      final queryString = params.toQueryString();
+      final response = await _baseClient.get('/articles/?$queryString');
 
       return ArticlesResponse.fromMap(response.data);
     } on DisplayableException {
       rethrow;
+    } catch (e) {
+      throw FetchException();
     }
   }
 
@@ -62,22 +56,15 @@ class ArticlesRepository {
     required String page,
   }) async {
     try {
-      final body = MakeRequest(
-        method: 'articles',
-        requestParams: RequestParams(
-            params: ArticlesParams(
-          fl: langArticles,
-          hl: langUI.name,
-          news: 'true',
-          page: page,
-        )),
+      final params = ArticlesParams(
+        fl: langArticles,
+        hl: langUI.name,
+        news: 'true',
+        page: page,
       );
 
-      final map = body.toMap();
-      final response = await _proxyClient.post(
-        '/makeRequest',
-        body: map,
-      );
+      final queryString = params.toQueryString();
+      final response = await _baseClient.get('/articles/?$queryString');
 
       return response.data;
     } catch (e) {
@@ -85,7 +72,7 @@ class ArticlesRepository {
     }
   }
 
-  /// todo: unimplemented
+  /// todo: получение моей ленты
   void fetchFeed() {}
 
   Future<Map<String, dynamic>> fetchById(String id) async {

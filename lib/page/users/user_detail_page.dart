@@ -70,12 +70,12 @@ class UserDetailPageView extends StatelessWidget {
               ),
             ),
             const Divider(),
-            if (model.fullName.isNotEmpty)
+            if (model.fullname.isNotEmpty)
               FittedBox(
                 fit: BoxFit.scaleDown,
                 alignment: Alignment.topLeft,
                 child: Text(
-                  model.fullName,
+                  model.fullname,
                   style: Theme.of(context).textTheme.headline4,
                 ),
               ),

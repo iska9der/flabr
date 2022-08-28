@@ -55,9 +55,9 @@ class _UserCard extends StatelessWidget {
                 RichText(
                   text: TextSpan(
                     style: Theme.of(context).textTheme.titleSmall,
-                    text: model.fullName,
+                    text: model.fullname,
                     children: [
-                      if (model.fullName.isNotEmpty) const TextSpan(text: ', '),
+                      if (model.fullname.isNotEmpty) const TextSpan(text: ', '),
                       TextSpan(
                         text: '@${model.alias}',
                         style: Theme.of(context).textTheme.caption,

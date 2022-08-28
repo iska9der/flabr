@@ -7,7 +7,7 @@ import '../../component/router/app_router.dart';
 import '../../feature/settings/cubit/settings_cubit.dart';
 import '../../feature/user/cubit/user_cubit.dart';
 import '../../feature/user/service/users_service.dart';
-import '../../widget/nav_link_widget.dart';
+import '../../feature/user/widget/nav_link_widget.dart';
 import 'user_article_page.dart';
 import 'user_detail_page.dart';
 
@@ -47,11 +47,11 @@ class UserDashboardPage extends StatelessWidget {
               child: SafeArea(
                 child: Column(
                   children: const [
-                    NavLink(
+                    NavLinkWidget(
                       title: UserDetailPage.title,
                       route: UserDetailPage.routePath,
                     ),
-                    NavLink(
+                    NavLinkWidget(
                       title: UserArticlePage.title,
                       route: UserArticlePage.routePath,
                     ),

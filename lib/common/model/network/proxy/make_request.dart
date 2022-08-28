@@ -2,6 +2,8 @@ import 'package:equatable/equatable.dart';
 
 import 'request_params.dart';
 
+/// эти классы [MakeRequest], [RequestParams] нужны нам
+/// для составлений запросов на proxy клиент
 class MakeRequest extends Equatable {
   const MakeRequest({
     required this.method,
@@ -10,10 +12,17 @@ class MakeRequest extends Equatable {
     required this.requestParams,
   });
 
+  /// путь на habr, куда летит запрос через прокси
+  /// например: articles, users
   final String method;
+
+  /// версия api
   final String version;
+
+  /// токен авторизации
   final String? connectSSID;
 
+  /// параметры запроса
   final RequestParams requestParams;
 
   Map<String, dynamic> toMap() {

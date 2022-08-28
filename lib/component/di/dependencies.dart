@@ -28,6 +28,10 @@ void setDependencies() {
     () => HttpClient(Dio(BaseOptions(baseUrl: baseApiUrl))),
     instanceName: 'baseClient',
   );
+
+  /// proxyClient использует api чувачка jarvis394,
+  /// который любезно разрешил пользоваться им при
+  /// реализации авторизации
   getIt.registerLazySingleton<HttpClient>(
     () => HttpClient(Dio(BaseOptions(baseUrl: proxyApiUrl))),
     instanceName: 'proxyClient',

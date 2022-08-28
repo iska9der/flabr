@@ -1,5 +1,4 @@
 import '../../../../common/model/network/params.dart';
-import '../sort/date_period_enum.dart';
 
 class ArticlesParams extends Params {
   const ArticlesParams({
@@ -20,7 +19,7 @@ class ArticlesParams extends Params {
 
   /// Sorting
   final String? sort;
-  final DatePeriodEnum? period;
+  final String? period;
   final String? score;
 
   @override
@@ -33,7 +32,7 @@ class ArticlesParams extends Params {
       'custom': custom,
       'page': page,
       'sort': sort,
-      'period': period != null ? period!.name : null,
+      'period': period,
       'score': score,
     };
   }
@@ -48,14 +47,20 @@ class ArticlesParams extends Params {
       custom: map['custom'] as String,
       page: map['page'] as String,
       sort: map['sort'] as String,
-      period: DatePeriodEnum.fromString(map['period']),
+      period: map['period'] as String,
       score: map['score'] as String,
     );
   }
 
   @override
   String toQueryString() {
-    throw UnimplementedError();
+    String? lNews = news != null ? '&news=$news' : '';
+    String? lFlow = flow != null ? '&flow=$flow' : '';
+    String? lSort = sort != null ? '&sort=$sort' : '';
+    String? lPeriod = period != null ? '&period=$period' : '';
+    String? lScore = score != null ? '&score=$score' : '';
+
+    return 'fl=$fl&hl=$hl$lFlow$lNews$lSort$lPeriod$lScore&page=$page';
   }
 
   @override
