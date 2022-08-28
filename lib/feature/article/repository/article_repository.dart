@@ -10,8 +10,8 @@ import '../model/sort/sort_enum.dart';
 
 /// todo: [_proxyClient] пока не используется, но, с появлением
 /// авторизации, возможно он пригодится
-class ArticlesRepository {
-  const ArticlesRepository(this._baseClient, this._proxyClient);
+class ArticleRepository {
+  const ArticleRepository(this._baseClient, this._proxyClient);
 
   final HttpClient _baseClient;
   final HttpClient _proxyClient;

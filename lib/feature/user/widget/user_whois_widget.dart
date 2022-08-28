@@ -2,28 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 
-import '../../feature/user/cubit/user_cubit.dart';
-import '../../feature/user/model/user_badget_model.dart';
-import '../../feature/user/widget/section_container_widget.dart';
-import '../../widget/card_widget.dart';
-import '../../widget/html_view_widget.dart';
+import '../cubit/user_cubit.dart';
+import '../model/user_badget_model.dart';
+import 'section_container_widget.dart';
+import '../../../widget/card_widget.dart';
+import '../../../widget/html_view_widget.dart';
 
-class UserAboutPage extends StatelessWidget {
-  const UserAboutPage({Key? key}) : super(key: key);
+class UserWhoisWidget extends StatelessWidget {
+  const UserWhoisWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     context.read<UserCubit>().fetchWhois();
 
-    return const UserAboutPageView();
-  }
-}
-
-class UserAboutPageView extends StatelessWidget {
-  const UserAboutPageView({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
     return BlocBuilder<UserCubit, UserState>(
       buildWhen: (previous, current) => !current.whoisModel.isEmpty,
       builder: (context, state) {

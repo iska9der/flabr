@@ -10,7 +10,7 @@ class UserModel extends Equatable {
     this.alias = '',
     this.registerDateTime = '',
     this.lastActivityDateTime = '',
-    this.avatar = '',
+    this.avatarUrl = '',
     this.fullname = '',
     this.speciality = '',
     this.score = 0,
@@ -29,7 +29,7 @@ class UserModel extends Equatable {
   final String lastActivityDateTime;
   DateTime get lastActivityAt => DateTime.parse(lastActivityDateTime);
 
-  final String avatar;
+  final String avatarUrl;
   final String fullname;
   final String speciality;
   final UserLocationModel location;
@@ -46,7 +46,7 @@ class UserModel extends Equatable {
     String? alias,
     String? registerDateTime,
     String? lastActivityDateTime,
-    String? avatar,
+    String? avatarUrl,
     String? fullname,
     String? speciality,
     int? score,
@@ -61,7 +61,7 @@ class UserModel extends Equatable {
       alias: alias ?? this.alias,
       registerDateTime: registerDateTime ?? this.registerDateTime,
       lastActivityDateTime: lastActivityDateTime ?? this.lastActivityDateTime,
-      avatar: avatar ?? this.avatar,
+      avatarUrl: avatarUrl ?? this.avatarUrl,
       fullname: fullname ?? this.fullname,
       speciality: speciality ?? this.speciality,
       score: score ?? this.score,
@@ -79,7 +79,7 @@ class UserModel extends Equatable {
       alias: map['alias'],
       registerDateTime: map['registerDateTime'] ?? '',
       lastActivityDateTime: map['lastActivityDateTime'] ?? '',
-      avatar: map['avatarUrl'] ?? '',
+      avatarUrl: map['avatarUrl'] ?? '',
       fullname: map['fullname'] ?? '',
       speciality: map['speciality'] ?? '',
       score: map['scoreStats']['score'],
@@ -114,7 +114,7 @@ class UserModel extends Equatable {
       alias,
       registerDateTime,
       lastActivityDateTime,
-      avatar,
+      avatarUrl,
       fullname,
       speciality,
       score,

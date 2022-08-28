@@ -1,10 +1,10 @@
-part of 'users_cubit.dart';
+part of 'user_list_cubit.dart';
 
-enum UsersStatus { initial, loading, success, failure }
+enum UserListStatus { initial, loading, success, failure }
 
-class UsersState extends Equatable {
-  const UsersState({
-    this.status = UsersStatus.initial,
+class UserListState extends Equatable {
+  const UserListState({
+    this.status = UserListStatus.initial,
     this.error = '',
     this.langUI = LanguageEnum.ru,
     this.langArticles = const [LanguageEnum.ru],
@@ -13,7 +13,7 @@ class UsersState extends Equatable {
     this.users = const [],
   });
 
-  final UsersStatus status;
+  final UserListStatus status;
   final String error;
   final LanguageEnum langUI;
   final List<LanguageEnum> langArticles;
@@ -21,8 +21,8 @@ class UsersState extends Equatable {
   final int pagesCount;
   final List<UserModel> users;
 
-  UsersState copyWith({
-    UsersStatus? status,
+  UserListState copyWith({
+    UserListStatus? status,
     String? error,
     LanguageEnum? langUI,
     List<LanguageEnum>? langArticles,
@@ -30,7 +30,7 @@ class UsersState extends Equatable {
     int? pagesCount,
     List<UserModel>? users,
   }) {
-    return UsersState(
+    return UserListState(
       status: status ?? this.status,
       error: error ?? this.error,
       langUI: langUI ?? this.langUI,

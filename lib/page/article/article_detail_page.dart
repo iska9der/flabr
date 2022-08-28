@@ -7,7 +7,7 @@ import '../../widget/html_view_widget.dart';
 import '../../widget/progress_indicator.dart';
 import '../../component/di/dependencies.dart';
 import '../../feature/article/cubit/article_cubit.dart';
-import '../../feature/article/service/articles_service.dart';
+import '../../feature/article/service/article_service.dart';
 import '../../feature/article/widget/article_card_widget.dart';
 
 const double hPadding = 12.0;
@@ -30,7 +30,7 @@ class ArticleDetailPage extends StatelessWidget {
       key: ValueKey('article-$id-detail'),
       create: (c) => ArticleCubit(
         id,
-        service: getIt.get<ArticlesService>(),
+        service: getIt.get<ArticleService>(),
       )..fetch(),
       child: const ArticleDetailPageView(),
     );

@@ -4,29 +4,29 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../common/exception/displayable_exception.dart';
 import '../../../component/localization/language_enum.dart';
 import '../model/user_model.dart';
-import '../service/users_service.dart';
+import '../service/user_service.dart';
 
-part 'users_state.dart';
+part 'user_list_state.dart';
 
-class UsersCubit extends Cubit<UsersState> {
-  UsersCubit(
-    UsersService service, {
+class UserListCubit extends Cubit<UserListState> {
+  UserListCubit(
+    UserService service, {
     required LanguageEnum langUI,
     required List<LanguageEnum> langArticles,
   })  : _service = service,
-        super(UsersState(langUI: langUI, langArticles: langArticles));
+        super(UserListState(langUI: langUI, langArticles: langArticles));
 
-  final UsersService _service;
+  final UserService _service;
 
   bool get isFirstFetch => state.page == 1;
   bool get isLastPage => state.page >= state.pagesCount;
 
   void fetchAll() async {
-    if (state.status == UsersStatus.loading || !isFirstFetch && isLastPage) {
+    if (state.status == UserListStatus.loading || !isFirstFetch && isLastPage) {
       return;
     }
 
-    emit(state.copyWith(status: UsersStatus.loading));
+    emit(state.copyWith(status: UserListStatus.loading));
 
     try {
       var response = await _service.fetchAll(
@@ -36,7 +36,7 @@ class UsersCubit extends Cubit<UsersState> {
       );
 
       emit(state.copyWith(
-        status: UsersStatus.success,
+        status: UserListStatus.success,
         users: [...state.users, ...response.models],
         page: state.page + 1,
         pagesCount: response.pagesCount,
@@ -44,12 +44,12 @@ class UsersCubit extends Cubit<UsersState> {
     } on DisplayableException catch (e) {
       emit(state.copyWith(
         error: e.toString(),
-        status: UsersStatus.failure,
+        status: UserListStatus.failure,
       ));
     } catch (e) {
       emit(state.copyWith(
         error: 'Не удалось получить пользователей',
-        status: UsersStatus.failure,
+        status: UserListStatus.failure,
       ));
     }
   }
@@ -58,7 +58,7 @@ class UsersCubit extends Cubit<UsersState> {
     LanguageEnum? langUI,
     List<LanguageEnum>? langArticles,
   }) {
-    emit(UsersState(
+    emit(UserListState(
       langUI: langUI ?? state.langUI,
       langArticles: langArticles ?? state.langArticles,
     ));

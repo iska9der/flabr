@@ -16,7 +16,7 @@ import '../../feature/article/model/sort/date_period_enum.dart';
 import '../../feature/article/model/sort/rating_score_enum.dart';
 import '../../feature/article/model/sort/sort_enum.dart';
 import '../../feature/article/model/sort/sort_option_model.dart';
-import '../../feature/article/service/articles_service.dart';
+import '../../feature/article/service/article_service.dart';
 import '../../feature/article/widget/article_card_widget.dart';
 import '../../feature/article/widget/articles_sort_widget.dart';
 import '../../feature/settings/cubit/settings_cubit.dart';
@@ -37,7 +37,7 @@ class ArticleListPage extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (c) => ArticlesCubit(
-            getIt.get<ArticlesService>(),
+            getIt.get<ArticleService>(),
             flow: FlowEnum.fromString(flow),
             langUI: context.read<SettingsCubit>().state.langUI,
             langArticles: context.read<SettingsCubit>().state.langArticles,

@@ -3,16 +3,16 @@ import 'package:auto_route/empty_router_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
-import '../../page/articles/article_detail_page.dart';
-import '../../page/articles/article_list_page.dart';
+import '../../page/article/article_detail_page.dart';
+import '../../page/article/article_list_page.dart';
 import '../../page/dashboard_page.dart';
 import '../../page/news/news_list_page.dart';
 import '../../page/services_page.dart';
 import '../../page/settings_page.dart';
-import '../../page/users/user_article_page.dart';
-import '../../page/users/user_dashboard_page.dart';
-import '../../page/users/user_detail_page.dart';
-import '../../page/users/user_list_page.dart';
+import '../../page/user/user_article_page.dart';
+import '../../page/user/user_dashboard_page.dart';
+import '../../page/user/user_detail_page.dart';
+import '../../page/user/user_list_page.dart';
 
 import 'routes.dart';
 

@@ -10,13 +10,13 @@ import '../model/sort/sort_option_model.dart';
 
 import '../model/article_model.dart';
 import '../model/sort/date_period_enum.dart';
-import '../service/articles_service.dart';
+import '../service/article_service.dart';
 
 part 'articles_state.dart';
 
 class ArticlesCubit extends Cubit<ArticlesState> {
   ArticlesCubit(
-    ArticlesService service, {
+    ArticleService service, {
     flow = FlowEnum.all,
     type = ArticleType.article,
     required LanguageEnum langUI,
@@ -29,7 +29,7 @@ class ArticlesCubit extends Cubit<ArticlesState> {
           langArticles: langArticles,
         ));
 
-  final ArticlesService _service;
+  final ArticleService _service;
 
   bool get isFirstFetch => state.page == 1;
   bool get isLastPage => state.page >= state.pagesCount;

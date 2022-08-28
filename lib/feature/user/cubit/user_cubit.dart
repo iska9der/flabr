@@ -4,20 +4,20 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../component/localization/language_enum.dart';
 import '../model/user_model.dart';
 import '../model/user_whois_model.dart';
-import '../service/users_service.dart';
+import '../service/user_service.dart';
 
 part 'user_state.dart';
 
 class UserCubit extends Cubit<UserState> {
   UserCubit(
     String login, {
-    required UsersService service,
+    required UserService service,
     required LanguageEnum langUI,
     required List<LanguageEnum> langArticles,
   })  : _service = service,
         super(UserState(login: login, model: UserModel.empty));
 
-  final UsersService _service;
+  final UserService _service;
 
   void fetchByLogin() async {
     emit(state.copyWith(status: UserStatus.loading));

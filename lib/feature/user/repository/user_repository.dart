@@ -1,10 +1,10 @@
 import '../../../common/exception/displayable_exception.dart';
 import '../../../common/model/network/params.dart';
 import '../../../component/http/http_client.dart';
-import '../model/users_response.dart';
+import '../model/user_response.dart';
 
-class UsersRepository {
-  const UsersRepository(this._client);
+class UserRepository {
+  const UserRepository(this._client);
 
   final HttpClient _client;
 

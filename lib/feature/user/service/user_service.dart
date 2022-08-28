@@ -1,13 +1,13 @@
 import '../../../component/language.dart';
 import '../model/user_model.dart';
 import '../model/user_whois_model.dart';
-import '../model/users_response.dart';
-import '../repository/users_repository.dart';
+import '../model/user_response.dart';
+import '../repository/user_repository.dart';
 
-class UsersService {
-  UsersService(UsersRepository repository) : _repository = repository;
+class UserService {
+  UserService(UserRepository repository) : _repository = repository;
 
-  final UsersRepository _repository;
+  final UserRepository _repository;
 
   UsersResponse cached = UsersResponse.empty;
 

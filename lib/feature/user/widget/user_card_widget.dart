@@ -44,7 +44,7 @@ class _UserCard extends StatelessWidget {
       child: Row(
         children: [
           /// Аватар
-          UserAvatarWidget(imageUrl: model.avatar),
+          UserAvatarWidget(imageUrl: model.avatarUrl),
           const SizedBox(width: 12),
           Expanded(
             child: Column(

@@ -11,8 +11,8 @@ import '../../feature/scroll/widget/floating_scroll_to_top_button.dart';
 import '../../widget/progress_indicator.dart';
 import '../../component/di/dependencies.dart';
 import '../../feature/settings/cubit/settings_cubit.dart';
-import '../../feature/user/cubit/users_cubit.dart';
-import '../../feature/user/service/users_service.dart';
+import '../../feature/user/cubit/user_list_cubit.dart';
+import '../../feature/user/service/user_service.dart';
 import '../../feature/user/widget/user_card_widget.dart';
 
 class UserListPage extends StatelessWidget {
@@ -26,8 +26,8 @@ class UserListPage extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (c) => UsersCubit(
-            getIt.get<UsersService>(),
+          create: (c) => UserListCubit(
+            getIt.get<UserService>(),
             langUI: context.read<SettingsCubit>().state.langUI,
             langArticles: context.read<SettingsCubit>().state.langArticles,
           ),
@@ -38,7 +38,7 @@ class UserListPage extends StatelessWidget {
       ],
       child: Builder(
         builder: (context) {
-          var usersCubit = context.read<UsersCubit>();
+          var usersCubit = context.read<UserListCubit>();
 
           return MultiBlocListener(
             listeners: [
@@ -70,7 +70,7 @@ class UserListPageView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var usersCubit = context.read<UsersCubit>();
+    var usersCubit = context.read<UserListCubit>();
     var scrollCubit = context.read<ScrollControllerCubit>();
     var scrollCtrl = scrollCubit.state.controller;
 
@@ -81,8 +81,9 @@ class UserListPageView extends StatelessWidget {
       ),
       floatingActionButton: const FloatingScrollToTopButton(),
       body: SafeArea(
-        child: BlocConsumer<UsersCubit, UsersState>(
-          listenWhen: (p, c) => p.page != 1 && c.status == UsersStatus.failure,
+        child: BlocConsumer<UserListCubit, UserListState>(
+          listenWhen: (p, c) =>
+              p.page != 1 && c.status == UserListStatus.failure,
           listener: (context, state) {
             getIt.get<Utils>().showNotification(
                   context: context,
@@ -90,17 +91,17 @@ class UserListPageView extends StatelessWidget {
                 );
           },
           builder: (context, state) {
-            if (state.status == UsersStatus.initial) {
+            if (state.status == UserListStatus.initial) {
               usersCubit.fetchAll();
 
               return const CircleIndicator();
             }
 
             if (usersCubit.isFirstFetch) {
-              if (state.status == UsersStatus.loading) {
+              if (state.status == UserListStatus.loading) {
                 return const CircleIndicator();
               }
-              if (state.status == UsersStatus.failure) {
+              if (state.status == UserListStatus.failure) {
                 return Center(child: Text(state.error));
               }
             }
@@ -112,8 +113,8 @@ class UserListPageView extends StatelessWidget {
                 horizontal: kScreenHPadding,
               ),
               controller: scrollCtrl,
-              itemCount:
-                  users.length + (state.status == UsersStatus.loading ? 1 : 0),
+              itemCount: users.length +
+                  (state.status == UserListStatus.loading ? 1 : 0),
               itemBuilder: (context, i) {
                 if (i < users.length) {
                   return Padding(

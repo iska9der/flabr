@@ -10,7 +10,7 @@ import '../../widget/progress_indicator.dart';
 import '../../component/di/dependencies.dart';
 import '../../feature/user/cubit/user_cubit.dart';
 import '../../feature/user/widget/user_avatar_widget.dart';
-import 'user_about_page.dart';
+import '../../feature/user/widget/user_whois_widget.dart';
 
 class UserDetailPage extends StatelessWidget {
   const UserDetailPage({
@@ -61,7 +61,7 @@ class UserDetailPageView extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(right: 20),
                     child: UserAvatarWidget(
-                      imageUrl: model.avatar,
+                      imageUrl: model.avatarUrl,
                       height: 50,
                     ),
                   ),
@@ -122,7 +122,7 @@ class UserDetailPageView extends StatelessWidget {
               title: 'Активность',
               child: Text(DateFormat.yMMMMEEEEd().format(model.lastActivityAt)),
             ),
-            const UserAboutPage(),
+            const UserWhoisWidget(),
           ],
         );
       },

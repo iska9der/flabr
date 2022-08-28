@@ -6,7 +6,7 @@ import '../../component/di/dependencies.dart';
 import '../../component/router/app_router.dart';
 import '../../feature/settings/cubit/settings_cubit.dart';
 import '../../feature/user/cubit/user_cubit.dart';
-import '../../feature/user/service/users_service.dart';
+import '../../feature/user/service/user_service.dart';
 import '../../feature/user/widget/nav_link_widget.dart';
 import 'user_article_page.dart';
 import 'user_detail_page.dart';
@@ -29,7 +29,7 @@ class UserDashboardPage extends StatelessWidget {
       lazy: false,
       create: (c) => UserCubit(
         login,
-        service: getIt.get<UsersService>(),
+        service: getIt.get<UserService>(),
         langUI: context.read<SettingsCubit>().state.langUI,
         langArticles: context.read<SettingsCubit>().state.langArticles,
       ),

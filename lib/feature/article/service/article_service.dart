@@ -5,12 +5,12 @@ import '../model/network/articles_response.dart';
 import '../model/sort/sort_enum.dart';
 import '../model/article_model.dart';
 import '../model/sort/date_period_enum.dart';
-import '../repository/articles_repository.dart';
+import '../repository/article_repository.dart';
 
-class ArticlesService {
-  ArticlesService(this.repository);
+class ArticleService {
+  ArticleService(this.repository);
 
-  final ArticlesRepository repository;
+  final ArticleRepository repository;
 
   ArticlesResponse cached = ArticlesResponse.empty;
 
