@@ -23,7 +23,7 @@ ThemeData darkTheme() {
     appBarTheme: appAppBarTheme.copyWith(shadowColor: Colors.black),
     drawerTheme: appDrawerThemeData,
     floatingActionButtonTheme: FloatingActionButtonThemeData(
-      backgroundColor: Colors.grey.shade900,
+      backgroundColor: Colors.grey.shade600,
     ),
     pageTransitionsTheme: appPageTransitionsTheme,
     scrollbarTheme: appScrollBarThemeData,

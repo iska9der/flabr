@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-extension CopyableEx on SvgPicture {
+extension SvgPictureX on SvgPicture {
   copyWith({
     double? width,
     double? height,

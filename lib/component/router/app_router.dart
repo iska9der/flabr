@@ -6,6 +6,7 @@ import 'package:url_launcher/url_launcher_string.dart';
 import '../../page/article/article_detail_page.dart';
 import '../../page/article/article_list_page.dart';
 import '../../page/dashboard_page.dart';
+import '../../page/news/news_detail_page.dart';
 import '../../page/news/news_list_page.dart';
 import '../../page/services_page.dart';
 import '../../page/settings_page.dart';
@@ -42,6 +43,27 @@ part 'app_router.gr.dart';
               path: ArticleDetailPage.routePath,
               name: ArticleDetailPage.routeName,
               page: ArticleDetailPage,
+            ),
+          ],
+        ),
+
+        /// Таб "новости"
+        AutoRoute(
+          path: MyNewsRoute.routePath,
+          name: MyNewsRoute.routeName,
+          page: EmptyRouterPage,
+          children: [
+            RedirectRoute(path: '', redirectTo: 'flows/all'),
+            AutoRoute(
+              initial: true,
+              path: NewsListPage.routePath,
+              name: NewsListPage.routeName,
+              page: NewsListPage,
+            ),
+            AutoRoute(
+              path: NewsDetailPage.routePath,
+              name: NewsDetailPage.routeName,
+              page: NewsDetailPage,
             ),
           ],
         ),
@@ -84,19 +106,8 @@ part 'app_router.gr.dart';
             ),
           ],
         ),
-        AutoRoute(
-          path: MyNewsRoute.routePath,
-          name: MyNewsRoute.routeName,
-          page: EmptyRouterPage,
-          children: [
-            AutoRoute(
-              initial: true,
-              path: NewsListPage.routePath,
-              name: NewsListPage.routeName,
-              page: NewsListPage,
-            ),
-          ],
-        ),
+
+        /// Таб "Настройки"
         AutoRoute(
           path: 'settings',
           name: 'SettingsRoute',
@@ -105,9 +116,21 @@ part 'app_router.gr.dart';
 
         /// Редиректы с хабропутей
         ///
+        /// расположение редиректов важно
         ///
 
-        /// Флоу, статьи
+        /// Новости [флоу, детали]
+        RedirectRoute(
+          path: '*/flows/:flow/news',
+          redirectTo: 'news/flows/:flow',
+        ),
+        RedirectRoute(
+          path: '*/news/',
+          redirectTo: 'news',
+        ),
+        RedirectRoute(path: '*/news/t/:id', redirectTo: 'news/details/:id'),
+
+        /// Статьи [флоу, детали]
         RedirectRoute(
           path: '*/flows/:flow/',
           redirectTo: 'articles/flows/:flow',
@@ -126,13 +149,6 @@ part 'app_router.gr.dart';
         RedirectRoute(
           path: '*/users/:login/*',
           redirectTo: 'services/users/:login/detail',
-        ),
-
-        /// Новости
-        /// todo: не работает
-        RedirectRoute(
-          path: '*/news/',
-          redirectTo: 'news',
         ),
       ],
     ),

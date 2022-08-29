@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../common/model/extension/num_x.dart';
 import '../../feature/article/widget/article_hub_widget.dart';
 import '../../widget/html_view_widget.dart';
 import '../../widget/progress_indicator.dart';
@@ -189,22 +190,22 @@ class _FloatingActionButtons extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               ArticleFloatingButton(
-                text: stats.score.toString(),
+                text: stats.score.compact(),
                 icon: Icon(
                   Icons.insert_chart_rounded,
                   color: stats.score >= 0 ? Colors.green : Colors.red,
                 ),
               ),
               ArticleFloatingButton(
-                text: stats.commentsCount.toString(),
+                text: stats.commentsCount.compact(),
                 icon: const Icon(Icons.chat_bubble_rounded),
               ),
               ArticleFloatingButton(
-                text: stats.favoritesCount.toString(),
+                text: stats.favoritesCount.compact(),
                 icon: const Icon(Icons.bookmark_rounded),
               ),
               ArticleFloatingButton(
-                text: stats.readingCount.toString(),
+                text: stats.readingCount.compact(),
                 icon: const Icon(Icons.remove_red_eye_rounded),
               ),
             ],

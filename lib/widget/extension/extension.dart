@@ -1,2 +1,2 @@
-export 'color_extension.dart';
-export 'svg_extension.dart';
+export 'color_x.dart';
+export 'svg_picture_x.dart';

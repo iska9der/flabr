@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../common/model/extension/num_x.dart';
 import '../model/article_statistics_model.dart';
 
 class ArticleStatisticsWidget extends StatelessWidget {
@@ -15,20 +16,20 @@ class ArticleStatisticsWidget extends StatelessWidget {
       children: [
         IconText(
           icon: Icons.insert_chart_rounded,
-          text: statistics.score.toString(),
+          text: statistics.score.compact(),
           color: statistics.score >= 0 ? Colors.green : Colors.red,
         ),
         IconText(
           icon: Icons.chat_bubble_rounded,
-          text: statistics.commentsCount.toString(),
+          text: statistics.commentsCount.compact(),
         ),
         IconText(
           icon: Icons.bookmark_rounded,
-          text: statistics.favoritesCount.toString(),
+          text: statistics.favoritesCount.compact(),
         ),
         IconText(
           icon: Icons.remove_red_eye_rounded,
-          text: statistics.readingCount.toString(),
+          text: statistics.readingCount.compact(),
         ),
       ],
     );

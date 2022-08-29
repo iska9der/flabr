@@ -39,9 +39,8 @@ class ArticleCardWidget extends StatelessWidget {
               const SizedBox(height: 12),
               ArticleTitleButton(
                 title: article.titleHtml,
-                onPressed: () => context.navigateTo(ArticlesEmptyRoute(
-                  children: [ArticleDetailRoute(id: article.id)],
-                )),
+                onPressed: () =>
+                    context.navigateNamedTo('details/${article.id}'),
               ),
             ],
           ),

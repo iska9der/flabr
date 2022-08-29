@@ -25,11 +25,11 @@ class _$AppRouter extends RootStackRouter {
       return MaterialPageX<dynamic>(
           routeData: routeData, child: const EmptyRouterPage());
     },
-    ServicesEmptyRoute.name: (routeData) {
+    NewsEmptyRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
           routeData: routeData, child: const EmptyRouterPage());
     },
-    NewsEmptyRoute.name: (routeData) {
+    ServicesEmptyRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
           routeData: routeData, child: const EmptyRouterPage());
     },
@@ -53,6 +53,22 @@ class _$AppRouter extends RootStackRouter {
       return MaterialPageX<dynamic>(
           routeData: routeData,
           child: ArticleDetailPage(key: args.key, id: args.id));
+    },
+    NewsListRoute.name: (routeData) {
+      final pathParams = routeData.inheritedPathParams;
+      final args = routeData.argsAs<NewsListRouteArgs>(
+          orElse: () => NewsListRouteArgs(flow: pathParams.getString('flow')));
+      return MaterialPageX<dynamic>(
+          routeData: routeData,
+          child: NewsListPage(key: args.key, flow: args.flow));
+    },
+    NewsDetailRoute.name: (routeData) {
+      final pathParams = routeData.inheritedPathParams;
+      final args = routeData.argsAs<NewsDetailRouteArgs>(
+          orElse: () => NewsDetailRouteArgs(id: pathParams.getString('id')));
+      return MaterialPageX<dynamic>(
+          routeData: routeData,
+          child: NewsDetailPage(key: args.key, id: args.id));
     },
     ServicesRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
@@ -78,10 +94,6 @@ class _$AppRouter extends RootStackRouter {
     UserArticleRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
           routeData: routeData, child: const UserArticlePage());
-    },
-    NewsListRoute.name: (routeData) {
-      return MaterialPageX<dynamic>(
-          routeData: routeData, child: const NewsListPage());
     }
   };
 
@@ -107,6 +119,20 @@ class _$AppRouter extends RootStackRouter {
                 RouteConfig(ArticleDetailRoute.name,
                     path: 'details/:id', parent: ArticlesEmptyRoute.name)
               ]),
+          RouteConfig(NewsEmptyRoute.name,
+              path: 'news',
+              parent: DashboardRoute.name,
+              children: [
+                RouteConfig('#redirect',
+                    path: '',
+                    parent: NewsEmptyRoute.name,
+                    redirectTo: 'flows/all',
+                    fullMatch: true),
+                RouteConfig(NewsListRoute.name,
+                    path: 'flows/:flow', parent: NewsEmptyRoute.name),
+                RouteConfig(NewsDetailRoute.name,
+                    path: 'details/:id', parent: NewsEmptyRoute.name)
+              ]),
           RouteConfig(ServicesEmptyRoute.name,
               path: 'services',
               parent: DashboardRoute.name,
@@ -125,15 +151,23 @@ class _$AppRouter extends RootStackRouter {
                           path: 'article', parent: UserDashboardRoute.name)
                     ])
               ]),
-          RouteConfig(NewsEmptyRoute.name,
-              path: 'news',
-              parent: DashboardRoute.name,
-              children: [
-                RouteConfig(NewsListRoute.name,
-                    path: '', parent: NewsEmptyRoute.name)
-              ]),
           RouteConfig(SettingsRoute.name,
               path: 'settings', parent: DashboardRoute.name),
+          RouteConfig('*/flows/:flow/news#redirect',
+              path: '*/flows/:flow/news',
+              parent: DashboardRoute.name,
+              redirectTo: 'news/flows/:flow',
+              fullMatch: true),
+          RouteConfig('*/news/#redirect',
+              path: '*/news/',
+              parent: DashboardRoute.name,
+              redirectTo: 'news',
+              fullMatch: true),
+          RouteConfig('*/news/t/:id#redirect',
+              path: '*/news/t/:id',
+              parent: DashboardRoute.name,
+              redirectTo: 'news/details/:id',
+              fullMatch: true),
           RouteConfig('*/flows/:flow/#redirect',
               path: '*/flows/:flow/',
               parent: DashboardRoute.name,
@@ -158,11 +192,6 @@ class _$AppRouter extends RootStackRouter {
               path: '*/users/:login/*',
               parent: DashboardRoute.name,
               redirectTo: 'services/users/:login/detail',
-              fullMatch: true),
-          RouteConfig('*/news/#redirect',
-              path: '*/news/',
-              parent: DashboardRoute.name,
-              redirectTo: 'news',
               fullMatch: true)
         ])
       ];
@@ -189,21 +218,21 @@ class ArticlesEmptyRoute extends PageRouteInfo<void> {
 
 /// generated route for
 /// [EmptyRouterPage]
+class NewsEmptyRoute extends PageRouteInfo<void> {
+  const NewsEmptyRoute({List<PageRouteInfo>? children})
+      : super(NewsEmptyRoute.name, path: 'news', initialChildren: children);
+
+  static const String name = 'NewsEmptyRoute';
+}
+
+/// generated route for
+/// [EmptyRouterPage]
 class ServicesEmptyRoute extends PageRouteInfo<void> {
   const ServicesEmptyRoute({List<PageRouteInfo>? children})
       : super(ServicesEmptyRoute.name,
             path: 'services', initialChildren: children);
 
   static const String name = 'ServicesEmptyRoute';
-}
-
-/// generated route for
-/// [EmptyRouterPage]
-class NewsEmptyRoute extends PageRouteInfo<void> {
-  const NewsEmptyRoute({List<PageRouteInfo>? children})
-      : super(NewsEmptyRoute.name, path: 'news', initialChildren: children);
-
-  static const String name = 'NewsEmptyRoute';
 }
 
 /// generated route for
@@ -265,6 +294,56 @@ class ArticleDetailRouteArgs {
 }
 
 /// generated route for
+/// [NewsListPage]
+class NewsListRoute extends PageRouteInfo<NewsListRouteArgs> {
+  NewsListRoute({Key? key, required String flow})
+      : super(NewsListRoute.name,
+            path: 'flows/:flow',
+            args: NewsListRouteArgs(key: key, flow: flow),
+            rawPathParams: {'flow': flow});
+
+  static const String name = 'NewsListRoute';
+}
+
+class NewsListRouteArgs {
+  const NewsListRouteArgs({this.key, required this.flow});
+
+  final Key? key;
+
+  final String flow;
+
+  @override
+  String toString() {
+    return 'NewsListRouteArgs{key: $key, flow: $flow}';
+  }
+}
+
+/// generated route for
+/// [NewsDetailPage]
+class NewsDetailRoute extends PageRouteInfo<NewsDetailRouteArgs> {
+  NewsDetailRoute({Key? key, required String id})
+      : super(NewsDetailRoute.name,
+            path: 'details/:id',
+            args: NewsDetailRouteArgs(key: key, id: id),
+            rawPathParams: {'id': id});
+
+  static const String name = 'NewsDetailRoute';
+}
+
+class NewsDetailRouteArgs {
+  const NewsDetailRouteArgs({this.key, required this.id});
+
+  final Key? key;
+
+  final String id;
+
+  @override
+  String toString() {
+    return 'NewsDetailRouteArgs{key: $key, id: $id}';
+  }
+}
+
+/// generated route for
 /// [ServicesPage]
 class ServicesRoute extends PageRouteInfo<void> {
   const ServicesRoute() : super(ServicesRoute.name, path: '');
@@ -321,12 +400,4 @@ class UserArticleRoute extends PageRouteInfo<void> {
   const UserArticleRoute() : super(UserArticleRoute.name, path: 'article');
 
   static const String name = 'UserArticleRoute';
-}
-
-/// generated route for
-/// [NewsListPage]
-class NewsListRoute extends PageRouteInfo<void> {
-  const NewsListRoute() : super(NewsListRoute.name, path: '');
-
-  static const String name = 'NewsListRoute';
 }
