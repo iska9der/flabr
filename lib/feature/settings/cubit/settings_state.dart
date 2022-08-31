@@ -9,6 +9,7 @@ class SettingsState extends Equatable {
     this.langArticles = const [LanguageEnum.ru],
     this.isDarkTheme = false,
     this.initialDeepLink = '',
+    this.articleConfig = ArticleConfigModel.empty,
   });
 
   final SettingsStatus status;
@@ -20,6 +21,7 @@ class SettingsState extends Equatable {
   final List<LanguageEnum> langArticles;
   final bool isDarkTheme;
   final String initialDeepLink;
+  final ArticleConfigModel articleConfig;
 
   SettingsState copyWith({
     SettingsStatus? status,
@@ -27,6 +29,7 @@ class SettingsState extends Equatable {
     List<LanguageEnum>? langArticles,
     bool? isDarkTheme,
     String? initialDeepLink,
+    ArticleConfigModel? articleConfig,
   }) {
     return SettingsState(
       status: status ?? this.status,
@@ -34,6 +37,7 @@ class SettingsState extends Equatable {
       langArticles: langArticles ?? this.langArticles,
       isDarkTheme: isDarkTheme ?? this.isDarkTheme,
       initialDeepLink: initialDeepLink ?? this.initialDeepLink,
+      articleConfig: articleConfig ?? this.articleConfig,
     );
   }
 
@@ -47,5 +51,6 @@ class SettingsState extends Equatable {
         langArticles,
         isDarkTheme,
         initialDeepLink,
+        articleConfig,
       ];
 }

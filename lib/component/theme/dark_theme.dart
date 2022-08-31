@@ -35,6 +35,7 @@ ThemeData darkTheme() {
     switchTheme: appSwitchThemeData.copyWith(
       thumbColor: MaterialStateProperty.all(accentColor),
     ),
+    sliderTheme: appSliderThemeData,
   );
 
   return themeData;

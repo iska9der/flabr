@@ -6,12 +6,14 @@ import '../../../component/language.dart';
 import '../../../common/exception/value_exception.dart';
 import '../../../component/router/app_router.dart';
 import '../../../component/storage/cache_storage.dart';
+import '../model/article_config_model.dart';
 
 part 'settings_state.dart';
 
 const isDarkThemeCacheKey = 'isDarkTheme';
 const langUICacheKey = 'langUI';
 const langArticlesCacheKey = 'langArticles';
+const articleConfigCacheKey = 'articleConfig';
 
 class SettingsCubit extends Cubit<SettingsState> {
   SettingsCubit({
@@ -29,8 +31,11 @@ class SettingsCubit extends Cubit<SettingsState> {
   void init() async {
     emit(state.copyWith(status: SettingsStatus.loading));
 
+    /// todo: эту штуку можно оптимизировать, на мой блестящий взгляд:
+    /// возвращать из функций значения и менять state одним поджопником
     await initLocales();
     await initTheme();
+    await initArticleConfig();
     await initDeepLink();
 
     emit(state.copyWith(status: SettingsStatus.success));
@@ -69,15 +74,15 @@ class SettingsCubit extends Cubit<SettingsState> {
     }
   }
 
-  changeUILang(LanguageEnum? uiLang) async {
+  changeUILang(LanguageEnum? uiLang) {
     if (uiLang == null) return;
 
-    await _storage.write(langUICacheKey, uiLang.name);
+    _storage.write(langUICacheKey, uiLang.name);
 
     emit(state.copyWith(langUI: uiLang));
   }
 
-  changeArticlesLang(LanguageEnum lang, {bool? isEnabled}) async {
+  changeArticlesLang(LanguageEnum lang, {bool? isEnabled}) {
     if (isEnabled == null) return;
 
     var langs = [...state.langArticles];
@@ -91,8 +96,7 @@ class SettingsCubit extends Cubit<SettingsState> {
     if (langs.isEmpty) return;
 
     String langsAsString = encodeLangs(langs);
-
-    await _storage.write(langArticlesCacheKey, langsAsString);
+    _storage.write(langArticlesCacheKey, langsAsString);
 
     emit(state.copyWith(langArticles: langs));
   }
@@ -130,5 +134,38 @@ class SettingsCubit extends Cubit<SettingsState> {
 
       router.navigateNamed(path);
     });
+  }
+
+  /// ARTICLE CONFIG
+  ///
+
+  initArticleConfig() async {
+    String? raw = await _storage.read(articleConfigCacheKey);
+
+    if (raw == null) return;
+
+    ArticleConfigModel config = ArticleConfigModel.fromJson(raw);
+
+    emit(state.copyWith(articleConfig: config));
+  }
+
+  void changeArticleFontScale(double newScale) {
+    if (state.articleConfig.fontScale == newScale) return;
+
+    var newConfig = state.articleConfig.copyWith(fontScale: newScale);
+
+    _storage.write(articleConfigCacheKey, newConfig.toJson());
+
+    emit(state.copyWith(articleConfig: newConfig));
+  }
+
+  void changeArticleImageVisibility({bool? isVisible}) {
+    if (state.articleConfig.isImagesVisible == isVisible) return;
+
+    var newConfig = state.articleConfig.copyWith(isImagesVisible: isVisible);
+
+    _storage.write(articleConfigCacheKey, newConfig.toJson());
+
+    emit(state.copyWith(articleConfig: newConfig));
   }
 }

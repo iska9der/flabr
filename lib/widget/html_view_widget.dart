@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:fwfh_selectable_text/fwfh_selectable_text.dart';
@@ -10,6 +11,7 @@ import '../../widget/extension/extension.dart';
 import '../../widget/network_image_widget.dart';
 import '../../component/di/dependencies.dart';
 import '../../component/router/app_router.dart';
+import '../feature/settings/cubit/settings_cubit.dart';
 import 'progress_indicator.dart';
 
 class HtmlView extends StatelessWidget {
@@ -24,46 +26,67 @@ class HtmlView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return HtmlWidget(
-      textHtml,
-      key: ValueKey(Theme.of(context).brightness),
-      renderMode: renderMode,
-      onTapUrl: (String url) async {
-        await getIt.get<AppRouter>().pushArticleOrExternal(Uri.parse(url));
+    return BlocBuilder<SettingsCubit, SettingsState>(
+      builder: (context, state) {
+        var articleConfig = state.articleConfig;
 
-        return true;
-      },
-      onLoadingBuilder: (ctx, el, prgrs) => const CircleIndicator.small(),
-      factoryBuilder: () => CustomFactory(context),
-      customStylesBuilder: ((element) {
-        if (element.localName == 'div' && element.parent == null) {
-          return {'margin-left': '20px', 'margin-right': '20px'};
-        }
+        var fontSize = Theme.of(context).textTheme.bodyText1!.fontSize! *
+            articleConfig.fontScale;
+        var isImageVisible = articleConfig.isImagesVisible;
 
-        return null;
-      }),
-      customWidgetBuilder: (element) {
-        if (element.localName == 'img') {
-          String imgSrc =
-              element.attributes['data-src'] ?? element.attributes['src'] ?? '';
+        return HtmlWidget(
+          textHtml,
+          renderMode: renderMode,
+          rebuildTriggers: RebuildTriggers([
+            Theme.of(context).brightness,
+            fontSize,
+            isImageVisible,
+          ]),
+          onTapUrl: (String url) async {
+            await getIt.get<AppRouter>().pushArticleOrExternal(Uri.parse(url));
 
-          if (imgSrc.isEmpty) {
+            return true;
+          },
+          onLoadingBuilder: (ctx, el, prgrs) => const CircleIndicator.small(),
+          factoryBuilder: () => CustomFactory(context),
+          customStylesBuilder: ((element) {
+            if (element.localName == 'div' && element.parent == null) {
+              return {
+                'margin-left': '20px',
+                'margin-right': '20px',
+                'font-size': '${fontSize}px',
+              };
+            }
+
             return null;
-          }
+          }),
+          customWidgetBuilder: (element) {
+            if (element.localName == 'img') {
+              if (!isImageVisible) return Wrap();
 
-          String imgExt = p.extension(imgSrc);
+              String imgSrc = element.attributes['data-src'] ??
+                  element.attributes['src'] ??
+                  '';
 
-          if (imgExt == '.svg') return null;
+              if (imgSrc.isEmpty) {
+                return null;
+              }
 
-          return Align(
-            child: NetworkImageWidget(
-              imageUrl: imgSrc,
-              isTapable: true,
-            ),
-          );
-        }
+              String imgExt = p.extension(imgSrc);
 
-        return null;
+              if (imgExt == '.svg') return null;
+
+              return Align(
+                child: NetworkImageWidget(
+                  imageUrl: imgSrc,
+                  isTapable: true,
+                ),
+              );
+            }
+
+            return null;
+          },
+        );
       },
     );
   }

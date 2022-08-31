@@ -55,3 +55,8 @@ const DrawerThemeData appDrawerThemeData = DrawerThemeData(width: 200);
 const CheckboxThemeData appCheckboxThemeData = CheckboxThemeData();
 
 const SwitchThemeData appSwitchThemeData = SwitchThemeData();
+
+const SliderThemeData appSliderThemeData = SliderThemeData(
+  thumbShape: RoundSliderThumbShape(enabledThumbRadius: 6.0),
+  overlayShape: RoundSliderOverlayShape(overlayRadius: 20.0),
+);
