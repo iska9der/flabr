@@ -108,9 +108,9 @@ class _$AppRouter extends RootStackRouter {
       return MaterialPageX<dynamic>(
           routeData: routeData, child: const UserDetailPage());
     },
-    UserArticleRoute.name: (routeData) {
+    UserArticleListRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
-          routeData: routeData, child: const UserArticlePage());
+          routeData: routeData, child: const UserArticleListPage());
     }
   };
 
@@ -173,7 +173,7 @@ class _$AppRouter extends RootStackRouter {
                     children: [
                       RouteConfig(UserDetailRoute.name,
                           path: 'detail', parent: UserDashboardRoute.name),
-                      RouteConfig(UserArticleRoute.name,
+                      RouteConfig(UserArticleListRoute.name,
                           path: 'article', parent: UserDashboardRoute.name)
                     ])
               ]),
@@ -219,6 +219,11 @@ class _$AppRouter extends RootStackRouter {
               parent: DashboardRoute.name,
               redirectTo: 'services/users/:login',
               fullMatch: true),
+          RouteConfig('*/users/:login/posts#redirect',
+              path: '*/users/:login/posts',
+              parent: DashboardRoute.name,
+              redirectTo: 'services/users/:login/article',
+              fullMatch: true),
           RouteConfig('*/users/:login/*#redirect',
               path: '*/users/:login/*',
               parent: DashboardRoute.name,
@@ -232,7 +237,7 @@ class _$AppRouter extends RootStackRouter {
           RouteConfig('*/hub/:alias#redirect',
               path: '*/hub/:alias',
               parent: DashboardRoute.name,
-              redirectTo: 'services/hubs/:alias',
+              redirectTo: 'services/hubs/:alias/profile',
               fullMatch: true),
           RouteConfig('*/hub/:alias/*#redirect',
               path: '*/hub/:alias/*',
@@ -484,9 +489,10 @@ class UserDetailRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [UserArticlePage]
-class UserArticleRoute extends PageRouteInfo<void> {
-  const UserArticleRoute() : super(UserArticleRoute.name, path: 'article');
+/// [UserArticleListPage]
+class UserArticleListRoute extends PageRouteInfo<void> {
+  const UserArticleListRoute()
+      : super(UserArticleListRoute.name, path: 'article');
 
-  static const String name = 'UserArticleRoute';
+  static const String name = 'UserArticleListRoute';
 }

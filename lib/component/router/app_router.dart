@@ -13,7 +13,7 @@ import '../../feature/hub/page/hub_list_page.dart';
 import '../../page/dashboard_page.dart';
 import '../../page/services_page.dart';
 import '../../page/settings_page.dart';
-import '../../feature/user/page/user_article_page.dart';
+import '../../feature/user/page/user_article_list_page.dart';
 import '../../feature/user/page/user_dashboard_page.dart';
 import '../../feature/user/page/user_detail_page.dart';
 import '../../feature/user/page/user_list_page.dart';
@@ -124,9 +124,9 @@ part 'app_router.gr.dart';
                   page: UserDetailPage,
                 ),
                 AutoRoute(
-                  path: UserArticlePage.routePath,
-                  name: UserArticlePage.routeName,
-                  page: UserArticlePage,
+                  path: UserArticleListPage.routePath,
+                  name: UserArticleListPage.routeName,
+                  page: UserArticleListPage,
                 ),
               ],
             ),
@@ -191,9 +191,14 @@ part 'app_router.gr.dart';
           path: '*/users/:login',
           redirectTo: 'services/users/:login',
         ),
+        RedirectRoute(
+          path: '*/users/:login/posts',
+          redirectTo: 'services/users/:login/article',
+        ),
 
-        /// todo: временный редирект, пока не реализованы
-        /// вложенные пути у пользователей
+        /// todo: временный редирект на детали пользователя,
+        /// пока не реализованы остальные вложенные пути
+        /// (комментарии, закладки, подписчики, подписки)
         RedirectRoute(
           path: '*/users/:login/*',
           redirectTo: 'services/users/:login/detail',
@@ -206,11 +211,12 @@ part 'app_router.gr.dart';
         ),
         RedirectRoute(
           path: '*/hub/:alias',
-          redirectTo: 'services/hubs/:alias',
+          redirectTo: 'services/hubs/:alias/profile',
         ),
 
-        /// todo: временный редирект, пока не реализованы
-        /// вложенные пути в хабах
+        /// todo: временный редирект в профиль хаба со статьями,
+        /// пока не реализованы остальные вложенные пути
+        /// (авторы, компании)
         RedirectRoute(
           path: '*/hub/:alias/*',
           redirectTo: 'services/hubs/:alias',

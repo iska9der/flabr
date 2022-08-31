@@ -16,7 +16,20 @@ class ArticleRepository {
   final HttpClient _baseClient;
   final HttpClient _proxyClient;
 
-  Future<ArticleListResponse> fetchAll({
+  /// todo: получение моей ленты
+  void fetchFeed() {}
+
+  Future<Map<String, dynamic>> fetchById(String id) async {
+    try {
+      final response = await _baseClient.get('/articles/$id');
+
+      return response.data;
+    } catch (e) {
+      throw FetchException();
+    }
+  }
+
+  Future<ArticleListResponse> fetchByFlow({
     required String langUI,
     required String langArticles,
     required ArticleType type,
@@ -54,19 +67,6 @@ class ArticleRepository {
     }
   }
 
-  /// todo: получение моей ленты
-  void fetchFeed() {}
-
-  Future<Map<String, dynamic>> fetchById(String id) async {
-    try {
-      final response = await _baseClient.get('/articles/$id');
-
-      return response.data;
-    } catch (e) {
-      throw FetchException();
-    }
-  }
-
   Future<ArticleListResponse> fetchByHub({
     required String langUI,
     required String langArticles,
@@ -91,9 +91,36 @@ class ArticleRepository {
         '/articles/?hub=$hub&$queryString',
       );
 
-      return ArticleListResponse.fromMap(
-        response.data,
+      return ArticleListResponse.fromMap(response.data);
+    } on DisplayableException {
+      rethrow;
+    } catch (e) {
+      throw FetchException();
+    }
+  }
+
+  fetchByUser({
+    required String langUI,
+    required String langArticles,
+    required String user,
+    required SortEnum sort,
+    required DatePeriodEnum period,
+    required String score,
+    required String page,
+  }) async {
+    try {
+      final params = ArticleListParams(
+        fl: langArticles,
+        hl: langUI,
+        page: page,
       );
+
+      final queryString = params.toQueryString();
+      final response = await _baseClient.get(
+        '/articles/?user=$user&$queryString',
+      );
+
+      return ArticleListResponse.fromMap(response.data);
     } on DisplayableException {
       rethrow;
     } catch (e) {

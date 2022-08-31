@@ -9,6 +9,7 @@ class ArticleListState extends Equatable {
     this.from = ArticleFromEnum.flow,
     this.flow = FlowEnum.all,
     this.hub = '',
+    this.user = '',
     this.langUI = LanguageEnum.ru,
     this.langArticles = const [LanguageEnum.ru],
     this.type = ArticleType.article,
@@ -25,6 +26,7 @@ class ArticleListState extends Equatable {
   final ArticleFromEnum from;
   final FlowEnum flow;
   final String hub;
+  final String user;
   final LanguageEnum langUI;
   final List<LanguageEnum> langArticles;
   final ArticleType type;
@@ -41,6 +43,7 @@ class ArticleListState extends Equatable {
     ArticleFromEnum? from,
     FlowEnum? flow,
     String? hub,
+    String? user,
     LanguageEnum? langUI,
     List<LanguageEnum>? langArticles,
     ArticleType? type,
@@ -57,6 +60,7 @@ class ArticleListState extends Equatable {
       from: from ?? this.from,
       flow: flow ?? this.flow,
       hub: hub ?? this.hub,
+      user: user ?? this.user,
       langUI: langUI ?? this.langUI,
       langArticles: langArticles ?? this.langArticles,
       type: type ?? this.type,
@@ -79,6 +83,7 @@ class ArticleListState extends Equatable {
         from,
         flow,
         hub,
+        user,
         langUI,
         langArticles,
         type,

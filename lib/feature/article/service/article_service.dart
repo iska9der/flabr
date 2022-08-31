@@ -14,6 +14,32 @@ class ArticleService {
 
   ArticleListResponse cached = ArticleListResponse.empty;
 
+  /// todo: unimplemented
+  void fetchFeed() {
+    repository.fetchFeed();
+  }
+
+  Future<ArticleModel> fetchById(String id) async {
+    final rawData = await repository.fetchById(id);
+
+    final article = ArticleModel.fromMap(rawData);
+
+    return article;
+  }
+
+  /// Сортируем статьи в полученном списке
+  void _sortListResponse(SortEnum sort, ArticleListResponse response) {
+    if (sort == SortEnum.byBest) {
+      response.refs.sort((a, b) => b.statistics.score.compareTo(
+            a.statistics.score,
+          ));
+    } else {
+      response.refs.sort((a, b) => b.timePublished.compareTo(
+            a.timePublished,
+          ));
+    }
+  }
+
   /// Получение статей/новостей
   ///
   /// Сортировка полученных статей происходит как на сайте:
@@ -30,7 +56,7 @@ class ArticleService {
     required String score,
     required String page,
   }) async {
-    final response = await repository.fetchAll(
+    final response = await repository.fetchByFlow(
       langUI: langUI.name,
       langArticles: encodeLangs(langArticles),
       type: type,
@@ -41,32 +67,11 @@ class ArticleService {
       page: page,
     );
 
-    if (sort == SortEnum.byBest) {
-      response.refs.sort((a, b) => b.statistics.score.compareTo(
-            a.statistics.score,
-          ));
-    } else {
-      response.refs.sort((a, b) => b.timePublished.compareTo(
-            a.timePublished,
-          ));
-    }
+    _sortListResponse(sort, response);
 
     cached = response;
 
     return cached;
-  }
-
-  /// todo: unimplemented
-  void fetchFeed() {
-    repository.fetchFeed();
-  }
-
-  Future<ArticleModel> fetchById(String id) async {
-    final rawData = await repository.fetchById(id);
-
-    final article = ArticleModel.fromMap(rawData);
-
-    return article;
   }
 
   Future<ArticleListResponse> fetchByHub({
@@ -88,15 +93,33 @@ class ArticleService {
       page: page,
     );
 
-    if (sort == SortEnum.byBest) {
-      response.refs.sort((a, b) => b.statistics.score.compareTo(
-            a.statistics.score,
-          ));
-    } else {
-      response.refs.sort((a, b) => b.timePublished.compareTo(
-            a.timePublished,
-          ));
-    }
+    _sortListResponse(sort, response);
+
+    cached = response;
+
+    return cached;
+  }
+
+  fetchByUser({
+    required LanguageEnum langUI,
+    required List<LanguageEnum> langArticles,
+    required String user,
+    required SortEnum sort,
+    required DatePeriodEnum period,
+    required String score,
+    required String page,
+  }) async {
+    final response = await repository.fetchByUser(
+      langUI: langUI.name,
+      langArticles: encodeLangs(langArticles),
+      user: user,
+      sort: sort,
+      period: period,
+      score: score,
+      page: page,
+    );
+
+    _sortListResponse(sort, response);
 
     cached = response;
 

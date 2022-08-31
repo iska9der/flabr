@@ -8,7 +8,7 @@ import '../../settings/cubit/settings_cubit.dart';
 import '../cubit/user_cubit.dart';
 import '../service/user_service.dart';
 import '../widget/nav_link_widget.dart';
-import 'user_article_page.dart';
+import 'user_article_list_page.dart';
 import 'user_detail_page.dart';
 
 class UserDashboardPage extends StatelessWidget {
@@ -36,7 +36,7 @@ class UserDashboardPage extends StatelessWidget {
       child: AutoTabsRouter(
         routes: const [
           UserDetailRoute(),
-          UserArticleRoute(),
+          UserArticleListRoute(),
         ],
         builder: (context, child, animation) {
           return Scaffold(
@@ -52,8 +52,8 @@ class UserDashboardPage extends StatelessWidget {
                       route: UserDetailPage.routePath,
                     ),
                     NavLinkWidget(
-                      title: UserArticlePage.title,
-                      route: UserArticlePage.routePath,
+                      title: UserArticleListPage.title,
+                      route: UserArticleListPage.routePath,
                     ),
                   ],
                 ),

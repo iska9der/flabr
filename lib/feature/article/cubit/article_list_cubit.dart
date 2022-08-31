@@ -21,6 +21,7 @@ class ArticleListCubit extends Cubit<ArticleListState> {
     from = ArticleFromEnum.flow,
     flow = FlowEnum.all,
     hub = '',
+    user = '',
     type = ArticleType.article,
     required LanguageEnum langUI,
     required List<LanguageEnum> langArticles,
@@ -30,13 +31,17 @@ class ArticleListCubit extends Cubit<ArticleListState> {
             from: from,
             flow: flow,
             hub: hub,
+            user: user,
             type: type,
             langUI: langUI,
             langArticles: langArticles,
           ),
         ) {
     if (from == ArticleFromEnum.hub) {
-      assert(state.hub.isNotEmpty, 'Нужно указать хаб');
+      assert(state.hub.isNotEmpty, 'Нужно указать хаб [hub]');
+    }
+    if (from == ArticleFromEnum.user) {
+      assert(state.user.isNotEmpty, 'Нужно указать пользователя [user]');
     }
   }
 
@@ -45,64 +50,17 @@ class ArticleListCubit extends Cubit<ArticleListState> {
   bool get isFirstFetch => state.page == 1;
   bool get isLastPage => state.page >= state.pagesCount;
 
-  void fetch() async {
-    switch (state.from) {
-      case ArticleFromEnum.flow:
-        await _fetchByFlow();
-        break;
-      case ArticleFromEnum.hub:
-        await _fetchByHub();
-        break;
-    }
-  }
-
-  Future<void> _fetchByFlow() async {
-    if (state.status == ArticlesStatus.loading || !isFirstFetch && isLastPage) {
-      return;
-    }
-
-    emit(state.copyWith(status: ArticlesStatus.loading));
-
-    try {
-      var response = await _service.fetchByFlow(
-        langUI: state.langUI,
-        langArticles: state.langArticles,
-        type: state.type,
-        flow: state.flow,
-        sort: state.sort,
-        period: state.period,
-        score: state.score,
-        page: state.page.toString(),
-      );
-
-      emit(state.copyWith(
-        status: ArticlesStatus.success,
-        articles: [...state.articles, ...response.refs],
-        page: state.page + 1,
-        pagesCount: response.pagesCount,
-      ));
-    } on DisplayableException catch (e) {
-      emit(state.copyWith(
-        error: e.toString(),
-        status: ArticlesStatus.failure,
-      ));
-    } catch (e) {
-      emit(state.copyWith(
-        error: 'Не удалось получить статьи',
-        status: ArticlesStatus.failure,
-      ));
-    }
-  }
-
   void changeFlow(FlowEnum value) {
     if (state.flow == value) return;
 
     emit(ArticleListState(
       from: state.from,
-      type: state.type,
       flow: value,
+      hub: state.hub,
+      user: state.user,
       langUI: state.langUI,
       langArticles: state.langArticles,
+      type: state.type,
     ));
   }
 
@@ -113,6 +71,7 @@ class ArticleListCubit extends Cubit<ArticleListState> {
       from: state.from,
       flow: state.flow,
       hub: state.hub,
+      user: state.user,
       langUI: state.langUI,
       langArticles: state.langArticles,
       type: state.type,
@@ -141,6 +100,7 @@ class ArticleListCubit extends Cubit<ArticleListState> {
       from: state.from,
       flow: state.flow,
       hub: state.hub,
+      user: state.user,
       langUI: state.langUI,
       langArticles: state.langArticles,
       type: state.type,
@@ -156,13 +116,17 @@ class ArticleListCubit extends Cubit<ArticleListState> {
       from: state.from,
       flow: state.flow,
       hub: state.hub,
+      user: state.user,
       langUI: langUI ?? state.langUI,
       langArticles: langArticles ?? state.langArticles,
       type: state.type,
     ));
   }
 
-  Future<void> _fetchByHub() async {
+  /// FETCH ARTICLES
+  ///
+  ///
+  void fetch() async {
     if (state.status == ArticlesStatus.loading || !isFirstFetch && isLastPage) {
       return;
     }
@@ -170,22 +134,17 @@ class ArticleListCubit extends Cubit<ArticleListState> {
     emit(state.copyWith(status: ArticlesStatus.loading));
 
     try {
-      var response = await _service.fetchByHub(
-        langUI: state.langUI,
-        langArticles: state.langArticles,
-        hub: state.hub,
-        sort: state.sort,
-        period: state.period,
-        score: state.score,
-        page: state.page.toString(),
-      );
-
-      emit(state.copyWith(
-        status: ArticlesStatus.success,
-        articles: [...state.articles, ...response.refs],
-        page: state.page + 1,
-        pagesCount: response.pagesCount,
-      ));
+      switch (state.from) {
+        case ArticleFromEnum.flow:
+          await _fetchByFlow();
+          break;
+        case ArticleFromEnum.hub:
+          await _fetchByHub();
+          break;
+        case ArticleFromEnum.user:
+          await _fetchByUser();
+          break;
+      }
     } on DisplayableException catch (e) {
       emit(state.copyWith(
         error: e.toString(),
@@ -197,5 +156,63 @@ class ArticleListCubit extends Cubit<ArticleListState> {
         status: ArticlesStatus.failure,
       ));
     }
+  }
+
+  Future<void> _fetchByFlow() async {
+    var response = await _service.fetchByFlow(
+      langUI: state.langUI,
+      langArticles: state.langArticles,
+      type: state.type,
+      flow: state.flow,
+      sort: state.sort,
+      period: state.period,
+      score: state.score,
+      page: state.page.toString(),
+    );
+
+    emit(state.copyWith(
+      status: ArticlesStatus.success,
+      articles: [...state.articles, ...response.refs],
+      page: state.page + 1,
+      pagesCount: response.pagesCount,
+    ));
+  }
+
+  Future<void> _fetchByHub() async {
+    var response = await _service.fetchByHub(
+      langUI: state.langUI,
+      langArticles: state.langArticles,
+      hub: state.hub,
+      sort: state.sort,
+      period: state.period,
+      score: state.score,
+      page: state.page.toString(),
+    );
+
+    emit(state.copyWith(
+      status: ArticlesStatus.success,
+      articles: [...state.articles, ...response.refs],
+      page: state.page + 1,
+      pagesCount: response.pagesCount,
+    ));
+  }
+
+  Future<void> _fetchByUser() async {
+    var response = await _service.fetchByUser(
+      langUI: state.langUI,
+      langArticles: state.langArticles,
+      user: state.user,
+      sort: state.sort,
+      period: state.period,
+      score: state.score,
+      page: state.page.toString(),
+    );
+
+    emit(state.copyWith(
+      status: ArticlesStatus.success,
+      articles: [...state.articles, ...response.refs],
+      page: state.page + 1,
+      pagesCount: response.pagesCount,
+    ));
   }
 }

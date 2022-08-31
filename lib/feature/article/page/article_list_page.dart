@@ -113,7 +113,9 @@ class ArticleListPageView extends StatelessWidget {
                 const SliverAppBar(
                   automaticallyImplyLeading: false,
                   floating: true,
-                  toolbarHeight: 100,
+                  elevation: 0,
+                  scrolledUnderElevation: 0,
+                  toolbarHeight: sortToolbarHeight,
                   title: ArticlesSortWidget(),
                 ),
 

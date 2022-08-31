@@ -78,8 +78,10 @@ class HubDetailPageView extends StatelessWidget {
                 SliverToBoxAdapter(child: HubProfileCardWidget()),
                 SliverAppBar(
                   automaticallyImplyLeading: false,
+                  elevation: 0,
+                  scrolledUnderElevation: 0,
                   floating: true,
-                  toolbarHeight: 100,
+                  toolbarHeight: sortToolbarHeight,
                   title: ArticlesSortWidget(),
                 ),
                 _HubArticleListView(),
