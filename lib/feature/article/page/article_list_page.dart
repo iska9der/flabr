@@ -13,10 +13,7 @@ import '../../scroll/widget/floating_scroll_to_top_button.dart';
 import '../../settings/cubit/settings_cubit.dart';
 import '../cubit/article_list_cubit.dart';
 import '../model/flow_enum.dart';
-import '../model/sort/date_period_enum.dart';
-import '../model/sort/rating_score_enum.dart';
 import '../model/sort/sort_enum.dart';
-import '../model/sort/sort_option_model.dart';
 import '../service/article_service.dart';
 import '../widget/article_card_widget.dart';
 import '../widget/articles_sort_widget.dart';
@@ -119,36 +116,24 @@ class ArticleListPageView extends StatelessWidget {
                     return SliverAppBar(
                       automaticallyImplyLeading: false,
                       floating: true,
-                      toolbarHeight: 80,
+                      toolbarHeight: 100,
                       title: Column(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           SortWidget(
                             isEnabled: state.status != ArticlesStatus.loading,
                             currentValue: state.sort,
-                            onTap: (value) => articlesCubit.changeSort(value),
+                            onTap: (sort) => articlesCubit.changeSort(sort),
                           ),
                           SortOptionsWidget(
                             isEnabled: state.status != ArticlesStatus.loading,
-                            options: state.sort == SortEnum.byBest
-                                ? DatePeriodEnum.values
-                                    .map((period) => SortOptionModel(
-                                          label: period.label,
-                                          value: period,
-                                        ))
-                                    .toList()
-                                : RatingScoreEnum.values
-                                    .map((score) => SortOptionModel(
-                                          label: score.label,
-                                          value: score.value,
-                                        ))
-                                    .toList(),
+                            currentSort: state.sort,
                             currentValue: state.sort == SortEnum.byBest
                                 ? state.period
                                 : state.score,
-                            onTap: (value) => articlesCubit.changeSortOption(
+                            onTap: (option) => articlesCubit.changeSortOption(
                               state.sort,
-                              value,
+                              option,
                             ),
                           ),
                         ],

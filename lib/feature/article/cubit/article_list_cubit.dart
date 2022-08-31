@@ -106,6 +106,8 @@ class ArticleListCubit extends Cubit<ArticleListState> {
   }
 
   void changeSort(SortEnum value) {
+    if (state.sort == value) return;
+
     emit(ArticleListState(
       type: state.type,
       langUI: state.langUI,
