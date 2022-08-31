@@ -263,7 +263,7 @@ class AppRouter extends _$AppRouter {
   }
 
   bool isUserUrl(Uri url) {
-    if (url.host.contains('habr.com') && url.path.contains('user/')) {
+    if (url.host.contains('habr.com') && url.path.contains('users/')) {
       return true;
     }
 

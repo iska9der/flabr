@@ -66,7 +66,7 @@ class ArticleListPageView extends StatelessWidget {
       listeners: [
         BlocListener<ScrollCubit, ScrollState>(
           listenWhen: (p, c) => c.isBottomEdge,
-          listener: (c, state) => articlesCubit.fetchByFlow(),
+          listener: (c, state) => articlesCubit.fetch(),
         ),
         BlocListener<SettingsCubit, SettingsState>(
           listenWhen: (p, c) =>
@@ -183,7 +183,7 @@ class ArticleList extends StatelessWidget {
       },
       builder: (context, state) {
         if (state.status == ArticlesStatus.initial) {
-          context.read<ArticleListCubit>().fetchByFlow();
+          context.read<ArticleListCubit>().fetch();
 
           return const SliverFillRemaining(
             child: CircleIndicator(),

@@ -6,10 +6,12 @@ class ArticleListState extends Equatable {
   const ArticleListState({
     this.status = ArticlesStatus.initial,
     this.error = '',
-    this.type = ArticleType.article,
+    this.from = ArticleFromEnum.flow,
+    this.flow = FlowEnum.all,
+    this.hub = '',
     this.langUI = LanguageEnum.ru,
     this.langArticles = const [LanguageEnum.ru],
-    this.flow = FlowEnum.all,
+    this.type = ArticleType.article,
     this.sort = SortEnum.byNew,
     this.period = DatePeriodEnum.daily,
     this.score = '',
@@ -20,10 +22,12 @@ class ArticleListState extends Equatable {
 
   final ArticlesStatus status;
   final String error;
-  final ArticleType type;
+  final ArticleFromEnum from;
+  final FlowEnum flow;
+  final String hub;
   final LanguageEnum langUI;
   final List<LanguageEnum> langArticles;
-  final FlowEnum flow;
+  final ArticleType type;
   final SortEnum sort;
   final DatePeriodEnum period;
   final String score;
@@ -34,10 +38,12 @@ class ArticleListState extends Equatable {
   ArticleListState copyWith({
     ArticlesStatus? status,
     String? error,
-    ArticleType? type,
+    ArticleFromEnum? from,
+    FlowEnum? flow,
+    String? hub,
     LanguageEnum? langUI,
     List<LanguageEnum>? langArticles,
-    FlowEnum? flow,
+    ArticleType? type,
     SortEnum? sort,
     DatePeriodEnum? period,
     String? score,
@@ -48,10 +54,12 @@ class ArticleListState extends Equatable {
     return ArticleListState(
       status: status ?? this.status,
       error: error ?? this.error,
-      type: type ?? this.type,
+      from: from ?? this.from,
+      flow: flow ?? this.flow,
+      hub: hub ?? this.hub,
       langUI: langUI ?? this.langUI,
       langArticles: langArticles ?? this.langArticles,
-      flow: flow ?? this.flow,
+      type: type ?? this.type,
       sort: sort ?? this.sort,
       period: period ?? this.period,
       score: score ?? this.score,
@@ -68,10 +76,12 @@ class ArticleListState extends Equatable {
   List<Object> get props => [
         status,
         error,
-        type,
+        from,
+        flow,
+        hub,
         langUI,
         langArticles,
-        flow,
+        type,
         sort,
         period,
         score,

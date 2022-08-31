@@ -1,0 +1,1 @@
+enum ArticleFromEnum { flow, hub }

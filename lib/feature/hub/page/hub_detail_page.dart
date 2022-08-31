@@ -4,10 +4,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../component/di/dependencies.dart';
 import '../../../widget/progress_indicator.dart';
 import '../../article/cubit/article_list_cubit.dart';
+import '../../article/model/article_from_enum.dart';
 import '../../article/model/flow_enum.dart';
 import '../../article/page/article_list_page.dart';
 import '../../article/service/article_service.dart';
 import '../../scroll/cubit/scroll_cubit.dart';
+import '../../scroll/widget/floating_scroll_to_top_button.dart';
 import '../../settings/cubit/settings_cubit.dart';
 import '../cubit/hub_cubit.dart';
 import '../widget/hub_profile_card_widget.dart';
@@ -40,7 +42,9 @@ class HubDetailPageView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var scrollCtrl = context.read<ScrollCubit>().state.controller;
+
     return Scaffold(
+      floatingActionButton: const FloatingScrollToTopButton(),
       body: BlocBuilder<HubCubit, HubState>(
         builder: (context, state) {
           if (state.status == HubStatus.loading) {
@@ -80,23 +84,22 @@ class _HubArticleListView extends StatelessWidget {
         BlocProvider(
           create: (c) => ArticleListCubit(
             getIt.get<ArticleService>(),
+            from: ArticleFromEnum.hub,
+            hub: cubit.state.alias,
             flow: FlowEnum.fromString('all'),
             langUI: context.read<SettingsCubit>().state.langUI,
             langArticles: context.read<SettingsCubit>().state.langArticles,
-          )..fetchByHub(cubit.state.alias),
+          ),
         ),
       ],
       child: Builder(builder: (context) {
-        var cubit = context.read<HubCubit>();
         var articlesCubit = context.read<ArticleListCubit>();
 
         return MultiBlocListener(
           listeners: [
             BlocListener<ScrollCubit, ScrollState>(
               listenWhen: (p, c) => c.isBottomEdge,
-              listener: (c, state) => context
-                  .read<ArticleListCubit>()
-                  .fetchByHub(cubit.state.alias),
+              listener: (c, state) => articlesCubit.fetch(),
             ),
             BlocListener<SettingsCubit, SettingsState>(
               listenWhen: (p, c) =>
@@ -107,7 +110,7 @@ class _HubArticleListView extends StatelessWidget {
                   langArticles: state.langArticles,
                 );
 
-                context.read<ArticleListCubit>().fetchByHub(cubit.state.alias);
+                articlesCubit.fetch();
 
                 context.read<ScrollCubit>().animateToTop();
               },

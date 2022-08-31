@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../common/exception/displayable_exception.dart';
 import '../../../common/exception/value_exception.dart';
 import '../../../component/localization/language_enum.dart';
+import '../model/article_from_enum.dart';
 import '../model/article_type.dart';
 import '../model/flow_enum.dart';
 import '../model/sort/sort_enum.dart';
@@ -17,24 +18,45 @@ part 'article_list_state.dart';
 class ArticleListCubit extends Cubit<ArticleListState> {
   ArticleListCubit(
     ArticleService service, {
+    from = ArticleFromEnum.flow,
     flow = FlowEnum.all,
+    hub = '',
     type = ArticleType.article,
     required LanguageEnum langUI,
     required List<LanguageEnum> langArticles,
   })  : _service = service,
-        super(ArticleListState(
-          type: type,
-          flow: flow,
-          langUI: langUI,
-          langArticles: langArticles,
-        ));
+        super(
+          ArticleListState(
+            from: from,
+            flow: flow,
+            hub: hub,
+            type: type,
+            langUI: langUI,
+            langArticles: langArticles,
+          ),
+        ) {
+    if (from == ArticleFromEnum.hub) {
+      assert(state.hub.isNotEmpty, 'Нужно указать хаб');
+    }
+  }
 
   final ArticleService _service;
 
   bool get isFirstFetch => state.page == 1;
   bool get isLastPage => state.page >= state.pagesCount;
 
-  void fetchByFlow() async {
+  void fetch() async {
+    switch (state.from) {
+      case ArticleFromEnum.flow:
+        await _fetchByFlow();
+        break;
+      case ArticleFromEnum.hub:
+        await _fetchByHub();
+        break;
+    }
+  }
+
+  Future<void> _fetchByFlow() async {
     if (state.status == ArticlesStatus.loading || !isFirstFetch && isLastPage) {
       return;
     }
@@ -131,7 +153,7 @@ class ArticleListCubit extends Cubit<ArticleListState> {
     ));
   }
 
-  fetchByHub(String hub) async {
+  Future<void> _fetchByHub() async {
     if (state.status == ArticlesStatus.loading || !isFirstFetch && isLastPage) {
       return;
     }
@@ -142,7 +164,7 @@ class ArticleListCubit extends Cubit<ArticleListState> {
       var response = await _service.fetchByHub(
         langUI: state.langUI,
         langArticles: state.langArticles,
-        hub: hub,
+        hub: state.hub,
         sort: state.sort,
         period: state.period,
         score: state.score,
