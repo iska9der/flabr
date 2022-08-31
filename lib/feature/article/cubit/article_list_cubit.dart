@@ -98,10 +98,11 @@ class ArticleListCubit extends Cubit<ArticleListState> {
     if (state.flow == value) return;
 
     emit(ArticleListState(
+      from: state.from,
       type: state.type,
+      flow: value,
       langUI: state.langUI,
       langArticles: state.langArticles,
-      flow: value,
     ));
   }
 
@@ -109,10 +110,12 @@ class ArticleListCubit extends Cubit<ArticleListState> {
     if (state.sort == value) return;
 
     emit(ArticleListState(
-      type: state.type,
+      from: state.from,
+      flow: state.flow,
+      hub: state.hub,
       langUI: state.langUI,
       langArticles: state.langArticles,
-      flow: state.flow,
+      type: state.type,
       sort: value,
     ));
   }
@@ -135,11 +138,13 @@ class ArticleListCubit extends Cubit<ArticleListState> {
     }
 
     emit(newState.copyWith(
-      type: state.type,
+      from: state.from,
+      flow: state.flow,
+      hub: state.hub,
       langUI: state.langUI,
       langArticles: state.langArticles,
+      type: state.type,
       sort: sort,
-      flow: state.flow,
     ));
   }
 
@@ -148,10 +153,12 @@ class ArticleListCubit extends Cubit<ArticleListState> {
     List<LanguageEnum>? langArticles,
   }) {
     emit(ArticleListState(
-      type: state.type,
+      from: state.from,
       flow: state.flow,
+      hub: state.hub,
       langUI: langUI ?? state.langUI,
       langArticles: langArticles ?? state.langArticles,
+      type: state.type,
     ));
   }
 

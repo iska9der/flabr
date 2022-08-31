@@ -13,10 +13,9 @@ import '../../scroll/widget/floating_scroll_to_top_button.dart';
 import '../../settings/cubit/settings_cubit.dart';
 import '../cubit/article_list_cubit.dart';
 import '../model/flow_enum.dart';
-import '../model/sort/sort_enum.dart';
 import '../service/article_service.dart';
 import '../widget/article_card_widget.dart';
-import '../widget/articles_sort_widget.dart';
+import '../widget/sort/articles_sort_widget.dart';
 
 class ArticleListPage extends StatelessWidget {
   const ArticleListPage({Key? key, @PathParam() required this.flow})
@@ -111,39 +110,15 @@ class ArticleListPageView extends StatelessWidget {
                     title: Text(state.flow.label),
                   ),
                 ),
-                BlocBuilder<ArticleListCubit, ArticleListState>(
-                  builder: (context, state) {
-                    return SliverAppBar(
-                      automaticallyImplyLeading: false,
-                      floating: true,
-                      toolbarHeight: 100,
-                      title: Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          SortWidget(
-                            isEnabled: state.status != ArticlesStatus.loading,
-                            currentValue: state.sort,
-                            onTap: (sort) => articlesCubit.changeSort(sort),
-                          ),
-                          SortOptionsWidget(
-                            isEnabled: state.status != ArticlesStatus.loading,
-                            currentSort: state.sort,
-                            currentValue: state.sort == SortEnum.byBest
-                                ? state.period
-                                : state.score,
-                            onTap: (option) => articlesCubit.changeSortOption(
-                              state.sort,
-                              option,
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
+                const SliverAppBar(
+                  automaticallyImplyLeading: false,
+                  floating: true,
+                  toolbarHeight: 100,
+                  title: ArticlesSortWidget(),
                 ),
 
                 /// Статьи
-                const ArticleList(),
+                const ArticleSliverList(),
               ],
             ),
           ),
@@ -153,8 +128,8 @@ class ArticleListPageView extends StatelessWidget {
   }
 }
 
-class ArticleList extends StatelessWidget {
-  const ArticleList({Key? key}) : super(key: key);
+class ArticleSliverList extends StatelessWidget {
+  const ArticleSliverList({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
