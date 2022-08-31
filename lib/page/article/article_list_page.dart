@@ -6,11 +6,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../common/utils/utils.dart';
 import '../../config/constants.dart';
-import '../../feature/scroll/cubit/scroll_controller_cubit.dart';
+import '../../feature/scroll/cubit/scroll_cubit.dart';
 import '../../feature/scroll/widget/floating_scroll_to_top_button.dart';
 import '../../widget/progress_indicator.dart';
 import '../../component/di/dependencies.dart';
-import '../../feature/article/cubit/articles_cubit.dart';
+import '../../feature/article/cubit/article_list_cubit.dart';
 import '../../feature/article/model/flow_enum.dart';
 import '../../feature/article/model/sort/date_period_enum.dart';
 import '../../feature/article/model/sort/rating_score_enum.dart';
@@ -27,6 +27,7 @@ class ArticleListPage extends StatelessWidget {
 
   final String flow;
 
+  static const String name = 'Статьи';
   static const String routePath = 'flows/:flow';
   static const String routeName = 'ArticleListRoute';
 
@@ -36,7 +37,7 @@ class ArticleListPage extends StatelessWidget {
       key: ValueKey('articles-$flow-flow'),
       providers: [
         BlocProvider(
-          create: (c) => ArticlesCubit(
+          create: (c) => ArticleListCubit(
             getIt.get<ArticleService>(),
             flow: FlowEnum.fromString(flow),
             langUI: context.read<SettingsCubit>().state.langUI,
@@ -44,7 +45,7 @@ class ArticleListPage extends StatelessWidget {
           ),
         ),
         BlocProvider(
-          create: (c) => ScrollControllerCubit()..setUpEdgeListeners(),
+          create: (c) => ScrollCubit()..setUpEdgeListeners(),
         ),
       ],
       child: const ArticleListPageView(),
@@ -57,15 +58,15 @@ class ArticleListPageView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var articlesCubit = context.read<ArticlesCubit>();
-    var scrollCubit = context.read<ScrollControllerCubit>();
+    var articlesCubit = context.read<ArticleListCubit>();
+    var scrollCubit = context.read<ScrollCubit>();
     var controller = scrollCubit.state.controller;
 
     return MultiBlocListener(
       listeners: [
-        BlocListener<ScrollControllerCubit, ScrollControllerState>(
+        BlocListener<ScrollCubit, ScrollState>(
           listenWhen: (p, c) => c.isBottomEdge,
-          listener: (c, state) => articlesCubit.fetchArticles(),
+          listener: (c, state) => articlesCubit.fetchByFlow(),
         ),
         BlocListener<SettingsCubit, SettingsState>(
           listenWhen: (p, c) =>
@@ -108,12 +109,12 @@ class ArticleListPageView extends StatelessWidget {
             child: CustomScrollView(
               controller: controller,
               slivers: [
-                BlocBuilder<ArticlesCubit, ArticlesState>(
+                BlocBuilder<ArticleListCubit, ArticleListState>(
                   builder: (context, state) => SliverAppBar(
                     title: Text(state.flow.label),
                   ),
                 ),
-                BlocBuilder<ArticlesCubit, ArticlesState>(
+                BlocBuilder<ArticleListCubit, ArticleListState>(
                   builder: (context, state) {
                     return SliverAppBar(
                       automaticallyImplyLeading: false,
@@ -156,74 +157,82 @@ class ArticleListPageView extends StatelessWidget {
                   },
                 ),
 
-                /// Список новостей
-                BlocConsumer<ArticlesCubit, ArticlesState>(
-                  listenWhen: (p, c) =>
-                      p.page != 1 && c.status == ArticlesStatus.failure,
-                  listener: (c, state) {
-                    getIt.get<Utils>().showNotification(
-                          context: context,
-                          content: Text(state.error),
-                        );
-                  },
-                  builder: (context, state) {
-                    if (state.status == ArticlesStatus.initial) {
-                      articlesCubit.fetchArticles();
-
-                      return const SliverFillRemaining(
-                        child: CircleIndicator(),
-                      );
-                    }
-
-                    /// Если происходит загрузка первой страницы
-                    if (articlesCubit.isFirstFetch) {
-                      if (state.status == ArticlesStatus.loading) {
-                        return const SliverFillRemaining(
-                          child: CircleIndicator(),
-                        );
-                      }
-                      if (state.status == ArticlesStatus.failure) {
-                        return SliverFillRemaining(
-                          child: Center(child: Text(state.error)),
-                        );
-                      }
-                    }
-
-                    var articles = state.articles;
-
-                    return SliverList(
-                      delegate: SliverChildBuilderDelegate(
-                        (c, i) {
-                          if (i < articles.length) {
-                            return Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: kScreenHPadding,
-                              ),
-                              child: ArticleCardWidget(article: articles[i]),
-                            );
-                          }
-
-                          Timer(
-                            const Duration(milliseconds: 30),
-                            () => scrollCubit.animateToBottom(),
-                          );
-
-                          return const SizedBox(
-                            height: 60,
-                            child: CircleIndicator.medium(),
-                          );
-                        },
-                        childCount: articles.length +
-                            (state.status == ArticlesStatus.loading ? 1 : 0),
-                      ),
-                    );
-                  },
-                )
+                /// Статьи
+                const ArticleList(),
               ],
             ),
           ),
         ),
       ),
+    );
+  }
+}
+
+class ArticleList extends StatelessWidget {
+  const ArticleList({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocConsumer<ArticleListCubit, ArticleListState>(
+      listenWhen: (p, c) => p.page != 1 && c.status == ArticlesStatus.failure,
+      listener: (c, state) {
+        getIt.get<Utils>().showNotification(
+              context: context,
+              content: Text(state.error),
+            );
+      },
+      builder: (context, state) {
+        if (state.status == ArticlesStatus.initial) {
+          context.read<ArticleListCubit>().fetchByFlow();
+
+          return const SliverFillRemaining(
+            child: CircleIndicator(),
+          );
+        }
+
+        /// Если происходит загрузка первой страницы
+        if (context.read<ArticleListCubit>().isFirstFetch) {
+          if (state.status == ArticlesStatus.loading) {
+            return const SliverFillRemaining(
+              child: CircleIndicator(),
+            );
+          }
+          if (state.status == ArticlesStatus.failure) {
+            return SliverFillRemaining(
+              child: Center(child: Text(state.error)),
+            );
+          }
+        }
+
+        var articles = state.articles;
+
+        return SliverList(
+          delegate: SliverChildBuilderDelegate(
+            (c, i) {
+              if (i < articles.length) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: kScreenHPadding,
+                  ),
+                  child: ArticleCardWidget(article: articles[i]),
+                );
+              }
+
+              Timer(
+                const Duration(milliseconds: 30),
+                () => context.read<ScrollCubit?>()?.animateToBottom(),
+              );
+
+              return const SizedBox(
+                height: 60,
+                child: CircleIndicator.medium(),
+              );
+            },
+            childCount: articles.length +
+                (state.status == ArticlesStatus.loading ? 1 : 0),
+          ),
+        );
+      },
     );
   }
 }

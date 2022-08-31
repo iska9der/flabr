@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
 import '../config/constants.dart';
+import 'hub/hub_list_page.dart';
 import 'user/user_list_page.dart';
 
 class ServicesPage extends StatelessWidget {
@@ -30,12 +31,13 @@ class ServicesPageView extends StatelessWidget {
         crossAxisSpacing: 8,
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
         children: [
-          const ServiceCard(
-            title: 'Хабы',
+          ServiceCard(
+            title: HubListPage.name,
             icon: Icons.hub_rounded,
+            onTap: () => context.router.pushWidget(const HubListPage()),
           ),
           ServiceCard(
-            title: 'Авторы',
+            title: UserListPage.name,
             icon: Icons.supervisor_account_sharp,
             onTap: () => context.router.pushWidget(const UserListPage()),
           ),

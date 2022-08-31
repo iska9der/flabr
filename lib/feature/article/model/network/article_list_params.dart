@@ -1,7 +1,7 @@
 import '../../../../common/model/network/params.dart';
 
-class ArticlesParams extends Params {
-  const ArticlesParams({
+class ArticleListParams extends Params {
+  const ArticleListParams({
     super.fl = 'ru',
     super.hl = 'ru',
     this.news = false,
@@ -38,8 +38,8 @@ class ArticlesParams extends Params {
   }
 
   @override
-  factory ArticlesParams.fromMap(Map<String, dynamic> map) {
-    return ArticlesParams(
+  factory ArticleListParams.fromMap(Map<String, dynamic> map) {
+    return ArticleListParams(
       fl: map['fl'] as String,
       hl: map['hl'] as String,
       news: map['news'] ? map['news'] == 'true' : false,

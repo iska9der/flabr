@@ -37,7 +37,7 @@ class UserListCubit extends Cubit<UserListState> {
 
       emit(state.copyWith(
         status: UserListStatus.success,
-        users: [...state.users, ...response.models],
+        users: [...state.users, ...response.refs],
         page: state.page + 1,
         pagesCount: response.pagesCount,
       ));

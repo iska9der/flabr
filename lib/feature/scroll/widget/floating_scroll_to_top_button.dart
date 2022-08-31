@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../cubit/scroll_controller_cubit.dart';
+import '../cubit/scroll_cubit.dart';
 
 /// До того как использовать, нужно
-/// создать [ScrollControllerCubit] выше по дереву
+/// создать [ScrollCubit] выше по дереву
 class FloatingScrollToTopButton extends StatelessWidget {
   const FloatingScrollToTopButton({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var scrollCubit = context.read<ScrollControllerCubit>();
+    var scrollCubit = context.read<ScrollCubit>();
 
-    return BlocBuilder<ScrollControllerCubit, ScrollControllerState>(
+    return BlocBuilder<ScrollCubit, ScrollState>(
       builder: (context, state) {
         return AnimatedOpacity(
           duration: scrollCubit.duration,

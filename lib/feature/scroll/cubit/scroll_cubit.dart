@@ -2,13 +2,13 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-part 'scroll_controller_state.dart';
+part 'scroll_state.dart';
 
-class ScrollControllerCubit extends Cubit<ScrollControllerState> {
-  ScrollControllerCubit({
+class ScrollCubit extends Cubit<ScrollState> {
+  ScrollCubit({
     this.duration = const Duration(milliseconds: 200),
     this.curve = Curves.linear,
-  }) : super(ScrollControllerState(controller: ScrollController()));
+  }) : super(ScrollState(controller: ScrollController()));
 
   final Duration duration;
   final Curve curve;

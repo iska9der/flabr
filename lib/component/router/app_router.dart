@@ -6,6 +6,9 @@ import 'package:url_launcher/url_launcher_string.dart';
 import '../../page/article/article_detail_page.dart';
 import '../../page/article/article_list_page.dart';
 import '../../page/dashboard_page.dart';
+import '../../page/hub/hub_dashboard_page.dart';
+import '../../page/hub/hub_detail_page.dart';
+import '../../page/hub/hub_list_page.dart';
 import '../../page/news/news_detail_page.dart';
 import '../../page/news/news_list_page.dart';
 import '../../page/services_page.dart';
@@ -80,6 +83,29 @@ part 'app_router.gr.dart';
               name: ServicesPage.routeName,
               page: ServicesPage,
             ),
+
+            /// Хабы
+            AutoRoute(
+              path: HubListPage.routePath,
+              name: HubListPage.routeName,
+              page: HubListPage,
+            ),
+
+            /// Вложенная навигация в деталях хаба
+            AutoRoute(
+              path: HubDashboardPage.routePath,
+              name: HubDashboardPage.routeName,
+              page: HubDashboardPage,
+              children: [
+                AutoRoute(
+                  path: HubDetailPage.routePath,
+                  name: HubDetailPage.routeName,
+                  page: HubDetailPage,
+                ),
+              ],
+            ),
+
+            /// Пользователи/Авторы
             AutoRoute(
               path: UserListPage.routePath,
               name: UserListPage.routeName,
@@ -114,11 +140,17 @@ part 'app_router.gr.dart';
           page: SettingsPage,
         ),
 
+        ///
+        ///
+        ///
+        ///
+        ///
         /// Редиректы с хабропутей
         ///
         /// расположение редиректов важно
         ///
-
+        ///
+        ///
         /// Новости [флоу, детали]
         RedirectRoute(
           path: '*/flows/:flow/news',
@@ -128,14 +160,27 @@ part 'app_router.gr.dart';
           path: '*/news/',
           redirectTo: 'news',
         ),
-        RedirectRoute(path: '*/news/t/:id', redirectTo: 'news/details/:id'),
+        RedirectRoute(
+          path: '*/news/t/:id',
+          redirectTo: 'news/details/:id',
+        ),
 
         /// Статьи [флоу, детали]
         RedirectRoute(
           path: '*/flows/:flow/',
           redirectTo: 'articles/flows/:flow',
         ),
-        RedirectRoute(path: '*/post/:id', redirectTo: 'articles/details/:id'),
+        RedirectRoute(
+          path: '*/post/:id',
+          redirectTo: 'articles/details/:id',
+        ),
+
+        /// Статьи из блогов
+        /// todo: пока через вкладку "статьи"
+        RedirectRoute(
+          path: '*/company/*/blog/:id',
+          redirectTo: 'articles/details/:id',
+        ),
 
         /// Пользователи/Авторы
         RedirectRoute(
@@ -146,9 +191,29 @@ part 'app_router.gr.dart';
           path: '*/users/:login',
           redirectTo: 'services/users/:login',
         ),
+
+        /// todo: временный редирект, пока не реализованы
+        /// вложенные пути у пользователей
         RedirectRoute(
           path: '*/users/:login/*',
           redirectTo: 'services/users/:login/detail',
+        ),
+
+        /// Хабы
+        RedirectRoute(
+          path: '*/hubs',
+          redirectTo: 'services/hubs',
+        ),
+        RedirectRoute(
+          path: '*/hub/:alias',
+          redirectTo: 'services/hubs/:alias',
+        ),
+
+        /// todo: временный редирект, пока не реализованы
+        /// вложенные пути в хабах
+        RedirectRoute(
+          path: '*/hub/:alias/*',
+          redirectTo: 'services/hubs/:alias',
         ),
       ],
     ),
@@ -162,10 +227,13 @@ class AppRouter extends _$AppRouter {
     String id = parseId(url);
 
     if (isArticleUrl(url)) {
-      return await navigate(ArticleDetailRoute(id: id));
+      return await pushWidget(ArticleDetailPage(id: id));
     } else if (isUserUrl(url)) {
       return await navigate(
-        UserDashboardRoute(login: id, children: const [UserDetailRoute()]),
+        UserDashboardRoute(
+          login: id,
+          children: const [UserDetailRoute()],
+        ),
       );
     }
 

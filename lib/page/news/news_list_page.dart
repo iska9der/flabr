@@ -4,8 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../feature/article/model/article_type.dart';
 import '../../feature/article/model/flow_enum.dart';
-import '../../feature/scroll/cubit/scroll_controller_cubit.dart';
-import '../../feature/article/cubit/articles_cubit.dart';
+import '../../feature/scroll/cubit/scroll_cubit.dart';
+import '../../feature/article/cubit/article_list_cubit.dart';
 import '../../component/di/dependencies.dart';
 import '../../feature/article/service/article_service.dart';
 import '../../feature/settings/cubit/settings_cubit.dart';
@@ -19,6 +19,7 @@ class NewsListPage extends StatelessWidget {
 
   final String flow;
 
+  static const String name = 'Новости';
   static const String routePath = 'flows/:flow';
   static const String routeName = 'NewsListRoute';
 
@@ -28,7 +29,7 @@ class NewsListPage extends StatelessWidget {
       key: ValueKey('news-$flow-flow'),
       providers: [
         BlocProvider(
-          create: (c) => ArticlesCubit(
+          create: (c) => ArticleListCubit(
             getIt.get<ArticleService>(),
             type: ArticleType.news,
             flow: FlowEnum.fromString(flow),
@@ -37,7 +38,7 @@ class NewsListPage extends StatelessWidget {
           ),
         ),
         BlocProvider(
-          create: (c) => ScrollControllerCubit()..setUpEdgeListeners(),
+          create: (c) => ScrollCubit()..setUpEdgeListeners(),
         ),
       ],
       child: const ArticleListPageView(),

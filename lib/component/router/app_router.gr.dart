@@ -74,6 +74,19 @@ class _$AppRouter extends RootStackRouter {
       return MaterialPageX<dynamic>(
           routeData: routeData, child: const ServicesPage());
     },
+    HubListRoute.name: (routeData) {
+      return MaterialPageX<dynamic>(
+          routeData: routeData, child: const HubListPage());
+    },
+    HubDashboardRoute.name: (routeData) {
+      final pathParams = routeData.inheritedPathParams;
+      final args = routeData.argsAs<HubDashboardRouteArgs>(
+          orElse: () =>
+              HubDashboardRouteArgs(alias: pathParams.getString('alias')));
+      return MaterialPageX<dynamic>(
+          routeData: routeData,
+          child: HubDashboardPage(key: args.key, alias: args.alias));
+    },
     UserListRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
           routeData: routeData, child: const UserListPage());
@@ -86,6 +99,10 @@ class _$AppRouter extends RootStackRouter {
       return MaterialPageX<dynamic>(
           routeData: routeData,
           child: UserDashboardPage(key: args.key, login: args.login));
+    },
+    HubDetailRoute.name: (routeData) {
+      return MaterialPageX<dynamic>(
+          routeData: routeData, child: const HubDetailPage());
     },
     UserDetailRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
@@ -139,6 +156,15 @@ class _$AppRouter extends RootStackRouter {
               children: [
                 RouteConfig(ServicesRoute.name,
                     path: '', parent: ServicesEmptyRoute.name),
+                RouteConfig(HubListRoute.name,
+                    path: 'hubs', parent: ServicesEmptyRoute.name),
+                RouteConfig(HubDashboardRoute.name,
+                    path: 'hubs/:alias',
+                    parent: ServicesEmptyRoute.name,
+                    children: [
+                      RouteConfig(HubDetailRoute.name,
+                          path: 'profile', parent: HubDashboardRoute.name)
+                    ]),
                 RouteConfig(UserListRoute.name,
                     path: 'users', parent: ServicesEmptyRoute.name),
                 RouteConfig(UserDashboardRoute.name,
@@ -178,6 +204,11 @@ class _$AppRouter extends RootStackRouter {
               parent: DashboardRoute.name,
               redirectTo: 'articles/details/:id',
               fullMatch: true),
+          RouteConfig('*/company/*/blog/:id#redirect',
+              path: '*/company/*/blog/:id',
+              parent: DashboardRoute.name,
+              redirectTo: 'articles/details/:id',
+              fullMatch: true),
           RouteConfig('*/users#redirect',
               path: '*/users',
               parent: DashboardRoute.name,
@@ -192,6 +223,21 @@ class _$AppRouter extends RootStackRouter {
               path: '*/users/:login/*',
               parent: DashboardRoute.name,
               redirectTo: 'services/users/:login/detail',
+              fullMatch: true),
+          RouteConfig('*/hubs#redirect',
+              path: '*/hubs',
+              parent: DashboardRoute.name,
+              redirectTo: 'services/hubs',
+              fullMatch: true),
+          RouteConfig('*/hub/:alias#redirect',
+              path: '*/hub/:alias',
+              parent: DashboardRoute.name,
+              redirectTo: 'services/hubs/:alias',
+              fullMatch: true),
+          RouteConfig('*/hub/:alias/*#redirect',
+              path: '*/hub/:alias/*',
+              parent: DashboardRoute.name,
+              redirectTo: 'services/hubs/:alias',
               fullMatch: true)
         ])
       ];
@@ -352,6 +398,41 @@ class ServicesRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [HubListPage]
+class HubListRoute extends PageRouteInfo<void> {
+  const HubListRoute() : super(HubListRoute.name, path: 'hubs');
+
+  static const String name = 'HubListRoute';
+}
+
+/// generated route for
+/// [HubDashboardPage]
+class HubDashboardRoute extends PageRouteInfo<HubDashboardRouteArgs> {
+  HubDashboardRoute(
+      {Key? key, required String alias, List<PageRouteInfo>? children})
+      : super(HubDashboardRoute.name,
+            path: 'hubs/:alias',
+            args: HubDashboardRouteArgs(key: key, alias: alias),
+            rawPathParams: {'alias': alias},
+            initialChildren: children);
+
+  static const String name = 'HubDashboardRoute';
+}
+
+class HubDashboardRouteArgs {
+  const HubDashboardRouteArgs({this.key, required this.alias});
+
+  final Key? key;
+
+  final String alias;
+
+  @override
+  String toString() {
+    return 'HubDashboardRouteArgs{key: $key, alias: $alias}';
+  }
+}
+
+/// generated route for
 /// [UserListPage]
 class UserListRoute extends PageRouteInfo<void> {
   const UserListRoute() : super(UserListRoute.name, path: 'users');
@@ -384,6 +465,14 @@ class UserDashboardRouteArgs {
   String toString() {
     return 'UserDashboardRouteArgs{key: $key, login: $login}';
   }
+}
+
+/// generated route for
+/// [HubDetailPage]
+class HubDetailRoute extends PageRouteInfo<void> {
+  const HubDetailRoute() : super(HubDetailRoute.name, path: 'profile');
+
+  static const String name = 'HubDetailRoute';
 }
 
 /// generated route for

@@ -8,6 +8,7 @@ class Params extends Equatable {
   });
 
   /// Язык постов
+  ///
   /// перечисляется через запятую
   final String fl;
 

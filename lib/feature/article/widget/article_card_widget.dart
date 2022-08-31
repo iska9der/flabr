@@ -2,9 +2,9 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../../../page/article/article_detail_page.dart';
 import '../../../widget/card_widget.dart';
 import '../../../widget/network_image_widget.dart';
-import '../../../component/router/app_router.dart';
 import '../../../config/constants.dart';
 import '../model/article_model.dart';
 import 'article_author_widget.dart';
@@ -39,8 +39,8 @@ class ArticleCardWidget extends StatelessWidget {
               const SizedBox(height: 12),
               ArticleTitleButton(
                 title: article.titleHtml,
-                onPressed: () =>
-                    context.navigateNamedTo('details/${article.id}'),
+                onPressed: () => context.router
+                    .pushWidget(ArticleDetailPage(id: article.id)),
               ),
             ],
           ),

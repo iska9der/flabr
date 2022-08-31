@@ -4,7 +4,7 @@ abstract class HubBase {
     this.titleHtml = '',
     this.imageUrl = '',
     this.descriptionHtml = '',
-    required this.isProfiled,
+    this.isProfiled = false,
     this.isOfftop = false,
     this.relatedData = const {},
     this.statistics = const {},
@@ -18,7 +18,7 @@ abstract class HubBase {
   final bool isProfiled;
   final bool isOfftop;
   final Map relatedData;
-  final Map statistics;
+  final Object statistics;
   final List<String> commonTags;
 
   HubBase copyWith() {

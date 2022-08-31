@@ -1,7 +1,7 @@
 import '../../../component/language.dart';
 import '../model/user_model.dart';
 import '../model/user_whois_model.dart';
-import '../model/user_response.dart';
+import '../model/network/user_list_response.dart';
 import '../repository/user_repository.dart';
 
 class UserService {
@@ -9,9 +9,9 @@ class UserService {
 
   final UserRepository _repository;
 
-  UsersResponse cached = UsersResponse.empty;
+  UserListResponse cached = UserListResponse.empty;
 
-  Future<UsersResponse> fetchAll({
+  Future<UserListResponse> fetchAll({
     required LanguageEnum langUI,
     required List<LanguageEnum> langArticles,
     required String page,
@@ -22,7 +22,7 @@ class UserService {
       page: page,
     );
 
-    cached = cached.copyWith(models: [...cached.models, ...response.models]);
+    cached = cached.copyWith(refs: [...cached.refs, ...response.refs]);
 
     return response;
   }
@@ -44,7 +44,7 @@ class UserService {
   }
 
   UserModel getByLogin(String login) {
-    return cached.models.firstWhere((element) => element.alias == login);
+    return cached.refs.firstWhere((element) => element.alias == login);
   }
 
   Future<UserWhoisModel> fetchWhois({

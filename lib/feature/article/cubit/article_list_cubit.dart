@@ -12,17 +12,17 @@ import '../model/article_model.dart';
 import '../model/sort/date_period_enum.dart';
 import '../service/article_service.dart';
 
-part 'articles_state.dart';
+part 'article_list_state.dart';
 
-class ArticlesCubit extends Cubit<ArticlesState> {
-  ArticlesCubit(
+class ArticleListCubit extends Cubit<ArticleListState> {
+  ArticleListCubit(
     ArticleService service, {
     flow = FlowEnum.all,
     type = ArticleType.article,
     required LanguageEnum langUI,
     required List<LanguageEnum> langArticles,
   })  : _service = service,
-        super(ArticlesState(
+        super(ArticleListState(
           type: type,
           flow: flow,
           langUI: langUI,
@@ -34,7 +34,7 @@ class ArticlesCubit extends Cubit<ArticlesState> {
   bool get isFirstFetch => state.page == 1;
   bool get isLastPage => state.page >= state.pagesCount;
 
-  void fetchArticles() async {
+  void fetchByFlow() async {
     if (state.status == ArticlesStatus.loading || !isFirstFetch && isLastPage) {
       return;
     }
@@ -42,7 +42,7 @@ class ArticlesCubit extends Cubit<ArticlesState> {
     emit(state.copyWith(status: ArticlesStatus.loading));
 
     try {
-      var response = await _service.fetchAll(
+      var response = await _service.fetchByFlow(
         langUI: state.langUI,
         langArticles: state.langArticles,
         type: state.type,
@@ -55,7 +55,7 @@ class ArticlesCubit extends Cubit<ArticlesState> {
 
       emit(state.copyWith(
         status: ArticlesStatus.success,
-        articles: [...state.articles, ...response.models],
+        articles: [...state.articles, ...response.refs],
         page: state.page + 1,
         pagesCount: response.pagesCount,
       ));
@@ -75,7 +75,7 @@ class ArticlesCubit extends Cubit<ArticlesState> {
   void changeFlow(FlowEnum value) {
     if (state.flow == value) return;
 
-    emit(ArticlesState(
+    emit(ArticleListState(
       type: state.type,
       langUI: state.langUI,
       langArticles: state.langArticles,
@@ -84,7 +84,7 @@ class ArticlesCubit extends Cubit<ArticlesState> {
   }
 
   void changeSort(SortEnum value) {
-    emit(ArticlesState(
+    emit(ArticleListState(
       type: state.type,
       langUI: state.langUI,
       langArticles: state.langArticles,
@@ -94,17 +94,17 @@ class ArticlesCubit extends Cubit<ArticlesState> {
   }
 
   void changeSortOption(SortEnum sort, SortOptionModel option) {
-    ArticlesState newState;
+    ArticleListState newState;
     switch (sort) {
       case SortEnum.byBest:
         if (state.period == option.value) return;
 
-        newState = ArticlesState(period: option.value);
+        newState = ArticleListState(period: option.value);
         break;
       case SortEnum.byNew:
         if (state.score == option.value) return;
 
-        newState = ArticlesState(score: option.value);
+        newState = ArticleListState(score: option.value);
         break;
       default:
         throw ValueException('Неизвестный вариант сортировки статей');
@@ -123,11 +123,48 @@ class ArticlesCubit extends Cubit<ArticlesState> {
     LanguageEnum? langUI,
     List<LanguageEnum>? langArticles,
   }) {
-    emit(ArticlesState(
+    emit(ArticleListState(
       type: state.type,
       flow: state.flow,
       langUI: langUI ?? state.langUI,
       langArticles: langArticles ?? state.langArticles,
     ));
+  }
+
+  fetchByHub(String hub) async {
+    if (state.status == ArticlesStatus.loading || !isFirstFetch && isLastPage) {
+      return;
+    }
+
+    emit(state.copyWith(status: ArticlesStatus.loading));
+
+    try {
+      var response = await _service.fetchByHub(
+        langUI: state.langUI,
+        langArticles: state.langArticles,
+        hub: hub,
+        sort: state.sort,
+        period: state.period,
+        score: state.score,
+        page: state.page.toString(),
+      );
+
+      emit(state.copyWith(
+        status: ArticlesStatus.success,
+        articles: [...state.articles, ...response.refs],
+        page: state.page + 1,
+        pagesCount: response.pagesCount,
+      ));
+    } on DisplayableException catch (e) {
+      emit(state.copyWith(
+        error: e.toString(),
+        status: ArticlesStatus.failure,
+      ));
+    } catch (e) {
+      emit(state.copyWith(
+        error: 'Не удалось получить статьи',
+        status: ArticlesStatus.failure,
+      ));
+    }
   }
 }

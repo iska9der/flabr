@@ -1,14 +1,14 @@
 import '../../../common/exception/displayable_exception.dart';
 import '../../../common/model/network/params.dart';
 import '../../../component/http/http_client.dart';
-import '../model/user_response.dart';
+import '../model/network/user_list_response.dart';
 
 class UserRepository {
   const UserRepository(this._client);
 
   final HttpClient _client;
 
-  Future<UsersResponse> fetchAll({
+  Future<UserListResponse> fetchAll({
     required String langUI,
     required String langArticles,
     required String page,
@@ -20,7 +20,7 @@ class UserRepository {
         '/users?${params.toQueryString()}',
       );
 
-      return UsersResponse.fromMap(response.data);
+      return UserListResponse.fromMap(response.data);
     } on DisplayableException {
       rethrow;
     }

@@ -1,9 +1,11 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
+import '../../../common/model/stat_type.dart';
 import '../../../component/router/app_router.dart';
 import '../../../config/constants.dart';
 import '../../../widget/card_widget.dart';
+import '../../../widget/profile_stat_card_widget.dart';
 import '../model/user_model.dart';
 import 'user_avatar_widget.dart';
 
@@ -108,31 +110,15 @@ class _UserScore extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          _buildCard(context, 'Рейтинг', model.rating.toString()),
-          _buildCard(context, 'Очки', model.score.toString()),
-        ],
-      ),
-    );
-  }
-
-  Expanded _buildCard(BuildContext context, String title, String text) {
-    return Expanded(
-      child: Stack(
-        fit: StackFit.passthrough,
-        children: [
-          FlabrCard(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              text,
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.headline5,
-            ),
+          ProfileStatCardWidget(
+            type: StatType.rating,
+            title: 'Рейтинг',
+            text: model.rating.toString(),
           ),
-          Align(
-            child: Text(
-              title,
-              style: Theme.of(context).textTheme.labelMedium,
-            ),
+          ProfileStatCardWidget(
+            type: StatType.score,
+            title: 'Очки',
+            text: model.score.toString(),
           ),
         ],
       ),

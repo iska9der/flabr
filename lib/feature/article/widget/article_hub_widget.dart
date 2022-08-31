@@ -1,7 +1,6 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
-import '../../../common/utils/utils.dart';
-import '../../../component/di/dependencies.dart';
 import '../model/article_hub_model.dart';
 
 class ArticleHubsWidget extends StatelessWidget {
@@ -44,10 +43,7 @@ class _ArticleHubWidget extends StatelessWidget {
     }
 
     return InkWell(
-      onTap: () => getIt.get<Utils>().showNotification(
-            context: context,
-            content: Text('Тут будет переход в ${hub.alias}'),
-          ),
+      onTap: () => context.navigateNamedTo('services/hubs/${hub.alias}'),
       child: Padding(
         padding: const EdgeInsets.symmetric(
           horizontal: 8,

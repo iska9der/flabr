@@ -1,28 +1,22 @@
 import 'package:equatable/equatable.dart';
 
-class HubModel extends Equatable {
+import '../../../common/model/hub.dart';
+import 'hub_statistics_model.dart';
+
+class HubModel extends HubBase with EquatableMixin {
   const HubModel({
-    required this.alias,
-    this.titleHtml = '',
-    this.imageUrl = '',
-    this.descriptionHtml = '',
-    required this.isProfiled,
-    this.isOfftop = false,
-    this.relatedData = const {},
-    this.statistics = const {},
-    this.commonTags = const [],
+    required super.alias,
+    super.titleHtml = '',
+    super.imageUrl = '',
+    super.descriptionHtml = '',
+    super.isProfiled = false,
+    super.isOfftop = false,
+    super.relatedData = const {},
+    super.statistics = HubStatisticsModel.empty,
+    super.commonTags = const [],
   });
 
-  final String alias;
-  final String titleHtml;
-  final String imageUrl;
-  final String descriptionHtml;
-  final bool isProfiled;
-  final bool isOfftop;
-  final Map relatedData;
-  final Map statistics;
-  final List<String> commonTags;
-
+  @override
   HubModel copyWith({
     String? alias,
     String? titleHtml,
@@ -31,7 +25,7 @@ class HubModel extends Equatable {
     bool? isProfiled,
     bool? isOfftop,
     Map? relatedData,
-    Map? statistics,
+    HubStatisticsModel? statistics,
     List<String>? commonTags,
   }) {
     return HubModel(
@@ -55,11 +49,18 @@ class HubModel extends Equatable {
       descriptionHtml: map['descriptionHtml'] as String,
       isProfiled: map['isProfiled'] as bool,
       isOfftop: map['isOfftop'] as bool,
-      relatedData: map['relatedData'],
-      statistics: map['statistics'],
-      commonTags: map['commonTags'] ?? const [],
+      relatedData: map['relatedData'] ?? const {},
+      statistics: map['statistics'] != null
+          ? HubStatisticsModel.fromMap(map['statistics'])
+          : HubStatisticsModel.empty,
+      commonTags: map['commonTags'] != null
+          ? List<String>.from(map['commonTags'])
+          : const [],
     );
   }
+
+  static const empty = HubModel(alias: '-');
+  bool get isEmpty => this == empty;
 
   @override
   bool get stringify => true;

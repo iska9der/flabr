@@ -1,9 +1,9 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
-part of 'scroll_controller_cubit.dart';
+part of 'scroll_cubit.dart';
 
-class ScrollControllerState extends Equatable {
-  const ScrollControllerState({
+class ScrollState extends Equatable {
+  const ScrollState({
     required this.controller,
     this.isTopEdge = false,
     this.isBottomEdge = false,
@@ -15,13 +15,13 @@ class ScrollControllerState extends Equatable {
 
   bool get isBetweenEdge => !isTopEdge && !isBottomEdge;
 
-  ScrollControllerState copyWith({
+  ScrollState copyWith({
     ScrollController? controller,
     ScrollPosition? position,
     bool? isTopEdge,
     bool? isBottomEdge,
   }) {
-    return ScrollControllerState(
+    return ScrollState(
       controller: controller ?? this.controller,
       isTopEdge: isTopEdge ?? this.isTopEdge,
       isBottomEdge: isBottomEdge ?? this.isBottomEdge,

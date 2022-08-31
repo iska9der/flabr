@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
+import '../../common/model/stat_type.dart';
 import '../../common/utils/utils.dart';
 import '../../config/constants.dart';
 import '../../feature/user/widget/section_container_widget.dart';
 import '../../widget/card_widget.dart';
+import '../../widget/profile_stat_widget.dart';
 import '../../widget/progress_indicator.dart';
 import '../../component/di/dependencies.dart';
 import '../../feature/user/cubit/user_cubit.dart';
@@ -13,9 +15,7 @@ import '../../feature/user/widget/user_avatar_widget.dart';
 import '../../feature/user/widget/user_whois_widget.dart';
 
 class UserDetailPage extends StatelessWidget {
-  const UserDetailPage({
-    Key? key,
-  }) : super(key: key);
+  const UserDetailPage({Key? key}) : super(key: key);
 
   static const String title = 'Профиль';
   static const String routePath = 'detail';
@@ -24,6 +24,7 @@ class UserDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cubit = context.read<UserCubit>();
+
     cubit.fetchByLogin();
 
     return UserDetailPageView(
@@ -141,36 +142,16 @@ class _UserScoresWidget extends StatelessWidget {
 
         return Row(
           children: [
-            Column(
-              children: [
-                Text(
-                  model.score.toString(),
-                  style: Theme.of(context)
-                      .textTheme
-                      .headline6
-                      ?.copyWith(color: Colors.green),
-                ),
-                Text(
-                  'Очки',
-                  style: Theme.of(context).textTheme.caption,
-                ),
-              ],
+            ProfileStatWidget(
+              type: StatType.score,
+              title: 'Очки',
+              text: model.score.toString(),
             ),
             const SizedBox(width: 40),
-            Column(
-              children: [
-                Text(
-                  model.rating.toString(),
-                  style: Theme.of(context)
-                      .textTheme
-                      .headline6
-                      ?.copyWith(color: Colors.purple),
-                ),
-                Text(
-                  'Рейтинг',
-                  style: Theme.of(context).textTheme.caption,
-                ),
-              ],
+            ProfileStatWidget(
+              type: StatType.rating,
+              title: 'Рейтинг',
+              text: model.rating.toString(),
             ),
           ],
         );

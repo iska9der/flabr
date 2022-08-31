@@ -2,7 +2,8 @@ import '../../../common/exception/value_exception.dart';
 
 enum ArticleType {
   article,
-  news;
+  news,
+  megaproject;
 
   factory ArticleType.fromString(String value) {
     return ArticleType.values.firstWhere(
