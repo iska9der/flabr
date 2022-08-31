@@ -2,12 +2,12 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../component/di/dependencies.dart';
-import '../../component/router/app_router.dart';
-import '../../feature/settings/cubit/settings_cubit.dart';
-import '../../feature/user/cubit/user_cubit.dart';
-import '../../feature/user/service/user_service.dart';
-import '../../feature/user/widget/nav_link_widget.dart';
+import '../../../component/di/dependencies.dart';
+import '../../../component/router/app_router.dart';
+import '../../settings/cubit/settings_cubit.dart';
+import '../cubit/user_cubit.dart';
+import '../service/user_service.dart';
+import '../widget/nav_link_widget.dart';
 import 'user_article_page.dart';
 import 'user_detail_page.dart';
 

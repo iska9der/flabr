@@ -2,10 +2,10 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../component/di/dependencies.dart';
-import '../../feature/article/cubit/article_cubit.dart';
-import '../../feature/article/service/article_service.dart';
-import '../article/article_detail_page.dart';
+import '../../../component/di/dependencies.dart';
+import '../cubit/article_cubit.dart';
+import '../service/article_service.dart';
+import 'article_detail_page.dart';
 
 class NewsDetailPage extends StatelessWidget {
   const NewsDetailPage({

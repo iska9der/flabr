@@ -2,8 +2,8 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
 import '../config/constants.dart';
-import 'hub/hub_list_page.dart';
-import 'user/user_list_page.dart';
+import '../feature/hub/page/hub_list_page.dart';
+import '../feature/user/page/user_list_page.dart';
 
 class ServicesPage extends StatelessWidget {
   const ServicesPage({Key? key}) : super(key: key);

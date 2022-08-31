@@ -3,20 +3,20 @@ import 'package:auto_route/empty_router_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
-import '../../page/article/article_detail_page.dart';
-import '../../page/article/article_list_page.dart';
+import '../../feature/article/page/article_detail_page.dart';
+import '../../feature/article/page/article_list_page.dart';
+import '../../feature/article/page/news_detail_page.dart';
+import '../../feature/article/page/news_list_page.dart';
+import '../../feature/hub/page/hub_dashboard_page.dart';
+import '../../feature/hub/page/hub_detail_page.dart';
+import '../../feature/hub/page/hub_list_page.dart';
 import '../../page/dashboard_page.dart';
-import '../../page/hub/hub_dashboard_page.dart';
-import '../../page/hub/hub_detail_page.dart';
-import '../../page/hub/hub_list_page.dart';
-import '../../page/news/news_detail_page.dart';
-import '../../page/news/news_list_page.dart';
 import '../../page/services_page.dart';
 import '../../page/settings_page.dart';
-import '../../page/user/user_article_page.dart';
-import '../../page/user/user_dashboard_page.dart';
-import '../../page/user/user_detail_page.dart';
-import '../../page/user/user_list_page.dart';
+import '../../feature/user/page/user_article_page.dart';
+import '../../feature/user/page/user_dashboard_page.dart';
+import '../../feature/user/page/user_detail_page.dart';
+import '../../feature/user/page/user_list_page.dart';
 
 import 'routes.dart';
 

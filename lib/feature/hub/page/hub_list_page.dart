@@ -4,17 +4,17 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../common/utils/utils.dart';
-import '../../component/di/dependencies.dart';
-import '../../config/constants.dart';
-import '../../feature/hub/cubit/hub_list_cubit.dart';
-import '../../feature/hub/model/hub_model.dart';
-import '../../feature/hub/service/hub_service.dart';
-import '../../feature/hub/widget/hub_card_widget.dart';
-import '../../feature/scroll/cubit/scroll_cubit.dart';
-import '../../feature/scroll/widget/floating_scroll_to_top_button.dart';
-import '../../feature/settings/cubit/settings_cubit.dart';
-import '../../widget/progress_indicator.dart';
+import '../../../common/utils/utils.dart';
+import '../../../component/di/dependencies.dart';
+import '../../../config/constants.dart';
+import '../../../widget/progress_indicator.dart';
+import '../../scroll/cubit/scroll_cubit.dart';
+import '../../scroll/widget/floating_scroll_to_top_button.dart';
+import '../../settings/cubit/settings_cubit.dart';
+import '../cubit/hub_list_cubit.dart';
+import '../model/hub_model.dart';
+import '../service/hub_service.dart';
+import '../widget/hub_card_widget.dart';
 
 class HubListPage extends StatelessWidget {
   const HubListPage({Key? key}) : super(key: key);

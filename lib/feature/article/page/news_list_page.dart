@@ -2,14 +2,14 @@ import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../feature/article/model/article_type.dart';
-import '../../feature/article/model/flow_enum.dart';
-import '../../feature/scroll/cubit/scroll_cubit.dart';
-import '../../feature/article/cubit/article_list_cubit.dart';
-import '../../component/di/dependencies.dart';
-import '../../feature/article/service/article_service.dart';
-import '../../feature/settings/cubit/settings_cubit.dart';
-import '../article/article_list_page.dart';
+import '../../../component/di/dependencies.dart';
+import '../../scroll/cubit/scroll_cubit.dart';
+import '../../settings/cubit/settings_cubit.dart';
+import '../cubit/article_list_cubit.dart';
+import '../model/article_type.dart';
+import '../model/flow_enum.dart';
+import '../service/article_service.dart';
+import 'article_list_page.dart';
 
 class NewsListPage extends StatelessWidget {
   const NewsListPage({

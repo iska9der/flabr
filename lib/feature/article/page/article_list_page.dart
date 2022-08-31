@@ -4,22 +4,22 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../common/utils/utils.dart';
-import '../../config/constants.dart';
-import '../../feature/scroll/cubit/scroll_cubit.dart';
-import '../../feature/scroll/widget/floating_scroll_to_top_button.dart';
-import '../../widget/progress_indicator.dart';
-import '../../component/di/dependencies.dart';
-import '../../feature/article/cubit/article_list_cubit.dart';
-import '../../feature/article/model/flow_enum.dart';
-import '../../feature/article/model/sort/date_period_enum.dart';
-import '../../feature/article/model/sort/rating_score_enum.dart';
-import '../../feature/article/model/sort/sort_enum.dart';
-import '../../feature/article/model/sort/sort_option_model.dart';
-import '../../feature/article/service/article_service.dart';
-import '../../feature/article/widget/article_card_widget.dart';
-import '../../feature/article/widget/articles_sort_widget.dart';
-import '../../feature/settings/cubit/settings_cubit.dart';
+import '../../../common/utils/utils.dart';
+import '../../../component/di/dependencies.dart';
+import '../../../config/constants.dart';
+import '../../../widget/progress_indicator.dart';
+import '../../scroll/cubit/scroll_cubit.dart';
+import '../../scroll/widget/floating_scroll_to_top_button.dart';
+import '../../settings/cubit/settings_cubit.dart';
+import '../cubit/article_list_cubit.dart';
+import '../model/flow_enum.dart';
+import '../model/sort/date_period_enum.dart';
+import '../model/sort/rating_score_enum.dart';
+import '../model/sort/sort_enum.dart';
+import '../model/sort/sort_option_model.dart';
+import '../service/article_service.dart';
+import '../widget/article_card_widget.dart';
+import '../widget/articles_sort_widget.dart';
 
 class ArticleListPage extends StatelessWidget {
   const ArticleListPage({Key? key, @PathParam() required this.flow})

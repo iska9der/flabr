@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
-import '../../common/model/stat_type.dart';
-import '../../common/utils/utils.dart';
-import '../../config/constants.dart';
-import '../../feature/user/widget/section_container_widget.dart';
-import '../../widget/card_widget.dart';
-import '../../widget/profile_stat_widget.dart';
-import '../../widget/progress_indicator.dart';
-import '../../component/di/dependencies.dart';
-import '../../feature/user/cubit/user_cubit.dart';
-import '../../feature/user/widget/user_avatar_widget.dart';
-import '../../feature/user/widget/user_whois_widget.dart';
+import '../../../common/model/stat_type.dart';
+import '../../../common/utils/utils.dart';
+import '../../../config/constants.dart';
+import '../widget/section_container_widget.dart';
+import '../../../widget/card_widget.dart';
+import '../../../widget/profile_stat_widget.dart';
+import '../../../widget/progress_indicator.dart';
+import '../../../component/di/dependencies.dart';
+import '../cubit/user_cubit.dart';
+import '../widget/user_avatar_widget.dart';
+import '../widget/user_whois_widget.dart';
 
 class UserDetailPage extends StatelessWidget {
   const UserDetailPage({Key? key}) : super(key: key);

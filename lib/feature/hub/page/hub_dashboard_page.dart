@@ -2,12 +2,12 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../component/di/dependencies.dart';
-import '../../component/router/app_router.dart';
-import '../../feature/hub/cubit/hub_cubit.dart';
-import '../../feature/hub/service/hub_service.dart';
-import '../../feature/settings/cubit/settings_cubit.dart';
-import '../../feature/user/widget/nav_link_widget.dart';
+import '../../../component/di/dependencies.dart';
+import '../../../component/router/app_router.dart';
+import '../../settings/cubit/settings_cubit.dart';
+import '../../user/widget/nav_link_widget.dart';
+import '../cubit/hub_cubit.dart';
+import '../service/hub_service.dart';
 import 'hub_detail_page.dart';
 
 class HubDashboardPage extends StatelessWidget {

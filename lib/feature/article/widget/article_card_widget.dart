@@ -2,11 +2,11 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import '../../../page/article/article_detail_page.dart';
 import '../../../widget/card_widget.dart';
 import '../../../widget/network_image_widget.dart';
 import '../../../config/constants.dart';
 import '../model/article_model.dart';
+import '../page/article_detail_page.dart';
 import 'article_author_widget.dart';
 import 'article_hub_widget.dart';
 import 'article_statistics_widget.dart';

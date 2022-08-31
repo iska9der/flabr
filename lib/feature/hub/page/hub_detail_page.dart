@@ -1,21 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../common/model/extension/num_x.dart';
-import '../../common/model/stat_type.dart';
-import '../../component/di/dependencies.dart';
-import '../../config/constants.dart';
-import '../../feature/article/cubit/article_list_cubit.dart';
-import '../../feature/article/model/flow_enum.dart';
-import '../../feature/article/service/article_service.dart';
-import '../../feature/hub/cubit/hub_cubit.dart';
-import '../../feature/scroll/cubit/scroll_cubit.dart';
-import '../../feature/settings/cubit/settings_cubit.dart';
-import '../../feature/user/widget/user_avatar_widget.dart';
-import '../../widget/card_widget.dart';
-import '../../widget/profile_stat_widget.dart';
-import '../../widget/progress_indicator.dart';
-import '../article/article_list_page.dart';
+import '../../../component/di/dependencies.dart';
+import '../../../widget/progress_indicator.dart';
+import '../../article/cubit/article_list_cubit.dart';
+import '../../article/model/flow_enum.dart';
+import '../../article/page/article_list_page.dart';
+import '../../article/service/article_service.dart';
+import '../../scroll/cubit/scroll_cubit.dart';
+import '../../settings/cubit/settings_cubit.dart';
+import '../cubit/hub_cubit.dart';
+import '../widget/hub_profile_card_widget.dart';
 
 class HubDetailPage extends StatelessWidget {
   const HubDetailPage({Key? key}) : super(key: key);
@@ -61,76 +56,13 @@ class HubDetailPageView extends StatelessWidget {
             child: CustomScrollView(
               controller: scrollCtrl,
               slivers: const [
-                SliverToBoxAdapter(child: _ProfileCardWidget()),
+                SliverToBoxAdapter(child: HubProfileCardWidget()),
                 _HubArticleListView(),
               ],
             ),
           );
         },
       ),
-    );
-  }
-}
-
-class _ProfileCardWidget extends StatelessWidget {
-  const _ProfileCardWidget({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<HubCubit, HubState>(
-      builder: (context, state) {
-        var profile = state.profile;
-        var stats = profile.statistics;
-
-        return FlabrCard(
-          padding: const EdgeInsets.symmetric(
-            horizontal: kScreenHPadding,
-            vertical: kScreenHPadding * 2,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Row(
-                children: [
-                  UserAvatarWidget(
-                    imageUrl: profile.imageUrl,
-                    height: 60,
-                  ),
-                  const SizedBox(width: 20),
-                  Expanded(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        ProfileStatWidget(
-                          type: StatType.rating,
-                          title: 'Рейтинг',
-                          text: stats.rating.toString(),
-                        ),
-                        ProfileStatWidget(
-                          title: 'Подписчиков',
-                          text: stats.subscribersCount.compact(),
-                        ),
-                      ],
-                    ),
-                  )
-                ],
-              ),
-              const SizedBox(height: 16),
-              Text(
-                profile.descriptionHtml,
-                textAlign: TextAlign.left,
-                style: Theme.of(context).textTheme.labelLarge,
-              ),
-              const SizedBox(height: 8),
-              Text(
-                profile.fullDescriptionHtml,
-                textAlign: TextAlign.left,
-                style: Theme.of(context).textTheme.caption,
-              ),
-            ],
-          ),
-        );
-      },
     );
   }
 }
