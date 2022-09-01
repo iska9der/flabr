@@ -17,14 +17,6 @@ class ProfileStatCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color? color;
-
-    if (type == StatType.rating) {
-      color = Colors.purple;
-    } else if (type == StatType.score) {
-      color = Colors.green;
-    }
-
     return Expanded(
       child: Stack(
         fit: StackFit.passthrough,
@@ -35,7 +27,7 @@ class ProfileStatCardWidget extends StatelessWidget {
               text,
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.headline5?.copyWith(
-                    color: color,
+                    color: type.color,
                   ),
             ),
           ),

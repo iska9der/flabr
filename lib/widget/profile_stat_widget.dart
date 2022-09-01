@@ -8,27 +8,23 @@ class ProfileStatWidget extends StatelessWidget {
     this.type = StatType.neutral,
     required this.title,
     required this.text,
+    this.isNegative = false,
   }) : super(key: key);
 
   final StatType type;
   final String title;
   final String text;
+  final bool isNegative;
 
   @override
   Widget build(BuildContext context) {
-    Color? color;
-
-    if (type == StatType.rating) {
-      color = Colors.purple;
-    } else if (type == StatType.score) {
-      color = Colors.green;
-    }
-
     return Column(
       children: [
         Text(
           text,
-          style: Theme.of(context).textTheme.headline6?.copyWith(color: color),
+          style: Theme.of(context).textTheme.headline6?.copyWith(
+                color: isNegative ? type.negativeColor : type.color,
+              ),
         ),
         Text(
           title,

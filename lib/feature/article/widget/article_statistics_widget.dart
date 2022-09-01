@@ -1,23 +1,30 @@
 import 'package:flutter/material.dart';
 
 import '../../../common/model/extension/num_x.dart';
+import '../../../common/model/stat_type.dart';
 import '../model/article_statistics_model.dart';
 
 class ArticleStatisticsWidget extends StatelessWidget {
-  const ArticleStatisticsWidget({Key? key, required this.statistics})
-      : super(key: key);
+  const ArticleStatisticsWidget({
+    Key? key,
+    required this.statistics,
+    this.mainAxisAlignment = MainAxisAlignment.spaceBetween,
+  }) : super(key: key);
 
   final ArticleStatisticsModel statistics;
+  final MainAxisAlignment mainAxisAlignment;
 
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: mainAxisAlignment,
       children: [
         IconText(
           icon: Icons.insert_chart_rounded,
           text: statistics.score.compact(),
-          color: statistics.score >= 0 ? Colors.green : Colors.red,
+          color: statistics.score >= 0
+              ? StatType.score.color
+              : StatType.score.negativeColor,
         ),
         IconText(
           icon: Icons.chat_bubble_rounded,

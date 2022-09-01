@@ -11,6 +11,7 @@ import '../../widget/extension/extension.dart';
 import '../../widget/network_image_widget.dart';
 import '../../component/di/dependencies.dart';
 import '../../component/router/app_router.dart';
+import '../config/constants.dart';
 import '../feature/settings/cubit/settings_cubit.dart';
 import 'progress_indicator.dart';
 
@@ -49,17 +50,18 @@ class HtmlView extends StatelessWidget {
           },
           onLoadingBuilder: (ctx, el, prgrs) => const CircleIndicator.small(),
           factoryBuilder: () => CustomFactory(context),
-          customStylesBuilder: ((element) {
+          customStylesBuilder: (element) {
             if (element.localName == 'div' && element.parent == null) {
               return {
                 'margin-left': '20px',
                 'margin-right': '20px',
+                'padding-bottom': '40px',
                 'font-size': '${fontSize}px',
               };
             }
 
             return null;
-          }),
+          },
           customWidgetBuilder: (element) {
             if (element.localName == 'img') {
               if (!isImageVisible) return Wrap();
@@ -79,6 +81,7 @@ class HtmlView extends StatelessWidget {
               return Align(
                 child: NetworkImageWidget(
                   imageUrl: imgSrc,
+                  height: kImageHeightDefault,
                   isTapable: true,
                 ),
               );
@@ -161,7 +164,6 @@ class CustomFactory extends WidgetFactory
         meta.register(
           BuildOp(
             onTree: (_, tree) {
-              tree.bits.firstWhere((element) => element.tsb == tree.tsb);
               WidgetBit.block(
                 tree.parent!,
                 buildBlockCodeWidget(el.text),
@@ -178,14 +180,12 @@ class CustomFactory extends WidgetFactory
     return super.parse(meta);
   }
 
-  Container buildBlockCodeWidget(String text) {
+  Widget buildBlockCodeWidget(String text) {
     ScrollController controller = ScrollController();
 
     return Container(
-      width: MediaQuery.of(context).size.width,
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surface,
-      ),
+      constraints: BoxConstraints(minWidth: MediaQuery.of(context).size.width),
+      decoration: BoxDecoration(color: Theme.of(context).colorScheme.surface),
       child: Scrollbar(
         controller: controller,
         thumbVisibility: true,

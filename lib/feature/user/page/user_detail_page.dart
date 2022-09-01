@@ -146,6 +146,7 @@ class _UserScoresWidget extends StatelessWidget {
               type: StatType.score,
               title: 'Очки',
               text: model.score.toString(),
+              isNegative: model.score < 0,
             ),
             const SizedBox(width: 40),
             ProfileStatWidget(

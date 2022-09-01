@@ -2,7 +2,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../common/model/extension/num_x.dart';
 import '../../../component/di/dependencies.dart';
 import '../../../config/constants.dart';
 import '../../../widget/html_view_widget.dart';
@@ -12,6 +11,7 @@ import '../cubit/article_cubit.dart';
 import '../service/article_service.dart';
 import '../widget/article_card_widget.dart';
 import '../widget/article_hub_widget.dart';
+import '../widget/article_statistics_widget.dart';
 
 const double hPadding = 12.0;
 const double vPadding = 6.0;
@@ -49,7 +49,7 @@ class ArticleDetailPageView extends StatefulWidget {
 
 class _ArticleDetailPageViewState extends State<ArticleDetailPageView> {
   late final ScrollController controller;
-  bool isFabVisible = true;
+  bool isStatsVisible = true;
 
   @override
   void initState() {
@@ -61,9 +61,8 @@ class _ArticleDetailPageViewState extends State<ArticleDetailPageView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: _FloatingActionButtons(isVisible: isFabVisible),
-      floatingActionButtonLocation:
-          FloatingActionButtonLocation.miniCenterFloat,
+      floatingActionButton: _FloatingStatistics(isVisible: isStatsVisible),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       body: SafeArea(
         child: BlocBuilder<ArticleCubit, ArticleState>(
           builder: (context, state) {
@@ -82,13 +81,17 @@ class _ArticleDetailPageViewState extends State<ArticleDetailPageView> {
                 onNotification: (notification) {
                   final direction = notification.direction;
 
-                  if (direction == ScrollDirection.forward) {
+                  /// Если скроллим вверх, или скролл достиг нижнего края,
+                  /// то показываем статистику
+                  if (direction == ScrollDirection.forward ||
+                      notification.metrics.atEdge &&
+                          notification.metrics.pixels != 0) {
                     setState(() {
-                      isFabVisible = true;
+                      isStatsVisible = true;
                     });
                   } else if (direction == ScrollDirection.reverse) {
                     setState(() {
-                      isFabVisible = false;
+                      isStatsVisible = false;
                     });
                   }
 
@@ -190,8 +193,8 @@ class _ArticleDetailPageViewState extends State<ArticleDetailPageView> {
   }
 }
 
-class _FloatingActionButtons extends StatelessWidget {
-  const _FloatingActionButtons({Key? key, this.isVisible = true})
+class _FloatingStatistics extends StatelessWidget {
+  const _FloatingStatistics({Key? key, this.isVisible = true})
       : super(key: key);
 
   final bool isVisible;
@@ -206,29 +209,13 @@ class _FloatingActionButtons extends StatelessWidget {
           duration: const Duration(milliseconds: 300),
           curve: Curves.easeInOutCubicEmphasized,
           offset: isVisible ? const Offset(0, 0) : const Offset(0, 10),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              ArticleFloatingButton(
-                text: stats.score.compact(),
-                icon: Icon(
-                  Icons.insert_chart_rounded,
-                  color: stats.score >= 0 ? Colors.green : Colors.red,
-                ),
-              ),
-              ArticleFloatingButton(
-                text: stats.commentsCount.compact(),
-                icon: const Icon(Icons.chat_bubble_rounded),
-              ),
-              ArticleFloatingButton(
-                text: stats.favoritesCount.compact(),
-                icon: const Icon(Icons.bookmark_rounded),
-              ),
-              ArticleFloatingButton(
-                text: stats.readingCount.compact(),
-                icon: const Icon(Icons.remove_red_eye_rounded),
-              ),
-            ],
+          child: Container(
+            height: 26,
+            color: Theme.of(context).colorScheme.surface.withOpacity(.95),
+            child: ArticleStatisticsWidget(
+              statistics: stats,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            ),
           ),
         );
       },
