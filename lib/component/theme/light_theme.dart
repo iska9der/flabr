@@ -42,6 +42,7 @@ ThemeData lightTheme() {
       thumbColor: MaterialStateProperty.all(accentColor),
     ),
     sliderTheme: appSliderThemeData,
+    chipTheme: appChipThemeData.copyWith(selectedColor: primaryColor),
   );
 
   return themeData;

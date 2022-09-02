@@ -31,20 +31,26 @@ class _SortOptionsWidget extends StatelessWidget {
                 ))
             .toList();
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: options
-          .map((option) => ChoiceChip(
-                visualDensity: VisualDensity.compact,
-                label: Text(
-                  option.label,
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.center,
-                ),
-                selected: option.value == currentValue,
-                onSelected: (bool value) => onTap(option),
-              ))
-          .toList(),
+    return FittedBox(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: options
+            .map((option) => Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 4),
+                  child: ChoiceChip(
+                    visualDensity: VisualDensity.compact,
+                    label: Text(
+                      option.label,
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.labelMedium,
+                    ),
+                    selected: option.value == currentValue,
+                    onSelected: (bool value) => onTap(option),
+                  ),
+                ))
+            .toList(),
+      ),
     );
   }
 }

@@ -60,3 +60,5 @@ const SliderThemeData appSliderThemeData = SliderThemeData(
   thumbShape: RoundSliderThumbShape(enabledThumbRadius: 6.0),
   overlayShape: RoundSliderOverlayShape(overlayRadius: 20.0),
 );
+
+const ChipThemeData appChipThemeData = ChipThemeData(side: BorderSide.none);
