@@ -5,11 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../common/utils/utils.dart';
+import '../../../component/di/dependencies.dart';
 import '../../../config/constants.dart';
+import '../../../widget/progress_indicator.dart';
 import '../../scroll/cubit/scroll_cubit.dart';
 import '../../scroll/widget/floating_scroll_to_top_button.dart';
-import '../../../widget/progress_indicator.dart';
-import '../../../component/di/dependencies.dart';
 import '../../settings/cubit/settings_cubit.dart';
 import '../cubit/user_list_cubit.dart';
 import '../service/user_service.dart';

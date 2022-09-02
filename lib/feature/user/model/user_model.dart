@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
-import 'user_location_model.dart';
 
 import '../../article/model/article_model.dart';
+import 'user_location_model.dart';
 import 'user_workplace_model.dart';
 
 class UserModel extends Equatable {

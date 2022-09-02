@@ -4,6 +4,9 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../common/utils/utils.dart';
+import '../../config/constants.dart';
+import '../../feature/article/repository/article_repository.dart';
+import '../../feature/article/service/article_service.dart';
 import '../../feature/hub/repository/hub_repository.dart';
 import '../../feature/hub/service/hub_service.dart';
 import '../../feature/user/repository/user_repository.dart';
@@ -11,9 +14,6 @@ import '../../feature/user/service/user_service.dart';
 import '../http/http_client.dart';
 import '../router/app_router.dart';
 import '../storage/cache_storage.dart';
-import '../../config/constants.dart';
-import '../../feature/article/repository/article_repository.dart';
-import '../../feature/article/service/article_service.dart';
 
 final getIt = GetIt.instance;
 

@@ -1,10 +1,10 @@
 import '../../../component/language.dart';
+import '../model/article_model.dart';
 import '../model/article_type.dart';
 import '../model/flow_enum.dart';
 import '../model/network/article_list_response.dart';
-import '../model/sort/sort_enum.dart';
-import '../model/article_model.dart';
 import '../model/sort/date_period_enum.dart';
+import '../model/sort/sort_enum.dart';
 import '../repository/article_repository.dart';
 
 class ArticleService {

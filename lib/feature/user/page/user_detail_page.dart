@@ -4,13 +4,13 @@ import 'package:intl/intl.dart';
 
 import '../../../common/model/stat_type.dart';
 import '../../../common/utils/utils.dart';
+import '../../../component/di/dependencies.dart';
 import '../../../config/constants.dart';
-import '../widget/section_container_widget.dart';
 import '../../../widget/card_widget.dart';
 import '../../../widget/profile_stat_widget.dart';
 import '../../../widget/progress_indicator.dart';
-import '../../../component/di/dependencies.dart';
 import '../cubit/user_cubit.dart';
+import '../widget/section_container_widget.dart';
 import '../widget/user_avatar_widget.dart';
 import '../widget/user_whois_widget.dart';
 

@@ -10,14 +10,13 @@ import '../../feature/article/page/news_list_page.dart';
 import '../../feature/hub/page/hub_dashboard_page.dart';
 import '../../feature/hub/page/hub_detail_page.dart';
 import '../../feature/hub/page/hub_list_page.dart';
-import '../../page/dashboard_page.dart';
-import '../../page/services_page.dart';
-import '../../page/settings_page.dart';
 import '../../feature/user/page/user_article_list_page.dart';
 import '../../feature/user/page/user_dashboard_page.dart';
 import '../../feature/user/page/user_detail_page.dart';
 import '../../feature/user/page/user_list_page.dart';
-
+import '../../page/dashboard_page.dart';
+import '../../page/services_page.dart';
+import '../../page/settings_page.dart';
 import 'routes.dart';
 
 part 'app_router.gr.dart';

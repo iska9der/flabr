@@ -1,7 +1,7 @@
 import '../../../component/language.dart';
+import '../model/network/user_list_response.dart';
 import '../model/user_model.dart';
 import '../model/user_whois_model.dart';
-import '../model/network/user_list_response.dart';
 import '../repository/user_repository.dart';
 
 class UserService {

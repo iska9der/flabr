@@ -2,8 +2,8 @@ import 'package:app_links/app_links.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../component/language.dart';
 import '../../../common/exception/value_exception.dart';
+import '../../../component/language.dart';
 import '../../../component/router/app_router.dart';
 import '../../../component/storage/cache_storage.dart';
 import '../model/article_config_model.dart';

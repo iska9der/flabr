@@ -7,12 +7,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'widget/progress_indicator.dart';
 import 'component/di/dependencies.dart';
 import 'component/router/app_router.dart';
 import 'component/storage/cache_storage.dart';
 import 'component/theme.dart';
 import 'feature/settings/cubit/settings_cubit.dart';
+import 'widget/progress_indicator.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

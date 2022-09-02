@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../widget/network_image_widget.dart';
 import '../../../config/constants.dart';
+import '../../../widget/network_image_widget.dart';
 
 class UserAvatarWidget extends StatelessWidget {
   const UserAvatarWidget({

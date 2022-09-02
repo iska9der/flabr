@@ -1,16 +1,16 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '../../../common/exception/displayable_exception.dart';
 import '../../../common/exception/value_exception.dart';
 import '../../../component/localization/language_enum.dart';
 import '../model/article_from_enum.dart';
+import '../model/article_model.dart';
 import '../model/article_type.dart';
 import '../model/flow_enum.dart';
+import '../model/sort/date_period_enum.dart';
 import '../model/sort/sort_enum.dart';
 import '../model/sort/sort_option_model.dart';
-
-import '../model/article_model.dart';
-import '../model/sort/date_period_enum.dart';
 import '../service/article_service.dart';
 
 part 'article_list_state.dart';
