@@ -10,6 +10,9 @@ import '../../../config/constants.dart';
 import '../../../widget/progress_indicator.dart';
 import '../../scroll/cubit/scroll_cubit.dart';
 import '../../scroll/widget/floating_scroll_to_top_button.dart';
+import '../../search/cubit/search_cubit.dart';
+import '../../search/model/search_delegate.dart';
+import '../../search/service/search_service.dart';
 import '../../settings/cubit/settings_cubit.dart';
 import '../cubit/article_list_cubit.dart';
 import '../model/flow_enum.dart';
@@ -43,14 +46,26 @@ class ArticleListPage extends StatelessWidget {
         BlocProvider(
           create: (c) => ScrollCubit()..setUpEdgeListeners(),
         ),
+        BlocProvider(
+          create: (c) => SearchCubit(
+            getIt.get<SearchService>(),
+            langUI: context.read<SettingsCubit>().state.langUI,
+            langArticles: context.read<SettingsCubit>().state.langArticles,
+          ),
+        ),
       ],
-      child: const ArticleListPageView(),
+      child: const ArticleListPageView(isSearchEnabled: true),
     );
   }
 }
 
 class ArticleListPageView extends StatelessWidget {
-  const ArticleListPageView({Key? key}) : super(key: key);
+  const ArticleListPageView({
+    Key? key,
+    this.isSearchEnabled = false,
+  }) : super(key: key);
+
+  final bool isSearchEnabled;
 
   @override
   Widget build(BuildContext context) {
@@ -108,6 +123,27 @@ class ArticleListPageView extends StatelessWidget {
                 BlocBuilder<ArticleListCubit, ArticleListState>(
                   builder: (context, state) => SliverAppBar(
                     title: Text(state.flow.label),
+                    actions: [
+                      if (isSearchEnabled)
+                        Padding(
+                          padding: const EdgeInsets.only(right: 20),
+                          child: IconButton(
+                            onPressed: () async {
+                              final cubit = context.read<SearchCubit>();
+
+                              await showSearch(
+                                context: context,
+                                delegate: FlabrSearchDelegate(
+                                  cubit: BlocProvider.of<SearchCubit>(context),
+                                ),
+                              );
+
+                              cubit.reset();
+                            },
+                            icon: const Icon(Icons.search_rounded),
+                          ),
+                        ),
+                    ],
                   ),
                 ),
                 const SliverAppBar(

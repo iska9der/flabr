@@ -124,7 +124,7 @@ class UserListPageView extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(
                         vertical: kCardBetweenPadding,
                       ),
-                      child: UserCardWidget(state.users[i]),
+                      child: UserCardWidget(model: state.users[i]),
                     );
                   }
 

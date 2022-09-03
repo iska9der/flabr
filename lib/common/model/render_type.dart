@@ -1,0 +1,1 @@
+enum RenderType { plain, html }

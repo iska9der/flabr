@@ -9,6 +9,8 @@ import '../../feature/article/repository/article_repository.dart';
 import '../../feature/article/service/article_service.dart';
 import '../../feature/hub/repository/hub_repository.dart';
 import '../../feature/hub/service/hub_service.dart';
+import '../../feature/search/repository/search_repository.dart';
+import '../../feature/search/service/search_service.dart';
 import '../../feature/user/repository/user_repository.dart';
 import '../../feature/user/service/user_service.dart';
 import '../http/http_client.dart';
@@ -69,5 +71,13 @@ void setDependencies() {
   );
   getIt.registerLazySingleton<HubService>(
     () => HubService(getIt()),
+  );
+
+  /// Search
+  getIt.registerLazySingleton<SearchRepository>(
+    () => SearchRepository(getIt(instanceName: 'baseClient')),
+  );
+  getIt.registerLazySingleton<SearchService>(
+    () => SearchService(getIt()),
   );
 }

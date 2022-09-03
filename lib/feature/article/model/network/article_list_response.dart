@@ -13,15 +13,16 @@ class ArticleListResponse extends ListResponse with EquatableMixin {
   @override
   List<ArticleModel> get refs => super.refs as List<ArticleModel>;
 
+  @override
   ArticleListResponse copyWith({
     int? pagesCount,
     List<String>? ids,
-    List<ArticleModel>? refs,
+    List<dynamic>? refs,
   }) {
     return ArticleListResponse(
       pagesCount: pagesCount ?? this.pagesCount,
       ids: ids ?? this.ids,
-      refs: refs ?? this.refs,
+      refs: List<ArticleModel>.from((refs ?? this.refs)),
     );
   }
 
@@ -41,9 +42,6 @@ class ArticleListResponse extends ListResponse with EquatableMixin {
 
   static const empty = ArticleListResponse(pagesCount: 0);
   get isEmpty => this == empty;
-
-  @override
-  bool get stringify => true;
 
   @override
   List<Object> get props => [pagesCount, ids, refs];

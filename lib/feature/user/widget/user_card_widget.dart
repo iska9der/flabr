@@ -10,7 +10,7 @@ import '../model/user_model.dart';
 import 'user_avatar_widget.dart';
 
 class UserCardWidget extends StatelessWidget {
-  const UserCardWidget(this.model, {Key? key}) : super(key: key);
+  const UserCardWidget({Key? key, required this.model}) : super(key: key);
 
   final UserModel model;
 
@@ -29,9 +29,7 @@ class _UserCard extends StatelessWidget {
   const _UserCard({Key? key}) : super(key: key);
 
   void _pushDetails(BuildContext context, String alias) {
-    context.router.push(
-      UserDashboardRoute(login: alias, children: const [UserDetailRoute()]),
-    );
+    context.router.navigateNamed('services/users/$alias/detail');
   }
 
   @override

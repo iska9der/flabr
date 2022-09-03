@@ -13,15 +13,16 @@ class HubListResponse extends ListResponse with EquatableMixin {
   @override
   List<HubModel> get refs => super.refs as List<HubModel>;
 
+  @override
   HubListResponse copyWith({
     int? pagesCount,
     List<String>? ids,
-    List<HubModel>? refs,
+    List<dynamic>? refs,
   }) {
     return HubListResponse(
       pagesCount: pagesCount ?? this.pagesCount,
       ids: ids ?? this.ids,
-      refs: refs ?? this.refs,
+      refs: List<HubModel>.from((refs ?? this.refs)),
     );
   }
 

@@ -1,9 +1,10 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 
 import '../../../common/model/extension/num_x.dart';
+import '../../../common/model/render_type.dart';
 import '../../../common/model/stat_type.dart';
-import '../../../component/router/app_router.dart';
 import '../../../config/constants.dart';
 import '../../../widget/card_widget.dart';
 import '../../../widget/profile_stat_card_widget.dart';
@@ -12,9 +13,14 @@ import '../model/hub_model.dart';
 import '../model/hub_statistics_model.dart';
 
 class HubCardWidget extends StatelessWidget {
-  const HubCardWidget({Key? key, required this.model}) : super(key: key);
+  const HubCardWidget({
+    Key? key,
+    required this.model,
+    this.renderType = RenderType.plain,
+  }) : super(key: key);
 
   final HubModel model;
+  final RenderType renderType;
 
   @override
   Widget build(BuildContext context) {
@@ -33,17 +39,11 @@ class HubCardWidget extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    InkWell(
-                      borderRadius: BorderRadius.circular(kBorderRadiusDefault),
-                      onTap: () => context.router.push(
-                        HubDashboardRoute(
-                          alias: model.alias,
-                          children: const [HubDetailRoute()],
-                        ),
-                      ),
-                      child: Text(
-                        model.titleHtml,
-                        style: Theme.of(context).textTheme.headline6,
+                    _HubTitleWidget(
+                      title: model.titleHtml,
+                      renderType: renderType,
+                      onPressed: () => context.router.navigateNamed(
+                        'services/hubs/${model.alias}/profile',
                       ),
                     ),
                     Text(
@@ -88,6 +88,39 @@ class HubCardWidget extends StatelessWidget {
           ),
         )
       ],
+    );
+  }
+}
+
+class _HubTitleWidget extends StatelessWidget {
+  const _HubTitleWidget({
+    Key? key,
+    required this.title,
+    required this.renderType,
+    required this.onPressed,
+  }) : super(key: key);
+
+  final String title;
+  final RenderType renderType;
+  final void Function() onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      borderRadius: BorderRadius.circular(kBorderRadiusDefault),
+      onTap: onPressed,
+      child: renderType == RenderType.plain
+          ? Text(
+              title,
+              style: Theme.of(context).textTheme.headline6,
+            )
+          : HtmlWidget(
+              title,
+              textStyle: TextStyle(
+                color: Theme.of(context).textTheme.headline6?.color,
+                fontSize: Theme.of(context).textTheme.headline6?.fontSize,
+              ),
+            ),
     );
   }
 }

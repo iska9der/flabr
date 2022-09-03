@@ -10,15 +10,16 @@ class UserListResponse extends ListResponse with EquatableMixin {
     super.refs = const [],
   });
 
+  @override
   UserListResponse copyWith({
     int? pagesCount,
     List<String>? ids,
-    List<UserModel>? refs,
+    List<dynamic>? refs,
   }) {
     return UserListResponse(
       pagesCount: pagesCount ?? this.pagesCount,
       ids: ids ?? this.ids,
-      refs: refs ?? this.refs as List<UserModel>,
+      refs: List<UserModel>.from((refs ?? this.refs)),
     );
   }
 
@@ -30,7 +31,7 @@ class UserListResponse extends ListResponse with EquatableMixin {
       //     (user) => UserModel.fromMap(user as Map<String, dynamic>),
       //   ),
       // ),
-      refs: Map.from((map['authorRefs'] as Map))
+      refs: Map.from((map['authorRefs'] ?? map['userRefs'] as Map))
           .entries
           .map((e) => UserModel.fromMap({'alias': e.key, ...e.value}))
           .toList(),
@@ -39,9 +40,6 @@ class UserListResponse extends ListResponse with EquatableMixin {
 
   static const UserListResponse empty = UserListResponse(pagesCount: 0);
   get isEmpty => this == empty;
-
-  @override
-  bool get stringify => true;
 
   @override
   List<Object> get props => [pagesCount, ids, refs];
