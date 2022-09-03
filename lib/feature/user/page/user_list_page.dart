@@ -129,7 +129,7 @@ class UserListPageView extends StatelessWidget {
                   }
 
                   Timer(
-                    const Duration(milliseconds: 30),
+                    scrollCubit.duration,
                     () => scrollCubit.animateToBottom(),
                   );
 

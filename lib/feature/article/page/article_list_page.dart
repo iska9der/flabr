@@ -119,6 +119,7 @@ class ArticleListPageView extends StatelessWidget {
             controller: controller,
             child: CustomScrollView(
               controller: controller,
+              cacheExtent: 5000,
               slivers: [
                 BlocBuilder<ArticleListCubit, ArticleListState>(
                   builder: (context, state) => SliverAppBar(
@@ -180,6 +181,8 @@ class ArticleSliverList extends StatelessWidget {
             );
       },
       builder: (context, state) {
+        final ScrollCubit? scrollCubit = context.read<ScrollCubit?>();
+
         if (state.status == ArticlesStatus.initial) {
           context.read<ArticleListCubit>().fetch();
 
@@ -217,8 +220,8 @@ class ArticleSliverList extends StatelessWidget {
               }
 
               Timer(
-                const Duration(milliseconds: 30),
-                () => context.read<ScrollCubit?>()?.animateToBottom(),
+                scrollCubit?.duration ?? const Duration(milliseconds: 30),
+                () => scrollCubit?.animateToBottom(),
               );
 
               return const SizedBox(

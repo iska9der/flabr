@@ -106,24 +106,25 @@ class HubListPageView extends StatelessWidget {
 
               return Scrollbar(
                 controller: scrollCtrl,
-                child: ListView.builder(
+                child: ListView.separated(
                   controller: scrollCtrl,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: kScreenHPadding,
+                  ),
+                  separatorBuilder: (context, index) => const SizedBox(
+                    height: kCardBetweenPadding,
+                  ),
                   itemCount: state.list.refs.length +
                       (state.status == HubListStatus.loading ? 1 : 0),
                   itemBuilder: (context, index) {
                     if (index < state.list.refs.length) {
                       HubModel item = state.list.refs[index];
 
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: kCardBetweenPadding,
-                        ),
-                        child: HubCardWidget(model: item),
-                      );
+                      return HubCardWidget(model: item);
                     }
 
                     Timer(
-                      const Duration(milliseconds: 30),
+                      scrollCubit.duration,
                       () => scrollCubit.animateToBottom(),
                     );
 

@@ -67,6 +67,7 @@ class UserArticleListPageView extends StatelessWidget {
           controller: scrollCtrl,
           child: CustomScrollView(
             controller: scrollCtrl,
+            cacheExtent: 5000,
             slivers: const [
               ArticleSliverList(),
             ],

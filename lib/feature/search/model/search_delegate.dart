@@ -81,7 +81,8 @@ class FlabrSearchDelegate extends SearchDelegate {
         child: BlocBuilder<SearchCubit, SearchState>(
           bloc: cubit,
           builder: (context, state) {
-            final scrollCtrl = context.read<ScrollCubit>().state.controller;
+            final scrollCubit = context.read<ScrollCubit>();
+            final scrollCtrl = scrollCubit.state.controller;
 
             if (state.isFirstFetch) {
               if (state.status.isLoading) {
@@ -152,9 +153,8 @@ class FlabrSearchDelegate extends SearchDelegate {
                             }
 
                             Timer(
-                              const Duration(milliseconds: 30),
-                              () =>
-                                  context.read<ScrollCubit>().animateToBottom(),
+                              scrollCubit.duration,
+                              () => scrollCubit.animateToBottom(),
                             );
 
                             return const SizedBox(
