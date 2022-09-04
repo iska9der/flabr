@@ -17,8 +17,8 @@ class HubRepository {
     try {
       var params = Params(
         page: page.toString(),
-        hl: langUI,
-        fl: langArticles,
+        langUI: langUI,
+        langArticles: langArticles,
       );
       final queryString = params.toQueryString();
       final response = await _client.get('/hubs/?$queryString');
@@ -38,8 +38,8 @@ class HubRepository {
   }) async {
     try {
       var params = Params(
-        hl: langUI,
-        fl: langArticles,
+        langUI: langUI,
+        langArticles: langArticles,
       );
       final queryString = params.toQueryString();
       final response = await _client.get('/hubs/$alias/profile?$queryString');

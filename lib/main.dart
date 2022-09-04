@@ -6,6 +6,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl.dart';
 
 import 'component/di/dependencies.dart';
 import 'component/router/app_router.dart';
@@ -21,6 +23,9 @@ void main() async {
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
   setDependencies();
+
+  Intl.defaultLocale = 'ru_RU';
+  await initializeDateFormatting('ru_RU');
 
   runZonedGuarded(
     () => runApp(MyApp()),

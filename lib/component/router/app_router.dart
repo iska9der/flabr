@@ -7,6 +7,7 @@ import '../../feature/article/page/article_detail_page.dart';
 import '../../feature/article/page/article_list_page.dart';
 import '../../feature/article/page/news_detail_page.dart';
 import '../../feature/article/page/news_list_page.dart';
+import '../../feature/comment/page/comment_list_page.dart';
 import '../../feature/hub/page/hub_dashboard_page.dart';
 import '../../feature/hub/page/hub_detail_page.dart';
 import '../../feature/hub/page/hub_list_page.dart';
@@ -45,6 +46,11 @@ part 'app_router.gr.dart';
               path: ArticleDetailPage.routePath,
               name: ArticleDetailPage.routeName,
               page: ArticleDetailPage,
+            ),
+            AutoRoute(
+              path: CommentListPage.routePath,
+              name: CommentListPage.routeName,
+              page: CommentListPage,
             ),
           ],
         ),
@@ -172,6 +178,10 @@ part 'app_router.gr.dart';
         RedirectRoute(
           path: '*/post/:id',
           redirectTo: 'articles/details/:id',
+        ),
+        RedirectRoute(
+          path: '*/post/:id/comments',
+          redirectTo: 'articles/comments/:id',
         ),
 
         /// Статьи из блогов

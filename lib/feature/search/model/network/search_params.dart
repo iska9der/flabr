@@ -19,16 +19,16 @@ abstract class SearchParamsFactory extends Params {
         return SearchArticleParams(
           query: query,
           order: order,
-          hl: langUI,
-          fl: langArticles,
+          langArticles: langArticles,
+          langUI: langUI,
           page: page.toString(),
         );
       case SearchTarget.hubs:
         return SearchHubParams(
           query: query,
           order: order,
-          hl: langUI,
-          fl: langArticles,
+          langArticles: langArticles,
+          langUI: langUI,
           page: page.toString(),
         );
       case SearchTarget.companies:
@@ -37,8 +37,8 @@ abstract class SearchParamsFactory extends Params {
         return SearchUserParams(
           query: query,
           order: order,
-          hl: langUI,
-          fl: langArticles,
+          langArticles: langArticles,
+          langUI: langUI,
           page: page.toString(),
         );
       case SearchTarget.comments:

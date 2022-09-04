@@ -54,6 +54,15 @@ class _$AppRouter extends RootStackRouter {
           routeData: routeData,
           child: ArticleDetailPage(key: args.key, id: args.id));
     },
+    ArticleCommentListRoute.name: (routeData) {
+      final pathParams = routeData.inheritedPathParams;
+      final args = routeData.argsAs<ArticleCommentListRouteArgs>(
+          orElse: () => ArticleCommentListRouteArgs(
+              articleId: pathParams.getString('articleId')));
+      return MaterialPageX<dynamic>(
+          routeData: routeData,
+          child: CommentListPage(key: args.key, articleId: args.articleId));
+    },
     NewsListRoute.name: (routeData) {
       final pathParams = routeData.inheritedPathParams;
       final args = routeData.argsAs<NewsListRouteArgs>(
@@ -134,7 +143,10 @@ class _$AppRouter extends RootStackRouter {
                 RouteConfig(ArticleListRoute.name,
                     path: 'flows/:flow', parent: ArticlesEmptyRoute.name),
                 RouteConfig(ArticleDetailRoute.name,
-                    path: 'details/:id', parent: ArticlesEmptyRoute.name)
+                    path: 'details/:id', parent: ArticlesEmptyRoute.name),
+                RouteConfig(ArticleCommentListRoute.name,
+                    path: 'comments/:articleId',
+                    parent: ArticlesEmptyRoute.name)
               ]),
           RouteConfig(NewsEmptyRoute.name,
               path: 'news',
@@ -203,6 +215,11 @@ class _$AppRouter extends RootStackRouter {
               path: '*/post/:id',
               parent: DashboardRoute.name,
               redirectTo: 'articles/details/:id',
+              fullMatch: true),
+          RouteConfig('*/post/:id/comments#redirect',
+              path: '*/post/:id/comments',
+              parent: DashboardRoute.name,
+              redirectTo: 'articles/comments/:id',
               fullMatch: true),
           RouteConfig('*/company/*/blog/:id#redirect',
               path: '*/company/*/blog/:id',
@@ -341,6 +358,32 @@ class ArticleDetailRouteArgs {
   @override
   String toString() {
     return 'ArticleDetailRouteArgs{key: $key, id: $id}';
+  }
+}
+
+/// generated route for
+/// [CommentListPage]
+class ArticleCommentListRoute
+    extends PageRouteInfo<ArticleCommentListRouteArgs> {
+  ArticleCommentListRoute({Key? key, required String articleId})
+      : super(ArticleCommentListRoute.name,
+            path: 'comments/:articleId',
+            args: ArticleCommentListRouteArgs(key: key, articleId: articleId),
+            rawPathParams: {'articleId': articleId});
+
+  static const String name = 'ArticleCommentListRoute';
+}
+
+class ArticleCommentListRouteArgs {
+  const ArticleCommentListRouteArgs({this.key, required this.articleId});
+
+  final Key? key;
+
+  final String articleId;
+
+  @override
+  String toString() {
+    return 'ArticleCommentListRouteArgs{key: $key, articleId: $articleId}';
   }
 }
 

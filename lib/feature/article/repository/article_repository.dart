@@ -1,6 +1,8 @@
 import '../../../common/exception/displayable_exception.dart';
 import '../../../common/exception/fetch_exception.dart';
 import '../../../component/http/http_client.dart';
+import '../../comment/model/network/comment_list_params.dart';
+import '../../comment/model/network/comment_list_response.dart';
 import '../model/article_type.dart';
 import '../model/flow_enum.dart';
 import '../model/network/article_list_params.dart';
@@ -41,8 +43,8 @@ class ArticleRepository {
   }) async {
     try {
       final params = ArticleListParams(
-        fl: langArticles,
-        hl: langUI,
+        langArticles: langArticles,
+        langUI: langUI,
         flow: flow == FlowEnum.all ? null : flow.name,
         news: type == ArticleType.news,
 
@@ -78,8 +80,8 @@ class ArticleRepository {
   }) async {
     try {
       final params = ArticleListParams(
-        fl: langArticles,
-        hl: langUI,
+        langArticles: langArticles,
+        langUI: langUI,
         sort: 'all',
         period: sort == SortEnum.byBest ? period.name : null,
         score: sort == SortEnum.byNew ? score : null,
@@ -110,8 +112,8 @@ class ArticleRepository {
   }) async {
     try {
       final params = ArticleListParams(
-        fl: langArticles,
-        hl: langUI,
+        langArticles: langArticles,
+        langUI: langUI,
         page: page,
       );
 
@@ -121,6 +123,29 @@ class ArticleRepository {
       );
 
       return ArticleListResponse.fromMap(response.data);
+    } on DisplayableException {
+      rethrow;
+    } catch (e) {
+      throw FetchException();
+    }
+  }
+
+  Future<CommentListResponse> fetchComments({
+    required String articleId,
+    required String langUI,
+    required String langArticles,
+  }) async {
+    try {
+      final params = CommentListParams(
+        articleId: articleId,
+        langArticles: langArticles,
+        langUI: langUI,
+      );
+
+      final queryString = params.toQueryString();
+      final response = await _baseClient.get(queryString);
+
+      return CommentListResponse.fromMap(response.data);
     } on DisplayableException {
       rethrow;
     } catch (e) {

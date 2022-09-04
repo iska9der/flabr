@@ -65,8 +65,7 @@ class UserInvitedByModel extends Equatable {
 
   /// дата приглашения
   final String timeCreated;
-  String get createdAt =>
-      DateFormat.yMMMd().format(DateTime.parse(timeCreated));
+  DateTime get createdAt => DateTime.parse(timeCreated).toLocal();
 
   const UserInvitedByModel({
     this.issuerLogin = 'НЛО',
@@ -96,13 +95,13 @@ class UserInvitedByModel extends Equatable {
   static const UserInvitedByModel empty = UserInvitedByModel();
   bool get isEmpty => this == empty;
 
-  String get fullText {
-    return '$createdAt по приглашению $issuerLogin';
-  }
-
   @override
   bool get stringify => true;
 
   @override
   List<Object> get props => [issuerLogin, timeCreated];
+
+  String get fullText {
+    return '${DateFormat.yMMMd().format(createdAt)} по приглашению $issuerLogin';
+  }
 }

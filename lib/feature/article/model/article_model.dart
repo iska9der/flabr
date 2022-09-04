@@ -23,7 +23,7 @@ class ArticleModel extends Equatable {
   final ArticleType type;
 
   final String timePublished;
-  DateTime get publishedAt => DateTime.parse(timePublished);
+  DateTime get publishedAt => DateTime.parse(timePublished).toLocal();
 
   /// Заголовок
   final String titleHtml;

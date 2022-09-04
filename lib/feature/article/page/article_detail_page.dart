@@ -210,9 +210,10 @@ class _FloatingStatistics extends StatelessWidget {
           curve: Curves.easeInOutCubicEmphasized,
           offset: isVisible ? const Offset(0, 0) : const Offset(0, 10),
           child: Container(
-            height: 26,
+            height: 36,
             color: Theme.of(context).colorScheme.surface.withOpacity(.95),
             child: ArticleStatisticsWidget(
+              articleId: state.id,
               statistics: stats,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             ),

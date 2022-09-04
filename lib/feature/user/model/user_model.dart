@@ -25,9 +25,9 @@ class UserModel extends Equatable {
   final String alias;
 
   final String registerDateTime;
-  DateTime get registeredAt => DateTime.parse(registerDateTime);
+  DateTime get registeredAt => DateTime.parse(registerDateTime).toLocal();
   final String lastActivityDateTime;
-  DateTime get lastActivityAt => DateTime.parse(lastActivityDateTime);
+  DateTime get lastActivityAt => DateTime.parse(lastActivityDateTime).toLocal();
 
   final String avatarUrl;
   final String fullname;

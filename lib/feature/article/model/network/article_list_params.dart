@@ -2,8 +2,8 @@ import '../../../../common/model/network/params.dart';
 
 class ArticleListParams extends Params {
   const ArticleListParams({
-    super.fl = 'ru',
-    super.hl = 'ru',
+    super.langArticles = 'ru',
+    super.langUI = 'ru',
     this.news = false,
     this.flow,
     this.custom,
@@ -25,8 +25,8 @@ class ArticleListParams extends Params {
   @override
   Map<String, dynamic> toMap() {
     return {
-      'fl': fl,
-      'hl': hl,
+      'fl': langArticles,
+      'hl': langUI,
       'news': news,
       'flow': flow,
       'custom': custom,
@@ -35,21 +35,6 @@ class ArticleListParams extends Params {
       'period': period,
       'score': score,
     };
-  }
-
-  @override
-  factory ArticleListParams.fromMap(Map<String, dynamic> map) {
-    return ArticleListParams(
-      fl: map['fl'] as String,
-      hl: map['hl'] as String,
-      news: map['news'] ? map['news'] == 'true' : false,
-      flow: map['flow'] as String,
-      custom: map['custom'] as String,
-      page: map['page'] as String,
-      sort: map['sort'] as String,
-      period: map['period'] as String,
-      score: map['score'] as String,
-    );
   }
 
   @override
@@ -70,13 +55,13 @@ class ArticleListParams extends Params {
     String? lPeriod = period != null ? '&period=$period' : '';
     String? lScore = score != null ? '&score=$score' : '';
 
-    return 'fl=$fl&hl=$hl$lFlow$lNews$lSort$lPeriod$lScore&page=$page';
+    return 'fl=$langArticles&hl=$langUI$lFlow$lNews$lSort$lPeriod$lScore&page=$page';
   }
 
   @override
   List<Object?> get props => [
-        fl,
-        hl,
+        langArticles,
+        langUI,
         news,
         flow,
         custom,

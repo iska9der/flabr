@@ -3,8 +3,8 @@ import 'search_params.dart';
 
 class SearchUserParams extends Params implements SearchParamsFactory {
   const SearchUserParams({
-    super.fl,
-    super.hl,
+    super.langArticles,
+    super.langUI,
     super.page,
     required this.query,
     required this.order,
@@ -15,6 +15,6 @@ class SearchUserParams extends Params implements SearchParamsFactory {
 
   @override
   String toQueryString() {
-    return '/users/search?q=$query&target_type=users&order=$order&fl=$fl&hl=$hl&page=$page';
+    return '/users/search?q=$query&target_type=users&order=$order&fl=$langArticles&hl=$langUI&page=$page';
   }
 }

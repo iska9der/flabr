@@ -14,7 +14,8 @@ class UserRepository {
     required String page,
   }) async {
     try {
-      final params = Params(fl: langArticles, hl: langUI, page: page);
+      final params =
+          Params(langArticles: langArticles, langUI: langUI, page: page);
 
       final response = await _client.get(
         '/users?${params.toQueryString()}',
@@ -32,7 +33,7 @@ class UserRepository {
     required String langArticles,
   }) async {
     try {
-      final params = Params(fl: langArticles, hl: langUI);
+      final params = Params(langArticles: langArticles, langUI: langUI);
 
       final response = await _client.get(
         '/users/$login/card?${params.toQueryString()}',
@@ -50,7 +51,7 @@ class UserRepository {
     required String langArticles,
   }) async {
     try {
-      final params = Params(fl: langArticles, hl: langUI);
+      final params = Params(langArticles: langArticles, langUI: langUI);
 
       final response = await _client.get(
         '/users/$login/whois?${params.toQueryString()}',

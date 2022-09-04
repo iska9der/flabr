@@ -1,4 +1,5 @@
 import '../../../component/language.dart';
+import '../../comment/model/network/comment_list_response.dart';
 import '../model/article_model.dart';
 import '../model/article_type.dart';
 import '../model/flow_enum.dart';
@@ -124,5 +125,21 @@ class ArticleService {
     cached = response;
 
     return cached;
+  }
+
+  Future<CommentListResponse> fetchComments({
+    required String articleId,
+    required LanguageEnum langUI,
+    required List<LanguageEnum> langArticles,
+  }) async {
+    final listResponse = await repository.fetchComments(
+      articleId: articleId,
+      langUI: langUI.name,
+      langArticles: encodeLangs(langArticles),
+    );
+
+    final structurizedComments = listResponse.structurize();
+
+    return listResponse.copyWith(comments: structurizedComments);
   }
 }
