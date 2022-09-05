@@ -8,7 +8,7 @@ import '../../../common/model/extension/state_status_x.dart';
 import '../../../common/model/stat_type.dart';
 import '../../../component/di/dependencies.dart';
 import '../../../config/constants.dart';
-import '../../../widget/extension/color_x.dart';
+import '../../../widget/html_view_widget.dart';
 import '../../../widget/progress_indicator.dart';
 import '../../../widget/stat_text_widget.dart';
 import '../../article/service/article_service.dart';
@@ -78,13 +78,12 @@ class CommentListView extends StatelessWidget {
                 horizontal: kScreenHPadding,
               ),
               itemCount: comments.length,
-              separatorBuilder: (context, index) => const SizedBox(height: 12),
+              separatorBuilder: (context, index) => const SizedBox(height: 24),
               itemBuilder: (context, index) {
                 final comment = comments[index];
 
                 return Padding(
                   padding: EdgeInsets.only(
-                    top: 24,
                     bottom: index + 1 == comments.length ? 24 : 0,
                   ),
                   child: _buildTree(comment),
@@ -97,6 +96,7 @@ class CommentListView extends StatelessWidget {
     );
   }
 
+  /// Рекурсивная функция для отрисовки дерева комментариев
   _buildTree(CommentModel comment) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -104,7 +104,7 @@ class CommentListView extends StatelessWidget {
         CommentWidget(comment),
         for (var child in comment.children)
           Padding(
-            padding: const EdgeInsets.only(top: 12),
+            padding: const EdgeInsets.only(top: 4),
             child: _buildTree(child),
           )
       ],
@@ -122,8 +122,10 @@ class CommentWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        /// Строка автора
         Row(
           children: [
+            /// Вложенность
             for (var i = 0; i <= comment.level; i++)
               Padding(
                 padding: const EdgeInsets.only(right: 4),
@@ -139,6 +141,8 @@ class CommentWidget extends StatelessWidget {
                   ],
                 ),
               ),
+
+            /// Автор
             Container(
               clipBehavior: Clip.hardEdge,
               decoration: BoxDecoration(
@@ -150,6 +154,8 @@ class CommentWidget extends StatelessWidget {
               child: ArticleAuthorWidget(comment.author),
             ),
             Expanded(child: Wrap()),
+
+            /// Очки
             StatTextWidget(
               type: StatType.score,
               value: comment.score,
@@ -157,40 +163,18 @@ class CommentWidget extends StatelessWidget {
             ),
           ],
         ),
+
+        /// Дата коммента
         Text(
           DateFormat.yMd().add_jm().format(comment.publishedAt),
-          style: Theme.of(context).textTheme.caption?.copyWith(
-                fontWeight: FontWeight.w300,
-              ),
+          style: Theme.of(context).textTheme.caption,
         ),
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  const SizedBox(height: 8),
-                  HtmlWidget(
-                    comment.message,
-                    key: ValueKey(Theme.of(context).brightness),
-                    customStylesBuilder: (element) {
-                      if (element.localName == 'blockquote') {
-                        return {
-                          'margin': '12px',
-                          'padding': '10px',
-                          'background':
-                              Theme.of(context).backgroundColor.toHex(),
-                        };
-                      }
 
-                      return null;
-                    },
-                  ),
-                ],
-              ),
-            )
-          ],
+        /// Текст
+        HtmlView(
+          textHtml: comment.message,
+          renderMode: RenderMode.column,
+          padding: EdgeInsets.zero,
         ),
       ],
     );

@@ -22,12 +22,14 @@ class HtmlView extends StatelessWidget {
     this.renderMode = RenderMode.sliverList,
     this.customStylesBuilder,
     this.customWidgetBuilder,
+    this.padding = const EdgeInsets.only(left: 20, right: 20, bottom: 40),
   }) : super(key: key);
 
   final String textHtml;
   final RenderMode renderMode;
   final CustomStylesBuilder? customStylesBuilder;
   final CustomWidgetBuilder? customWidgetBuilder;
+  final EdgeInsets padding;
 
   @override
   Widget build(BuildContext context) {
@@ -57,9 +59,9 @@ class HtmlView extends StatelessWidget {
               (element) {
                 if (element.localName == 'div' && element.parent == null) {
                   return {
-                    'margin-left': '20px',
-                    'margin-right': '20px',
-                    'padding-bottom': '40px',
+                    'margin-left': '${padding.left}px',
+                    'margin-right': '${padding.right}px',
+                    'padding-bottom': '${padding.bottom}px',
                     'font-size': '${fontSize}px',
                   };
                 }

@@ -50,17 +50,26 @@ class CommentListResponse extends Equatable {
   @override
   List<Object> get props => [commentAccess, comments, lastCommentTimestamp];
 
+  /// Структуризируем комментарии
+  ///
+  /// А шо значит?
+  ///
+  /// А значит мы пересобираем комменты с уже вложенными детками
+  /// с помощью рекурсивной функции [_recursive]
   List<CommentModel> structurize() {
     if (comments.isEmpty) return [];
 
     List<CommentModel> newComments = [];
 
+    /// выбираем корневые комментарии, и запускаем
+    /// для каждого папаши рекурсивную функцию сбора потомков
     comments.where((element) => element.level == 0).forEach((comment) {
       comment = _recursive(comments, comment);
 
       newComments.add(comment);
     });
 
+    /// сортируем по дате публикации
     newComments.sort((a, b) => a.publishedAt.isBefore(b.publishedAt) ? 0 : 1);
 
     return newComments;
@@ -71,20 +80,26 @@ CommentModel _recursive(
   List<CommentModel> comments,
   CommentModel parent,
 ) {
-  if (parent.childrenRaw.isNotEmpty) {
-    var childs = parent.childrenRaw
-        .map((id) => comments.firstWhere((element) => element.id == id))
-        .toList();
-
-    List<CommentModel> newChilds = [];
-
-    for (var child in childs) {
-      var newChild = _recursive(comments, child);
-      newChilds.add(newChild);
-    }
-
-    parent = parent.copyWith(children: newChilds);
+  /// если деток нет, возвращаем одинокого пахана домой
+  if (!parent.childrenRaw.isNotEmpty) {
+    return parent;
   }
 
-  return parent;
+  /// ищем детей
+  var childs = parent.childrenRaw
+      .map((id) => comments.firstWhere((element) => element.id == id))
+      .toList();
+
+  List<CommentModel> newChilds = [];
+
+  for (var child in childs) {
+    /// ищем внуков... вдруг и дети уже паханы?
+    var newChild = _recursive(comments, child);
+
+    newChilds.add(newChild);
+  }
+
+  /// и возвращаем счатливого/грустного (сам смотри, пахан, ты уже взрослый)
+  /// пахана/деда/прадеда с найденными потомками
+  return parent.copyWith(children: newChilds);
 }
