@@ -28,14 +28,75 @@ class SettingsView extends StatelessWidget {
 
     return ListView(
       padding: const EdgeInsets.symmetric(horizontal: kScreenHPadding),
-      children: const [
-        SizedBox(height: ownPadding),
-        UIThemeWidget(),
-        SizedBox(height: ownPadding),
-        UILangWidget(),
-        SizedBox(height: ownPadding),
-        ArticlesLangWidget(),
+      children: [
+        const SizedBox(height: ownPadding),
+        Text(
+          'Интерфейс',
+          style: Theme.of(context).textTheme.headline4,
+        ),
+        const UIThemeWidget(),
+        const SizedBox(height: ownPadding),
+        const UILangWidget(),
+        const SizedBox(height: ownPadding),
+        const ArticlesLangWidget(),
+        const SizedBox(height: ownPadding),
+        Text(
+          'Лента',
+          style: Theme.of(context).textTheme.headline4,
+        ),
+        const SizedBox(height: ownPadding),
+        const FeedArticlesCardsWidget(),
       ],
+    );
+  }
+}
+
+class FeedArticlesCardsWidget extends StatelessWidget {
+  const FeedArticlesCardsWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return _SettingCard(
+      title: 'Карточки статей',
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          BlocBuilder<SettingsCubit, SettingsState>(
+            buildWhen: (p, c) =>
+                p.feedConfig.isImageVisible != c.feedConfig.isImageVisible,
+            builder: (context, state) {
+              return CheckboxListTile(
+                title: const Text('Изображение'),
+                value: state.feedConfig.isImageVisible,
+                contentPadding: EdgeInsets.zero,
+                onChanged: (bool? value) {
+                  context
+                      .read<SettingsCubit>()
+                      .changeFeedImageVisibility(isVisible: value);
+                },
+              );
+            },
+          ),
+          BlocBuilder<SettingsCubit, SettingsState>(
+            buildWhen: (p, c) =>
+                p.feedConfig.isDescriptionVisible !=
+                c.feedConfig.isDescriptionVisible,
+            builder: (context, state) {
+              return CheckboxListTile(
+                title: const Text('Короткое описание'),
+                subtitle: const Text('влияет на производительность'),
+                contentPadding: EdgeInsets.zero,
+                value: state.feedConfig.isDescriptionVisible,
+                onChanged: (bool? value) {
+                  context
+                      .read<SettingsCubit>()
+                      .changeFeedDescVisibility(isVisible: value);
+                },
+              );
+            },
+          ),
+        ],
+      ),
     );
   }
 }

@@ -20,20 +20,23 @@ class HtmlView extends StatelessWidget {
     Key? key,
     required this.textHtml,
     this.renderMode = RenderMode.sliverList,
+    this.customStylesBuilder,
+    this.customWidgetBuilder,
   }) : super(key: key);
 
   final String textHtml;
   final RenderMode renderMode;
+  final CustomStylesBuilder? customStylesBuilder;
+  final CustomWidgetBuilder? customWidgetBuilder;
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<SettingsCubit, SettingsState>(
       builder: (context, state) {
         var articleConfig = state.articleConfig;
-
+        var isImageVisible = articleConfig.isImagesVisible;
         var fontSize = Theme.of(context).textTheme.bodyText1!.fontSize! *
             articleConfig.fontScale;
-        var isImageVisible = articleConfig.isImagesVisible;
 
         return HtmlWidget(
           textHtml,
@@ -50,45 +53,47 @@ class HtmlView extends StatelessWidget {
           },
           onLoadingBuilder: (ctx, el, prgrs) => const CircleIndicator.small(),
           factoryBuilder: () => CustomFactory(context),
-          customStylesBuilder: (element) {
-            if (element.localName == 'div' && element.parent == null) {
-              return {
-                'margin-left': '20px',
-                'margin-right': '20px',
-                'padding-bottom': '40px',
-                'font-size': '${fontSize}px',
-              };
-            }
+          customStylesBuilder: customStylesBuilder ??
+              (element) {
+                if (element.localName == 'div' && element.parent == null) {
+                  return {
+                    'margin-left': '20px',
+                    'margin-right': '20px',
+                    'padding-bottom': '40px',
+                    'font-size': '${fontSize}px',
+                  };
+                }
 
-            return null;
-          },
-          customWidgetBuilder: (element) {
-            if (element.localName == 'img') {
-              if (!isImageVisible) return Wrap();
-
-              String imgSrc = element.attributes['data-src'] ??
-                  element.attributes['src'] ??
-                  '';
-
-              if (imgSrc.isEmpty) {
                 return null;
-              }
+              },
+          customWidgetBuilder: customWidgetBuilder ??
+              (element) {
+                if (element.localName == 'img') {
+                  if (!isImageVisible) return Wrap();
 
-              String imgExt = p.extension(imgSrc);
+                  String imgSrc = element.attributes['data-src'] ??
+                      element.attributes['src'] ??
+                      '';
 
-              if (imgExt == '.svg') return null;
+                  if (imgSrc.isEmpty) {
+                    return null;
+                  }
 
-              return Align(
-                child: NetworkImageWidget(
-                  imageUrl: imgSrc,
-                  height: kImageHeightDefault,
-                  isTapable: true,
-                ),
-              );
-            }
+                  String imgExt = p.extension(imgSrc);
 
-            return null;
-          },
+                  if (imgExt == '.svg') return null;
+
+                  return Align(
+                    child: NetworkImageWidget(
+                      imageUrl: imgSrc,
+                      height: kImageHeightDefault,
+                      isTapable: true,
+                    ),
+                  );
+                }
+
+                return null;
+              },
         );
       },
     );

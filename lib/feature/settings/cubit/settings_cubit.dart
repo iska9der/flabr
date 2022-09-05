@@ -7,12 +7,14 @@ import '../../../component/language.dart';
 import '../../../component/router/app_router.dart';
 import '../../../component/storage/cache_storage.dart';
 import '../model/article_config_model.dart';
+import '../model/feed_config_model.dart';
 
 part 'settings_state.dart';
 
 const isDarkThemeCacheKey = 'isDarkTheme';
 const langUICacheKey = 'langUI';
 const langArticlesCacheKey = 'langArticles';
+const feedConfigCacheKey = 'feedConfig';
 const articleConfigCacheKey = 'articleConfig';
 
 class SettingsCubit extends Cubit<SettingsState> {
@@ -35,6 +37,7 @@ class SettingsCubit extends Cubit<SettingsState> {
     /// возвращать из функций значения и менять state одним поджопником
     await initLocales();
     await initTheme();
+    await initFeedConfig();
     await initArticleConfig();
     await initDeepLink();
 
@@ -134,6 +137,39 @@ class SettingsCubit extends Cubit<SettingsState> {
 
       router.navigateNamed(path);
     });
+  }
+
+  /// FEED CONFIG
+  ///
+
+  initFeedConfig() async {
+    String? raw = await _storage.read(feedConfigCacheKey);
+
+    if (raw == null) return;
+
+    FeedConfigModel config = FeedConfigModel.fromJson(raw);
+
+    emit(state.copyWith(feedConfig: config));
+  }
+
+  void changeFeedImageVisibility({bool? isVisible}) {
+    if (state.feedConfig.isImageVisible == isVisible) return;
+
+    var newConfig = state.feedConfig.copyWith(isImageVisible: isVisible);
+
+    _storage.write(feedConfigCacheKey, newConfig.toJson());
+
+    emit(state.copyWith(feedConfig: newConfig));
+  }
+
+  void changeFeedDescVisibility({bool? isVisible}) {
+    if (state.feedConfig.isDescriptionVisible == isVisible) return;
+
+    var newConfig = state.feedConfig.copyWith(isDescriptionVisible: isVisible);
+
+    _storage.write(feedConfigCacheKey, newConfig.toJson());
+
+    emit(state.copyWith(feedConfig: newConfig));
   }
 
   /// ARTICLE CONFIG

@@ -10,6 +10,7 @@ class SettingsState extends Equatable {
     this.isDarkTheme = false,
     this.initialDeepLink = '',
     this.articleConfig = ArticleConfigModel.empty,
+    this.feedConfig = FeedConfigModel.empty,
   });
 
   final SettingsStatus status;
@@ -22,6 +23,7 @@ class SettingsState extends Equatable {
   final bool isDarkTheme;
   final String initialDeepLink;
   final ArticleConfigModel articleConfig;
+  final FeedConfigModel feedConfig;
 
   SettingsState copyWith({
     SettingsStatus? status,
@@ -30,6 +32,7 @@ class SettingsState extends Equatable {
     bool? isDarkTheme,
     String? initialDeepLink,
     ArticleConfigModel? articleConfig,
+    FeedConfigModel? feedConfig,
   }) {
     return SettingsState(
       status: status ?? this.status,
@@ -38,6 +41,7 @@ class SettingsState extends Equatable {
       isDarkTheme: isDarkTheme ?? this.isDarkTheme,
       initialDeepLink: initialDeepLink ?? this.initialDeepLink,
       articleConfig: articleConfig ?? this.articleConfig,
+      feedConfig: feedConfig ?? this.feedConfig,
     );
   }
 
@@ -52,5 +56,6 @@ class SettingsState extends Equatable {
         isDarkTheme,
         initialDeepLink,
         articleConfig,
+        feedConfig,
       ];
 }
