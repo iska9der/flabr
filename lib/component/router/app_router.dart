@@ -253,7 +253,7 @@ class AppRouter extends _$AppRouter {
     }
 
     return await launchUrlString(
-      url.origin,
+      url.toString(),
       mode: LaunchMode.externalApplication,
     );
   }
