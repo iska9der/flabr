@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../common/model/extension/num_x.dart';
 import '../../../common/model/stat_type.dart';
 import '../../../config/constants.dart';
 import '../../../widget/card_widget.dart';
@@ -41,11 +40,11 @@ class HubProfileCardWidget extends StatelessWidget {
                         ProfileStatWidget(
                           type: StatType.rating,
                           title: 'Рейтинг',
-                          text: stats.rating.toString(),
+                          value: stats.rating,
                         ),
                         ProfileStatWidget(
                           title: 'Подписчиков',
-                          text: stats.subscribersCount.compact(),
+                          value: stats.subscribersCount,
                         ),
                       ],
                     ),

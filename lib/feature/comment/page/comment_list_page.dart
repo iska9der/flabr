@@ -5,14 +5,15 @@ import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart
 import 'package:intl/intl.dart';
 
 import '../../../common/model/extension/state_status_x.dart';
+import '../../../common/model/stat_type.dart';
 import '../../../component/di/dependencies.dart';
 import '../../../config/constants.dart';
 import '../../../widget/extension/color_x.dart';
 import '../../../widget/progress_indicator.dart';
+import '../../../widget/stat_text_widget.dart';
 import '../../article/service/article_service.dart';
 import '../../article/widget/article_author_widget.dart';
 import '../../settings/cubit/settings_cubit.dart';
-import '../../user/widget/user_avatar_widget.dart';
 import '../cubit/comment_list_cubit.dart';
 import '../model/comment_model.dart';
 
@@ -77,14 +78,16 @@ class CommentListView extends StatelessWidget {
                 horizontal: kScreenHPadding,
               ),
               itemCount: comments.length,
-              separatorBuilder: (context, index) => const SizedBox(height: 18),
+              separatorBuilder: (context, index) => const SizedBox(height: 12),
               itemBuilder: (context, index) {
                 final comment = comments[index];
 
-                return Column(
-                  children: [
-                    _buildTree(comment),
-                  ],
+                return Padding(
+                  padding: EdgeInsets.only(
+                    top: 24,
+                    bottom: index + 1 == comments.length ? 24 : 0,
+                  ),
+                  child: _buildTree(comment),
                 );
               },
             );
@@ -95,15 +98,16 @@ class CommentListView extends StatelessWidget {
   }
 
   _buildTree(CommentModel comment) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 24),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          CommentWidget(comment),
-          for (comment in comment.children) _buildTree(comment)
-        ],
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        CommentWidget(comment),
+        for (var child in comment.children)
+          Padding(
+            padding: const EdgeInsets.only(top: 12),
+            child: _buildTree(child),
+          )
+      ],
     );
   }
 }
@@ -115,60 +119,78 @@ class CommentWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        for (var i = 0; i <= comment.level; i++)
-          Padding(
-            padding: const EdgeInsets.only(top: 20, right: 12),
-            child: Icon(
-              i != comment.level ? Icons.circle_rounded : Icons.circle_outlined,
-              size: 6,
-            ),
-          ),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(kBorderRadiusDefault),
-                  color: comment.isPostAuthor
-                      ? Colors.yellowAccent.withOpacity(.12)
-                      : null,
-                ),
-                child: Row(
+        Row(
+          children: [
+            for (var i = 0; i <= comment.level; i++)
+              Padding(
+                padding: const EdgeInsets.only(right: 4),
+                child: Stack(
+                  alignment: Alignment.center,
                   children: [
-                    ArticleAuthorWidget(comment.author),
-                    const SizedBox(width: 12),
-                    Text(
-                      DateFormat.yMd().add_jm().format(comment.publishedAt),
-                      style: Theme.of(context)
-                          .textTheme
-                          .caption
-                          ?.copyWith(fontWeight: FontWeight.w300),
-                    )
+                    Icon(
+                      i != comment.level
+                          ? Icons.circle_rounded
+                          : Icons.circle_outlined,
+                      size: i != comment.level ? 4 : 6,
+                    ),
                   ],
                 ),
               ),
-              const SizedBox(height: 8),
-              HtmlWidget(
-                comment.message,
-                key: ValueKey(Theme.of(context).brightness),
-                customStylesBuilder: (element) {
-                  if (element.localName == 'blockquote') {
-                    return {
-                      'margin': '12px',
-                      'padding': '10px',
-                      'background': Theme.of(context).backgroundColor.toHex(),
-                    };
-                  }
-
-                  return null;
-                },
+            Container(
+              clipBehavior: Clip.hardEdge,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(kBorderRadiusDefault),
+                color: comment.isPostAuthor
+                    ? Colors.yellowAccent.withOpacity(.12)
+                    : null,
               ),
-            ],
-          ),
+              child: ArticleAuthorWidget(comment.author),
+            ),
+            Expanded(child: Wrap()),
+            StatTextWidget(
+              type: StatType.score,
+              value: comment.score,
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
+          ],
+        ),
+        Text(
+          DateFormat.yMd().add_jm().format(comment.publishedAt),
+          style: Theme.of(context).textTheme.caption?.copyWith(
+                fontWeight: FontWeight.w300,
+              ),
+        ),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  const SizedBox(height: 8),
+                  HtmlWidget(
+                    comment.message,
+                    key: ValueKey(Theme.of(context).brightness),
+                    customStylesBuilder: (element) {
+                      if (element.localName == 'blockquote') {
+                        return {
+                          'margin': '12px',
+                          'padding': '10px',
+                          'background':
+                              Theme.of(context).backgroundColor.toHex(),
+                        };
+                      }
+
+                      return null;
+                    },
+                  ),
+                ],
+              ),
+            )
+          ],
         ),
       ],
     );

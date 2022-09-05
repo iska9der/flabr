@@ -111,12 +111,12 @@ class _UserScore extends StatelessWidget {
           ProfileStatCardWidget(
             type: StatType.rating,
             title: 'Рейтинг',
-            text: model.rating.toString(),
+            value: model.rating,
           ),
           ProfileStatCardWidget(
             type: StatType.score,
             title: 'Очки',
-            text: model.score.toString(),
+            value: model.score,
           ),
         ],
       ),

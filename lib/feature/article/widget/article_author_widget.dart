@@ -15,7 +15,8 @@ class ArticleAuthorWidget extends StatelessWidget {
       onPressed: () {
         context.navigateNamedTo('services/users/${author.alias}');
       },
-      child: Row(
+      child: Wrap(
+        crossAxisAlignment: WrapCrossAlignment.center,
         children: [
           UserAvatarWidget(imageUrl: author.avatarUrl),
           const SizedBox(width: 8),

@@ -145,14 +145,13 @@ class _UserScoresWidget extends StatelessWidget {
             ProfileStatWidget(
               type: StatType.score,
               title: 'Очки',
-              text: model.score.toString(),
-              isNegative: model.score < 0,
+              value: model.score,
             ),
             const SizedBox(width: 40),
             ProfileStatWidget(
               type: StatType.rating,
               title: 'Рейтинг',
-              text: model.rating.toString(),
+              value: model.rating,
             ),
           ],
         );

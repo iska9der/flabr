@@ -2,7 +2,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 
-import '../../../common/model/extension/num_x.dart';
 import '../../../common/model/render_type.dart';
 import '../../../common/model/stat_type.dart';
 import '../../../config/constants.dart';
@@ -78,11 +77,11 @@ class HubCardWidget extends StatelessWidget {
               ProfileStatCardWidget(
                 type: StatType.rating,
                 title: 'Рейтинг',
-                text: stats.rating.toString(),
+                value: stats.rating,
               ),
               ProfileStatCardWidget(
                 title: 'Подписчики',
-                text: stats.subscribersCount.compact(),
+                value: stats.subscribersCount,
               ),
             ],
           ),
