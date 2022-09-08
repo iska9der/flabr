@@ -13,6 +13,12 @@ class ScrollCubit extends Cubit<ScrollState> {
   final Duration duration;
   final Curve curve;
 
+  @override
+  Future<void> close() {
+    state.controller.dispose();
+    return super.close();
+  }
+
   void setUpEdgeListeners() {
     emit(state.copyWith(isTopEdge: true));
 

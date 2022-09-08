@@ -147,7 +147,7 @@ class SettingsCubit extends Cubit<SettingsState> {
 
     if (raw == null) return;
 
-    FeedConfigModel config = FeedConfigModel.fromJson(raw);
+    final config = FeedConfigModel.fromJson(raw);
 
     emit(state.copyWith(feedConfig: config));
   }
@@ -155,21 +155,23 @@ class SettingsCubit extends Cubit<SettingsState> {
   void changeFeedImageVisibility({bool? isVisible}) {
     if (state.feedConfig.isImageVisible == isVisible) return;
 
-    var newConfig = state.feedConfig.copyWith(isImageVisible: isVisible);
-
-    _storage.write(feedConfigCacheKey, newConfig.toJson());
+    final newConfig = state.feedConfig.copyWith(isImageVisible: isVisible);
 
     emit(state.copyWith(feedConfig: newConfig));
+
+    _storage.write(feedConfigCacheKey, newConfig.toJson());
   }
 
   void changeFeedDescVisibility({bool? isVisible}) {
     if (state.feedConfig.isDescriptionVisible == isVisible) return;
 
-    var newConfig = state.feedConfig.copyWith(isDescriptionVisible: isVisible);
-
-    _storage.write(feedConfigCacheKey, newConfig.toJson());
+    final newConfig = state.feedConfig.copyWith(
+      isDescriptionVisible: isVisible,
+    );
 
     emit(state.copyWith(feedConfig: newConfig));
+
+    _storage.write(feedConfigCacheKey, newConfig.toJson());
   }
 
   /// ARTICLE CONFIG

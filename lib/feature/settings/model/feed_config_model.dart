@@ -35,7 +35,7 @@ class FeedConfigModel extends Equatable {
   factory FeedConfigModel.fromMap(Map<String, dynamic> map) {
     return FeedConfigModel(
       isImageVisible: (map['isImageVisible'] ?? false) as bool,
-      isDescriptionVisible: (map['isShortVisible'] ?? false) as bool,
+      isDescriptionVisible: (map['isDescriptionVisible'] ?? false) as bool,
     );
   }
 

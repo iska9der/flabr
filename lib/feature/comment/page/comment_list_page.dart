@@ -74,9 +74,6 @@ class CommentListView extends StatelessWidget {
             }
 
             return ListView.separated(
-              padding: const EdgeInsets.symmetric(
-                horizontal: kScreenHPadding,
-              ),
               itemCount: comments.length,
               separatorBuilder: (context, index) => const SizedBox(height: 24),
               itemBuilder: (context, index) {
@@ -86,7 +83,7 @@ class CommentListView extends StatelessWidget {
                   padding: EdgeInsets.only(
                     bottom: index + 1 == comments.length ? 24 : 0,
                   ),
-                  child: _buildTree(comment),
+                  child: CommentTreeWidget(comment),
                 );
               },
             );
@@ -95,17 +92,25 @@ class CommentListView extends StatelessWidget {
       ),
     );
   }
+}
 
-  /// Рекурсивная функция для отрисовки дерева комментариев
-  _buildTree(CommentModel comment) {
+/// Рекурсивный виджет для отрисовки дерева комментариев
+class CommentTreeWidget extends StatelessWidget {
+  const CommentTreeWidget(this.comment, {Key? key}) : super(key: key);
+
+  final CommentModel comment;
+
+  @override
+  Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
       children: [
         CommentWidget(comment),
         for (var child in comment.children)
           Padding(
-            padding: const EdgeInsets.only(top: 4),
-            child: _buildTree(child),
+            padding: EdgeInsets.only(left: 2.0 * child.level, top: 4),
+            child: CommentTreeWidget(child),
           )
       ],
     );
@@ -123,46 +128,38 @@ class CommentWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         /// Строка автора
-        Row(
-          children: [
-            /// Вложенность
-            for (var i = 0; i <= comment.level; i++)
-              Padding(
-                padding: const EdgeInsets.only(right: 4),
-                child: Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    Icon(
-                      i != comment.level
-                          ? Icons.circle_rounded
-                          : Icons.circle_outlined,
-                      size: i != comment.level ? 4 : 6,
-                    ),
-                  ],
-                ),
-              ),
-
-            /// Автор
-            Container(
-              clipBehavior: Clip.hardEdge,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(kBorderRadiusDefault),
-                color: comment.isPostAuthor
-                    ? Colors.yellowAccent.withOpacity(.12)
-                    : null,
-              ),
-              child: ArticleAuthorWidget(comment.author),
+        ClipRRect(
+          clipBehavior: Clip.hardEdge,
+          borderRadius: BorderRadius.circular(kBorderRadiusDefault),
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              color: comment.isPostAuthor
+                  ? Colors.yellowAccent.withOpacity(.12)
+                  : Theme.of(context).colorScheme.surface,
             ),
-            Expanded(child: Wrap()),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: Row(
+                children: [
+                  /// Автор
+                  ArticleAuthorWidget(comment.author),
 
-            /// Очки
-            StatTextWidget(
-              type: StatType.score,
-              value: comment.score,
-              style: Theme.of(context).textTheme.bodySmall,
+                  /// Заполняем пространство между виджетами
+                  Expanded(child: Wrap()),
+
+                  /// Очки
+                  StatTextWidget(
+                    type: StatType.score,
+                    value: comment.score,
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                ],
+              ),
             ),
-          ],
+          ),
         ),
+
+        const SizedBox(height: 6),
 
         /// Дата коммента
         Text(

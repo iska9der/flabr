@@ -118,8 +118,8 @@ class ArticleListPageView extends StatelessWidget {
           child: Scrollbar(
             controller: controller,
             child: CustomScrollView(
+              cacheExtent: 1000,
               controller: controller,
-              cacheExtent: 5000,
               slivers: [
                 BlocBuilder<ArticleListCubit, ArticleListState>(
                   builder: (context, state) => SliverAppBar(

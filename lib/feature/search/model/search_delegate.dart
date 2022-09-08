@@ -96,10 +96,11 @@ class FlabrSearchDelegate extends SearchDelegate {
             var models = state.listResponse.refs;
 
             if (models.isEmpty) {
-              return Container(
-                alignment: Alignment.center,
-                padding: const EdgeInsets.all(kScreenHPadding),
-                child: const Text('Поиск не дал результатов'),
+              return const Padding(
+                padding: EdgeInsets.all(kScreenHPadding),
+                child: Align(
+                  child: Text('Поиск не дал результатов'),
+                ),
               );
             }
 
@@ -143,12 +144,14 @@ class FlabrSearchDelegate extends SearchDelegate {
                                   );
                                 case SearchTarget.companies:
                                   return const Center(
-                                      child: Text('Не реализовано'));
+                                    child: Text('Не реализовано'),
+                                  );
                                 case SearchTarget.users:
                                   return UserCardWidget(model: model);
                                 case SearchTarget.comments:
                                   return const Center(
-                                      child: Text('Не реализовано'));
+                                    child: Text('Не реализовано'),
+                                  );
                               }
                             }
 
@@ -240,27 +243,29 @@ class _OrderOptions extends StatelessWidget {
     return BlocBuilder<SearchCubit, SearchState>(
       bloc: cubit,
       builder: (context, state) {
-        return Container(
+        return Padding(
           padding: const EdgeInsets.symmetric(horizontal: kScreenHPadding),
-          width: MediaQuery.of(context).size.width,
-          child: FittedBox(
-            child: Row(
-              children: SearchOrder.values
-                  .map((order) => Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 4),
-                        child: ChoiceChip(
-                          label: Text(order.label),
-                          selected: state.order == order,
-                          onSelected: (value) {
-                            cubit.changeSort(order);
+          child: SizedBox(
+            width: MediaQuery.of(context).size.width,
+            child: FittedBox(
+              child: Row(
+                children: SearchOrder.values
+                    .map((order) => Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 4),
+                          child: ChoiceChip(
+                            label: Text(order.label),
+                            selected: state.order == order,
+                            onSelected: (value) {
+                              cubit.changeSort(order);
 
-                            if (state.query.isNotEmpty) {
-                              delegate.showResults(context);
-                            }
-                          },
-                        ),
-                      ))
-                  .toList(),
+                              if (state.query.isNotEmpty) {
+                                delegate.showResults(context);
+                              }
+                            },
+                          ),
+                        ))
+                    .toList(),
+              ),
             ),
           ),
         );

@@ -9,7 +9,7 @@ Habra mobile client on Flutter
 
 *apk:*
 ```
-flutter build apk --release --split-per-abi
+flutter build apk --release --split-per-abi 
 ```
 
 ---

@@ -66,6 +66,8 @@ class UserCubit extends Cubit<UserState> {
       }
 
       emit(state.copyWith(whoisModel: model));
-    } catch (e) {}
+    } catch (e) {
+      /// нечего делать
+    }
   }
 }

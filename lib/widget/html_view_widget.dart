@@ -20,14 +20,12 @@ class HtmlView extends StatelessWidget {
     Key? key,
     required this.textHtml,
     this.renderMode = RenderMode.sliverList,
-    this.customStylesBuilder,
     this.customWidgetBuilder,
     this.padding = const EdgeInsets.only(left: 20, right: 20, bottom: 40),
   }) : super(key: key);
 
   final String textHtml;
   final RenderMode renderMode;
-  final CustomStylesBuilder? customStylesBuilder;
   final CustomWidgetBuilder? customWidgetBuilder;
   final EdgeInsets padding;
 
@@ -55,19 +53,18 @@ class HtmlView extends StatelessWidget {
           },
           onLoadingBuilder: (ctx, el, prgrs) => const CircleIndicator.small(),
           factoryBuilder: () => CustomFactory(context),
-          customStylesBuilder: customStylesBuilder ??
-              (element) {
-                if (element.localName == 'div' && element.parent == null) {
-                  return {
-                    'margin-left': '${padding.left}px',
-                    'margin-right': '${padding.right}px',
-                    'padding-bottom': '${padding.bottom}px',
-                    'font-size': '${fontSize}px',
-                  };
-                }
+          customStylesBuilder: (element) {
+            if (element.localName == 'div' && element.parent == null) {
+              return {
+                'margin-left': '${padding.left}px',
+                'margin-right': '${padding.right}px',
+                'padding-bottom': '${padding.bottom}px',
+                'font-size': '${fontSize}px',
+              };
+            }
 
-                return null;
-              },
+            return null;
+          },
           customWidgetBuilder: customWidgetBuilder ??
               (element) {
                 if (element.localName == 'img') {
@@ -190,24 +187,28 @@ class CustomFactory extends WidgetFactory
   Widget buildBlockCodeWidget(String text) {
     ScrollController controller = ScrollController();
 
-    return Container(
-      constraints: BoxConstraints(minWidth: MediaQuery.of(context).size.width),
+    return DecoratedBox(
       decoration: BoxDecoration(color: Theme.of(context).colorScheme.surface),
-      child: Scrollbar(
-        controller: controller,
-        thumbVisibility: true,
-        child: SingleChildScrollView(
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+          minWidth: MediaQuery.of(context).size.width,
+        ),
+        child: Scrollbar(
           controller: controller,
-          scrollDirection: Axis.horizontal,
-          padding: const EdgeInsets.all(12),
-          child: SelectableText(text),
+          thumbVisibility: true,
+          child: SingleChildScrollView(
+            controller: controller,
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.all(12),
+            child: SelectableText(text),
+          ),
         ),
       ),
     );
   }
 
-  Container buildInlineCodeWidget(String text) {
-    return Container(
+  Widget buildInlineCodeWidget(String text) {
+    return ColoredBox(
       color: Theme.of(context).colorScheme.surface,
       child: SelectableText(text),
     );

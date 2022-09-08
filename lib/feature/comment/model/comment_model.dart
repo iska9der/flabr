@@ -104,7 +104,9 @@ class CommentModel extends Equatable {
   factory CommentModel.fromMap(Map<String, dynamic> map) {
     return CommentModel(
       id: map['id'],
-      author: ArticleAuthorModel.fromMap(map['author']),
+      author: map['author'] != null && map['author'].isNotEmpty
+          ? ArticleAuthorModel.fromMap(map['author'])
+          : ArticleAuthorModel.empty,
       isPostAuthor: map['isPostAuthor'] as bool,
       isAuthor: map['isAuthor'] as bool,
       isFavorite: map['isFavorite'] as bool,

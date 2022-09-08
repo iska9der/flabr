@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '../../../component/di/dependencies.dart';
 import '../../../config/constants.dart';
 import '../../../widget/html_view_widget.dart';
@@ -9,8 +10,8 @@ import '../../../widget/progress_indicator.dart';
 import '../../settings/widget/article_config_widget.dart';
 import '../cubit/article_cubit.dart';
 import '../service/article_service.dart';
-import '../widget/article_card_widget.dart';
 import '../widget/article_hub_widget.dart';
+import '../widget/article_info_widget.dart';
 import '../widget/article_statistics_widget.dart';
 
 const double hPadding = 12.0;
@@ -130,13 +131,15 @@ class _ArticleDetailPageViewState extends State<ArticleDetailPageView> {
                               onPressed: () => showModalBottomSheet(
                                 context: context,
                                 builder: (context) {
-                                  return Container(
-                                    height: 240,
-                                    padding: const EdgeInsets.symmetric(
+                                  return const Padding(
+                                    padding: EdgeInsets.symmetric(
                                       horizontal: kScreenHPadding,
                                       vertical: kScreenHPadding * 3,
                                     ),
-                                    child: const ArticleConfigWidget(),
+                                    child: SizedBox(
+                                      height: 240,
+                                      child: ArticleConfigWidget(),
+                                    ),
                                   );
                                 },
                               ),
@@ -209,13 +212,15 @@ class _FloatingStatistics extends StatelessWidget {
           duration: const Duration(milliseconds: 300),
           curve: Curves.easeInOutCubicEmphasized,
           offset: isVisible ? const Offset(0, 0) : const Offset(0, 10),
-          child: Container(
-            height: 36,
+          child: ColoredBox(
             color: Theme.of(context).colorScheme.surface.withOpacity(.95),
-            child: ArticleStatisticsWidget(
-              articleId: state.id,
-              statistics: stats,
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            child: SizedBox(
+              height: 36,
+              child: ArticleStatisticsWidget(
+                articleId: state.id,
+                statistics: stats,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              ),
             ),
           ),
         );

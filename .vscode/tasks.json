@@ -1,0 +1,19 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "flutter",
+			"command": "flutter",
+			"args": [
+				"build",
+				"apk",
+				"--release",
+				"--split-per-abi"
+			],
+			"group": "build",
+			"problemMatcher": [],
+			"label": "flutter: build release apk [split]",
+			"detail": ""
+		}
+	]
+}

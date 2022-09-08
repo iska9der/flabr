@@ -71,22 +71,30 @@ class _FullImageWidgetState extends State<FullImageWidget> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => Navigator.of(context).pop(),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: PhotoView(
-          controller: controller,
-          initialScale: PhotoViewComputedScale.contained,
-          backgroundDecoration: const BoxDecoration(
-            color: Colors.transparent,
+      child: Stack(
+        children: [
+          PhotoView(
+            controller: controller,
+            initialScale: PhotoViewComputedScale.contained,
+            backgroundDecoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.background,
+            ),
+            onScaleEnd: (context, details, controllerValue) {
+              // controller.value = controller.initial;
+            },
+            imageProvider: CachedNetworkImageProvider(
+              widget.imageUrl,
+              cacheKey: widget.imageUrl,
+            ),
           ),
-          onScaleEnd: (context, details, controllerValue) {
-            controller.value = controller.initial;
-          },
-          imageProvider: CachedNetworkImageProvider(
-            widget.imageUrl,
-            cacheKey: widget.imageUrl,
+          Align(
+            alignment: Alignment.topRight,
+            child: IconButton(
+              onPressed: () => Navigator.of(context).pop(),
+              icon: const Icon(Icons.close_rounded, size: 32),
+            ),
           ),
-        ),
+        ],
       ),
     );
   }

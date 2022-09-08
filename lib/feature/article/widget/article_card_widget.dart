@@ -2,18 +2,16 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
-import 'package:intl/intl.dart';
 
 import '../../../common/model/render_type.dart';
 import '../../../config/constants.dart';
 import '../../../widget/card_widget.dart';
-import '../../../widget/html_view_widget.dart';
 import '../../../widget/network_image_widget.dart';
 import '../../settings/cubit/settings_cubit.dart';
 import '../model/article_model.dart';
 import '../page/article_detail_page.dart';
-import 'article_author_widget.dart';
 import 'article_hub_widget.dart';
+import 'article_info_widget.dart';
 import 'article_statistics_widget.dart';
 
 class ArticleCardWidget extends StatelessWidget {
@@ -32,11 +30,13 @@ class ArticleCardWidget extends StatelessWidget {
       padding: const EdgeInsets.all(kCardPadding),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisSize: MainAxisSize.min,
         children: [
           ArticleInfoWidget(article),
           ArticleHubsWidget(hubs: article.hubs),
           Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisSize: MainAxisSize.min,
             children: [
               if (article.leadData.image.isNotEmpty)
                 BlocBuilder<SettingsCubit, SettingsState>(
@@ -72,22 +72,40 @@ class ArticleCardWidget extends StatelessWidget {
                         c.feedConfig.isDescriptionVisible ||
                     p.feedConfig.isImageVisible != c.feedConfig.isImageVisible,
                 builder: (context, state) {
-                  if (!state.feedConfig.isDescriptionVisible) return Wrap();
+                  if (!state.feedConfig.isDescriptionVisible) {
+                    return const SizedBox();
+                  }
 
-                  return HtmlView(
-                    textHtml: article.leadData.textHtml,
-                    renderMode: RenderMode.column,
-                    customWidgetBuilder: !state.feedConfig.isImageVisible
-                        ? (element) {
-                            if (element.localName == 'img') {
-                              if (!state.feedConfig.isImageVisible) {
-                                return Wrap();
-                              }
-                            }
+                  return HtmlWidget(
+                    article.leadData.textHtml,
+                    rebuildTriggers: RebuildTriggers([
+                      state.feedConfig,
+                    ]),
+                    customWidgetBuilder: (element) {
+                      if (element.localName == 'img') {
+                        if (!state.feedConfig.isImageVisible) {
+                          return const SizedBox();
+                        }
 
-                            return null;
-                          }
-                        : null,
+                        String imgSrc = element.attributes['data-src'] ??
+                            element.attributes['src'] ??
+                            '';
+
+                        if (imgSrc.isEmpty) {
+                          return null;
+                        }
+
+                        return Align(
+                          child: NetworkImageWidget(
+                            imageUrl: imgSrc,
+                            height: kImageHeightDefault,
+                            isTapable: true,
+                          ),
+                        );
+                      }
+
+                      return null;
+                    },
                   );
                 },
               ),
@@ -100,26 +118,6 @@ class ArticleCardWidget extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-}
-
-class ArticleInfoWidget extends StatelessWidget {
-  const ArticleInfoWidget(this.article, {Key? key}) : super(key: key);
-
-  final ArticleModel article;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        ArticleAuthorWidget(article.author),
-        const SizedBox(width: 4),
-        Text(
-          DateFormat.yMMMMd().add_jm().format(article.publishedAt),
-          style: Theme.of(context).textTheme.caption,
-        ),
-      ],
     );
   }
 }
