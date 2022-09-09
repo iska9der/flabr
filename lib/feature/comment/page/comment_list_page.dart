@@ -75,6 +75,7 @@ class CommentListView extends StatelessWidget {
 
             return ListView.separated(
               itemCount: comments.length,
+              padding: const EdgeInsets.symmetric(horizontal: 4),
               separatorBuilder: (context, index) => const SizedBox(height: 24),
               itemBuilder: (context, index) {
                 final comment = comments[index];
@@ -109,7 +110,7 @@ class CommentTreeWidget extends StatelessWidget {
         CommentWidget(comment),
         for (var child in comment.children)
           Padding(
-            padding: EdgeInsets.only(left: 2.0 * child.level, top: 4),
+            padding: const EdgeInsets.only(top: 4),
             child: CommentTreeWidget(child),
           )
       ],
@@ -124,56 +125,61 @@ class CommentWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        /// Строка автора
-        ClipRRect(
-          clipBehavior: Clip.hardEdge,
-          borderRadius: BorderRadius.circular(kBorderRadiusDefault),
-          child: DecoratedBox(
-            decoration: BoxDecoration(
-              color: comment.isPostAuthor
-                  ? Colors.yellowAccent.withOpacity(.12)
-                  : Theme.of(context).colorScheme.surface,
-            ),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
-              child: Row(
-                children: [
-                  /// Автор
-                  ArticleAuthorWidget(comment.author),
+    final paddingLeft = 3.0 * comment.level;
 
-                  /// Заполняем пространство между виджетами
-                  Expanded(child: Wrap()),
+    return Padding(
+      padding: EdgeInsets.only(left: paddingLeft),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          /// Строка автора
+          ClipRRect(
+            clipBehavior: Clip.hardEdge,
+            borderRadius: BorderRadius.circular(kBorderRadiusDefault),
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                color: comment.isPostAuthor
+                    ? Colors.yellowAccent.withOpacity(.12)
+                    : Theme.of(context).colorScheme.surface,
+              ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                child: Row(
+                  children: [
+                    /// Автор
+                    ArticleAuthorWidget(comment.author),
 
-                  /// Очки
-                  StatTextWidget(
-                    type: StatType.score,
-                    value: comment.score,
-                    style: Theme.of(context).textTheme.bodySmall,
-                  ),
-                ],
+                    /// Заполняем пространство между виджетами
+                    Expanded(child: Wrap()),
+
+                    /// Очки
+                    StatTextWidget(
+                      type: StatType.score,
+                      value: comment.score,
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
-        ),
 
-        const SizedBox(height: 6),
+          const SizedBox(height: 6),
 
-        /// Дата коммента
-        Text(
-          DateFormat.yMd().add_jm().format(comment.publishedAt),
-          style: Theme.of(context).textTheme.caption,
-        ),
+          /// Дата коммента
+          Text(
+            DateFormat.yMd().add_jm().format(comment.publishedAt),
+            style: Theme.of(context).textTheme.caption,
+          ),
 
-        /// Текст
-        HtmlView(
-          textHtml: comment.message,
-          renderMode: RenderMode.column,
-          padding: EdgeInsets.zero,
-        ),
-      ],
+          /// Текст
+          HtmlView(
+            textHtml: comment.message,
+            renderMode: RenderMode.column,
+            padding: EdgeInsets.zero,
+          ),
+        ],
+      ),
     );
   }
 }
