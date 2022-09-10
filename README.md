@@ -12,6 +12,7 @@
 <hr>
 
 <h5>Спасибо</h5>
-[@jarvis394](https://github.com/jarvis394/) -
-за [прокси-сервер](https://github.com/jarvis394/habra-auth/), через который осуществляется
-аутентификация
+
+<a href="https://github.com/jarvis394/">@jarvis394</a> -
+за <a href="https://github.com/jarvis394/habra-auth/">прокси-сервер</a>, через который
+осуществляется аутентификация
