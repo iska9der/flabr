@@ -8,6 +8,7 @@ class ArticleListState extends Equatable {
     this.error = '',
     this.from = ArticleFromEnum.flow,
     this.flow = FlowEnum.all,
+    this.connectSid = '',
     this.hub = '',
     this.user = '',
     this.langUI = LanguageEnum.ru,
@@ -25,6 +26,7 @@ class ArticleListState extends Equatable {
   final String error;
   final ArticleFromEnum from;
   final FlowEnum flow;
+  final String connectSid;
   final String hub;
   final String user;
   final LanguageEnum langUI;
@@ -42,6 +44,7 @@ class ArticleListState extends Equatable {
     String? error,
     ArticleFromEnum? from,
     FlowEnum? flow,
+    String? connectSid,
     String? hub,
     String? user,
     LanguageEnum? langUI,
@@ -59,6 +62,7 @@ class ArticleListState extends Equatable {
       error: error ?? this.error,
       from: from ?? this.from,
       flow: flow ?? this.flow,
+      connectSid: connectSid ?? this.connectSid,
       hub: hub ?? this.hub,
       user: user ?? this.user,
       langUI: langUI ?? this.langUI,
@@ -82,6 +86,7 @@ class ArticleListState extends Equatable {
         error,
         from,
         flow,
+        connectSid,
         hub,
         user,
         langUI,

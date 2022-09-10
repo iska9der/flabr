@@ -41,7 +41,7 @@ class NewsListPage extends StatelessWidget {
           create: (c) => ScrollCubit()..setUpEdgeListeners(),
         ),
       ],
-      child: const ArticleListPageView(),
+      child: const ArticleListPageView(type: ArticleType.news),
     );
   }
 }

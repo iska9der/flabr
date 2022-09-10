@@ -1,3 +1,5 @@
+import 'package:dio/dio.dart';
+
 import '../../../common/exception/displayable_exception.dart';
 import '../../../common/exception/fetch_exception.dart';
 import '../../../component/http/http_client.dart';
@@ -10,16 +12,10 @@ import '../model/network/article_list_response.dart';
 import '../model/sort/date_period_enum.dart';
 import '../model/sort/sort_enum.dart';
 
-/// todo: [_proxyClient] пока не используется, но, с появлением
-/// авторизации, возможно он пригодится
 class ArticleRepository {
-  const ArticleRepository(this._baseClient, this._proxyClient);
+  const ArticleRepository(this._baseClient);
 
   final HttpClient _baseClient;
-  final HttpClient _proxyClient;
-
-  /// todo: получение моей ленты
-  void fetchFeed() {}
 
   Future<Map<String, dynamic>> fetchById(String id) async {
     try {
@@ -36,6 +32,7 @@ class ArticleRepository {
     required String langArticles,
     required ArticleType type,
     required FlowEnum flow,
+    String connectSid = '',
     required SortEnum sort,
     required String page,
     required DatePeriodEnum period,
@@ -47,6 +44,7 @@ class ArticleRepository {
         langUI: langUI,
         flow: flow == FlowEnum.all ? null : flow.name,
         news: type == ArticleType.news,
+        custom: flow == FlowEnum.feed ? 'true' : null,
 
         /// если мы находимся не во "Все потоки", в значение sort, по завету
         /// костыльного api хабра, нужно передавать значение 'all'
@@ -57,7 +55,15 @@ class ArticleRepository {
       );
 
       final queryString = params.toQueryString();
-      final response = await _baseClient.get('/articles/?$queryString');
+      Options? options;
+      if (connectSid.isNotEmpty) {
+        options = Options(headers: {'Cookie': 'connect_sid=$connectSid'});
+      }
+
+      final response = await _baseClient.get(
+        '/articles/?$queryString',
+        options: options,
+      );
 
       return ArticleListResponse.fromMap(
         response.data,

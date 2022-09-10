@@ -8,6 +8,8 @@ import '../../../common/utils/utils.dart';
 import '../../../component/di/dependencies.dart';
 import '../../../config/constants.dart';
 import '../../../widget/progress_indicator.dart';
+import '../../auth/cubit/auth_cubit.dart';
+import '../../auth/widget/profile_icon_button.dart';
 import '../../scroll/cubit/scroll_cubit.dart';
 import '../../scroll/widget/floating_scroll_to_top_button.dart';
 import '../../search/cubit/search_cubit.dart';
@@ -15,6 +17,7 @@ import '../../search/model/search_delegate.dart';
 import '../../search/service/search_service.dart';
 import '../../settings/cubit/settings_cubit.dart';
 import '../cubit/article_list_cubit.dart';
+import '../model/article_type.dart';
 import '../model/flow_enum.dart';
 import '../service/article_service.dart';
 import '../widget/article_card_widget.dart';
@@ -54,7 +57,7 @@ class ArticleListPage extends StatelessWidget {
           ),
         ),
       ],
-      child: const ArticleListPageView(isSearchEnabled: true),
+      child: const ArticleListPageView(),
     );
   }
 }
@@ -62,10 +65,10 @@ class ArticleListPage extends StatelessWidget {
 class ArticleListPageView extends StatelessWidget {
   const ArticleListPageView({
     Key? key,
-    this.isSearchEnabled = false,
+    this.type = ArticleType.article,
   }) : super(key: key);
 
-  final bool isSearchEnabled;
+  final ArticleType type;
 
   @override
   Widget build(BuildContext context) {
@@ -99,18 +102,40 @@ class ArticleListPageView extends StatelessWidget {
           child: SafeArea(
             child: ListView(
               physics: const NeverScrollableScrollPhysics(),
-              children: [
-                ...FlowEnum.values
-                    .map((type) => ListTile(
-                          title: Text(type.label),
-                          onTap: () {
-                            articlesCubit.changeFlow(type);
+              children: FlowEnum.values.map((flow) {
+                /// дергаем пункт "Моя лента"
+                if (flow == FlowEnum.feed) {
+                  final authState = context.watch<AuthCubit>().state;
 
-                            Navigator.of(context).pop();
-                          },
-                        ))
-                    .toList(),
-              ],
+                  /// если мы не в статьях и не авторизованы, то не показываем
+                  /// этот пункт в drawer
+                  if (type != ArticleType.article ||
+                      !authState.status.isAuthorized) {
+                    return const SizedBox();
+                  }
+
+                  return ListTile(
+                    title: const Text('Моя лента'),
+                    onTap: () {
+                      articlesCubit.changeFlow(
+                        flow,
+                        connectSid: authState.data.connectSId,
+                      );
+
+                      Navigator.of(context).pop();
+                    },
+                  );
+                } else {
+                  return ListTile(
+                    title: Text(flow.label),
+                    onTap: () {
+                      articlesCubit.changeFlow(flow);
+
+                      Navigator.of(context).pop();
+                    },
+                  );
+                }
+              }).toList(),
             ),
           ),
         ),
@@ -125,9 +150,9 @@ class ArticleListPageView extends StatelessWidget {
                   builder: (context, state) => SliverAppBar(
                     title: Text(state.flow.label),
                     actions: [
-                      if (isSearchEnabled)
+                      if (type == ArticleType.article)
                         Padding(
-                          padding: const EdgeInsets.only(right: 20),
+                          padding: const EdgeInsets.only(right: 8),
                           child: IconButton(
                             onPressed: () async {
                               final cubit = context.read<SearchCubit>();
@@ -144,16 +169,28 @@ class ArticleListPageView extends StatelessWidget {
                             icon: const Icon(Icons.search_rounded),
                           ),
                         ),
+                      const Padding(
+                        padding: EdgeInsets.only(right: 20),
+                        child: ProfileIconButton(),
+                      ),
                     ],
                   ),
                 ),
-                const SliverAppBar(
-                  automaticallyImplyLeading: false,
-                  floating: true,
-                  elevation: 0,
-                  scrolledUnderElevation: 0,
-                  toolbarHeight: sortToolbarHeight,
-                  title: ArticlesSortWidget(),
+                BlocBuilder<ArticleListCubit, ArticleListState>(
+                  builder: (context, state) {
+                    if (state.flow == FlowEnum.feed) {
+                      return const SliverToBoxAdapter();
+                    }
+
+                    return const SliverAppBar(
+                      automaticallyImplyLeading: false,
+                      floating: true,
+                      elevation: 0,
+                      scrolledUnderElevation: 0,
+                      toolbarHeight: sortToolbarHeight,
+                      title: ArticlesSortWidget(),
+                    );
+                  },
                 ),
 
                 /// Статьи

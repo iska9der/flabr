@@ -9,10 +9,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 
+import 'component/bloc/observer.dart';
 import 'component/di/dependencies.dart';
 import 'component/router/app_router.dart';
 import 'component/storage/cache_storage.dart';
 import 'component/theme.dart';
+import 'feature/auth/cubit/auth_cubit.dart';
+import 'feature/auth/service/auth_service.dart';
 import 'feature/settings/cubit/settings_cubit.dart';
 import 'widget/progress_indicator.dart';
 
@@ -28,7 +31,13 @@ void main() async {
   await initializeDateFormatting('ru_RU');
 
   runZonedGuarded(
-    () => runApp(MyApp()),
+    () {
+      if (kDebugMode) {
+        Bloc.observer = MyBlocObserver();
+      }
+
+      runApp(MyApp());
+    },
     (error, stack) {
       if (kDebugMode) print(error.toString());
     },
@@ -42,12 +51,24 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (c) => SettingsCubit(
-        storage: getIt.get<CacheStorage>(),
-        router: getIt.get<AppRouter>(),
-        appLinks: getIt.get<AppLinks>(),
-      )..init(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          lazy: false,
+          create: (c) => SettingsCubit(
+            storage: getIt.get<CacheStorage>(),
+            router: getIt.get<AppRouter>(),
+            appLinks: getIt.get<AppLinks>(),
+          )..init(),
+        ),
+        BlocProvider(
+          lazy: false,
+          create: (context) => AuthCubit(
+            storage: getIt.get<CacheStorage>(),
+            service: getIt.get<AuthService>(),
+          )..init(),
+        ),
+      ],
       child: BlocConsumer<SettingsCubit, SettingsState>(
         listenWhen: (p, current) =>
             p.status == SettingsStatus.loading &&

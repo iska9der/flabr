@@ -15,6 +15,8 @@ class ArticleListParams extends Params {
 
   final bool news;
   final String? flow;
+
+  /// 'true', когда нужно получить "мою ленту"
   final String? custom;
 
   /// Sorting
@@ -54,8 +56,9 @@ class ArticleListParams extends Params {
     String? lFlow = flow != null ? '&flow=$flow' : '';
     String? lPeriod = period != null ? '&period=$period' : '';
     String? lScore = score != null ? '&score=$score' : '';
+    String? lCustom = custom != null ? '&custom=$custom' : '';
 
-    return 'fl=$langArticles&hl=$langUI$lFlow$lNews$lSort$lPeriod$lScore&page=$page';
+    return 'fl=$langArticles&hl=$langUI$lFlow$lCustom$lNews$lSort$lPeriod$lScore&page=$page';
   }
 
   @override

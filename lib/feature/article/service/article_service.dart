@@ -15,11 +15,6 @@ class ArticleService {
 
   ArticleListResponse cached = ArticleListResponse.empty;
 
-  /// todo: unimplemented
-  void fetchFeed() {
-    repository.fetchFeed();
-  }
-
   Future<ArticleModel> fetchById(String id) async {
     final rawData = await repository.fetchById(id);
 
@@ -52,6 +47,7 @@ class ArticleService {
     required List<LanguageEnum> langArticles,
     required ArticleType type,
     required FlowEnum flow,
+    String connectSid = '',
     required SortEnum sort,
     required DatePeriodEnum period,
     required String score,
@@ -62,6 +58,7 @@ class ArticleService {
       langArticles: encodeLangs(langArticles),
       type: type,
       flow: flow,
+      connectSid: connectSid,
       sort: sort,
       period: period,
       score: score,

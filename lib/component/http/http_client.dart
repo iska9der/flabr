@@ -10,7 +10,10 @@ class HttpClient {
 
   final Dio client;
 
-  Future<Response> get(String url) => client.get(url);
+  Future<Response> get(String url, {Options? options}) => client.get(
+        url,
+        options: options,
+      );
 
   Future<Response> post(String url, {dynamic body}) =>
       client.post(url, data: body);

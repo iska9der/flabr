@@ -7,6 +7,8 @@ import '../../common/utils/utils.dart';
 import '../../config/constants.dart';
 import '../../feature/article/repository/article_repository.dart';
 import '../../feature/article/service/article_service.dart';
+import '../../feature/auth/repository/auth_repository.dart';
+import '../../feature/auth/service/auth_service.dart';
 import '../../feature/hub/repository/hub_repository.dart';
 import '../../feature/hub/service/hub_service.dart';
 import '../../feature/search/repository/search_repository.dart';
@@ -46,12 +48,17 @@ void setDependencies() {
     () => CacheStorage(const FlutterSecureStorage()),
   );
 
+  /// Auth
+  getIt.registerLazySingleton<AuthRepository>(
+    () => AuthRepository(getIt(instanceName: 'proxyClient')),
+  );
+  getIt.registerLazySingleton<AuthService>(
+    () => AuthService(getIt()),
+  );
+
   /// Articles
   getIt.registerLazySingleton<ArticleRepository>(
-    () => ArticleRepository(
-      getIt(instanceName: 'baseClient'),
-      getIt(instanceName: 'proxyClient'),
-    ),
+    () => ArticleRepository(getIt(instanceName: 'baseClient')),
   );
   getIt.registerLazySingleton<ArticleService>(
     () => ArticleService(getIt()),
