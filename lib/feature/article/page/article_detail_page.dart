@@ -7,11 +7,11 @@ import '../../../component/di/dependencies.dart';
 import '../../../config/constants.dart';
 import '../../../widget/html_view_widget.dart';
 import '../../../widget/progress_indicator.dart';
-import '../../settings/widget/article_config_widget.dart';
 import '../cubit/article_cubit.dart';
 import '../service/article_service.dart';
 import '../widget/article_hub_widget.dart';
 import '../widget/article_info_widget.dart';
+import '../widget/article_settings_widget.dart';
 import '../widget/article_statistics_widget.dart';
 
 const double hPadding = 12.0;
@@ -138,7 +138,7 @@ class _ArticleDetailPageViewState extends State<ArticleDetailPageView> {
                                     ),
                                     child: SizedBox(
                                       height: 240,
-                                      child: ArticleConfigWidget(),
+                                      child: ArticleSettingsWidget(),
                                     ),
                                   );
                                 },
@@ -206,7 +206,7 @@ class _FloatingStatistics extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<ArticleCubit, ArticleState>(
       builder: (context, state) {
-        var stats = state.article.statistics;
+        final article = state.article;
 
         return AnimatedSlide(
           duration: const Duration(milliseconds: 300),
@@ -218,7 +218,8 @@ class _FloatingStatistics extends StatelessWidget {
               height: 36,
               child: ArticleStatisticsWidget(
                 articleId: state.id,
-                statistics: stats,
+                statistics: article.statistics,
+                related: article.relatedData,
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               ),
             ),

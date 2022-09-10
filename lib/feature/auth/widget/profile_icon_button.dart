@@ -32,7 +32,9 @@ class ProfileIconButton extends StatelessWidget {
           ),
           icon: Icon(
             Icons.account_circle_rounded,
-            color: state.status.isAuthorized ? Colors.green : null,
+            color: state.status.isAuthorized
+                ? Theme.of(context).primaryColor
+                : null,
           ),
         );
       },

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../cubit/settings_cubit.dart';
+import '../../settings/cubit/settings_cubit.dart';
 
-class ArticleConfigWidget extends StatelessWidget {
-  const ArticleConfigWidget({Key? key}) : super(key: key);
+class ArticleSettingsWidget extends StatelessWidget {
+  const ArticleSettingsWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

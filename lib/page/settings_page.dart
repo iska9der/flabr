@@ -4,7 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../component/language.dart';
 import '../config/constants.dart';
 import '../feature/settings/cubit/settings_cubit.dart';
-import '../widget/card_widget.dart';
+import '../feature/settings/widget/settings_card_widget.dart';
+import '../feature/settings/widget/settings_checkbox_widget.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({Key? key}) : super(key: key);
@@ -45,7 +46,7 @@ class SettingsView extends StatelessWidget {
           style: textTheme.headline4,
         ),
         const SizedBox(height: hAfterHeadline),
-        const FeedConfigWidget(),
+        const SettingsFeedWidget(),
       ],
     );
   }
@@ -56,7 +57,7 @@ class UIThemeWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return _SettingCard(
+    return SettingsCardWidget(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: BlocBuilder<SettingsCubit, SettingsState>(
         buildWhen: (p, c) => p.isDarkTheme != c.isDarkTheme,
@@ -80,7 +81,7 @@ class UILangWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return _SettingCard(
+    return SettingsCardWidget(
       title: 'Язык интерфейса',
       child: BlocBuilder<SettingsCubit, SettingsState>(
         buildWhen: (p, c) => p.langUI != c.langUI,
@@ -115,7 +116,7 @@ class ArticlesLangWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return _SettingCard(
+    return SettingsCardWidget(
       title: 'Язык публикаций',
       subtitle: 'должен быть выбран хотя бы один',
       child: BlocBuilder<SettingsCubit, SettingsState>(
@@ -125,15 +126,15 @@ class ArticlesLangWidget extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: LanguageEnum.values
                 .map(
-                  (lang) => CheckboxListTile(
+                  (lang) => SettingsCheckboxWidget(
                     title: Text(lang.label),
-                    contentPadding: EdgeInsets.zero,
-                    value: state.langArticles.contains(lang),
-                    onChanged: (bool? val) {
-                      context
-                          .read<SettingsCubit>()
-                          .changeArticlesLang(lang, isEnabled: val);
-                    },
+                    initialValue: state.langArticles.contains(lang),
+                    validate: (bool val) => context
+                        .read<SettingsCubit>()
+                        .validateChangeArticlesLang(lang, isEnabled: val),
+                    onChanged: (bool? val) => context
+                        .read<SettingsCubit>()
+                        .changeArticlesLang(lang, isEnabled: val),
                   ),
                 )
                 .toList(),
@@ -144,97 +145,34 @@ class ArticlesLangWidget extends StatelessWidget {
   }
 }
 
-class FeedConfigWidget extends StatelessWidget {
-  const FeedConfigWidget({Key? key}) : super(key: key);
+class SettingsFeedWidget extends StatelessWidget {
+  const SettingsFeedWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return _SettingCard(
+    final settingsCubit = context.read<SettingsCubit>();
+
+    return SettingsCardWidget(
       title: 'Карточки статей',
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          BlocBuilder<SettingsCubit, SettingsState>(
-            buildWhen: (p, c) =>
-                p.feedConfig.isImageVisible != c.feedConfig.isImageVisible,
-            builder: (context, state) {
-              return CheckboxListTile(
-                title: const Text('Изображение'),
-                value: state.feedConfig.isImageVisible,
-                contentPadding: EdgeInsets.zero,
-                onChanged: (bool? value) {
-                  context
-                      .read<SettingsCubit>()
-                      .changeFeedImageVisibility(isVisible: value);
-                },
-              );
-            },
+          SettingsCheckboxWidget(
+            initialValue: settingsCubit.state.feedConfig.isImageVisible,
+            title: const Text('Изображение'),
+            onChanged: (bool value) =>
+                settingsCubit.changeFeedImageVisibility(isVisible: value),
           ),
-          BlocBuilder<SettingsCubit, SettingsState>(
-            buildWhen: (p, c) =>
-                p.feedConfig.isDescriptionVisible !=
-                c.feedConfig.isDescriptionVisible,
-            builder: (context, state) {
-              return CheckboxListTile(
-                title: const Text('Короткое описание'),
-                subtitle: const Text('влияет на производительность'),
-                contentPadding: EdgeInsets.zero,
-                value: state.feedConfig.isDescriptionVisible,
-                onChanged: (bool? value) {
-                  context
-                      .read<SettingsCubit>()
-                      .changeFeedDescVisibility(isVisible: value);
-                },
-              );
-            },
+          SettingsCheckboxWidget(
+            initialValue: settingsCubit.state.feedConfig.isDescriptionVisible,
+            title: const Text('Короткое описание'),
+            subtitle: const Text('влияет на производительность'),
+            onChanged: (bool value) =>
+                settingsCubit.changeFeedDescVisibility(isVisible: value),
           ),
         ],
       ),
-    );
-  }
-}
-
-class _SettingCard extends StatelessWidget {
-  const _SettingCard({
-    Key? key,
-    this.title,
-    this.subtitle,
-    this.padding = const EdgeInsets.all(20),
-    required this.child,
-  }) : super(key: key);
-
-  final String? title;
-  final String? subtitle;
-  final EdgeInsets padding;
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      clipBehavior: Clip.none,
-      children: [
-        FlabrCard(
-          padding: padding,
-          child: child,
-        ),
-        Positioned(
-          left: 6,
-          top: -10,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              if (title != null) Text(title!),
-              if (subtitle != null)
-                Text(
-                  subtitle!,
-                  style: Theme.of(context).textTheme.caption,
-                ),
-            ],
-          ),
-        ),
-      ],
     );
   }
 }

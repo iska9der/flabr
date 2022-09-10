@@ -6,19 +6,12 @@ class AuthService {
 
   final AuthRepository _repository;
 
-  AuthDataModel _authData = AuthDataModel.empty;
-  AuthDataModel get authData => _authData;
-
-  Future<void> login({
+  Future<AuthDataModel> login({
     required String login,
     required String password,
   }) async {
     final raw = await _repository.login(login: login, password: password);
 
-    _authData = AuthDataModel.fromMap(raw);
-  }
-
-  void clearCachedAuth() {
-    _authData = AuthDataModel.empty;
+    return AuthDataModel.fromMap(raw);
   }
 }

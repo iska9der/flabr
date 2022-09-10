@@ -5,6 +5,7 @@ import '../../../common/model/extension/num_x.dart';
 import '../../../common/model/stat_type.dart';
 import '../../../config/constants.dart';
 import '../../comment/page/comment_list_page.dart';
+import '../model/article_related_data.dart';
 import '../model/article_statistics_model.dart';
 
 class ArticleStatisticsWidget extends StatelessWidget {
@@ -12,11 +13,14 @@ class ArticleStatisticsWidget extends StatelessWidget {
     Key? key,
     required this.articleId,
     required this.statistics,
+    required this.related,
     this.mainAxisAlignment = MainAxisAlignment.spaceBetween,
   }) : super(key: key);
 
   final String articleId;
   final ArticleStatisticsModel statistics;
+  final ArticleRelatedData related;
+
   final MainAxisAlignment mainAxisAlignment;
 
   @override
@@ -24,25 +28,28 @@ class ArticleStatisticsWidget extends StatelessWidget {
     return Row(
       mainAxisAlignment: mainAxisAlignment,
       children: [
-        IconText(
+        StatIconButton(
           icon: Icons.insert_chart_rounded,
           text: statistics.score.compact(),
+          isHighlighted: true,
           color: statistics.score >= 0
               ? StatType.score.color
               : StatType.score.negativeColor,
         ),
-        IconText(
+        StatIconButton(
           icon: Icons.chat_bubble_rounded,
           text: statistics.commentsCount.compact(),
+          isHighlighted: related.unreadCommentsCount > 0,
           onTap: () => context.router.pushWidget(
             CommentListPage(articleId: articleId),
           ),
         ),
-        IconText(
+        StatIconButton(
           icon: Icons.bookmark_rounded,
           text: statistics.favoritesCount.compact(),
+          isHighlighted: related.bookmarked,
         ),
-        IconText(
+        StatIconButton(
           icon: Icons.remove_red_eye_rounded,
           text: statistics.readingCount.compact(),
         ),
@@ -51,18 +58,20 @@ class ArticleStatisticsWidget extends StatelessWidget {
   }
 }
 
-class IconText extends StatelessWidget {
-  const IconText({
+class StatIconButton extends StatelessWidget {
+  const StatIconButton({
     Key? key,
     required this.icon,
     required this.text,
     this.color,
+    this.isHighlighted = false,
     this.onTap,
   }) : super(key: key);
 
   final IconData icon;
   final String text;
   final Color? color;
+  final bool isHighlighted;
   final void Function()? onTap;
 
   @override
@@ -76,7 +85,15 @@ class IconText extends StatelessWidget {
           padding: const EdgeInsets.all(kScreenHPadding),
           child: Row(
             children: [
-              Icon(icon, size: 14, color: color),
+              Icon(
+                icon,
+                size: 14,
+                color: color?.withOpacity(isHighlighted ? 1 : .3) ??
+                    Theme.of(context)
+                        .iconTheme
+                        .color
+                        ?.withOpacity(isHighlighted ? 1 : .3),
+              ),
               const SizedBox(width: 6),
               Text(
                 text,

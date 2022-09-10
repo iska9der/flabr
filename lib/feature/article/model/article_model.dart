@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'article_author_model.dart';
 import 'article_hub_model.dart';
 import 'article_lead_data_model.dart';
+import 'article_related_data.dart';
 import 'article_statistics_model.dart';
 import 'article_type.dart';
 
@@ -16,6 +17,7 @@ class ArticleModel extends Equatable {
     this.author = ArticleAuthorModel.empty,
     this.statistics = ArticleStatisticsModel.empty,
     this.leadData = ArticleLeadDataModel.empty,
+    this.relatedData = ArticleRelatedData.empty,
     this.hubs = const [],
   });
 
@@ -34,6 +36,8 @@ class ArticleModel extends Equatable {
   final ArticleAuthorModel author;
   final ArticleStatisticsModel statistics;
   final ArticleLeadDataModel leadData;
+  final ArticleRelatedData relatedData;
+
   final List<ArticleHubModel> hubs;
 
   factory ArticleModel.fromMap(Map<String, dynamic> map) {
@@ -54,6 +58,9 @@ class ArticleModel extends Equatable {
       leadData: map['leadData'] != null
           ? ArticleLeadDataModel.fromMap(map['leadData'])
           : ArticleLeadDataModel.empty,
+      relatedData: map['relatedData'] != null
+          ? ArticleRelatedData.fromMap(map['relatedData'])
+          : ArticleRelatedData.empty,
       hubs: map['hubs'] != null
           ? List<ArticleHubModel>.from(
               map['hubs'].map((e) => ArticleHubModel.fromMap(e)),

@@ -51,13 +51,12 @@ class ArticleListCubit extends Cubit<ArticleListState> {
 
   bool get isLastPage => state.page >= state.pagesCount;
 
-  void changeFlow(FlowEnum value, {String connectSid = ''}) {
+  void changeFlow(FlowEnum value) {
     if (state.flow == value) return;
 
     emit(ArticleListState(
       from: state.from,
       flow: value,
-      connectSid: connectSid,
       hub: state.hub,
       user: state.user,
       langUI: state.langUI,
@@ -166,7 +165,6 @@ class ArticleListCubit extends Cubit<ArticleListState> {
       langArticles: state.langArticles,
       type: state.type,
       flow: state.flow,
-      connectSid: state.connectSid,
       sort: state.sort,
       period: state.period,
       score: state.score,
@@ -216,6 +214,15 @@ class ArticleListCubit extends Cubit<ArticleListState> {
       articles: [...state.articles, ...response.refs],
       page: state.page + 1,
       pagesCount: response.pagesCount,
+    ));
+  }
+
+  void refetch() {
+    emit(state.copyWith(
+      status: ArticlesStatus.initial,
+      page: 1,
+      articles: [],
+      pagesCount: 0,
     ));
   }
 }

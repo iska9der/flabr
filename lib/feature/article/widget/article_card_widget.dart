@@ -115,6 +115,7 @@ class ArticleCardWidget extends StatelessWidget {
           ArticleStatisticsWidget(
             articleId: article.id,
             statistics: article.statistics,
+            related: article.relatedData,
           ),
         ],
       ),

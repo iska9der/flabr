@@ -85,6 +85,23 @@ class SettingsCubit extends Cubit<SettingsState> {
     emit(state.copyWith(langUI: uiLang));
   }
 
+  bool validateChangeArticlesLang(
+    LanguageEnum lang, {
+    required bool isEnabled,
+  }) {
+    var langs = [...state.langArticles];
+
+    if (isEnabled) {
+      langs.add(lang);
+    } else {
+      langs.remove(lang);
+    }
+
+    if (langs.isEmpty) return false;
+
+    return true;
+  }
+
   changeArticlesLang(LanguageEnum lang, {bool? isEnabled}) {
     if (isEnabled == null) return;
 

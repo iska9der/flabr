@@ -1,62 +1,47 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../component/storage/cache_storage.dart';
 import '../model/auth_data_model.dart';
-import '../service/auth_service.dart';
+import '../service/token_service.dart';
 
 part 'auth_state.dart';
 
-const authDataCacheKey = 'aData';
-const authCsrfCacheKey = 'cData';
-
 class AuthCubit extends Cubit<AuthState> {
-  AuthCubit({
-    required CacheStorage storage,
-    required AuthService service,
-  })  : _storage = storage,
-        _service = service,
+  AuthCubit({required TokenService tokenService})
+      : _tokenService = tokenService,
         super(const AuthState());
 
-  final CacheStorage _storage;
-  final AuthService _service;
+  final TokenService _tokenService;
 
   void init() async {
     emit(state.copyWith(status: AuthStatus.loading));
 
-    String? rawData = await _storage.read(authDataCacheKey);
-    String? rawCsrf = await _storage.read(authCsrfCacheKey);
+    AuthDataModel? authData = await _tokenService.getData();
+    String? csrf = await _tokenService.getCsrf();
 
-    if (rawData == null) {
+    if (authData == null) {
       return emit(state.copyWith(status: AuthStatus.unauthorized));
     }
 
-    AuthDataModel data = AuthDataModel.fromJson(rawData);
-
     emit(state.copyWith(
       status: AuthStatus.authorized,
-      data: data,
-      csrfToken: rawCsrf,
+      data: authData,
+      csrfToken: csrf,
     ));
   }
 
   void handleAuthData() {
-    final authData = _service.authData;
+    final authData = _tokenService.authData;
 
     if (authData.isEmpty) return;
 
-    _storage.write(authDataCacheKey, authData.toJson());
-
     emit(state.copyWith(status: AuthStatus.authorized, data: authData));
-
-    _service.clearCachedAuth();
   }
 
   logOut() async {
     emit(state.copyWith(status: AuthStatus.loading));
 
-    await _storage.delete(authDataCacheKey);
-    await _storage.delete(authCsrfCacheKey);
+    await _tokenService.clearAll();
 
     emit(state.copyWith(status: AuthStatus.unauthorized));
   }

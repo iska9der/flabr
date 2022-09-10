@@ -72,16 +72,23 @@ class ArticleListPageView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var articlesCubit = context.read<ArticleListCubit>();
-    var scrollCubit = context.read<ScrollCubit>();
-    var controller = scrollCubit.state.controller;
+    final articlesCubit = context.read<ArticleListCubit>();
+    final scrollCubit = context.read<ScrollCubit>();
+    final controller = scrollCubit.state.controller;
 
     return MultiBlocListener(
       listeners: [
-        BlocListener<ScrollCubit, ScrollState>(
-          listenWhen: (p, c) => c.isBottomEdge,
-          listener: (c, state) => articlesCubit.fetch(),
+        /// Если пользователь вошел или вышел из аккаунта,
+        /// надо переполучить статьи
+        BlocListener<AuthCubit, AuthState>(
+          listenWhen: (p, c) =>
+              c.status.isUnauthorized || c.status.isAuthorized,
+          listener: (context, state) {
+            articlesCubit.refetch();
+          },
         ),
+
+        /// Смена языков
         BlocListener<SettingsCubit, SettingsState>(
           listenWhen: (p, c) =>
               p.langUI != c.langUI || p.langArticles != c.langArticles,
@@ -93,6 +100,12 @@ class ArticleListPageView extends StatelessWidget {
 
             scrollCubit.animateToTop();
           },
+        ),
+
+        /// Когда скролл достиг предела, получаем следующую страницу
+        BlocListener<ScrollCubit, ScrollState>(
+          listenWhen: (p, c) => c.isBottomEdge,
+          listener: (c, state) => articlesCubit.fetch(),
         ),
       ],
       child: Scaffold(
@@ -117,10 +130,7 @@ class ArticleListPageView extends StatelessWidget {
                   return ListTile(
                     title: const Text('Моя лента'),
                     onTap: () {
-                      articlesCubit.changeFlow(
-                        flow,
-                        connectSid: authState.data.connectSId,
-                      );
+                      articlesCubit.changeFlow(flow);
 
                       Navigator.of(context).pop();
                     },

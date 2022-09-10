@@ -9,6 +9,7 @@ import '../../feature/article/repository/article_repository.dart';
 import '../../feature/article/service/article_service.dart';
 import '../../feature/auth/repository/auth_repository.dart';
 import '../../feature/auth/service/auth_service.dart';
+import '../../feature/auth/service/token_service.dart';
 import '../../feature/hub/repository/hub_repository.dart';
 import '../../feature/hub/service/hub_service.dart';
 import '../../feature/search/repository/search_repository.dart';
@@ -29,9 +30,22 @@ void setDependencies() {
   /// Utils
   getIt.registerSingleton<Utils>(Utils(router: getIt()));
 
+  /// Cache
+  getIt.registerSingleton<CacheStorage>(CacheStorage(
+    const FlutterSecureStorage(),
+  ));
+
+  /// Token
+  getIt.registerLazySingleton<TokenService>(
+    () => TokenService(getIt()),
+  );
+
   /// Http Clients
   getIt.registerLazySingleton<HttpClient>(
-    () => HttpClient(Dio(BaseOptions(baseUrl: baseApiUrl))),
+    () => HttpClient(
+      Dio(BaseOptions(baseUrl: baseApiUrl)),
+      tokenService: getIt(),
+    ),
     instanceName: 'baseClient',
   );
 
@@ -41,11 +55,6 @@ void setDependencies() {
   getIt.registerLazySingleton<HttpClient>(
     () => HttpClient(Dio(BaseOptions(baseUrl: proxyApiUrl))),
     instanceName: 'proxyClient',
-  );
-
-  /// Cache
-  getIt.registerLazySingleton<CacheStorage>(
-    () => CacheStorage(const FlutterSecureStorage()),
   );
 
   /// Auth

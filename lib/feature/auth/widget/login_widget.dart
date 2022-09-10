@@ -8,6 +8,7 @@ import '../../../widget/progress_indicator.dart';
 import '../cubit/auth_cubit.dart';
 import '../cubit/login_cubit.dart';
 import '../service/auth_service.dart';
+import '../service/token_service.dart';
 
 class LoginWidget extends StatelessWidget {
   const LoginWidget({
@@ -17,7 +18,10 @@ class LoginWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => LoginCubit(service: getIt.get<AuthService>()),
+      create: (context) => LoginCubit(
+        service: getIt.get<AuthService>(),
+        tokenService: getIt.get<TokenService>(),
+      ),
       child: BlocListener<LoginCubit, LoginState>(
         listener: (context, state) {
           if (state.status.isSuccess) {

@@ -1,5 +1,3 @@
-import 'package:dio/dio.dart';
-
 import '../../../common/exception/displayable_exception.dart';
 import '../../../common/exception/fetch_exception.dart';
 import '../../../component/http/http_client.dart';
@@ -32,7 +30,6 @@ class ArticleRepository {
     required String langArticles,
     required ArticleType type,
     required FlowEnum flow,
-    String connectSid = '',
     required SortEnum sort,
     required String page,
     required DatePeriodEnum period,
@@ -55,15 +52,7 @@ class ArticleRepository {
       );
 
       final queryString = params.toQueryString();
-      Options? options;
-      if (connectSid.isNotEmpty) {
-        options = Options(headers: {'Cookie': 'connect_sid=$connectSid'});
-      }
-
-      final response = await _baseClient.get(
-        '/articles/?$queryString',
-        options: options,
-      );
+      final response = await _baseClient.get('/articles/?$queryString');
 
       return ArticleListResponse.fromMap(
         response.data,
