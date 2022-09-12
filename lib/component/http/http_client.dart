@@ -25,7 +25,7 @@ class HttpClient {
         AuthDataModel? authData = await tokenService!.getData();
 
         if (authData != null) {
-          request.headers['Cookie'] = 'connect_sid=${authData.connectSId}';
+          request.headers['Cookie'] = 'connect_sid=${authData.connectSID}';
 
           return handler.next(request);
         }

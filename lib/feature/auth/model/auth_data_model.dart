@@ -4,26 +4,26 @@ import 'package:equatable/equatable.dart';
 
 class AuthDataModel extends Equatable {
   const AuthDataModel({
-    this.connectSId = '',
-    this.habrSessionId = '',
-    this.accCsId = '',
-    this.phpSessId = '',
-    this.hcSecId = '',
+    this.connectSID = '',
+    this.habrSID = '',
+    this.accCSID = '',
+    this.phpSID = '',
+    this.hSecID = '',
   });
 
-  final String connectSId;
-  final String habrSessionId;
-  final String accCsId;
-  final String phpSessId;
-  final String hcSecId;
+  final String connectSID;
+  final String habrSID;
+  final String accCSID;
+  final String phpSID;
+  final String hSecID;
 
   @override
   List<Object> get props => [
-        connectSId,
-        habrSessionId,
-        accCsId,
-        phpSessId,
-        hcSecId,
+        connectSID,
+        habrSID,
+        accCSID,
+        phpSID,
+        hSecID,
       ];
 
   static const empty = AuthDataModel();
@@ -31,21 +31,21 @@ class AuthDataModel extends Equatable {
 
   Map<String, dynamic> toMap() {
     return {
-      'connectSID': connectSId,
-      'habrSessionID': habrSessionId,
-      'acc_csid': accCsId,
-      'PHPSESSID': phpSessId,
-      'hsec_id': hcSecId,
+      'connectSID': connectSID,
+      'habrSessionID': habrSID,
+      'acc_csid': accCSID,
+      'PHPSESSID': phpSID,
+      'hsec_id': hSecID,
     };
   }
 
   factory AuthDataModel.fromMap(Map<String, dynamic> map) {
     return AuthDataModel(
-      connectSId: map['connectSID'] as String,
-      habrSessionId: map['habrSessionID'] as String,
-      accCsId: map['acc_csid'] as String,
-      phpSessId: map['PHPSESSID'] as String,
-      hcSecId: map['hsec_id'] as String,
+      connectSID: map['connectSID'] as String,
+      habrSID: map['habrSessionID'] as String,
+      accCSID: map['acc_csid'] as String,
+      phpSID: map['PHPSESSID'] as String,
+      hSecID: map['hsec_id'] as String,
     );
   }
 

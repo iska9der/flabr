@@ -120,6 +120,10 @@ class _$AppRouter extends RootStackRouter {
     UserArticleListRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
           routeData: routeData, child: const UserArticleListPage());
+    },
+    UserBookmarkListRoute.name: (routeData) {
+      return MaterialPageX<dynamic>(
+          routeData: routeData, child: const UserBookmarkListPage());
     }
   };
 
@@ -186,7 +190,9 @@ class _$AppRouter extends RootStackRouter {
                       RouteConfig(UserDetailRoute.name,
                           path: 'detail', parent: UserDashboardRoute.name),
                       RouteConfig(UserArticleListRoute.name,
-                          path: 'article', parent: UserDashboardRoute.name)
+                          path: 'article', parent: UserDashboardRoute.name),
+                      RouteConfig(UserBookmarkListRoute.name,
+                          path: 'bookmarks', parent: UserDashboardRoute.name)
                     ])
               ]),
           RouteConfig(SettingsRoute.name,
@@ -538,4 +544,13 @@ class UserArticleListRoute extends PageRouteInfo<void> {
       : super(UserArticleListRoute.name, path: 'article');
 
   static const String name = 'UserArticleListRoute';
+}
+
+/// generated route for
+/// [UserBookmarkListPage]
+class UserBookmarkListRoute extends PageRouteInfo<void> {
+  const UserBookmarkListRoute()
+      : super(UserBookmarkListRoute.name, path: 'bookmarks');
+
+  static const String name = 'UserBookmarkListRoute';
 }

@@ -11,9 +11,7 @@ import '../service/auth_service.dart';
 import '../service/token_service.dart';
 
 class LoginWidget extends StatelessWidget {
-  const LoginWidget({
-    Key? key,
-  }) : super(key: key);
+  const LoginWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

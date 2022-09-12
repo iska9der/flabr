@@ -1,19 +1,18 @@
 import 'dart:convert';
+
 import 'package:equatable/equatable.dart';
 
-class ArticleAuthorModel extends Equatable {
+import '../../../common/model/user.dart';
+
+class ArticleAuthorModel extends UserBase with EquatableMixin {
   const ArticleAuthorModel({
-    required this.id,
-    this.alias = '',
-    this.fullname = '',
-    this.avatarUrl = '',
+    required super.id,
+    super.alias = '',
+    super.fullname = '',
+    super.avatarUrl = '',
     this.speciality = '',
   });
 
-  final String id;
-  final String alias;
-  final String fullname;
-  final String avatarUrl;
   final String speciality;
 
   Map<String, dynamic> toMap() {

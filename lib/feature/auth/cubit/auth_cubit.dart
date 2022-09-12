@@ -2,15 +2,19 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../model/auth_data_model.dart';
+import '../model/me_model.dart';
+import '../service/auth_service.dart';
 import '../service/token_service.dart';
 
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
-  AuthCubit({required TokenService tokenService})
-      : _tokenService = tokenService,
+  AuthCubit({required AuthService service, required TokenService tokenService})
+      : _service = service,
+        _tokenService = tokenService,
         super(const AuthState());
 
+  final AuthService _service;
   final TokenService _tokenService;
 
   void init() async {
@@ -28,6 +32,14 @@ class AuthCubit extends Cubit<AuthState> {
       data: authData,
       csrfToken: csrf,
     ));
+
+    _fetchMe();
+  }
+
+  void _fetchMe() async {
+    final me = await _service.fetchMe(state.data.connectSID);
+
+    emit(state.copyWith(me: me));
   }
 
   void handleAuthData() {

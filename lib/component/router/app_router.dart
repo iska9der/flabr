@@ -12,6 +12,7 @@ import '../../feature/hub/page/hub_dashboard_page.dart';
 import '../../feature/hub/page/hub_detail_page.dart';
 import '../../feature/hub/page/hub_list_page.dart';
 import '../../feature/user/page/user_article_list_page.dart';
+import '../../feature/user/page/user_bookmark_list_page.dart';
 import '../../feature/user/page/user_dashboard_page.dart';
 import '../../feature/user/page/user_detail_page.dart';
 import '../../feature/user/page/user_list_page.dart';
@@ -132,6 +133,11 @@ part 'app_router.gr.dart';
                   path: UserArticleListPage.routePath,
                   name: UserArticleListPage.routeName,
                   page: UserArticleListPage,
+                ),
+                AutoRoute(
+                  path: UserBookmarkListPage.routePath,
+                  name: UserBookmarkListPage.routeName,
+                  page: UserBookmarkListPage,
                 ),
               ],
             ),

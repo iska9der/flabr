@@ -42,7 +42,7 @@ class ArticleService {
   /// если сортировка по лучшим [SortEnum.byBest], то надо сортировать по рейтингу;
   /// если по новым [SortEnum.byNew], сортируем по дате публикации
   ///
-  Future<ArticleListResponse> fetchByFlow({
+  Future<ArticleListResponse> fetchFlowArticles({
     required LanguageEnum langUI,
     required List<LanguageEnum> langArticles,
     required ArticleType type,
@@ -52,7 +52,7 @@ class ArticleService {
     required String score,
     required String page,
   }) async {
-    final response = await repository.fetchByFlow(
+    final response = await repository.fetchFlowArticles(
       langUI: langUI.name,
       langArticles: encodeLangs(langArticles),
       type: type,
@@ -70,7 +70,7 @@ class ArticleService {
     return cached;
   }
 
-  Future<ArticleListResponse> fetchByHub({
+  Future<ArticleListResponse> fetchHubArticles({
     required LanguageEnum langUI,
     required List<LanguageEnum> langArticles,
     required String hub,
@@ -79,7 +79,7 @@ class ArticleService {
     required String score,
     required String page,
   }) async {
-    final response = await repository.fetchByHub(
+    final response = await repository.fetchHubArticles(
       langUI: langUI.name,
       langArticles: encodeLangs(langArticles),
       hub: hub,
@@ -96,7 +96,7 @@ class ArticleService {
     return cached;
   }
 
-  fetchByUser({
+  fetchUserArticles({
     required LanguageEnum langUI,
     required List<LanguageEnum> langArticles,
     required String user,
@@ -105,7 +105,7 @@ class ArticleService {
     required String score,
     required String page,
   }) async {
-    final response = await repository.fetchByUser(
+    final response = await repository.fetchUserArticles(
       langUI: langUI.name,
       langArticles: encodeLangs(langArticles),
       user: user,
@@ -118,6 +118,31 @@ class ArticleService {
     _sortListResponse(sort, response);
 
     cached = response;
+
+    return cached;
+  }
+
+  fetchUserBookmarks({
+    required LanguageEnum langUI,
+    required List<LanguageEnum> langArticles,
+    required String user,
+    required String page,
+  }) async {
+    final response = await repository.fetchUserBookmarks(
+      langUI: langUI.name,
+      langArticles: encodeLangs(langArticles),
+      user: user,
+      page: page,
+    );
+
+    var newResponse = response.copyWith(
+      refs: response.ids.map(
+        (id) {
+          return response.refs.firstWhere((ref) => id == ref.id);
+        },
+      ).toList(),
+    );
+    cached = newResponse;
 
     return cached;
   }

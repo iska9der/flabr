@@ -25,7 +25,7 @@ class ArticleRepository {
     }
   }
 
-  Future<ArticleListResponse> fetchByFlow({
+  Future<ArticleListResponse> fetchFlowArticles({
     required String langUI,
     required String langArticles,
     required ArticleType type,
@@ -64,7 +64,7 @@ class ArticleRepository {
     }
   }
 
-  Future<ArticleListResponse> fetchByHub({
+  Future<ArticleListResponse> fetchHubArticles({
     required String langUI,
     required String langArticles,
     required String hub,
@@ -96,7 +96,7 @@ class ArticleRepository {
     }
   }
 
-  fetchByUser({
+  Future<ArticleListResponse> fetchUserArticles({
     required String langUI,
     required String langArticles,
     required String user,
@@ -115,6 +115,32 @@ class ArticleRepository {
       final queryString = params.toQueryString();
       final response = await _baseClient.get(
         '/articles/?user=$user&$queryString',
+      );
+
+      return ArticleListResponse.fromMap(response.data);
+    } on DisplayableException {
+      rethrow;
+    } catch (e) {
+      throw FetchException();
+    }
+  }
+
+  Future<ArticleListResponse> fetchUserBookmarks({
+    required String langUI,
+    required String langArticles,
+    required String user,
+    required String page,
+  }) async {
+    try {
+      final params = ArticleListParams(
+        langArticles: langArticles,
+        langUI: langUI,
+        page: page,
+      );
+
+      final queryString = params.toQueryString();
+      final response = await _baseClient.get(
+        '/articles/?user=$user&user_bookmarks=true&$queryString',
       );
 
       return ArticleListResponse.fromMap(response.data);

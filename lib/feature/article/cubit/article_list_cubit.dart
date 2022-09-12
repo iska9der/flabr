@@ -8,6 +8,7 @@ import '../model/article_from_enum.dart';
 import '../model/article_model.dart';
 import '../model/article_type.dart';
 import '../model/flow_enum.dart';
+import '../model/network/article_list_response.dart';
 import '../model/sort/date_period_enum.dart';
 import '../model/sort/sort_enum.dart';
 import '../model/sort/sort_option_model.dart';
@@ -40,7 +41,7 @@ class ArticleListCubit extends Cubit<ArticleListState> {
     if (from == ArticleFromEnum.hub) {
       assert(state.hub.isNotEmpty, 'Нужно указать хаб [hub]');
     }
-    if (from == ArticleFromEnum.user) {
+    if (from == ArticleFromEnum.userArticles) {
       assert(state.user.isNotEmpty, 'Нужно указать пользователя [user]');
     }
   }
@@ -135,17 +136,29 @@ class ArticleListCubit extends Cubit<ArticleListState> {
     emit(state.copyWith(status: ArticlesStatus.loading));
 
     try {
+      ArticleListResponse response;
+
       switch (state.from) {
         case ArticleFromEnum.flow:
-          await _fetchByFlow();
+          response = await _fetchFlowArticles();
           break;
         case ArticleFromEnum.hub:
-          await _fetchByHub();
+          response = await _fetchHubArticles();
           break;
-        case ArticleFromEnum.user:
-          await _fetchByUser();
+        case ArticleFromEnum.userArticles:
+          response = await _fetchUserArticles();
+          break;
+        case ArticleFromEnum.userBookmarks:
+          response = await _fetchUserBookmarks();
           break;
       }
+
+      emit(state.copyWith(
+        status: ArticlesStatus.success,
+        articles: [...state.articles, ...response.refs],
+        page: state.page + 1,
+        pagesCount: response.pagesCount,
+      ));
     } on DisplayableException catch (e) {
       emit(state.copyWith(
         error: e.toString(),
@@ -159,8 +172,8 @@ class ArticleListCubit extends Cubit<ArticleListState> {
     }
   }
 
-  Future<void> _fetchByFlow() async {
-    var response = await _service.fetchByFlow(
+  Future<ArticleListResponse> _fetchFlowArticles() async {
+    return await _service.fetchFlowArticles(
       langUI: state.langUI,
       langArticles: state.langArticles,
       type: state.type,
@@ -170,17 +183,10 @@ class ArticleListCubit extends Cubit<ArticleListState> {
       score: state.score,
       page: state.page.toString(),
     );
-
-    emit(state.copyWith(
-      status: ArticlesStatus.success,
-      articles: [...state.articles, ...response.refs],
-      page: state.page + 1,
-      pagesCount: response.pagesCount,
-    ));
   }
 
-  Future<void> _fetchByHub() async {
-    var response = await _service.fetchByHub(
+  Future<ArticleListResponse> _fetchHubArticles() async {
+    return await _service.fetchHubArticles(
       langUI: state.langUI,
       langArticles: state.langArticles,
       hub: state.hub,
@@ -189,17 +195,10 @@ class ArticleListCubit extends Cubit<ArticleListState> {
       score: state.score,
       page: state.page.toString(),
     );
-
-    emit(state.copyWith(
-      status: ArticlesStatus.success,
-      articles: [...state.articles, ...response.refs],
-      page: state.page + 1,
-      pagesCount: response.pagesCount,
-    ));
   }
 
-  Future<void> _fetchByUser() async {
-    var response = await _service.fetchByUser(
+  Future<ArticleListResponse> _fetchUserArticles() async {
+    return await _service.fetchUserArticles(
       langUI: state.langUI,
       langArticles: state.langArticles,
       user: state.user,
@@ -208,13 +207,15 @@ class ArticleListCubit extends Cubit<ArticleListState> {
       score: state.score,
       page: state.page.toString(),
     );
+  }
 
-    emit(state.copyWith(
-      status: ArticlesStatus.success,
-      articles: [...state.articles, ...response.refs],
-      page: state.page + 1,
-      pagesCount: response.pagesCount,
-    ));
+  Future<ArticleListResponse> _fetchUserBookmarks() async {
+    return await _service.fetchUserBookmarks(
+      langUI: state.langUI,
+      langArticles: state.langArticles,
+      user: state.user,
+      page: state.page.toString(),
+    );
   }
 
   void refetch() {

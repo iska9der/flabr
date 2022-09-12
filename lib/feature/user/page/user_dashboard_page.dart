@@ -9,6 +9,7 @@ import '../cubit/user_cubit.dart';
 import '../service/user_service.dart';
 import '../widget/nav_link_widget.dart';
 import 'user_article_list_page.dart';
+import 'user_bookmark_list_page.dart';
 import 'user_detail_page.dart';
 
 class UserDashboardPage extends StatelessWidget {
@@ -37,6 +38,7 @@ class UserDashboardPage extends StatelessWidget {
         routes: const [
           UserDetailRoute(),
           UserArticleListRoute(),
+          UserBookmarkListRoute(),
         ],
         builder: (context, child, animation) {
           return Scaffold(
@@ -54,6 +56,10 @@ class UserDashboardPage extends StatelessWidget {
                     NavLinkWidget(
                       title: UserArticleListPage.title,
                       route: UserArticleListPage.routePath,
+                    ),
+                    NavLinkWidget(
+                      title: UserBookmarkListPage.title,
+                      route: UserBookmarkListPage.routePath,
                     ),
                   ],
                 ),

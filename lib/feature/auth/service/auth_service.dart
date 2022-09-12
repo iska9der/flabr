@@ -1,4 +1,5 @@
 import '../model/auth_data_model.dart';
+import '../model/me_model.dart';
 import '../repository/auth_repository.dart';
 
 class AuthService {
@@ -13,5 +14,11 @@ class AuthService {
     final raw = await _repository.login(login: login, password: password);
 
     return AuthDataModel.fromMap(raw);
+  }
+
+  Future<MeModel> fetchMe(String connectSid) async {
+    final raw = await _repository.fetchMe(connectSid);
+
+    return MeModel.fromMap(raw);
   }
 }

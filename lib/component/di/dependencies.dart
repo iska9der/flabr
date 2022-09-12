@@ -59,7 +59,9 @@ void setDependencies() {
 
   /// Auth
   getIt.registerLazySingleton<AuthRepository>(
-    () => AuthRepository(getIt(instanceName: 'proxyClient')),
+    () => AuthRepository(
+        baseClient: getIt(instanceName: 'baseClient'),
+        proxyClient: getIt(instanceName: 'proxyClient')),
   );
   getIt.registerLazySingleton<AuthService>(
     () => AuthService(getIt()),

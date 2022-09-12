@@ -1,1 +1,1 @@
-enum ArticleFromEnum { flow, hub, user }
+enum ArticleFromEnum { flow, hub, userArticles, userBookmarks }

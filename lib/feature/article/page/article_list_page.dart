@@ -82,7 +82,8 @@ class ArticleListPageView extends StatelessWidget {
         /// надо переполучить статьи
         BlocListener<AuthCubit, AuthState>(
           listenWhen: (p, c) =>
-              c.status.isUnauthorized || c.status.isAuthorized,
+              p.status.isAuthorized && c.status.isUnauthorized ||
+              p.status.isUnauthorized && c.status.isAuthorized,
           listener: (context, state) {
             articlesCubit.refetch();
           },
@@ -181,7 +182,7 @@ class ArticleListPageView extends StatelessWidget {
                         ),
                       const Padding(
                         padding: EdgeInsets.only(right: 20),
-                        child: ProfileIconButton(),
+                        child: MyProfileIconButton(),
                       ),
                     ],
                   ),
@@ -253,6 +254,14 @@ class ArticleSliverList extends StatelessWidget {
         }
 
         var articles = state.articles;
+
+        if (articles.isEmpty) {
+          return const SliverFillRemaining(
+            child: Center(
+              child: Text('Ничего нет'),
+            ),
+          );
+        }
 
         return SliverList(
           delegate: SliverChildBuilderDelegate(

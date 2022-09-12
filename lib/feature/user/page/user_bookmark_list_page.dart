@@ -11,24 +11,24 @@ import '../../scroll/widget/floating_scroll_to_top_button.dart';
 import '../../settings/cubit/settings_cubit.dart';
 import '../cubit/user_cubit.dart';
 
-class UserArticleListPage extends StatelessWidget {
-  const UserArticleListPage({Key? key}) : super(key: key);
+class UserBookmarkListPage extends StatelessWidget {
+  const UserBookmarkListPage({super.key});
 
-  static const String title = 'Публикации';
-  static const String routePath = 'article';
-  static const String routeName = 'UserArticleListRoute';
+  static const String title = 'Закладки';
+  static const String routePath = 'bookmarks';
+  static const String routeName = 'UserBookmarkListRoute';
 
   @override
   Widget build(BuildContext context) {
     final cubit = context.read<UserCubit>();
 
     return MultiBlocProvider(
-      key: ValueKey('user-${cubit.state.login}-articles'),
+      key: ValueKey('user-${cubit.state.login}-bookmarks'),
       providers: [
         BlocProvider(
           create: (c) => ArticleListCubit(
             getIt.get<ArticleService>(),
-            from: ArticleFromEnum.userArticles,
+            from: ArticleFromEnum.userBookmarks,
             user: cubit.state.login,
             langUI: context.read<SettingsCubit>().state.langUI,
             langArticles: context.read<SettingsCubit>().state.langArticles,
@@ -38,13 +38,15 @@ class UserArticleListPage extends StatelessWidget {
           create: (c) => ScrollCubit()..setUpEdgeListeners(),
         ),
       ],
-      child: const UserArticleListPageView(),
+      child: const UserBookmarkListView(),
     );
   }
 }
 
-class UserArticleListPageView extends StatelessWidget {
-  const UserArticleListPageView({Key? key}) : super(key: key);
+class UserBookmarkListView extends StatelessWidget {
+  const UserBookmarkListView({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +62,7 @@ class UserArticleListPageView extends StatelessWidget {
           controller: scrollCtrl,
           child: CustomScrollView(
             controller: scrollCtrl,
-            cacheExtent: 2000,
+            cacheExtent: 1000,
             slivers: const [
               ArticleSliverList(),
             ],

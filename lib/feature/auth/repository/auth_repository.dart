@@ -6,18 +6,21 @@ import '../model/auth_exception.dart';
 import '../model/network/auth_response_type.dart';
 
 class AuthRepository {
-  const AuthRepository(
-    HttpClient client,
-  ) : _client = client;
+  const AuthRepository({
+    required HttpClient baseClient,
+    required HttpClient proxyClient,
+  })  : _baseClient = baseClient,
+        _proxyClient = proxyClient;
 
-  final HttpClient _client;
+  final HttpClient _baseClient;
+  final HttpClient _proxyClient;
 
   login({
     required String login,
     required String password,
   }) async {
     try {
-      final response = await _client.post('/getAccountAuthData', body: {
+      final response = await _proxyClient.post('/getAccountAuthData', body: {
         'email': login,
         'password': password,
       });
@@ -37,6 +40,16 @@ class AuthRepository {
       }
 
       throw AuthException(type);
+    } catch (e) {
+      throw FetchException();
+    }
+  }
+
+  Future<Map<String, dynamic>> fetchMe(String connectSid) async {
+    try {
+      final response = await _baseClient.get('/me');
+
+      return response.data;
     } catch (e) {
       throw FetchException();
     }
