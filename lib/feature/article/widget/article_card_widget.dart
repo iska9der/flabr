@@ -28,6 +28,9 @@ class ArticleCardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return FlabrCard(
       padding: const EdgeInsets.all(kCardPadding),
+      onTap: () => context.router.pushWidget(
+        ArticleDetailPage(id: article.id),
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.min,
@@ -62,9 +65,6 @@ class ArticleCardWidget extends StatelessWidget {
               _ArticleTitleWidget(
                 title: article.titleHtml,
                 renderType: renderType,
-                onPressed: () => context.router.pushWidget(
-                  ArticleDetailPage(id: article.id),
-                ),
               ),
               BlocBuilder<SettingsCubit, SettingsState>(
                 buildWhen: (p, c) =>
@@ -128,31 +128,23 @@ class _ArticleTitleWidget extends StatelessWidget {
     Key? key,
     required this.title,
     required this.renderType,
-    required this.onPressed,
   }) : super(key: key);
 
   final String title;
   final RenderType renderType;
-  final void Function()? onPressed;
 
   @override
   Widget build(BuildContext context) {
     return renderType == RenderType.plain
-        ? TextButton(
-            onPressed: onPressed,
-            child: Text(
-              title,
-              style: Theme.of(context).textTheme.headline6,
-            ),
+        ? Text(
+            title,
+            style: Theme.of(context).textTheme.headline6,
           )
-        : TextButton(
-            onPressed: onPressed,
-            child: HtmlWidget(
-              title,
-              textStyle: TextStyle(
-                color: Theme.of(context).textTheme.headline6?.color,
-                fontSize: Theme.of(context).textTheme.headline6?.fontSize,
-              ),
+        : HtmlWidget(
+            title,
+            textStyle: TextStyle(
+              color: Theme.of(context).textTheme.headline6?.color,
+              fontSize: Theme.of(context).textTheme.headline6?.fontSize,
             ),
           );
   }
