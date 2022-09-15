@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 
 import '../../../common/model/hub.dart';
 import '../../article/model/flow_enum.dart';
+import 'hub_related_data.dart';
 import 'hub_statistics_model.dart';
 
 class HubProfileModel extends HubBase with EquatableMixin {
@@ -12,7 +13,7 @@ class HubProfileModel extends HubBase with EquatableMixin {
     super.descriptionHtml = '',
     this.fullDescriptionHtml = '',
     super.imageUrl = '',
-    super.relatedData = const {},
+    HubRelatedData super.relatedData = HubRelatedData.empty,
     super.statistics = HubStatisticsModel.empty,
     this.keywords = const [],
     super.isProfiled = false,
@@ -33,7 +34,7 @@ class HubProfileModel extends HubBase with EquatableMixin {
     String? descriptionHtml,
     String? fullDescriptionHtml,
     String? imageUrl,
-    Map? relatedData,
+    HubRelatedData? relatedData,
     HubStatisticsModel? statistics,
     List<String>? keywords,
     bool? isProfiled,
@@ -45,7 +46,7 @@ class HubProfileModel extends HubBase with EquatableMixin {
       descriptionHtml: descriptionHtml ?? this.descriptionHtml,
       fullDescriptionHtml: fullDescriptionHtml ?? this.fullDescriptionHtml,
       imageUrl: imageUrl ?? this.imageUrl,
-      relatedData: relatedData ?? this.relatedData,
+      relatedData: relatedData ?? this.relatedData as HubRelatedData,
       statistics: statistics ?? this.statistics,
       keywords: keywords ?? this.keywords,
       isProfiled: isProfiled ?? this.isProfiled,
@@ -60,7 +61,9 @@ class HubProfileModel extends HubBase with EquatableMixin {
       descriptionHtml: map['descriptionHtml'] as String,
       fullDescriptionHtml: map['fullDescriptionHtml'] as String,
       imageUrl: map['imageUrl'] as String,
-      relatedData: map['relatedData'] ?? const {},
+      relatedData: map['relatedData'] != null
+          ? HubRelatedData.fromMap(map['relatedData'])
+          : HubRelatedData.empty,
       statistics: map['statistics'] != null
           ? HubStatisticsModel.fromMap(map['statistics'])
           : HubStatisticsModel.empty,

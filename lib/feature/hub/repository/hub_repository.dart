@@ -5,9 +5,14 @@ import '../../../component/http/http_client.dart';
 import '../model/network/hub_list_response.dart';
 
 class HubRepository {
-  const HubRepository(HttpClient client) : _client = client;
+  const HubRepository({
+    required HttpClient mobileClient,
+    required HttpClient siteClient,
+  })  : _mobileClient = mobileClient,
+        _siteClient = siteClient;
 
-  final HttpClient _client;
+  final HttpClient _mobileClient;
+  final HttpClient _siteClient;
 
   Future<HubListResponse> fetchAll({
     required int page,
@@ -21,7 +26,7 @@ class HubRepository {
         langArticles: langArticles,
       );
       final queryString = params.toQueryString();
-      final response = await _client.get('/hubs/?$queryString');
+      final response = await _mobileClient.get('/hubs/?$queryString');
 
       return HubListResponse.fromMap(response.data);
     } on DisplayableException {
@@ -42,9 +47,23 @@ class HubRepository {
         langArticles: langArticles,
       );
       final queryString = params.toQueryString();
-      final response = await _client.get('/hubs/$alias/profile?$queryString');
+      final response =
+          await _mobileClient.get('/hubs/$alias/profile?$queryString');
 
       return response.data;
+    } on DisplayableException {
+      rethrow;
+    } catch (e) {
+      throw FetchException();
+    }
+  }
+
+  Future<void> toggleSubscription({required String alias}) async {
+    try {
+      await _siteClient.post(
+        '/v2/hubs/$alias/subscription',
+        body: {},
+      );
     } on DisplayableException {
       rethrow;
     } catch (e) {

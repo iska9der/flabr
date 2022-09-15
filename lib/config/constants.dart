@@ -1,6 +1,6 @@
 /// Urls
-const baseApiUrl = 'https://m.habr.com/kek/v2';
-const oldApiUrl = 'https://habr.com/kek/v1';
+const mobileApiUrl = 'https://m.habr.com/kek/v2';
+const siteApiUrl = 'https://habr.com/kek';
 const proxyApiUrl = 'https://geekr-lambda.vercel.app/api';
 
 /// Images

@@ -16,8 +16,11 @@ class HubCubit extends Cubit<HubState> {
     required LanguageEnum langUI,
     required List<LanguageEnum> langArticles,
   })  : _service = service,
-        super(
-            HubState(alias: alias, langUI: langUI, langArticles: langArticles));
+        super(HubState(
+          alias: alias,
+          langUI: langUI,
+          langArticles: langArticles,
+        ));
 
   final HubService _service;
 

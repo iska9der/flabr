@@ -1,3 +1,5 @@
+import 'related_data.dart';
+
 abstract class HubBase {
   const HubBase({
     required this.alias,
@@ -6,7 +8,7 @@ abstract class HubBase {
     this.descriptionHtml = '',
     this.isProfiled = false,
     this.isOfftop = false,
-    this.relatedData = const {},
+    required this.relatedData,
     this.statistics = const {},
     this.commonTags = const [],
   });
@@ -17,7 +19,7 @@ abstract class HubBase {
   final String descriptionHtml;
   final bool isProfiled;
   final bool isOfftop;
-  final Map relatedData;
+  final RelatedDataBase relatedData;
   final Object statistics;
   final List<String> commonTags;
 

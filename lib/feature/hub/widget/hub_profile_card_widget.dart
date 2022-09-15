@@ -5,8 +5,10 @@ import '../../../common/model/stat_type.dart';
 import '../../../config/constants.dart';
 import '../../../widget/card_widget.dart';
 import '../../../widget/profile_stat_widget.dart';
+import '../../auth/cubit/auth_cubit.dart';
 import '../../user/widget/user_avatar_widget.dart';
 import '../cubit/hub_cubit.dart';
+import 'hub_subscribe_button.dart';
 
 class HubProfileCardWidget extends StatelessWidget {
   const HubProfileCardWidget({Key? key}) : super(key: key);
@@ -63,6 +65,10 @@ class HubProfileCardWidget extends StatelessWidget {
                 textAlign: TextAlign.left,
                 style: Theme.of(context).textTheme.caption,
               ),
+              if (context.watch<AuthCubit>().state.isAuthorized) ...[
+                const SizedBox(height: 8),
+                const HubSubscribeButton(),
+              ],
             ],
           ),
         );

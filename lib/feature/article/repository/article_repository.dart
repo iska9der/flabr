@@ -15,16 +15,16 @@ import '../model/sort/sort_enum.dart';
 
 class ArticleRepository {
   const ArticleRepository(
-      {required HttpClient baseClient, required HttpClient oldClient})
-      : _baseClient = baseClient,
-        _oldClient = oldClient;
+      {required HttpClient mobileClient, required HttpClient siteClient})
+      : _mobileClient = mobileClient,
+        _siteClient = siteClient;
 
-  final HttpClient _baseClient;
-  final HttpClient _oldClient;
+  final HttpClient _mobileClient;
+  final HttpClient _siteClient;
 
   Future<Map<String, dynamic>> fetchById(String id) async {
     try {
-      final response = await _baseClient.get('/articles/$id');
+      final response = await _mobileClient.get('/articles/$id');
 
       return response.data;
     } catch (e) {
@@ -59,7 +59,7 @@ class ArticleRepository {
       );
 
       final queryString = params.toQueryString();
-      final response = await _baseClient.get('/articles/?$queryString');
+      final response = await _mobileClient.get('/articles/?$queryString');
 
       return ArticleListResponse.fromMap(
         response.data,
@@ -91,7 +91,7 @@ class ArticleRepository {
       );
 
       final queryString = params.toQueryString();
-      final response = await _baseClient.get(
+      final response = await _mobileClient.get(
         '/articles/?hub=$hub&$queryString',
       );
 
@@ -120,7 +120,7 @@ class ArticleRepository {
       );
 
       final queryString = params.toQueryString();
-      final response = await _baseClient.get(
+      final response = await _mobileClient.get(
         '/articles/?user=$user&$queryString',
       );
 
@@ -146,7 +146,7 @@ class ArticleRepository {
       );
 
       final queryString = params.toQueryString();
-      final response = await _baseClient.get(
+      final response = await _mobileClient.get(
         '/articles/?user=$user&user_bookmarks=true&$queryString',
       );
 
@@ -171,7 +171,7 @@ class ArticleRepository {
       );
 
       final queryString = params.toQueryString();
-      final response = await _baseClient.get(queryString);
+      final response = await _mobileClient.get(queryString);
 
       return CommentListResponse.fromMap(response.data);
     } on DisplayableException {
@@ -183,8 +183,8 @@ class ArticleRepository {
 
   Future<bool> addToBookmark(String articleId) async {
     try {
-      final response = await _oldClient.post(
-        '/articles/$articleId/bookmarks/add/',
+      final response = await _siteClient.post(
+        '/v1/articles/$articleId/bookmarks/add/',
         body: {},
       );
 
@@ -202,8 +202,8 @@ class ArticleRepository {
 
   Future<bool> removeFromBookmark(String articleId) async {
     try {
-      final response = await _oldClient.post(
-        '/articles/$articleId/bookmarks/remove/',
+      final response = await _siteClient.post(
+        '/v1/articles/$articleId/bookmarks/remove/',
         body: {},
       );
 

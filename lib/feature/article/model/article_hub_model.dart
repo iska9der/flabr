@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 import '../../../common/model/hub.dart';
+import '../../hub/model/hub_related_data.dart';
 import 'article_hub_type.dart';
 
 class ArticleHubModel extends HubBase with EquatableMixin {
@@ -10,7 +11,7 @@ class ArticleHubModel extends HubBase with EquatableMixin {
     this.title = '',
     this.type = ArticleHubType.collective,
     super.isProfiled = false,
-    super.relatedData = const {},
+    HubRelatedData super.relatedData = HubRelatedData.empty,
   });
 
   final String id;
@@ -25,7 +26,9 @@ class ArticleHubModel extends HubBase with EquatableMixin {
       title: map['title'] as String,
       type: ArticleHubType.fromString(map['type']),
       isProfiled: map['isProfiled'] as bool,
-      relatedData: map['relatedData'] ?? const {},
+      relatedData: map['relatedData'] != null
+          ? HubRelatedData.fromMap(map['relatedData'])
+          : HubRelatedData.empty,
     );
   }
 

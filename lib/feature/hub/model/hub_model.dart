@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 import '../../../common/model/hub.dart';
+import 'hub_related_data.dart';
 import 'hub_statistics_model.dart';
 
 class HubModel extends HubBase with EquatableMixin {
@@ -11,7 +12,7 @@ class HubModel extends HubBase with EquatableMixin {
     super.descriptionHtml = '',
     super.isProfiled = false,
     super.isOfftop = false,
-    super.relatedData = const {},
+    super.relatedData = HubRelatedData.empty,
     super.statistics = HubStatisticsModel.empty,
     super.commonTags = const [],
   });
@@ -24,7 +25,7 @@ class HubModel extends HubBase with EquatableMixin {
     String? descriptionHtml,
     bool? isProfiled,
     bool? isOfftop,
-    Map? relatedData,
+    HubRelatedData? relatedData,
     HubStatisticsModel? statistics,
     List<String>? commonTags,
   }) {
@@ -49,7 +50,9 @@ class HubModel extends HubBase with EquatableMixin {
       descriptionHtml: map['descriptionHtml'] as String,
       isProfiled: map['isProfiled'] as bool,
       isOfftop: map['isOfftop'] as bool,
-      relatedData: map['relatedData'] ?? const {},
+      relatedData: map['relatedData'] != null
+          ? HubRelatedData.fromMap(map['relatedData'])
+          : HubRelatedData.empty,
       statistics: map['statistics'] != null
           ? HubStatisticsModel.fromMap(map['statistics'])
           : HubStatisticsModel.empty,
@@ -61,9 +64,6 @@ class HubModel extends HubBase with EquatableMixin {
 
   static const empty = HubModel(alias: '-');
   bool get isEmpty => this == empty;
-
-  @override
-  bool get stringify => true;
 
   @override
   List<Object> get props {

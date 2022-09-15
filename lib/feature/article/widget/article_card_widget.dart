@@ -82,36 +82,39 @@ class ArticleCardWidget extends StatelessWidget {
                     return const SizedBox();
                   }
 
-                  return HtmlWidget(
-                    article.leadData.textHtml,
-                    rebuildTriggers: RebuildTriggers([
-                      state.feedConfig,
-                    ]),
-                    customWidgetBuilder: (element) {
-                      if (element.localName == 'img') {
-                        if (!state.feedConfig.isImageVisible) {
-                          return const SizedBox();
+                  return Padding(
+                    padding: const EdgeInsets.only(top: 12.0),
+                    child: HtmlWidget(
+                      article.leadData.textHtml,
+                      rebuildTriggers: RebuildTriggers([
+                        state.feedConfig,
+                      ]),
+                      customWidgetBuilder: (element) {
+                        if (element.localName == 'img') {
+                          if (!state.feedConfig.isImageVisible) {
+                            return const SizedBox();
+                          }
+
+                          String imgSrc = element.attributes['data-src'] ??
+                              element.attributes['src'] ??
+                              '';
+
+                          if (imgSrc.isEmpty) {
+                            return null;
+                          }
+
+                          return Align(
+                            child: NetworkImageWidget(
+                              imageUrl: imgSrc,
+                              height: kImageHeightDefault,
+                              isTapable: true,
+                            ),
+                          );
                         }
 
-                        String imgSrc = element.attributes['data-src'] ??
-                            element.attributes['src'] ??
-                            '';
-
-                        if (imgSrc.isEmpty) {
-                          return null;
-                        }
-
-                        return Align(
-                          child: NetworkImageWidget(
-                            imageUrl: imgSrc,
-                            height: kImageHeightDefault,
-                            isTapable: true,
-                          ),
-                        );
-                      }
-
-                      return null;
-                    },
+                        return null;
+                      },
+                    ),
                   );
                 },
               ),

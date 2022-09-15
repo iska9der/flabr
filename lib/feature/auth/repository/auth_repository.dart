@@ -8,12 +8,12 @@ import '../model/network/auth_response_type.dart';
 
 class AuthRepository {
   const AuthRepository({
-    required HttpClient baseClient,
+    required HttpClient mobileClient,
     required HttpClient proxyClient,
-  })  : _baseClient = baseClient,
+  })  : _mobileClient = mobileClient,
         _proxyClient = proxyClient;
 
-  final HttpClient _baseClient;
+  final HttpClient _mobileClient;
   final HttpClient _proxyClient;
 
   login({
@@ -48,7 +48,7 @@ class AuthRepository {
 
   Future<Map<String, dynamic>> fetchMe(String connectSid) async {
     try {
-      final response = await _baseClient.get('/me');
+      final response = await _mobileClient.get('/me');
 
       return response.data;
     } catch (e) {
@@ -63,7 +63,7 @@ class AuthRepository {
     try {
       final options = Options(headers: {'Cookie': data.toCookieString()});
 
-      final response = await _baseClient.get(
+      final response = await _mobileClient.get(
         'https://habr.com',
         options: options,
       );

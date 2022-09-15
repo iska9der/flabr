@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
+import '../../hub/model/hub_related_data.dart';
 import '../model/article_hub_model.dart';
 
 class ArticleHubsWidget extends StatelessWidget {
@@ -37,6 +38,10 @@ class _ArticleHubWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var title = hub.title;
     var style = Theme.of(context).textTheme.caption;
+
+    if ((hub.relatedData as HubRelatedData).isSubscribed) {
+      style = style?.copyWith(color: Colors.green);
+    }
 
     if (hub.isProfiled) {
       title += '*';

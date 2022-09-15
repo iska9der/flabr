@@ -43,18 +43,18 @@ void setDependencies() {
   /// Http Clients
   getIt.registerLazySingleton<HttpClient>(
     () => HttpClient(
-      Dio(BaseOptions(baseUrl: baseApiUrl)),
+      Dio(BaseOptions(baseUrl: mobileApiUrl)),
       tokenService: getIt(),
     ),
-    instanceName: 'baseClient',
+    instanceName: 'mobileClient',
   );
 
   getIt.registerLazySingleton<HttpClient>(
     () => HttpClient(
-      Dio(BaseOptions(baseUrl: oldApiUrl)),
+      Dio(BaseOptions(baseUrl: siteApiUrl)),
       tokenService: getIt(),
     ),
-    instanceName: 'oldClient',
+    instanceName: 'siteClient',
   );
 
   /// proxyClient использует api чувачка jarvis394,
@@ -70,7 +70,7 @@ void setDependencies() {
   /// Auth
   getIt.registerLazySingleton<AuthRepository>(
     () => AuthRepository(
-      baseClient: getIt(instanceName: 'baseClient'),
+      mobileClient: getIt(instanceName: 'mobileClient'),
       proxyClient: getIt(instanceName: 'proxyClient'),
     ),
   );
@@ -81,8 +81,8 @@ void setDependencies() {
   /// Articles
   getIt.registerLazySingleton<ArticleRepository>(
     () => ArticleRepository(
-      baseClient: getIt(instanceName: 'baseClient'),
-      oldClient: getIt(instanceName: 'oldClient'),
+      mobileClient: getIt(instanceName: 'mobileClient'),
+      siteClient: getIt(instanceName: 'siteClient'),
     ),
   );
   getIt.registerLazySingleton<ArticleService>(
@@ -91,7 +91,7 @@ void setDependencies() {
 
   /// Users
   getIt.registerLazySingleton<UserRepository>(
-    () => UserRepository(getIt(instanceName: 'baseClient')),
+    () => UserRepository(getIt(instanceName: 'mobileClient')),
   );
   getIt.registerLazySingleton<UserService>(
     () => UserService(getIt()),
@@ -99,7 +99,10 @@ void setDependencies() {
 
   /// Hubs
   getIt.registerLazySingleton<HubRepository>(
-    () => HubRepository(getIt(instanceName: 'baseClient')),
+    () => HubRepository(
+      mobileClient: getIt(instanceName: 'mobileClient'),
+      siteClient: getIt(instanceName: 'siteClient'),
+    ),
   );
   getIt.registerLazySingleton<HubService>(
     () => HubService(getIt()),
@@ -107,7 +110,7 @@ void setDependencies() {
 
   /// Search
   getIt.registerLazySingleton<SearchRepository>(
-    () => SearchRepository(getIt(instanceName: 'baseClient')),
+    () => SearchRepository(getIt(instanceName: 'mobileClient')),
   );
   getIt.registerLazySingleton<SearchService>(
     () => SearchService(getIt()),
