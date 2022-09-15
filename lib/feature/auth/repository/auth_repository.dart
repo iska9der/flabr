@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 
 import '../../../common/exception/fetch_exception.dart';
 import '../../../component/http/http_client.dart';
+import '../model/auth_data_model.dart';
 import '../model/auth_exception.dart';
 import '../model/network/auth_response_type.dart';
 
@@ -48,6 +49,24 @@ class AuthRepository {
   Future<Map<String, dynamic>> fetchMe(String connectSid) async {
     try {
       final response = await _baseClient.get('/me');
+
+      return response.data;
+    } catch (e) {
+      throw FetchException();
+    }
+  }
+
+  /// Отправляем запрос на главную страницу с данными пользователя
+  /// в заголовке запроса, чтобы в дальнейшем вытащить из мета тега
+  /// csrf-token соответственно токен csrf
+  Future<String> fetchRawMainPage(AuthDataModel data) async {
+    try {
+      final options = Options(headers: {'Cookie': data.toCookieString()});
+
+      final response = await _baseClient.get(
+        'https://habr.com',
+        options: options,
+      );
 
       return response.data;
     } catch (e) {

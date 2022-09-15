@@ -9,26 +9,39 @@ import '../cubit/auth_cubit.dart';
 import '../cubit/login_cubit.dart';
 import '../service/auth_service.dart';
 import '../service/token_service.dart';
+import 'profile_widget.dart';
 
-class LoginWidget extends StatelessWidget {
+class LoginWidget extends StatelessWidget implements DialogUserWidget {
   const LoginWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => LoginCubit(
-        service: getIt.get<AuthService>(),
-        tokenService: getIt.get<TokenService>(),
-      ),
-      child: BlocListener<LoginCubit, LoginState>(
-        listener: (context, state) {
-          if (state.status.isSuccess) {
-            Navigator.of(context).pop();
+    final authState = context.read<AuthCubit>().state;
 
-            context.read<AuthCubit>().handleAuthData();
-          }
-        },
-        child: const _LoginWidgetView(),
+    return Center(
+      child: SizedBox(
+        height: MediaQuery.of(context).size.height * .55,
+        child: FlabrCard(
+          padding: const EdgeInsets.all(20),
+          child: authState.isAuthorized
+              ? Center(child: Text('Вы уже вошли, ${authState.me.alias}'))
+              : BlocProvider(
+                  create: (context) => LoginCubit(
+                    service: getIt.get<AuthService>(),
+                    tokenService: getIt.get<TokenService>(),
+                  ),
+                  child: BlocListener<LoginCubit, LoginState>(
+                    listener: (context, state) {
+                      if (state.status.isSuccess) {
+                        Navigator.of(context).pop();
+
+                        context.read<AuthCubit>().handleAuthData();
+                      }
+                    },
+                    child: const _LoginWidgetView(),
+                  ),
+                ),
+        ),
       ),
     );
   }
@@ -39,57 +52,22 @@ class _LoginWidgetView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: SizedBox(
-        height: MediaQuery.of(context).size.height * .5,
-        width: MediaQuery.of(context).size.width * .8,
-        child: FlabrCard(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                'Авторизация',
-                style: Theme.of(context).textTheme.headline5,
-              ),
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const SizedBox(height: 18),
-                    const _LoginField(),
-                    const SizedBox(height: 18),
-                    const _PasswordField(),
-                    const SizedBox(height: 24),
-                    Expanded(
-                      child: BlocBuilder<LoginCubit, LoginState>(
-                        buildWhen: (p, c) => p.status != c.status,
-                        builder: (context, state) {
-                          if (state.status.isFailure) {
-                            return Text(
-                              state.error,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: Theme.of(context).errorColor,
-                              ),
-                            );
-                          }
-
-                          return Wrap();
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const _SubmitButton(),
-            ],
-          ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          'Вход',
+          style: Theme.of(context).textTheme.headline5,
         ),
-      ),
+        const SizedBox(height: 18),
+        const _LoginField(),
+        const SizedBox(height: 18),
+        const _PasswordField(),
+        const Expanded(child: SizedBox()),
+        const Expanded(child: _ErrorWidget()),
+        const _SubmitButton(),
+      ],
     );
   }
 }
@@ -104,10 +82,11 @@ class _LoginField extends StatelessWidget {
       builder: (context, state) {
         return TextFormField(
           initialValue: state.login,
-          decoration: const InputDecoration(
-            label: Text('Почта'),
-            prefixIcon: Icon(Icons.email_outlined),
-            border: OutlineInputBorder(),
+          decoration: InputDecoration(
+            label: const Text('Почта'),
+            prefixIcon: const Icon(Icons.email_outlined),
+            border: const OutlineInputBorder(),
+            errorText: state.loginError.isNotEmpty ? state.loginError : null,
           ),
           onChanged: (String value) {
             context.read<LoginCubit>().onLoginChanged(value);
@@ -127,16 +106,41 @@ class _PasswordField extends StatelessWidget {
       builder: (context, state) {
         return TextFormField(
           initialValue: state.password,
-          decoration: const InputDecoration(
-            label: Text('Пароль'),
-            prefixIcon: Icon(Icons.password_outlined),
-            border: OutlineInputBorder(),
+          decoration: InputDecoration(
+            label: const Text('Пароль'),
+            prefixIcon: const Icon(Icons.password_outlined),
+            border: const OutlineInputBorder(),
+            errorText:
+                state.passwordError.isNotEmpty ? state.passwordError : null,
           ),
           obscureText: true,
           onChanged: (value) {
             context.read<LoginCubit>().onPasswordChanged(value);
           },
         );
+      },
+    );
+  }
+}
+
+class _ErrorWidget extends StatelessWidget {
+  const _ErrorWidget({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<LoginCubit, LoginState>(
+      builder: (context, state) {
+        if (state.status.isFailure) {
+          return Text(
+            state.error,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Theme.of(context).errorColor,
+            ),
+          );
+        }
+
+        return const SizedBox();
       },
     );
   }

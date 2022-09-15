@@ -206,6 +206,8 @@ class _FloatingStatistics extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<ArticleCubit, ArticleState>(
       builder: (context, state) {
+        if (state.article.isEmpty) return const SizedBox();
+
         final article = state.article;
 
         return AnimatedSlide(
@@ -217,9 +219,7 @@ class _FloatingStatistics extends StatelessWidget {
             child: SizedBox(
               height: 36,
               child: ArticleStatisticsWidget(
-                articleId: state.id,
-                statistics: article.statistics,
-                related: article.relatedData,
+                article: article,
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               ),
             ),

@@ -1,25 +1,29 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../common/model/extension/num_x.dart';
+import '../../../common/model/extension/state_status_x.dart';
 import '../../../common/model/stat_type.dart';
+import '../../../common/utils/utils.dart';
+import '../../../component/di/dependencies.dart';
 import '../../../config/constants.dart';
+import '../../../widget/progress_indicator.dart';
+import '../../auth/cubit/auth_cubit.dart';
+import '../../auth/widget/dialog.dart';
 import '../../comment/page/comment_list_page.dart';
-import '../model/article_related_data.dart';
-import '../model/article_statistics_model.dart';
+import '../cubit/bookmark_cubit.dart';
+import '../model/article_model.dart';
+import '../service/article_service.dart';
 
 class ArticleStatisticsWidget extends StatelessWidget {
   const ArticleStatisticsWidget({
     Key? key,
-    required this.articleId,
-    required this.statistics,
-    required this.related,
+    required this.article,
     this.mainAxisAlignment = MainAxisAlignment.spaceBetween,
   }) : super(key: key);
 
-  final String articleId;
-  final ArticleStatisticsModel statistics;
-  final ArticleRelatedData related;
+  final ArticleModel article;
 
   final MainAxisAlignment mainAxisAlignment;
 
@@ -30,30 +34,66 @@ class ArticleStatisticsWidget extends StatelessWidget {
       children: [
         StatIconButton(
           icon: Icons.insert_chart_rounded,
-          text: statistics.score.compact(),
+          text: article.statistics.score.compact(),
           isHighlighted: true,
-          color: statistics.score >= 0
+          color: article.statistics.score >= 0
               ? StatType.score.color
               : StatType.score.negativeColor,
         ),
         StatIconButton(
           icon: Icons.chat_bubble_rounded,
-          text: statistics.commentsCount.compact(),
-          isHighlighted: related.unreadCommentsCount > 0,
+          text: article.statistics.commentsCount.compact(),
+          isHighlighted: article.relatedData.unreadCommentsCount > 0,
           onTap: () => context.router.pushWidget(
-            CommentListPage(articleId: articleId),
+            CommentListPage(articleId: article.id),
           ),
         ),
-        StatIconButton(
-          icon: Icons.bookmark_rounded,
-          text: statistics.favoritesCount.compact(),
-          isHighlighted: related.bookmarked,
-        ),
+        _BookmarkIconButton(article: article),
         StatIconButton(
           icon: Icons.remove_red_eye_rounded,
-          text: statistics.readingCount.compact(),
+          text: article.statistics.readingCount.compact(),
         ),
       ],
+    );
+  }
+}
+
+class _BookmarkIconButton extends StatelessWidget {
+  const _BookmarkIconButton({Key? key, required this.article})
+      : super(key: key);
+
+  final ArticleModel article;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => BookmarkCubit(
+        service: getIt.get<ArticleService>(),
+        articleId: article.id,
+        isBookmarked: article.relatedData.bookmarked,
+        count: article.statistics.favoritesCount,
+      ),
+      child: BlocConsumer<BookmarkCubit, BookmarkState>(
+        listenWhen: (p, c) => c.status.isFailure,
+        listener: (context, state) {
+          getIt.get<Utils>().showNotification(
+                context: context,
+                content: Text(state.error),
+              );
+        },
+        buildWhen: (p, c) => p.status != c.status,
+        builder: (context, state) {
+          return StatIconButton(
+            icon: Icons.bookmark_rounded,
+            text: state.count.compact(),
+            isHighlighted: state.isBookmarked,
+            isLoading: state.status.isLoading,
+            onTap: () => context.read<AuthCubit>().state.isUnauthorized
+                ? showLoginDialog(context)
+                : context.read<BookmarkCubit>().toggle(),
+          );
+        },
+      ),
     );
   }
 }
@@ -65,6 +105,7 @@ class StatIconButton extends StatelessWidget {
     required this.text,
     this.color,
     this.isHighlighted = false,
+    this.isLoading = false,
     this.onTap,
   }) : super(key: key);
 
@@ -72,6 +113,7 @@ class StatIconButton extends StatelessWidget {
   final String text;
   final Color? color;
   final bool isHighlighted;
+  final bool isLoading;
   final void Function()? onTap;
 
   @override
@@ -85,15 +127,21 @@ class StatIconButton extends StatelessWidget {
           padding: const EdgeInsets.all(kScreenHPadding),
           child: Row(
             children: [
-              Icon(
-                icon,
-                size: 14,
-                color: color?.withOpacity(isHighlighted ? 1 : .3) ??
-                    Theme.of(context)
-                        .iconTheme
-                        .color
-                        ?.withOpacity(isHighlighted ? 1 : .3),
-              ),
+              isLoading
+                  ? const SizedBox(
+                      width: 14,
+                      height: 14,
+                      child: CircleIndicator.small(),
+                    )
+                  : Icon(
+                      icon,
+                      size: 14,
+                      color: color?.withOpacity(isHighlighted ? 1 : .3) ??
+                          Theme.of(context)
+                              .iconTheme
+                              .color
+                              ?.withOpacity(isHighlighted ? 1 : .3),
+                    ),
               const SizedBox(width: 6),
               Text(
                 text,

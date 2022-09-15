@@ -9,6 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 
+import 'common/model/extension/state_status_x.dart';
 import 'component/bloc/observer.dart';
 import 'component/di/dependencies.dart';
 import 'component/router/app_router.dart';
@@ -70,40 +71,53 @@ class MyApp extends StatelessWidget {
           )..init(),
         ),
       ],
-      child: BlocConsumer<SettingsCubit, SettingsState>(
-        listenWhen: (p, current) =>
-            p.status == SettingsStatus.loading &&
-            current.status == SettingsStatus.success,
-        listener: (context, state) {
-          if (state.initialDeepLink.isNotEmpty) {
-            /// Auto route delegate? криво шлет нас по путям с холодного
-            /// старта, не подставляя корректный стэк в навигацию,
-            /// поэтому в AutoRouterDelegate указываем initialDeepLink
-            /// как "/", и в кубите через AppLinks получаем линк и с задержкой
-            /// шлем по пути вот прямо тут, под этим комментарием
-            Future.delayed(
-              const Duration(milliseconds: 1500),
-              () => router.navigateNamed(state.initialDeepLink),
-            );
-          }
-        },
-        builder: (context, state) {
-          if (state.status == SettingsStatus.loading) {
-            /// todo: Splash Page
-            return const Material(
-              child: CircleIndicator(),
-            );
-          }
+      child: MultiBlocListener(
+        listeners: [
+          BlocListener<AuthCubit, AuthState>(
+            listenWhen: (p, c) => p.status.isLoading && c.isAuthorized,
+            listener: (context, state) {
+              context.read<AuthCubit>().fetchMe();
+              context.read<AuthCubit>().fetchCsrf();
+            },
+          ),
+          BlocListener<SettingsCubit, SettingsState>(
+            listenWhen: (p, current) =>
+                p.status == SettingsStatus.loading &&
+                current.status == SettingsStatus.success,
+            listener: (context, state) {
+              if (state.initialDeepLink.isNotEmpty) {
+                /// Auto route delegate? криво шлет нас по путям с холодного
+                /// старта, не подставляя корректный стэк в навигацию,
+                /// поэтому в AutoRouterDelegate указываем initialDeepLink
+                /// как "/", и в кубите через AppLinks получаем линк и с задержкой
+                /// шлем по пути вот прямо тут, под этим комментарием
+                Future.delayed(
+                  const Duration(milliseconds: 1500),
+                  () => router.navigateNamed(state.initialDeepLink),
+                );
+              }
+            },
+          ),
+        ],
+        child: BlocBuilder<SettingsCubit, SettingsState>(
+          builder: (context, state) {
+            if (state.status == SettingsStatus.loading) {
+              /// todo: Splash Page
+              return const Material(
+                child: CircleIndicator(),
+              );
+            }
 
-          return MaterialApp.router(
-            title: 'Flabr',
-            routerDelegate: AutoRouterDelegate(router, initialDeepLink: '/'),
-            routeInformationParser: router.defaultRouteParser(
-              includePrefixMatches: true,
-            ),
-            theme: state.isDarkTheme ? darkTheme() : lightTheme(),
-          );
-        },
+            return MaterialApp.router(
+              title: 'Flabr',
+              routerDelegate: AutoRouterDelegate(router, initialDeepLink: '/'),
+              routeInformationParser: router.defaultRouteParser(
+                includePrefixMatches: true,
+              ),
+              theme: state.isDarkTheme ? darkTheme() : lightTheme(),
+            );
+          },
+        ),
       ),
     );
   }

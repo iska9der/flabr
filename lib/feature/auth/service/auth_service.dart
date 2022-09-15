@@ -21,4 +21,17 @@ class AuthService {
 
     return MeModel.fromMap(raw);
   }
+
+  fetchCsrf(AuthDataModel data) async {
+    String rawHtml = await _repository.fetchRawMainPage(data);
+
+    String csrf = '';
+    int indexOfCsrfStart = rawHtml.indexOf('csrf-token') + 11;
+    int indexOfFirstQuote = rawHtml.indexOf('"', indexOfCsrfStart) + 1;
+    int indexOfLastQuote = rawHtml.indexOf('"', indexOfFirstQuote);
+
+    csrf = rawHtml.substring(indexOfFirstQuote, indexOfLastQuote);
+
+    return csrf;
+  }
 }

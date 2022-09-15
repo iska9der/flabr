@@ -210,10 +210,14 @@ part 'app_router.gr.dart';
           path: '*/users/:login/posts',
           redirectTo: 'services/users/:login/article',
         ),
+        RedirectRoute(
+          path: '*/users/:login/favorites',
+          redirectTo: 'services/users/:login/bookmarks',
+        ),
 
         /// todo: временный редирект на детали пользователя,
         /// пока не реализованы остальные вложенные пути
-        /// (комментарии, закладки, подписчики, подписки)
+        /// (комментарии, подписчики, подписки)
         RedirectRoute(
           path: '*/users/:login/*',
           redirectTo: 'services/users/:login/detail',
@@ -251,10 +255,12 @@ class AppRouter extends _$AppRouter {
       return await pushWidget(ArticleDetailPage(id: id));
     } else if (isUserUrl(url)) {
       return await navigate(
-        UserDashboardRoute(
-          login: id,
-          children: const [UserDetailRoute()],
-        ),
+        ServicesEmptyRoute(children: [
+          UserDashboardRoute(
+            login: id,
+            children: const [UserDetailRoute()],
+          )
+        ]),
       );
     }
 
@@ -285,6 +291,8 @@ class AppRouter extends _$AppRouter {
 
   bool isUserUrl(Uri url) {
     if (url.host.contains('habr.com') && url.path.contains('users/')) {
+      return true;
+    } else if (url.host.isEmpty && url.path.contains('/users/')) {
       return true;
     }
 

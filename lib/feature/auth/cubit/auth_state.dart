@@ -2,11 +2,6 @@ part of 'auth_cubit.dart';
 
 enum AuthStatus { initial, loading, authorized, unauthorized }
 
-extension AuthStatusX on AuthStatus {
-  bool get isAuthorized => this == AuthStatus.authorized;
-  bool get isUnauthorized => this == AuthStatus.unauthorized;
-}
-
 class AuthState extends Equatable {
   const AuthState({
     this.error = '',
@@ -37,6 +32,9 @@ class AuthState extends Equatable {
       me: me ?? this.me,
     );
   }
+
+  bool get isAuthorized => status == AuthStatus.authorized;
+  bool get isUnauthorized => status == AuthStatus.unauthorized;
 
   @override
   List<Object> get props => [

@@ -9,6 +9,7 @@ import '../../../widget/card_widget.dart';
 import '../../../widget/network_image_widget.dart';
 import '../../settings/cubit/settings_cubit.dart';
 import '../model/article_model.dart';
+import '../model/article_type.dart';
 import '../page/article_detail_page.dart';
 import 'article_hub_widget.dart';
 import 'article_info_widget.dart';
@@ -26,6 +27,11 @@ class ArticleCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    /// пропускаем подозрительных ребят
+    if (article.type == ArticleType.voice) {
+      return const SizedBox();
+    }
+
     return FlabrCard(
       padding: const EdgeInsets.all(kCardPadding),
       onTap: () => context.router.pushWidget(
@@ -112,11 +118,7 @@ class ArticleCardWidget extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 30),
-          ArticleStatisticsWidget(
-            articleId: article.id,
-            statistics: article.statistics,
-            related: article.relatedData,
-          ),
+          ArticleStatisticsWidget(article: article),
         ],
       ),
     );

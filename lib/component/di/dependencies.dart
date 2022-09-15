@@ -49,19 +49,30 @@ void setDependencies() {
     instanceName: 'baseClient',
   );
 
+  getIt.registerLazySingleton<HttpClient>(
+    () => HttpClient(
+      Dio(BaseOptions(baseUrl: oldApiUrl)),
+      tokenService: getIt(),
+    ),
+    instanceName: 'oldClient',
+  );
+
   /// proxyClient использует api чувачка jarvis394,
   /// который любезно разрешил пользоваться им при
   /// реализации авторизации
   getIt.registerLazySingleton<HttpClient>(
-    () => HttpClient(Dio(BaseOptions(baseUrl: proxyApiUrl))),
+    () => HttpClient(
+      Dio(BaseOptions(baseUrl: proxyApiUrl)),
+    ),
     instanceName: 'proxyClient',
   );
 
   /// Auth
   getIt.registerLazySingleton<AuthRepository>(
     () => AuthRepository(
-        baseClient: getIt(instanceName: 'baseClient'),
-        proxyClient: getIt(instanceName: 'proxyClient')),
+      baseClient: getIt(instanceName: 'baseClient'),
+      proxyClient: getIt(instanceName: 'proxyClient'),
+    ),
   );
   getIt.registerLazySingleton<AuthService>(
     () => AuthService(getIt()),
@@ -69,7 +80,10 @@ void setDependencies() {
 
   /// Articles
   getIt.registerLazySingleton<ArticleRepository>(
-    () => ArticleRepository(getIt(instanceName: 'baseClient')),
+    () => ArticleRepository(
+      baseClient: getIt(instanceName: 'baseClient'),
+      oldClient: getIt(instanceName: 'oldClient'),
+    ),
   );
   getIt.registerLazySingleton<ArticleService>(
     () => ArticleService(getIt()),

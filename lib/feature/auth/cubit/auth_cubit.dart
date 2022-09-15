@@ -33,16 +33,26 @@ class AuthCubit extends Cubit<AuthState> {
       csrfToken: csrf,
     ));
 
-    _fetchMe();
+    fetchMe();
   }
 
-  void _fetchMe() async {
+  void fetchCsrf() async {
+    final csrf = await _service.fetchCsrf(state.data);
+
+    _tokenService.setCsrf(csrf);
+
+    emit(state.copyWith(csrfToken: csrf));
+  }
+
+  void fetchMe() async {
     final me = await _service.fetchMe(state.data.connectSID);
 
     emit(state.copyWith(me: me));
   }
 
   void handleAuthData() {
+    emit(state.copyWith(status: AuthStatus.loading));
+
     final authData = _tokenService.authData;
 
     if (authData.isEmpty) return;

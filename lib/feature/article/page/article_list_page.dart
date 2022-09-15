@@ -4,6 +4,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../common/model/extension/state_status_x.dart';
 import '../../../common/utils/utils.dart';
 import '../../../component/di/dependencies.dart';
 import '../../../config/constants.dart';
@@ -78,13 +79,27 @@ class ArticleListPageView extends StatelessWidget {
 
     return MultiBlocListener(
       listeners: [
-        /// Если пользователь вошел или вышел из аккаунта,
-        /// надо переполучить статьи
+        /// Если пользователь вошел, надо переполучить статьи
         BlocListener<AuthCubit, AuthState>(
-          listenWhen: (p, c) =>
-              p.status.isAuthorized && c.status.isUnauthorized ||
-              p.status.isUnauthorized && c.status.isAuthorized,
+          listenWhen: (p, c) => p.status.isLoading && c.isAuthorized,
           listener: (context, state) {
+            articlesCubit.refetch();
+          },
+        ),
+
+        /// Если пользователь вышел
+        ///
+        /// к тому же он находится в потоке "Моя лента", то отправляем его
+        /// на поток "Все", виджет сам стриггерит получение статей
+        ///
+        /// иначе переполучаем статьи напрямую
+        BlocListener<AuthCubit, AuthState>(
+          listenWhen: (p, c) => p.status.isLoading && c.isUnauthorized,
+          listener: (context, state) {
+            if (articlesCubit.state.flow == FlowEnum.feed) {
+              return articlesCubit.changeFlow(FlowEnum.all);
+            }
+
             articlesCubit.refetch();
           },
         ),
@@ -123,8 +138,7 @@ class ArticleListPageView extends StatelessWidget {
 
                   /// если мы не в статьях и не авторизованы, то не показываем
                   /// этот пункт в drawer
-                  if (type != ArticleType.article ||
-                      !authState.status.isAuthorized) {
+                  if (type != ArticleType.article || !authState.isAuthorized) {
                     return const SizedBox();
                   }
 
@@ -267,11 +281,13 @@ class ArticleSliverList extends StatelessWidget {
           delegate: SliverChildBuilderDelegate(
             (c, i) {
               if (i < articles.length) {
+                final article = articles[i];
+
                 return Padding(
                   padding: const EdgeInsets.symmetric(
                     horizontal: kScreenHPadding,
                   ),
-                  child: ArticleCardWidget(article: articles[i]),
+                  child: ArticleCardWidget(article: article),
                 );
               }
 

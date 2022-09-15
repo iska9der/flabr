@@ -54,4 +54,8 @@ class AuthDataModel extends Equatable {
   factory AuthDataModel.fromJson(String source) => AuthDataModel.fromMap(
         json.decode(source) as Map<String, dynamic>,
       );
+
+  String toCookieString() {
+    return 'connect_sid="$connectSID"; habrsession_id="$habrSID"; fl=ru; hl=ru; acc_csid="$accCSID"; habr_web_redirect_back=%2Fru%2Fall%2F; PHPSESSID="$phpSID"; hsec_id="$hSecID"';
+  }
 }

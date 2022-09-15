@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 
-Future showProfileDialog(BuildContext context, {required Widget child}) async {
+import 'login_widget.dart';
+import 'profile_widget.dart';
+
+Future showProfileDialog(
+  BuildContext context, {
+  required DialogUserWidget child,
+}) async {
   return await showDialog(
     context: context,
     builder: (context) => Padding(
@@ -9,11 +15,17 @@ Future showProfileDialog(BuildContext context, {required Widget child}) async {
       ),
       child: Center(
         child: SizedBox(
-          height: MediaQuery.of(context).size.height * .5,
           width: MediaQuery.of(context).size.width * .8,
           child: child,
         ),
       ),
     ),
+  );
+}
+
+Future showLoginDialog(BuildContext context) async {
+  return await showProfileDialog(
+    context,
+    child: const LoginWidget(),
   );
 }

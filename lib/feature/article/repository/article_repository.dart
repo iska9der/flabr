@@ -1,5 +1,8 @@
+import 'package:dio/dio.dart';
+
 import '../../../common/exception/displayable_exception.dart';
 import '../../../common/exception/fetch_exception.dart';
+import '../../../common/exception/value_exception.dart';
 import '../../../component/http/http_client.dart';
 import '../../comment/model/network/comment_list_params.dart';
 import '../../comment/model/network/comment_list_response.dart';
@@ -11,9 +14,13 @@ import '../model/sort/date_period_enum.dart';
 import '../model/sort/sort_enum.dart';
 
 class ArticleRepository {
-  const ArticleRepository(this._baseClient);
+  const ArticleRepository(
+      {required HttpClient baseClient, required HttpClient oldClient})
+      : _baseClient = baseClient,
+        _oldClient = oldClient;
 
   final HttpClient _baseClient;
+  final HttpClient _oldClient;
 
   Future<Map<String, dynamic>> fetchById(String id) async {
     try {
@@ -59,7 +66,7 @@ class ArticleRepository {
       );
     } on DisplayableException {
       rethrow;
-    } catch (e) {
+    } on DioError {
       throw FetchException();
     }
   }
@@ -91,7 +98,7 @@ class ArticleRepository {
       return ArticleListResponse.fromMap(response.data);
     } on DisplayableException {
       rethrow;
-    } catch (e) {
+    } on DioError {
       throw FetchException();
     }
   }
@@ -120,7 +127,7 @@ class ArticleRepository {
       return ArticleListResponse.fromMap(response.data);
     } on DisplayableException {
       rethrow;
-    } catch (e) {
+    } on DioError {
       throw FetchException();
     }
   }
@@ -146,7 +153,7 @@ class ArticleRepository {
       return ArticleListResponse.fromMap(response.data);
     } on DisplayableException {
       rethrow;
-    } catch (e) {
+    } on DioError {
       throw FetchException();
     }
   }
@@ -169,7 +176,45 @@ class ArticleRepository {
       return CommentListResponse.fromMap(response.data);
     } on DisplayableException {
       rethrow;
-    } catch (e) {
+    } on DioError {
+      throw FetchException();
+    }
+  }
+
+  Future<bool> addToBookmark(String articleId) async {
+    try {
+      final response = await _oldClient.post(
+        '/articles/$articleId/bookmarks/add/',
+        body: {},
+      );
+
+      if (response.data['ok'] != true) {
+        throw ValueException('Не удалось!');
+      }
+
+      return true;
+    } on DisplayableException {
+      rethrow;
+    } on DioError {
+      throw FetchException();
+    }
+  }
+
+  Future<bool> removeFromBookmark(String articleId) async {
+    try {
+      final response = await _oldClient.post(
+        '/articles/$articleId/bookmarks/remove/',
+        body: {},
+      );
+
+      if (response.data['ok'] != true) {
+        throw ValueException('Не удалось!');
+      }
+
+      return true;
+    } on DisplayableException {
+      rethrow;
+    } on DioError {
       throw FetchException();
     }
   }

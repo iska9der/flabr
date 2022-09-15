@@ -11,7 +11,7 @@ class ArticleModel extends Equatable {
   const ArticleModel({
     required this.id,
     this.type = ArticleType.article,
-    this.timePublished = '',
+    this.timePublished = '2022-12-22T10:10:00+00:00',
     this.titleHtml = '',
     this.textHtml = '',
     this.author = ArticleAuthorModel.empty,

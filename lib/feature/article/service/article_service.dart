@@ -162,4 +162,12 @@ class ArticleService {
 
     return listResponse.copyWith(comments: structurizedComments);
   }
+
+  Future<bool> addToBookmark(String articleId) async {
+    return await repository.addToBookmark(articleId);
+  }
+
+  Future<bool> removeFromBookmark(String articleId) async {
+    return await repository.removeFromBookmark(articleId);
+  }
 }

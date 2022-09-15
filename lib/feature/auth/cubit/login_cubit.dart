@@ -24,25 +24,69 @@ class LoginCubit extends Cubit<LoginState> {
   void onLoginChanged(String value) {
     if (value == state.login) return;
 
-    if (!emailValidation.hasMatch(value)) {
-      return emit(state.copyWith(
-        status: LoginStatus.failure,
-        error: 'Некорректная почта',
-      ));
-    } else {
-      emit(state.copyWith(status: LoginStatus.initial));
-    }
-
     emit(state.copyWith(login: value));
+
+    validateLogin();
   }
 
   void onPasswordChanged(String value) {
     if (value == state.password) return;
 
     emit(state.copyWith(password: value));
+
+    validatePassword();
+  }
+
+  validateAll() {
+    List<bool> results = [validateLogin(), validatePassword()];
+
+    if (results.any((result) => result == false)) {
+      emit(state.copyWith(formStatus: LoginFormStatus.invalid));
+      return;
+    }
+
+    emit(state.copyWith(formStatus: LoginFormStatus.valid));
+  }
+
+  bool validateLogin() {
+    if (!emailValidation.hasMatch(state.login)) {
+      emit(state.copyWith(
+        loginStatus: LoginFieldStatus.invalid,
+        loginError: 'Некорректная почта',
+      ));
+
+      return false;
+    }
+
+    emit(state.copyWith(
+      loginStatus: LoginFieldStatus.valid,
+      loginError: '',
+    ));
+    return true;
+  }
+
+  bool validatePassword() {
+    if (state.password.length < 5) {
+      emit(state.copyWith(
+        passwordStatus: LoginFieldStatus.invalid,
+        passwordError: 'Не скупись на символы',
+      ));
+
+      return false;
+    }
+
+    emit(state.copyWith(
+      passwordStatus: LoginFieldStatus.valid,
+      passwordError: '',
+    ));
+    return true;
   }
 
   submit() async {
+    validateAll();
+
+    if (state.formStatus == LoginFormStatus.invalid) return;
+
     emit(state.copyWith(status: LoginStatus.loading));
 
     try {
