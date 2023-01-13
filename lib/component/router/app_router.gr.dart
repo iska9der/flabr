@@ -109,6 +109,10 @@ class _$AppRouter extends RootStackRouter {
           routeData: routeData,
           child: UserDashboardPage(key: args.key, login: args.login));
     },
+    CompanyListRoute.name: (routeData) {
+      return MaterialPageX<dynamic>(
+          routeData: routeData, child: const CompanyListPage());
+    },
     HubDetailRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
           routeData: routeData, child: const HubDetailPage());
@@ -193,7 +197,9 @@ class _$AppRouter extends RootStackRouter {
                           path: 'article', parent: UserDashboardRoute.name),
                       RouteConfig(UserBookmarkListRoute.name,
                           path: 'bookmarks', parent: UserDashboardRoute.name)
-                    ])
+                    ]),
+                RouteConfig(CompanyListRoute.name,
+                    path: 'companies', parent: ServicesEmptyRoute.name)
               ]),
           RouteConfig(SettingsRoute.name,
               path: 'settings', parent: DashboardRoute.name),
@@ -524,6 +530,14 @@ class UserDashboardRouteArgs {
   String toString() {
     return 'UserDashboardRouteArgs{key: $key, login: $login}';
   }
+}
+
+/// generated route for
+/// [CompanyListPage]
+class CompanyListRoute extends PageRouteInfo<void> {
+  const CompanyListRoute() : super(CompanyListRoute.name, path: 'companies');
+
+  static const String name = 'CompanyListRoute';
 }
 
 /// generated route for

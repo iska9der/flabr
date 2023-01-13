@@ -10,6 +10,8 @@ import '../../feature/article/service/article_service.dart';
 import '../../feature/auth/repository/auth_repository.dart';
 import '../../feature/auth/service/auth_service.dart';
 import '../../feature/auth/service/token_service.dart';
+import '../../feature/company/repository/company_repository.dart';
+import '../../feature/company/service/company_service.dart';
 import '../../feature/hub/repository/hub_repository.dart';
 import '../../feature/hub/service/hub_service.dart';
 import '../../feature/search/repository/search_repository.dart';
@@ -106,6 +108,14 @@ void setDependencies() {
   );
   getIt.registerLazySingleton<HubService>(
     () => HubService(getIt()),
+  );
+
+  /// Companies
+  getIt.registerLazySingleton<CompanyRepository>(
+    () => CompanyRepository(mobileClient: getIt(instanceName: 'mobileClient')),
+  );
+  getIt.registerLazySingleton<CompanyService>(
+    () => CompanyService(getIt()),
   );
 
   /// Search

@@ -41,9 +41,11 @@ class ServicesPageView extends StatelessWidget {
             icon: Icons.supervisor_account_sharp,
             onTap: () => context.router.pushWidget(const UserListPage()),
           ),
-          const ServiceCard(
+          ServiceCard(
             title: 'Компании',
             icon: Icons.cases_rounded,
+            // onTap: () => context.router.pushWidget(const CompanyListPage()),
+            onTap: null,
           ),
         ],
       ),

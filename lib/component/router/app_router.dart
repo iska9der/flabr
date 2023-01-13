@@ -8,6 +8,7 @@ import '../../feature/article/page/article_list_page.dart';
 import '../../feature/article/page/news_detail_page.dart';
 import '../../feature/article/page/news_list_page.dart';
 import '../../feature/comment/page/comment_list_page.dart';
+import '../../feature/company/page/company_list_page.dart';
 import '../../feature/hub/page/hub_dashboard_page.dart';
 import '../../feature/hub/page/hub_detail_page.dart';
 import '../../feature/hub/page/hub_list_page.dart';
@@ -141,6 +142,27 @@ part 'app_router.gr.dart';
                 ),
               ],
             ),
+
+            /// Компании
+            AutoRoute(
+              path: CompanyListPage.routePath,
+              name: CompanyListPage.routeName,
+              page: CompanyListPage,
+            ),
+
+            /// Вложенная навигация в деталях компании
+            // AutoRoute(
+            //   path: CompanyDashboardPage.routePath,
+            //   name: CompanyDashboardPage.routeName,
+            //   page: CompanyDashboardPage,
+            //   children: [
+            //     AutoRoute(
+            //       path: CompanyDetailPage.routePath,
+            //       name: CompanyDetailPage.routeName,
+            //       page: CompanyDetailPage,
+            //     ),
+            //   ],
+            // ),
           ],
         ),
 
