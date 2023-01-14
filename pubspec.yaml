@@ -12,24 +12,23 @@ dependencies:
 
   get_it: ^7.2.0
   dio: ^4.0.6
-  path: ^1.8.1
+  path: ^1.8.2
   flutter_bloc: ^8.1.1
   equatable: ^2.0.5
-  intl: ^0.17.0
-  flutter_secure_storage: ^5.1.2
-  cached_network_image: ^3.2.1
+  intl: ^0.18.0
+  flutter_secure_storage: ^7.0.1
+  cached_network_image: ^3.2.3
   collection: ^1.16.0
   ### Router
-  auto_route: ^5.0.1
+  auto_route: ^5.0.4
   url_launcher: ^6.1.5
   app_links: ^3.2.0
   ###
   ### Html Render
-  flutter_widget_from_html_core: ^0.8.5+3
-  fwfh_selectable_text: ^0.8.3+1
-  flutter_svg: ^1.1.4
-  fwfh_svg: ^0.7.2
-  fwfh_webview: ^0.6.2+3
+  flutter_widget_from_html_core: ^0.9.1
+  flutter_svg: ^1.1.6
+  fwfh_svg: ^0.7.2+1
+  fwfh_webview: ^0.7.0
   ###
   photo_view: ^0.14.0
 

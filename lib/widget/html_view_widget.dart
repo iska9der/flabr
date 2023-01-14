@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
-import 'package:fwfh_selectable_text/fwfh_selectable_text.dart';
 import 'package:fwfh_svg/fwfh_svg.dart';
 import 'package:fwfh_webview/fwfh_webview.dart';
 import 'package:path/path.dart' as p;
@@ -99,8 +98,7 @@ class HtmlView extends StatelessWidget {
   }
 }
 
-class CustomFactory extends WidgetFactory
-    with SelectableTextFactory, SvgFactory, WebViewFactory {
+class CustomFactory extends WidgetFactory with SvgFactory, WebViewFactory {
   CustomFactory(this.context);
 
   final BuildContext context;
@@ -150,8 +148,8 @@ class CustomFactory extends WidgetFactory
         break;
       case 'code':
 
-        /// если родитель "p", то это инлайновый фрагмент кода
-        if (el.parent?.localName == 'p') {
+        /// если родитель не "pre", то это инлайновый фрагмент кода
+        if (el.parent?.localName != 'pre') {
           final op = BuildOp(
             onTree: (meta, tree) {
               tree.bits.firstWhere((element) => element.tsb == tree.tsb);
