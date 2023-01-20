@@ -1,29 +1,29 @@
 import 'package:dio/dio.dart';
 
 import '../../feature/auth/model/auth_data_model.dart';
-import '../../feature/auth/service/token_service.dart';
+import '../../feature/auth/repository/token_repository.dart';
 
 class HttpClient {
-  HttpClient(this.client, {this.tokenService}) {
+  HttpClient(this.client, {this.tokenRepository}) {
     client.options = client.options.copyWith(
       connectTimeout: 10000,
       receiveTimeout: 15000,
     );
 
-    if (tokenService != null) {
+    if (tokenRepository != null) {
       client.interceptors.clear();
       client.interceptors.add(_interceptor());
     }
   }
 
   final Dio client;
-  final TokenService? tokenService;
+  final TokenRepository? tokenRepository;
 
   Interceptor _interceptor() {
     return InterceptorsWrapper(
       onRequest: (request, handler) async {
-        AuthDataModel? authData = await tokenService!.getData();
-        String? csrfToken = await tokenService!.getCsrf();
+        AuthDataModel? authData = await tokenRepository!.getData();
+        String? csrfToken = await tokenRepository!.getCsrf();
 
         if (authData != null && !request.headers.containsKey('Cookie')) {
           request.headers['Cookie'] = 'connect_sid=${authData.connectSID};';

@@ -1,37 +1,76 @@
+import 'package:dio/dio.dart';
+
+import '../../../common/exception/fetch_exception.dart';
+import '../../../component/http/http_client.dart';
 import '../model/auth_data_model.dart';
-import '../model/me_model.dart';
-import '../repository/auth_repository.dart';
+import '../model/auth_exception.dart';
+import '../model/network/auth_response_type.dart';
 
 class AuthService {
-  AuthService(AuthRepository repository) : _repository = repository;
+  const AuthService({
+    required HttpClient mobileClient,
+    required HttpClient proxyClient,
+  })  : _mobileClient = mobileClient,
+        _proxyClient = proxyClient;
 
-  final AuthRepository _repository;
+  final HttpClient _mobileClient;
+  final HttpClient _proxyClient;
 
-  Future<AuthDataModel> login({
+  login({
     required String login,
     required String password,
   }) async {
-    final raw = await _repository.login(login: login, password: password);
+    try {
+      final response = await _proxyClient.post('/getAccountAuthData', body: {
+        'email': login,
+        'password': password,
+      });
 
-    return AuthDataModel.fromMap(raw);
+      return response.data;
+    } on DioError catch (e) {
+      final dynamic data = e.response?.data;
+
+      AuthFailureType type = AuthFailureType.unknown;
+
+      if (data != null && data is Map) {
+        if (data.containsKey('isAuthError')) {
+          type = AuthFailureType.auth;
+        } else if (data.containsKey('isCaptchaError')) {
+          type = AuthFailureType.captcha;
+        }
+      }
+
+      throw AuthException(type);
+    } catch (e) {
+      throw FetchException();
+    }
   }
 
-  Future<MeModel> fetchMe(String connectSid) async {
-    final raw = await _repository.fetchMe(connectSid);
+  Future<Map<String, dynamic>> fetchMe(String connectSid) async {
+    try {
+      final response = await _mobileClient.get('/me');
 
-    return MeModel.fromMap(raw);
+      return response.data;
+    } catch (e) {
+      throw FetchException();
+    }
   }
 
-  fetchCsrf(AuthDataModel data) async {
-    String rawHtml = await _repository.fetchRawMainPage(data);
+  /// Отправляем запрос на главную страницу с данными пользователя
+  /// в заголовке запроса, чтобы в дальнейшем вытащить из мета тега
+  /// csrf-token соответственно токен csrf
+  Future<String> fetchRawMainPage(AuthDataModel data) async {
+    try {
+      final options = Options(headers: {'Cookie': data.toCookieString()});
 
-    String csrf = '';
-    int indexOfCsrfStart = rawHtml.indexOf('csrf-token') + 11;
-    int indexOfFirstQuote = rawHtml.indexOf('"', indexOfCsrfStart) + 1;
-    int indexOfLastQuote = rawHtml.indexOf('"', indexOfFirstQuote);
+      final response = await _mobileClient.get(
+        'https://habr.com',
+        options: options,
+      );
 
-    csrf = rawHtml.substring(indexOfFirstQuote, indexOfLastQuote);
-
-    return csrf;
+      return response.data;
+    } catch (e) {
+      throw FetchException();
+    }
   }
 }

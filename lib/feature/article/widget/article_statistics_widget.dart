@@ -14,7 +14,7 @@ import '../../auth/widget/dialog.dart';
 import '../../comment/page/comment_list_page.dart';
 import '../cubit/bookmark_cubit.dart';
 import '../model/article_model.dart';
-import '../service/article_service.dart';
+import '../repository/article_repository.dart';
 
 class ArticleStatisticsWidget extends StatelessWidget {
   const ArticleStatisticsWidget({
@@ -68,7 +68,7 @@ class _BookmarkIconButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => BookmarkCubit(
-        service: getIt.get<ArticleService>(),
+        service: getIt.get<ArticleRepository>(),
         articleId: article.id,
         isBookmarked: article.relatedData.bookmarked,
         count: article.statistics.favoritesCount,

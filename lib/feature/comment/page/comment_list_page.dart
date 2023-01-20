@@ -11,7 +11,7 @@ import '../../../config/constants.dart';
 import '../../../widget/html_view_widget.dart';
 import '../../../widget/progress_indicator.dart';
 import '../../../widget/stat_text_widget.dart';
-import '../../article/service/article_service.dart';
+import '../../article/repository/article_repository.dart';
 import '../../article/widget/article_author_widget.dart';
 import '../../settings/cubit/settings_cubit.dart';
 import '../cubit/comment_list_cubit.dart';
@@ -33,7 +33,7 @@ class CommentListPage extends StatelessWidget {
     return BlocProvider(
       create: (context) => CommentListCubit(
         articleId,
-        service: getIt.get<ArticleService>(),
+        repository: getIt.get<ArticleRepository>(),
         langArticles: context.read<SettingsCubit>().state.langArticles,
         langUI: context.read<SettingsCubit>().state.langUI,
       ),

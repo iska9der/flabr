@@ -3,25 +3,27 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../model/auth_data_model.dart';
 import '../model/me_model.dart';
-import '../service/auth_service.dart';
-import '../service/token_service.dart';
+import '../repository/auth_repository.dart';
+import '../repository/token_repository.dart';
 
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
-  AuthCubit({required AuthService service, required TokenService tokenService})
-      : _service = service,
-        _tokenService = tokenService,
+  AuthCubit({
+    required AuthRepository repository,
+    required TokenRepository tokenRepository,
+  })  : _repository = repository,
+        _tokenRepository = tokenRepository,
         super(const AuthState());
 
-  final AuthService _service;
-  final TokenService _tokenService;
+  final AuthRepository _repository;
+  final TokenRepository _tokenRepository;
 
   void init() async {
     emit(state.copyWith(status: AuthStatus.loading));
 
-    AuthDataModel? authData = await _tokenService.getData();
-    String? csrf = await _tokenService.getCsrf();
+    AuthDataModel? authData = await _tokenRepository.getData();
+    String? csrf = await _tokenRepository.getCsrf();
 
     if (authData == null) {
       return emit(state.copyWith(status: AuthStatus.unauthorized));
@@ -37,15 +39,15 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   void fetchCsrf() async {
-    final csrf = await _service.fetchCsrf(state.data);
+    final csrf = await _repository.fetchCsrf(state.data);
 
-    _tokenService.setCsrf(csrf);
+    _tokenRepository.setCsrf(csrf);
 
     emit(state.copyWith(csrfToken: csrf));
   }
 
   void fetchMe() async {
-    final me = await _service.fetchMe(state.data.connectSID);
+    final me = await _repository.fetchMe(state.data.connectSID);
 
     emit(state.copyWith(me: me));
   }
@@ -53,7 +55,7 @@ class AuthCubit extends Cubit<AuthState> {
   void handleAuthData() {
     emit(state.copyWith(status: AuthStatus.loading));
 
-    final authData = _tokenService.authData;
+    final authData = _tokenRepository.authData;
 
     if (authData.isEmpty) return;
 
@@ -63,7 +65,7 @@ class AuthCubit extends Cubit<AuthState> {
   logOut() async {
     emit(state.copyWith(status: AuthStatus.loading));
 
-    await _tokenService.clearAll();
+    await _tokenRepository.clearAll();
 
     emit(state.copyWith(status: AuthStatus.unauthorized));
   }

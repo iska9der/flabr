@@ -8,8 +8,8 @@ import '../../config/constants.dart';
 import '../../feature/article/repository/article_repository.dart';
 import '../../feature/article/service/article_service.dart';
 import '../../feature/auth/repository/auth_repository.dart';
+import '../../feature/auth/repository/token_repository.dart';
 import '../../feature/auth/service/auth_service.dart';
-import '../../feature/auth/service/token_service.dart';
 import '../../feature/company/repository/company_repository.dart';
 import '../../feature/company/service/company_service.dart';
 import '../../feature/hub/repository/hub_repository.dart';
@@ -38,15 +38,15 @@ void setDependencies() {
   ));
 
   /// Token
-  getIt.registerLazySingleton<TokenService>(
-    () => TokenService(getIt()),
+  getIt.registerLazySingleton<TokenRepository>(
+    () => TokenRepository(getIt()),
   );
 
   /// Http Clients
   getIt.registerLazySingleton<HttpClient>(
     () => HttpClient(
       Dio(BaseOptions(baseUrl: mobileApiUrl)),
-      tokenService: getIt(),
+      tokenRepository: getIt(),
     ),
     instanceName: 'mobileClient',
   );
@@ -54,7 +54,7 @@ void setDependencies() {
   getIt.registerLazySingleton<HttpClient>(
     () => HttpClient(
       Dio(BaseOptions(baseUrl: siteApiUrl)),
-      tokenService: getIt(),
+      tokenRepository: getIt(),
     ),
     instanceName: 'siteClient',
   );
@@ -70,59 +70,59 @@ void setDependencies() {
   );
 
   /// Auth
-  getIt.registerLazySingleton<AuthRepository>(
-    () => AuthRepository(
+  getIt.registerLazySingleton<AuthService>(
+    () => AuthService(
       mobileClient: getIt(instanceName: 'mobileClient'),
       proxyClient: getIt(instanceName: 'proxyClient'),
     ),
   );
-  getIt.registerLazySingleton<AuthService>(
-    () => AuthService(getIt()),
+  getIt.registerLazySingleton<AuthRepository>(
+    () => AuthRepository(getIt()),
   );
 
   /// Articles
-  getIt.registerLazySingleton<ArticleRepository>(
-    () => ArticleRepository(
+  getIt.registerLazySingleton<ArticleService>(
+    () => ArticleService(
       mobileClient: getIt(instanceName: 'mobileClient'),
       siteClient: getIt(instanceName: 'siteClient'),
     ),
   );
-  getIt.registerLazySingleton<ArticleService>(
-    () => ArticleService(getIt()),
+  getIt.registerLazySingleton<ArticleRepository>(
+    () => ArticleRepository(getIt()),
   );
 
   /// Users
-  getIt.registerLazySingleton<UserRepository>(
-    () => UserRepository(getIt(instanceName: 'mobileClient')),
-  );
   getIt.registerLazySingleton<UserService>(
-    () => UserService(getIt()),
+    () => UserService(getIt(instanceName: 'mobileClient')),
+  );
+  getIt.registerLazySingleton<UserRepository>(
+    () => UserRepository(getIt()),
   );
 
   /// Hubs
-  getIt.registerLazySingleton<HubRepository>(
-    () => HubRepository(
+  getIt.registerLazySingleton<HubService>(
+    () => HubService(
       mobileClient: getIt(instanceName: 'mobileClient'),
       siteClient: getIt(instanceName: 'siteClient'),
     ),
   );
-  getIt.registerLazySingleton<HubService>(
-    () => HubService(getIt()),
+  getIt.registerLazySingleton<HubRepository>(
+    () => HubRepository(getIt()),
   );
 
   /// Companies
-  getIt.registerLazySingleton<CompanyRepository>(
-    () => CompanyRepository(mobileClient: getIt(instanceName: 'mobileClient')),
-  );
   getIt.registerLazySingleton<CompanyService>(
-    () => CompanyService(getIt()),
+    () => CompanyService(mobileClient: getIt(instanceName: 'mobileClient')),
+  );
+  getIt.registerLazySingleton<CompanyRepository>(
+    () => CompanyRepository(getIt()),
   );
 
   /// Search
-  getIt.registerLazySingleton<SearchRepository>(
-    () => SearchRepository(getIt(instanceName: 'mobileClient')),
-  );
   getIt.registerLazySingleton<SearchService>(
-    () => SearchService(getIt()),
+    () => SearchService(getIt(instanceName: 'mobileClient')),
+  );
+  getIt.registerLazySingleton<SearchRepository>(
+    () => SearchRepository(getIt()),
   );
 }

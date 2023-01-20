@@ -8,7 +8,7 @@ import '../../article/cubit/article_list_cubit.dart';
 import '../../article/model/article_from_enum.dart';
 import '../../article/model/flow_enum.dart';
 import '../../article/page/article_list_page.dart';
-import '../../article/service/article_service.dart';
+import '../../article/repository/article_repository.dart';
 import '../../article/widget/sort/articles_sort_widget.dart';
 import '../../scroll/cubit/scroll_cubit.dart';
 import '../../scroll/widget/floating_scroll_to_top_button.dart';
@@ -34,7 +34,7 @@ class HubDetailPage extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (c) => ArticleListCubit(
-            getIt.get<ArticleService>(),
+            getIt.get<ArticleRepository>(),
             from: ArticleFromEnum.hub,
             hub: cubit.state.alias,
             flow: FlowEnum.fromString('all'),

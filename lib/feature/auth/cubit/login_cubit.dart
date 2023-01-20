@@ -2,8 +2,8 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../common/exception/displayable_exception.dart';
-import '../service/auth_service.dart';
-import '../service/token_service.dart';
+import '../repository/auth_repository.dart';
+import '../repository/token_repository.dart';
 
 part 'login_state.dart';
 
@@ -12,14 +12,14 @@ final emailValidation = RegExp(
 
 class LoginCubit extends Cubit<LoginState> {
   LoginCubit({
-    required AuthService service,
-    required TokenService tokenService,
-  })  : _service = service,
-        _tokenService = tokenService,
+    required AuthRepository repository,
+    required TokenRepository tokenRepository,
+  })  : _repository = repository,
+        _tokenRepository = tokenRepository,
         super(const LoginState());
 
-  final AuthService _service;
-  final TokenService _tokenService;
+  final AuthRepository _repository;
+  final TokenRepository _tokenRepository;
 
   void onLoginChanged(String value) {
     if (value == state.login) return;
@@ -90,12 +90,12 @@ class LoginCubit extends Cubit<LoginState> {
     emit(state.copyWith(status: LoginStatus.loading));
 
     try {
-      final authData = await _service.login(
+      final authData = await _repository.login(
         login: state.login,
         password: state.password,
       );
 
-      await _tokenService.setData(authData);
+      await _tokenRepository.setData(authData);
 
       emit(state.copyWith(status: LoginStatus.success));
     } on DisplayableException catch (e) {

@@ -15,12 +15,12 @@ import '../../scroll/cubit/scroll_cubit.dart';
 import '../../scroll/widget/floating_scroll_to_top_button.dart';
 import '../../search/cubit/search_cubit.dart';
 import '../../search/model/search_delegate.dart';
-import '../../search/service/search_service.dart';
+import '../../search/repository/search_repository.dart';
 import '../../settings/cubit/settings_cubit.dart';
 import '../cubit/article_list_cubit.dart';
 import '../model/article_type.dart';
 import '../model/flow_enum.dart';
-import '../service/article_service.dart';
+import '../repository/article_repository.dart';
 import '../widget/article_card_widget.dart';
 import '../widget/sort/articles_sort_widget.dart';
 
@@ -41,7 +41,7 @@ class ArticleListPage extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (c) => ArticleListCubit(
-            getIt.get<ArticleService>(),
+            getIt.get<ArticleRepository>(),
             flow: FlowEnum.fromString(flow),
             langUI: context.read<SettingsCubit>().state.langUI,
             langArticles: context.read<SettingsCubit>().state.langArticles,
@@ -52,7 +52,7 @@ class ArticleListPage extends StatelessWidget {
         ),
         BlocProvider(
           create: (c) => SearchCubit(
-            getIt.get<SearchService>(),
+            getIt.get<SearchRepository>(),
             langUI: context.read<SettingsCubit>().state.langUI,
             langArticles: context.read<SettingsCubit>().state.langArticles,
           ),

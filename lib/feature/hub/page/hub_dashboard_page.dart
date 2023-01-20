@@ -7,7 +7,7 @@ import '../../../component/router/app_router.dart';
 import '../../settings/cubit/settings_cubit.dart';
 import '../../user/widget/nav_link_widget.dart';
 import '../cubit/hub_cubit.dart';
-import '../service/hub_service.dart';
+import '../repository/hub_repository.dart';
 import 'hub_detail_page.dart';
 
 class HubDashboardPage extends StatelessWidget {
@@ -28,7 +28,7 @@ class HubDashboardPage extends StatelessWidget {
       lazy: false,
       create: (c) => HubCubit(
         alias,
-        service: getIt.get<HubService>(),
+        repository: getIt.get<HubRepository>(),
         langUI: context.read<SettingsCubit>().state.langUI,
         langArticles: context.read<SettingsCubit>().state.langArticles,
       ),

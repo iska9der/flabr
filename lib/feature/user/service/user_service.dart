@@ -1,65 +1,65 @@
-import '../../../component/language.dart';
+import '../../../common/exception/displayable_exception.dart';
+import '../../../common/model/network/params.dart';
+import '../../../component/http/http_client.dart';
 import '../model/network/user_list_response.dart';
-import '../model/user_model.dart';
-import '../model/user_whois_model.dart';
-import '../repository/user_repository.dart';
 
 class UserService {
-  UserService(UserRepository repository) : _repository = repository;
+  const UserService(this._client);
 
-  final UserRepository _repository;
-
-  UserListResponse cached = UserListResponse.empty;
+  final HttpClient _client;
 
   Future<UserListResponse> fetchAll({
-    required LanguageEnum langUI,
-    required List<LanguageEnum> langArticles,
+    required String langUI,
+    required String langArticles,
     required String page,
   }) async {
-    final response = await _repository.fetchAll(
-      langUI: langUI.name,
-      langArticles: encodeLangs(langArticles),
-      page: page,
-    );
+    try {
+      final params =
+          Params(langArticles: langArticles, langUI: langUI, page: page);
 
-    cached = cached.copyWith(refs: [...cached.refs, ...response.refs]);
+      final response = await _client.get(
+        '/users?${params.toQueryString()}',
+      );
 
-    return response;
+      return UserListResponse.fromMap(response.data);
+    } on DisplayableException {
+      rethrow;
+    }
   }
 
-  Future<UserModel> fetchByLogin({
+  Future<Map<String, dynamic>> fetchByLogin({
     required String login,
-    required LanguageEnum langUI,
-    required List<LanguageEnum> langArticles,
+    required String langUI,
+    required String langArticles,
   }) async {
-    final raw = await _repository.fetchByLogin(
-      login: login,
-      langUI: langUI.name,
-      langArticles: encodeLangs(langArticles),
-    );
+    try {
+      final params = Params(langArticles: langArticles, langUI: langUI);
 
-    UserModel model = UserModel.fromMap(raw);
+      final response = await _client.get(
+        '/users/$login/card?${params.toQueryString()}',
+      );
 
-    return model;
+      return response.data;
+    } on DisplayableException {
+      rethrow;
+    }
   }
 
-  UserModel getByLogin(String login) {
-    return cached.refs.firstWhere((element) => element.alias == login);
-  }
-
-  Future<UserWhoisModel> fetchWhois({
+  Future<Map<String, dynamic>> fetchWhois({
     required String login,
-    required LanguageEnum langUI,
-    required List<LanguageEnum> langArticles,
+    required String langUI,
+    required String langArticles,
   }) async {
-    final raw = await _repository.fetchWhois(
-      login: login,
-      langUI: langUI.name,
-      langArticles: encodeLangs(langArticles),
-    );
+    try {
+      final params = Params(langArticles: langArticles, langUI: langUI);
 
-    UserWhoisModel model = UserWhoisModel.fromMap(raw);
+      final response = await _client.get(
+        '/users/$login/whois?${params.toQueryString()}',
+      );
 
-    return model;
+      return response.data;
+    } on DisplayableException {
+      rethrow;
+    }
   }
 }

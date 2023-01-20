@@ -8,7 +8,7 @@ import '../../settings/cubit/settings_cubit.dart';
 import '../cubit/article_list_cubit.dart';
 import '../model/article_type.dart';
 import '../model/flow_enum.dart';
-import '../service/article_service.dart';
+import '../repository/article_repository.dart';
 import 'article_list_page.dart';
 
 class NewsListPage extends StatelessWidget {
@@ -30,7 +30,7 @@ class NewsListPage extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (c) => ArticleListCubit(
-            getIt.get<ArticleService>(),
+            getIt.get<ArticleRepository>(),
             type: ArticleType.news,
             flow: FlowEnum.fromString(flow),
             langUI: context.read<SettingsCubit>().state.langUI,

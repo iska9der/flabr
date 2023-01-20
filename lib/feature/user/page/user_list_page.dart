@@ -12,7 +12,7 @@ import '../../scroll/cubit/scroll_cubit.dart';
 import '../../scroll/widget/floating_scroll_to_top_button.dart';
 import '../../settings/cubit/settings_cubit.dart';
 import '../cubit/user_list_cubit.dart';
-import '../service/user_service.dart';
+import '../repository/user_repository.dart';
 import '../widget/user_card_widget.dart';
 
 class UserListPage extends StatelessWidget {
@@ -28,7 +28,7 @@ class UserListPage extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (c) => UserListCubit(
-            getIt.get<UserService>(),
+            getIt.get<UserRepository>(),
             langUI: context.read<SettingsCubit>().state.langUI,
             langArticles: context.read<SettingsCubit>().state.langArticles,
           ),

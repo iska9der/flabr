@@ -7,8 +7,8 @@ import '../../../widget/card_widget.dart';
 import '../../../widget/progress_indicator.dart';
 import '../cubit/auth_cubit.dart';
 import '../cubit/login_cubit.dart';
-import '../service/auth_service.dart';
-import '../service/token_service.dart';
+import '../repository/auth_repository.dart';
+import '../repository/token_repository.dart';
 import 'profile_widget.dart';
 
 class LoginWidget extends StatelessWidget implements DialogUserWidget {
@@ -27,8 +27,8 @@ class LoginWidget extends StatelessWidget implements DialogUserWidget {
               ? Center(child: Text('Вы уже вошли, ${authState.me.alias}'))
               : BlocProvider(
                   create: (context) => LoginCubit(
-                    service: getIt.get<AuthService>(),
-                    tokenService: getIt.get<TokenService>(),
+                    repository: getIt.get<AuthRepository>(),
+                    tokenRepository: getIt.get<TokenRepository>(),
                   ),
                   child: BlocListener<LoginCubit, LoginState>(
                     listener: (context, state) {

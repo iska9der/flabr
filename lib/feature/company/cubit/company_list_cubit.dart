@@ -4,19 +4,19 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../common/exception/displayable_exception.dart';
 import '../../../component/localization/language_enum.dart';
 import '../model/network/company_list_response.dart';
-import '../service/company_service.dart';
+import '../repository/company_repository.dart';
 
 part 'company_list_state.dart';
 
 class CompanyListCubit extends Cubit<CompanyListState> {
   CompanyListCubit(
-    CompanyService service, {
+    CompanyRepository repository, {
     required LanguageEnum langUI,
     required List<LanguageEnum> langArticles,
-  })  : _service = service,
+  })  : _repository = repository,
         super(CompanyListState(langUI: langUI, langArticles: langArticles));
 
-  final CompanyService _service;
+  final CompanyRepository _repository;
 
   void fetch() async {
     if (state.status == CompanyListStatus.loading ||
@@ -27,7 +27,7 @@ class CompanyListCubit extends Cubit<CompanyListState> {
     emit(state.copyWith(status: CompanyListStatus.loading));
 
     try {
-      final response = await _service.fetchAll(
+      final response = await _repository.fetchAll(
         page: state.page,
         langUI: state.langUI,
         langArticles: state.langArticles,

@@ -5,24 +5,24 @@ import '../../../common/exception/displayable_exception.dart';
 import '../../../component/localization/language_enum.dart';
 import '../model/hub_model.dart';
 import '../model/hub_profile_model.dart';
-import '../service/hub_service.dart';
+import '../repository/hub_repository.dart';
 
 part 'hub_state.dart';
 
 class HubCubit extends Cubit<HubState> {
   HubCubit(
     String alias, {
-    required HubService service,
+    required HubRepository repository,
     required LanguageEnum langUI,
     required List<LanguageEnum> langArticles,
-  })  : _service = service,
+  })  : _repository = repository,
         super(HubState(
           alias: alias,
           langUI: langUI,
           langArticles: langArticles,
         ));
 
-  final HubService _service;
+  final HubRepository _repository;
 
   void fetchProfile() async {
     HubProfileModel profile = state.profile;
@@ -31,7 +31,7 @@ class HubCubit extends Cubit<HubState> {
       if (profile.isEmpty) {
         emit(state.copyWith(status: HubStatus.loading));
 
-        profile = await _service.fetchProfile(
+        profile = await _repository.fetchProfile(
           state.alias,
           langUI: state.langUI,
           langArticles: state.langArticles,

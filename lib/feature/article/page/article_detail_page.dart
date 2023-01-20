@@ -8,7 +8,7 @@ import '../../../config/constants.dart';
 import '../../../widget/html_view_widget.dart';
 import '../../../widget/progress_indicator.dart';
 import '../cubit/article_cubit.dart';
-import '../service/article_service.dart';
+import '../repository/article_repository.dart';
 import '../widget/article_hub_widget.dart';
 import '../widget/article_info_widget.dart';
 import '../widget/article_settings_widget.dart';
@@ -34,7 +34,7 @@ class ArticleDetailPage extends StatelessWidget {
       key: ValueKey('article-$id-detail'),
       create: (c) => ArticleCubit(
         id,
-        service: getIt.get<ArticleService>(),
+        repository: getIt.get<ArticleRepository>(),
       )..fetch(),
       child: const ArticleDetailPageView(),
     );

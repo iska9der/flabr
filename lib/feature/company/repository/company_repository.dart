@@ -1,35 +1,25 @@
-import '../../../common/exception/displayable_exception.dart';
-import '../../../common/exception/fetch_exception.dart';
-import '../../../common/model/network/params.dart';
-import '../../../component/http/http_client.dart';
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import '../../../component/localization/language_enum.dart';
+import '../../../component/localization/language_helper.dart';
 import '../model/network/company_list_response.dart';
+import '../service/company_service.dart';
 
 class CompanyRepository {
-  const CompanyRepository({
-    required HttpClient mobileClient,
-  }) : _mobileClient = mobileClient;
+  CompanyRepository(CompanyService service) : _service = service;
 
-  final HttpClient _mobileClient;
+  final CompanyService _service;
 
   Future<CompanyListResponse> fetchAll({
     required int page,
-    required String langUI,
-    required String langArticles,
+    required LanguageEnum langUI,
+    required List<LanguageEnum> langArticles,
   }) async {
-    try {
-      var params = Params(
-        page: page.toString(),
-        langUI: langUI,
-        langArticles: langArticles,
-      );
-      final queryString = params.toQueryString();
-      final response = await _mobileClient.get('/companies/?$queryString');
+    final response = await _service.fetchAll(
+      page: page,
+      langUI: langUI.name,
+      langArticles: encodeLangs(langArticles),
+    );
 
-      return CompanyListResponse.fromMap(response.data);
-    } on DisplayableException {
-      rethrow;
-    } catch (e) {
-      throw FetchException();
-    }
+    return response;
   }
 }

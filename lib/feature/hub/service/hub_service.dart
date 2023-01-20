@@ -1,47 +1,73 @@
-import '../../../component/language.dart';
-import '../model/hub_profile_model.dart';
+import '../../../common/exception/displayable_exception.dart';
+import '../../../common/exception/fetch_exception.dart';
+import '../../../common/model/network/params.dart';
+import '../../../component/http/http_client.dart';
 import '../model/network/hub_list_response.dart';
-import '../repository/hub_repository.dart';
 
 class HubService {
-  HubService(HubRepository repository) : _repository = repository;
+  const HubService({
+    required HttpClient mobileClient,
+    required HttpClient siteClient,
+  })  : _mobileClient = mobileClient,
+        _siteClient = siteClient;
 
-  final HubRepository _repository;
-
-  /// пока не нужно
-  // HubListResponse cached = HubListResponse.empty;
+  final HttpClient _mobileClient;
+  final HttpClient _siteClient;
 
   Future<HubListResponse> fetchAll({
     required int page,
-    required LanguageEnum langUI,
-    required List<LanguageEnum> langArticles,
+    required String langUI,
+    required String langArticles,
   }) async {
-    final response = await _repository.fetchAll(
-      page: page,
-      langUI: langUI.name,
-      langArticles: encodeLangs(langArticles),
-    );
+    try {
+      var params = Params(
+        page: page.toString(),
+        langUI: langUI,
+        langArticles: langArticles,
+      );
+      final queryString = params.toQueryString();
+      final response = await _mobileClient.get('/hubs/?$queryString');
 
-    // cached = cached.copyWith(refs: [...cached.refs, ...response.refs]);
-
-    return response;
+      return HubListResponse.fromMap(response.data);
+    } on DisplayableException {
+      rethrow;
+    } catch (e) {
+      throw FetchException();
+    }
   }
 
-  Future<HubProfileModel> fetchProfile(
+  Future<Map<String, dynamic>> fetchProfile(
     String alias, {
-    required LanguageEnum langUI,
-    required List<LanguageEnum> langArticles,
+    required String langUI,
+    required String langArticles,
   }) async {
-    final raw = await _repository.fetchProfile(
-      alias,
-      langUI: langUI.name,
-      langArticles: encodeLangs(langArticles),
-    );
+    try {
+      var params = Params(
+        langUI: langUI,
+        langArticles: langArticles,
+      );
+      final queryString = params.toQueryString();
+      final response =
+          await _mobileClient.get('/hubs/$alias/profile?$queryString');
 
-    return HubProfileModel.fromMap(raw);
+      return response.data;
+    } on DisplayableException {
+      rethrow;
+    } catch (e) {
+      throw FetchException();
+    }
   }
 
   Future<void> toggleSubscription({required String alias}) async {
-    await _repository.toggleSubscription(alias: alias);
+    try {
+      await _siteClient.post(
+        '/v2/hubs/$alias/subscription',
+        body: {},
+      );
+    } on DisplayableException {
+      rethrow;
+    } catch (e) {
+      throw FetchException();
+    }
   }
 }

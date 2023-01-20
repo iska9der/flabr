@@ -4,19 +4,19 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../common/exception/displayable_exception.dart';
 import '../../../component/localization/language_enum.dart';
 import '../model/user_model.dart';
-import '../service/user_service.dart';
+import '../repository/user_repository.dart';
 
 part 'user_list_state.dart';
 
 class UserListCubit extends Cubit<UserListState> {
   UserListCubit(
-    UserService service, {
+    UserRepository repository, {
     required LanguageEnum langUI,
     required List<LanguageEnum> langArticles,
-  })  : _service = service,
+  })  : _repository = repository,
         super(UserListState(langUI: langUI, langArticles: langArticles));
 
-  final UserService _service;
+  final UserRepository _repository;
 
   bool get isFirstFetch => state.page == 1;
   bool get isLastPage => state.page >= state.pagesCount;
@@ -29,7 +29,7 @@ class UserListCubit extends Cubit<UserListState> {
     emit(state.copyWith(status: UserListStatus.loading));
 
     try {
-      var response = await _service.fetchAll(
+      var response = await _repository.fetchAll(
         langUI: state.langUI,
         langArticles: state.langArticles,
         page: state.page.toString(),

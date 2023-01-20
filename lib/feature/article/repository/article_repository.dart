@@ -1,221 +1,174 @@
-import 'package:dio/dio.dart';
-
-import '../../../common/exception/displayable_exception.dart';
-import '../../../common/exception/fetch_exception.dart';
-import '../../../common/exception/value_exception.dart';
-import '../../../component/http/http_client.dart';
-import '../../comment/model/network/comment_list_params.dart';
+import '../../../component/localization/language_enum.dart';
+import '../../../component/localization/language_helper.dart';
 import '../../comment/model/network/comment_list_response.dart';
+import '../model/article_model.dart';
 import '../model/article_type.dart';
 import '../model/flow_enum.dart';
-import '../model/network/article_list_params.dart';
 import '../model/network/article_list_response.dart';
 import '../model/sort/date_period_enum.dart';
 import '../model/sort/sort_enum.dart';
+import '../service/article_service.dart';
 
 class ArticleRepository {
-  const ArticleRepository(
-      {required HttpClient mobileClient, required HttpClient siteClient})
-      : _mobileClient = mobileClient,
-        _siteClient = siteClient;
+  ArticleRepository(this.service);
 
-  final HttpClient _mobileClient;
-  final HttpClient _siteClient;
+  final ArticleService service;
 
-  Future<Map<String, dynamic>> fetchById(String id) async {
-    try {
-      final response = await _mobileClient.get('/articles/$id');
+  ArticleListResponse cached = ArticleListResponse.empty;
 
-      return response.data;
-    } catch (e) {
-      throw FetchException();
+  Future<ArticleModel> fetchById(String id) async {
+    final rawData = await service.fetchById(id);
+
+    final article = ArticleModel.fromMap(rawData);
+
+    return article;
+  }
+
+  /// Сортируем статьи в полученном списке
+  void _sortListResponse(SortEnum sort, ArticleListResponse response) {
+    if (sort == SortEnum.byBest) {
+      response.refs.sort((a, b) => b.statistics.score.compareTo(
+            a.statistics.score,
+          ));
+    } else {
+      response.refs.sort((a, b) => b.timePublished.compareTo(
+            a.timePublished,
+          ));
     }
   }
 
+  /// Получение статей/новостей
+  ///
+  /// Сортировка полученных статей происходит как на сайте:
+  /// если сортировка по лучшим [SortEnum.byBest], то надо сортировать по рейтингу;
+  /// если по новым [SortEnum.byNew], сортируем по дате публикации
+  ///
   Future<ArticleListResponse> fetchFlowArticles({
-    required String langUI,
-    required String langArticles,
+    required LanguageEnum langUI,
+    required List<LanguageEnum> langArticles,
     required ArticleType type,
     required FlowEnum flow,
     required SortEnum sort,
-    required String page,
     required DatePeriodEnum period,
     required String score,
+    required String page,
   }) async {
-    try {
-      final params = ArticleListParams(
-        langArticles: langArticles,
-        langUI: langUI,
-        flow: flow == FlowEnum.all ? null : flow.name,
-        news: type == ArticleType.news,
-        custom: flow == FlowEnum.feed ? 'true' : null,
+    final response = await service.fetchFlowArticles(
+      langUI: langUI.name,
+      langArticles: encodeLangs(langArticles),
+      type: type,
+      flow: flow,
+      sort: sort,
+      period: period,
+      score: score,
+      page: page,
+    );
 
-        /// если мы находимся не во "Все потоки", в значение sort, по завету
-        /// костыльного api хабра, нужно передавать значение 'all'
-        sort: flow == FlowEnum.all ? sort.value : 'all',
-        period: sort == SortEnum.byBest ? period.name : null,
-        score: sort == SortEnum.byNew ? score : null,
-        page: page,
-      );
+    _sortListResponse(sort, response);
 
-      final queryString = params.toQueryString();
-      final response = await _mobileClient.get('/articles/?$queryString');
+    cached = response;
 
-      return ArticleListResponse.fromMap(
-        response.data,
-      );
-    } on DisplayableException {
-      rethrow;
-    } on DioError {
-      throw FetchException();
-    }
+    return cached;
   }
 
   Future<ArticleListResponse> fetchHubArticles({
-    required String langUI,
-    required String langArticles,
+    required LanguageEnum langUI,
+    required List<LanguageEnum> langArticles,
     required String hub,
     required SortEnum sort,
     required DatePeriodEnum period,
     required String score,
     required String page,
   }) async {
-    try {
-      final params = ArticleListParams(
-        langArticles: langArticles,
-        langUI: langUI,
-        sort: 'all',
-        period: sort == SortEnum.byBest ? period.name : null,
-        score: sort == SortEnum.byNew ? score : null,
-        page: page,
-      );
+    final response = await service.fetchHubArticles(
+      langUI: langUI.name,
+      langArticles: encodeLangs(langArticles),
+      hub: hub,
+      sort: sort,
+      period: period,
+      score: score,
+      page: page,
+    );
 
-      final queryString = params.toQueryString();
-      final response = await _mobileClient.get(
-        '/articles/?hub=$hub&$queryString',
-      );
+    _sortListResponse(sort, response);
 
-      return ArticleListResponse.fromMap(response.data);
-    } on DisplayableException {
-      rethrow;
-    } on DioError {
-      throw FetchException();
-    }
+    cached = response;
+
+    return cached;
   }
 
-  Future<ArticleListResponse> fetchUserArticles({
-    required String langUI,
-    required String langArticles,
+  fetchUserArticles({
+    required LanguageEnum langUI,
+    required List<LanguageEnum> langArticles,
     required String user,
     required SortEnum sort,
     required DatePeriodEnum period,
     required String score,
     required String page,
   }) async {
-    try {
-      final params = ArticleListParams(
-        langArticles: langArticles,
-        langUI: langUI,
-        page: page,
-      );
+    final response = await service.fetchUserArticles(
+      langUI: langUI.name,
+      langArticles: encodeLangs(langArticles),
+      user: user,
+      sort: sort,
+      period: period,
+      score: score,
+      page: page,
+    );
 
-      final queryString = params.toQueryString();
-      final response = await _mobileClient.get(
-        '/articles/?user=$user&$queryString',
-      );
+    _sortListResponse(sort, response);
 
-      return ArticleListResponse.fromMap(response.data);
-    } on DisplayableException {
-      rethrow;
-    } on DioError {
-      throw FetchException();
-    }
+    cached = response;
+
+    return cached;
   }
 
-  Future<ArticleListResponse> fetchUserBookmarks({
-    required String langUI,
-    required String langArticles,
+  fetchUserBookmarks({
+    required LanguageEnum langUI,
+    required List<LanguageEnum> langArticles,
     required String user,
     required String page,
   }) async {
-    try {
-      final params = ArticleListParams(
-        langArticles: langArticles,
-        langUI: langUI,
-        page: page,
-      );
+    final response = await service.fetchUserBookmarks(
+      langUI: langUI.name,
+      langArticles: encodeLangs(langArticles),
+      user: user,
+      page: page,
+    );
 
-      final queryString = params.toQueryString();
-      final response = await _mobileClient.get(
-        '/articles/?user=$user&user_bookmarks=true&$queryString',
-      );
+    var newResponse = response.copyWith(
+      refs: response.ids.map(
+        (id) {
+          return response.refs.firstWhere((ref) => id == ref.id);
+        },
+      ).toList(),
+    );
+    cached = newResponse;
 
-      return ArticleListResponse.fromMap(response.data);
-    } on DisplayableException {
-      rethrow;
-    } on DioError {
-      throw FetchException();
-    }
+    return cached;
   }
 
   Future<CommentListResponse> fetchComments({
     required String articleId,
-    required String langUI,
-    required String langArticles,
+    required LanguageEnum langUI,
+    required List<LanguageEnum> langArticles,
   }) async {
-    try {
-      final params = CommentListParams(
-        articleId: articleId,
-        langArticles: langArticles,
-        langUI: langUI,
-      );
+    final listResponse = await service.fetchComments(
+      articleId: articleId,
+      langUI: langUI.name,
+      langArticles: encodeLangs(langArticles),
+    );
 
-      final queryString = params.toQueryString();
-      final response = await _mobileClient.get(queryString);
+    final structurizedComments = listResponse.structurize();
 
-      return CommentListResponse.fromMap(response.data);
-    } on DisplayableException {
-      rethrow;
-    } on DioError {
-      throw FetchException();
-    }
+    return listResponse.copyWith(comments: structurizedComments);
   }
 
   Future<bool> addToBookmark(String articleId) async {
-    try {
-      final response = await _siteClient.post(
-        '/v1/articles/$articleId/bookmarks/add/',
-        body: {},
-      );
-
-      if (response.data['ok'] != true) {
-        throw ValueException('Не удалось!');
-      }
-
-      return true;
-    } on DisplayableException {
-      rethrow;
-    } on DioError {
-      throw FetchException();
-    }
+    return await service.addToBookmark(articleId);
   }
 
   Future<bool> removeFromBookmark(String articleId) async {
-    try {
-      final response = await _siteClient.post(
-        '/v1/articles/$articleId/bookmarks/remove/',
-        body: {},
-      );
-
-      if (response.data['ok'] != true) {
-        throw ValueException('Не удалось!');
-      }
-
-      return true;
-    } on DisplayableException {
-      rethrow;
-    } on DioError {
-      throw FetchException();
-    }
+    return await service.removeFromBookmark(articleId);
   }
 }

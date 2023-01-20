@@ -1,60 +1,40 @@
-import '../../../common/exception/value_exception.dart';
-import '../../../common/model/network/list_response.dart';
-import '../../../component/language.dart';
-import '../../article/model/network/article_list_response.dart';
-import '../../hub/model/network/hub_list_response.dart';
-import '../../user/model/network/user_list_response.dart';
-import '../model/search_order.dart';
+import '../../../common/exception/displayable_exception.dart';
+import '../../../common/exception/fetch_exception.dart';
+import '../../../component/http/http_client.dart';
+import '../model/network/search_params.dart';
 import '../model/search_target.dart';
-import '../repository/search_repository.dart';
 
 class SearchService {
-  const SearchService(SearchRepository repository) : _repository = repository;
+  const SearchService(HttpClient client) : _client = client;
 
-  final SearchRepository _repository;
+  final HttpClient _client;
 
-  Future<ListResponse> fetch({
-    required LanguageEnum langUI,
-    required List<LanguageEnum> langArticles,
+  Future fetch({
+    required String langUI,
+    required String langArticles,
     required String query,
     required SearchTarget target,
-    required SearchOrder order,
+    required String order,
     required int page,
   }) async {
-    var raw = await _repository.fetch(
-      langUI: langUI.name,
-      langArticles: encodeLangs(langArticles),
-      query: query,
-      target: target,
-      order: order.name,
-      page: page,
-    );
+    try {
+      final params = SearchParamsFactory.from(
+        langUI: langUI,
+        langArticles: langArticles,
+        query: query,
+        target: target,
+        order: order,
+        page: page,
+      );
 
-    switch (target) {
-      case SearchTarget.posts:
-        final response = ArticleListResponse.fromMap(raw);
-        _sortArticles(order, response);
-        return response;
-      case SearchTarget.hubs:
-        return HubListResponse.fromMap(raw);
-      case SearchTarget.companies:
-        throw ValueException('Не реализовано');
-      case SearchTarget.users:
-        return UserListResponse.fromMap(raw);
-      case SearchTarget.comments:
-        throw ValueException('Не реализовано');
-    }
-  }
+      final queryString = params.toQueryString();
+      final response = await _client.get(queryString);
 
-  void _sortArticles(SearchOrder order, ArticleListResponse response) {
-    if (order == SearchOrder.date) {
-      response.refs.sort((a, b) => b.timePublished.compareTo(
-            a.timePublished,
-          ));
-    } else if (order == SearchOrder.rating) {
-      response.refs.sort((a, b) => b.statistics.score.compareTo(
-            a.statistics.score,
-          ));
+      return response.data;
+    } on DisplayableException {
+      rethrow;
+    } catch (e) {
+      throw FetchException();
     }
   }
 }

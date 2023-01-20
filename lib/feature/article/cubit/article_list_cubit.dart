@@ -12,13 +12,13 @@ import '../model/network/article_list_response.dart';
 import '../model/sort/date_period_enum.dart';
 import '../model/sort/sort_enum.dart';
 import '../model/sort/sort_option_model.dart';
-import '../service/article_service.dart';
+import '../repository/article_repository.dart';
 
 part 'article_list_state.dart';
 
 class ArticleListCubit extends Cubit<ArticleListState> {
   ArticleListCubit(
-    ArticleService service, {
+    ArticleRepository repository, {
     from = ArticleFromEnum.flow,
     flow = FlowEnum.all,
     hub = '',
@@ -26,7 +26,7 @@ class ArticleListCubit extends Cubit<ArticleListState> {
     type = ArticleType.article,
     required LanguageEnum langUI,
     required List<LanguageEnum> langArticles,
-  })  : _service = service,
+  })  : _repository = repository,
         super(
           ArticleListState(
             from: from,
@@ -46,7 +46,7 @@ class ArticleListCubit extends Cubit<ArticleListState> {
     }
   }
 
-  final ArticleService _service;
+  final ArticleRepository _repository;
 
   bool get isFirstFetch => state.page == 1;
 
@@ -173,7 +173,7 @@ class ArticleListCubit extends Cubit<ArticleListState> {
   }
 
   Future<ArticleListResponse> _fetchFlowArticles() async {
-    return await _service.fetchFlowArticles(
+    return await _repository.fetchFlowArticles(
       langUI: state.langUI,
       langArticles: state.langArticles,
       type: state.type,
@@ -186,7 +186,7 @@ class ArticleListCubit extends Cubit<ArticleListState> {
   }
 
   Future<ArticleListResponse> _fetchHubArticles() async {
-    return await _service.fetchHubArticles(
+    return await _repository.fetchHubArticles(
       langUI: state.langUI,
       langArticles: state.langArticles,
       hub: state.hub,
@@ -198,7 +198,7 @@ class ArticleListCubit extends Cubit<ArticleListState> {
   }
 
   Future<ArticleListResponse> _fetchUserArticles() async {
-    return await _service.fetchUserArticles(
+    return await _repository.fetchUserArticles(
       langUI: state.langUI,
       langArticles: state.langArticles,
       user: state.user,
@@ -210,7 +210,7 @@ class ArticleListCubit extends Cubit<ArticleListState> {
   }
 
   Future<ArticleListResponse> _fetchUserBookmarks() async {
-    return await _service.fetchUserBookmarks(
+    return await _repository.fetchUserBookmarks(
       langUI: state.langUI,
       langArticles: state.langArticles,
       user: state.user,

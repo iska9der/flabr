@@ -7,18 +7,18 @@ import '../../../common/model/network/list_response.dart';
 import '../../../component/localization/language_enum.dart';
 import '../model/search_order.dart';
 import '../model/search_target.dart';
-import '../service/search_service.dart';
+import '../repository/search_repository.dart';
 
 part 'search_state.dart';
 
 class SearchCubit extends Cubit<SearchState> {
   SearchCubit(
-    SearchService service, {
+    SearchRepository repository, {
     SearchTarget target = SearchTarget.posts,
     SearchOrder order = SearchOrder.relevance,
     required LanguageEnum langUI,
     required List<LanguageEnum> langArticles,
-  })  : _service = service,
+  })  : _repository = repository,
         super(SearchState(
           langUI: langUI,
           langArticles: langArticles,
@@ -26,7 +26,7 @@ class SearchCubit extends Cubit<SearchState> {
           order: order,
         ));
 
-  final SearchService _service;
+  final SearchRepository _repository;
 
   Future<void> changeTarget(SearchTarget newTarget) async {
     if (state.target == newTarget) return;
@@ -75,7 +75,7 @@ class SearchCubit extends Cubit<SearchState> {
 
     emit(state.copyWith(status: SearchStatus.loading));
     try {
-      ListResponse list = await _service.fetch(
+      ListResponse list = await _repository.fetch(
         langUI: state.langUI,
         langArticles: state.langArticles,
         query: state.query,

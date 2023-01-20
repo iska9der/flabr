@@ -8,7 +8,7 @@ import '../../../component/di/dependencies.dart';
 import '../cubit/hub_cubit.dart';
 import '../cubit/hub_subscription_cubit.dart';
 import '../model/hub_related_data.dart';
-import '../service/hub_service.dart';
+import '../repository/hub_repository.dart';
 
 class HubSubscribeButton extends StatelessWidget {
   const HubSubscribeButton({Key? key, this.child}) : super(key: key);
@@ -26,7 +26,7 @@ class HubSubscribeButton extends StatelessWidget {
 
     return BlocProvider(
       create: (_) => HubSubscriptionCubit(
-        service: getIt.get<HubService>(),
+        repository: getIt.get<HubRepository>(),
         hubAlias: hubCubit.state.alias,
         isSubscribed:
             (hubCubit.state.profile.relatedData as HubRelatedData).isSubscribed,

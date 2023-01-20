@@ -5,7 +5,7 @@ import '../../../component/di/dependencies.dart';
 import '../../article/cubit/article_list_cubit.dart';
 import '../../article/model/article_from_enum.dart';
 import '../../article/page/article_list_page.dart';
-import '../../article/service/article_service.dart';
+import '../../article/repository/article_repository.dart';
 import '../../scroll/cubit/scroll_cubit.dart';
 import '../../scroll/widget/floating_scroll_to_top_button.dart';
 import '../../settings/cubit/settings_cubit.dart';
@@ -27,7 +27,7 @@ class UserBookmarkListPage extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (c) => ArticleListCubit(
-            getIt.get<ArticleService>(),
+            getIt.get<ArticleRepository>(),
             from: ArticleFromEnum.userBookmarks,
             user: cubit.state.login,
             langUI: context.read<SettingsCubit>().state.langUI,

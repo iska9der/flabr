@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../component/di/dependencies.dart';
 import '../cubit/article_cubit.dart';
-import '../service/article_service.dart';
+import '../repository/article_repository.dart';
 import 'article_detail_page.dart';
 
 class NewsDetailPage extends StatelessWidget {
@@ -24,7 +24,7 @@ class NewsDetailPage extends StatelessWidget {
       key: ValueKey('news-$id-detail'),
       create: (c) => ArticleCubit(
         id,
-        service: getIt.get<ArticleService>(),
+        repository: getIt.get<ArticleRepository>(),
       )..fetch(),
       child: const ArticleDetailPageView(),
     );

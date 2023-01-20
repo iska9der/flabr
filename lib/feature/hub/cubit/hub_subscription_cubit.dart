@@ -2,20 +2,20 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../common/model/extension/state_status_x.dart';
-import '../service/hub_service.dart';
+import '../repository/hub_repository.dart';
 
 part 'hub_subscription_state.dart';
 
 class HubSubscriptionCubit extends Cubit<HubSubscriptionState> {
   HubSubscriptionCubit({
-    required HubService service,
+    required HubRepository repository,
     required String hubAlias,
     required bool isSubscribed,
-  })  : _service = service,
+  })  : _repository = repository,
         super(HubSubscriptionState(
             hubAlias: hubAlias, isSubscribed: isSubscribed));
 
-  final HubService _service;
+  final HubRepository _repository;
 
   void toggleSubscription() async {
     if (state.status.isLoading) return;
@@ -23,7 +23,7 @@ class HubSubscriptionCubit extends Cubit<HubSubscriptionState> {
     emit(state.copyWith(status: HubSubscriptionStatus.loading));
 
     try {
-      await _service.toggleSubscription(alias: state.hubAlias);
+      await _repository.toggleSubscription(alias: state.hubAlias);
 
       emit(state.copyWith(
         status: HubSubscriptionStatus.success,

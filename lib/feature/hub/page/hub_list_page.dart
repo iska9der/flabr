@@ -13,7 +13,7 @@ import '../../scroll/widget/floating_scroll_to_top_button.dart';
 import '../../settings/cubit/settings_cubit.dart';
 import '../cubit/hub_list_cubit.dart';
 import '../model/hub_model.dart';
-import '../service/hub_service.dart';
+import '../repository/hub_repository.dart';
 import '../widget/hub_card_widget.dart';
 
 class HubListPage extends StatelessWidget {
@@ -30,7 +30,7 @@ class HubListPage extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (c) => HubListCubit(
-            getIt.get<HubService>(),
+            getIt.get<HubRepository>(),
             langUI: context.read<SettingsCubit>().state.langUI,
             langArticles: context.read<SettingsCubit>().state.langArticles,
           ),

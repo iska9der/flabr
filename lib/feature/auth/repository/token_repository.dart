@@ -4,8 +4,8 @@ import '../model/auth_data_model.dart';
 const authDataCacheKey = 'aData';
 const authCsrfCacheKey = 'cData';
 
-class TokenService {
-  TokenService(CacheStorage storage) : _storage = storage;
+class TokenRepository {
+  TokenRepository(CacheStorage storage) : _storage = storage;
 
   final CacheStorage _storage;
 

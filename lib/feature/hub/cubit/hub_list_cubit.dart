@@ -4,19 +4,19 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../common/exception/displayable_exception.dart';
 import '../../../component/language.dart';
 import '../model/network/hub_list_response.dart';
-import '../service/hub_service.dart';
+import '../repository/hub_repository.dart';
 
 part 'hub_list_state.dart';
 
 class HubListCubit extends Cubit<HubListState> {
   HubListCubit(
-    HubService service, {
+    HubRepository repository, {
     required LanguageEnum langUI,
     required List<LanguageEnum> langArticles,
-  })  : _service = service,
+  })  : _repository = repository,
         super(HubListState(langUI: langUI, langArticles: langArticles));
 
-  final HubService _service;
+  final HubRepository _repository;
 
   void fetch() async {
     if (state.status == HubListStatus.loading ||
@@ -27,7 +27,7 @@ class HubListCubit extends Cubit<HubListState> {
     emit(state.copyWith(status: HubListStatus.loading));
 
     try {
-      final response = await _service.fetchAll(
+      final response = await _repository.fetchAll(
         page: state.page,
         langUI: state.langUI,
         langArticles: state.langArticles,

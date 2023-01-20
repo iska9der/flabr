@@ -1,40 +1,60 @@
-import '../../../common/exception/displayable_exception.dart';
-import '../../../common/exception/fetch_exception.dart';
-import '../../../component/http/http_client.dart';
-import '../model/network/search_params.dart';
+import '../../../common/exception/value_exception.dart';
+import '../../../common/model/network/list_response.dart';
+import '../../../component/language.dart';
+import '../../article/model/network/article_list_response.dart';
+import '../../hub/model/network/hub_list_response.dart';
+import '../../user/model/network/user_list_response.dart';
+import '../model/search_order.dart';
 import '../model/search_target.dart';
+import '../service/search_service.dart';
 
 class SearchRepository {
-  const SearchRepository(HttpClient client) : _client = client;
+  const SearchRepository(SearchService service) : _service = service;
 
-  final HttpClient _client;
+  final SearchService _service;
 
-  Future fetch({
-    required String langUI,
-    required String langArticles,
+  Future<ListResponse> fetch({
+    required LanguageEnum langUI,
+    required List<LanguageEnum> langArticles,
     required String query,
     required SearchTarget target,
-    required String order,
+    required SearchOrder order,
     required int page,
   }) async {
-    try {
-      final params = SearchParamsFactory.from(
-        langUI: langUI,
-        langArticles: langArticles,
-        query: query,
-        target: target,
-        order: order,
-        page: page,
-      );
+    var raw = await _service.fetch(
+      langUI: langUI.name,
+      langArticles: encodeLangs(langArticles),
+      query: query,
+      target: target,
+      order: order.name,
+      page: page,
+    );
 
-      final queryString = params.toQueryString();
-      final response = await _client.get(queryString);
+    switch (target) {
+      case SearchTarget.posts:
+        final response = ArticleListResponse.fromMap(raw);
+        _sortArticles(order, response);
+        return response;
+      case SearchTarget.hubs:
+        return HubListResponse.fromMap(raw);
+      case SearchTarget.companies:
+        throw ValueException('Не реализовано');
+      case SearchTarget.users:
+        return UserListResponse.fromMap(raw);
+      case SearchTarget.comments:
+        throw ValueException('Не реализовано');
+    }
+  }
 
-      return response.data;
-    } on DisplayableException {
-      rethrow;
-    } catch (e) {
-      throw FetchException();
+  void _sortArticles(SearchOrder order, ArticleListResponse response) {
+    if (order == SearchOrder.date) {
+      response.refs.sort((a, b) => b.timePublished.compareTo(
+            a.timePublished,
+          ));
+    } else if (order == SearchOrder.rating) {
+      response.refs.sort((a, b) => b.statistics.score.compareTo(
+            a.statistics.score,
+          ));
     }
   }
 }

@@ -16,8 +16,8 @@ import 'component/router/app_router.dart';
 import 'component/storage/cache_storage.dart';
 import 'component/theme.dart';
 import 'feature/auth/cubit/auth_cubit.dart';
-import 'feature/auth/service/auth_service.dart';
-import 'feature/auth/service/token_service.dart';
+import 'feature/auth/repository/auth_repository.dart';
+import 'feature/auth/repository/token_repository.dart';
 import 'feature/settings/cubit/settings_cubit.dart';
 import 'widget/progress_indicator.dart';
 
@@ -66,8 +66,8 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           lazy: false,
           create: (context) => AuthCubit(
-            service: getIt.get<AuthService>(),
-            tokenService: getIt.get<TokenService>(),
+            repository: getIt.get<AuthRepository>(),
+            tokenRepository: getIt.get<TokenRepository>(),
           )..init(),
         ),
       ],

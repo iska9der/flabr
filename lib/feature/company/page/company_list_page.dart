@@ -13,7 +13,7 @@ import '../../scroll/widget/floating_scroll_to_top_button.dart';
 import '../../settings/cubit/settings_cubit.dart';
 import '../cubit/company_list_cubit.dart';
 import '../model/company_model.dart';
-import '../service/company_service.dart';
+import '../repository/company_repository.dart';
 import '../widget/company_card_widget.dart';
 
 class CompanyListPage extends StatelessWidget {
@@ -30,7 +30,7 @@ class CompanyListPage extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (c) => CompanyListCubit(
-            getIt.get<CompanyService>(),
+            getIt.get<CompanyRepository>(),
             langUI: context.read<SettingsCubit>().state.langUI,
             langArticles: context.read<SettingsCubit>().state.langArticles,
           ),
