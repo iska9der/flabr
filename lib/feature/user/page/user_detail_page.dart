@@ -2,16 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
+import '../../../common/model/extension/state_status_x.dart';
 import '../../../common/model/stat_type.dart';
 import '../../../common/utils/utils.dart';
+import '../../../common/widget/detail/section_container_widget.dart';
+import '../../../common/widget/list_card/card_avatar_widget.dart';
 import '../../../component/di/dependencies.dart';
 import '../../../config/constants.dart';
 import '../../../widget/card_widget.dart';
 import '../../../widget/profile_stat_widget.dart';
 import '../../../widget/progress_indicator.dart';
 import '../cubit/user_cubit.dart';
-import '../widget/section_container_widget.dart';
-import '../widget/user_avatar_widget.dart';
 import '../widget/user_whois_widget.dart';
 
 class UserDetailPage extends StatelessWidget {
@@ -40,11 +41,11 @@ class UserDetailPageView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<UserCubit, UserState>(
       builder: (context, state) {
-        if (state.status == UserStatus.loading) {
+        if (state.status.isLoading) {
           return const CircleIndicator();
         }
 
-        if (state.status == UserStatus.failure) {
+        if (state.status.isFailure) {
           return const Center(
             child: Text('Не удалось найти пользователя'),
           );
@@ -61,7 +62,7 @@ class UserDetailPageView extends StatelessWidget {
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(right: 20),
-                    child: UserAvatarWidget(
+                    child: CardAvatarWidget(
                       imageUrl: model.avatarUrl,
                       height: 50,
                     ),

@@ -2,6 +2,7 @@ import '../../../common/exception/value_exception.dart';
 import '../../../common/model/network/list_response.dart';
 import '../../../component/language.dart';
 import '../../article/model/network/article_list_response.dart';
+import '../../company/model/network/company_list_response.dart';
 import '../../hub/model/network/hub_list_response.dart';
 import '../../user/model/network/user_list_response.dart';
 import '../model/search_order.dart';
@@ -38,7 +39,7 @@ class SearchRepository {
       case SearchTarget.hubs:
         return HubListResponse.fromMap(raw);
       case SearchTarget.companies:
-        throw ValueException('Не реализовано');
+        return CompanyListResponse.fromMap(raw);
       case SearchTarget.users:
         return UserListResponse.fromMap(raw);
       case SearchTarget.comments:

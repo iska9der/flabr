@@ -40,8 +40,4 @@ class HubRepository {
 
     return HubProfileModel.fromMap(raw);
   }
-
-  Future<void> toggleSubscription({required String alias}) async {
-    await _service.toggleSubscription(alias: alias);
-  }
 }

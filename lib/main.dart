@@ -59,7 +59,7 @@ class MyApp extends StatelessWidget {
           lazy: false,
           create: (c) => SettingsCubit(
             storage: getIt.get<CacheStorage>(),
-            router: getIt.get<AppRouter>(),
+            router: router,
             appLinks: getIt.get<AppLinks>(),
           )..init(),
         ),

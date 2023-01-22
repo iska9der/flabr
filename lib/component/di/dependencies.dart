@@ -38,21 +38,21 @@ void setDependencies() {
   ));
 
   /// Token
-  getIt.registerLazySingleton<TokenRepository>(
-    () => TokenRepository(getIt()),
+  getIt.registerSingleton<TokenRepository>(
+    TokenRepository(getIt()),
   );
 
   /// Http Clients
-  getIt.registerLazySingleton<HttpClient>(
-    () => HttpClient(
+  getIt.registerSingleton<HttpClient>(
+    HttpClient(
       Dio(BaseOptions(baseUrl: mobileApiUrl)),
       tokenRepository: getIt(),
     ),
     instanceName: 'mobileClient',
   );
 
-  getIt.registerLazySingleton<HttpClient>(
-    () => HttpClient(
+  getIt.registerSingleton<HttpClient>(
+    HttpClient(
       Dio(BaseOptions(baseUrl: siteApiUrl)),
       tokenRepository: getIt(),
     ),
@@ -70,14 +70,14 @@ void setDependencies() {
   );
 
   /// Auth
-  getIt.registerLazySingleton<AuthService>(
-    () => AuthService(
+  getIt.registerSingleton<AuthService>(
+    AuthService(
       mobileClient: getIt(instanceName: 'mobileClient'),
       proxyClient: getIt(instanceName: 'proxyClient'),
     ),
   );
-  getIt.registerLazySingleton<AuthRepository>(
-    () => AuthRepository(getIt()),
+  getIt.registerSingleton<AuthRepository>(
+    AuthRepository(getIt()),
   );
 
   /// Articles
@@ -112,7 +112,10 @@ void setDependencies() {
 
   /// Companies
   getIt.registerLazySingleton<CompanyService>(
-    () => CompanyService(mobileClient: getIt(instanceName: 'mobileClient')),
+    () => CompanyService(
+      mobileClient: getIt(instanceName: 'mobileClient'),
+      siteClient: getIt(instanceName: 'siteClient'),
+    ),
   );
   getIt.registerLazySingleton<CompanyRepository>(
     () => CompanyRepository(getIt()),

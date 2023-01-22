@@ -5,17 +5,19 @@ class SectionContainerWidget extends StatelessWidget {
     Key? key,
     required this.title,
     required this.child,
+    this.crossAxisAlignment = CrossAxisAlignment.stretch,
   }) : super(key: key);
 
   final String title;
   final Widget child;
+  final CrossAxisAlignment crossAxisAlignment;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+        crossAxisAlignment: crossAxisAlignment,
         children: [
           Text(
             title,

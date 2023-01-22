@@ -113,6 +113,15 @@ class _$AppRouter extends RootStackRouter {
       return MaterialPageX<dynamic>(
           routeData: routeData, child: const CompanyListPage());
     },
+    CompanyDashboardRoute.name: (routeData) {
+      final pathParams = routeData.inheritedPathParams;
+      final args = routeData.argsAs<CompanyDashboardRouteArgs>(
+          orElse: () =>
+              CompanyDashboardRouteArgs(alias: pathParams.getString('alias')));
+      return MaterialPageX<dynamic>(
+          routeData: routeData,
+          child: CompanyDashboardPage(key: args.key, alias: args.alias));
+    },
     HubDetailRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
           routeData: routeData, child: const HubDetailPage());
@@ -128,6 +137,10 @@ class _$AppRouter extends RootStackRouter {
     UserBookmarkListRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
           routeData: routeData, child: const UserBookmarkListPage());
+    },
+    CompanyDetailRoute.name: (routeData) {
+      return MaterialPageX<dynamic>(
+          routeData: routeData, child: const CompanyDetailPage());
     }
   };
 
@@ -199,7 +212,14 @@ class _$AppRouter extends RootStackRouter {
                           path: 'bookmarks', parent: UserDashboardRoute.name)
                     ]),
                 RouteConfig(CompanyListRoute.name,
-                    path: 'companies', parent: ServicesEmptyRoute.name)
+                    path: 'companies', parent: ServicesEmptyRoute.name),
+                RouteConfig(CompanyDashboardRoute.name,
+                    path: 'companies/:alias',
+                    parent: ServicesEmptyRoute.name,
+                    children: [
+                      RouteConfig(CompanyDetailRoute.name,
+                          path: 'profile', parent: CompanyDashboardRoute.name)
+                    ])
               ]),
           RouteConfig(SettingsRoute.name,
               path: 'settings', parent: DashboardRoute.name),
@@ -541,6 +561,33 @@ class CompanyListRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [CompanyDashboardPage]
+class CompanyDashboardRoute extends PageRouteInfo<CompanyDashboardRouteArgs> {
+  CompanyDashboardRoute(
+      {Key? key, required String alias, List<PageRouteInfo>? children})
+      : super(CompanyDashboardRoute.name,
+            path: 'companies/:alias',
+            args: CompanyDashboardRouteArgs(key: key, alias: alias),
+            rawPathParams: {'alias': alias},
+            initialChildren: children);
+
+  static const String name = 'CompanyDashboardRoute';
+}
+
+class CompanyDashboardRouteArgs {
+  const CompanyDashboardRouteArgs({this.key, required this.alias});
+
+  final Key? key;
+
+  final String alias;
+
+  @override
+  String toString() {
+    return 'CompanyDashboardRouteArgs{key: $key, alias: $alias}';
+  }
+}
+
+/// generated route for
 /// [HubDetailPage]
 class HubDetailRoute extends PageRouteInfo<void> {
   const HubDetailRoute() : super(HubDetailRoute.name, path: 'profile');
@@ -572,4 +619,12 @@ class UserBookmarkListRoute extends PageRouteInfo<void> {
       : super(UserBookmarkListRoute.name, path: 'bookmarks');
 
   static const String name = 'UserBookmarkListRoute';
+}
+
+/// generated route for
+/// [CompanyDetailPage]
+class CompanyDetailRoute extends PageRouteInfo<void> {
+  const CompanyDetailRoute() : super(CompanyDetailRoute.name, path: 'profile');
+
+  static const String name = 'CompanyDetailRoute';
 }

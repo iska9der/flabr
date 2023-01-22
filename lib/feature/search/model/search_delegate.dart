@@ -10,6 +10,7 @@ import '../../../component/di/dependencies.dart';
 import '../../../config/constants.dart';
 import '../../../widget/progress_indicator.dart';
 import '../../article/widget/article_card_widget.dart';
+import '../../company/widget/company_card_widget.dart';
 import '../../hub/widget/hub_card_widget.dart';
 import '../../scroll/cubit/scroll_cubit.dart';
 import '../../scroll/widget/floating_scroll_to_top_button.dart';
@@ -39,20 +40,32 @@ class FlabrSearchDelegate extends SearchDelegate {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    return Stack(children: [
-      Positioned(
-        top: 0,
-        left: 0,
-        right: 0,
-        child: _TargetOptions(cubit: cubit, delegate: this),
-      ),
-      Positioned(
-        top: 40,
-        left: 0,
-        right: 0,
-        child: _OrderOptions(cubit: cubit, delegate: this),
-      ),
-    ]);
+    return Stack(
+      children: [
+        Positioned(
+          top: 0,
+          left: 0,
+          right: 0,
+          child: _TargetOptions(cubit: cubit, delegate: this),
+        ),
+        Positioned(
+          top: 40,
+          left: 0,
+          right: 0,
+          child: BlocBuilder<SearchCubit, SearchState>(
+            bloc: cubit,
+            builder: (context, state) {
+              if (state.target == SearchTarget.posts ||
+                  state.target == SearchTarget.users) {
+                return _OrderOptions(cubit: cubit, delegate: this);
+              }
+
+              return const SizedBox();
+            },
+          ),
+        ),
+      ],
+    );
   }
 
   @override
@@ -114,7 +127,9 @@ class FlabrSearchDelegate extends SearchDelegate {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         _TargetOptions(cubit: cubit, delegate: this),
-                        _OrderOptions(cubit: cubit, delegate: this),
+                        if (state.target == SearchTarget.posts ||
+                            state.target == SearchTarget.users)
+                          _OrderOptions(cubit: cubit, delegate: this),
                         ListView.separated(
                           cacheExtent: 5000,
                           shrinkWrap: true,
@@ -143,8 +158,9 @@ class FlabrSearchDelegate extends SearchDelegate {
                                     renderType: RenderType.html,
                                   );
                                 case SearchTarget.companies:
-                                  return const Center(
-                                    child: Text('Не реализовано'),
+                                  return CompanyCardWidget(
+                                    model: model,
+                                    renderType: RenderType.html,
                                   );
                                 case SearchTarget.users:
                                   return UserCardWidget(model: model);

@@ -1,9 +1,9 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
+import '../../../common/widget/list_card/card_avatar_widget.dart';
 import '../../auth/widget/dialog.dart';
 import '../../auth/widget/profile_widget.dart';
-import '../../user/widget/user_avatar_widget.dart';
 import '../model/article_author_model.dart';
 
 class ArticleAuthorWidget extends StatelessWidget {
@@ -26,7 +26,7 @@ class ArticleAuthorWidget extends StatelessWidget {
       child: Wrap(
         crossAxisAlignment: WrapCrossAlignment.center,
         children: [
-          UserAvatarWidget(imageUrl: author.avatarUrl),
+          CardAvatarWidget(imageUrl: author.avatarUrl),
           const SizedBox(width: 8),
           Text(author.alias),
         ],

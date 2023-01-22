@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:photo_view/photo_view.dart';
 
 import '../../component/di/dependencies.dart';
@@ -36,14 +37,19 @@ class NetworkImageWidget extends StatelessWidget {
                 },
               )
           : null,
-      child: CachedNetworkImage(
-        cacheKey: imageUrl,
-        imageUrl: imageUrl,
-        height: height,
-        memCacheHeight: cacheHeight,
-        placeholder: placeholderWidget ?? getIt.get<Utils>().onLoading,
-        errorWidget: errorWidget ?? getIt.get<Utils>().onError,
-      ),
+      child: imageUrl.contains('.svg')
+          ? SvgPicture.network(
+              imageUrl,
+              height: height,
+            )
+          : CachedNetworkImage(
+              cacheKey: imageUrl,
+              imageUrl: imageUrl,
+              height: height,
+              memCacheHeight: cacheHeight,
+              placeholder: placeholderWidget ?? getIt.get<Utils>().onLoading,
+              errorWidget: errorWidget ?? getIt.get<Utils>().onError,
+            ),
     );
   }
 }

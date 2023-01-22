@@ -1,22 +1,22 @@
 import 'package:equatable/equatable.dart';
 
 import '../../../common/model/hub.dart';
+import '../../../common/model/hub_type.dart';
 import '../../hub/model/hub_related_data.dart';
-import 'article_hub_type.dart';
 
 class ArticleHubModel extends HubBase with EquatableMixin {
   const ArticleHubModel({
     required this.id,
     super.alias = '',
     this.title = '',
-    this.type = ArticleHubType.collective,
+    this.type = HubType.collective,
     super.isProfiled = false,
     HubRelatedData super.relatedData = HubRelatedData.empty,
   });
 
   final String id;
   final String title;
-  final ArticleHubType type;
+  final HubType type;
 
   @override
   factory ArticleHubModel.fromMap(Map<String, dynamic> map) {
@@ -24,7 +24,7 @@ class ArticleHubModel extends HubBase with EquatableMixin {
       id: map['id'],
       alias: map['alias'] as String,
       title: map['title'] as String,
-      type: ArticleHubType.fromString(map['type']),
+      type: HubType.fromString((map['type'] ?? 'collective')),
       isProfiled: map['isProfiled'] as bool,
       relatedData: map['relatedData'] != null
           ? HubRelatedData.fromMap(map['relatedData'])

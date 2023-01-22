@@ -1,13 +1,14 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 
 import '../../../common/model/render_type.dart';
 import '../../../common/model/stat_type.dart';
+import '../../../common/widget/list_card/card_avatar_widget.dart';
+import '../../../common/widget/list_card/card_title_widget.dart';
+import '../../../component/router/routes.dart';
 import '../../../config/constants.dart';
 import '../../../widget/card_widget.dart';
 import '../../../widget/profile_stat_card_widget.dart';
-import '../../user/widget/user_avatar_widget.dart';
 import '../model/hub_model.dart';
 import '../model/hub_statistics_model.dart';
 
@@ -32,17 +33,17 @@ class HubCardWidget extends StatelessWidget {
           padding: const EdgeInsets.all(kCardPadding),
           child: Row(
             children: [
-              UserAvatarWidget(imageUrl: model.imageUrl),
+              CardAvatarWidget(imageUrl: model.imageUrl),
               const SizedBox(width: 16),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    _HubTitleWidget(
+                    CardTitleWidget(
                       title: model.titleHtml,
                       renderType: renderType,
                       onPressed: () => context.router.navigateNamed(
-                        'services/hubs/${model.alias}/profile',
+                        '${MyServicesRoute.routePath}/hubs/${model.alias}/profile',
                       ),
                     ),
                     Text(
@@ -87,39 +88,6 @@ class HubCardWidget extends StatelessWidget {
           ),
         )
       ],
-    );
-  }
-}
-
-class _HubTitleWidget extends StatelessWidget {
-  const _HubTitleWidget({
-    Key? key,
-    required this.title,
-    required this.renderType,
-    required this.onPressed,
-  }) : super(key: key);
-
-  final String title;
-  final RenderType renderType;
-  final void Function() onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      borderRadius: BorderRadius.circular(kBorderRadiusDefault),
-      onTap: onPressed,
-      child: renderType == RenderType.plain
-          ? Text(
-              title,
-              style: Theme.of(context).textTheme.headline6,
-            )
-          : HtmlWidget(
-              title,
-              textStyle: TextStyle(
-                color: Theme.of(context).textTheme.headline6?.color,
-                fontSize: Theme.of(context).textTheme.headline6?.fontSize,
-              ),
-            ),
     );
   }
 }

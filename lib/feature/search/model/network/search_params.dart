@@ -2,6 +2,7 @@ import '../../../../common/exception/value_exception.dart';
 import '../../../../common/model/network/params.dart';
 import '../search_target.dart';
 import 'search_article_params.dart';
+import 'search_company_params.dart';
 import 'search_hub_params.dart';
 import 'search_user_params.dart';
 
@@ -32,7 +33,13 @@ abstract class SearchParamsFactory extends Params {
           page: page.toString(),
         );
       case SearchTarget.companies:
-        throw ValueException('Не реализовано');
+        return SearchCompanyParams(
+          query: query,
+          order: order,
+          langArticles: langArticles,
+          langUI: langUI,
+          page: page.toString(),
+        );
       case SearchTarget.users:
         return SearchUserParams(
           query: query,

@@ -111,21 +111,19 @@ class UserListPageView extends StatelessWidget {
 
             return Scrollbar(
               controller: scrollCtrl,
-              child: ListView.builder(
+              child: ListView.separated(
                 controller: scrollCtrl,
                 padding: const EdgeInsets.symmetric(
                   horizontal: kScreenHPadding,
+                ),
+                separatorBuilder: (context, index) => const SizedBox(
+                  height: kCardBetweenPadding,
                 ),
                 itemCount: users.length +
                     (state.status == UserListStatus.loading ? 1 : 0),
                 itemBuilder: (context, i) {
                   if (i < users.length) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: kCardBetweenPadding,
-                      ),
-                      child: UserCardWidget(model: state.users[i]),
-                    );
+                    return UserCardWidget(model: state.users[i]);
                   }
 
                   Timer(

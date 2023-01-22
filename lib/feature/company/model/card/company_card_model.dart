@@ -1,47 +1,44 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:equatable/equatable.dart';
+import '../../../../common/model/company.dart';
+import '../company_related_data.dart';
+import 'company_card_statistics_model.dart';
+import 'company_contact.dart';
 
-import '../../../common/model/company.dart';
-import 'company_hub_model.dart';
-import 'company_related_data.dart';
-import 'company_statistics_model.dart';
-
-class CompanyModel extends CompanyBase with EquatableMixin {
-  const CompanyModel({
+class CompanyCardModel extends CompanyBase {
+  const CompanyCardModel({
     required super.alias,
     super.imageUrl = '',
     super.titleHtml = '',
     super.descriptionHtml = '',
     super.relatedData = CompanyRelatedData.empty,
-    super.statistics = CompanyStatisticsModel.empty,
-    this.commonHubs = const [],
+    super.statistics = CompanyCardStatisticsModel.empty,
+    this.contacts = const [],
   });
 
-  final List<CompanyHubModel> commonHubs;
+  final List<CompanyContact> contacts;
 
   @override
-  CompanyModel copyWith({
+  CompanyCardModel copyWith({
     String? alias,
     String? imageUrl,
     String? titleHtml,
     String? descriptionHtml,
     CompanyRelatedData? relatedData,
-    CompanyStatisticsModel? statistics,
-    List<CompanyHubModel>? commonHubs,
+    CompanyCardStatisticsModel? statistics,
+    List<CompanyContact>? contacts,
   }) {
-    return CompanyModel(
+    return CompanyCardModel(
       alias: alias ?? this.alias,
       imageUrl: imageUrl ?? this.imageUrl,
       titleHtml: titleHtml ?? this.titleHtml,
       descriptionHtml: descriptionHtml ?? this.descriptionHtml,
       relatedData: relatedData ?? this.relatedData,
       statistics: statistics ?? this.statistics,
-      commonHubs: commonHubs ?? this.commonHubs,
+      contacts: contacts ?? this.contacts,
     );
   }
 
-  factory CompanyModel.fromMap(Map<String, dynamic> map) {
-    return CompanyModel(
+  factory CompanyCardModel.fromMap(Map<String, dynamic> map) {
+    return CompanyCardModel(
       alias: (map['alias'] ?? '') as String,
       imageUrl: (map['imageUrl'] ?? '') as String,
       titleHtml: (map['titleHtml'] ?? '') as String,
@@ -52,28 +49,28 @@ class CompanyModel extends CompanyBase with EquatableMixin {
             )
           : CompanyRelatedData.empty,
       statistics: map['statistics'] != null
-          ? CompanyStatisticsModel.fromMap(
+          ? CompanyCardStatisticsModel.fromMap(
               map['statistics'] as Map<String, dynamic>,
             )
-          : CompanyStatisticsModel.empty,
-      commonHubs: map['commonHubs'] != null
-          ? List<CompanyHubModel>.from(
-              map['commonHubs'].map((el) => CompanyHubModel.fromMap(el)),
+          : CompanyCardStatisticsModel.empty,
+      contacts: map['contacts'] != null
+          ? List<CompanyContact>.from(
+              map['contacts'].map((e) => CompanyContact.fromMap(e)),
             ).toList()
           : const [],
     );
   }
 
-  static const empty = CompanyModel(alias: '-');
+  static const empty = CompanyCardModel(alias: '-');
   bool get isEmpty => this == empty;
 
-  @override
   List<Object> get props => [
         alias,
         imageUrl,
         titleHtml,
         descriptionHtml,
         relatedData,
-        commonHubs,
+        statistics,
+        contacts,
       ];
 }

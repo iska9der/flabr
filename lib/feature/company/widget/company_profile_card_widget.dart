@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 
 import '../../../common/model/stat_type.dart';
 import '../../../common/widget/list_card/card_avatar_widget.dart';
@@ -10,24 +11,26 @@ import '../../../widget/profile_stat_widget.dart';
 import '../../auth/cubit/auth_cubit.dart';
 import '../../common/profile_subscribe/repository/subscription_repository.dart';
 import '../../common/profile_subscribe/widget/subscribe_button.dart';
-import '../cubit/hub_cubit.dart';
-import '../model/hub_related_data.dart';
-import '../repository/hub_subscription_repository.dart';
-import '../service/hub_service.dart';
+import '../cubit/company_cubit.dart';
+import '../model/card/company_card_statistics_model.dart';
+import '../model/company_related_data.dart';
+import '../repository/company_subscription_repository.dart';
+import '../service/company_service.dart';
 
-class HubProfileCardWidget extends StatefulWidget {
-  const HubProfileCardWidget({Key? key}) : super(key: key);
+class CompanyProfileCardWidget extends StatefulWidget {
+  const CompanyProfileCardWidget({Key? key}) : super(key: key);
 
   @override
-  State<HubProfileCardWidget> createState() => _HubProfileCardWidgetState();
+  State<CompanyProfileCardWidget> createState() =>
+      _CompanyProfileCardWidgetState();
 }
 
-class _HubProfileCardWidgetState extends State<HubProfileCardWidget> {
+class _CompanyProfileCardWidgetState extends State<CompanyProfileCardWidget> {
   @override
   void initState() {
     getIt.allowReassignment = true;
     getIt.registerFactory<SubscriptionRepository>(
-      () => HubSubscriptionRepository(getIt.get<HubService>()),
+      () => CompanySubscriptionRepository(getIt.get<CompanyService>()),
     );
 
     super.initState();
@@ -46,10 +49,10 @@ class _HubProfileCardWidgetState extends State<HubProfileCardWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<HubCubit, HubState>(
+    return BlocBuilder<CompanyCubit, CompanyState>(
       builder: (context, state) {
-        var profile = state.profile;
-        var stats = profile.statistics;
+        var card = state.card;
+        var stats = card.statistics as CompanyCardStatisticsModel;
 
         return FlabrCard(
           padding: const EdgeInsets.symmetric(
@@ -62,7 +65,7 @@ class _HubProfileCardWidgetState extends State<HubProfileCardWidget> {
               Row(
                 children: [
                   CardAvatarWidget(
-                    imageUrl: profile.imageUrl,
+                    imageUrl: card.imageUrl,
                     height: 60,
                   ),
                   const SizedBox(width: 20),
@@ -86,21 +89,20 @@ class _HubProfileCardWidgetState extends State<HubProfileCardWidget> {
               ),
               const SizedBox(height: 16),
               Text(
-                profile.descriptionHtml,
+                card.titleHtml,
                 textAlign: TextAlign.left,
                 style: Theme.of(context).textTheme.labelLarge,
               ),
               const SizedBox(height: 8),
-              Text(
-                profile.fullDescriptionHtml,
-                textAlign: TextAlign.left,
-                style: Theme.of(context).textTheme.caption,
+              HtmlWidget(
+                card.descriptionHtml,
+                textStyle: Theme.of(context).textTheme.caption,
               ),
               if (context.watch<AuthCubit>().state.isAuthorized) ...[
                 const SizedBox(height: 8),
                 SubscribeButton(
                   alias: state.alias,
-                  isSubscribed: (state.profile.relatedData as HubRelatedData)
+                  isSubscribed: (state.card.relatedData as CompanyRelatedData)
                       .isSubscribed,
                 ),
               ],

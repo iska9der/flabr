@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
 import '../config/constants.dart';
+import '../feature/company/page/company_list_page.dart';
 import '../feature/hub/page/hub_list_page.dart';
 import '../feature/user/page/user_list_page.dart';
 
@@ -44,8 +45,7 @@ class ServicesPageView extends StatelessWidget {
           ServiceCard(
             title: 'Компании',
             icon: Icons.cases_rounded,
-            // onTap: () => context.router.pushWidget(const CompanyListPage()),
-            onTap: null,
+            onTap: () => context.router.pushWidget(const CompanyListPage()),
           ),
         ],
       ),

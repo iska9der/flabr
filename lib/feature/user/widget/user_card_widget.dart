@@ -2,12 +2,12 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
 import '../../../common/model/stat_type.dart';
+import '../../../common/widget/list_card/card_avatar_widget.dart';
 import '../../../component/router/app_router.dart';
 import '../../../config/constants.dart';
 import '../../../widget/card_widget.dart';
 import '../../../widget/profile_stat_card_widget.dart';
 import '../model/user_model.dart';
-import 'user_avatar_widget.dart';
 
 class UserCardWidget extends StatelessWidget {
   const UserCardWidget({Key? key, required this.model}) : super(key: key);
@@ -44,7 +44,7 @@ class _UserCard extends StatelessWidget {
       child: Row(
         children: [
           /// Аватар
-          UserAvatarWidget(imageUrl: model.avatarUrl),
+          CardAvatarWidget(imageUrl: model.avatarUrl),
           const SizedBox(width: 12),
           Expanded(
             child: Column(

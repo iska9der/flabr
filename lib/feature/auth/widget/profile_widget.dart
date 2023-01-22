@@ -4,9 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../common/model/extension/state_status_x.dart';
 import '../../../common/model/user.dart';
+import '../../../common/widget/list_card/card_avatar_widget.dart';
 import '../../../widget/card_widget.dart';
 import '../../../widget/progress_indicator.dart';
-import '../../user/widget/user_avatar_widget.dart';
 import '../cubit/auth_cubit.dart';
 
 abstract class DialogUserWidget extends StatelessWidget {
@@ -30,7 +30,7 @@ class DialogUserProfileWidget extends StatelessWidget
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ListTile(
-                leading: UserAvatarWidget(imageUrl: user.avatarUrl),
+                leading: CardAvatarWidget(imageUrl: user.avatarUrl),
                 subtitle: user.fullname.isNotEmpty ? Text(user.fullname) : null,
                 title: Text('@${user.alias}'),
                 onTap: () {

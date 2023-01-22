@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
+import '../../../common/model/hub_type.dart';
 import '../../hub/model/hub_related_data.dart';
 import '../model/article_hub_model.dart';
 
@@ -36,19 +37,21 @@ class _ArticleHubWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var title = hub.title;
     var style = Theme.of(context).textTheme.caption;
 
     if ((hub.relatedData as HubRelatedData).isSubscribed) {
       style = style?.copyWith(color: Colors.green);
     }
 
+    var title = hub.title;
     if (hub.isProfiled) {
       title += '*';
     }
 
+    var path = hub.type.isCorporative ? 'companies' : 'hubs';
+
     return InkWell(
-      onTap: () => context.navigateNamedTo('services/hubs/${hub.alias}'),
+      onTap: () => context.navigateNamedTo('services/$path/${hub.alias}'),
       child: Padding(
         padding: const EdgeInsets.symmetric(
           horizontal: 8,

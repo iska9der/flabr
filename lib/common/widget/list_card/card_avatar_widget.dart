@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import '../../../config/constants.dart';
 import '../../../widget/network_image_widget.dart';
 
-class UserAvatarWidget extends StatelessWidget {
-  const UserAvatarWidget({
+class CardAvatarWidget extends StatelessWidget {
+  const CardAvatarWidget({
     Key? key,
     required this.imageUrl,
     this.height = kAvatarHeight,

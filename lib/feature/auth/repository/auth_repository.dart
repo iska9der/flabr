@@ -16,7 +16,7 @@ class AuthRepository {
     return AuthDataModel.fromMap(raw);
   }
 
-  Future<MeModel> fetchMe(String connectSid) async {
+  Future<MeModel?> fetchMe(String connectSid) async {
     final raw = await _service.fetchMe(connectSid);
 
     return MeModel.fromMap(raw);
