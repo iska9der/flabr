@@ -1,20 +1,18 @@
 part of 'auth_cubit.dart';
 
-enum AuthStatus { initial, loading, authorized, unauthorized }
+enum AuthStatus { initial, loading, authorized, unauthorized, anomaly }
 
 class AuthState extends Equatable {
   const AuthState({
     this.error = '',
     this.status = AuthStatus.initial,
     this.data = AuthDataModel.empty,
-    this.csrfToken = '',
     this.me = MeModel.empty,
   });
 
   final String error;
   final AuthStatus status;
   final AuthDataModel data;
-  final String csrfToken;
   final MeModel me;
 
   AuthState copyWith({
@@ -28,20 +26,19 @@ class AuthState extends Equatable {
       error: error ?? this.error,
       status: status ?? this.status,
       data: data ?? this.data,
-      csrfToken: csrfToken ?? this.csrfToken,
       me: me ?? this.me,
     );
   }
 
   bool get isAuthorized => status == AuthStatus.authorized;
   bool get isUnauthorized => status == AuthStatus.unauthorized;
+  bool get isAnomaly => status == AuthStatus.anomaly;
 
   @override
   List<Object> get props => [
         error,
         status,
         data,
-        csrfToken,
         me,
       ];
 }

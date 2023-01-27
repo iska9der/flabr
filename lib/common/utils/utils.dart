@@ -11,11 +11,17 @@ class Utils with ImageUtilsMixin {
   void showNotification({
     required BuildContext context,
     required Widget content,
+    SnackBarAction? action,
+    Duration duration = const Duration(seconds: 3),
   }) {
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
 
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: content),
+      SnackBar(
+        content: content,
+        action: action,
+        duration: duration,
+      ),
     );
   }
 }

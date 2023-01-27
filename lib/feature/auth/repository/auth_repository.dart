@@ -19,6 +19,10 @@ class AuthRepository {
   Future<MeModel?> fetchMe(String connectSid) async {
     final raw = await _service.fetchMe(connectSid);
 
+    if (raw == null) {
+      return null;
+    }
+
     return MeModel.fromMap(raw);
   }
 

@@ -23,7 +23,6 @@ class AuthCubit extends Cubit<AuthState> {
     emit(state.copyWith(status: AuthStatus.loading));
 
     AuthDataModel? authData = await _tokenRepository.getData();
-    String? csrf = await _tokenRepository.getCsrf();
 
     if (authData == null) {
       return emit(state.copyWith(status: AuthStatus.unauthorized));
@@ -32,23 +31,22 @@ class AuthCubit extends Cubit<AuthState> {
     emit(state.copyWith(
       status: AuthStatus.authorized,
       data: authData,
-      csrfToken: csrf,
     ));
-
-    fetchMe();
   }
 
   void fetchCsrf() async {
     final csrf = await _repository.fetchCsrf(state.data);
 
     _tokenRepository.setCsrf(csrf);
-
-    emit(state.copyWith(csrfToken: csrf));
   }
 
   void fetchMe() async {
     try {
       final me = await _repository.fetchMe(state.data.connectSID);
+
+      if (me == null) {
+        return emit(state.copyWith(status: AuthStatus.anomaly));
+      }
 
       emit(state.copyWith(me: me));
     } catch (e) {

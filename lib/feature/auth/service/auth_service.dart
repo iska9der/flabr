@@ -46,7 +46,7 @@ class AuthService {
     }
   }
 
-  Future<Map<String, dynamic>> fetchMe(String connectSid) async {
+  Future<Map<String, dynamic>?> fetchMe(String connectSid) async {
     try {
       final response = await _mobileClient.get('/me');
 
