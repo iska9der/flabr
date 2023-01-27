@@ -16,8 +16,16 @@ class ArticleRepository {
 
   ArticleListResponse cached = ArticleListResponse.empty;
 
-  Future<ArticleModel> fetchById(String id) async {
-    final rawData = await service.fetchById(id);
+  Future<ArticleModel> fetchById(
+    String id, {
+    required LanguageEnum langUI,
+    required List<LanguageEnum> langArticles,
+  }) async {
+    final rawData = await service.fetchById(
+      id,
+      langUI: langUI.name,
+      langArticles: encodeLangs(langArticles),
+    );
 
     final article = ArticleModel.fromMap(rawData);
 

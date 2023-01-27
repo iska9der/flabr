@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import '../../../common/exception/displayable_exception.dart';
 import '../../../common/exception/fetch_exception.dart';
 import '../../../common/exception/value_exception.dart';
+import '../../../common/model/network/params.dart';
 import '../../../component/http/http_client.dart';
 import '../../comment/model/network/comment_list_params.dart';
 import '../../comment/model/network/comment_list_response.dart';
@@ -22,9 +23,17 @@ class ArticleService {
   final HttpClient _mobileClient;
   final HttpClient _siteClient;
 
-  Future<Map<String, dynamic>> fetchById(String id) async {
+  Future<Map<String, dynamic>> fetchById(
+    String id, {
+    required String langUI,
+    required String langArticles,
+  }) async {
     try {
-      final response = await _mobileClient.get('/articles/$id');
+      final params = Params(langArticles: langArticles, langUI: langUI);
+
+      final response = await _mobileClient.get(
+        '/articles/$id/?${params.toQueryString()}',
+      );
 
       return response.data;
     } catch (e) {
