@@ -2,80 +2,58 @@ import 'package:flutter/material.dart';
 
 import 'common.dart';
 
-ThemeData darkTheme() {
-  MaterialColor primaryColor = Colors.blue;
-  Color backgroundColor = Colors.grey.shade900;
-  Color accentColor = Colors.blue.shade200;
+const darkColorScheme = ColorScheme(
+  brightness: Brightness.dark,
+  primary: Color(0xFF86CFFF),
+  onPrimary: Color(0xFF00344C),
+  primaryContainer: Color(0xFF004C6D),
+  onPrimaryContainer: Color(0xFFC7E7FF),
+  secondary: Color(0xFFB6C9D8),
+  onSecondary: Color(0xFF21323E),
+  secondaryContainer: Color(0xFF384956),
+  onSecondaryContainer: Color(0xFFD2E5F5),
+  tertiary: Color(0xFF8ECDFF),
+  onTertiary: Color(0xFF00344F),
+  tertiaryContainer: Color(0xFF004B70),
+  onTertiaryContainer: Color(0xFFCAE6FF),
+  error: Color(0xFFFFB4AB),
+  errorContainer: Color(0xFF93000A),
+  onError: Color(0xFF690005),
+  onErrorContainer: Color(0xFFFFDAD6),
+  background: Color(0xFF001F25),
+  onBackground: Color(0xFFA6EEFF),
+  surface: Color.fromARGB(255, 35, 35, 35),
+  onSurface: Color(0xFFA6EEFF),
+  surfaceVariant: Color(0xFF41484D),
+  onSurfaceVariant: Color(0xFFC1C7CE),
+  outline: Color(0xFF8B9198),
+  onInverseSurface: Color(0xFF001F25),
+  inverseSurface: Color(0xFFA6EEFF),
+  inversePrimary: Color(0xFF00658F),
+  shadow: Color(0xFF000000),
+  surfaceTint: Color(0xFF86CFFF),
+  outlineVariant: Color(0xFF41484D),
+  scrim: Color(0xFF000000),
+);
 
+ThemeData darkTheme() {
   var themeData = ThemeData.dark();
 
   themeData = themeData.copyWith(
     useMaterial3: true,
-    colorScheme: ColorScheme.fromSwatch(
-      brightness: Brightness.dark,
-      primarySwatch: primaryColor,
-      accentColor: accentColor,
-      backgroundColor: backgroundColor,
+    colorScheme: darkColorScheme,
+    cardTheme: appCardTheme,
+    appBarTheme: appAppBarTheme.copyWith(
+      scrolledUnderElevation: 3,
     ),
-    primaryColor: primaryColor.shade500,
-    scaffoldBackgroundColor: backgroundColor,
-    cardTheme: appCardTheme.copyWith(surfaceTintColor: backgroundColor),
-    appBarTheme: appAppBarTheme.copyWith(shadowColor: Colors.black),
     drawerTheme: appDrawerThemeData,
-    floatingActionButtonTheme: FloatingActionButtonThemeData(
-      backgroundColor: Colors.grey.shade600,
-    ),
     pageTransitionsTheme: appPageTransitionsTheme,
     scrollbarTheme: appScrollBarThemeData,
     textButtonTheme: appTextButtonThemeData,
     sliderTheme: appSliderThemeData,
-    chipTheme: appChipThemeData.copyWith(selectedColor: primaryColor),
-    checkboxTheme: appCheckboxThemeData.copyWith(
-      fillColor: MaterialStateProperty.resolveWith<Color?>(
-          (Set<MaterialState> states) {
-        if (states.contains(MaterialState.disabled)) {
-          return null;
-        }
-        if (states.contains(MaterialState.selected)) {
-          return primaryColor;
-        }
-        return null;
-      }),
-    ),
-    radioTheme: RadioThemeData(
-      fillColor: MaterialStateProperty.resolveWith<Color?>(
-          (Set<MaterialState> states) {
-        if (states.contains(MaterialState.disabled)) {
-          return null;
-        }
-        if (states.contains(MaterialState.selected)) {
-          return backgroundColor;
-        }
-        return null;
-      }),
-    ),
-    switchTheme: appSwitchThemeData.copyWith(
-      thumbColor: MaterialStateProperty.resolveWith<Color?>(
-          (Set<MaterialState> states) {
-        if (states.contains(MaterialState.disabled)) {
-          return null;
-        }
-        if (states.contains(MaterialState.selected)) {
-          return primaryColor;
-        }
-        return null;
-      }),
-      trackColor: MaterialStateProperty.resolveWith<Color?>(
-          (Set<MaterialState> states) {
-        if (states.contains(MaterialState.disabled)) {
-          return null;
-        }
-        if (states.contains(MaterialState.selected)) {
-          return accentColor;
-        }
-        return null;
-      }),
-    ),
+    chipTheme: appChipThemeData,
+    checkboxTheme: appCheckboxThemeData,
+    switchTheme: appSwitchThemeData,
   );
 
   return themeData;

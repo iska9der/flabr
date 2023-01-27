@@ -2,53 +2,63 @@ import 'package:flutter/material.dart';
 
 import 'common.dart';
 
-ThemeData lightTheme() {
-  MaterialColor primaryColor = Colors.blue;
-  Color backgroundColor = Colors.grey.shade200;
-  Color accentColor = Colors.lightBlue.shade100;
+const lightColorScheme = ColorScheme(
+  brightness: Brightness.light,
+  primary: Color(0xFF00658F),
+  onPrimary: Color(0xFFFFFFFF),
+  primaryContainer: Color(0xFFC7E7FF),
+  onPrimaryContainer: Color(0xFF001E2E),
+  secondary: Color(0xFF4F616E),
+  onSecondary: Color(0xFFFFFFFF),
+  secondaryContainer: Color(0xFFD2E5F5),
+  onSecondaryContainer: Color(0xFF0B1D29),
+  tertiary: Color(0xFF006494),
+  onTertiary: Color(0xFFFFFFFF),
+  tertiaryContainer: Color(0xFFCAE6FF),
+  onTertiaryContainer: Color(0xFF001E30),
+  error: Color(0xFFBA1A1A),
+  errorContainer: Color(0xFFFFDAD6),
+  onError: Color(0xFFFFFFFF),
+  onErrorContainer: Color(0xFF410002),
+  background: Color(0xFFF8FDFF),
+  onBackground: Color(0xFF001F25),
+  surface: Color(0xFFF8FDFF),
+  onSurface: Color(0xFF001F25),
+  surfaceVariant: Color(0xFFDDE3EA),
+  onSurfaceVariant: Color(0xFF41484D),
+  outline: Color(0xFF71787E),
+  onInverseSurface: Color(0xFFD6F6FF),
+  inverseSurface: Color(0xFF00363F),
+  inversePrimary: Color(0xFF86CFFF),
+  shadow: Color(0xFF000000),
+  surfaceTint: Color(0xFF00658F),
+  outlineVariant: Color(0xFFC1C7CE),
+  scrim: Color(0xFF000000),
+);
 
+ThemeData lightTheme() {
   var themeData = ThemeData.light();
+  var bgColor = Colors.grey.shade200;
 
   themeData = themeData.copyWith(
     useMaterial3: true,
-    colorScheme: ColorScheme.fromSwatch(
-      primarySwatch: primaryColor,
-      backgroundColor: backgroundColor,
-      accentColor: accentColor,
-    ),
-    primaryColor: Colors.blue.shade500,
-    scaffoldBackgroundColor: backgroundColor,
-    cardTheme: appCardTheme.copyWith(surfaceTintColor: accentColor),
+    colorScheme: lightColorScheme,
+    scaffoldBackgroundColor: bgColor,
+    cardTheme: appCardTheme.copyWith(elevation: 0),
     appBarTheme: appAppBarTheme.copyWith(
-      shadowColor: Colors.black87,
-      backgroundColor: backgroundColor,
+      backgroundColor: bgColor,
+      scrolledUnderElevation: 3,
       titleTextStyle: appAppBarTheme.titleTextStyle?.copyWith(
         color: Colors.black87,
       ),
     ),
     drawerTheme: appDrawerThemeData,
-    floatingActionButtonTheme: FloatingActionButtonThemeData(
-      backgroundColor: Colors.grey.shade200,
-      elevation: 5,
-      foregroundColor: Colors.black87,
-    ),
     pageTransitionsTheme: appPageTransitionsTheme,
     textButtonTheme: appTextButtonThemeData,
-    checkboxTheme: appCheckboxThemeData.copyWith(
-      fillColor: MaterialStateProperty.all(primaryColor),
-    ),
-    switchTheme: appSwitchThemeData.copyWith(
-      thumbColor: MaterialStateProperty.resolveWith<Color?>(
-          (Set<MaterialState> states) {
-        return primaryColor;
-      }),
-      trackColor: MaterialStateProperty.resolveWith<Color?>(
-          (Set<MaterialState> states) {
-        return accentColor;
-      }),
-    ),
+    checkboxTheme: appCheckboxThemeData,
+    switchTheme: appSwitchThemeData,
     sliderTheme: appSliderThemeData,
-    chipTheme: appChipThemeData.copyWith(selectedColor: primaryColor),
+    chipTheme: appChipThemeData,
   );
 
   return themeData;

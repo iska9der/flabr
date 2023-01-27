@@ -106,6 +106,7 @@ class _ArticleDetailPageViewState extends State<ArticleDetailPageView> {
                       pinned: true,
                       toolbarHeight: 40,
                       titleSpacing: 0,
+                      forceElevated: true,
                       title: FlexibleSpaceBar(
                         titlePadding: EdgeInsets.zero,
                         expandedTitleScale: 1,
