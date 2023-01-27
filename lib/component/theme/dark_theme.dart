@@ -28,15 +28,54 @@ ThemeData darkTheme() {
     pageTransitionsTheme: appPageTransitionsTheme,
     scrollbarTheme: appScrollBarThemeData,
     textButtonTheme: appTextButtonThemeData,
-    toggleableActiveColor: primaryColor,
-    checkboxTheme: appCheckboxThemeData.copyWith(
-      fillColor: MaterialStateProperty.all(primaryColor),
-    ),
-    switchTheme: appSwitchThemeData.copyWith(
-      thumbColor: MaterialStateProperty.all(accentColor),
-    ),
     sliderTheme: appSliderThemeData,
     chipTheme: appChipThemeData.copyWith(selectedColor: primaryColor),
+    checkboxTheme: appCheckboxThemeData.copyWith(
+      fillColor: MaterialStateProperty.resolveWith<Color?>(
+          (Set<MaterialState> states) {
+        if (states.contains(MaterialState.disabled)) {
+          return null;
+        }
+        if (states.contains(MaterialState.selected)) {
+          return primaryColor;
+        }
+        return null;
+      }),
+    ),
+    radioTheme: RadioThemeData(
+      fillColor: MaterialStateProperty.resolveWith<Color?>(
+          (Set<MaterialState> states) {
+        if (states.contains(MaterialState.disabled)) {
+          return null;
+        }
+        if (states.contains(MaterialState.selected)) {
+          return backgroundColor;
+        }
+        return null;
+      }),
+    ),
+    switchTheme: appSwitchThemeData.copyWith(
+      thumbColor: MaterialStateProperty.resolveWith<Color?>(
+          (Set<MaterialState> states) {
+        if (states.contains(MaterialState.disabled)) {
+          return null;
+        }
+        if (states.contains(MaterialState.selected)) {
+          return primaryColor;
+        }
+        return null;
+      }),
+      trackColor: MaterialStateProperty.resolveWith<Color?>(
+          (Set<MaterialState> states) {
+        if (states.contains(MaterialState.disabled)) {
+          return null;
+        }
+        if (states.contains(MaterialState.selected)) {
+          return accentColor;
+        }
+        return null;
+      }),
+    ),
   );
 
   return themeData;

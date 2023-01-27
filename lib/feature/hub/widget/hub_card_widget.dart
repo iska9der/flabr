@@ -60,7 +60,7 @@ class HubCardWidget extends StatelessWidget {
                                 ),
                                 child: Text(
                                   tag,
-                                  style: Theme.of(context).textTheme.caption,
+                                  style: Theme.of(context).textTheme.bodySmall,
                                 ),
                               ))
                           .toList(),

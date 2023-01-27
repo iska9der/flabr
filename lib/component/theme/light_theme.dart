@@ -34,12 +34,18 @@ ThemeData lightTheme() {
     ),
     pageTransitionsTheme: appPageTransitionsTheme,
     textButtonTheme: appTextButtonThemeData,
-    toggleableActiveColor: primaryColor,
     checkboxTheme: appCheckboxThemeData.copyWith(
       fillColor: MaterialStateProperty.all(primaryColor),
     ),
     switchTheme: appSwitchThemeData.copyWith(
-      thumbColor: MaterialStateProperty.all(accentColor),
+      thumbColor: MaterialStateProperty.resolveWith<Color?>(
+          (Set<MaterialState> states) {
+        return primaryColor;
+      }),
+      trackColor: MaterialStateProperty.resolveWith<Color?>(
+          (Set<MaterialState> states) {
+        return accentColor;
+      }),
     ),
     sliderTheme: appSliderThemeData,
     chipTheme: appChipThemeData.copyWith(selectedColor: primaryColor),

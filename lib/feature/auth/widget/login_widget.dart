@@ -58,7 +58,7 @@ class _LoginWidgetView extends StatelessWidget {
       children: [
         Text(
           'Вход',
-          style: Theme.of(context).textTheme.headline5,
+          style: Theme.of(context).textTheme.headlineSmall,
         ),
         const SizedBox(height: 18),
         const _LoginField(),
@@ -135,7 +135,7 @@ class _ErrorWidget extends StatelessWidget {
             state.error,
             textAlign: TextAlign.center,
             style: TextStyle(
-              color: Theme.of(context).errorColor,
+              color: Theme.of(context).colorScheme.error,
             ),
           );
         }

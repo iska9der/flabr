@@ -78,7 +78,7 @@ class UserDetailPageView extends StatelessWidget {
                 alignment: Alignment.topLeft,
                 child: Text(
                   model.fullname,
-                  style: Theme.of(context).textTheme.headline4,
+                  style: Theme.of(context).textTheme.headlineMedium,
                 ),
               ),
             Text(

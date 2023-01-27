@@ -94,7 +94,7 @@ class CompanyCardWidget extends StatelessWidget {
                       ),
                       child: Text(
                         title,
-                        style: Theme.of(context).textTheme.caption,
+                        style: Theme.of(context).textTheme.bodySmall,
                       ),
                     ),
                   );

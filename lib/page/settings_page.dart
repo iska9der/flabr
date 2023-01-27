@@ -33,7 +33,7 @@ class SettingsView extends StatelessWidget {
         const SizedBox(height: hBetweenSub),
         Text(
           'Интерфейс',
-          style: textTheme.headline4,
+          style: textTheme.headlineMedium,
         ),
         const UIThemeWidget(),
         const SizedBox(height: hBetweenSub),
@@ -43,7 +43,7 @@ class SettingsView extends StatelessWidget {
         const SizedBox(height: hBetweenSub),
         Text(
           'Лента',
-          style: textTheme.headline4,
+          style: textTheme.headlineMedium,
         ),
         const SizedBox(height: hAfterHeadline),
         const SettingsFeedWidget(),

@@ -143,13 +143,13 @@ class _ArticleTitleWidget extends StatelessWidget {
     return renderType == RenderType.plain
         ? Text(
             title,
-            style: Theme.of(context).textTheme.headline6,
+            style: Theme.of(context).textTheme.titleLarge,
           )
         : HtmlWidget(
             title,
             textStyle: TextStyle(
-              color: Theme.of(context).textTheme.headline6?.color,
-              fontSize: Theme.of(context).textTheme.headline6?.fontSize,
+              color: Theme.of(context).textTheme.titleLarge?.color,
+              fontSize: Theme.of(context).textTheme.titleLarge?.fontSize,
             ),
           );
   }

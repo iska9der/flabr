@@ -96,7 +96,7 @@ class _CompanyProfileCardWidgetState extends State<CompanyProfileCardWidget> {
               const SizedBox(height: 8),
               HtmlWidget(
                 card.descriptionHtml,
-                textStyle: Theme.of(context).textTheme.caption,
+                textStyle: Theme.of(context).textTheme.bodySmall,
               ),
               if (context.watch<AuthCubit>().state.isAuthorized) ...[
                 const SizedBox(height: 8),

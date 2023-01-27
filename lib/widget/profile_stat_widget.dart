@@ -22,11 +22,11 @@ class ProfileStatWidget extends StatelessWidget {
         StatTextWidget(
           type: type,
           value: value,
-          style: Theme.of(context).textTheme.headline6,
+          style: Theme.of(context).textTheme.titleLarge,
         ),
         Text(
           title,
-          style: Theme.of(context).textTheme.caption,
+          style: Theme.of(context).textTheme.bodySmall,
         ),
       ],
     );

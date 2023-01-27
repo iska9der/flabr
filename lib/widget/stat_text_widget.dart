@@ -20,7 +20,7 @@ class StatTextWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    TextStyle? statStyle = Theme.of(context).textTheme.bodyText1;
+    TextStyle? statStyle = Theme.of(context).textTheme.bodyLarge;
 
     statStyle = statStyle?.merge(style);
 

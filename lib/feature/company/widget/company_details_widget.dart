@@ -40,7 +40,6 @@ class CompanyDetailsWidget extends StatelessWidget {
                 title: 'Контакты',
                 child: Wrap(
                   spacing: 4,
-                  runSpacing: 0,
                   children: card.contacts
                       .map(
                         (contact) => FlabrCard(

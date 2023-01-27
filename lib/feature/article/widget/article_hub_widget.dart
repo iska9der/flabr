@@ -37,7 +37,7 @@ class _ArticleHubWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var style = Theme.of(context).textTheme.caption;
+    var style = Theme.of(context).textTheme.bodySmall;
 
     if ((hub.relatedData as HubRelatedData).isSubscribed) {
       style = style?.copyWith(color: Colors.green);

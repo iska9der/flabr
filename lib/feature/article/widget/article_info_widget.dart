@@ -17,7 +17,7 @@ class ArticleInfoWidget extends StatelessWidget {
         const SizedBox(width: 4),
         Text(
           DateFormat.yMMMMd().add_jm().format(article.publishedAt),
-          style: Theme.of(context).textTheme.caption,
+          style: Theme.of(context).textTheme.bodySmall,
         ),
       ],
     );

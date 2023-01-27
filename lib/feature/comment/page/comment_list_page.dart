@@ -169,7 +169,7 @@ class CommentWidget extends StatelessWidget {
           /// Дата коммента
           Text(
             DateFormat.yMd().add_jm().format(comment.publishedAt),
-            style: Theme.of(context).textTheme.caption,
+            style: Theme.of(context).textTheme.bodySmall,
           ),
 
           /// Текст

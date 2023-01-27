@@ -60,7 +60,7 @@ class _UserCard extends StatelessWidget {
                       if (model.fullname.isNotEmpty) const TextSpan(text: ', '),
                       TextSpan(
                         text: '@${model.alias}',
-                        style: Theme.of(context).textTheme.caption,
+                        style: Theme.of(context).textTheme.bodySmall,
                       )
                     ],
                   ),
@@ -72,7 +72,7 @@ class _UserCard extends StatelessWidget {
                   model.speciality.isNotEmpty
                       ? model.speciality
                       : 'Пользователь',
-                  style: Theme.of(context).textTheme.caption,
+                  style: Theme.of(context).textTheme.bodySmall,
                 ),
 
                 /// Последний пост

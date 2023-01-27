@@ -145,7 +145,7 @@ class StatIconButton extends StatelessWidget {
               const SizedBox(width: 6),
               Text(
                 text,
-                style: Theme.of(context).textTheme.caption?.copyWith(
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       color: color,
                       fontWeight: FontWeight.w600,
                     ),

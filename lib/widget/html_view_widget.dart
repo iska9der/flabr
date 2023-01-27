@@ -34,7 +34,7 @@ class HtmlView extends StatelessWidget {
       builder: (context, state) {
         var articleConfig = state.articleConfig;
         var isImageVisible = articleConfig.isImagesVisible;
-        var fontSize = Theme.of(context).textTheme.bodyText1!.fontSize! *
+        var fontSize = Theme.of(context).textTheme.bodyLarge!.fontSize! *
             articleConfig.fontScale;
 
         return HtmlWidget(

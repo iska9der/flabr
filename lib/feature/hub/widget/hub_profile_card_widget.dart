@@ -94,7 +94,7 @@ class _HubProfileCardWidgetState extends State<HubProfileCardWidget> {
               Text(
                 profile.fullDescriptionHtml,
                 textAlign: TextAlign.left,
-                style: Theme.of(context).textTheme.caption,
+                style: Theme.of(context).textTheme.bodySmall,
               ),
               if (context.watch<AuthCubit>().state.isAuthorized) ...[
                 const SizedBox(height: 8),

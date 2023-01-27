@@ -169,7 +169,7 @@ class _ArticleDetailPageViewState extends State<ArticleDetailPageView> {
                         child: SelectableText(
                           article.titleHtml,
                           textAlign: TextAlign.left,
-                          style: Theme.of(context).textTheme.headline6,
+                          style: Theme.of(context).textTheme.titleLarge,
                         ),
                       ),
                     ),
