@@ -18,7 +18,9 @@ class MyProfileIconButton extends StatelessWidget {
               : showLoginDialog(context),
           icon: Icon(
             Icons.account_circle_rounded,
-            color: state.isAuthorized ? Theme.of(context).primaryColor : null,
+            color: state.isAuthorized
+                ? Theme.of(context).colorScheme.primary
+                : null,
           ),
         );
       },

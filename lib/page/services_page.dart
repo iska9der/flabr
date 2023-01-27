@@ -71,7 +71,7 @@ class ServiceCard extends StatelessWidget {
       elevation: onTap != null ? 6 : 0,
       clipBehavior: Clip.hardEdge,
       color: onTap != null
-          ? Theme.of(context).cardColor
+          ? Theme.of(context).cardTheme.color
           : Theme.of(context).disabledColor,
       child: InkWell(
         onTap: onTap,
@@ -85,14 +85,11 @@ class ServiceCard extends StatelessWidget {
                   ? Colors.yellow.shade800.withOpacity(.8)
                   : Theme.of(context).iconTheme.color?.withOpacity(0.2),
             ),
-            Positioned(
-              top: 65,
-              left: 0,
-              right: 0,
+            Align(
+              alignment: Alignment.bottomCenter,
               child: Container(
-                alignment: Alignment.center,
-                padding: const EdgeInsets.symmetric(vertical: 4),
-                margin: const EdgeInsets.symmetric(horizontal: 20),
+                padding: const EdgeInsets.all(4),
+                margin: const EdgeInsets.only(bottom: 10),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(kBorderRadiusDefault),
                   color: onTap != null
@@ -105,6 +102,7 @@ class ServiceCard extends StatelessWidget {
                 child: Text(
                   title,
                   textAlign: TextAlign.center,
+                  maxLines: 1,
                   style: TextStyle(
                     color: onTap != null
                         ? Theme.of(context).colorScheme.onInverseSurface
