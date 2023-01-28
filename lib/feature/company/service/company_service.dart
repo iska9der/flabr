@@ -62,7 +62,7 @@ class CompanyService {
   Future<void> toggleSubscription({required String alias}) async {
     try {
       await _siteClient.post(
-        '/v2/hubs/$alias/subscription',
+        '/v2/companies/$alias/subscription',
         body: {},
       );
     } on DisplayableException {

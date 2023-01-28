@@ -25,6 +25,7 @@ class HubProfileCardWidget extends StatefulWidget {
 class _HubProfileCardWidgetState extends State<HubProfileCardWidget> {
   @override
   void initState() {
+    /// Регистрируем репозиторий подписки для [SubscribeButton]
     getIt.allowReassignment = true;
     getIt.registerFactory<SubscriptionRepository>(
       () => HubSubscriptionRepository(getIt.get<HubService>()),

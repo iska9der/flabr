@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../common/model/extension/state_status_x.dart';
 import '../../../config/constants.dart';
+import '../../../widget/progress_indicator.dart';
 import '../cubit/company_cubit.dart';
 import '../widget/company_details_widget.dart';
 import '../widget/company_profile_card_widget.dart';
@@ -19,12 +21,24 @@ class CompanyDetailPage extends StatelessWidget {
 
     cubit.fetchCard();
 
-    return ListView(
-      padding: const EdgeInsets.all(kScreenHPadding),
-      children: const [
-        CompanyProfileCardWidget(),
-        CompanyDetailsWidget(),
-      ],
+    return BlocBuilder<CompanyCubit, CompanyState>(
+      builder: (context, state) {
+        if (state.status.isLoading) {
+          return const CircleIndicator();
+        }
+
+        if (state.status.isFailure) {
+          return Center(child: Text(state.error));
+        }
+
+        return ListView(
+          padding: const EdgeInsets.all(kScreenHPadding),
+          children: const [
+            CompanyProfileCardWidget(),
+            CompanyDetailsWidget(),
+          ],
+        );
+      },
     );
   }
 }

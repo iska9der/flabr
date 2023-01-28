@@ -2,6 +2,8 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../common/exception/displayable_exception.dart';
+import '../../../common/model/extension/state_status_x.dart';
+import '../model/auth_data_model.dart';
 import '../repository/auth_repository.dart';
 import '../repository/token_repository.dart';
 
@@ -104,5 +106,17 @@ class LoginCubit extends Cubit<LoginState> {
         error: e.toString(),
       ));
     }
+  }
+
+  submitConnectSid(String value) async {
+    if (state.status.isLoading || value.isEmpty) return;
+
+    emit(state.copyWith(status: LoginStatus.loading));
+
+    final authData = AuthDataModel(connectSID: value);
+
+    await _tokenRepository.setData(authData);
+
+    emit(state.copyWith(status: LoginStatus.success));
   }
 }

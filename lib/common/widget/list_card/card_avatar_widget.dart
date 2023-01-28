@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../config/constants.dart';
-import '../../../widget/network_image_widget.dart';
+import '../../../widget/image/network_image_widget.dart';
 
 class CardAvatarWidget extends StatelessWidget {
   const CardAvatarWidget({

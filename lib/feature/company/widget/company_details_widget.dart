@@ -1,12 +1,14 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 
 import '../../../common/model/extension/state_status_x.dart';
 import '../../../common/widget/detail/section_container_widget.dart';
 import '../../../component/di/dependencies.dart';
 import '../../../component/router/app_router.dart';
 import '../../../widget/card_widget.dart';
-import '../../../widget/network_image_widget.dart';
+import '../../../widget/image/network_image_widget.dart';
 import '../../../widget/progress_indicator.dart';
 import '../cubit/company_cubit.dart';
 
@@ -70,6 +72,50 @@ class CompanyDetailsWidget extends StatelessWidget {
                       .toList(),
                 ),
               ),
+            SectionContainerWidget(
+              title: 'Информация',
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  if (card.information.siteUrl.isNotEmpty)
+                    ListTile(
+                      title: const Text('Сайт'),
+                      subtitle: Text(card.information.siteUrl),
+                      onTap: () => getIt
+                          .get<AppRouter>()
+                          .launchExternalUrl(card.information.siteUrl),
+                    ),
+                  ListTile(
+                    title: const Text('Дата регистрации'),
+                    subtitle: Text(
+                      DateFormat.yMMMMd()
+                          .add_jm()
+                          .format(card.information.registeredAt),
+                    ),
+                  ),
+                  if (card.information.foundationDate.isNotEmpty)
+                    ListTile(
+                      title: const Text('Дата основания'),
+                      subtitle: Text(card.information.foundedAt),
+                    ),
+                  if (card.information.staffNumber.isNotEmpty)
+                    ListTile(
+                      title: const Text('Численность'),
+                      subtitle: Text(card.information.staffNumber),
+                    ),
+                  if (!card.information.representativeUser.isEmpty)
+                    ListTile(
+                      title: const Text('Представитель'),
+                      subtitle: Text(
+                        card.information.representativeUser.name,
+                      ),
+                      onTap: () => context.router.navigateNamed(
+                        'services/users/${card.information.representativeUser.alias}',
+                      ),
+                    ),
+                ],
+              ),
+            )
           ],
         );
       },

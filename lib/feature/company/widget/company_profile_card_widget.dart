@@ -28,6 +28,7 @@ class CompanyProfileCardWidget extends StatefulWidget {
 class _CompanyProfileCardWidgetState extends State<CompanyProfileCardWidget> {
   @override
   void initState() {
+    /// Регистрируем репозиторий подписки для [SubscribeButton]
     getIt.allowReassignment = true;
     getIt.registerFactory<SubscriptionRepository>(
       () => CompanySubscriptionRepository(getIt.get<CompanyService>()),
@@ -102,8 +103,8 @@ class _CompanyProfileCardWidgetState extends State<CompanyProfileCardWidget> {
                 const SizedBox(height: 8),
                 SubscribeButton(
                   alias: state.alias,
-                  isSubscribed: (state.card.relatedData as CompanyRelatedData)
-                      .isSubscribed,
+                  isSubscribed:
+                      (card.relatedData as CompanyRelatedData).isSubscribed,
                 ),
               ],
             ],

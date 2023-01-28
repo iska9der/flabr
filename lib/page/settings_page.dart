@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../common/model/extension/state_status_x.dart';
+import '../component/di/dependencies.dart';
 import '../component/language.dart';
 import '../config/constants.dart';
+import '../feature/auth/cubit/auth_cubit.dart';
+import '../feature/auth/cubit/login_cubit.dart';
+import '../feature/auth/repository/auth_repository.dart';
+import '../feature/auth/repository/token_repository.dart';
 import '../feature/settings/cubit/settings_cubit.dart';
 import '../feature/settings/widget/settings_card_widget.dart';
 import '../feature/settings/widget/settings_checkbox_widget.dart';
+import '../widget/image/full_image_widget.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({Key? key}) : super(key: key);
@@ -32,6 +39,15 @@ class SettingsView extends StatelessWidget {
       children: [
         const SizedBox(height: hBetweenSub),
         Text(
+          'Аккаунт',
+          style: textTheme.headlineMedium,
+        ),
+        const Padding(
+          padding: EdgeInsets.only(top: 8),
+          child: ConnectSidWidget(),
+        ),
+        const SizedBox(height: hBetweenSub),
+        Text(
           'Интерфейс',
           style: textTheme.headlineMedium,
         ),
@@ -48,6 +64,98 @@ class SettingsView extends StatelessWidget {
         const SizedBox(height: hAfterHeadline),
         const SettingsFeedWidget(),
       ],
+    );
+  }
+}
+
+class ConnectSidWidget extends StatefulWidget {
+  const ConnectSidWidget({super.key});
+
+  @override
+  State<ConnectSidWidget> createState() => _ConnectSidWidgetState();
+}
+
+class _ConnectSidWidgetState extends State<ConnectSidWidget> {
+  late final TextEditingController controller;
+
+  @override
+  void initState() {
+    controller = TextEditingController();
+
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (_) => LoginCubit(
+        repository: getIt.get<AuthRepository>(),
+        tokenRepository: getIt.get<TokenRepository>(),
+      ),
+      child: BlocListener<LoginCubit, LoginState>(
+        listener: (_, state) {
+          if (state.status.isSuccess) {
+            context.read<AuthCubit>().handleAuthData();
+          }
+        },
+        child: BlocBuilder<AuthCubit, AuthState>(
+          builder: (context, state) {
+            if (state.isAuthorized) {
+              controller.text = state.data.connectSID;
+            } else {
+              controller.text = '';
+            }
+
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text('Если не удается войти через форму логина'),
+                const SizedBox(height: 14),
+                TextFormField(
+                  enabled: !state.isAuthorized,
+                  controller: controller,
+                  keyboardType: TextInputType.text,
+                  decoration: const InputDecoration(
+                    floatingLabelBehavior: FloatingLabelBehavior.always,
+                    label: Text('Connect SID'),
+                    hintText: 'Можно найти в cookies',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Row(
+                  children: [
+                    state.isAuthorized
+                        ? ElevatedButton(
+                            onPressed: () => context.read<AuthCubit>().logOut(),
+                            child: const Text('Очистить'),
+                          )
+                        : ElevatedButton(
+                            onPressed: () =>
+                                context.read<LoginCubit>().submitConnectSid(
+                                      controller.text,
+                                    ),
+                            child: const Text('Сохранить'),
+                          ),
+                    const SizedBox(width: 12),
+                    ElevatedButton(
+                      onPressed: () => showDialog(
+                        context: context,
+                        builder: (context) {
+                          return const FullAssetImageWidget(
+                            assetPath: 'assets/connect_sid_instruction.gif',
+                          );
+                        },
+                      ),
+                      child: const Text('Инструкция'),
+                    ),
+                  ],
+                ),
+              ],
+            );
+          },
+        ),
+      ),
     );
   }
 }

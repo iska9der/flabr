@@ -108,13 +108,22 @@ class MyApp extends StatelessWidget {
               );
             }
 
-            return MaterialApp.router(
-              title: 'Flabr',
-              routerDelegate: AutoRouterDelegate(router, initialDeepLink: '/'),
-              routeInformationParser: router.defaultRouteParser(
-                includePrefixMatches: true,
+            return Listener(
+              onPointerDown: (_) {
+                // FocusScopeNode currentFocus = FocusScope.of(context);
+                // if (!currentFocus.hasPrimaryFocus) {
+                //   currentFocus.focusedChild?.unfocus();
+                // }
+              },
+              child: MaterialApp.router(
+                title: 'Flabr',
+                routerDelegate:
+                    AutoRouterDelegate(router, initialDeepLink: '/'),
+                routeInformationParser: router.defaultRouteParser(
+                  includePrefixMatches: true,
+                ),
+                theme: state.isDarkTheme ? darkTheme() : lightTheme(),
               ),
-              theme: state.isDarkTheme ? darkTheme() : lightTheme(),
             );
           },
         ),
