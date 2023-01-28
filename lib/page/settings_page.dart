@@ -130,7 +130,7 @@ class _ConnectSidWidgetState extends State<ConnectSidWidget> {
                             onPressed: () => context.read<AuthCubit>().logOut(),
                             child: const Text('Очистить'),
                           )
-                        : ElevatedButton(
+                        : FilledButton(
                             onPressed: () =>
                                 context.read<LoginCubit>().submitConnectSid(
                                       controller.text,

@@ -43,7 +43,7 @@ class SubscribeButton extends StatelessWidget {
               );
             }
 
-            return ElevatedButton(
+            return OutlinedButton(
               style: style,
               onPressed: state.status.isLoading
                   ? null

@@ -153,7 +153,7 @@ class _SubmitButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<LoginCubit, LoginState>(
       builder: (context, state) {
-        return ElevatedButton(
+        return FilledButton(
           onPressed: state.status.isLoading
               ? null
               : () => context.read<LoginCubit>().submit(),
