@@ -217,7 +217,7 @@ part 'app_router.gr.dart';
         /// Статьи из блогов
         /// todo: пока через вкладку "статьи"
         RedirectRoute(
-          path: '*/company/*/blog/:id',
+          path: '/*/company/:companyName/blog/:id',
           redirectTo: 'articles/details/:id',
         ),
 

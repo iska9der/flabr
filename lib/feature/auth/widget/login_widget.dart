@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -19,29 +20,26 @@ class LoginWidget extends StatelessWidget implements DialogUserWidget {
     final authState = context.read<AuthCubit>().state;
 
     return Center(
-      child: SizedBox(
-        height: MediaQuery.of(context).size.height * .55,
-        child: FlabrCard(
-          padding: const EdgeInsets.all(20),
-          child: authState.isAuthorized
-              ? Center(child: Text('Вы уже вошли, ${authState.me.alias}'))
-              : BlocProvider(
-                  create: (context) => LoginCubit(
-                    repository: getIt.get<AuthRepository>(),
-                    tokenRepository: getIt.get<TokenRepository>(),
-                  ),
-                  child: BlocListener<LoginCubit, LoginState>(
-                    listener: (context, state) {
-                      if (state.status.isSuccess) {
-                        Navigator.of(context).pop();
-
-                        context.read<AuthCubit>().handleAuthData();
-                      }
-                    },
-                    child: const _LoginWidgetView(),
-                  ),
+      child: FlabrCard(
+        padding: const EdgeInsets.all(20),
+        child: authState.isAuthorized
+            ? Center(child: Text('Вы уже вошли, ${authState.me.alias}'))
+            : BlocProvider(
+                create: (context) => LoginCubit(
+                  repository: getIt.get<AuthRepository>(),
+                  tokenRepository: getIt.get<TokenRepository>(),
                 ),
-        ),
+                child: BlocListener<LoginCubit, LoginState>(
+                  listener: (context, state) {
+                    if (state.status.isSuccess) {
+                      Navigator.of(context).pop();
+
+                      context.read<AuthCubit>().handleAuthData();
+                    }
+                  },
+                  child: const _LoginWidgetView(),
+                ),
+              ),
       ),
     );
   }
@@ -64,8 +62,9 @@ class _LoginWidgetView extends StatelessWidget {
         const _LoginField(),
         const SizedBox(height: 18),
         const _PasswordField(),
-        const Expanded(child: SizedBox()),
-        const Expanded(child: _ErrorWidget()),
+        const SizedBox(height: 24),
+        const _ErrorWidget(),
+        const SizedBox(height: 18),
         const _SubmitButton(),
       ],
     );
@@ -153,13 +152,27 @@ class _SubmitButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<LoginCubit, LoginState>(
       builder: (context, state) {
-        return FilledButton(
-          onPressed: state.status.isLoading
-              ? null
-              : () => context.read<LoginCubit>().submit(),
-          child: state.status.isLoading
-              ? const CircleIndicator.small()
-              : const Text('Войти'),
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            FilledButton(
+              onPressed: state.status.isLoading
+                  ? null
+                  : () => context.read<LoginCubit>().submit(),
+              child: state.status.isLoading
+                  ? const CircleIndicator.small()
+                  : const Text('Войти'),
+            ),
+            OutlinedButton(
+              onPressed: state.status.isLoading
+                  ? null
+                  : () {
+                      Navigator.of(context).pop();
+                      context.router.navigateNamed('settings');
+                    },
+              child: const Text('Войти по токену'),
+            ),
+          ],
         );
       },
     );

@@ -160,25 +160,47 @@ class _ConnectSidWidgetState extends State<ConnectSidWidget> {
   }
 }
 
-class UIThemeWidget extends StatelessWidget {
+class UIThemeWidget extends StatefulWidget {
   const UIThemeWidget({Key? key}) : super(key: key);
+
+  @override
+  State<UIThemeWidget> createState() => _UIThemeWidgetState();
+}
+
+class _UIThemeWidgetState extends State<UIThemeWidget> {
+  late bool isDarkTheme;
+  bool isLoading = false;
+
+  @override
+  void initState() {
+    isDarkTheme = context.read<SettingsCubit>().state.isDarkTheme;
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return SettingsCardWidget(
       padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: BlocBuilder<SettingsCubit, SettingsState>(
-        buildWhen: (p, c) => p.isDarkTheme != c.isDarkTheme,
-        builder: (context, state) {
-          return SwitchListTile.adaptive(
-            title: const Text('Темная тема'),
-            contentPadding: EdgeInsets.zero,
-            value: state.isDarkTheme,
-            onChanged: (val) {
-              context.read<SettingsCubit>().changeTheme(isDarkTheme: val);
-            },
-          );
-        },
+      child: SwitchListTile.adaptive(
+        title: const Text('Темная тема'),
+        contentPadding: EdgeInsets.zero,
+        value: isDarkTheme,
+        onChanged: isLoading
+            ? null
+            : (val) {
+                setState(() {
+                  isDarkTheme = val;
+                  isLoading = true;
+                });
+
+                Future.delayed(const Duration(milliseconds: 300), () {
+                  context.read<SettingsCubit>().changeTheme(isDarkTheme: val);
+                  setState(() {
+                    isLoading = false;
+                  });
+                });
+              },
       ),
     );
   }
