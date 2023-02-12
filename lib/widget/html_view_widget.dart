@@ -112,9 +112,11 @@ class CustomFactory extends WidgetFactory with SvgFactory, WebViewFactory {
     SvgPicture? widget = super.buildImageWidget(meta, src) as SvgPicture?;
 
     widget = widget?.copyWith(
-        theme: SvgTheme(
-      currentColor: Theme.of(context).colorScheme.onSurface,
-    ));
+      colorFilter: ColorFilter.mode(
+        Theme.of(context).textTheme.bodyMedium!.color!,
+        BlendMode.srcIn,
+      ),
+    );
 
     return widget ?? super.buildImageWidget(meta, src);
   }
