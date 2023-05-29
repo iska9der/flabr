@@ -145,7 +145,8 @@ class _ArticleDetailPageViewState extends State<ArticleDetailPageView> {
                               ),
                               const SizedBox(width: 14),
                               IconButton(
-                                icon: const Icon(Icons.palette_rounded),
+                                icon: const Icon(Icons.palette_outlined),
+                                iconSize: 20,
                                 tooltip: 'Настроить показ',
                                 onPressed: () => showModalBottomSheet(
                                   context: context,
