@@ -200,15 +200,23 @@ part 'app_router.gr.dart';
           redirectTo: 'news/details/:id',
         ),
 
-        /// Статьи [флоу, детали]
+        /// Флоу
         RedirectRoute(
           path: '*/flows/:flow/',
           redirectTo: 'articles/flows/:flow',
         ),
+
+        /// Статьи
         RedirectRoute(
           path: '*/post/:id',
           redirectTo: 'articles/details/:id',
         ),
+        RedirectRoute(
+          path: '*/articles/:id',
+          redirectTo: 'articles/details/:id',
+        ),
+
+        /// Комменты к статьям
         RedirectRoute(
           path: '*/post/:id/comments',
           redirectTo: 'articles/comments/:id',
@@ -218,6 +226,10 @@ part 'app_router.gr.dart';
         /// todo: пока через вкладку "статьи"
         RedirectRoute(
           path: '/*/company/:companyName/blog/:id',
+          redirectTo: 'articles/details/:id',
+        ),
+        RedirectRoute(
+          path: '/*/companies/:companyName/articles/:id',
           redirectTo: 'articles/details/:id',
         ),
 

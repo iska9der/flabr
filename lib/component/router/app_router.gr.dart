@@ -384,6 +384,13 @@ class _$AppRouter extends RootStackRouter {
               fullMatch: true,
             ),
             RouteConfig(
+              '*/articles/:id#redirect',
+              path: '*/articles/:id',
+              parent: DashboardRoute.name,
+              redirectTo: 'articles/details/:id',
+              fullMatch: true,
+            ),
+            RouteConfig(
               '*/post/:id/comments#redirect',
               path: '*/post/:id/comments',
               parent: DashboardRoute.name,
@@ -393,6 +400,13 @@ class _$AppRouter extends RootStackRouter {
             RouteConfig(
               '/*/company/:companyName/blog/:id#redirect',
               path: '/*/company/:companyName/blog/:id',
+              parent: DashboardRoute.name,
+              redirectTo: 'articles/details/:id',
+              fullMatch: true,
+            ),
+            RouteConfig(
+              '/*/companies/:companyName/articles/:id#redirect',
+              path: '/*/companies/:companyName/articles/:id',
               parent: DashboardRoute.name,
               redirectTo: 'articles/details/:id',
               fullMatch: true,
