@@ -8,6 +8,7 @@ import '../cubit/article_cubit.dart';
 import '../repository/article_repository.dart';
 import 'article_detail_page.dart';
 
+@RoutePage(name: NewsDetailPage.routeName)
 class NewsDetailPage extends StatelessWidget {
   const NewsDetailPage({
     Key? key,

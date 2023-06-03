@@ -53,7 +53,7 @@ class ArticleCardWidget extends StatelessWidget {
                       p.feedConfig.isImageVisible !=
                       c.feedConfig.isImageVisible,
                   builder: (context, state) {
-                    if (!state.feedConfig.isImageVisible) return Wrap();
+                    if (!state.feedConfig.isImageVisible) return const Wrap();
 
                     return Column(
                       children: [

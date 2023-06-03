@@ -10,6 +10,7 @@ import '../cubit/hub_cubit.dart';
 import '../repository/hub_repository.dart';
 import 'hub_detail_page.dart';
 
+@RoutePage(name: HubDashboardPage.routeName)
 class HubDashboardPage extends StatelessWidget {
   const HubDashboardPage({
     Key? key,
@@ -46,7 +47,7 @@ class HubDashboardPageView extends StatelessWidget {
       routes: const [
         HubDetailRoute(),
       ],
-      builder: (context, child, animation) {
+      builder: (context, child) {
         return Scaffold(
           appBar: AppBar(
             scrolledUnderElevation: 0,
@@ -57,10 +58,10 @@ class HubDashboardPageView extends StatelessWidget {
               },
             ),
           ),
-          drawer: Drawer(
+          drawer: const Drawer(
             child: SafeArea(
               child: Column(
-                children: const [
+                children: [
                   NavLinkWidget(
                     title: HubDetailPage.name,
                     route: HubDetailPage.routePath,

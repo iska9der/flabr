@@ -17,6 +17,7 @@ import '../../settings/cubit/settings_cubit.dart';
 import '../cubit/comment_list_cubit.dart';
 import '../model/comment_model.dart';
 
+@RoutePage(name: CommentListPage.routeName)
 class CommentListPage extends StatelessWidget {
   const CommentListPage({
     super.key,
@@ -150,7 +151,7 @@ class CommentWidget extends StatelessWidget {
                     ArticleAuthorWidget(comment.author),
 
                     /// Заполняем пространство между виджетами
-                    Expanded(child: Wrap()),
+                    const Expanded(child: Wrap()),
 
                     /// Очки
                     StatTextWidget(

@@ -16,6 +16,7 @@ import '../model/hub_model.dart';
 import '../repository/hub_repository.dart';
 import '../widget/hub_card_widget.dart';
 
+@RoutePage(name: HubListPage.routeName)
 class HubListPage extends StatelessWidget {
   const HubListPage({Key? key}) : super(key: key);
 

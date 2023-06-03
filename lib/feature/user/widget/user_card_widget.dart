@@ -16,8 +16,8 @@ class UserCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: const [
+    return const Column(
+      children: [
         _UserCard(),
         _UserScore(),
       ],
@@ -79,7 +79,7 @@ class _UserCard extends StatelessWidget {
                 if (!model.lastPost.isEmpty) ...[
                   const SizedBox(height: 12),
                   TextButton(
-                    onPressed: () => context.navigateTo(ArticlesEmptyRoute(
+                    onPressed: () => context.navigateTo(MyArticlesRoute(
                       children: [ArticleDetailRoute(id: model.lastPost.id)],
                     )),
                     child: Text(model.lastPost.titleHtml),

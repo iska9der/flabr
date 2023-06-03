@@ -12,6 +12,7 @@ import 'user_article_list_page.dart';
 import 'user_bookmark_list_page.dart';
 import 'user_detail_page.dart';
 
+@RoutePage(name: UserDashboardPage.routeName)
 class UserDashboardPage extends StatelessWidget {
   const UserDashboardPage({
     Key? key,
@@ -40,15 +41,15 @@ class UserDashboardPage extends StatelessWidget {
           UserArticleListRoute(),
           UserBookmarkListRoute(),
         ],
-        builder: (context, child, animation) {
+        builder: (context, child) {
           return Scaffold(
             appBar: AppBar(
               title: Text(login),
             ),
-            drawer: Drawer(
+            drawer: const Drawer(
               child: SafeArea(
                 child: Column(
-                  children: const [
+                  children: [
                     NavLinkWidget(
                       title: UserDetailPage.title,
                       route: UserDetailPage.routePath,

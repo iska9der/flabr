@@ -6,6 +6,7 @@ import '../feature/company/page/company_list_page.dart';
 import '../feature/hub/page/hub_list_page.dart';
 import '../feature/user/page/user_list_page.dart';
 
+@RoutePage(name: ServicesPage.routeName)
 class ServicesPage extends StatelessWidget {
   const ServicesPage({Key? key}) : super(key: key);
 

@@ -24,6 +24,7 @@ import '../repository/article_repository.dart';
 import '../widget/article_card_widget.dart';
 import '../widget/sort/articles_sort_widget.dart';
 
+@RoutePage(name: ArticleListPage.routeName)
 class ArticleListPage extends StatelessWidget {
   const ArticleListPage({Key? key, @PathParam() required this.flow})
       : super(key: key);

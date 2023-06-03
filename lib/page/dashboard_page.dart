@@ -3,17 +3,20 @@ import 'package:flutter/material.dart';
 
 import '../component/router/app_router.dart';
 
+@RoutePage(name: DashboardPage.routeName)
 class DashboardPage extends StatelessWidget {
   const DashboardPage({Key? key}) : super(key: key);
+
+  static const String routeName = 'DashboardRoute';
 
   @override
   Widget build(BuildContext context) {
     return AutoTabsScaffold(
       lazyLoad: false,
-      routes: const [
-        ArticlesEmptyRoute(),
-        NewsEmptyRoute(),
-        ServicesEmptyRoute(),
+      routes:  const [
+        MyArticlesRoute(),
+        MyNewsRoute(),
+        MyServicesRoute(),
         SettingsRoute(),
       ],
       bottomNavigationBuilder: (_, tabsRouter) {

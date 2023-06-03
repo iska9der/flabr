@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:app_links/app_links.dart';
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -22,18 +21,18 @@ import 'feature/settings/cubit/settings_cubit.dart';
 import 'widget/progress_indicator.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-
-  /// Залочить вертикальную ориентацию
-  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-
-  setDependencies();
-
-  Intl.defaultLocale = 'ru_RU';
-  await initializeDateFormatting('ru_RU');
-
   runZonedGuarded(
-    () {
+    () async {
+      WidgetsFlutterBinding.ensureInitialized();
+
+      /// Залочить вертикальную ориентацию
+      await SystemChrome.setPreferredOrientations(
+          [DeviceOrientation.portraitUp]);
+
+      setDependencies();
+
+      Intl.defaultLocale = 'ru_RU';
+      await initializeDateFormatting('ru_RU');
       if (kDebugMode) {
         Bloc.observer = MyBlocObserver();
       }
@@ -117,11 +116,7 @@ class MyApp extends StatelessWidget {
               },
               child: MaterialApp.router(
                 title: 'Flabr',
-                routerDelegate:
-                    AutoRouterDelegate(router, initialDeepLink: '/'),
-                routeInformationParser: router.defaultRouteParser(
-                  includePrefixMatches: true,
-                ),
+                routerConfig: router.config(initialDeepLink: '/', includePrefixMatches: true),
                 theme: state.isDarkTheme ? darkTheme() : lightTheme(),
               ),
             );

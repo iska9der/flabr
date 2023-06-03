@@ -16,6 +16,7 @@ import '../model/company_model.dart';
 import '../repository/company_repository.dart';
 import '../widget/company_card_widget.dart';
 
+@RoutePage(name: CompanyListPage.routeName)
 class CompanyListPage extends StatelessWidget {
   const CompanyListPage({Key? key}) : super(key: key);
 

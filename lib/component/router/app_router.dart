@@ -1,5 +1,4 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:auto_route/empty_router_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
@@ -26,90 +25,141 @@ import 'routes.dart';
 
 part 'app_router.gr.dart';
 
-@MaterialAutoRouter(
+@AutoRouterConfig(
   replaceInRouteName: 'Page,Route',
-  routes: <AutoRoute>[
+)
+// extend the generated private router
+class AppRouter extends _$AppRouter {
+  /// Открыть внешнюю ссылку
+  Future launchExternalUrl(String url) async {
+    return await launchUrlString(
+      url,
+      mode: LaunchMode.externalApplication,
+    );
+  }
+
+  /// Открыть статью в приложении, либо открыть внешнюю ссылку в браузере
+  Future pushArticleOrExternal(Uri url) async {
+    String id = parseId(url);
+
+    if (isArticleUrl(url)) {
+      return await pushWidget(ArticleDetailPage(id: id));
+    } else if (isUserUrl(url)) {
+      return await navigate(
+        MyServicesRoute(
+          children: [
+            UserDashboardRoute(
+              login: id,
+              children: const [UserDetailRoute()],
+            )
+          ],
+        ),
+      );
+    }
+
+    return await launchExternalUrl(url.toString());
+  }
+
+  String parseId(Uri url) {
+    Iterable<String> parts =
+        url.pathSegments.where((element) => element.isNotEmpty);
+
+    return parts.last;
+  }
+
+  bool isArticleUrl(Uri url) {
+    if (url.host.contains('habr.com')) {
+      if (url.path.contains('post/') ||
+          url.path.contains('blog/') ||
+          url.path.contains('news/')) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  bool isUserUrl(Uri url) {
+    if (url.host.contains('habr.com') && url.path.contains('users/')) {
+      return true;
+    } else if (url.host.isEmpty && url.path.contains('/users/')) {
+      return true;
+    }
+
+    return false;
+  }
+
+  @override
+  RouteType get defaultRouteType => const RouteType.material();
+  @override
+  final List<AutoRoute> routes = [
     AutoRoute(
-      page: DashboardPage,
+      page: DashboardRoute.page,
       path: '/',
       children: [
         /// Таб "статьи"
         AutoRoute(
           initial: true,
-          path: MyArticlesRoute.routePath,
-          name: MyArticlesRoute.routeName,
-          page: EmptyRouterPage,
+          path: MyArticlesRouteInfo.routePath,
+          page: MyArticlesRoute.page,
           children: [
             RedirectRoute(path: '', redirectTo: 'flows/all'),
             AutoRoute(
               path: ArticleListPage.routePath,
-              name: ArticleListPage.routeName,
-              page: ArticleListPage,
+              page: ArticleListRoute.page,
             ),
             AutoRoute(
               path: ArticleDetailPage.routePath,
-              name: ArticleDetailPage.routeName,
-              page: ArticleDetailPage,
+              page: ArticleDetailRoute.page,
             ),
             AutoRoute(
               path: CommentListPage.routePath,
-              name: CommentListPage.routeName,
-              page: CommentListPage,
+              page: ArticleCommentListRoute.page,
             ),
           ],
         ),
 
         /// Таб "новости"
         AutoRoute(
-          path: MyNewsRoute.routePath,
-          name: MyNewsRoute.routeName,
-          page: EmptyRouterPage,
+          path: MyNewsRouteInfo.routePath,
+          page: MyNewsRoute.page,
           children: [
             RedirectRoute(path: '', redirectTo: 'flows/all'),
             AutoRoute(
               initial: true,
               path: NewsListPage.routePath,
-              name: NewsListPage.routeName,
-              page: NewsListPage,
+              page: NewsListRoute.page,
             ),
             AutoRoute(
               path: NewsDetailPage.routePath,
-              name: NewsDetailPage.routeName,
-              page: NewsDetailPage,
+              page: NewsDetailRoute.page,
             ),
           ],
         ),
 
         /// Таб "сервисы"
         AutoRoute(
-          path: MyServicesRoute.routePath,
-          name: MyServicesRoute.routeName,
-          page: EmptyRouterPage,
+          path: MyServicesRouteInfo.routePath,
+          page: MyServicesRoute.page,
           children: [
             AutoRoute(
               initial: true,
               path: ServicesPage.routePath,
-              name: ServicesPage.routeName,
-              page: ServicesPage,
+              page: ServicesRoute.page,
             ),
 
             /// Хабы
             AutoRoute(
               path: HubListPage.routePath,
-              name: HubListPage.routeName,
-              page: HubListPage,
+              page: HubListRoute.page,
             ),
-
-            /// Вложенная навигация в деталях хаба
             AutoRoute(
               path: HubDashboardPage.routePath,
-              name: HubDashboardPage.routeName,
-              page: HubDashboardPage,
+              page: HubDashboardRoute.page,
               children: [
                 AutoRoute(
                   path: HubDetailPage.routePath,
-                  name: HubDetailPage.routeName,
-                  page: HubDetailPage,
+                  page: HubDetailRoute.page,
                 ),
               ],
             ),
@@ -117,30 +167,23 @@ part 'app_router.gr.dart';
             /// Пользователи/Авторы
             AutoRoute(
               path: UserListPage.routePath,
-              name: UserListPage.routeName,
-              page: UserListPage,
+              page: UserListRoute.page,
             ),
-
-            /// Вложенная навигация в деталях пользователя
             AutoRoute(
               path: UserDashboardPage.routePath,
-              name: UserDashboardPage.routeName,
-              page: UserDashboardPage,
+              page: UserDashboardRoute.page,
               children: [
                 AutoRoute(
                   path: UserDetailPage.routePath,
-                  name: UserDetailPage.routeName,
-                  page: UserDetailPage,
+                  page: UserDetailRoute.page,
                 ),
                 AutoRoute(
                   path: UserArticleListPage.routePath,
-                  name: UserArticleListPage.routeName,
-                  page: UserArticleListPage,
+                  page: UserArticleListRoute.page,
                 ),
                 AutoRoute(
                   path: UserBookmarkListPage.routePath,
-                  name: UserBookmarkListPage.routeName,
-                  page: UserBookmarkListPage,
+                  page: UserBookmarkListRoute.page,
                 ),
               ],
             ),
@@ -148,20 +191,15 @@ part 'app_router.gr.dart';
             /// Компании
             AutoRoute(
               path: CompanyListPage.routePath,
-              name: CompanyListPage.routeName,
-              page: CompanyListPage,
+              page: CompanyListRoute.page,
             ),
-
-            /// Вложенная навигация в деталях компании
             AutoRoute(
               path: CompanyDashboardPage.routePath,
-              name: CompanyDashboardPage.routeName,
-              page: CompanyDashboardPage,
+              page: CompanyDashboardRoute.page,
               children: [
                 AutoRoute(
                   path: CompanyDetailPage.routePath,
-                  name: CompanyDetailPage.routeName,
-                  page: CompanyDetailPage,
+                  page: CompanyDetailRoute.page,
                 ),
               ],
             ),
@@ -171,21 +209,14 @@ part 'app_router.gr.dart';
         /// Таб "Настройки"
         AutoRoute(
           path: 'settings',
-          name: 'SettingsRoute',
-          page: SettingsPage,
+          page: SettingsRoute.page,
         ),
 
-        ///
-        ///
-        ///
-        ///
         ///
         /// Редиректы с хабропутей
         ///
         /// расположение редиректов важно
-        ///
-        ///
-        ///
+
         /// Новости [флоу, детали]
         RedirectRoute(
           path: '*/flows/:flow/news',
@@ -225,11 +256,11 @@ part 'app_router.gr.dart';
         /// Статьи из блогов
         /// todo: пока через вкладку "статьи"
         RedirectRoute(
-          path: '/*/company/:companyName/blog/:id',
+          path: '*/company/:companyName/blog/:id',
           redirectTo: 'articles/details/:id',
         ),
         RedirectRoute(
-          path: '/*/companies/:companyName/articles/:id',
+          path: '*/companies/:companyName/articles/:id',
           redirectTo: 'articles/details/:id',
         ),
 
@@ -278,66 +309,5 @@ part 'app_router.gr.dart';
         ),
       ],
     ),
-  ],
-)
-
-// extend the generated private router
-class AppRouter extends _$AppRouter {
-  /// Открыть внешнюю ссылку
-  ///
-  Future launchExternalUrl(String url) async {
-    return await launchUrlString(
-      url,
-      mode: LaunchMode.externalApplication,
-    );
-  }
-
-  /// Открыть статью в приложении, либо открыть внешнюю ссылку в браузере
-  Future pushArticleOrExternal(Uri url) async {
-    String id = parseId(url);
-
-    if (isArticleUrl(url)) {
-      return await pushWidget(ArticleDetailPage(id: id));
-    } else if (isUserUrl(url)) {
-      return await navigate(
-        ServicesEmptyRoute(children: [
-          UserDashboardRoute(
-            login: id,
-            children: const [UserDetailRoute()],
-          )
-        ]),
-      );
-    }
-
-    return await launchExternalUrl(url.toString());
-  }
-
-  String parseId(Uri url) {
-    Iterable<String> parts =
-        url.pathSegments.where((element) => element.isNotEmpty);
-
-    return parts.last;
-  }
-
-  bool isArticleUrl(Uri url) {
-    if (url.host.contains('habr.com')) {
-      if (url.path.contains('post/') ||
-          url.path.contains('blog/') ||
-          url.path.contains('news/')) {
-        return true;
-      }
-    }
-
-    return false;
-  }
-
-  bool isUserUrl(Uri url) {
-    if (url.host.contains('habr.com') && url.path.contains('users/')) {
-      return true;
-    } else if (url.host.isEmpty && url.path.contains('/users/')) {
-      return true;
-    }
-
-    return false;
-  }
+  ];
 }

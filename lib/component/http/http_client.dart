@@ -6,8 +6,8 @@ import '../../feature/auth/repository/token_repository.dart';
 class HttpClient {
   HttpClient(this.client, {this.tokenRepository}) {
     client.options = client.options.copyWith(
-      connectTimeout: 10000,
-      receiveTimeout: 15000,
+      connectTimeout: const Duration(seconds: 10),
+      receiveTimeout: const Duration(seconds: 15),
     );
 
     if (tokenRepository != null) {

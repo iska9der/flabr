@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -16,6 +17,7 @@ import '../../settings/cubit/settings_cubit.dart';
 import '../cubit/hub_cubit.dart';
 import '../widget/hub_profile_card_widget.dart';
 
+@RoutePage(name: HubDetailPage.routeName)
 class HubDetailPage extends StatelessWidget {
   const HubDetailPage({Key? key}) : super(key: key);
 

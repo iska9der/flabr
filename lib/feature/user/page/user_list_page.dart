@@ -15,6 +15,7 @@ import '../cubit/user_list_cubit.dart';
 import '../repository/user_repository.dart';
 import '../widget/user_card_widget.dart';
 
+@RoutePage(name: UserListPage.routeName)
 class UserListPage extends StatelessWidget {
   const UserListPage({Key? key}) : super(key: key);
 

@@ -67,7 +67,7 @@ class HtmlView extends StatelessWidget {
           customWidgetBuilder: customWidgetBuilder ??
               (element) {
                 if (element.localName == 'img') {
-                  if (!isImageVisible) return Wrap();
+                  if (!isImageVisible) return const Wrap();
 
                   String imgSrc = element.attributes['data-src'] ??
                       element.attributes['src'] ??

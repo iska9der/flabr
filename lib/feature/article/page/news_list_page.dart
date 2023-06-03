@@ -11,6 +11,7 @@ import '../model/flow_enum.dart';
 import '../repository/article_repository.dart';
 import 'article_list_page.dart';
 
+@RoutePage(name: NewsListPage.routeName)
 class NewsListPage extends StatelessWidget {
   const NewsListPage({
     Key? key,

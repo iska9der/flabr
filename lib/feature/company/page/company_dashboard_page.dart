@@ -10,6 +10,7 @@ import '../cubit/company_cubit.dart';
 import '../repository/company_repository.dart';
 import 'company_detail_page.dart';
 
+@RoutePage(name: CompanyDashboardPage.routeName)
 class CompanyDashboardPage extends StatelessWidget {
   const CompanyDashboardPage({
     Key? key,
@@ -36,15 +37,15 @@ class CompanyDashboardPage extends StatelessWidget {
         routes: const [
           CompanyDetailRoute(),
         ],
-        builder: (context, child, animation) {
+        builder: (context, child) {
           return Scaffold(
             appBar: AppBar(
               title: Text(alias),
             ),
-            drawer: Drawer(
+            drawer: const Drawer(
               child: SafeArea(
                 child: Column(
-                  children: const [
+                  children: [
                     NavLinkWidget(
                       title: CompanyDetailPage.title,
                       route: CompanyDetailPage.routePath,

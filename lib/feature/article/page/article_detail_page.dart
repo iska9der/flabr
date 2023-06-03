@@ -18,6 +18,7 @@ import '../widget/article_statistics_widget.dart';
 const double hPadding = 12.0;
 const double vPadding = 6.0;
 
+@RoutePage(name: ArticleDetailPage.routeName)
 class ArticleDetailPage extends StatelessWidget {
   const ArticleDetailPage({
     Key? key,

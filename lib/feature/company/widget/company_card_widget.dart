@@ -27,7 +27,7 @@ class CompanyCardWidget extends StatelessWidget {
 
   moveToDetails(BuildContext context) {
     context.router.navigateNamed(
-      '${MyServicesRoute.routePath}/${CompanyListPage.routePath}/${model.alias}',
+      '${MyServicesRouteInfo.routePath}/${CompanyListPage.routePath}/${model.alias}',
     );
   }
 
