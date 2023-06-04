@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:app_links/app_links.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -116,7 +117,11 @@ class MyApp extends StatelessWidget {
               },
               child: MaterialApp.router(
                 title: 'Flabr',
-                routerConfig: router.config(),
+                routerConfig: router.config(
+                  deepLinkBuilder: (deepLink) {
+                    return const DeepLink.path('/');
+                  },
+                ),
                 theme: state.isDarkTheme ? darkTheme() : lightTheme(),
               ),
             );
