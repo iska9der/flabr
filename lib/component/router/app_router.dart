@@ -219,66 +219,74 @@ class AppRouter extends _$AppRouter {
 
         /// Новости [флоу, детали]
         RedirectRoute(
-          path: '*/flows/:flow/news',
+          path: '*/*/flows/:flow/news',
           redirectTo: 'news/flows/:flow',
         ),
         RedirectRoute(
-          path: '*/news/',
+          path: '*/*/news/',
           redirectTo: 'news',
         ),
         RedirectRoute(
-          path: '*/news/t/:id',
+          path: '*/*/news/:id',
+          redirectTo: 'news/details/:id',
+        ),
+        RedirectRoute(
+          path: '*/*/news/t/:id',
           redirectTo: 'news/details/:id',
         ),
 
         /// Флоу
         RedirectRoute(
-          path: '*/flows/:flow/',
+          path: '*/*/flows/:flow/',
           redirectTo: 'articles/flows/:flow',
         ),
 
         /// Статьи
         RedirectRoute(
-          path: '*/post/:id',
+          path: '*/*/post/:id',
           redirectTo: 'articles/details/:id',
         ),
         RedirectRoute(
-          path: '*/articles/:id',
+          path: '*/*/articles/:id',
           redirectTo: 'articles/details/:id',
         ),
 
         /// Комменты к статьям
         RedirectRoute(
-          path: '*/post/:id/comments',
+          path: '*/*/post/:id/comments',
+          redirectTo: 'articles/comments/:id',
+        ),
+        RedirectRoute(
+          path: '*/*/articles/:id/comments',
           redirectTo: 'articles/comments/:id',
         ),
 
         /// Статьи из блогов
         /// todo: пока через вкладку "статьи"
         RedirectRoute(
-          path: '*/company/:companyName/blog/:id',
+          path: '*/*/company/:companyName/blog/:id',
           redirectTo: 'articles/details/:id',
         ),
         RedirectRoute(
-          path: '*/companies/:companyName/articles/:id',
+          path: '*/*/companies/:companyName/articles/:id',
           redirectTo: 'articles/details/:id',
         ),
 
         /// Пользователи/Авторы
         RedirectRoute(
-          path: '*/users',
+          path: '*/*/users',
           redirectTo: 'services/users',
         ),
         RedirectRoute(
-          path: '*/users/:login',
+          path: '*/*/users/:login',
           redirectTo: 'services/users/:login',
         ),
         RedirectRoute(
-          path: '*/users/:login/posts',
+          path: '*/*/users/:login/posts',
           redirectTo: 'services/users/:login/article',
         ),
         RedirectRoute(
-          path: '*/users/:login/favorites',
+          path: '*/*/users/:login/favorites',
           redirectTo: 'services/users/:login/bookmarks',
         ),
 
@@ -286,17 +294,17 @@ class AppRouter extends _$AppRouter {
         /// пока не реализованы остальные вложенные пути
         /// (комментарии, подписчики, подписки)
         RedirectRoute(
-          path: '*/users/:login/*',
+          path: '*/*/users/:login/*',
           redirectTo: 'services/users/:login/detail',
         ),
 
         /// Хабы
         RedirectRoute(
-          path: '*/hubs',
+          path: '*/*/hubs',
           redirectTo: 'services/hubs',
         ),
         RedirectRoute(
-          path: '*/hub/:alias',
+          path: '*/*/hub/:alias',
           redirectTo: 'services/hubs/:alias/profile',
         ),
 
@@ -304,7 +312,7 @@ class AppRouter extends _$AppRouter {
         /// пока не реализованы остальные вложенные пути
         /// (авторы, компании)
         RedirectRoute(
-          path: '*/hub/:alias/*',
+          path: '*/*/hub/:alias/*',
           redirectTo: 'services/hubs/:alias',
         ),
       ],

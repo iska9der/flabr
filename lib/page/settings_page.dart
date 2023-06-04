@@ -32,39 +32,49 @@ class SettingsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
-    const hBetweenSub = 22.0;
-    const hAfterHeadline = 16.0;
+    const hBetweenSub = 14.0;
 
     return ListView(
       padding: const EdgeInsets.symmetric(horizontal: kScreenHPadding),
-      children: [
-        const SizedBox(height: hBetweenSub),
-        Text(
-          'Аккаунт',
-          style: textTheme.headlineMedium,
-        ),
-        const Padding(
+      children: const [
+        SettingsHeaderWidget(title: 'Аккаунт'),
+        Padding(
           padding: EdgeInsets.only(top: 8),
           child: ConnectSidWidget(),
         ),
-        const SizedBox(height: hBetweenSub),
+        SizedBox(height: hBetweenSub),
+        SettingsHeaderWidget(title: 'Интерфейс'),
+        UIThemeWidget(),
+        SizedBox(height: hBetweenSub),
+        UILangWidget(),
+        SizedBox(height: hBetweenSub),
+        ArticlesLangWidget(),
+        SizedBox(height: hBetweenSub),
+        SettingsHeaderWidget(title: 'Лента'),
+        SettingsFeedWidget(),
+      ],
+    );
+  }
+}
+
+class SettingsHeaderWidget extends StatelessWidget {
+  const SettingsHeaderWidget({super.key, required this.title});
+
+  final String title;
+
+  @override
+  Widget build(BuildContext context) {
+    const hAfterHeadline = 10.0;
+    final textTheme = Theme.of(context).textTheme;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
         Text(
-          'Интерфейс',
-          style: textTheme.headlineMedium,
-        ),
-        const UIThemeWidget(),
-        const SizedBox(height: hBetweenSub),
-        const UILangWidget(),
-        const SizedBox(height: hBetweenSub),
-        const ArticlesLangWidget(),
-        const SizedBox(height: hBetweenSub),
-        Text(
-          'Лента',
+          title,
           style: textTheme.headlineMedium,
         ),
         const SizedBox(height: hAfterHeadline),
-        const SettingsFeedWidget(),
       ],
     );
   }
@@ -183,6 +193,7 @@ class _UIThemeWidgetState extends State<UIThemeWidget> {
   @override
   Widget build(BuildContext context) {
     return SettingsCardWidget(
+      title: 'Цветовая схема',
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: SwitchListTile.adaptive(
         title: const Text('Темная тема'),

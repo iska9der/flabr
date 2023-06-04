@@ -17,6 +17,9 @@ import '../../settings/cubit/settings_cubit.dart';
 import '../cubit/comment_list_cubit.dart';
 import '../model/comment_model.dart';
 
+const paddingBetweenTrees = 44.0;
+const paddingBetweenChilds = 22.0;
+
 @RoutePage(name: CommentListPage.routeName)
 class CommentListPage extends StatelessWidget {
   const CommentListPage({
@@ -49,6 +52,9 @@ class CommentListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Комментарии'),
+      ),
       body: SafeArea(
         child: BlocBuilder<CommentListCubit, CommentListState>(
           builder: (context, state) {
@@ -76,14 +82,20 @@ class CommentListView extends StatelessWidget {
 
             return ListView.separated(
               itemCount: comments.length,
-              padding: const EdgeInsets.symmetric(horizontal: 4),
-              separatorBuilder: (context, index) => const SizedBox(height: 24),
+              padding: const EdgeInsets.symmetric(
+                horizontal: kScreenHPadding,
+                vertical: kScreenHPadding * 0.5,
+              ),
+              separatorBuilder: (c, i) => const Divider(
+                height: paddingBetweenTrees,
+              ),
               itemBuilder: (context, index) {
                 final comment = comments[index];
+                bool isLast = index + 1 == comments.length;
 
                 return Padding(
                   padding: EdgeInsets.only(
-                    bottom: index + 1 == comments.length ? 24 : 0,
+                    bottom: isLast ? paddingBetweenTrees : 0,
                   ),
                   child: CommentTreeWidget(comment),
                 );
@@ -111,7 +123,7 @@ class CommentTreeWidget extends StatelessWidget {
         CommentWidget(comment),
         for (var child in comment.children)
           Padding(
-            padding: const EdgeInsets.only(top: 4),
+            padding: const EdgeInsets.only(top: paddingBetweenChilds),
             child: CommentTreeWidget(child),
           )
       ],
@@ -126,7 +138,8 @@ class CommentWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final paddingLeft = 3.0 * comment.level;
+    final paddingLeft = 6.0 * comment.level;
+    const textPadding = 4.0;
 
     return Padding(
       padding: EdgeInsets.only(left: paddingLeft),
@@ -165,19 +178,26 @@ class CommentWidget extends StatelessWidget {
             ),
           ),
 
-          const SizedBox(height: 6),
-
           /// Дата коммента
-          Text(
-            DateFormat.yMd().add_jm().format(comment.publishedAt),
-            style: Theme.of(context).textTheme.bodySmall,
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: textPadding,
+              vertical: textPadding * 1.5,
+            ),
+            child: Text(
+              DateFormat.yMd().add_jm().format(comment.publishedAt),
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
           ),
 
           /// Текст
-          HtmlView(
-            textHtml: comment.message,
-            renderMode: RenderMode.column,
-            padding: EdgeInsets.zero,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: textPadding),
+            child: HtmlView(
+              textHtml: comment.message,
+              renderMode: RenderMode.column,
+              padding: EdgeInsets.zero,
+            ),
           ),
         ],
       ),

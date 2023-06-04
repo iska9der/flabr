@@ -116,7 +116,7 @@ class MyApp extends StatelessWidget {
               },
               child: MaterialApp.router(
                 title: 'Flabr',
-                routerConfig: router.config(initialDeepLink: '/', includePrefixMatches: true),
+                routerConfig: router.config(),
                 theme: state.isDarkTheme ? darkTheme() : lightTheme(),
               ),
             );
