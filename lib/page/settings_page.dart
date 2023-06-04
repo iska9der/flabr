@@ -32,50 +32,54 @@ class SettingsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const hBetweenSub = 14.0;
+    const paddingBetweenElements = 14.0;
 
     return ListView(
       padding: const EdgeInsets.symmetric(horizontal: kScreenHPadding),
       children: const [
-        SettingsHeaderWidget(title: 'Аккаунт'),
+        _SectionHeader(title: 'Аккаунт'),
         Padding(
-          padding: EdgeInsets.only(top: 8),
+          padding: EdgeInsets.only(bottom: paddingBetweenElements),
           child: ConnectSidWidget(),
         ),
-        SizedBox(height: hBetweenSub),
-        SettingsHeaderWidget(title: 'Интерфейс'),
-        UIThemeWidget(),
-        SizedBox(height: hBetweenSub),
-        UILangWidget(),
-        SizedBox(height: hBetweenSub),
-        ArticlesLangWidget(),
-        SizedBox(height: hBetweenSub),
-        SettingsHeaderWidget(title: 'Лента'),
-        SettingsFeedWidget(),
+        _SectionHeader(title: 'Интерфейс'),
+        Padding(
+          padding: EdgeInsets.only(bottom: paddingBetweenElements),
+          child: UIThemeWidget(),
+        ),
+        Padding(
+          padding: EdgeInsets.only(bottom: paddingBetweenElements),
+          child: UILangWidget(),
+        ),
+        Padding(
+          padding: EdgeInsets.only(bottom: paddingBetweenElements),
+          child: ArticlesLangWidget(),
+        ),
+        _SectionHeader(title: 'Лента'),
+        Padding(
+          padding: EdgeInsets.only(bottom: paddingBetweenElements),
+          child: SettingsFeedWidget(),
+        ),
       ],
     );
   }
 }
 
-class SettingsHeaderWidget extends StatelessWidget {
-  const SettingsHeaderWidget({super.key, required this.title});
+class _SectionHeader extends StatelessWidget {
+  const _SectionHeader({required this.title});
 
   final String title;
 
   @override
   Widget build(BuildContext context) {
-    const hAfterHeadline = 10.0;
     final textTheme = Theme.of(context).textTheme;
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Text(
-          title,
-          style: textTheme.headlineMedium,
-        ),
-        const SizedBox(height: hAfterHeadline),
-      ],
+    return Padding(
+      padding: const EdgeInsets.only(top: 18, bottom: 10),
+      child: Text(
+        title,
+        style: textTheme.headlineMedium,
+      ),
     );
   }
 }
@@ -99,19 +103,20 @@ class _ConnectSidWidgetState extends State<ConnectSidWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final authCubit = context.read<AuthCubit>();
+
     return BlocProvider(
       create: (_) => LoginCubit(
         repository: getIt.get<AuthRepository>(),
         tokenRepository: getIt.get<TokenRepository>(),
       ),
       child: BlocListener<LoginCubit, LoginState>(
-        listener: (_, state) {
-          if (state.status.isSuccess) {
-            context.read<AuthCubit>().handleAuthData();
-          }
-        },
+        listenWhen: (previous, current) => current.status.isSuccess,
+        listener: (_, state) => authCubit.handleAuthData(),
         child: BlocBuilder<AuthCubit, AuthState>(
           builder: (context, state) {
+            final loginCubit = context.read<LoginCubit>();
+
             if (state.isAuthorized) {
               controller.text = state.data.connectSID;
             } else {
@@ -119,17 +124,23 @@ class _ConnectSidWidgetState extends State<ConnectSidWidget> {
             }
 
             return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const Text('Если не удается войти через форму логина'),
-                const SizedBox(height: 14),
+                const Text('Connect SID'),
+                Text(
+                  'Если не удается войти через форму логина',
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
+                const SizedBox(height: 8),
                 TextFormField(
+                  onTapOutside: (event) {
+                    FocusManager.instance.primaryFocus?.unfocus();
+                  },
                   enabled: !state.isAuthorized,
                   controller: controller,
                   keyboardType: TextInputType.text,
                   decoration: const InputDecoration(
                     floatingLabelBehavior: FloatingLabelBehavior.always,
-                    label: Text('Connect SID'),
                     hintText: 'Можно найти в cookies',
                     border: OutlineInputBorder(),
                   ),
@@ -139,26 +150,29 @@ class _ConnectSidWidgetState extends State<ConnectSidWidget> {
                   children: [
                     state.isAuthorized
                         ? ElevatedButton(
-                            onPressed: () => context.read<AuthCubit>().logOut(),
+                            onPressed: () {
+                              authCubit.logOut();
+                            },
                             child: const Text('Очистить'),
                           )
                         : FilledButton(
-                            onPressed: () =>
-                                context.read<LoginCubit>().submitConnectSid(
-                                      controller.text,
-                                    ),
+                            onPressed: () {
+                              loginCubit.submitConnectSid(controller.text);
+                            },
                             child: const Text('Сохранить'),
                           ),
                     const SizedBox(width: 12),
                     ElevatedButton(
-                      onPressed: () => showDialog(
-                        context: context,
-                        builder: (context) {
-                          return const FullAssetImageWidget(
-                            assetPath: 'assets/connect_sid_instruction.gif',
-                          );
-                        },
-                      ),
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return const FullAssetImageWidget(
+                              assetPath: 'assets/connect_sid_instruction.gif',
+                            );
+                          },
+                        );
+                      },
                       child: const Text('Инструкция'),
                     ),
                   ],
@@ -226,6 +240,7 @@ class UILangWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return SettingsCardWidget(
       title: 'Язык интерфейса',
+      padding: const EdgeInsets.symmetric(horizontal: 20),
       child: BlocBuilder<SettingsCubit, SettingsState>(
         buildWhen: (p, c) => p.langUI != c.langUI,
         builder: (context, state) {
