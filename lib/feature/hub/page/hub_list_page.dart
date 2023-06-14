@@ -18,7 +18,7 @@ import '../widget/hub_card_widget.dart';
 
 @RoutePage(name: HubListPage.routeName)
 class HubListPage extends StatelessWidget {
-  const HubListPage({Key? key}) : super(key: key);
+  const HubListPage({super.key});
 
   static const name = 'Хабы';
   static const routePath = 'hubs';
@@ -46,7 +46,7 @@ class HubListPage extends StatelessWidget {
 }
 
 class HubListPageView extends StatelessWidget {
-  const HubListPageView({Key? key}) : super(key: key);
+  const HubListPageView({super.key});
 
   @override
   Widget build(BuildContext context) {

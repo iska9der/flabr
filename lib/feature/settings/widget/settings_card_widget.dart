@@ -4,12 +4,12 @@ import '../../../widget/card_widget.dart';
 
 class SettingsCardWidget extends StatelessWidget {
   const SettingsCardWidget({
-    Key? key,
+    super.key,
     this.title,
     this.subtitle,
     this.padding = const EdgeInsets.all(20),
     required this.child,
-  }) : super(key: key);
+  });
 
   final String? title;
   final String? subtitle;

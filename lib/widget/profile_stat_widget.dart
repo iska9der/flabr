@@ -5,11 +5,11 @@ import 'stat_text_widget.dart';
 
 class ProfileStatWidget extends StatelessWidget {
   const ProfileStatWidget({
-    Key? key,
+    super.key,
     this.type = StatType.neutral,
     required this.title,
     required this.value,
-  }) : super(key: key);
+  });
 
   final StatType type;
   final String title;

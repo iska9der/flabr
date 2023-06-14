@@ -5,7 +5,7 @@ import '../component/router/app_router.dart';
 
 @RoutePage(name: DashboardPage.routeName)
 class DashboardPage extends StatelessWidget {
-  const DashboardPage({Key? key}) : super(key: key);
+  const DashboardPage({super.key});
 
   static const String routeName = 'DashboardRoute';
 

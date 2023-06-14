@@ -6,7 +6,7 @@ import '../cubit/scroll_cubit.dart';
 /// До того как использовать, нужно
 /// создать [ScrollCubit] выше по дереву
 class FloatingScrollToTopButton extends StatelessWidget {
-  const FloatingScrollToTopButton({Key? key}) : super(key: key);
+  const FloatingScrollToTopButton({super.key});
 
   @override
   Widget build(BuildContext context) {

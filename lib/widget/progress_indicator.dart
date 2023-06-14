@@ -12,14 +12,11 @@ enum IndicatorSize {
 }
 
 class CircleIndicator extends StatelessWidget {
-  const CircleIndicator({Key? key, this.size = IndicatorSize.large})
-      : super(key: key);
+  const CircleIndicator({super.key, this.size = IndicatorSize.large});
 
-  const CircleIndicator.small({Key? key, this.size = IndicatorSize.small})
-      : super(key: key);
+  const CircleIndicator.small({super.key, this.size = IndicatorSize.small});
 
-  const CircleIndicator.medium({Key? key, this.size = IndicatorSize.medium})
-      : super(key: key);
+  const CircleIndicator.medium({super.key, this.size = IndicatorSize.medium});
 
   final IndicatorSize size;
 

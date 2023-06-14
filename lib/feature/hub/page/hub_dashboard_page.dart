@@ -13,9 +13,9 @@ import 'hub_detail_page.dart';
 @RoutePage(name: HubDashboardPage.routeName)
 class HubDashboardPage extends StatelessWidget {
   const HubDashboardPage({
-    Key? key,
+    super.key,
     @PathParam() required this.alias,
-  }) : super(key: key);
+  });
 
   final String alias;
 
@@ -39,7 +39,7 @@ class HubDashboardPage extends StatelessWidget {
 }
 
 class HubDashboardPageView extends StatelessWidget {
-  const HubDashboardPageView({Key? key}) : super(key: key);
+  const HubDashboardPageView({super.key});
 
   @override
   Widget build(BuildContext context) {

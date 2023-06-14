@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 
 class DashboardDrawerLinkWidget extends StatelessWidget {
   const DashboardDrawerLinkWidget({
-    Key? key,
+    super.key,
     required this.title,
     required this.route,
-  }) : super(key: key);
+  });
 
   final String title;
   final String route;

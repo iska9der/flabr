@@ -11,7 +11,7 @@ part 'sort_by_widget.dart';
 part 'sort_options_widget.dart';
 
 class ArticlesSortWidget extends StatelessWidget {
-  const ArticlesSortWidget({Key? key}) : super(key: key);
+  const ArticlesSortWidget({super.key});
 
   @override
   Widget build(BuildContext context) {

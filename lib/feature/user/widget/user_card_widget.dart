@@ -10,7 +10,7 @@ import '../../../widget/profile_stat_card_widget.dart';
 import '../model/user_model.dart';
 
 class UserCardWidget extends StatelessWidget {
-  const UserCardWidget({Key? key, required this.model}) : super(key: key);
+  const UserCardWidget({super.key, required this.model});
 
   final UserModel model;
 
@@ -26,7 +26,7 @@ class UserCardWidget extends StatelessWidget {
 }
 
 class _UserCard extends StatelessWidget {
-  const _UserCard({Key? key}) : super(key: key);
+  const _UserCard();
 
   void _pushDetails(BuildContext context, String alias) {
     context.router.navigateNamed('services/users/$alias/detail');
@@ -95,7 +95,7 @@ class _UserCard extends StatelessWidget {
 }
 
 class _UserScore extends StatelessWidget {
-  const _UserScore({Key? key}) : super(key: key);
+  const _UserScore();
 
   @override
   Widget build(BuildContext context) {

@@ -21,9 +21,9 @@ const double vPadding = 6.0;
 @RoutePage(name: ArticleDetailPage.routeName)
 class ArticleDetailPage extends StatelessWidget {
   const ArticleDetailPage({
-    Key? key,
+    super.key,
     @PathParam() required this.id,
-  }) : super(key: key);
+  });
 
   final String id;
 
@@ -46,7 +46,7 @@ class ArticleDetailPage extends StatelessWidget {
 }
 
 class ArticleDetailPageView extends StatefulWidget {
-  const ArticleDetailPageView({Key? key}) : super(key: key);
+  const ArticleDetailPageView({super.key});
 
   @override
   State<ArticleDetailPageView> createState() => _ArticleDetailPageViewState();
@@ -219,8 +219,7 @@ class _ArticleDetailPageViewState extends State<ArticleDetailPageView> {
 }
 
 class _FloatingStatistics extends StatelessWidget {
-  const _FloatingStatistics({Key? key, this.isVisible = true})
-      : super(key: key);
+  const _FloatingStatistics({this.isVisible = true});
 
   final bool isVisible;
 
@@ -254,11 +253,11 @@ class _FloatingStatistics extends StatelessWidget {
 
 class ArticleFloatingButton extends StatelessWidget {
   const ArticleFloatingButton({
-    Key? key,
+    super.key,
     required this.icon,
     required this.text,
     this.onPressed,
-  }) : super(key: key);
+  });
 
   final void Function()? onPressed;
   final Icon icon;

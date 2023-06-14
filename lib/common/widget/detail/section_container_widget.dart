@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 
 class SectionContainerWidget extends StatelessWidget {
   const SectionContainerWidget({
-    Key? key,
+    super.key,
     required this.title,
     required this.child,
     this.crossAxisAlignment = CrossAxisAlignment.stretch,
-  }) : super(key: key);
+  });
 
   final String title;
   final Widget child;

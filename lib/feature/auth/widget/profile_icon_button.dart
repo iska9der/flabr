@@ -6,7 +6,7 @@ import 'dialog.dart';
 import 'profile_widget.dart';
 
 class MyProfileIconButton extends StatelessWidget {
-  const MyProfileIconButton({Key? key}) : super(key: key);
+  const MyProfileIconButton({super.key});
 
   @override
   Widget build(BuildContext context) {

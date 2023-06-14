@@ -16,12 +16,12 @@ import 'progress_indicator.dart';
 
 class HtmlView extends StatelessWidget {
   const HtmlView({
-    Key? key,
+    super.key,
     required this.textHtml,
     this.renderMode = RenderMode.sliverList,
     this.customWidgetBuilder,
     this.padding = const EdgeInsets.only(left: 20, right: 20, bottom: 40),
-  }) : super(key: key);
+  });
 
   final String textHtml;
   final RenderMode renderMode;

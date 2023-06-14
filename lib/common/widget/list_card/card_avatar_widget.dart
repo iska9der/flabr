@@ -5,10 +5,10 @@ import '../../../widget/image/network_image_widget.dart';
 
 class CardAvatarWidget extends StatelessWidget {
   const CardAvatarWidget({
-    Key? key,
+    super.key,
     required this.imageUrl,
     this.height = kAvatarHeight,
-  }) : super(key: key);
+  });
 
   final String imageUrl;
   final double height;
@@ -39,7 +39,7 @@ class CardAvatarWidget extends StatelessWidget {
 }
 
 class _PlaceholderAvatar extends StatelessWidget {
-  const _PlaceholderAvatar({Key? key}) : super(key: key);
+  const _PlaceholderAvatar();
 
   @override
   Widget build(BuildContext context) {

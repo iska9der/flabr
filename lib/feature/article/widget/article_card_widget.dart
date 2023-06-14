@@ -17,10 +17,10 @@ import 'article_statistics_widget.dart';
 
 class ArticleCardWidget extends StatelessWidget {
   const ArticleCardWidget({
-    Key? key,
+    super.key,
     required this.article,
     this.renderType = RenderType.plain,
-  }) : super(key: key);
+  });
 
   final ArticleModel article;
   final RenderType renderType;
@@ -130,10 +130,9 @@ class ArticleCardWidget extends StatelessWidget {
 
 class _ArticleTitleWidget extends StatelessWidget {
   const _ArticleTitleWidget({
-    Key? key,
     required this.title,
     required this.renderType,
-  }) : super(key: key);
+  });
 
   final String title;
   final RenderType renderType;

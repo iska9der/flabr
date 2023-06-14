@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 
 class FlabrCard extends StatelessWidget {
   const FlabrCard({
-    Key? key,
+    super.key,
     required this.child,
     this.onTap,
     this.elevation,
     this.margin,
     this.padding = EdgeInsets.zero,
-  }) : super(key: key);
+  });
 
   /// если не указано, берется из темы
   final double? elevation;

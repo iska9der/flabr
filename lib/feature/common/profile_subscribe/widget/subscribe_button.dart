@@ -10,8 +10,7 @@ import '../repository/subscription_repository.dart';
 
 class SubscribeButton extends StatelessWidget {
   const SubscribeButton(
-      {Key? key, required this.alias, required this.isSubscribed})
-      : super(key: key);
+      {super.key, required this.alias, required this.isSubscribed});
 
   final String alias;
   final bool isSubscribed;

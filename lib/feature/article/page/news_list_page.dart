@@ -14,9 +14,9 @@ import 'article_list_page.dart';
 @RoutePage(name: NewsListPage.routeName)
 class NewsListPage extends StatelessWidget {
   const NewsListPage({
-    Key? key,
+    super.key,
     @PathParam() required this.flow,
-  }) : super(key: key);
+  });
 
   final String flow;
 

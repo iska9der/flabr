@@ -6,7 +6,7 @@ import '../../hub/model/hub_related_data.dart';
 import '../model/article_hub_model.dart';
 
 class ArticleHubsWidget extends StatelessWidget {
-  const ArticleHubsWidget({Key? key, required this.hubs}) : super(key: key);
+  const ArticleHubsWidget({super.key, required this.hubs});
 
   final List<ArticleHubModel> hubs;
 
@@ -31,7 +31,7 @@ class ArticleHubsWidget extends StatelessWidget {
 /// в зависимости от типа, ссылка перехода в методе `onTap` будет меняться
 ///
 class _ArticleHubWidget extends StatelessWidget {
-  const _ArticleHubWidget(this.hub, {Key? key}) : super(key: key);
+  const _ArticleHubWidget(this.hub);
 
   final ArticleHubModel hub;
 

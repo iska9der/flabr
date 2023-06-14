@@ -18,7 +18,7 @@ import '../widget/company_card_widget.dart';
 
 @RoutePage(name: CompanyListPage.routeName)
 class CompanyListPage extends StatelessWidget {
-  const CompanyListPage({Key? key}) : super(key: key);
+  const CompanyListPage({super.key});
 
   static const name = 'Компании';
   static const routePath = 'companies';
@@ -46,7 +46,7 @@ class CompanyListPage extends StatelessWidget {
 }
 
 class CompanyListPageView extends StatelessWidget {
-  const CompanyListPageView({Key? key}) : super(key: key);
+  const CompanyListPageView({super.key});
 
   @override
   Widget build(BuildContext context) {

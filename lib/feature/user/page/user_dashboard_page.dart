@@ -15,9 +15,9 @@ import 'user_detail_page.dart';
 @RoutePage(name: UserDashboardPage.routeName)
 class UserDashboardPage extends StatelessWidget {
   const UserDashboardPage({
-    Key? key,
+    super.key,
     @PathParam() required this.login,
-  }) : super(key: key);
+  });
 
   final String login;
 

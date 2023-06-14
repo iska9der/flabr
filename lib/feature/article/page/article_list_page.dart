@@ -26,8 +26,7 @@ import '../widget/sort/articles_sort_widget.dart';
 
 @RoutePage(name: ArticleListPage.routeName)
 class ArticleListPage extends StatelessWidget {
-  const ArticleListPage({Key? key, @PathParam() required this.flow})
-      : super(key: key);
+  const ArticleListPage({super.key, @PathParam() required this.flow});
 
   final String flow;
 
@@ -66,9 +65,9 @@ class ArticleListPage extends StatelessWidget {
 
 class ArticleListPageView extends StatelessWidget {
   const ArticleListPageView({
-    Key? key,
+    super.key,
     this.type = ArticleType.article,
-  }) : super(key: key);
+  });
 
   final ArticleType type;
 
@@ -260,7 +259,7 @@ class _ArticleListDrawer extends StatelessWidget {
 }
 
 class ArticleSliverList extends StatelessWidget {
-  const ArticleSliverList({Key? key}) : super(key: key);
+  const ArticleSliverList({super.key});
 
   @override
   Widget build(BuildContext context) {

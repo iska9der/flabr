@@ -7,7 +7,7 @@ import '../../auth/widget/profile_widget.dart';
 import '../model/article_author_model.dart';
 
 class ArticleAuthorWidget extends StatelessWidget {
-  const ArticleAuthorWidget(this.author, {Key? key}) : super(key: key);
+  const ArticleAuthorWidget(this.author, {super.key});
 
   final ArticleAuthorModel author;
 

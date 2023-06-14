@@ -5,7 +5,7 @@ import '../model/article_model.dart';
 import 'article_author_widget.dart';
 
 class ArticleInfoWidget extends StatelessWidget {
-  const ArticleInfoWidget(this.article, {Key? key}) : super(key: key);
+  const ArticleInfoWidget(this.article, {super.key});
 
   final ArticleModel article;
 

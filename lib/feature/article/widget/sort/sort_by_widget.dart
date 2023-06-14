@@ -2,11 +2,10 @@ part of 'articles_sort_widget.dart';
 
 class _SortByWidget extends StatelessWidget {
   const _SortByWidget({
-    Key? key,
     required this.currentValue,
     required this.onTap,
     this.isEnabled = true,
-  }) : super(key: key);
+  });
 
   final SortEnum currentValue;
   final ValueChanged<SortEnum> onTap;

@@ -17,7 +17,7 @@ import '../widget/user_card_widget.dart';
 
 @RoutePage(name: UserListPage.routeName)
 class UserListPage extends StatelessWidget {
-  const UserListPage({Key? key}) : super(key: key);
+  const UserListPage({super.key});
 
   static const String name = 'Авторы';
   static const String routePath = 'users';
@@ -68,7 +68,7 @@ class UserListPage extends StatelessWidget {
 }
 
 class UserListPageView extends StatelessWidget {
-  const UserListPageView({Key? key}) : super(key: key);
+  const UserListPageView({super.key});
 
   @override
   Widget build(BuildContext context) {

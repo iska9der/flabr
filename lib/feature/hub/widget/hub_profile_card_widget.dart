@@ -16,7 +16,7 @@ import '../repository/hub_subscription_repository.dart';
 import '../service/hub_service.dart';
 
 class HubProfileCardWidget extends StatefulWidget {
-  const HubProfileCardWidget({Key? key}) : super(key: key);
+  const HubProfileCardWidget({super.key});
 
   @override
   State<HubProfileCardWidget> createState() => _HubProfileCardWidgetState();

@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../settings/cubit/settings_cubit.dart';
 
 class ArticleSettingsWidget extends StatelessWidget {
-  const ArticleSettingsWidget({Key? key}) : super(key: key);
+  const ArticleSettingsWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -44,8 +44,7 @@ class ArticleSettingsWidget extends StatelessWidget {
 }
 
 class FontScaleSlider extends StatefulWidget {
-  const FontScaleSlider({Key? key, required this.initialScale})
-      : super(key: key);
+  const FontScaleSlider({super.key, required this.initialScale});
 
   final double initialScale;
 

@@ -14,7 +14,7 @@ import '../cubit/user_cubit.dart';
 
 @RoutePage(name: UserArticleListPage.routeName)
 class UserArticleListPage extends StatelessWidget {
-  const UserArticleListPage({Key? key}) : super(key: key);
+  const UserArticleListPage({super.key});
 
   static const String title = 'Публикации';
   static const String routePath = 'article';
@@ -46,7 +46,7 @@ class UserArticleListPage extends StatelessWidget {
 }
 
 class UserArticleListPageView extends StatelessWidget {
-  const UserArticleListPageView({Key? key}) : super(key: key);
+  const UserArticleListPageView({super.key});
 
   @override
   Widget build(BuildContext context) {

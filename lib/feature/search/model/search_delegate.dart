@@ -202,10 +202,9 @@ class FlabrSearchDelegate extends SearchDelegate {
 
 class _TargetOptions extends StatelessWidget {
   const _TargetOptions({
-    Key? key,
     required this.cubit,
     required this.delegate,
-  }) : super(key: key);
+  });
 
   final SearchCubit cubit;
   final SearchDelegate delegate;
@@ -246,10 +245,9 @@ class _TargetOptions extends StatelessWidget {
 
 class _OrderOptions extends StatelessWidget {
   const _OrderOptions({
-    Key? key,
     required this.cubit,
     required this.delegate,
-  }) : super(key: key);
+  });
 
   final SearchCubit cubit;
   final SearchDelegate delegate;

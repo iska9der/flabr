@@ -6,11 +6,11 @@ import '../../model/render_type.dart';
 
 class CardTitleWidget extends StatelessWidget {
   const CardTitleWidget({
-    Key? key,
+    super.key,
     required this.title,
     required this.renderType,
     this.onPressed,
-  }) : super(key: key);
+  });
 
   final String title;
   final RenderType renderType;

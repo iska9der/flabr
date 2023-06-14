@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 
 class SettingsCheckboxWidget extends StatefulWidget {
   const SettingsCheckboxWidget({
-    Key? key,
+    super.key,
     required this.initialValue,
     required this.title,
     this.subtitle,
     this.validate,
     required this.onChanged,
-  }) : super(key: key);
+  });
 
   final bool initialValue;
   final Widget title;

@@ -47,8 +47,8 @@ class UserBookmarkListPage extends StatelessWidget {
 
 class UserBookmarkListView extends StatelessWidget {
   const UserBookmarkListView({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

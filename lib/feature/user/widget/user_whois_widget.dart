@@ -9,7 +9,7 @@ import '../cubit/user_cubit.dart';
 import '../model/user_badget_model.dart';
 
 class UserWhoisWidget extends StatelessWidget {
-  const UserWhoisWidget({Key? key}) : super(key: key);
+  const UserWhoisWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +48,7 @@ class UserWhoisWidget extends StatelessWidget {
 }
 
 class _BadgetsWidget extends StatelessWidget {
-  const _BadgetsWidget({Key? key, required this.badgets}) : super(key: key);
+  const _BadgetsWidget({required this.badgets});
 
   final List<UserBadgetModel> badgets;
 

@@ -13,9 +13,9 @@ import 'company_detail_page.dart';
 @RoutePage(name: CompanyDashboardPage.routeName)
 class CompanyDashboardPage extends StatelessWidget {
   const CompanyDashboardPage({
-    Key? key,
+    super.key,
     @PathParam() required this.alias,
-  }) : super(key: key);
+  });
 
   final String alias;
 

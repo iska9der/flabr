@@ -18,10 +18,10 @@ import '../repository/article_repository.dart';
 
 class ArticleStatisticsWidget extends StatelessWidget {
   const ArticleStatisticsWidget({
-    Key? key,
+    super.key,
     required this.article,
     this.mainAxisAlignment = MainAxisAlignment.spaceBetween,
-  }) : super(key: key);
+  });
 
   final ArticleModel article;
 
@@ -59,8 +59,7 @@ class ArticleStatisticsWidget extends StatelessWidget {
 }
 
 class _BookmarkIconButton extends StatelessWidget {
-  const _BookmarkIconButton({Key? key, required this.article})
-      : super(key: key);
+  const _BookmarkIconButton({required this.article});
 
   final ArticleModel article;
 
@@ -100,14 +99,14 @@ class _BookmarkIconButton extends StatelessWidget {
 
 class StatIconButton extends StatelessWidget {
   const StatIconButton({
-    Key? key,
+    super.key,
     required this.icon,
     required this.text,
     this.color,
     this.isHighlighted = false,
     this.isLoading = false,
     this.onTap,
-  }) : super(key: key);
+  });
 
   final IconData icon;
   final String text;

@@ -18,7 +18,7 @@ import '../repository/company_subscription_repository.dart';
 import '../service/company_service.dart';
 
 class CompanyProfileCardWidget extends StatefulWidget {
-  const CompanyProfileCardWidget({Key? key}) : super(key: key);
+  const CompanyProfileCardWidget({super.key});
 
   @override
   State<CompanyProfileCardWidget> createState() =>

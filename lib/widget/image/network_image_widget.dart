@@ -8,13 +8,13 @@ import 'full_image_widget.dart';
 
 class NetworkImageWidget extends StatelessWidget {
   const NetworkImageWidget({
-    Key? key,
+    super.key,
     required this.imageUrl,
     this.isTapable = false,
     this.height,
     this.placeholderWidget,
     this.errorWidget,
-  }) : super(key: key);
+  });
 
   final String imageUrl;
   final bool isTapable;

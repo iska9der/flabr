@@ -18,7 +18,7 @@ import '../widget/user_whois_widget.dart';
 
 @RoutePage(name: UserDetailPage.routeName)
 class UserDetailPage extends StatelessWidget {
-  const UserDetailPage({Key? key}) : super(key: key);
+  const UserDetailPage({super.key});
 
   static const String title = 'Профиль';
   static const String routePath = 'detail';
@@ -37,7 +37,7 @@ class UserDetailPage extends StatelessWidget {
 }
 
 class UserDetailPageView extends StatelessWidget {
-  const UserDetailPageView({Key? key}) : super(key: key);
+  const UserDetailPageView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -135,7 +135,7 @@ class UserDetailPageView extends StatelessWidget {
 }
 
 class _UserScoresWidget extends StatelessWidget {
-  const _UserScoresWidget({Key? key}) : super(key: key);
+  const _UserScoresWidget();
 
   @override
   Widget build(BuildContext context) {

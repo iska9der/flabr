@@ -14,10 +14,10 @@ import '../model/hub_statistics_model.dart';
 
 class HubCardWidget extends StatelessWidget {
   const HubCardWidget({
-    Key? key,
+    super.key,
     required this.model,
     this.renderType = RenderType.plain,
-  }) : super(key: key);
+  });
 
   final HubModel model;
   final RenderType renderType;

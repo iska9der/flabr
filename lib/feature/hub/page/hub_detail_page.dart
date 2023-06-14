@@ -19,7 +19,7 @@ import '../widget/hub_profile_card_widget.dart';
 
 @RoutePage(name: HubDetailPage.routeName)
 class HubDetailPage extends StatelessWidget {
-  const HubDetailPage({Key? key}) : super(key: key);
+  const HubDetailPage({super.key});
 
   static const name = 'Профиль';
   static const routePath = 'profile';
@@ -54,7 +54,7 @@ class HubDetailPage extends StatelessWidget {
 }
 
 class HubDetailPageView extends StatelessWidget {
-  const HubDetailPageView({Key? key}) : super(key: key);
+  const HubDetailPageView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -97,7 +97,7 @@ class HubDetailPageView extends StatelessWidget {
 }
 
 class _HubArticleListView extends StatelessWidget {
-  const _HubArticleListView({Key? key}) : super(key: key);
+  const _HubArticleListView();
 
   @override
   Widget build(BuildContext context) {

@@ -13,7 +13,7 @@ import '../repository/token_repository.dart';
 import 'profile_widget.dart';
 
 class LoginWidget extends StatelessWidget implements DialogUserWidget {
-  const LoginWidget({Key? key}) : super(key: key);
+  const LoginWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +46,7 @@ class LoginWidget extends StatelessWidget implements DialogUserWidget {
 }
 
 class _LoginWidgetView extends StatelessWidget {
-  const _LoginWidgetView({Key? key}) : super(key: key);
+  const _LoginWidgetView();
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +72,7 @@ class _LoginWidgetView extends StatelessWidget {
 }
 
 class _LoginField extends StatelessWidget {
-  const _LoginField({Key? key}) : super(key: key);
+  const _LoginField();
 
   @override
   Widget build(BuildContext context) {
@@ -97,7 +97,7 @@ class _LoginField extends StatelessWidget {
 }
 
 class _PasswordField extends StatelessWidget {
-  const _PasswordField({Key? key}) : super(key: key);
+  const _PasswordField();
 
   @override
   Widget build(BuildContext context) {
@@ -123,7 +123,7 @@ class _PasswordField extends StatelessWidget {
 }
 
 class _ErrorWidget extends StatelessWidget {
-  const _ErrorWidget({Key? key}) : super(key: key);
+  const _ErrorWidget();
 
   @override
   Widget build(BuildContext context) {
@@ -146,7 +146,7 @@ class _ErrorWidget extends StatelessWidget {
 }
 
 class _SubmitButton extends StatelessWidget {
-  const _SubmitButton({Key? key}) : super(key: key);
+  const _SubmitButton();
 
   @override
   Widget build(BuildContext context) {

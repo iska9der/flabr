@@ -71,7 +71,7 @@ class DialogUserProfileWidget extends StatelessWidget
 
 class DialogMyProfileWidget extends StatelessWidget
     implements DialogUserWidget {
-  const DialogMyProfileWidget({Key? key}) : super(key: key);
+  const DialogMyProfileWidget({super.key});
 
   @override
   Widget build(BuildContext context) {

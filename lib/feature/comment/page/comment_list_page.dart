@@ -110,7 +110,7 @@ class CommentListView extends StatelessWidget {
 
 /// Рекурсивный виджет для отрисовки дерева комментариев
 class CommentTreeWidget extends StatelessWidget {
-  const CommentTreeWidget(this.comment, {Key? key}) : super(key: key);
+  const CommentTreeWidget(this.comment, {super.key});
 
   final CommentModel comment;
 

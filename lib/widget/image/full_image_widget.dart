@@ -32,7 +32,7 @@ class FullNetworkImageWidget extends StatelessWidget {
 }
 
 class FullImageWidget extends StatefulWidget {
-  const FullImageWidget({Key? key, required this.provider}) : super(key: key);
+  const FullImageWidget({super.key, required this.provider});
 
   final ImageProvider provider;
 

@@ -17,7 +17,7 @@ import '../widget/image/full_image_widget.dart';
 
 @RoutePage(name: 'SettingsRoute')
 class SettingsPage extends StatelessWidget {
-  const SettingsPage({Key? key}) : super(key: key);
+  const SettingsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +28,7 @@ class SettingsPage extends StatelessWidget {
 }
 
 class SettingsView extends StatelessWidget {
-  const SettingsView({Key? key}) : super(key: key);
+  const SettingsView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -187,7 +187,7 @@ class _ConnectSidWidgetState extends State<ConnectSidWidget> {
 }
 
 class UIThemeWidget extends StatefulWidget {
-  const UIThemeWidget({Key? key}) : super(key: key);
+  const UIThemeWidget({super.key});
 
   @override
   State<UIThemeWidget> createState() => _UIThemeWidgetState();
@@ -234,7 +234,7 @@ class _UIThemeWidgetState extends State<UIThemeWidget> {
 }
 
 class UILangWidget extends StatelessWidget {
-  const UILangWidget({Key? key}) : super(key: key);
+  const UILangWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -270,7 +270,7 @@ class UILangWidget extends StatelessWidget {
 }
 
 class ArticlesLangWidget extends StatelessWidget {
-  const ArticlesLangWidget({Key? key}) : super(key: key);
+  const ArticlesLangWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -304,7 +304,7 @@ class ArticlesLangWidget extends StatelessWidget {
 }
 
 class SettingsFeedWidget extends StatelessWidget {
-  const SettingsFeedWidget({Key? key}) : super(key: key);
+  const SettingsFeedWidget({super.key});
 
   @override
   Widget build(BuildContext context) {

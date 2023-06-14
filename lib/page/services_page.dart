@@ -8,7 +8,7 @@ import '../feature/user/page/user_list_page.dart';
 
 @RoutePage(name: ServicesPage.routeName)
 class ServicesPage extends StatelessWidget {
-  const ServicesPage({Key? key}) : super(key: key);
+  const ServicesPage({super.key});
 
   static const routeName = 'ServicesRoute';
   static const routePath = '';
@@ -22,7 +22,7 @@ class ServicesPage extends StatelessWidget {
 }
 
 class ServicesPageView extends StatelessWidget {
-  const ServicesPageView({Key? key}) : super(key: key);
+  const ServicesPageView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -56,11 +56,11 @@ class ServicesPageView extends StatelessWidget {
 
 class ServiceCard extends StatelessWidget {
   const ServiceCard({
-    Key? key,
+    super.key,
     required this.title,
     required this.icon,
     this.onTap,
-  }) : super(key: key);
+  });
 
   final String title;
   final IconData icon;
