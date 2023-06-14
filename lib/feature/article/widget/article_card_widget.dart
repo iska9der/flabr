@@ -11,9 +11,10 @@ import '../../settings/cubit/settings_cubit.dart';
 import '../model/article_model.dart';
 import '../model/article_type.dart';
 import '../page/article_detail_page.dart';
-import 'article_hub_widget.dart';
-import 'article_info_widget.dart';
-import 'article_statistics_widget.dart';
+import 'article_footer_widget.dart';
+import 'article_header_widget.dart';
+import 'article_hubs_widget.dart';
+import 'article_stats_widget.dart';
 
 class ArticleCardWidget extends StatelessWidget {
   const ArticleCardWidget({
@@ -41,8 +42,22 @@ class ArticleCardWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.min,
         children: [
-          ArticleInfoWidget(article),
-          ArticleHubsWidget(hubs: article.hubs),
+          ArticleHeaderWidget(article),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+            child: _ArticleTitleWidget(
+              title: article.titleHtml,
+              renderType: renderType,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(8, 18, 8, 0),
+            child: ArticleStatsWidget(article),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(8, 12, 8, 0),
+            child: ArticleHubsWidget(hubs: article.hubs),
+          ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisSize: MainAxisSize.min,
@@ -55,23 +70,16 @@ class ArticleCardWidget extends StatelessWidget {
                   builder: (context, state) {
                     if (!state.feedConfig.isImageVisible) return const Wrap();
 
-                    return Column(
-                      children: [
-                        const SizedBox(height: 12),
-                        NetworkImageWidget(
-                          imageUrl: article.leadData.image.url,
-                          isTapable: true,
-                          height: kImageHeightDefault,
-                        )
-                      ],
+                    return Padding(
+                      padding: const EdgeInsets.only(top: 24),
+                      child: NetworkImageWidget(
+                        imageUrl: article.leadData.image.url,
+                        isTapable: true,
+                        height: kImageHeightDefault,
+                      ),
                     );
                   },
                 ),
-              const SizedBox(height: 12),
-              _ArticleTitleWidget(
-                title: article.titleHtml,
-                renderType: renderType,
-              ),
               BlocBuilder<SettingsCubit, SettingsState>(
                 buildWhen: (p, c) =>
                     p.feedConfig.isDescriptionVisible !=
@@ -83,7 +91,7 @@ class ArticleCardWidget extends StatelessWidget {
                   }
 
                   return Padding(
-                    padding: const EdgeInsets.only(top: 12.0),
+                    padding: const EdgeInsets.fromLTRB(8, 24, 8, 0),
                     child: HtmlWidget(
                       article.leadData.textHtml,
                       rebuildTriggers: RebuildTriggers([
@@ -120,8 +128,8 @@ class ArticleCardWidget extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 30),
-          ArticleStatisticsWidget(article: article),
+          const SizedBox(height: 24),
+          ArticleFooterWidget(article: article),
         ],
       ),
     );
@@ -139,17 +147,18 @@ class _ArticleTitleWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return renderType == RenderType.plain
-        ? Text(
-            title,
-            style: Theme.of(context).textTheme.titleLarge,
-          )
-        : HtmlWidget(
-            title,
-            textStyle: TextStyle(
-              color: Theme.of(context).textTheme.titleLarge?.color,
-              fontSize: Theme.of(context).textTheme.titleLarge?.fontSize,
-            ),
-          );
+    return switch (renderType) {
+      RenderType.plain => Text(
+          title,
+          style: Theme.of(context).textTheme.titleLarge,
+        ),
+      RenderType.html => HtmlWidget(
+          title,
+          textStyle: TextStyle(
+            color: Theme.of(context).textTheme.titleLarge?.color,
+            fontSize: Theme.of(context).textTheme.titleLarge?.fontSize,
+          ),
+        )
+    };
   }
 }

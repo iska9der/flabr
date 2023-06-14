@@ -13,6 +13,7 @@ class ArticleHubsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Wrap(
+      spacing: 14,
       children: hubs.map((hub) => _ArticleHubWidget(hub)).toList(),
     );
   }
@@ -40,7 +41,7 @@ class _ArticleHubWidget extends StatelessWidget {
     var style = Theme.of(context).textTheme.bodySmall;
 
     if ((hub.relatedData as HubRelatedData).isSubscribed) {
-      style = style?.copyWith(color: Colors.green);
+      style = style?.copyWith(color: Colors.green.shade300);
     }
 
     var title = hub.title;
@@ -53,10 +54,7 @@ class _ArticleHubWidget extends StatelessWidget {
     return InkWell(
       onTap: () => context.navigateNamedTo('services/$path/${hub.alias}'),
       child: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 8,
-          vertical: 6,
-        ),
+        padding: const EdgeInsets.symmetric(vertical: 8.0),
         child: Text(
           title,
           style: style,

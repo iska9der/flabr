@@ -16,11 +16,11 @@ import '../cubit/bookmark_cubit.dart';
 import '../model/article_model.dart';
 import '../repository/article_repository.dart';
 
-class ArticleStatisticsWidget extends StatelessWidget {
-  const ArticleStatisticsWidget({
+class ArticleFooterWidget extends StatelessWidget {
+  const ArticleFooterWidget({
     super.key,
     required this.article,
-    this.mainAxisAlignment = MainAxisAlignment.spaceBetween,
+    this.mainAxisAlignment = MainAxisAlignment.spaceAround,
   });
 
   final ArticleModel article;
@@ -49,10 +49,6 @@ class ArticleStatisticsWidget extends StatelessWidget {
           ),
         ),
         _BookmarkIconButton(article: article),
-        StatIconButton(
-          icon: Icons.remove_red_eye_rounded,
-          text: article.statistics.readingCount.compact(),
-        ),
       ],
     );
   }
@@ -117,6 +113,8 @@ class StatIconButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const iconSize = 18.0;
+
     return Material(
       color: Colors.transparent,
       child: InkWell(
@@ -128,13 +126,13 @@ class StatIconButton extends StatelessWidget {
             children: [
               isLoading
                   ? const SizedBox(
-                      width: 14,
-                      height: 14,
+                      width: iconSize,
+                      height: iconSize,
                       child: CircleIndicator.small(),
                     )
                   : Icon(
                       icon,
-                      size: 14,
+                      size: iconSize,
                       color: color?.withOpacity(isHighlighted ? 1 : .3) ??
                           Theme.of(context)
                               .iconTheme

@@ -4,8 +4,8 @@ import 'package:intl/intl.dart';
 import '../model/article_model.dart';
 import 'article_author_widget.dart';
 
-class ArticleInfoWidget extends StatelessWidget {
-  const ArticleInfoWidget(this.article, {super.key});
+class ArticleHeaderWidget extends StatelessWidget {
+  const ArticleHeaderWidget(this.article, {super.key});
 
   final ArticleModel article;
 

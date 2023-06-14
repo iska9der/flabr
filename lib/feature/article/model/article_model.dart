@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 import 'article_author_model.dart';
+import 'article_complexity.dart';
 import 'article_hub_model.dart';
 import 'article_lead_data_model.dart';
 import 'article_related_data.dart';
@@ -19,12 +20,15 @@ class ArticleModel extends Equatable {
     this.leadData = ArticleLeadDataModel.empty,
     this.relatedData = ArticleRelatedData.empty,
     this.hubs = const [],
+    this.complexity,
+    this.readingTime = 0,
   });
 
   final String id;
   final ArticleType type;
 
   final String timePublished;
+
   DateTime get publishedAt => DateTime.parse(timePublished).toLocal();
 
   /// Заголовок
@@ -33,12 +37,16 @@ class ArticleModel extends Equatable {
   /// Полный текст статьи
   /// прилетает, только если получаем конкретную статью по id
   final String textHtml;
+
   final ArticleAuthorModel author;
   final ArticleStatisticsModel statistics;
   final ArticleLeadDataModel leadData;
   final ArticleRelatedData relatedData;
 
   final List<ArticleHubModel> hubs;
+
+  final ArticleComplexity? complexity;
+  final int readingTime;
 
   factory ArticleModel.fromMap(Map<String, dynamic> map) {
     return ArticleModel(
@@ -66,10 +74,15 @@ class ArticleModel extends Equatable {
               map['hubs'].map((e) => ArticleHubModel.fromMap(e)),
             ).toList()
           : const [],
+      complexity: map['complexity'] != null
+          ? ArticleComplexity.fromString(map['complexity'])
+          : null,
+      readingTime: map['readingTime'] ?? 0,
     );
   }
 
   static const empty = ArticleModel(id: '0');
+
   bool get isEmpty => this == empty;
 
   @override
