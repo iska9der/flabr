@@ -4,10 +4,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../component/di/dependencies.dart';
 import '../../../component/router/app_router.dart';
+import '../../../widget/dashboard_drawer_link_widget.dart';
 import '../../settings/cubit/settings_cubit.dart';
 import '../cubit/user_cubit.dart';
 import '../repository/user_repository.dart';
-import '../widget/nav_link_widget.dart';
 import 'user_article_list_page.dart';
 import 'user_bookmark_list_page.dart';
 import 'user_detail_page.dart';
@@ -46,25 +46,21 @@ class UserDashboardPage extends StatelessWidget {
             appBar: AppBar(
               title: Text(login),
             ),
-            drawer: const Drawer(
-              child: SafeArea(
-                child: Column(
-                  children: [
-                    NavLinkWidget(
-                      title: UserDetailPage.title,
-                      route: UserDetailPage.routePath,
-                    ),
-                    NavLinkWidget(
-                      title: UserArticleListPage.title,
-                      route: UserArticleListPage.routePath,
-                    ),
-                    NavLinkWidget(
-                      title: UserBookmarkListPage.title,
-                      route: UserBookmarkListPage.routePath,
-                    ),
-                  ],
+            drawer: const NavigationDrawer(
+              children: [
+                DashboardDrawerLinkWidget(
+                  title: UserDetailPage.title,
+                  route: UserDetailPage.routePath,
                 ),
-              ),
+                DashboardDrawerLinkWidget(
+                  title: UserArticleListPage.title,
+                  route: UserArticleListPage.routePath,
+                ),
+                DashboardDrawerLinkWidget(
+                  title: UserBookmarkListPage.title,
+                  route: UserBookmarkListPage.routePath,
+                ),
+              ],
             ),
             body: SafeArea(child: child),
           );

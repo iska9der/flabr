@@ -4,8 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../component/di/dependencies.dart';
 import '../../../component/router/app_router.dart';
+import '../../../widget/dashboard_drawer_link_widget.dart';
 import '../../settings/cubit/settings_cubit.dart';
-import '../../user/widget/nav_link_widget.dart';
 import '../cubit/company_cubit.dart';
 import '../repository/company_repository.dart';
 import 'company_detail_page.dart';
@@ -42,17 +42,13 @@ class CompanyDashboardPage extends StatelessWidget {
             appBar: AppBar(
               title: Text(alias),
             ),
-            drawer: const Drawer(
-              child: SafeArea(
-                child: Column(
-                  children: [
-                    NavLinkWidget(
-                      title: CompanyDetailPage.title,
-                      route: CompanyDetailPage.routePath,
-                    ),
-                  ],
+            drawer: const NavigationDrawer(
+              children: [
+                DashboardDrawerLinkWidget(
+                  title: CompanyDetailPage.title,
+                  route: CompanyDetailPage.routePath,
                 ),
-              ),
+              ],
             ),
             body: SafeArea(child: child),
           );

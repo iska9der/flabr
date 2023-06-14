@@ -13,17 +13,17 @@ class DashboardPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return AutoTabsScaffold(
       lazyLoad: false,
-      routes:  const [
+      routes: const [
         MyArticlesRoute(),
         MyNewsRoute(),
         MyServicesRoute(),
         SettingsRoute(),
       ],
       bottomNavigationBuilder: (_, tabsRouter) {
-        return BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
-          currentIndex: tabsRouter.activeIndex,
-          onTap: (i) {
+        return NavigationBar(
+          labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
+          selectedIndex: tabsRouter.activeIndex,
+          onDestinationSelected: (i) {
             /// при нажатию на таб, в котором
             /// мы уже находимся - выходим в корень
             if (tabsRouter.activeIndex == i) {
@@ -33,20 +33,20 @@ class DashboardPage extends StatelessWidget {
               tabsRouter.setActiveIndex(i);
             }
           },
-          items: const [
-            BottomNavigationBarItem(
+          destinations: const [
+            NavigationDestination(
               label: 'Статьи',
               icon: Icon(Icons.article_outlined),
             ),
-            BottomNavigationBarItem(
+            NavigationDestination(
               label: 'Новости',
               icon: Icon(Icons.newspaper_outlined),
             ),
-            BottomNavigationBarItem(
+            NavigationDestination(
               label: 'Сервисы',
               icon: Icon(Icons.widgets_outlined),
             ),
-            BottomNavigationBarItem(
+            NavigationDestination(
               label: 'Настройки',
               icon: Icon(Icons.settings_outlined),
             ),

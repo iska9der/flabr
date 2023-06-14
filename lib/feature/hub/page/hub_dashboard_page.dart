@@ -4,8 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../component/di/dependencies.dart';
 import '../../../component/router/app_router.dart';
+import '../../../widget/dashboard_drawer_link_widget.dart';
 import '../../settings/cubit/settings_cubit.dart';
-import '../../user/widget/nav_link_widget.dart';
 import '../cubit/hub_cubit.dart';
 import '../repository/hub_repository.dart';
 import 'hub_detail_page.dart';
@@ -58,17 +58,13 @@ class HubDashboardPageView extends StatelessWidget {
               },
             ),
           ),
-          drawer: const Drawer(
-            child: SafeArea(
-              child: Column(
-                children: [
-                  NavLinkWidget(
-                    title: HubDetailPage.name,
-                    route: HubDetailPage.routePath,
-                  ),
-                ],
+          drawer: const NavigationDrawer(
+            children: [
+              DashboardDrawerLinkWidget(
+                title: HubDetailPage.name,
+                route: HubDetailPage.routePath,
               ),
-            ),
+            ],
           ),
           body: SafeArea(child: child),
         );

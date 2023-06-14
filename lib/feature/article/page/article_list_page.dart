@@ -148,44 +148,7 @@ class ArticleListPageView extends StatelessWidget {
       ],
       child: Scaffold(
         floatingActionButton: const FloatingScrollToTopButton(),
-        drawer: Drawer(
-          width: MediaQuery.of(context).size.width * .6,
-          child: SafeArea(
-            child: ListView(
-              physics: const NeverScrollableScrollPhysics(),
-              children: FlowEnum.values.map((flow) {
-                /// дергаем пункт "Моя лента"
-                if (flow == FlowEnum.feed) {
-                  final authState = context.watch<AuthCubit>().state;
-
-                  /// если мы не в статьях и не авторизованы, то не показываем
-                  /// этот пункт в drawer
-                  if (type != ArticleType.article || !authState.isAuthorized) {
-                    return const SizedBox();
-                  }
-
-                  return ListTile(
-                    title: const Text('Моя лента'),
-                    onTap: () {
-                      articlesCubit.changeFlow(flow);
-
-                      Navigator.of(context).pop();
-                    },
-                  );
-                } else {
-                  return ListTile(
-                    title: Text(flow.label),
-                    onTap: () {
-                      articlesCubit.changeFlow(flow);
-
-                      Navigator.of(context).pop();
-                    },
-                  );
-                }
-              }).toList(),
-            ),
-          ),
-        ),
+        drawer: _ArticleListDrawer(type: type),
         body: SafeArea(
           child: Scrollbar(
             controller: controller,
@@ -246,6 +209,51 @@ class ArticleListPageView extends StatelessWidget {
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _ArticleListDrawer extends StatelessWidget {
+  const _ArticleListDrawer({required this.type});
+
+  final ArticleType type;
+
+  _onItemTap(BuildContext context, FlowEnum flow) {
+    final articlesCubit = context.read<ArticleListCubit>();
+
+    articlesCubit.changeFlow(flow);
+
+    Navigator.of(context).pop();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final currentFlow = context.read<ArticleListCubit>().state.flow;
+
+    return DrawerTheme(
+      data: Theme.of(context).drawerTheme.copyWith(
+            width: MediaQuery.of(context).size.width * .6,
+          ),
+      child: NavigationDrawer(
+        children: FlowEnum.values.map((flow) {
+          /// дергаем пункт "Моя лента"
+          if (flow == FlowEnum.feed) {
+            final authState = context.watch<AuthCubit>().state;
+
+            /// если мы не в статьях и не авторизованы, то не показываем
+            /// этот пункт в drawer
+            if (type != ArticleType.article || !authState.isAuthorized) {
+              return const SizedBox();
+            }
+          }
+
+          return ListTile(
+            title: Text(flow.label),
+            selected: currentFlow == flow,
+            onTap: () => _onItemTap(context, flow),
+          );
+        }).toList(),
       ),
     );
   }
