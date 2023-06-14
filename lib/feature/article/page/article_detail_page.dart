@@ -10,13 +10,14 @@ import '../../../widget/progress_indicator.dart';
 import '../../settings/cubit/settings_cubit.dart';
 import '../cubit/article_cubit.dart';
 import '../repository/article_repository.dart';
-import '../widget/article_hub_widget.dart';
-import '../widget/article_info_widget.dart';
+import '../widget/article_hubs_widget.dart';
+import '../widget/article_header_widget.dart';
 import '../widget/article_settings_widget.dart';
-import '../widget/article_statistics_widget.dart';
+import '../widget/article_footer_widget.dart';
+import '../widget/article_stats_widget.dart';
 
 const double hPadding = 12.0;
-const double vPadding = 6.0;
+const double vPadding = 10.0;
 
 @RoutePage(name: ArticleDetailPage.routeName)
 class ArticleDetailPage extends StatelessWidget {
@@ -146,7 +147,7 @@ class _ArticleDetailPageViewState extends State<ArticleDetailPageView> {
                               ),
                               const SizedBox(width: 14),
                               IconButton(
-                                icon: const Icon(Icons.palette_outlined),
+                                icon: const Icon(Icons.brightness_6_rounded),
                                 iconSize: 20,
                                 tooltip: 'Настроить показ',
                                 onPressed: () => showModalBottomSheet(
@@ -177,7 +178,7 @@ class _ArticleDetailPageViewState extends State<ArticleDetailPageView> {
                             left: hPadding,
                             right: hPadding,
                           ),
-                          child: ArticleInfoWidget(article),
+                          child: ArticleHeaderWidget(article),
                         ),
                       ),
                       SliverToBoxAdapter(
@@ -186,6 +187,7 @@ class _ArticleDetailPageViewState extends State<ArticleDetailPageView> {
                             top: vPadding,
                             left: hPadding,
                             right: hPadding,
+                            bottom: vPadding,
                           ),
                           child: SelectableText(
                             article.titleHtml,
@@ -198,6 +200,17 @@ class _ArticleDetailPageViewState extends State<ArticleDetailPageView> {
                         child: Padding(
                           padding: const EdgeInsets.only(
                             top: vPadding,
+                            left: hPadding,
+                            right: hPadding,
+                            bottom: vPadding,
+                          ),
+                          child: ArticleStatsWidget(article),
+                        ),
+                      ),
+                      SliverToBoxAdapter(
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                            top: vPadding - 6,
                             left: hPadding,
                             right: hPadding,
                             bottom: vPadding,
@@ -239,7 +252,7 @@ class _FloatingStatistics extends StatelessWidget {
             color: Theme.of(context).colorScheme.surface.withOpacity(.95),
             child: SizedBox(
               height: 36,
-              child: ArticleStatisticsWidget(
+              child: ArticleFooterWidget(
                 article: article,
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               ),
