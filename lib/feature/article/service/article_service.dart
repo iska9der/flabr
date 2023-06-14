@@ -193,7 +193,7 @@ class ArticleService {
   Future<bool> addToBookmark(String articleId) async {
     try {
       final response = await _siteClient.post(
-        '/v1/articles/$articleId/bookmarks/add/',
+        '/v2/articles/$articleId/bookmarks/',
         body: {},
       );
 
@@ -211,9 +211,8 @@ class ArticleService {
 
   Future<bool> removeFromBookmark(String articleId) async {
     try {
-      final response = await _siteClient.post(
-        '/v1/articles/$articleId/bookmarks/remove/',
-        body: {},
+      final response = await _siteClient.delete(
+        '/v2/articles/$articleId/bookmarks/',
       );
 
       if (response.data['ok'] != true) {
