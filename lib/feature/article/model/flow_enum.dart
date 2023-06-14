@@ -21,30 +21,14 @@ enum FlowEnum {
 }
 
 extension FlowX on FlowEnum {
-  String get label {
-    switch (this) {
-      case FlowEnum.feed:
-        return 'Моя лента';
-      case FlowEnum.all:
-        return 'Все';
-
-      case FlowEnum.develop:
-        return 'Разработка';
-
-      case FlowEnum.admin:
-        return 'Администрирование';
-
-      case FlowEnum.design:
-        return 'Дизайн';
-
-      case FlowEnum.management:
-        return 'Менеджмент';
-
-      case FlowEnum.marketing:
-        return 'Маркетинг';
-
-      case FlowEnum.popsci:
-        return 'Научпоп';
-    }
-  }
+  String get label => switch (this) {
+        FlowEnum.feed => 'Моя лента',
+        FlowEnum.all => 'Все',
+        FlowEnum.develop => 'Разработка',
+        FlowEnum.admin => 'Администрирование',
+        FlowEnum.design => 'Дизайн',
+        FlowEnum.management => 'Менеджмент',
+        FlowEnum.marketing => 'Маркетинг',
+        FlowEnum.popsci => 'Научпоп'
+      };
 }

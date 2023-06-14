@@ -15,41 +15,36 @@ abstract class SearchParamsFactory extends Params {
     required String order,
     required int page,
   }) {
-    switch (target) {
-      case SearchTarget.posts:
-        return SearchArticleParams(
+    return switch (target) {
+      SearchTarget.posts => SearchArticleParams(
           query: query,
           order: order,
           langArticles: langArticles,
           langUI: langUI,
           page: page.toString(),
-        );
-      case SearchTarget.hubs:
-        return SearchHubParams(
+        ),
+      SearchTarget.hubs => SearchHubParams(
           query: query,
           order: order,
           langArticles: langArticles,
           langUI: langUI,
           page: page.toString(),
-        );
-      case SearchTarget.companies:
-        return SearchCompanyParams(
+        ),
+      SearchTarget.companies => SearchCompanyParams(
           query: query,
           order: order,
           langArticles: langArticles,
           langUI: langUI,
           page: page.toString(),
-        );
-      case SearchTarget.users:
-        return SearchUserParams(
+        ),
+      SearchTarget.users => SearchUserParams(
           query: query,
           order: order,
           langArticles: langArticles,
           langUI: langUI,
           page: page.toString(),
-        );
-      case SearchTarget.comments:
-        throw ValueException('Не реализовано');
-    }
+        ),
+      SearchTarget.comments => throw ValueException('Не реализовано'),
+    };
   }
 }

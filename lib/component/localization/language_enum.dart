@@ -5,13 +5,10 @@ enum LanguageEnum {
   en;
 
   static LanguageEnum fromString(String value) {
-    switch (value) {
-      case 'ru':
-        return ru;
-      case 'en':
-        return en;
-      default:
-        throw ValueException('Неизвестный язык');
-    }
+    return switch (value) {
+      'ru' => ru,
+      'en' => en,
+      _ => throw ValueException('Неизвестный язык')
+    };
   }
 }

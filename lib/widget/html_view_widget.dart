@@ -164,20 +164,17 @@ class CustomFactory extends WidgetFactory with SvgFactory, WebViewFactory {
           meta.register(op);
           break;
         }
+        final op = BuildOp(
+          onTree: (_, tree) {
+            WidgetBit.block(
+              tree.parent!,
+              buildBlockCodeWidget(el.text),
+            ).insertBefore(tree);
 
-        meta.register(
-          BuildOp(
-            onTree: (_, tree) {
-              WidgetBit.block(
-                tree.parent!,
-                buildBlockCodeWidget(el.text),
-              ).insertBefore(tree);
-
-              tree.detach();
-            },
-          ),
+            tree.detach();
+          },
         );
-
+        meta.register(op);
         break;
     }
 

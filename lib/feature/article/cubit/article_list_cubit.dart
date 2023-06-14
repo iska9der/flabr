@@ -86,14 +86,10 @@ class ArticleListCubit extends Cubit<ArticleListState> {
     switch (sort) {
       case SortEnum.byBest:
         if (state.period == option.value) return;
-
         newState = ArticleListState(period: option.value);
-        break;
       case SortEnum.byNew:
         if (state.score == option.value) return;
-
         newState = ArticleListState(score: option.value);
-        break;
       default:
         throw ValueException('Неизвестный вариант сортировки статей');
     }
@@ -136,22 +132,12 @@ class ArticleListCubit extends Cubit<ArticleListState> {
     emit(state.copyWith(status: ArticlesStatus.loading));
 
     try {
-      ArticleListResponse response;
-
-      switch (state.from) {
-        case ArticleFromEnum.flow:
-          response = await _fetchFlowArticles();
-          break;
-        case ArticleFromEnum.hub:
-          response = await _fetchHubArticles();
-          break;
-        case ArticleFromEnum.userArticles:
-          response = await _fetchUserArticles();
-          break;
-        case ArticleFromEnum.userBookmarks:
-          response = await _fetchUserBookmarks();
-          break;
-      }
+      ArticleListResponse response = switch (state.from) {
+        ArticleFromEnum.flow => await _fetchFlowArticles(),
+        ArticleFromEnum.hub => await _fetchHubArticles(),
+        ArticleFromEnum.userArticles => await _fetchUserArticles(),
+        ArticleFromEnum.userBookmarks => await _fetchUserBookmarks()
+      };
 
       emit(state.copyWith(
         status: ArticlesStatus.success,

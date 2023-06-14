@@ -28,10 +28,8 @@ class BookmarkCubit extends Cubit<BookmarkState> {
       switch (state.isBookmarked) {
         case false:
           await _add();
-          break;
         case true:
           await _remove();
-          break;
       }
     } on DisplayableException catch (e) {
       emit(state.copyWith(

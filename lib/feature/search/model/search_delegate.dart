@@ -146,29 +146,26 @@ class FlabrSearchDelegate extends SearchDelegate {
                             if (index < models.length) {
                               var model = models[index];
 
-                              switch (state.target) {
-                                case SearchTarget.posts:
-                                  return ArticleCardWidget(
+                              return switch (state.target) {
+                                SearchTarget.posts => ArticleCardWidget(
                                     article: model,
                                     renderType: RenderType.html,
-                                  );
-                                case SearchTarget.hubs:
-                                  return HubCardWidget(
+                                  ),
+                                SearchTarget.hubs => HubCardWidget(
                                     model: model,
                                     renderType: RenderType.html,
-                                  );
-                                case SearchTarget.companies:
-                                  return CompanyCardWidget(
+                                  ),
+                                SearchTarget.companies => CompanyCardWidget(
                                     model: model,
                                     renderType: RenderType.html,
-                                  );
-                                case SearchTarget.users:
-                                  return UserCardWidget(model: model);
-                                case SearchTarget.comments:
-                                  return const Center(
+                                  ),
+                                SearchTarget.users => UserCardWidget(
+                                    model: model,
+                                  ),
+                                SearchTarget.comments => const Center(
                                     child: Text('Не реализовано'),
-                                  );
-                              }
+                                  )
+                              };
                             }
 
                             Timer(
