@@ -14,6 +14,7 @@ import '../page/article_detail_page.dart';
 import 'article_footer_widget.dart';
 import 'article_header_widget.dart';
 import 'article_hubs_widget.dart';
+import 'article_labels_widget.dart';
 import 'article_stats_widget.dart';
 
 class ArticleCardWidget extends StatelessWidget {
@@ -57,6 +58,10 @@ class ArticleCardWidget extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.fromLTRB(8, 12, 8, 0),
             child: ArticleHubsWidget(hubs: article.hubs),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+            child: ArticleLabelsWidget(article),
           ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,

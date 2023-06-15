@@ -10,10 +10,11 @@ import '../../../widget/progress_indicator.dart';
 import '../../settings/cubit/settings_cubit.dart';
 import '../cubit/article_cubit.dart';
 import '../repository/article_repository.dart';
-import '../widget/article_hubs_widget.dart';
-import '../widget/article_header_widget.dart';
-import '../widget/article_settings_widget.dart';
 import '../widget/article_footer_widget.dart';
+import '../widget/article_header_widget.dart';
+import '../widget/article_hubs_widget.dart';
+import '../widget/article_labels_widget.dart';
+import '../widget/article_settings_widget.dart';
 import '../widget/article_stats_widget.dart';
 
 const double hPadding = 12.0;
@@ -77,7 +78,7 @@ class _ArticleDetailPageViewState extends State<ArticleDetailPageView> {
             );
       },
       child: Scaffold(
-        floatingActionButton: _FloatingStatistics(isVisible: isStatsVisible),
+        floatingActionButton: _FloatingFooter(isVisible: isStatsVisible),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         body: SafeArea(
           child: BlocBuilder<ArticleCubit, ArticleState>(
@@ -213,9 +214,17 @@ class _ArticleDetailPageViewState extends State<ArticleDetailPageView> {
                             top: vPadding - 6,
                             left: hPadding,
                             right: hPadding,
-                            bottom: vPadding,
                           ),
                           child: ArticleHubsWidget(hubs: article.hubs),
+                        ),
+                      ),
+                      SliverToBoxAdapter(
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                            left: hPadding,
+                            right: hPadding,
+                          ),
+                          child: ArticleLabelsWidget(article),
                         ),
                       ),
                       HtmlView(textHtml: article.textHtml),
@@ -231,8 +240,8 @@ class _ArticleDetailPageViewState extends State<ArticleDetailPageView> {
   }
 }
 
-class _FloatingStatistics extends StatelessWidget {
-  const _FloatingStatistics({this.isVisible = true});
+class _FloatingFooter extends StatelessWidget {
+  const _FloatingFooter({this.isVisible = true});
 
   final bool isVisible;
 

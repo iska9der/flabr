@@ -41,7 +41,7 @@ void main() async {
       runApp(MyApp());
     },
     (error, stack) {
-      if (kDebugMode) print(error.toString());
+      if (kDebugMode) print(stack);
     },
   );
 }
