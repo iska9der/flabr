@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 
 import 'article_author_model.dart';
 import 'article_complexity.dart';
+import 'article_format.dart';
 import 'article_hub_model.dart';
 import 'article_lead_data_model.dart';
 import 'article_related_data.dart';
@@ -22,6 +23,7 @@ class ArticleModel extends Equatable {
     this.hubs = const [],
     this.complexity,
     this.readingTime = 0,
+    this.format,
   });
 
   final String id;
@@ -47,6 +49,7 @@ class ArticleModel extends Equatable {
 
   final ArticleComplexity? complexity;
   final int readingTime;
+  final ArticleFormat? format;
 
   factory ArticleModel.fromMap(Map<String, dynamic> map) {
     return ArticleModel(
@@ -78,6 +81,9 @@ class ArticleModel extends Equatable {
           ? ArticleComplexity.fromString(map['complexity'])
           : null,
       readingTime: map['readingTime'] ?? 0,
+      format: map['format'] != null
+          ? ArticleFormat.fromString(map['format'])
+          : null,
     );
   }
 
