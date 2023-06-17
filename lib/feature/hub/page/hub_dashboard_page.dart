@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../component/di/dependencies.dart';
 import '../../../component/router/app_router.dart';
 import '../../../widget/dashboard_drawer_link_widget.dart';
+import '../../scaffold/cubit/scaffold_cubit.dart';
 import '../../settings/cubit/settings_cubit.dart';
 import '../cubit/hub_cubit.dart';
 import '../repository/hub_repository.dart';
@@ -24,15 +25,22 @@ class HubDashboardPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      key: ValueKey('hub-$alias-dashboard'),
-      lazy: false,
-      create: (c) => HubCubit(
-        alias,
-        repository: getIt.get<HubRepository>(),
-        langUI: context.read<SettingsCubit>().state.langUI,
-        langArticles: context.read<SettingsCubit>().state.langArticles,
-      ),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          key: ValueKey('hub-$alias-dashboard'),
+          lazy: false,
+          create: (c) => HubCubit(
+            alias,
+            repository: getIt.get<HubRepository>(),
+            langUI: context.read<SettingsCubit>().state.langUI,
+            langArticles: context.read<SettingsCubit>().state.langArticles,
+          ),
+        ),
+        BlocProvider(
+          create: (c) => ScaffoldCubit(),
+        ),
+      ],
       child: const HubDashboardPageView(),
     );
   }
@@ -49,6 +57,7 @@ class HubDashboardPageView extends StatelessWidget {
       ],
       builder: (context, child) {
         return Scaffold(
+          key: context.read<ScaffoldCubit>().key,
           appBar: AppBar(
             scrolledUnderElevation: 0,
             elevation: 0,

@@ -70,7 +70,7 @@ class _FontScaleSliderState extends State<FontScaleSlider> {
           label: 'Размер шрифта',
           value: sliderValue,
           min: 0.8,
-          max: 1.2,
+          max: 1.4,
           onChanged: (value) {
             setState(() {
               sliderValue = value;

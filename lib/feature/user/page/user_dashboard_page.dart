@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../component/di/dependencies.dart';
 import '../../../component/router/app_router.dart';
 import '../../../widget/dashboard_drawer_link_widget.dart';
+import '../../scaffold/cubit/scaffold_cubit.dart';
 import '../../settings/cubit/settings_cubit.dart';
 import '../cubit/user_cubit.dart';
 import '../repository/user_repository.dart';
@@ -26,46 +27,67 @@ class UserDashboardPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      key: ValueKey('user-$login-dashboard'),
-      lazy: false,
-      create: (c) => UserCubit(
-        login,
-        repository: getIt.get<UserRepository>(),
-        langUI: context.read<SettingsCubit>().state.langUI,
-        langArticles: context.read<SettingsCubit>().state.langArticles,
-      ),
-      child: AutoTabsRouter(
-        routes: const [
-          UserDetailRoute(),
-          UserArticleListRoute(),
-          UserBookmarkListRoute(),
-        ],
-        builder: (context, child) {
-          return Scaffold(
-            appBar: AppBar(
-              title: Text(login),
-            ),
-            drawer: const NavigationDrawer(
-              children: [
-                DashboardDrawerLinkWidget(
-                  title: UserDetailPage.title,
-                  route: UserDetailPage.routePath,
-                ),
-                DashboardDrawerLinkWidget(
-                  title: UserArticleListPage.title,
-                  route: UserArticleListPage.routePath,
-                ),
-                DashboardDrawerLinkWidget(
-                  title: UserBookmarkListPage.title,
-                  route: UserBookmarkListPage.routePath,
-                ),
-              ],
-            ),
-            body: SafeArea(child: child),
-          );
-        },
-      ),
+    final settingsCubit = context.read<SettingsCubit>();
+
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          key: ValueKey('user-$login-dashboard'),
+          lazy: false,
+          create: (c) => UserCubit(
+            login,
+            repository: getIt.get<UserRepository>(),
+            langUI: settingsCubit.state.langUI,
+            langArticles: settingsCubit.state.langArticles,
+          ),
+        ),
+        BlocProvider(
+          create: (c) => ScaffoldCubit(),
+        ),
+      ],
+      child: const UserDashboardView(),
+    );
+  }
+}
+
+class UserDashboardView extends StatelessWidget {
+  const UserDashboardView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final userCubit = context.read<UserCubit>();
+
+    return AutoTabsRouter(
+      routes: const [
+        UserDetailRoute(),
+        UserArticleListRoute(),
+        UserBookmarkListRoute(),
+      ],
+      builder: (context, child) {
+        return Scaffold(
+          key: context.read<ScaffoldCubit>().key,
+          appBar: AppBar(
+            title: Text(userCubit.state.login),
+          ),
+          drawer: const NavigationDrawer(
+            children: [
+              DashboardDrawerLinkWidget(
+                title: UserDetailPage.title,
+                route: UserDetailPage.routePath,
+              ),
+              DashboardDrawerLinkWidget(
+                title: UserArticleListPage.title,
+                route: UserArticleListPage.routePath,
+              ),
+              DashboardDrawerLinkWidget(
+                title: UserBookmarkListPage.title,
+                route: UserBookmarkListPage.routePath,
+              ),
+            ],
+          ),
+          body: SafeArea(child: child),
+        );
+      },
     );
   }
 }

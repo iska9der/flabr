@@ -18,6 +18,7 @@ class FloatingScrollToTopButton extends StatelessWidget {
           duration: scrollCubit.duration,
           opacity: state.isTopEdge ? 0 : 1,
           child: FloatingActionButton(
+            heroTag: null,
             mini: true,
             onPressed: () => scrollCubit.animateToTop(),
             child: const Icon(Icons.arrow_upward),

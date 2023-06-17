@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../component/di/dependencies.dart';
+import '../../scaffold/cubit/scaffold_cubit.dart';
 import '../../scroll/cubit/scroll_cubit.dart';
 import '../../settings/cubit/settings_cubit.dart';
 import '../cubit/article_list_cubit.dart';
@@ -40,6 +41,9 @@ class NewsListPage extends StatelessWidget {
         ),
         BlocProvider(
           create: (c) => ScrollCubit()..setUpEdgeListeners(),
+        ),
+        BlocProvider(
+          create: (c) => ScaffoldCubit(),
         ),
       ],
       child: const ArticleListPageView(type: ArticleType.news),
