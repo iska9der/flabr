@@ -8,11 +8,12 @@ import '../../../common/model/extension/state_status_x.dart';
 import '../../../common/utils/utils.dart';
 import '../../../component/di/dependencies.dart';
 import '../../../config/constants.dart';
+import '../../../widget/button/common_floating_action_button.dart';
 import '../../../widget/progress_indicator.dart';
 import '../../auth/cubit/auth_cubit.dart';
 import '../../auth/widget/profile_icon_button.dart';
+import '../../scaffold/cubit/scaffold_cubit.dart';
 import '../../scroll/cubit/scroll_cubit.dart';
-import '../../scroll/widget/floating_scroll_to_top_button.dart';
 import '../../search/cubit/search_cubit.dart';
 import '../../search/model/search_delegate.dart';
 import '../../search/repository/search_repository.dart';
@@ -56,6 +57,9 @@ class ArticleListPage extends StatelessWidget {
             langUI: context.read<SettingsCubit>().state.langUI,
             langArticles: context.read<SettingsCubit>().state.langArticles,
           ),
+        ),
+        BlocProvider(
+          create: (c) => ScaffoldCubit(),
         ),
       ],
       child: const ArticleListPageView(),
@@ -146,8 +150,10 @@ class ArticleListPageView extends StatelessWidget {
         ),
       ],
       child: Scaffold(
-        floatingActionButton: const FloatingScrollToTopButton(),
+        key: context.read<ScaffoldCubit>().key,
         drawer: _ArticleListDrawer(type: type),
+        floatingActionButton: const CommonFloatingActionButton(),
+        floatingActionButtonLocation: CommonFloatingActionButton.location,
         body: SafeArea(
           child: Scrollbar(
             controller: controller,

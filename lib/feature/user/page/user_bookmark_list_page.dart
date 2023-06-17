@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../component/di/dependencies.dart';
+import '../../../widget/button/common_floating_action_button.dart';
 import '../../article/cubit/article_list_cubit.dart';
 import '../../article/model/article_from_enum.dart';
 import '../../article/page/article_list_page.dart';
 import '../../article/repository/article_repository.dart';
 import '../../scroll/cubit/scroll_cubit.dart';
-import '../../scroll/widget/floating_scroll_to_top_button.dart';
 import '../../settings/cubit/settings_cubit.dart';
 import '../cubit/user_cubit.dart';
 
@@ -59,7 +59,8 @@ class UserBookmarkListView extends StatelessWidget {
       listenWhen: (p, c) => c.isBottomEdge,
       listener: (c, state) => articlesCubit.fetch(),
       child: Scaffold(
-        floatingActionButton: const FloatingScrollToTopButton(),
+        floatingActionButton: const CommonFloatingActionButton(),
+        floatingActionButtonLocation: CommonFloatingActionButton.location,
         body: Scrollbar(
           controller: scrollCtrl,
           child: CustomScrollView(
