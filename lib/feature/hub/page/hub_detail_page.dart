@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../component/di/dependencies.dart';
 import '../../../config/constants.dart';
+import '../../../widget/button/common_floating_action_button.dart';
 import '../../../widget/progress_indicator.dart';
 import '../../article/cubit/article_list_cubit.dart';
 import '../../article/model/article_from_enum.dart';
@@ -12,7 +13,6 @@ import '../../article/page/article_list_page.dart';
 import '../../article/repository/article_repository.dart';
 import '../../article/widget/sort/articles_sort_widget.dart';
 import '../../scroll/cubit/scroll_cubit.dart';
-import '../../scroll/widget/floating_scroll_to_top_button.dart';
 import '../../settings/cubit/settings_cubit.dart';
 import '../cubit/hub_cubit.dart';
 import '../widget/hub_profile_card_widget.dart';
@@ -61,7 +61,8 @@ class HubDetailPageView extends StatelessWidget {
     var scrollCtrl = context.read<ScrollCubit>().state.controller;
 
     return Scaffold(
-      floatingActionButton: const FloatingScrollToTopButton(),
+      floatingActionButton: const CommonFloatingActionButton(),
+      floatingActionButtonLocation: CommonFloatingActionButton.location,
       body: BlocBuilder<HubCubit, HubState>(
         builder: (context, state) {
           if (state.status == HubStatus.loading) {
