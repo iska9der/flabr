@@ -15,30 +15,6 @@ abstract class _$AppRouter extends RootStackRouter {
 
   @override
   final Map<String, PageFactory> pagesMap = {
-    MyArticlesRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: MyArticlesRouteEmpty(),
-      );
-    },
-    MyUsersRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: MyUsersRouteEmpty(),
-      );
-    },
-    MyNewsRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: MyNewsRouteEmpty(),
-      );
-    },
-    MyServicesRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: MyServicesRouteEmpty(),
-      );
-    },
     ArticleDetailRoute.name: (routeData) {
       final pathParams = routeData.inheritedPathParams;
       final args = routeData.argsAs<ArticleDetailRouteArgs>(
@@ -59,30 +35,6 @@ abstract class _$AppRouter extends RootStackRouter {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: ArticleListPage(
-          key: args.key,
-          flow: args.flow,
-        ),
-      );
-    },
-    NewsDetailRoute.name: (routeData) {
-      final pathParams = routeData.inheritedPathParams;
-      final args = routeData.argsAs<NewsDetailRouteArgs>(
-          orElse: () => NewsDetailRouteArgs(id: pathParams.getString('id')));
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: NewsDetailPage(
-          key: args.key,
-          id: args.id,
-        ),
-      );
-    },
-    NewsListRoute.name: (routeData) {
-      final pathParams = routeData.inheritedPathParams;
-      final args = routeData.argsAs<NewsListRouteArgs>(
-          orElse: () => NewsListRouteArgs(flow: pathParams.getString('flow')));
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: NewsListPage(
           key: args.key,
           flow: args.flow,
         ),
@@ -126,6 +78,12 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const CompanyListPage(),
       );
     },
+    DashboardRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const DashboardPage(),
+      );
+    },
     HubDashboardRoute.name: (routeData) {
       final pathParams = routeData.inheritedPathParams;
       final args = routeData.argsAs<HubDashboardRouteArgs>(
@@ -149,6 +107,66 @@ abstract class _$AppRouter extends RootStackRouter {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const HubListPage(),
+      );
+    },
+    MyArticlesRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: MyArticlesRouteEmpty(),
+      );
+    },
+    MyNewsRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: MyNewsRouteEmpty(),
+      );
+    },
+    MyServicesRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: MyServicesRouteEmpty(),
+      );
+    },
+    MyUsersRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: MyUsersRouteEmpty(),
+      );
+    },
+    NewsDetailRoute.name: (routeData) {
+      final pathParams = routeData.inheritedPathParams;
+      final args = routeData.argsAs<NewsDetailRouteArgs>(
+          orElse: () => NewsDetailRouteArgs(id: pathParams.getString('id')));
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: NewsDetailPage(
+          key: args.key,
+          id: args.id,
+        ),
+      );
+    },
+    NewsListRoute.name: (routeData) {
+      final pathParams = routeData.inheritedPathParams;
+      final args = routeData.argsAs<NewsListRouteArgs>(
+          orElse: () => NewsListRouteArgs(flow: pathParams.getString('flow')));
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: NewsListPage(
+          key: args.key,
+          flow: args.flow,
+        ),
+      );
+    },
+    ServicesRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const ServicesPage(),
+      );
+    },
+    SettingsRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const SettingsPage(),
       );
     },
     UserArticleListRoute.name: (routeData) {
@@ -188,81 +206,7 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const UserListPage(),
       );
     },
-    DashboardRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const DashboardPage(),
-      );
-    },
-    ServicesRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const ServicesPage(),
-      );
-    },
-    SettingsRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const SettingsPage(),
-      );
-    },
   };
-}
-
-/// generated route for
-/// [MyArticlesRouteEmpty]
-class MyArticlesRoute extends PageRouteInfo<void> {
-  const MyArticlesRoute({List<PageRouteInfo>? children})
-      : super(
-          MyArticlesRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'MyArticlesRoute';
-
-  static const PageInfo<void> page = PageInfo<void>(name);
-}
-
-/// generated route for
-/// [MyUsersRouteEmpty]
-class MyUsersRoute extends PageRouteInfo<void> {
-  const MyUsersRoute({List<PageRouteInfo>? children})
-      : super(
-          MyUsersRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'MyUsersRoute';
-
-  static const PageInfo<void> page = PageInfo<void>(name);
-}
-
-/// generated route for
-/// [MyNewsRouteEmpty]
-class MyNewsRoute extends PageRouteInfo<void> {
-  const MyNewsRoute({List<PageRouteInfo>? children})
-      : super(
-          MyNewsRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'MyNewsRoute';
-
-  static const PageInfo<void> page = PageInfo<void>(name);
-}
-
-/// generated route for
-/// [MyServicesRouteEmpty]
-class MyServicesRoute extends PageRouteInfo<void> {
-  const MyServicesRoute({List<PageRouteInfo>? children})
-      : super(
-          MyServicesRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'MyServicesRoute';
-
-  static const PageInfo<void> page = PageInfo<void>(name);
 }
 
 /// generated route for
@@ -340,84 +284,6 @@ class ArticleListRouteArgs {
   @override
   String toString() {
     return 'ArticleListRouteArgs{key: $key, flow: $flow}';
-  }
-}
-
-/// generated route for
-/// [NewsDetailPage]
-class NewsDetailRoute extends PageRouteInfo<NewsDetailRouteArgs> {
-  NewsDetailRoute({
-    Key? key,
-    required String id,
-    List<PageRouteInfo>? children,
-  }) : super(
-          NewsDetailRoute.name,
-          args: NewsDetailRouteArgs(
-            key: key,
-            id: id,
-          ),
-          rawPathParams: {'id': id},
-          initialChildren: children,
-        );
-
-  static const String name = 'NewsDetailRoute';
-
-  static const PageInfo<NewsDetailRouteArgs> page =
-      PageInfo<NewsDetailRouteArgs>(name);
-}
-
-class NewsDetailRouteArgs {
-  const NewsDetailRouteArgs({
-    this.key,
-    required this.id,
-  });
-
-  final Key? key;
-
-  final String id;
-
-  @override
-  String toString() {
-    return 'NewsDetailRouteArgs{key: $key, id: $id}';
-  }
-}
-
-/// generated route for
-/// [NewsListPage]
-class NewsListRoute extends PageRouteInfo<NewsListRouteArgs> {
-  NewsListRoute({
-    Key? key,
-    required String flow,
-    List<PageRouteInfo>? children,
-  }) : super(
-          NewsListRoute.name,
-          args: NewsListRouteArgs(
-            key: key,
-            flow: flow,
-          ),
-          rawPathParams: {'flow': flow},
-          initialChildren: children,
-        );
-
-  static const String name = 'NewsListRoute';
-
-  static const PageInfo<NewsListRouteArgs> page =
-      PageInfo<NewsListRouteArgs>(name);
-}
-
-class NewsListRouteArgs {
-  const NewsListRouteArgs({
-    this.key,
-    required this.flow,
-  });
-
-  final Key? key;
-
-  final String flow;
-
-  @override
-  String toString() {
-    return 'NewsListRouteArgs{key: $key, flow: $flow}';
   }
 }
 
@@ -529,6 +395,20 @@ class CompanyListRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [DashboardPage]
+class DashboardRoute extends PageRouteInfo<void> {
+  const DashboardRoute({List<PageRouteInfo>? children})
+      : super(
+          DashboardRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'DashboardRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
 /// [HubDashboardPage]
 class HubDashboardRoute extends PageRouteInfo<HubDashboardRouteArgs> {
   HubDashboardRoute({
@@ -591,6 +471,168 @@ class HubListRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'HubListRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [MyArticlesRouteEmpty]
+class MyArticlesRoute extends PageRouteInfo<void> {
+  const MyArticlesRoute({List<PageRouteInfo>? children})
+      : super(
+          MyArticlesRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'MyArticlesRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [MyNewsRouteEmpty]
+class MyNewsRoute extends PageRouteInfo<void> {
+  const MyNewsRoute({List<PageRouteInfo>? children})
+      : super(
+          MyNewsRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'MyNewsRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [MyServicesRouteEmpty]
+class MyServicesRoute extends PageRouteInfo<void> {
+  const MyServicesRoute({List<PageRouteInfo>? children})
+      : super(
+          MyServicesRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'MyServicesRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [MyUsersRouteEmpty]
+class MyUsersRoute extends PageRouteInfo<void> {
+  const MyUsersRoute({List<PageRouteInfo>? children})
+      : super(
+          MyUsersRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'MyUsersRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [NewsDetailPage]
+class NewsDetailRoute extends PageRouteInfo<NewsDetailRouteArgs> {
+  NewsDetailRoute({
+    Key? key,
+    required String id,
+    List<PageRouteInfo>? children,
+  }) : super(
+          NewsDetailRoute.name,
+          args: NewsDetailRouteArgs(
+            key: key,
+            id: id,
+          ),
+          rawPathParams: {'id': id},
+          initialChildren: children,
+        );
+
+  static const String name = 'NewsDetailRoute';
+
+  static const PageInfo<NewsDetailRouteArgs> page =
+      PageInfo<NewsDetailRouteArgs>(name);
+}
+
+class NewsDetailRouteArgs {
+  const NewsDetailRouteArgs({
+    this.key,
+    required this.id,
+  });
+
+  final Key? key;
+
+  final String id;
+
+  @override
+  String toString() {
+    return 'NewsDetailRouteArgs{key: $key, id: $id}';
+  }
+}
+
+/// generated route for
+/// [NewsListPage]
+class NewsListRoute extends PageRouteInfo<NewsListRouteArgs> {
+  NewsListRoute({
+    Key? key,
+    required String flow,
+    List<PageRouteInfo>? children,
+  }) : super(
+          NewsListRoute.name,
+          args: NewsListRouteArgs(
+            key: key,
+            flow: flow,
+          ),
+          rawPathParams: {'flow': flow},
+          initialChildren: children,
+        );
+
+  static const String name = 'NewsListRoute';
+
+  static const PageInfo<NewsListRouteArgs> page =
+      PageInfo<NewsListRouteArgs>(name);
+}
+
+class NewsListRouteArgs {
+  const NewsListRouteArgs({
+    this.key,
+    required this.flow,
+  });
+
+  final Key? key;
+
+  final String flow;
+
+  @override
+  String toString() {
+    return 'NewsListRouteArgs{key: $key, flow: $flow}';
+  }
+}
+
+/// generated route for
+/// [ServicesPage]
+class ServicesRoute extends PageRouteInfo<void> {
+  const ServicesRoute({List<PageRouteInfo>? children})
+      : super(
+          ServicesRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'ServicesRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [SettingsPage]
+class SettingsRoute extends PageRouteInfo<void> {
+  const SettingsRoute({List<PageRouteInfo>? children})
+      : super(
+          SettingsRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'SettingsRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }
@@ -686,48 +728,6 @@ class UserListRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'UserListRoute';
-
-  static const PageInfo<void> page = PageInfo<void>(name);
-}
-
-/// generated route for
-/// [DashboardPage]
-class DashboardRoute extends PageRouteInfo<void> {
-  const DashboardRoute({List<PageRouteInfo>? children})
-      : super(
-          DashboardRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'DashboardRoute';
-
-  static const PageInfo<void> page = PageInfo<void>(name);
-}
-
-/// generated route for
-/// [ServicesPage]
-class ServicesRoute extends PageRouteInfo<void> {
-  const ServicesRoute({List<PageRouteInfo>? children})
-      : super(
-          ServicesRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'ServicesRoute';
-
-  static const PageInfo<void> page = PageInfo<void>(name);
-}
-
-/// generated route for
-/// [SettingsPage]
-class SettingsRoute extends PageRouteInfo<void> {
-  const SettingsRoute({List<PageRouteInfo>? children})
-      : super(
-          SettingsRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'SettingsRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }

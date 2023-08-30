@@ -75,7 +75,7 @@ class ArticleService {
       );
     } on DisplayableException {
       rethrow;
-    } on DioError {
+    } on DioException {
       throw FetchException();
     }
   }
@@ -107,7 +107,7 @@ class ArticleService {
       return ArticleListResponse.fromMap(response.data);
     } on DisplayableException {
       rethrow;
-    } on DioError {
+    } on DioException {
       throw FetchException();
     }
   }
@@ -136,7 +136,7 @@ class ArticleService {
       return ArticleListResponse.fromMap(response.data);
     } on DisplayableException {
       rethrow;
-    } on DioError {
+    } on DioException {
       throw FetchException();
     }
   }
@@ -162,7 +162,7 @@ class ArticleService {
       return ArticleListResponse.fromMap(response.data);
     } on DisplayableException {
       rethrow;
-    } on DioError {
+    } on DioException {
       throw FetchException();
     }
   }
@@ -185,7 +185,7 @@ class ArticleService {
       return CommentListResponse.fromMap(response.data);
     } on DisplayableException {
       rethrow;
-    } on DioError {
+    } on DioException {
       throw FetchException();
     }
   }
@@ -204,7 +204,7 @@ class ArticleService {
       return true;
     } on DisplayableException {
       rethrow;
-    } on DioError {
+    } on DioException {
       throw FetchException();
     }
   }
@@ -222,7 +222,7 @@ class ArticleService {
       return true;
     } on DisplayableException {
       rethrow;
-    } on DioError {
+    } on DioException {
       throw FetchException();
     }
   }
