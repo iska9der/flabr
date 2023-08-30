@@ -11,9 +11,9 @@ import '../../../config/constants.dart';
 import '../../../widget/progress_indicator.dart';
 import '../../auth/cubit/auth_cubit.dart';
 import '../../auth/widget/dialog.dart';
-import '../../comment/page/comment_list_page.dart';
 import '../cubit/bookmark_cubit.dart';
 import '../model/article_model.dart';
+import '../page/comment_list_page.dart';
 import '../repository/article_repository.dart';
 
 class ArticleFooterWidget extends StatelessWidget {

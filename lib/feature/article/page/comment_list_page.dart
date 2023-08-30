@@ -12,12 +12,12 @@ import '../../../widget/app_expansion_panel.dart';
 import '../../../widget/html_view_widget.dart';
 import '../../../widget/progress_indicator.dart';
 import '../../../widget/stat_text_widget.dart';
-import '../../article/repository/article_repository.dart';
-import '../../article/widget/article_author_widget.dart';
 import '../../settings/cubit/settings_cubit.dart';
 import '../cubit/comment_hidden_cubit.dart';
 import '../cubit/comment_list_cubit.dart';
 import '../model/comment_model.dart';
+import '../repository/article_repository.dart';
+import '../widget/article_author_widget.dart';
 
 const paddingBetweenTrees = 44.0;
 const paddingBetweenChilds = 22.0;
