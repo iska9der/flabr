@@ -1,7 +1,6 @@
 /// Urls
 const mobileApiUrl = 'https://m.habr.com/kek/v2';
 const siteApiUrl = 'https://habr.com/kek';
-const proxyApiUrl = 'https://geekr-lambda.vercel.app/api';
 
 /// Images
 const double kAvatarHeight = 30.0;
