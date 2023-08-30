@@ -5,13 +5,13 @@ import '../../../common/exception/fetch_exception.dart';
 import '../../../common/exception/value_exception.dart';
 import '../../../common/model/network/params.dart';
 import '../../../component/http/http_client.dart';
-import '../../comment/model/network/comment_list_exception.dart';
-import '../../comment/model/network/comment_list_params.dart';
-import '../../comment/model/network/comment_list_response.dart';
 import '../model/article_type.dart';
 import '../model/flow_enum.dart';
 import '../model/network/article_list_params.dart';
 import '../model/network/article_list_response.dart';
+import '../model/network/comment_list_exception.dart';
+import '../model/network/comment_list_params.dart';
+import '../model/network/comment_list_response.dart';
 import '../model/sort/date_period_enum.dart';
 import '../model/sort/sort_enum.dart';
 

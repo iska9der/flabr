@@ -2,7 +2,8 @@
 
 import 'package:equatable/equatable.dart';
 
-import '../../article/model/article_author_model.dart';
+import 'article_author_model.dart';
+
 
 class CommentModel extends Equatable {
   const CommentModel({

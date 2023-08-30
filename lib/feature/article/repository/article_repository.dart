@@ -1,10 +1,10 @@
 import '../../../component/localization/language_enum.dart';
 import '../../../component/localization/language_helper.dart';
-import '../../comment/model/network/comment_list_response.dart';
 import '../model/article_model.dart';
 import '../model/article_type.dart';
 import '../model/flow_enum.dart';
 import '../model/network/article_list_response.dart';
+import '../model/network/comment_list_response.dart';
 import '../model/sort/date_period_enum.dart';
 import '../model/sort/sort_enum.dart';
 import '../service/article_service.dart';
