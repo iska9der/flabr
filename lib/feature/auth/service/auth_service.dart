@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 
+import '../../../common/exception/displayable_exception.dart';
 import '../../../common/exception/fetch_exception.dart';
 import '../../../component/http/http_client.dart';
 import '../model/auth_data_model.dart';
@@ -9,24 +10,17 @@ import '../model/network/auth_response_type.dart';
 class AuthService {
   const AuthService({
     required HttpClient mobileClient,
-    required HttpClient proxyClient,
-  })  : _mobileClient = mobileClient,
-        _proxyClient = proxyClient;
+  })  : _mobileClient = mobileClient;
 
   final HttpClient _mobileClient;
-  final HttpClient _proxyClient;
 
   login({
     required String login,
     required String password,
   }) async {
     try {
-      final response = await _proxyClient.post('/getAccountAuthData', body: {
-        'email': login,
-        'password': password,
-      });
-
-      return response.data;
+      // TODO: реализовать вход по логину и паролю
+      throw AuthException(AuthFailureType.unimplemented);
     } on DioException catch (e) {
       final dynamic data = e.response?.data;
 
@@ -41,6 +35,8 @@ class AuthService {
       }
 
       throw AuthException(type);
+    } on DisplayableException {
+      rethrow;
     } catch (e) {
       throw FetchException();
     }

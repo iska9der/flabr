@@ -80,6 +80,7 @@ class _LoginField extends StatelessWidget {
       buildWhen: (p, c) => p.login != c.login,
       builder: (context, state) {
         return TextFormField(
+          enabled: false,
           initialValue: state.login,
           decoration: InputDecoration(
             label: const Text('Почта'),
@@ -104,6 +105,7 @@ class _PasswordField extends StatelessWidget {
     return BlocBuilder<LoginCubit, LoginState>(
       builder: (context, state) {
         return TextFormField(
+          enabled: false,
           initialValue: state.password,
           decoration: InputDecoration(
             label: const Text('Пароль'),
@@ -156,12 +158,13 @@ class _SubmitButton extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             FilledButton(
-              onPressed: state.status.isLoading
-                  ? null
-                  : () => context.read<LoginCubit>().submit(),
+              // onPressed: state.status.isLoading
+              //     ? null
+              //     : () => context.read<LoginCubit>().submit(),
+              onPressed: null,
               child: state.status.isLoading
                   ? const CircleIndicator.small()
-                  : const Text('Войти'),
+                  : const Text('Не сегодня'),
             ),
             OutlinedButton(
               onPressed: state.status.isLoading

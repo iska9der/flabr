@@ -59,21 +59,10 @@ void setDependencies() {
     instanceName: 'siteClient',
   );
 
-  /// proxyClient использует api чувачка jarvis394,
-  /// который любезно разрешил пользоваться им при
-  /// реализации авторизации
-  getIt.registerLazySingleton<HttpClient>(
-    () => HttpClient(
-      Dio(BaseOptions(baseUrl: proxyApiUrl)),
-    ),
-    instanceName: 'proxyClient',
-  );
-
   /// Auth
   getIt.registerSingleton<AuthService>(
     AuthService(
       mobileClient: getIt(instanceName: 'mobileClient'),
-      proxyClient: getIt(instanceName: 'proxyClient'),
     ),
   );
   getIt.registerSingleton<AuthRepository>(
