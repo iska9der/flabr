@@ -4,9 +4,9 @@ import 'package:url_launcher/url_launcher_string.dart';
 
 import '../../feature/article/page/article_detail_page.dart';
 import '../../feature/article/page/article_list_page.dart';
+import '../../feature/article/page/comment_list_page.dart';
 import '../../feature/article/page/news_detail_page.dart';
 import '../../feature/article/page/news_list_page.dart';
-import '../../feature/comment/page/comment_list_page.dart';
 import '../../feature/company/page/company_dashboard_page.dart';
 import '../../feature/company/page/company_detail_page.dart';
 import '../../feature/company/page/company_list_page.dart';
