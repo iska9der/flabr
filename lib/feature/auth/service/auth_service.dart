@@ -27,7 +27,7 @@ class AuthService {
       });
 
       return response.data;
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       final dynamic data = e.response?.data;
 
       AuthFailureType type = AuthFailureType.unknown;
