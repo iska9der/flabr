@@ -10,7 +10,7 @@ import '../model/network/auth_response_type.dart';
 class AuthService {
   const AuthService({
     required HttpClient mobileClient,
-  })  : _mobileClient = mobileClient;
+  }) : _mobileClient = mobileClient;
 
   final HttpClient _mobileClient;
 
@@ -52,15 +52,13 @@ class AuthService {
     }
   }
 
-  /// Отправляем запрос на главную страницу с данными пользователя
-  /// в заголовке запроса, чтобы в дальнейшем вытащить из мета тега
-  /// csrf-token соответственно токен csrf
+  /// Отправляем запрос на страницу с данными пользователя в заголовке запроса,
+  /// чтобы в дальнейшем вытащить из мета тега csrf-token
   Future<String> fetchRawMainPage(AuthDataModel data) async {
     try {
       final options = Options(headers: {'Cookie': data.toCookieString()});
-
       final response = await _mobileClient.get(
-        'https://habr.com',
+        'https://habr.com/ru/conversations',
         options: options,
       );
 
