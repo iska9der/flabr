@@ -70,6 +70,7 @@ class AppRouter extends _$AppRouter {
   bool isArticleUrl(Uri url) {
     if (url.host.contains('habr.com')) {
       if (url.path.contains('post/') ||
+          url.path.contains('articles/')||
           url.path.contains('blog/') ||
           url.path.contains('news/')) {
         return true;
