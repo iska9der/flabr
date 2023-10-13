@@ -32,7 +32,7 @@ class NetworkImageWidget extends StatelessWidget {
       onTap: isTapable
           ? () => showDialog(
                 context: context,
-                builder: (context) {
+                builder: (_) {
                   return FullNetworkImageWidget(imageUrl: imageUrl);
                 },
               )
@@ -47,8 +47,9 @@ class NetworkImageWidget extends StatelessWidget {
               imageUrl: imageUrl,
               height: height,
               memCacheHeight: cacheHeight,
-              placeholder: placeholderWidget ?? getIt.get<Utils>().onLoading,
-              errorWidget: errorWidget ?? getIt.get<Utils>().onError,
+              placeholder:
+                  placeholderWidget ?? getIt.get<Utils>().onImageLoading,
+              errorWidget: errorWidget ?? getIt.get<Utils>().onImageError,
             ),
     );
   }

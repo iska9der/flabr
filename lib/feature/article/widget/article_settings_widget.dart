@@ -37,7 +37,21 @@ class ArticleSettingsWidget extends StatelessWidget {
               },
             );
           },
-        )
+        ),
+        const SizedBox(height: 12),
+        BlocBuilder<SettingsCubit, SettingsState>(
+          builder: (context, state) {
+            return CheckboxListTile(
+              title: Text('Отображать WebView?', style: titleStyle),
+              value: state.articleConfig.webViewEnabled,
+              onChanged: (bool? value) {
+                context
+                    .read<SettingsCubit>()
+                    .changeWebViewVisibility(isVisible: value);
+              },
+            );
+          },
+        ),
       ],
     );
   }

@@ -8,9 +8,9 @@ import 'package:path/path.dart' as p;
 
 import '../../component/di/dependencies.dart';
 import '../../component/router/app_router.dart';
-import '../../widget/extension/extension.dart';
 import '../config/constants.dart';
 import '../feature/settings/cubit/settings_cubit.dart';
+import 'extension/extension.dart';
 import 'image/network_image_widget.dart';
 import 'progress_indicator.dart';
 
@@ -19,23 +19,23 @@ class HtmlView extends StatelessWidget {
     super.key,
     required this.textHtml,
     this.renderMode = RenderMode.sliverList,
-    this.customWidgetBuilder,
     this.padding = const EdgeInsets.only(left: 20, right: 20, bottom: 40),
   });
 
   final String textHtml;
   final RenderMode renderMode;
-  final CustomWidgetBuilder? customWidgetBuilder;
   final EdgeInsets padding;
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<SettingsCubit, SettingsState>(
       builder: (context, state) {
-        var articleConfig = state.articleConfig;
-        var isImageVisible = articleConfig.isImagesVisible;
-        var fontSize = Theme.of(context).textTheme.bodyLarge!.fontSize! *
-            articleConfig.fontScale;
+        final theme = Theme.of(context);
+        final articleConfig = state.articleConfig;
+        final isImageVisible = articleConfig.isImagesVisible;
+        final fontSize =
+            theme.textTheme.bodyLarge!.fontSize! * articleConfig.fontScale;
+        final isWebViewEnabled = articleConfig.webViewEnabled;
 
         return HtmlWidget(
           textHtml,
@@ -44,13 +44,16 @@ class HtmlView extends StatelessWidget {
             Theme.of(context).brightness,
             fontSize,
             isImageVisible,
+            isWebViewEnabled,
           ]),
           onTapUrl: (String url) async {
             await getIt.get<AppRouter>().pushArticleOrExternal(Uri.parse(url));
 
             return true;
           },
-          onLoadingBuilder: (ctx, el, prgrs) => const CircleIndicator.small(),
+          onErrorBuilder: (context, element, error) =>
+              Text('$element error: $error'),
+          onLoadingBuilder: (ctx, el, prgrs) => const CircleIndicator.medium(),
           factoryBuilder: () => CustomFactory(context),
           customStylesBuilder: (element) {
             if (element.localName == 'div' && element.parent == null) {
@@ -64,34 +67,67 @@ class HtmlView extends StatelessWidget {
 
             return null;
           },
-          customWidgetBuilder: customWidgetBuilder ??
-              (element) {
-                if (element.localName == 'img') {
-                  if (!isImageVisible) return const Wrap();
+          customWidgetBuilder: (element) {
+            if (element.localName == 'img') {
+              /// Если пользователь не хочет видеть изображения - не показываем
+              if (!isImageVisible) {
+                return const SizedBox();
+              }
 
-                  String imgSrc = element.attributes['data-src'] ??
-                      element.attributes['src'] ??
-                      '';
-
-                  if (imgSrc.isEmpty) {
-                    return null;
-                  }
-
-                  String imgExt = p.extension(imgSrc);
-
-                  if (imgExt == '.svg') return null;
-
-                  return Align(
-                    child: NetworkImageWidget(
-                      imageUrl: imgSrc,
-                      height: kImageHeightDefault,
-                      isTapable: true,
-                    ),
-                  );
-                }
-
+              /// Люди верстают статьи по-разному, и иногда ужасно:
+              /// https://habr.com/ru/articles/599753/
+              /// почти все элементы находятся под одним родителем,
+              /// и поэтому, если мы уберем это условие, иконки подзаголовков
+              /// будут рендериться на отдельной строке, а по факту нужно инлайн.
+              /// Пусть библиотека сама разбирается с такими случаями.
+              if (element.parent != null &&
+                  element.parent!.children.length > 1 &&
+                  element.parent!.localName != 'figure' &&
+                  element.nextElementSibling?.localName != 'br') {
                 return null;
-              },
+              }
+
+              final imgSrc = element.attributes['data-src'] ??
+                  element.attributes['src'] ??
+                  '';
+              if (imgSrc.isEmpty) {
+                return null;
+              }
+
+              String imgExt = p.extension(imgSrc);
+              if (imgExt == '.svg') return null;
+
+              Widget widget = NetworkImageWidget(
+                imageUrl: imgSrc,
+                height: kImageHeightDefault,
+                isTapable: true,
+              );
+
+              final semanticLabel =
+                  element.attributes['alt'] ?? element.attributes['title'];
+              if (semanticLabel != null) {
+                widget = Semantics(
+                  label: semanticLabel,
+                  image: true,
+                  child: widget,
+                );
+              }
+
+              final tooltip = element.attributes['title'];
+              if (tooltip != null) {
+                widget = Tooltip(
+                  message: tooltip,
+                  child: widget,
+                );
+              }
+
+              widget = Align(child: widget);
+
+              return widget;
+            }
+
+            return null;
+          },
         );
       },
     );
@@ -104,14 +140,18 @@ class CustomFactory extends WidgetFactory with SvgFactory, WebViewFactory {
   final BuildContext context;
 
   @override
+  bool get webView => true;
+  @override
   bool get webViewMediaPlaybackAlwaysAllow => true;
 
   @override
   Widget? buildImageWidget(BuildMetadata meta, ImageSource src) {
-    /// меняем цвет выделения svg
-    SvgPicture? widget = super.buildImageWidget(meta, src) as SvgPicture?;
+    Widget? widget = super.buildImageWidget(meta, src);
+    if (widget is! SvgPicture) {
+      return widget;
+    }
 
-    widget = widget?.copyWith(
+    widget = widget.copyWith(
       colorFilter: ColorFilter.mode(
         Theme.of(context).textTheme.bodyMedium!.color!,
         BlendMode.srcIn,
@@ -125,6 +165,9 @@ class CustomFactory extends WidgetFactory with SvgFactory, WebViewFactory {
   void parse(BuildMetadata meta) {
     final el = meta.element;
 
+    final isWebViewEnabled =
+        context.read<SettingsCubit>().state.articleConfig.webViewEnabled;
+
     switch (el.localName) {
       case 'div':
         if (el.className.contains('tm-iframe_temp')) {
@@ -133,18 +176,20 @@ class CustomFactory extends WidgetFactory with SvgFactory, WebViewFactory {
               String src = el.attributes['data-src'] ?? '';
               final attrs = meta.element.attributes;
 
-              return listOrNull(
-                    buildWebView(
+              final widget = isWebViewEnabled
+                  ? buildWebView(
                       meta,
                       src,
                       height: tryParseDoubleFromMap(attrs, 'height'),
                       sandbox: attrs['sanbox']?.split(RegExp(r'\s+')),
                       width: tryParseDoubleFromMap(attrs, 'width'),
-                    ),
-                  ) ??
-                  widgets;
+                    )
+                  : buildWebViewLinkOnly(meta, src);
+
+              return listOrNull(widget) ?? widgets;
             },
           );
+
           meta.register(op);
         }
         break;

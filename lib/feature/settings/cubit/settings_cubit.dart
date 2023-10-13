@@ -208,19 +208,26 @@ class SettingsCubit extends Cubit<SettingsState> {
     if (state.articleConfig.fontScale == newScale) return;
 
     var newConfig = state.articleConfig.copyWith(fontScale: newScale);
+    emit(state.copyWith(articleConfig: newConfig));
 
     _storage.write(articleConfigCacheKey, newConfig.toJson());
-
-    emit(state.copyWith(articleConfig: newConfig));
   }
 
   void changeArticleImageVisibility({bool? isVisible}) {
     if (state.articleConfig.isImagesVisible == isVisible) return;
 
     var newConfig = state.articleConfig.copyWith(isImagesVisible: isVisible);
+    emit(state.copyWith(articleConfig: newConfig));
 
     _storage.write(articleConfigCacheKey, newConfig.toJson());
+  }
 
+  void changeWebViewVisibility({bool? isVisible}) {
+    if (state.articleConfig.webViewEnabled == isVisible) return;
+
+    var newConfig = state.articleConfig.copyWith(webViewEnabled: isVisible);
     emit(state.copyWith(articleConfig: newConfig));
+
+    _storage.write(articleConfigCacheKey, newConfig.toJson());
   }
 }
