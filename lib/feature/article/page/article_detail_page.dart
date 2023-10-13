@@ -105,6 +105,12 @@ class _ArticleDetailPageViewState extends State<ArticleDetailPageView> {
                 child: NotificationListener<UserScrollNotification>(
                   onNotification: (notification) {
                     final direction = notification.direction;
+                    final axis = notification.metrics.axisDirection;
+
+                    if (axis == AxisDirection.right ||
+                        axis == AxisDirection.left) {
+                      return true;
+                    }
 
                     /// Если скроллим вверх, или скролл достиг какого-либо края,
                     /// то показываем статистику
