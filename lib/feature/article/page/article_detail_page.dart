@@ -56,7 +56,7 @@ class ArticleDetailPageView extends StatefulWidget {
 
 class _ArticleDetailPageViewState extends State<ArticleDetailPageView> {
   late final ScrollController controller;
-  bool isStatsVisible = true;
+  ValueNotifier<bool> isStatsVisible = ValueNotifier(true);
 
   @override
   void initState() {
@@ -78,7 +78,10 @@ class _ArticleDetailPageViewState extends State<ArticleDetailPageView> {
             );
       },
       child: Scaffold(
-        floatingActionButton: _FloatingFooter(isVisible: isStatsVisible),
+        floatingActionButton: ValueListenableBuilder(
+          valueListenable: isStatsVisible,
+          builder: (_, value, __) => _FloatingFooter(isVisible: value),
+        ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         body: SafeArea(
           child: BlocBuilder<ArticleCubit, ArticleState>(
@@ -103,18 +106,14 @@ class _ArticleDetailPageViewState extends State<ArticleDetailPageView> {
                   onNotification: (notification) {
                     final direction = notification.direction;
 
-                    /// Если скроллим вверх, или скролл достиг нижнего края,
+                    /// Если скроллим вверх, или скролл достиг какого-либо края,
                     /// то показываем статистику
                     if (direction == ScrollDirection.forward ||
                         notification.metrics.atEdge &&
                             notification.metrics.pixels != 0) {
-                      setState(() {
-                        isStatsVisible = true;
-                      });
+                      isStatsVisible.value = true;
                     } else if (direction == ScrollDirection.reverse) {
-                      setState(() {
-                        isStatsVisible = false;
-                      });
+                      isStatsVisible.value = false;
                     }
 
                     return true;
