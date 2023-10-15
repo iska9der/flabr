@@ -57,12 +57,29 @@ class ArticleDetailPageView extends StatefulWidget {
 class _ArticleDetailPageViewState extends State<ArticleDetailPageView> {
   late final ScrollController controller;
   ValueNotifier<bool> isStatsVisible = ValueNotifier(true);
+  ValueNotifier<double> progressValue = ValueNotifier(0.0);
 
   @override
   void initState() {
     controller = ScrollController();
+    controller.addListener(_progressListener);
 
     super.initState();
+  }
+
+  @override
+  dispose() {
+    controller.removeListener(_progressListener);
+    controller.dispose();
+    super.dispose();
+  }
+
+  /// Вычисление прогресса скролла
+  _progressListener() {
+    final max = controller.position.maxScrollExtent;
+    final current = controller.position.pixels;
+    final normalized = (current - 0) / (max - 0);
+    progressValue.value = normalized;
   }
 
   @override
@@ -130,52 +147,68 @@ class _ArticleDetailPageViewState extends State<ArticleDetailPageView> {
                       slivers: [
                         SliverAppBar(
                           automaticallyImplyLeading: false,
+                          forceElevated: true,
                           pinned: true,
                           toolbarHeight: 40,
                           titleSpacing: 0,
-                          forceElevated: true,
-                          title: FlexibleSpaceBar(
-                            titlePadding: EdgeInsets.zero,
-                            expandedTitleScale: 1,
-                            title: Row(
-                              children: [
-                                const SizedBox(
-                                  width: 60,
-                                  child: AutoLeadingButton(),
-                                ),
-                                Expanded(
-                                  child: Text(
-                                    article.titleHtml,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: Theme.of(context)
-                                        .appBarTheme
-                                        .titleTextStyle,
+                          title: Stack(
+                            children: [
+                              Row(
+                                children: [
+                                  const SizedBox(
+                                    width: 60,
+                                    child: AutoLeadingButton(),
                                   ),
-                                ),
-                                const SizedBox(width: 14),
-                                IconButton(
-                                  icon: const Icon(Icons.brightness_6_rounded),
-                                  iconSize: 20,
-                                  tooltip: 'Настроить показ',
-                                  onPressed: () => showModalBottomSheet(
-                                    context: context,
-                                    builder: (context) {
-                                      return const Padding(
-                                        padding: EdgeInsets.symmetric(
-                                          horizontal: kScreenHPadding,
-                                          vertical: kScreenHPadding * 3,
-                                        ),
-                                        child: SizedBox(
-                                          height: 240,
-                                          child: ArticleSettingsWidget(),
-                                        ),
+                                  Expanded(
+                                    child: Text(
+                                      article.titleHtml,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: Theme.of(context)
+                                          .appBarTheme
+                                          .titleTextStyle,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 14),
+                                  IconButton(
+                                    icon:
+                                        const Icon(Icons.brightness_6_rounded),
+                                    iconSize: 20,
+                                    tooltip: 'Настроить показ',
+                                    onPressed: () => showModalBottomSheet(
+                                      context: context,
+                                      builder: (context) {
+                                        return const Padding(
+                                          padding: EdgeInsets.symmetric(
+                                            horizontal: kScreenHPadding,
+                                            vertical: kScreenHPadding * 3,
+                                          ),
+                                          child: SizedBox(
+                                            height: 240,
+                                            child: ArticleSettingsWidget(),
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                  const SizedBox(width: 14),
+                                ],
+                              ),
+                              IgnorePointer(
+                                child: SizedBox(
+                                  height: 45,
+                                  child: ValueListenableBuilder<double>(
+                                    valueListenable: progressValue,
+                                    builder: (context, value, child) {
+                                      return LinearProgressIndicator(
+                                        backgroundColor: Colors.transparent,
+                                        color: Colors.blue.withOpacity(.2),
+                                        value: value,
                                       );
                                     },
                                   ),
                                 ),
-                                const SizedBox(width: 14),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                         ),
                         SliverToBoxAdapter(

@@ -191,7 +191,7 @@ class CustomFactory extends WidgetFactory with SvgFactory, WebViewFactory {
         if (element.className.contains('tm-iframe_temp')) {
           final op = BuildOp(
             onRenderBlock: (meta, widgets) {
-              String src = attributes['data-src'] ?? '';
+              String src = attributes['data-src'] ?? attributes['src'] ?? '';
               final attrs = meta.element.attributes;
               final sandboxAttrs = attrs['sanbox'] ?? attrs['sandbox'];
               final widget = isWebViewEnabled
@@ -199,8 +199,8 @@ class CustomFactory extends WidgetFactory with SvgFactory, WebViewFactory {
                       meta,
                       src,
                       height: tryParseDoubleFromMap(attrs, 'height'),
-                      sandbox: sandboxAttrs?.split(RegExp(r'\s+')),
                       width: tryParseDoubleFromMap(attrs, 'width'),
+                      sandbox: sandboxAttrs?.split(RegExp(r'\s+')),
                     )
                   : buildWebViewLinkOnly(meta, src);
 
