@@ -124,116 +124,118 @@ class _ArticleDetailPageViewState extends State<ArticleDetailPageView> {
 
                     return true;
                   },
-                  child: CustomScrollView(
-                    controller: controller,
-                    slivers: [
-                      SliverAppBar(
-                        automaticallyImplyLeading: false,
-                        pinned: true,
-                        toolbarHeight: 40,
-                        titleSpacing: 0,
-                        forceElevated: true,
-                        title: FlexibleSpaceBar(
-                          titlePadding: EdgeInsets.zero,
-                          expandedTitleScale: 1,
-                          title: Row(
-                            children: [
-                              const SizedBox(
-                                width: 60,
-                                child: AutoLeadingButton(),
-                              ),
-                              Expanded(
-                                child: Text(
-                                  article.titleHtml,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: Theme.of(context)
-                                      .appBarTheme
-                                      .titleTextStyle,
+                  child: SelectionArea(
+                    child: CustomScrollView(
+                      controller: controller,
+                      slivers: [
+                        SliverAppBar(
+                          automaticallyImplyLeading: false,
+                          pinned: true,
+                          toolbarHeight: 40,
+                          titleSpacing: 0,
+                          forceElevated: true,
+                          title: FlexibleSpaceBar(
+                            titlePadding: EdgeInsets.zero,
+                            expandedTitleScale: 1,
+                            title: Row(
+                              children: [
+                                const SizedBox(
+                                  width: 60,
+                                  child: AutoLeadingButton(),
                                 ),
-                              ),
-                              const SizedBox(width: 14),
-                              IconButton(
-                                icon: const Icon(Icons.brightness_6_rounded),
-                                iconSize: 20,
-                                tooltip: 'Настроить показ',
-                                onPressed: () => showModalBottomSheet(
-                                  context: context,
-                                  builder: (context) {
-                                    return const Padding(
-                                      padding: EdgeInsets.symmetric(
-                                        horizontal: kScreenHPadding,
-                                        vertical: kScreenHPadding * 3,
-                                      ),
-                                      child: SizedBox(
-                                        height: 240,
-                                        child: ArticleSettingsWidget(),
-                                      ),
-                                    );
-                                  },
+                                Expanded(
+                                  child: Text(
+                                    article.titleHtml,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: Theme.of(context)
+                                        .appBarTheme
+                                        .titleTextStyle,
+                                  ),
                                 ),
-                              ),
-                              const SizedBox(width: 14),
-                            ],
+                                const SizedBox(width: 14),
+                                IconButton(
+                                  icon: const Icon(Icons.brightness_6_rounded),
+                                  iconSize: 20,
+                                  tooltip: 'Настроить показ',
+                                  onPressed: () => showModalBottomSheet(
+                                    context: context,
+                                    builder: (context) {
+                                      return const Padding(
+                                        padding: EdgeInsets.symmetric(
+                                          horizontal: kScreenHPadding,
+                                          vertical: kScreenHPadding * 3,
+                                        ),
+                                        child: SizedBox(
+                                          height: 240,
+                                          child: ArticleSettingsWidget(),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ),
+                                const SizedBox(width: 14),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                      SliverToBoxAdapter(
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                            top: vPadding,
-                            left: hPadding,
-                            right: hPadding,
-                          ),
-                          child: ArticleHeaderWidget(article),
-                        ),
-                      ),
-                      SliverToBoxAdapter(
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                            top: vPadding,
-                            left: hPadding,
-                            right: hPadding,
-                            bottom: vPadding,
-                          ),
-                          child: SelectableText(
-                            article.titleHtml,
-                            textAlign: TextAlign.left,
-                            style: Theme.of(context).textTheme.titleLarge,
+                        SliverToBoxAdapter(
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                              top: vPadding,
+                              left: hPadding,
+                              right: hPadding,
+                            ),
+                            child: ArticleHeaderWidget(article),
                           ),
                         ),
-                      ),
-                      SliverToBoxAdapter(
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                            top: vPadding,
-                            left: hPadding,
-                            right: hPadding,
-                            bottom: vPadding,
+                        SliverToBoxAdapter(
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                              top: vPadding,
+                              left: hPadding,
+                              right: hPadding,
+                              bottom: vPadding,
+                            ),
+                            child: SelectableText(
+                              article.titleHtml,
+                              textAlign: TextAlign.left,
+                              style: Theme.of(context).textTheme.titleLarge,
+                            ),
                           ),
-                          child: ArticleStatsWidget(article),
                         ),
-                      ),
-                      SliverToBoxAdapter(
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                            top: vPadding - 6,
-                            left: hPadding,
-                            right: hPadding,
+                        SliverToBoxAdapter(
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                              top: vPadding,
+                              left: hPadding,
+                              right: hPadding,
+                              bottom: vPadding,
+                            ),
+                            child: ArticleStatsWidget(article),
                           ),
-                          child: ArticleHubsWidget(hubs: article.hubs),
                         ),
-                      ),
-                      SliverToBoxAdapter(
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                            left: hPadding,
-                            right: hPadding,
+                        SliverToBoxAdapter(
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                              top: vPadding - 6,
+                              left: hPadding,
+                              right: hPadding,
+                            ),
+                            child: ArticleHubsWidget(hubs: article.hubs),
                           ),
-                          child: ArticleLabelsWidget(article),
                         ),
-                      ),
-                      HtmlView(textHtml: article.textHtml),
-                    ],
+                        SliverToBoxAdapter(
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                              left: hPadding,
+                              right: hPadding,
+                            ),
+                            child: ArticleLabelsWidget(article),
+                          ),
+                        ),
+                        HtmlView(textHtml: article.textHtml),
+                      ],
+                    ),
                   ),
                 ),
               );

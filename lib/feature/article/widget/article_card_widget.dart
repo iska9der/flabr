@@ -99,9 +99,9 @@ class ArticleCardWidget extends StatelessWidget {
                     padding: const EdgeInsets.fromLTRB(8, 24, 8, 0),
                     child: HtmlWidget(
                       article.leadData.textHtml,
-                      rebuildTriggers: RebuildTriggers([
+                      rebuildTriggers: [
                         state.feedConfig,
-                      ]),
+                      ],
                       customWidgetBuilder: (element) {
                         if (element.localName == 'img') {
                           if (!state.feedConfig.isImageVisible) {

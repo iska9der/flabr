@@ -31,20 +31,22 @@ part 'app_router.gr.dart';
 // extend the generated private router
 class AppRouter extends _$AppRouter {
   /// Открыть внешнюю ссылку
-  Future launchExternalUrl(String url) async {
+  Future launchUrl(String url) async {
     return await launchUrlString(
       url,
       mode: LaunchMode.externalApplication,
     );
   }
 
-  /// Открыть статью в приложении, либо открыть внешнюю ссылку в браузере
-  Future pushArticleOrExternal(Uri url) async {
-    String id = parseId(url);
+  /// Открыть ссылку в приложении, либо в браузере
+  Future navigateOrLaunchUrl(Uri uri) async {
+    String id = parseId(uri);
 
-    if (isArticleUrl(url)) {
+    if (isArticleUrl(uri)) {
       return await pushWidget(ArticleDetailPage(id: id));
-    } else if (isUserUrl(url)) {
+    }
+
+    if (isUserUrl(uri)) {
       return await navigate(
         MyServicesRoute(
           children: [
@@ -57,7 +59,7 @@ class AppRouter extends _$AppRouter {
       );
     }
 
-    return await launchExternalUrl(url.toString());
+    return await launchUrl(uri.toString());
   }
 
   String parseId(Uri url) {
@@ -67,23 +69,30 @@ class AppRouter extends _$AppRouter {
     return parts.last;
   }
 
-  bool isArticleUrl(Uri url) {
-    if (url.host.contains('habr.com')) {
-      if (url.path.contains('post/') ||
-          url.path.contains('articles/')||
-          url.path.contains('blog/') ||
-          url.path.contains('news/')) {
-        return true;
-      }
+  bool _isHostCompatible(Uri uri) =>
+      uri.host.contains('habr.com') || uri.host.contains('habrahabr.ru');
+
+  bool isArticleUrl(Uri uri) {
+    if (!_isHostCompatible(uri)) {
+      return false;
+    }
+
+    if (uri.path.contains('post/') ||
+        uri.path.contains('articles/') ||
+        uri.path.contains('blog/') ||
+        uri.path.contains('blogs/') ||
+        uri.path.contains('news/')) {
+      return true;
     }
 
     return false;
   }
 
-  bool isUserUrl(Uri url) {
-    if (url.host.contains('habr.com') && url.path.contains('users/')) {
+  bool isUserUrl(Uri uri) {
+    if (_isHostCompatible(uri) && uri.path.contains('users/')) {
       return true;
-    } else if (url.host.isEmpty && url.path.contains('/users/')) {
+    }
+    if (uri.host.isEmpty && uri.path.contains('/users/')) {
       return true;
     }
 
@@ -301,6 +310,16 @@ class AppRouter extends _$AppRouter {
         ),
         RedirectRoute(
           path: '*/*/companies/:companyName/articles/:id/comments',
+          redirectTo: 'articles/comments/:id',
+        ),
+
+        /// Статьи с AMP ссылками
+        RedirectRoute(
+          path: '*/*/amp/publications/:id',
+          redirectTo: 'articles/details/:id',
+        ),
+        RedirectRoute(
+          path: '*/*/amp/publications/:id/comments',
           redirectTo: 'articles/comments/:id',
         ),
 

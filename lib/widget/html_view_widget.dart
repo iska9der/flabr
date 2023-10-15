@@ -40,15 +40,24 @@ class HtmlView extends StatelessWidget {
         return HtmlWidget(
           textHtml,
           renderMode: renderMode,
-          rebuildTriggers: RebuildTriggers([
+          rebuildTriggers: [
             Theme.of(context).brightness,
             fontSize,
             isImageVisible,
             isWebViewEnabled,
-          ]),
+          ],
           onTapUrl: (String url) async {
-            await getIt.get<AppRouter>().pushArticleOrExternal(Uri.parse(url));
+            final uri = Uri.tryParse(url);
+            if (uri == null) {
+              return false;
+            }
 
+            /// anchor links обрабатываются самой библиотекой
+            if (url.startsWith('#')) {
+              return false;
+            }
+
+            await getIt.get<AppRouter>().navigateOrLaunchUrl(uri);
             return true;
           },
           onErrorBuilder: (context, element, error) =>
@@ -62,6 +71,14 @@ class HtmlView extends StatelessWidget {
                 'margin-right': '${padding.right}px',
                 'padding-bottom': '${padding.bottom}px',
                 'font-size': '${fontSize}px',
+              };
+            }
+
+            if (element.localName == 'code' &&
+                element.parent?.localName != 'pre') {
+              return {
+                'background-color': theme.colorScheme.surface.toHex(),
+                'font-weight': '500',
               };
             }
 
@@ -145,7 +162,7 @@ class CustomFactory extends WidgetFactory with SvgFactory, WebViewFactory {
   bool get webViewMediaPlaybackAlwaysAllow => true;
 
   @override
-  Widget? buildImageWidget(BuildMetadata meta, ImageSource src) {
+  Widget? buildImageWidget(BuildTree meta, ImageSource src) {
     Widget? widget = super.buildImageWidget(meta, src);
     if (widget is! SvgPicture) {
       return widget;
@@ -162,31 +179,32 @@ class CustomFactory extends WidgetFactory with SvgFactory, WebViewFactory {
   }
 
   @override
-  void parse(BuildMetadata meta) {
-    final el = meta.element;
+  void parse(BuildTree meta) {
+    final element = meta.element;
+    final attributes = element.attributes;
 
     final isWebViewEnabled =
         context.read<SettingsCubit>().state.articleConfig.webViewEnabled;
 
-    switch (el.localName) {
+    switch (element.localName) {
       case 'div':
-        if (el.className.contains('tm-iframe_temp')) {
+        if (element.className.contains('tm-iframe_temp')) {
           final op = BuildOp(
-            onWidgets: (meta, widgets) {
-              String src = el.attributes['data-src'] ?? '';
+            onRenderBlock: (meta, widgets) {
+              String src = attributes['data-src'] ?? '';
               final attrs = meta.element.attributes;
-
+              final sandboxAttrs = attrs['sanbox'] ?? attrs['sandbox'];
               final widget = isWebViewEnabled
                   ? buildWebView(
                       meta,
                       src,
                       height: tryParseDoubleFromMap(attrs, 'height'),
-                      sandbox: attrs['sanbox']?.split(RegExp(r'\s+')),
+                      sandbox: sandboxAttrs?.split(RegExp(r'\s+')),
                       width: tryParseDoubleFromMap(attrs, 'width'),
                     )
                   : buildWebViewLinkOnly(meta, src);
 
-              return listOrNull(widget) ?? widgets;
+              return widget ?? widgets;
             },
           );
 
@@ -196,27 +214,14 @@ class CustomFactory extends WidgetFactory with SvgFactory, WebViewFactory {
       case 'code':
 
         /// если родитель не "pre", то это инлайновый фрагмент кода
-        if (el.parent?.localName != 'pre') {
-          final op = BuildOp(
-            onTree: (meta, tree) {
-              tree.bits.firstWhere((element) => element.tsb == tree.tsb);
-              WidgetBit.inline(tree.parent!, buildInlineCodeWidget(el.text))
-                  .insertBefore(tree);
-
-              tree.detach();
-            },
-          );
-          meta.register(op);
+        /// добавляем стиль с помощью customStylesBuilder
+        if (element.parent?.localName != 'pre') {
           break;
         }
-        final op = BuildOp(
-          onTree: (_, tree) {
-            WidgetBit.block(
-              tree.parent!,
-              buildBlockCodeWidget(el.text),
-            ).insertBefore(tree);
 
-            tree.detach();
+        final op = BuildOp(
+          onRenderBlock: (tree, placeholder) {
+            return buildBlockCodeWidget(element.text);
           },
         );
         meta.register(op);
@@ -227,32 +232,18 @@ class CustomFactory extends WidgetFactory with SvgFactory, WebViewFactory {
   }
 
   Widget buildBlockCodeWidget(String text) {
-    ScrollController controller = ScrollController();
-
-    return DecoratedBox(
-      decoration: BoxDecoration(color: Theme.of(context).colorScheme.surface),
+    return ColoredBox(
+      color: Theme.of(context).colorScheme.surface,
       child: ConstrainedBox(
         constraints: BoxConstraints(
           minWidth: MediaQuery.of(context).size.width,
         ),
-        child: Scrollbar(
-          controller: controller,
-          thumbVisibility: true,
-          child: SingleChildScrollView(
-            controller: controller,
-            scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.all(12),
-            child: SelectableText(text),
-          ),
+        child: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          padding: const EdgeInsets.all(12),
+          child: Text(text),
         ),
       ),
-    );
-  }
-
-  Widget buildInlineCodeWidget(String text) {
-    return ColoredBox(
-      color: Theme.of(context).colorScheme.surface,
-      child: SelectableText(text),
     );
   }
 }

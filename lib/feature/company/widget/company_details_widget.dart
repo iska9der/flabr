@@ -46,9 +46,8 @@ class CompanyDetailsWidget extends StatelessWidget {
                       .map(
                         (contact) => FlabrCard(
                           onTap: contact.url.isNotEmpty
-                              ? () => getIt
-                                  .get<AppRouter>()
-                                  .launchExternalUrl(contact.url)
+                              ? () =>
+                                  getIt.get<AppRouter>().launchUrl(contact.url)
                               : null,
                           padding: const EdgeInsets.all(8),
                           child: Row(
@@ -83,7 +82,7 @@ class CompanyDetailsWidget extends StatelessWidget {
                       subtitle: Text(card.information.siteUrl),
                       onTap: () => getIt
                           .get<AppRouter>()
-                          .launchExternalUrl(card.information.siteUrl),
+                          .launchUrl(card.information.siteUrl),
                     ),
                   ListTile(
                     title: const Text('Дата регистрации'),
