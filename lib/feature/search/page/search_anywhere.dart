@@ -16,11 +16,12 @@ import '../../scroll/cubit/scroll_cubit.dart';
 import '../../scroll/widget/floating_scroll_to_top_button.dart';
 import '../../user/widget/user_card_widget.dart';
 import '../cubit/search_cubit.dart';
-import 'search_order.dart';
-import 'search_target.dart';
+import '../model/search_order.dart';
+import '../model/search_target.dart';
+import 'search.dart';
 
-class FlabrSearchDelegate extends SearchDelegate {
-  FlabrSearchDelegate({required this.cubit});
+class SearchAnywhereDelegate extends FlabrSearchDelegate {
+  SearchAnywhereDelegate({required this.cubit});
 
   final SearchCubit cubit;
 
@@ -72,8 +73,8 @@ class FlabrSearchDelegate extends SearchDelegate {
   Widget buildResults(BuildContext context) {
     cubit.changeQuery(query);
 
-    return BlocProvider(
-      create: (c) => ScrollCubit()..setUpEdgeListeners(),
+    return BlocProvider<ScrollCubit>(
+      create: (_) => ScrollCubit()..setUpEdgeListeners(),
       child: MultiBlocListener(
         listeners: [
           BlocListener<SearchCubit, SearchState>(
@@ -130,15 +131,12 @@ class FlabrSearchDelegate extends SearchDelegate {
                         if (state.target == SearchTarget.posts ||
                             state.target == SearchTarget.users)
                           _OrderOptions(cubit: cubit, delegate: this),
-                        ListView.separated(
+                        ListView.builder(
                           cacheExtent: 5000,
                           shrinkWrap: true,
                           primary: false,
                           padding: const EdgeInsets.symmetric(
                             horizontal: kScreenHPadding,
-                          ),
-                          separatorBuilder: (context, index) => const SizedBox(
-                            height: kCardBetweenPadding,
                           ),
                           itemCount:
                               models.length + (state.status.isLoading ? 1 : 0),
@@ -204,7 +202,7 @@ class _TargetOptions extends StatelessWidget {
   });
 
   final SearchCubit cubit;
-  final SearchDelegate delegate;
+  final FlabrSearchDelegate delegate;
 
   @override
   Widget build(BuildContext context) {
@@ -247,7 +245,7 @@ class _OrderOptions extends StatelessWidget {
   });
 
   final SearchCubit cubit;
-  final SearchDelegate delegate;
+  final FlabrSearchDelegate delegate;
 
   @override
   Widget build(BuildContext context) {

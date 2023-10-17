@@ -15,7 +15,8 @@ import '../../auth/widget/profile_icon_button.dart';
 import '../../scaffold/cubit/scaffold_cubit.dart';
 import '../../scroll/cubit/scroll_cubit.dart';
 import '../../search/cubit/search_cubit.dart';
-import '../../search/model/search_delegate.dart';
+import '../../search/page/search.dart';
+import '../../search/page/search_anywhere.dart';
 import '../../search/repository/search_repository.dart';
 import '../../settings/cubit/settings_cubit.dart';
 import '../cubit/article_list_cubit.dart';
@@ -172,9 +173,9 @@ class ArticleListPageView extends StatelessWidget {
                             onPressed: () async {
                               final cubit = context.read<SearchCubit>();
 
-                              await showSearch(
+                              await showFlabrSearch(
                                 context: context,
-                                delegate: FlabrSearchDelegate(
+                                delegate: SearchAnywhereDelegate(
                                   cubit: BlocProvider.of<SearchCubit>(context),
                                 ),
                               );
