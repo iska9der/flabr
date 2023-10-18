@@ -58,9 +58,9 @@ class _BadgetsWidget extends StatelessWidget {
       height: 60,
       child: Scrollbar(
         thumbVisibility: false,
+        thickness: 1,
         child: ListView(
           scrollDirection: Axis.horizontal,
-          shrinkWrap: true,
           children: badgets
               .map((badge) => Align(
                     alignment: Alignment.topCenter,

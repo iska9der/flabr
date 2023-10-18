@@ -5,27 +5,23 @@ import 'package:equatable/equatable.dart';
 
 class UserBadgetModel extends Equatable {
   const UserBadgetModel({
-    required this.id,
     this.title = '',
     this.description = '',
     this.url = '',
     this.isRemovable = false,
   });
-  final String id;
   final String title;
   final String description;
   final String url;
   final bool isRemovable;
 
   UserBadgetModel copyWith({
-    String? id,
     String? title,
     String? description,
     String? url,
     bool? isRemovable,
   }) {
     return UserBadgetModel(
-      id: id ?? this.id,
       title: title ?? this.title,
       description: description ?? this.description,
       url: url ?? this.url,
@@ -35,7 +31,6 @@ class UserBadgetModel extends Equatable {
 
   factory UserBadgetModel.fromMap(Map<String, dynamic> map) {
     return UserBadgetModel(
-      id: map['id'],
       title: map['title'],
       description: map['description'],
       url: map['url'] ?? '',
@@ -46,20 +41,17 @@ class UserBadgetModel extends Equatable {
   factory UserBadgetModel.fromJson(String source) =>
       UserBadgetModel.fromMap(json.decode(source) as Map<String, dynamic>);
 
-  static const UserBadgetModel empty = UserBadgetModel(id: '0');
+  static const UserBadgetModel empty = UserBadgetModel();
   bool get isEmpty => this == empty;
 
   @override
   bool get stringify => true;
 
   @override
-  List<Object> get props {
-    return [
-      id,
-      title,
-      description,
-      url,
-      isRemovable,
-    ];
-  }
+  List<Object> get props => [
+        title,
+        description,
+        url,
+        isRemovable,
+      ];
 }
