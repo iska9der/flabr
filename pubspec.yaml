@@ -22,9 +22,9 @@ dependencies:
   auto_route: ^7.8.4
   url_launcher: ^6.1.14
   app_links: ^3.4.5
-  flutter_widget_from_html_core: ^0.13.1-alpha.2
-  fwfh_svg: ^0.13.1-alpha.2
-  fwfh_webview: ^0.13.1-alpha.2
+  flutter_widget_from_html_core: ^0.14.3
+  fwfh_svg: ^0.8.0+4
+  fwfh_webview: ^0.14.2
   flutter_svg: ^2.0.7
   photo_view: ^0.14.0
 

@@ -412,10 +412,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_widget_from_html_core
-      sha256: "2dba32b7dbd2134af46138f6171683aff51b888c4d0b3efe289a79e3322f172e"
+      sha256: bf896211759a972c14054921ec9a97f551769cd0c8d970ac750d204d98322bdc
       url: "https://pub.dev"
     source: hosted
-    version: "0.13.1-alpha.2"
+    version: "0.14.3"
   frontend_server_client:
     dependency: transitive
     description:
@@ -428,18 +428,18 @@ packages:
     dependency: "direct main"
     description:
       name: fwfh_svg
-      sha256: a7257a6128fa2853dbb080ba1cf48a9fde3e6091ed493ea95966f9e5bdc7d841
+      sha256: "26df142c1784c29c3675ad0d37f589fc5c2173a14fc002d2c38cde3d0f117302"
       url: "https://pub.dev"
     source: hosted
-    version: "0.13.1-alpha.2"
+    version: "0.8.0+4"
   fwfh_webview:
     dependency: "direct main"
     description:
       name: fwfh_webview
-      sha256: "16e4d0fd65b28dd04790c355415891543f88f287cf2837d0d4d05ceefd774e8b"
+      sha256: "86531afae48a5838d2dce9719dfc6d46c3179237dacf47ea2b2c068243b2e88f"
       url: "https://pub.dev"
     source: hosted
-    version: "0.13.1-alpha.2"
+    version: "0.14.2"
   get_it:
     dependency: "direct main"
     description:
