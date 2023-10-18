@@ -13,7 +13,6 @@ import '../feature/auth/repository/token_repository.dart';
 import '../feature/settings/cubit/settings_cubit.dart';
 import '../feature/settings/widget/settings_card_widget.dart';
 import '../feature/settings/widget/settings_checkbox_widget.dart';
-import '../widget/image/full_image_widget.dart';
 
 @RoutePage(name: 'SettingsRoute')
 class SettingsPage extends StatelessWidget {
@@ -161,20 +160,6 @@ class _ConnectSidWidgetState extends State<ConnectSidWidget> {
                             },
                             child: const Text('Сохранить'),
                           ),
-                    const SizedBox(width: 12),
-                    ElevatedButton(
-                      onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (context) {
-                            return const FullAssetImageWidget(
-                              assetPath: 'assets/connect_sid_instruction.gif',
-                            );
-                          },
-                        );
-                      },
-                      child: const Text('Инструкция'),
-                    ),
                   ],
                 ),
               ],
