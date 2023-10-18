@@ -12,6 +12,7 @@ import 'package:intl/intl.dart';
 import 'common/model/extension/state_status_x.dart';
 import 'component/bloc/observer.dart';
 import 'component/di/dependencies.dart';
+import 'component/logger/console.dart';
 import 'component/router/app_router.dart';
 import 'component/storage/cache_storage.dart';
 import 'component/theme.dart';
@@ -41,7 +42,7 @@ void main() async {
       runApp(MyApp());
     },
     (error, stack) {
-      if (kDebugMode) print(stack);
+      if (kDebugMode) ConsoleLogger.error(error, stack);
     },
   );
 }

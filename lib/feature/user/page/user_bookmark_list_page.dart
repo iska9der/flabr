@@ -8,7 +8,7 @@ import '../../article/cubit/article_list_cubit.dart';
 import '../../article/model/article_from_enum.dart';
 import '../../article/page/article_list_page.dart';
 import '../../article/repository/article_repository.dart';
-import '../../scroll/cubit/scroll_cubit.dart';
+import '../../enhancement/scroll/scroll.dart';
 import '../../settings/cubit/settings_cubit.dart';
 import '../cubit/user_cubit.dart';
 

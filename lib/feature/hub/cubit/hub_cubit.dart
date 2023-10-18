@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../common/exception/displayable_exception.dart';
+import '../../../common/exception/exception_helper.dart';
 import '../../../component/localization/language_enum.dart';
 import '../model/hub_model.dart';
 import '../model/hub_profile_model.dart';
@@ -39,15 +39,11 @@ class HubCubit extends Cubit<HubState> {
       }
 
       emit(state.copyWith(status: HubStatus.success, profile: profile));
-    } on DisplayableException catch (e) {
-      emit(state.copyWith(
-        status: HubStatus.failure,
-        error: e.toString(),
-      ));
     } catch (e) {
+      const fallbackMessage = 'Не удалось получить профиль хаба';
       emit(state.copyWith(
         status: HubStatus.failure,
-        error: 'Не удалось получить профиль хаба',
+        error: ExceptionHelper.parseMessage(e, fallbackMessage),
       ));
     }
   }

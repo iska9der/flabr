@@ -157,8 +157,6 @@ class SettingsCubit extends Cubit<SettingsState> {
   }
 
   /// FEED CONFIG
-  ///
-
   initFeedConfig() async {
     String? raw = await _storage.read(feedConfigCacheKey);
 
@@ -192,8 +190,6 @@ class SettingsCubit extends Cubit<SettingsState> {
   }
 
   /// ARTICLE CONFIG
-  ///
-
   initArticleConfig() async {
     String? raw = await _storage.read(articleConfigCacheKey);
 

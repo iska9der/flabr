@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../common/exception/displayable_exception.dart';
+import '../../../common/exception/exception_helper.dart';
 import '../../../common/model/extension/state_status_x.dart';
 import '../model/auth_data_model.dart';
 import '../repository/auth_repository.dart';
@@ -100,10 +100,10 @@ class LoginCubit extends Cubit<LoginState> {
       await _tokenRepository.setData(authData);
 
       emit(state.copyWith(status: LoginStatus.success));
-    } on DisplayableException catch (e) {
+    } catch (e) {
       emit(state.copyWith(
         status: LoginStatus.failure,
-        error: e.toString(),
+        error: ExceptionHelper.parseMessage(e, 'Не удалось войти'),
       ));
     }
   }

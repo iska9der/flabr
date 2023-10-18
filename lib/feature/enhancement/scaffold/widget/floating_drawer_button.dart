@@ -11,11 +11,8 @@ class FloatingDrawerButton extends StatelessWidget {
     return FloatingActionButton(
       heroTag: null,
       mini: true,
-      onPressed: () => context
-          .read<ScaffoldCubit>()
-          .key
-          .currentState
-          ?.openDrawer(),
+      onPressed: () =>
+          context.read<ScaffoldCubit>().key.currentState?.openDrawer(),
       child: const Icon(Icons.menu),
     );
   }

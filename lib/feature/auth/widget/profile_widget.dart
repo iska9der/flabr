@@ -83,7 +83,7 @@ class DialogMyProfileWidget extends StatelessWidget
       },
       builder: (context, state) {
         if (state.isUnauthorized) {
-          return const Wrap();
+          return const SizedBox();
         }
 
         if (state.status.isLoading || state.me.isEmpty) {

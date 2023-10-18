@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../common/exception/displayable_exception.dart';
+import '../../../common/exception/exception_helper.dart';
 import '../../../common/exception/value_exception.dart';
 import '../../../component/localization/language_enum.dart';
 import '../model/article_from_enum.dart';
@@ -122,8 +122,6 @@ class ArticleListCubit extends Cubit<ArticleListState> {
   }
 
   /// FETCH ARTICLES
-  ///
-  ///
   void fetch() async {
     if (state.status == ArticlesStatus.loading || !isFirstFetch && isLastPage) {
       return;
@@ -145,14 +143,9 @@ class ArticleListCubit extends Cubit<ArticleListState> {
         page: state.page + 1,
         pagesCount: response.pagesCount,
       ));
-    } on DisplayableException catch (e) {
-      emit(state.copyWith(
-        error: e.toString(),
-        status: ArticlesStatus.failure,
-      ));
     } catch (e) {
       emit(state.copyWith(
-        error: 'Не удалось получить статьи',
+        error: ExceptionHelper.parseMessage(e, 'Не удалось получить статьи'),
         status: ArticlesStatus.failure,
       ));
     }

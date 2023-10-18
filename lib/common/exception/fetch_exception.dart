@@ -7,8 +7,9 @@ class FetchException implements DisplayableException {
 
   @override
   String toString() {
+    String result = 'Не удалось получить данные';
     Object? message = this.message;
-    if (message == null) return 'Не удалось получить данные';
-    return '$message';
+    if (message == null) return result;
+    return '$result: $message';
   }
 }

@@ -12,8 +12,8 @@ import '../../../widget/button/common_floating_action_button.dart';
 import '../../../widget/progress_indicator.dart';
 import '../../auth/cubit/auth_cubit.dart';
 import '../../auth/widget/profile_icon_button.dart';
-import '../../scaffold/cubit/scaffold_cubit.dart';
-import '../../scroll/cubit/scroll_cubit.dart';
+import '../../enhancement/scaffold/cubit/scaffold_cubit.dart';
+import '../../enhancement/scroll/cubit/scroll_cubit.dart';
 import '../../search/cubit/search_cubit.dart';
 import '../../search/page/search.dart';
 import '../../search/page/search_anywhere.dart';
@@ -80,7 +80,7 @@ class ArticleListPageView extends StatelessWidget {
   Widget build(BuildContext context) {
     final articlesCubit = context.read<ArticleListCubit>();
     final scrollCubit = context.read<ScrollCubit>();
-    final controller = scrollCubit.state.controller;
+    final scrollController = scrollCubit.state.controller;
 
     return MultiBlocListener(
       listeners: [
@@ -157,10 +157,10 @@ class ArticleListPageView extends StatelessWidget {
         floatingActionButtonLocation: CommonFloatingActionButton.location,
         body: SafeArea(
           child: Scrollbar(
-            controller: controller,
+            controller: scrollController,
             child: CustomScrollView(
               cacheExtent: 1000,
-              controller: controller,
+              controller: scrollController,
               slivers: [
                 BlocBuilder<ArticleListCubit, ArticleListState>(
                   builder: (context, state) => SliverAppBar(

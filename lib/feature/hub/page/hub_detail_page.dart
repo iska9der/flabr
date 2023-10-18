@@ -12,7 +12,7 @@ import '../../article/model/flow_enum.dart';
 import '../../article/page/article_list_page.dart';
 import '../../article/repository/article_repository.dart';
 import '../../article/widget/sort/articles_sort_widget.dart';
-import '../../scroll/cubit/scroll_cubit.dart';
+import '../../enhancement/scroll/scroll.dart';
 import '../../settings/cubit/settings_cubit.dart';
 import '../cubit/hub_cubit.dart';
 import '../widget/hub_profile_card_widget.dart';

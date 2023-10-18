@@ -6,12 +6,8 @@ part 'comment_hidden_state.dart';
 class CommentHiddenCubit extends Cubit<CommentHiddenState> {
   CommentHiddenCubit() : super(const CommentHiddenState());
 
-  bool isHidden(String id) {
-    return state.hiddenComments.contains(id);
-  }
-
   void _hide(String id) {
-    if (isHidden(id)) {
+    if (state.isHidden(id)) {
       return;
     }
 
@@ -21,7 +17,7 @@ class CommentHiddenCubit extends Cubit<CommentHiddenState> {
   }
 
   void _show(String id) {
-    if (!isHidden(id)) {
+    if (!state.isHidden(id)) {
       return;
     }
 

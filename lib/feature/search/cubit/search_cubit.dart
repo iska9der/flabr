@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../common/exception/displayable_exception.dart';
+import '../../../common/exception/exception_helper.dart';
 import '../../../common/model/extension/state_status_x.dart';
 import '../../../common/model/network/list_response.dart';
 import '../../../component/localization/language_enum.dart';
@@ -74,6 +74,7 @@ class SearchCubit extends Cubit<SearchState> {
     }
 
     emit(state.copyWith(status: SearchStatus.loading));
+
     try {
       ListResponse list = await _repository.fetch(
         langUI: state.langUI,
@@ -95,8 +96,11 @@ class SearchCubit extends Cubit<SearchState> {
         listResponse: newList,
         page: state.page + 1,
       ));
-    } on DisplayableException catch (e) {
-      emit(state.copyWith(status: SearchStatus.failure, error: e.toString()));
+    } catch (e) {
+      emit(state.copyWith(
+        status: SearchStatus.failure,
+        error: ExceptionHelper.parseMessage(e),
+      ));
     }
   }
 

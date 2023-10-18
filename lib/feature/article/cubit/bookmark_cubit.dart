@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../common/exception/displayable_exception.dart';
+import '../../../common/exception/exception_helper.dart';
 import '../repository/article_repository.dart';
 
 part 'bookmark_state.dart';
@@ -27,24 +27,19 @@ class BookmarkCubit extends Cubit<BookmarkState> {
     try {
       switch (state.isBookmarked) {
         case false:
-          await _add();
+          await _addToBookmars();
         case true:
-          await _remove();
+          await _removeFromBookmars();
       }
-    } on DisplayableException catch (e) {
-      emit(state.copyWith(
-        status: BookmarkStatus.failure,
-        error: e.toString(),
-      ));
     } catch (e) {
       emit(state.copyWith(
         status: BookmarkStatus.failure,
-        error: 'Не удалось',
+        error: ExceptionHelper.parseMessage(e),
       ));
     }
   }
 
-  Future<void> _add() async {
+  Future<void> _addToBookmars() async {
     await _service.addToBookmark(state.articleId);
 
     emit(state.copyWith(
@@ -54,7 +49,7 @@ class BookmarkCubit extends Cubit<BookmarkState> {
     ));
   }
 
-  Future<void> _remove() async {
+  Future<void> _removeFromBookmars() async {
     await _service.removeFromBookmark(state.articleId);
 
     emit(state.copyWith(

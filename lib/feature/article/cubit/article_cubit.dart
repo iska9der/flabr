@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../common/exception/displayable_exception.dart';
+import '../../../common/exception/exception_helper.dart';
 import '../../../component/language.dart';
 import '../model/article_model.dart';
 import '../repository/article_repository.dart';
@@ -30,8 +30,11 @@ class ArticleCubit extends Cubit<ArticleState> {
       );
 
       emit(state.copyWith(status: ArticleStatus.success, article: article));
-    } on DisplayableException catch (e) {
-      emit(state.copyWith(status: ArticleStatus.failure, error: e.toString()));
+    } catch (e) {
+      emit(state.copyWith(
+        status: ArticleStatus.failure,
+        error: ExceptionHelper.parseMessage(e),
+      ));
     }
   }
 

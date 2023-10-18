@@ -38,16 +38,14 @@ class CommentListPage extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (c) => CommentListCubit(
+          create: (_) => CommentListCubit(
             articleId,
             repository: getIt.get<ArticleRepository>(),
             langArticles: context.read<SettingsCubit>().state.langArticles,
             langUI: context.read<SettingsCubit>().state.langUI,
           ),
         ),
-        BlocProvider(
-          create: (c) => CommentHiddenCubit(),
-        ),
+        BlocProvider(create: (_) => CommentHiddenCubit()),
       ],
       child: const CommentListView(),
     );
@@ -129,7 +127,7 @@ class CommentTreeWidget extends StatelessWidget {
           },
           children: [
             AppExpansionPanel(
-              isExpanded: !state.hiddenComments.contains(comment.id),
+              isExpanded: !state.isHidden(comment.id),
               backgroundColor: Theme.of(context).scaffoldBackgroundColor,
               iconBuilder: (child, isExpanded) {
                 return DecoratedBox(
@@ -193,10 +191,13 @@ class CommentWidget extends StatelessWidget {
     const basePadding = 10.0;
     final additional = comment.level == 0 ? 0 : comment.level + 6;
     final paddingLeft = basePadding + additional;
+    final bgColor = comment.isPostAuthor
+        ? Colors.yellowAccent.withOpacity(.12)
+        : Theme.of(context).colorScheme.surface;
 
     return DecoratedBox(
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surface,
+        color: bgColor,
         borderRadius: const BorderRadius.only(
           bottomRight: Radius.circular(kBorderRadiusDefault),
           bottomLeft: Radius.circular(kBorderRadiusDefault),

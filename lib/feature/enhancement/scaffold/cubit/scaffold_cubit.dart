@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../user/page/user_dashboard_page.dart';
+import '../../../user/page/user_dashboard_page.dart';
 import '../widget/floating_drawer_button.dart';
 
 part 'scaffold_cubit_state.dart';

@@ -52,22 +52,18 @@ class UserCubit extends Cubit<UserState> {
   }
 
   void fetchWhois() async {
-    try {
-      UserWhoisModel model;
+    UserWhoisModel model;
 
-      if (state.whoisModel.isEmpty) {
-        model = await _repository.fetchWhois(
-          login: state.login,
-          langUI: state.langUI,
-          langArticles: state.langArticles,
-        );
-      } else {
-        model = state.whoisModel;
-      }
-
-      emit(state.copyWith(whoisModel: model));
-    } catch (e) {
-      /// нечего делать
+    if (state.whoisModel.isEmpty) {
+      model = await _repository.fetchWhois(
+        login: state.login,
+        langUI: state.langUI,
+        langArticles: state.langArticles,
+      );
+    } else {
+      model = state.whoisModel;
     }
+
+    emit(state.copyWith(whoisModel: model));
   }
 }

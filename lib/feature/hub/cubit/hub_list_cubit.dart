@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../common/exception/displayable_exception.dart';
+import '../../../common/exception/exception_helper.dart';
 import '../../../component/language.dart';
 import '../model/network/hub_list_response.dart';
 import '../repository/hub_repository.dart';
@@ -44,15 +44,11 @@ class HubListCubit extends Cubit<HubListState> {
         list: newList,
         page: state.page + 1,
       ));
-    } on DisplayableException catch (e) {
-      emit(state.copyWith(
-        status: HubListStatus.failure,
-        error: e.toString(),
-      ));
     } catch (e) {
+      const fallbackMessage = 'Не удалось получить список хабов';
       emit(state.copyWith(
         status: HubListStatus.failure,
-        error: 'Не удалось получить список хабов',
+        error: ExceptionHelper.parseMessage(e, fallbackMessage),
       ));
     }
   }

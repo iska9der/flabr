@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../common/exception/displayable_exception.dart';
+import '../../../common/exception/exception_helper.dart';
 import '../../../component/localization/language_enum.dart';
 import '../model/user_model.dart';
 import '../repository/user_repository.dart';
@@ -41,14 +41,11 @@ class UserListCubit extends Cubit<UserListState> {
         page: state.page + 1,
         pagesCount: response.pagesCount,
       ));
-    } on DisplayableException catch (e) {
-      emit(state.copyWith(
-        error: e.toString(),
-        status: UserListStatus.failure,
-      ));
     } catch (e) {
+      const fallbackMessage = 'Не удалось получить пользователей';
+
       emit(state.copyWith(
-        error: 'Не удалось получить пользователей',
+        error: ExceptionHelper.parseMessage(e, fallbackMessage),
         status: UserListStatus.failure,
       ));
     }

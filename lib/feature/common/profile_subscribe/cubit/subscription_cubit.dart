@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../common/exception/exception_helper.dart';
 import '../../../../common/model/extension/state_status_x.dart';
 import '../repository/subscription_repository.dart';
 
@@ -31,7 +32,7 @@ class SubscriptionCubit extends Cubit<SubscriptionState> {
     } catch (e) {
       emit(state.copyWith(
         status: SubscriptionStatus.failure,
-        error: 'Не удалось',
+        error: ExceptionHelper.parseMessage(e, 'Не удалось'),
       ));
     }
   }

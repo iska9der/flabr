@@ -16,4 +16,13 @@ class ConsoleLogger {
       name: 'INFO',
     );
   }
+
+  static void error(Object exception, StackTrace trace) {
+    dev.log(
+      '${exception.toString()} >',
+      name: 'ERROR',
+      error: exception,
+      stackTrace: trace,
+    );
+  }
 }

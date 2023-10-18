@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../component/di/dependencies.dart';
 import '../../../component/router/app_router.dart';
 import '../../../widget/dashboard_drawer_link_widget.dart';
-import '../../scaffold/cubit/scaffold_cubit.dart';
+import '../../enhancement/scaffold/cubit/scaffold_cubit.dart';
 import '../../settings/cubit/settings_cubit.dart';
 import '../cubit/hub_cubit.dart';
 import '../repository/hub_repository.dart';

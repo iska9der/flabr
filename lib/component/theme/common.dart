@@ -32,7 +32,7 @@ const PageTransitionsTheme appPageTransitionsTheme =
 });
 
 ScrollbarThemeData appScrollBarThemeData = ScrollbarThemeData(
-  thumbVisibility: MaterialStateProperty.all(true),
+  thumbVisibility: MaterialStateProperty.all(false),
   interactive: true,
   thickness: MaterialStateProperty.all(6),
   minThumbLength: kToolBarHeightOnScroll,
