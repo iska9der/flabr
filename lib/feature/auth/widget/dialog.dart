@@ -24,8 +24,28 @@ Future showProfileDialog(
 }
 
 Future showLoginDialog(BuildContext context) async {
-  return await showProfileDialog(
-    context,
-    child: const LoginWidget(),
+  return await showDialog(
+    context: context,
+    useSafeArea: true,
+    useRootNavigator: true,
+    builder: (context) => AlertDialog.adaptive(
+      insetPadding: EdgeInsets.zero,
+      contentPadding: EdgeInsets.zero,
+      actionsPadding: EdgeInsets.zero,
+      title: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          const Text('Авторизация'),
+          IconButton(
+            onPressed: () => Navigator.of(context).pop(),
+            icon: const Icon(Icons.close),
+          ),
+        ],
+      ),
+      content: SizedBox(
+        width: MediaQuery.of(context).size.width,
+        child: const LoginWidget(),
+      ),
+    ),
   );
 }

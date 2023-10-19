@@ -1,11 +1,8 @@
 import 'package:dio/dio.dart';
 
-import '../../../common/exception/displayable_exception.dart';
 import '../../../common/exception/fetch_exception.dart';
 import '../../../component/http/http_client.dart';
 import '../model/auth_data_model.dart';
-import '../model/auth_exception.dart';
-import '../model/network/auth_response_type.dart';
 
 class AuthService {
   const AuthService({
@@ -13,34 +10,6 @@ class AuthService {
   }) : _mobileClient = mobileClient;
 
   final HttpClient _mobileClient;
-
-  login({
-    required String login,
-    required String password,
-  }) async {
-    try {
-      // TODO: реализовать вход по логину и паролю
-      throw AuthException(AuthFailureType.unimplemented);
-    } on DioException catch (e) {
-      final dynamic data = e.response?.data;
-
-      AuthFailureType type = AuthFailureType.unknown;
-
-      if (data != null && data is Map) {
-        if (data.containsKey('isAuthError')) {
-          type = AuthFailureType.auth;
-        } else if (data.containsKey('isCaptchaError')) {
-          type = AuthFailureType.captcha;
-        }
-      }
-
-      throw AuthException(type);
-    } on DisplayableException {
-      rethrow;
-    } catch (e) {
-      throw FetchException();
-    }
-  }
 
   Future<Map<String, dynamic>?> fetchMe(String connectSid) async {
     try {

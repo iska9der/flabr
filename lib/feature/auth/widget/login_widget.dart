@@ -1,14 +1,17 @@
-import 'package:auto_route/auto_route.dart';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:webview_cookie_manager/webview_cookie_manager.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../../common/model/extension/state_status_x.dart';
+import '../../../common/utils/utils.dart';
 import '../../../component/di/dependencies.dart';
+import '../../../component/logger/console.dart';
 import '../../../widget/card_widget.dart';
-import '../../../widget/progress_indicator.dart';
 import '../cubit/auth_cubit.dart';
 import '../cubit/login_cubit.dart';
-import '../repository/auth_repository.dart';
 import '../repository/token_repository.dart';
 import 'profile_widget.dart';
 
@@ -21,12 +24,10 @@ class LoginWidget extends StatelessWidget implements DialogUserWidget {
 
     return Center(
       child: FlabrCard(
-        padding: const EdgeInsets.all(20),
         child: authState.isAuthorized
             ? Center(child: Text('Вы уже вошли, ${authState.me.alias}'))
             : BlocProvider(
-                create: (context) => LoginCubit(
-                  repository: getIt.get<AuthRepository>(),
+                create: (_) => LoginCubit(
                   tokenRepository: getIt.get<TokenRepository>(),
                 ),
                 child: BlocListener<LoginCubit, LoginState>(
@@ -37,7 +38,7 @@ class LoginWidget extends StatelessWidget implements DialogUserWidget {
                       context.read<AuthCubit>().handleAuthData();
                     }
                   },
-                  child: const _LoginWidgetView(),
+                  child: const _WebViewLogin(),
                 ),
               ),
       ),
@@ -45,139 +46,91 @@ class LoginWidget extends StatelessWidget implements DialogUserWidget {
   }
 }
 
-class _LoginWidgetView extends StatelessWidget {
-  const _LoginWidgetView();
+class _WebViewLogin extends StatefulWidget {
+  const _WebViewLogin();
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Text(
-          'Вход',
-          style: Theme.of(context).textTheme.headlineSmall,
+  State<_WebViewLogin> createState() => _WebViewLoginState();
+}
+
+class _WebViewLoginState extends State<_WebViewLogin> {
+  late final WebViewController wvController;
+  late final WebviewCookieManager cookieManager;
+
+  final Uri _authUri = Uri.parse('https://habr.com/kek/v1/auth/habrahabr/');
+
+  Future<String> getConnectSid(String url) async {
+    final list = await cookieManager.getCookies(url);
+    final sid = list
+        .firstWhere(
+          (cookie) => cookie.name == 'connect_sid',
+          orElse: () => Cookie('bababoi', ''),
+        )
+        .value;
+
+    return sid;
+  }
+
+  @override
+  void dispose() {
+    _clearControllerData();
+    super.dispose();
+  }
+
+  void _clearControllerData() async {
+    await wvController.clearCache();
+    await wvController.clearLocalStorage();
+    await cookieManager.clearCookies();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    final loginCubit = context.read<LoginCubit>();
+    cookieManager = WebviewCookieManager();
+    wvController = WebViewController()
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..setNavigationDelegate(
+        NavigationDelegate(
+          onWebResourceError: (WebResourceError error) {},
+          onNavigationRequest: (NavigationRequest request) async {
+            ConsoleLogger.info(request.url, title: 'URL');
+
+            if (request.url.startsWith('https://habr.com/ru/all')) {
+              final connectSid = await getConnectSid(request.url);
+              loginCubit.submitConnectSid(connectSid);
+              return NavigationDecision.prevent;
+            }
+
+            if (!request.url.startsWith('https://habr.com') &&
+                !request.url.startsWith('https://account.habr.com')) {
+              return NavigationDecision.prevent;
+            }
+
+            return NavigationDecision.navigate;
+          },
         ),
-        const SizedBox(height: 18),
-        const _LoginField(),
-        const SizedBox(height: 18),
-        const _PasswordField(),
-        const SizedBox(height: 24),
-        const _ErrorWidget(),
-        const SizedBox(height: 18),
-        const _SubmitButton(),
-      ],
-    );
+      )
+      ..loadRequest(_authUri);
   }
-}
-
-class _LoginField extends StatelessWidget {
-  const _LoginField();
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<LoginCubit, LoginState>(
-      buildWhen: (p, c) => p.login != c.login,
-      builder: (context, state) {
-        return TextFormField(
-          enabled: false,
-          initialValue: state.login,
-          decoration: InputDecoration(
-            label: const Text('Почта'),
-            prefixIcon: const Icon(Icons.email_outlined),
-            border: const OutlineInputBorder(),
-            errorText: state.loginError.isNotEmpty ? state.loginError : null,
-          ),
-          onChanged: (String value) {
-            context.read<LoginCubit>().onLoginChanged(value);
-          },
-        );
-      },
-    );
-  }
-}
-
-class _PasswordField extends StatelessWidget {
-  const _PasswordField();
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<LoginCubit, LoginState>(
-      builder: (context, state) {
-        return TextFormField(
-          enabled: false,
-          initialValue: state.password,
-          decoration: InputDecoration(
-            label: const Text('Пароль'),
-            prefixIcon: const Icon(Icons.password_outlined),
-            border: const OutlineInputBorder(),
-            errorText:
-                state.passwordError.isNotEmpty ? state.passwordError : null,
-          ),
-          obscureText: true,
-          onChanged: (value) {
-            context.read<LoginCubit>().onPasswordChanged(value);
-          },
-        );
-      },
-    );
-  }
-}
-
-class _ErrorWidget extends StatelessWidget {
-  const _ErrorWidget();
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<LoginCubit, LoginState>(
-      builder: (context, state) {
-        if (state.status.isFailure) {
-          return Text(
-            state.error,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: Theme.of(context).colorScheme.error,
-            ),
-          );
-        }
-
-        return const SizedBox();
-      },
-    );
-  }
-}
-
-class _SubmitButton extends StatelessWidget {
-  const _SubmitButton();
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<LoginCubit, LoginState>(
-      builder: (context, state) {
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            FilledButton(
-              // onPressed: state.status.isLoading
-              //     ? null
-              //     : () => context.read<LoginCubit>().submit(),
-              onPressed: null,
-              child: state.status.isLoading
-                  ? const CircleIndicator.small()
-                  : const Text('Не сегодня'),
-            ),
-            OutlinedButton(
-              onPressed: state.status.isLoading
-                  ? null
-                  : () {
-                      Navigator.of(context).pop();
-                      context.router.navigateNamed('settings');
-                    },
-              child: const Text('Войти по токену'),
-            ),
-          ],
-        );
-      },
+    return Scaffold(
+      body: BlocListener<LoginCubit, LoginState>(
+        listenWhen: (_, current) => current.status.isFailure,
+        listener: (context, state) {
+          _clearControllerData();
+          getIt.get<Utils>().showNotification(
+                context: context,
+                content: Text(state.error),
+                duration: const Duration(seconds: 5),
+              );
+          wvController.loadRequest(_authUri);
+        },
+        child: WebViewWidget(controller: wvController),
+      ),
     );
   }
 }

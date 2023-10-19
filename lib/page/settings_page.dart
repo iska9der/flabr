@@ -10,7 +10,6 @@ import '../component/language.dart';
 import '../config/constants.dart';
 import '../feature/auth/cubit/auth_cubit.dart';
 import '../feature/auth/cubit/login_cubit.dart';
-import '../feature/auth/repository/auth_repository.dart';
 import '../feature/auth/repository/token_repository.dart';
 import '../feature/settings/cubit/settings_cubit.dart';
 import '../feature/settings/widget/settings_card_widget.dart';
@@ -108,7 +107,6 @@ class _ConnectSidWidgetState extends State<ConnectSidWidget> {
 
     return BlocProvider(
       create: (_) => LoginCubit(
-        repository: getIt.get<AuthRepository>(),
         tokenRepository: getIt.get<TokenRepository>(),
       ),
       child: BlocListener<LoginCubit, LoginState>(

@@ -59,6 +59,7 @@ ThemeData lightTheme() {
     switchTheme: appSwitchThemeData,
     sliderTheme: appSliderThemeData,
     chipTheme: appChipThemeData,
+    dialogTheme: dialogTheme,
   );
 
   return themeData;

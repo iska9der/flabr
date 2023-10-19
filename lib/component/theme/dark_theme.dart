@@ -54,6 +54,7 @@ ThemeData darkTheme() {
     chipTheme: appChipThemeData,
     checkboxTheme: appCheckboxThemeData,
     switchTheme: appSwitchThemeData,
+    dialogTheme: dialogTheme,
   );
 
   return themeData;

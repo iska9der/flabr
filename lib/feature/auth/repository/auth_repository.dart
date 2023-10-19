@@ -7,15 +7,6 @@ class AuthRepository {
 
   final AuthService _service;
 
-  Future<AuthDataModel> login({
-    required String login,
-    required String password,
-  }) async {
-    final raw = await _service.login(login: login, password: password);
-
-    return AuthDataModel.fromMap(raw);
-  }
-
   Future<MeModel?> fetchMe(String connectSid) async {
     final raw = await _service.fetchMe(connectSid);
 

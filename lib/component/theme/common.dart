@@ -62,3 +62,9 @@ const SliderThemeData appSliderThemeData = SliderThemeData(
 );
 
 const ChipThemeData appChipThemeData = ChipThemeData(side: BorderSide.none);
+
+const DialogTheme dialogTheme = DialogTheme(
+  shape: RoundedRectangleBorder(
+    borderRadius: BorderRadius.all(Radius.circular(kBorderRadiusDefault)),
+  ),
+);
