@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../common/model/stat_type.dart';
+import '../model/stat_type.dart';
 import 'stat_text_widget.dart';
 
 class ProfileStatWidget extends StatelessWidget {

@@ -3,12 +3,12 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../common/model/extension/state_status_x.dart';
+import '../../../common/model/extension/enum_status.dart';
 import '../../../common/model/render_type.dart';
 import '../../../common/utils/utils.dart';
+import '../../../common/widget/enhancement/progress_indicator.dart';
 import '../../../component/di/dependencies.dart';
 import '../../../config/constants.dart';
-import '../../../widget/progress_indicator.dart';
 import '../../article/widget/article_card_widget.dart';
 import '../../company/widget/company_card_widget.dart';
 import '../../enhancement/scroll/scroll.dart';

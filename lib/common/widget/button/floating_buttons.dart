@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../../feature/enhancement/scaffold/widget/floating_drawer_button.dart';
-import '../../feature/enhancement/scroll/widget/floating_scroll_to_top_button.dart';
+import '../../../feature/enhancement/scaffold/widget/floating_drawer_button.dart';
+import '../../../feature/enhancement/scroll/widget/floating_scroll_to_top_button.dart';
 
-class CommonFloatingActionButton extends StatelessWidget {
-  const CommonFloatingActionButton({super.key});
+class FloatingButtons extends StatelessWidget {
+  const FloatingButtons({super.key});
 
   static get location => FloatingActionButtonLocation.centerFloat;
 

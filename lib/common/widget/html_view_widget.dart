@@ -6,13 +6,13 @@ import 'package:fwfh_svg/fwfh_svg.dart';
 import 'package:fwfh_webview/fwfh_webview.dart';
 import 'package:path/path.dart' as p;
 
-import '../../component/di/dependencies.dart';
-import '../../component/router/app_router.dart';
-import '../config/constants.dart';
-import '../feature/settings/cubit/settings_cubit.dart';
+import '../../../component/di/dependencies.dart';
+import '../../../component/router/app_router.dart';
+import '../../config/constants.dart';
+import '../../feature/settings/cubit/settings_cubit.dart';
+import 'enhancement/progress_indicator.dart';
 import 'extension/extension.dart';
 import 'image/network_image_widget.dart';
-import 'progress_indicator.dart';
 
 class HtmlView extends StatelessWidget {
   const HtmlView({

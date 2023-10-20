@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../settings/cubit/settings_cubit.dart';
+import '../../feature/settings/cubit/settings_cubit.dart';
 
 class ArticleSettingsWidget extends StatelessWidget {
   const ArticleSettingsWidget({super.key});
@@ -28,7 +28,7 @@ class ArticleSettingsWidget extends StatelessWidget {
         BlocBuilder<SettingsCubit, SettingsState>(
           builder: (context, state) {
             return CheckboxListTile(
-              title: Text('Показывать изображения?', style: titleStyle),
+              title: Text('Изображения', style: titleStyle),
               value: state.articleConfig.isImagesVisible,
               onChanged: (bool? value) {
                 context
@@ -42,7 +42,7 @@ class ArticleSettingsWidget extends StatelessWidget {
         BlocBuilder<SettingsCubit, SettingsState>(
           builder: (context, state) {
             return CheckboxListTile(
-              title: Text('Отображать WebView?', style: titleStyle),
+              title: Text('WebView', style: titleStyle),
               value: state.articleConfig.webViewEnabled,
               onChanged: (bool? value) {
                 context

@@ -2,13 +2,13 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../common/model/extension/num_x.dart';
-import '../../../common/model/extension/state_status_x.dart';
+import '../../../common/model/extension/enum_status.dart';
+import '../../../common/model/extension/num.dart';
 import '../../../common/model/stat_type.dart';
 import '../../../common/utils/utils.dart';
+import '../../../common/widget/enhancement/progress_indicator.dart';
 import '../../../component/di/dependencies.dart';
 import '../../../config/constants.dart';
-import '../../../widget/progress_indicator.dart';
 import '../../auth/cubit/auth_cubit.dart';
 import '../../auth/widget/dialog.dart';
 import '../cubit/bookmark_cubit.dart';

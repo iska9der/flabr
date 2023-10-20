@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../common/widget/article_settings_widget.dart';
+import '../../../common/widget/enhancement/progress_indicator.dart';
+import '../../../common/widget/html_view_widget.dart';
 import '../../../component/di/dependencies.dart';
 import '../../../config/constants.dart';
-import '../../../widget/html_view_widget.dart';
-import '../../../widget/progress_indicator.dart';
 import '../../settings/cubit/settings_cubit.dart';
 import '../cubit/article_cubit.dart';
 import '../repository/article_repository.dart';
@@ -14,7 +15,6 @@ import '../widget/article_footer_widget.dart';
 import '../widget/article_header_widget.dart';
 import '../widget/article_hubs_widget.dart';
 import '../widget/article_labels_widget.dart';
-import '../widget/article_settings_widget.dart';
 import '../widget/article_stats_widget.dart';
 
 const double hPadding = 12.0;

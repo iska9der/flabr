@@ -3,11 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 
 import '../../../common/model/stat_type.dart';
-import '../../../common/widget/list_card/card_avatar_widget.dart';
+import '../../../common/widget/enhancement/card.dart';
+import '../../../common/widget/feed/card_avatar_widget.dart';
+import '../../../common/widget/profile_stat_widget.dart';
 import '../../../component/di/dependencies.dart';
 import '../../../config/constants.dart';
-import '../../../widget/card_widget.dart';
-import '../../../widget/profile_stat_widget.dart';
 import '../../auth/cubit/auth_cubit.dart';
 import '../../common/profile_subscribe/repository/subscription_repository.dart';
 import '../../common/profile_subscribe/widget/subscribe_button.dart';

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../common/model/stat_type.dart';
-import 'card_widget.dart';
+import '../model/stat_type.dart';
+import 'enhancement/card.dart';
 import 'stat_text_widget.dart';
 
 class ProfileStatCardWidget extends StatelessWidget {

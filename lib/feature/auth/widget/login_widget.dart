@@ -5,11 +5,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:webview_cookie_manager/webview_cookie_manager.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-import '../../../common/model/extension/state_status_x.dart';
+import '../../../common/model/extension/enum_status.dart';
 import '../../../common/utils/utils.dart';
+import '../../../common/widget/enhancement/card.dart';
 import '../../../component/di/dependencies.dart';
 import '../../../component/logger/console.dart';
-import '../../../widget/card_widget.dart';
 import '../cubit/auth_cubit.dart';
 import '../cubit/login_cubit.dart';
 import '../repository/token_repository.dart';

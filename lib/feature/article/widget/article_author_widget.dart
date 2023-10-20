@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
-import '../../../common/widget/list_card/card_avatar_widget.dart';
+import '../../../common/widget/feed/card_avatar_widget.dart';
 import '../../auth/widget/dialog.dart';
 import '../../auth/widget/profile_widget.dart';
 import '../model/article_author_model.dart';

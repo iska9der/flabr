@@ -4,12 +4,12 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../common/model/extension/state_status_x.dart';
+import '../../../common/model/extension/enum_status.dart';
 import '../../../common/utils/utils.dart';
+import '../../../common/widget/button/floating_buttons.dart';
+import '../../../common/widget/enhancement/progress_indicator.dart';
 import '../../../component/di/dependencies.dart';
 import '../../../config/constants.dart';
-import '../../../widget/button/common_floating_action_button.dart';
-import '../../../widget/progress_indicator.dart';
 import '../../auth/cubit/auth_cubit.dart';
 import '../../auth/widget/profile_icon_button.dart';
 import '../../enhancement/scaffold/cubit/scaffold_cubit.dart';
@@ -153,8 +153,8 @@ class ArticleListPageView extends StatelessWidget {
       child: Scaffold(
         key: context.read<ScaffoldCubit>().key,
         drawer: _ArticleListDrawer(type: type),
-        floatingActionButton: const CommonFloatingActionButton(),
-        floatingActionButtonLocation: CommonFloatingActionButton.location,
+        floatingActionButton: const FloatingButtons(),
+        floatingActionButtonLocation: FloatingButtons.location,
         body: SafeArea(
           child: Scrollbar(
             controller: scrollController,

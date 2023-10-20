@@ -3,17 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
-import '../../../common/model/extension/state_status_x.dart';
-import '../../../common/model/stat_type.dart';
+import '../../../common/model/extension/enum_status.dart';
 import '../../../common/utils/utils.dart';
 import '../../../common/widget/detail/section_container_widget.dart';
-import '../../../common/widget/list_card/card_avatar_widget.dart';
+import '../../../common/widget/enhancement/progress_indicator.dart';
 import '../../../component/di/dependencies.dart';
 import '../../../config/constants.dart';
-import '../../../widget/card_widget.dart';
-import '../../../widget/profile_stat_widget.dart';
-import '../../../widget/progress_indicator.dart';
 import '../cubit/user_cubit.dart';
+import '../widget/user_profile_card_widget.dart';
 import '../widget/user_whois_widget.dart';
 
 @RoutePage(name: UserDetailPage.routeName)
@@ -57,21 +54,7 @@ class UserDetailPageView extends StatelessWidget {
         return ListView(
           padding: const EdgeInsets.all(kScreenHPadding),
           children: [
-            FlabrCard(
-              padding: const EdgeInsets.all(kCardPadding),
-              child: Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(right: 20),
-                    child: CardAvatarWidget(
-                      imageUrl: model.avatarUrl,
-                      height: 50,
-                    ),
-                  ),
-                  const Expanded(child: _UserScoresWidget())
-                ],
-              ),
-            ),
+            const UserProfileCardWidget(),
             const Divider(),
             if (model.fullname.isNotEmpty)
               FittedBox(
@@ -126,35 +109,6 @@ class UserDetailPageView extends StatelessWidget {
               child: Text(DateFormat.yMMMMEEEEd().format(model.lastActivityAt)),
             ),
             const UserWhoisWidget(),
-          ],
-        );
-      },
-    );
-  }
-}
-
-class _UserScoresWidget extends StatelessWidget {
-  const _UserScoresWidget();
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<UserCubit, UserState>(
-      builder: (context, state) {
-        var model = state.model;
-
-        return Row(
-          children: [
-            ProfileStatWidget(
-              type: StatType.score,
-              title: 'Очки',
-              value: model.score,
-            ),
-            const SizedBox(width: 40),
-            ProfileStatWidget(
-              type: StatType.rating,
-              title: 'Рейтинг',
-              value: model.rating,
-            ),
           ],
         );
       },

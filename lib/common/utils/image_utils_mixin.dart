@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../config/constants.dart';
-import '../../widget/progress_indicator.dart';
+import '../widget/enhancement/progress_indicator.dart';
 
 mixin ImageUtilsMixin {
   Widget onImageLoading(BuildContext context, String url) => const SizedBox(

@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../common/model/extension/state_status_x.dart';
+import '../../../common/model/extension/enum_status.dart';
 import '../model/auth_data_model.dart';
 import '../repository/token_repository.dart';
 

@@ -9,7 +9,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 
-import 'common/model/extension/state_status_x.dart';
+import 'common/model/extension/enum_status.dart';
+import 'common/widget/enhancement/progress_indicator.dart';
 import 'component/bloc/observer.dart';
 import 'component/di/dependencies.dart';
 import 'component/logger/console.dart';
@@ -20,7 +21,6 @@ import 'feature/auth/cubit/auth_cubit.dart';
 import 'feature/auth/repository/auth_repository.dart';
 import 'feature/auth/repository/token_repository.dart';
 import 'feature/settings/cubit/settings_cubit.dart';
-import 'widget/progress_indicator.dart';
 
 void main() async {
   runZonedGuarded(

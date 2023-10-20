@@ -2,8 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import '../../../component/di/dependencies.dart';
-import '../../common/utils/utils.dart';
+import '../../../../component/di/dependencies.dart';
+import '../../utils/utils.dart';
 import 'full_image_widget.dart';
 
 class NetworkImageWidget extends StatelessWidget {
