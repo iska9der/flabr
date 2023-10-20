@@ -40,7 +40,7 @@ class NewsListPage extends StatelessWidget {
           ),
         ),
         BlocProvider(
-          create: (c) => ScrollCubit()..setUpEdgeListeners(),
+          create: (c) => ScrollCubit(),
         ),
         BlocProvider(
           create: (c) => ScaffoldCubit(),

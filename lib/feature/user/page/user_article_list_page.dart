@@ -37,7 +37,7 @@ class UserArticleListPage extends StatelessWidget {
           ),
         ),
         BlocProvider(
-          create: (c) => ScrollCubit()..setUpEdgeListeners(),
+          create: (c) => ScrollCubit(),
         ),
       ],
       child: const UserArticleListPageView(),

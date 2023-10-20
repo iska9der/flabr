@@ -73,7 +73,7 @@ class SearchAnywhereDelegate extends FlabrSearchDelegate {
     cubit.changeQuery(query);
 
     return BlocProvider<ScrollCubit>(
-      create: (_) => ScrollCubit()..setUpEdgeListeners(),
+      create: (_) => ScrollCubit(),
       child: MultiBlocListener(
         listeners: [
           BlocListener<SearchCubit, SearchState>(
