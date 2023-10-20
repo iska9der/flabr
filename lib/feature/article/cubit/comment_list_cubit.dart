@@ -1,9 +1,9 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../common/model/extension/state_status_x.dart';
 import '../../../../component/language.dart';
 import '../../../common/exception/exception_helper.dart';
+import '../../../common/model/extension/enum_status.dart';
 import '../model/network/comment_list_response.dart';
 import '../repository/article_repository.dart';
 

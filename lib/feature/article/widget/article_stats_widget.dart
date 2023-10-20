@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../common/model/extension/num_x.dart';
+import '../../../common/model/extension/num.dart';
 import '../model/article_complexity.dart';
 import '../model/article_model.dart';
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../common/model/extension/num_x.dart';
-import '../common/model/stat_type.dart';
+import '../model/extension/num.dart';
+import '../model/stat_type.dart';
 
 class StatTextWidget extends StatelessWidget {
   const StatTextWidget({

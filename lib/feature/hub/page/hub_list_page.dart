@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../common/utils/utils.dart';
+import '../../../common/widget/enhancement/progress_indicator.dart';
 import '../../../component/di/dependencies.dart';
 import '../../../config/constants.dart';
-import '../../../widget/progress_indicator.dart';
 import '../../enhancement/scroll/scroll.dart';
 import '../../settings/cubit/settings_cubit.dart';
 import '../cubit/hub_list_cubit.dart';

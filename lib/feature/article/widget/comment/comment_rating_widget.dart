@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../common/model/stat_type.dart';
-import '../../../../widget/stat_text_widget.dart';
+import '../../../../common/widget/stat_text_widget.dart';
 import '../../model/comment_model.dart';
 
 class CommentRatingWidget extends StatelessWidget {

@@ -2,11 +2,11 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../common/model/extension/state_status_x.dart';
+import '../../../common/model/extension/enum_status.dart';
 import '../../../common/model/user.dart';
-import '../../../common/widget/list_card/card_avatar_widget.dart';
-import '../../../widget/card_widget.dart';
-import '../../../widget/progress_indicator.dart';
+import '../../../common/widget/enhancement/card.dart';
+import '../../../common/widget/enhancement/progress_indicator.dart';
+import '../../../common/widget/feed/card_avatar_widget.dart';
 import '../cubit/auth_cubit.dart';
 
 abstract class DialogUserWidget extends StatelessWidget {

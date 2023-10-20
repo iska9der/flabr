@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../common/exception/exception_helper.dart';
-import '../../../../common/model/extension/state_status_x.dart';
+import '../../../../common/model/extension/enum_status.dart';
 import '../repository/subscription_repository.dart';
 
 part 'subscription_state.dart';

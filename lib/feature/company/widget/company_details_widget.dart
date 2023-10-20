@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
-import '../../../common/model/extension/state_status_x.dart';
+import '../../../common/model/extension/enum_status.dart';
 import '../../../common/widget/detail/section_container_widget.dart';
+import '../../../common/widget/enhancement/card.dart';
+import '../../../common/widget/enhancement/progress_indicator.dart';
+import '../../../common/widget/image/network_image_widget.dart';
 import '../../../component/di/dependencies.dart';
 import '../../../component/router/app_router.dart';
-import '../../../widget/card_widget.dart';
-import '../../../widget/image/network_image_widget.dart';
-import '../../../widget/progress_indicator.dart';
 import '../cubit/company_cubit.dart';
 
 class CompanyDetailsWidget extends StatelessWidget {

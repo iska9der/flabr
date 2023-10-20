@@ -4,12 +4,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:intl/intl.dart';
 
-import '../../../common/model/extension/state_status_x.dart';
+import '../../../common/model/extension/enum_status.dart';
+import '../../../common/widget/enhancement/app_expansion_panel.dart';
+import '../../../common/widget/enhancement/progress_indicator.dart';
+import '../../../common/widget/html_view_widget.dart';
 import '../../../component/di/dependencies.dart';
 import '../../../config/constants.dart';
-import '../../../widget/app_expansion_panel.dart';
-import '../../../widget/html_view_widget.dart';
-import '../../../widget/progress_indicator.dart';
 import '../../settings/cubit/settings_cubit.dart';
 import '../cubit/comment_hidden_cubit.dart';
 import '../cubit/comment_list_cubit.dart';

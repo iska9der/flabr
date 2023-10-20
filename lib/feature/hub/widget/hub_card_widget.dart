@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 
 import '../../../common/model/render_type.dart';
 import '../../../common/model/stat_type.dart';
-import '../../../common/widget/list_card/card_avatar_widget.dart';
-import '../../../common/widget/list_card/card_title_widget.dart';
+import '../../../common/widget/enhancement/card.dart';
+import '../../../common/widget/feed/card_avatar_widget.dart';
+import '../../../common/widget/feed/card_title_widget.dart';
+import '../../../common/widget/profile_stat_card_widget.dart';
 import '../../../component/router/routes.dart';
 import '../../../config/constants.dart';
-import '../../../widget/card_widget.dart';
-import '../../../widget/profile_stat_card_widget.dart';
 import '../model/hub_model.dart';
 import '../model/hub_statistics_model.dart';
 
