@@ -14,6 +14,7 @@ import '../feature/auth/repository/token_repository.dart';
 import '../feature/settings/cubit/settings_cubit.dart';
 import '../feature/settings/widget/settings_card_widget.dart';
 import '../feature/settings/widget/settings_checkbox_widget.dart';
+import '../feature/settings/widget/settings_section_widget.dart';
 
 @RoutePage(name: 'SettingsRoute')
 class SettingsPage extends StatelessWidget {
@@ -32,54 +33,30 @@ class SettingsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const paddingBetweenElements = 14.0;
-
     return ListView(
       padding: const EdgeInsets.symmetric(horizontal: kScreenHPadding),
       children: const [
-        _SectionHeader(title: 'Аккаунт'),
-        Padding(
-          padding: EdgeInsets.only(bottom: paddingBetweenElements),
-          child: ConnectSidWidget(),
+        SettingsSectionWidget(
+          title: 'Аккаунт',
+          children: [
+            ConnectSidWidget(),
+          ],
         ),
-        _SectionHeader(title: 'Интерфейс'),
-        Padding(
-          padding: EdgeInsets.only(bottom: paddingBetweenElements),
-          child: UIThemeWidget(),
+        SettingsSectionWidget(
+          title: 'Интерфейс',
+          children: [
+            UIThemeWidget(),
+            UILangWidget(),
+            ArticlesLangWidget(),
+          ],
         ),
-        Padding(
-          padding: EdgeInsets.only(bottom: paddingBetweenElements),
-          child: UILangWidget(),
-        ),
-        Padding(
-          padding: EdgeInsets.only(bottom: paddingBetweenElements),
-          child: ArticlesLangWidget(),
-        ),
-        _SectionHeader(title: 'Лента'),
-        Padding(
-          padding: EdgeInsets.only(bottom: paddingBetweenElements),
-          child: SettingsFeedWidget(),
+        SettingsSectionWidget(
+          title: 'Лента',
+          children: [
+            SettingsFeedWidget(),
+          ],
         ),
       ],
-    );
-  }
-}
-
-class _SectionHeader extends StatelessWidget {
-  const _SectionHeader({required this.title});
-
-  final String title;
-
-  @override
-  Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
-
-    return Padding(
-      padding: const EdgeInsets.only(top: 18, bottom: 10),
-      child: Text(
-        title,
-        style: textTheme.headlineMedium,
-      ),
     );
   }
 }
@@ -122,63 +99,62 @@ class _ConnectSidWidgetState extends State<ConnectSidWidget> {
               controller.text = '';
             }
 
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                const Text('Connect SID'),
-                Text(
-                  'Если не удается войти через форму логина',
-                  style: Theme.of(context).textTheme.bodySmall,
-                ),
-                const SizedBox(height: 8),
-                TextFormField(
-                  onTapOutside: (event) {
-                    FocusManager.instance.primaryFocus?.unfocus();
-                  },
-                  enabled: !state.isAuthorized,
-                  controller: controller,
-                  keyboardType: TextInputType.text,
-                  decoration: const InputDecoration(
-                    floatingLabelBehavior: FloatingLabelBehavior.always,
-                    hintText: 'Можно найти в cookies',
-                    border: OutlineInputBorder(),
+            return SettingsCardWidget(
+              title: 'Connect SID',
+              subtitle: 'Если не удается войти через форму логина',
+              padding: const EdgeInsets.all(6),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  TextFormField(
+                    onTapOutside: (event) {
+                      FocusManager.instance.primaryFocus?.unfocus();
+                    },
+                    enabled: !state.isAuthorized,
+                    controller: controller,
+                    keyboardType: TextInputType.text,
+                    decoration: const InputDecoration(
+                      floatingLabelBehavior: FloatingLabelBehavior.always,
+                      hintText: 'Можно найти в cookies',
+                      border: OutlineInputBorder(),
+                    ),
                   ),
-                ),
-                const SizedBox(height: 8),
-                Row(
-                  children: [
-                    state.isAuthorized
-                        ? ElevatedButton(
-                            onPressed: () {
-                              authCubit.logOut();
-                            },
-                            child: const Text('Очистить'),
-                          )
-                        : FilledButton(
-                            onPressed: () {
-                              loginCubit.submitConnectSid(controller.text);
-                            },
-                            child: const Text('Сохранить'),
-                          ),
-                    const SizedBox(width: 12),
-                    if (state.isAuthorized)
-                      ElevatedButton(
-                        onPressed: () {
-                          Clipboard.setData(
-                            ClipboardData(text: controller.text),
-                          );
-                          getIt.get<Utils>().showNotification(
-                                context: context,
-                                content: const Text(
-                                  'Скопировано в буфер обмена',
-                                ),
-                              );
-                        },
-                        child: const Text('Скопировать'),
-                      ),
-                  ],
-                ),
-              ],
+                  const SizedBox(height: 8),
+                  Row(
+                    children: [
+                      state.isAuthorized
+                          ? ElevatedButton(
+                              onPressed: () {
+                                authCubit.logOut();
+                              },
+                              child: const Text('Очистить'),
+                            )
+                          : FilledButton(
+                              onPressed: () {
+                                loginCubit.submitConnectSid(controller.text);
+                              },
+                              child: const Text('Сохранить'),
+                            ),
+                      const SizedBox(width: 12),
+                      if (state.isAuthorized)
+                        ElevatedButton(
+                          onPressed: () {
+                            Clipboard.setData(
+                              ClipboardData(text: controller.text),
+                            );
+                            getIt.get<Utils>().showNotification(
+                                  context: context,
+                                  content: const Text(
+                                    'Скопировано в буфер обмена',
+                                  ),
+                                );
+                          },
+                          child: const Text('Скопировать'),
+                        ),
+                    ],
+                  ),
+                ],
+              ),
             );
           },
         ),
