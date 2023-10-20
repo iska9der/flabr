@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../common/model/extension/state_status_x.dart';
 import '../common/utils/utils.dart';
+import '../common/widget/article_settings_widget.dart';
 import '../component/di/dependencies.dart';
 import '../component/language.dart';
 import '../config/constants.dart';
@@ -54,6 +55,15 @@ class SettingsView extends StatelessWidget {
           title: 'Лента',
           children: [
             SettingsFeedWidget(),
+          ],
+        ),
+        SettingsSectionWidget(
+          title: 'Статьи',
+          children: [
+            SettingsCardWidget(
+              padding: EdgeInsets.symmetric(vertical: 20),
+              child: ArticleSettingsWidget(),
+            ),
           ],
         ),
       ],
@@ -295,7 +305,7 @@ class SettingsFeedWidget extends StatelessWidget {
         children: [
           SettingsCheckboxWidget(
             initialValue: settingsCubit.state.feedConfig.isImageVisible,
-            title: const Text('Изображение'),
+            title: const Text('Изображения'),
             onChanged: (bool value) =>
                 settingsCubit.changeFeedImageVisibility(isVisible: value),
           ),
