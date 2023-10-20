@@ -8,7 +8,9 @@ class ScrollCubit extends Cubit<ScrollState> {
   ScrollCubit({
     this.duration = const Duration(milliseconds: 200),
     this.curve = Curves.linear,
-  }) : super(ScrollState(controller: ScrollController()));
+  }) : super(ScrollState(controller: ScrollController())) {
+    _setUpEdgeListeners();
+  }
 
   final Duration duration;
   final Curve curve;
@@ -19,7 +21,7 @@ class ScrollCubit extends Cubit<ScrollState> {
     return super.close();
   }
 
-  void setUpEdgeListeners() {
+  void _setUpEdgeListeners() {
     emit(state.copyWith(isTopEdge: true));
 
     state.controller.addListener(() {
@@ -59,7 +61,11 @@ class ScrollCubit extends Cubit<ScrollState> {
   }
 
   Future<void> animateToTop({Duration? duration, Curve? curve}) async {
-    await animateTo(0.00, duration: duration, curve: curve);
+    await animateTo(
+      0.00,
+      duration: duration,
+      curve: curve,
+    );
   }
 
   Future<void> animateToBottom({Duration? duration, Curve? curve}) async {
