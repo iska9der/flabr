@@ -2,11 +2,11 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../common/widget/article_list_sliver.dart';
 import '../../../common/widget/button/floating_buttons.dart';
 import '../../../component/di/dependencies.dart';
 import '../../article/cubit/article_list_cubit.dart';
 import '../../article/model/article_from_enum.dart';
-import '../../article/page/article_list_page.dart';
 import '../../article/repository/article_repository.dart';
 import '../../enhancement/scroll/scroll.dart';
 import '../../settings/cubit/settings_cubit.dart';
@@ -65,7 +65,7 @@ class UserArticleListPageView extends StatelessWidget {
             controller: scrollCtrl,
             cacheExtent: 2000,
             slivers: const [
-              ArticleSliverList(),
+              ArticleListSliver(),
             ],
           ),
         ),

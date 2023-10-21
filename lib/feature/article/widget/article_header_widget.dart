@@ -15,9 +15,11 @@ class ArticleHeaderWidget extends StatelessWidget {
       children: [
         ArticleAuthorWidget(article.author),
         const SizedBox(width: 4),
-        Text(
-          DateFormat.yMMMMd().add_jm().format(article.publishedAt),
-          style: Theme.of(context).textTheme.bodySmall,
+        Expanded(
+          child: Text(
+            DateFormat.yMMMMd().add_jm().format(article.publishedAt),
+            style: Theme.of(context).textTheme.bodySmall,
+          ),
         ),
       ],
     );

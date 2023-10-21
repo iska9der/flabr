@@ -1,3 +1,3 @@
-const double kToolBarHeight = 60.0;
-const double kScrolledUnderElevation = 20.0;
-const double kToolBarHeightOnScroll = kToolBarHeight - kScrolledUnderElevation;
+const double fToolBarHeight = 60.0;
+const double fScrolledUnderElevation = 20.0;
+const double fToolBarHeightOnScroll = fToolBarHeight - fScrolledUnderElevation;

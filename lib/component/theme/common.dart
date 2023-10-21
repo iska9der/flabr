@@ -18,8 +18,8 @@ const appCardTheme = CardTheme(
 const AppBarTheme appAppBarTheme = AppBarTheme(
   surfaceTintColor: Colors.transparent,
   elevation: 0,
-  scrolledUnderElevation: kScrolledUnderElevation,
-  toolbarHeight: kToolBarHeight,
+  scrolledUnderElevation: fScrolledUnderElevation,
+  toolbarHeight: fToolBarHeight,
   titleTextStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
 );
 
@@ -35,7 +35,7 @@ ScrollbarThemeData appScrollBarThemeData = ScrollbarThemeData(
   thumbVisibility: MaterialStateProperty.all(false),
   interactive: true,
   thickness: MaterialStateProperty.all(6),
-  minThumbLength: kToolBarHeightOnScroll,
+  minThumbLength: fToolBarHeightOnScroll,
 );
 
 TextButtonThemeData appTextButtonThemeData = TextButtonThemeData(
