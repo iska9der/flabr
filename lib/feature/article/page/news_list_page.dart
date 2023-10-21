@@ -46,7 +46,7 @@ class NewsListPage extends StatelessWidget {
           create: (c) => ScaffoldCubit(),
         ),
       ],
-      child: const ArticleListPageView(type: ArticleType.news),
+      child: const ArticleListView(type: ArticleType.news),
     );
   }
 }

@@ -1,30 +1,24 @@
-import 'dart:async';
-
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../common/model/extension/enum_status.dart';
 import '../../../common/utils/utils.dart';
+import '../../../common/widget/article_list_sliver.dart';
 import '../../../common/widget/button/floating_buttons.dart';
-import '../../../common/widget/enhancement/progress_indicator.dart';
 import '../../../component/di/dependencies.dart';
-import '../../../config/constants.dart';
 import '../../auth/cubit/auth_cubit.dart';
-import '../../auth/widget/profile_icon_button.dart';
 import '../../enhancement/scaffold/cubit/scaffold_cubit.dart';
 import '../../enhancement/scroll/cubit/scroll_cubit.dart';
 import '../../search/cubit/search_cubit.dart';
-import '../../search/page/search.dart';
-import '../../search/page/search_anywhere.dart';
 import '../../search/repository/search_repository.dart';
 import '../../settings/cubit/settings_cubit.dart';
 import '../cubit/article_list_cubit.dart';
 import '../model/article_type.dart';
 import '../model/flow_enum.dart';
 import '../repository/article_repository.dart';
-import '../widget/article_card_widget.dart';
-import '../widget/sort/articles_sort_widget.dart';
+import '../widget/article_list/article_list_appbar.dart';
+import '../widget/article_list/article_list_drawer.dart';
 
 @RoutePage(name: ArticleListPage.routeName)
 class ArticleListPage extends StatelessWidget {
@@ -50,9 +44,6 @@ class ArticleListPage extends StatelessWidget {
           ),
         ),
         BlocProvider(
-          create: (c) => ScrollCubit(),
-        ),
-        BlocProvider(
           create: (c) => SearchCubit(
             getIt.get<SearchRepository>(),
             langUI: context.read<SettingsCubit>().state.langUI,
@@ -60,16 +51,19 @@ class ArticleListPage extends StatelessWidget {
           ),
         ),
         BlocProvider(
+          create: (c) => ScrollCubit(),
+        ),
+        BlocProvider(
           create: (c) => ScaffoldCubit(),
         ),
       ],
-      child: const ArticleListPageView(),
+      child: const ArticleListView(),
     );
   }
 }
 
-class ArticleListPageView extends StatelessWidget {
-  const ArticleListPageView({
+class ArticleListView extends StatelessWidget {
+  const ArticleListView({
     super.key,
     this.type = ArticleType.article,
   });
@@ -152,7 +146,7 @@ class ArticleListPageView extends StatelessWidget {
       ],
       child: Scaffold(
         key: context.read<ScaffoldCubit>().key,
-        drawer: _ArticleListDrawer(type: type),
+        drawer: ArticleListDrawer(type: type),
         floatingActionButton: const FloatingButtons(),
         floatingActionButtonLocation: FloatingButtons.location,
         body: SafeArea(
@@ -162,186 +156,13 @@ class ArticleListPageView extends StatelessWidget {
               cacheExtent: 1000,
               controller: scrollController,
               slivers: [
-                BlocBuilder<ArticleListCubit, ArticleListState>(
-                  builder: (context, state) => SliverAppBar(
-                    title: Text(state.flow.label),
-                    actions: [
-                      if (type == ArticleType.article)
-                        Padding(
-                          padding: const EdgeInsets.only(right: 8),
-                          child: IconButton(
-                            onPressed: () async {
-                              final cubit = context.read<SearchCubit>();
-
-                              await showFlabrSearch(
-                                context: context,
-                                delegate: SearchAnywhereDelegate(
-                                  cubit: BlocProvider.of<SearchCubit>(context),
-                                ),
-                              );
-
-                              cubit.reset();
-                            },
-                            icon: const Icon(Icons.search_rounded),
-                          ),
-                        ),
-                      const Padding(
-                        padding: EdgeInsets.only(right: 20),
-                        child: MyProfileIconButton(),
-                      ),
-                    ],
-                  ),
-                ),
-                BlocBuilder<ArticleListCubit, ArticleListState>(
-                  builder: (context, state) {
-                    if (state.flow == FlowEnum.feed) {
-                      return const SliverToBoxAdapter();
-                    }
-
-                    return const SliverAppBar(
-                      automaticallyImplyLeading: false,
-                      floating: true,
-                      elevation: 0,
-                      scrolledUnderElevation: 0,
-                      toolbarHeight: sortToolbarHeight,
-                      title: ArticlesSortWidget(),
-                    );
-                  },
-                ),
-
-                /// Статьи
-                const ArticleSliverList(),
+                ArticleListAppBar(type: type),
+                const ArticleListSliver(),
               ],
             ),
           ),
         ),
       ),
-    );
-  }
-}
-
-class _ArticleListDrawer extends StatelessWidget {
-  const _ArticleListDrawer({required this.type});
-
-  final ArticleType type;
-
-  _onItemTap(BuildContext context, FlowEnum flow) {
-    final articlesCubit = context.read<ArticleListCubit>();
-
-    articlesCubit.changeFlow(flow);
-
-    Navigator.of(context).pop();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final currentFlow = context.read<ArticleListCubit>().state.flow;
-
-    return DrawerTheme(
-      data: Theme.of(context).drawerTheme.copyWith(
-            width: MediaQuery.of(context).size.width * .6,
-          ),
-      child: NavigationDrawer(
-        children: FlowEnum.values.map((flow) {
-          /// дергаем пункт "Моя лента"
-          if (flow == FlowEnum.feed) {
-            final authState = context.watch<AuthCubit>().state;
-
-            /// если мы не в статьях и не авторизованы, то не показываем
-            /// этот пункт в drawer
-            if (type != ArticleType.article || !authState.isAuthorized) {
-              return const SizedBox();
-            }
-          }
-
-          return ListTile(
-            title: Text(flow.label),
-            selected: currentFlow == flow,
-            onTap: () => _onItemTap(context, flow),
-          );
-        }).toList(),
-      ),
-    );
-  }
-}
-
-class ArticleSliverList extends StatelessWidget {
-  const ArticleSliverList({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocConsumer<ArticleListCubit, ArticleListState>(
-      listenWhen: (p, c) => p.page != 1 && c.status == ArticlesStatus.failure,
-      listener: (c, state) {
-        getIt.get<Utils>().showNotification(
-              context: context,
-              content: Text(state.error),
-            );
-      },
-      builder: (context, state) {
-        final ScrollCubit? scrollCubit = context.read<ScrollCubit?>();
-
-        if (state.status == ArticlesStatus.initial) {
-          context.read<ArticleListCubit>().fetch();
-
-          return const SliverFillRemaining(
-            child: CircleIndicator(),
-          );
-        }
-
-        /// Если происходит загрузка первой страницы
-        if (context.read<ArticleListCubit>().isFirstFetch) {
-          if (state.status == ArticlesStatus.loading) {
-            return const SliverFillRemaining(
-              child: CircleIndicator(),
-            );
-          }
-          if (state.status == ArticlesStatus.failure) {
-            return SliverFillRemaining(
-              child: Center(child: Text(state.error)),
-            );
-          }
-        }
-
-        var articles = state.articles;
-
-        if (articles.isEmpty) {
-          return const SliverFillRemaining(
-            child: Center(
-              child: Text('Ничего нет'),
-            ),
-          );
-        }
-
-        return SliverList(
-          delegate: SliverChildBuilderDelegate(
-            (c, i) {
-              if (i < articles.length) {
-                final article = articles[i];
-
-                return Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: kScreenHPadding,
-                  ),
-                  child: ArticleCardWidget(article: article),
-                );
-              }
-
-              Timer(
-                scrollCubit?.duration ?? const Duration(milliseconds: 30),
-                () => scrollCubit?.animateToBottom(),
-              );
-
-              return const SizedBox(
-                height: 60,
-                child: CircleIndicator.medium(),
-              );
-            },
-            childCount: articles.length +
-                (state.status == ArticlesStatus.loading ? 1 : 0),
-          ),
-        );
-      },
     );
   }
 }
