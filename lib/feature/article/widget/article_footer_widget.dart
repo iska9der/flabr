@@ -6,15 +6,14 @@ import '../../../common/model/extension/enum_status.dart';
 import '../../../common/model/extension/num.dart';
 import '../../../common/model/stat_type.dart';
 import '../../../common/utils/utils.dart';
-import '../../../common/widget/enhancement/progress_indicator.dart';
 import '../../../component/di/dependencies.dart';
-import '../../../config/constants.dart';
 import '../../auth/cubit/auth_cubit.dart';
 import '../../auth/widget/dialog.dart';
 import '../cubit/bookmark_cubit.dart';
 import '../model/article_model.dart';
 import '../page/comment_list_page.dart';
 import '../repository/article_repository.dart';
+import 'stats/article_stat_icon_widget.dart';
 
 class ArticleFooterWidget extends StatelessWidget {
   const ArticleFooterWidget({
@@ -88,68 +87,6 @@ class _BookmarkIconButton extends StatelessWidget {
                 : context.read<BookmarkCubit>().toggle(),
           );
         },
-      ),
-    );
-  }
-}
-
-class StatIconButton extends StatelessWidget {
-  const StatIconButton({
-    super.key,
-    required this.icon,
-    required this.text,
-    this.color,
-    this.isHighlighted = false,
-    this.isLoading = false,
-    this.onTap,
-  });
-
-  final IconData icon;
-  final String text;
-  final Color? color;
-  final bool isHighlighted;
-  final bool isLoading;
-  final void Function()? onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    const iconSize = 18.0;
-
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(kBorderRadiusDefault),
-        child: Padding(
-          padding: const EdgeInsets.all(kScreenHPadding),
-          child: Row(
-            children: [
-              isLoading
-                  ? const SizedBox(
-                      width: iconSize,
-                      height: iconSize,
-                      child: CircleIndicator.small(),
-                    )
-                  : Icon(
-                      icon,
-                      size: iconSize,
-                      color: color?.withOpacity(isHighlighted ? 1 : .3) ??
-                          Theme.of(context)
-                              .iconTheme
-                              .color
-                              ?.withOpacity(isHighlighted ? 1 : .3),
-                    ),
-              const SizedBox(width: 6),
-              Text(
-                text,
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: color,
-                      fontWeight: FontWeight.w600,
-                    ),
-              ),
-            ],
-          ),
-        ),
       ),
     );
   }

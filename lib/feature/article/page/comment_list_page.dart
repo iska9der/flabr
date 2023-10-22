@@ -18,8 +18,8 @@ import '../repository/article_repository.dart';
 import '../widget/article_author_widget.dart';
 import '../widget/comment/comment_rating_widget.dart';
 
-const paddingBetweenTrees = 12.0;
-const paddingBetweenChilds = 4.0;
+const _paddingBetweenTrees = 12.0;
+const _paddingBetweenChilds = 4.0;
 
 @RoutePage(name: CommentListPage.routeName)
 class CommentListPage extends StatelessWidget {
@@ -88,7 +88,7 @@ class CommentListView extends StatelessWidget {
               itemCount: comments.length,
               padding: const EdgeInsets.fromLTRB(4, 4, 4, 16),
               separatorBuilder: (c, i) => const SizedBox(
-                height: paddingBetweenTrees,
+                height: _paddingBetweenTrees,
               ),
               itemBuilder: (context, index) {
                 final comment = comments[index];
@@ -167,7 +167,8 @@ class CommentTreeWidget extends StatelessWidget {
                     shrinkWrap: true,
                     itemCount: comment.children.length,
                     itemBuilder: (_, i) => Padding(
-                      padding: const EdgeInsets.only(top: paddingBetweenChilds),
+                      padding:
+                          const EdgeInsets.only(top: _paddingBetweenChilds),
                       child: CommentTreeWidget(comment.children[i]),
                     ),
                   )

@@ -15,7 +15,7 @@ import 'article_footer_widget.dart';
 import 'article_header_widget.dart';
 import 'article_hubs_widget.dart';
 import 'article_labels_widget.dart';
-import 'article_stats_widget.dart';
+import 'stats/article_stats_widget.dart';
 
 class ArticleCardWidget extends StatelessWidget {
   const ArticleCardWidget({

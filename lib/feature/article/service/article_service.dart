@@ -12,6 +12,7 @@ import '../model/network/article_list_response.dart';
 import '../model/network/comment_list_exception.dart';
 import '../model/network/comment_list_params.dart';
 import '../model/network/comment_list_response.dart';
+import '../model/network/most_reading_response.dart';
 import '../model/sort/date_period_enum.dart';
 import '../model/sort/sort_enum.dart';
 
@@ -221,6 +222,29 @@ class ArticleService {
       }
 
       return true;
+    } on DisplayableException {
+      rethrow;
+    } on DioException {
+      throw FetchException();
+    }
+  }
+
+  fetchMostReading({
+    required String langUI,
+    required String langArticles,
+  }) async {
+    try {
+      final params = ArticleListParams(
+        langArticles: langArticles,
+        langUI: langUI,
+      );
+
+      final queryString = params.toQueryString();
+      final response = await _mobileClient.get(
+        '/articles/most-reading?$queryString',
+      );
+
+      return MostReadingResponse.fromMap(response.data);
     } on DisplayableException {
       rethrow;
     } on DioException {

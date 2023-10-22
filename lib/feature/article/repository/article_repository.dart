@@ -5,6 +5,7 @@ import '../model/article_type.dart';
 import '../model/flow_enum.dart';
 import '../model/network/article_list_response.dart';
 import '../model/network/comment_list_response.dart';
+import '../model/network/most_reading_response.dart';
 import '../model/sort/date_period_enum.dart';
 import '../model/sort/sort_enum.dart';
 import '../service/article_service.dart';
@@ -105,7 +106,7 @@ class ArticleRepository {
     return cached;
   }
 
-  fetchUserArticles({
+  Future<ArticleListResponse> fetchUserArticles({
     required LanguageEnum langUI,
     required List<LanguageEnum> langArticles,
     required String user,
@@ -178,5 +179,24 @@ class ArticleRepository {
 
   Future<bool> removeFromBookmark(String articleId) async {
     return await service.removeFromBookmark(articleId);
+  }
+
+  Future<List<ArticleModel>> fetchMostReading({
+    required LanguageEnum langUI,
+    required List<LanguageEnum> langArticles,
+  }) async {
+    final MostReadingResponse raw = await service.fetchMostReading(
+      langUI: langUI.name,
+      langArticles: encodeLangs(langArticles),
+    );
+
+    List<ArticleModel> articles = [...raw.refs];
+
+    articles.sort((a, b) =>
+        a.statistics.readingCount > b.statistics.readingCount ? 0 : 1);
+
+    articles = articles.take(8).toList();
+
+    return articles;
   }
 }
