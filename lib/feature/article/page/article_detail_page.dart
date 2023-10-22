@@ -15,7 +15,7 @@ import '../widget/article_footer_widget.dart';
 import '../widget/article_header_widget.dart';
 import '../widget/article_hubs_widget.dart';
 import '../widget/article_labels_widget.dart';
-import '../widget/article_stats_widget.dart';
+import '../widget/stats/article_stats_widget.dart';
 
 const double hPadding = 12.0;
 const double vPadding = 10.0;

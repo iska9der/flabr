@@ -5,12 +5,13 @@ class FlabrCard extends StatelessWidget {
     super.key,
     required this.child,
     this.onTap,
+    this.color,
     this.elevation,
     this.margin,
     this.padding = EdgeInsets.zero,
   });
 
-  /// если не указано, берется из темы
+  final Color? color;
   final double? elevation;
   final EdgeInsetsGeometry? margin;
   final EdgeInsetsGeometry padding;
@@ -20,6 +21,7 @@ class FlabrCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      color: color,
       elevation: elevation,
       margin: margin,
       clipBehavior: Clip.hardEdge,

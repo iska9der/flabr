@@ -7,6 +7,7 @@ import '../../../common/utils/utils.dart';
 import '../../../common/widget/article_list_sliver.dart';
 import '../../../common/widget/button/floating_buttons.dart';
 import '../../../component/di/dependencies.dart';
+import '../../../config/constants.dart';
 import '../../auth/cubit/auth_cubit.dart';
 import '../../enhancement/scaffold/cubit/scaffold_cubit.dart';
 import '../../enhancement/scroll/cubit/scroll_cubit.dart';
@@ -19,6 +20,7 @@ import '../model/flow_enum.dart';
 import '../repository/article_repository.dart';
 import '../widget/article_list/article_list_appbar.dart';
 import '../widget/article_list/article_list_drawer.dart';
+import '../widget/most_reading_widget.dart';
 
 @RoutePage(name: ArticleListPage.routeName)
 class ArticleListPage extends StatelessWidget {
@@ -157,6 +159,15 @@ class ArticleListView extends StatelessWidget {
               controller: scrollController,
               slivers: [
                 ArticleListAppBar(type: type),
+                const SliverToBoxAdapter(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: kScreenHPadding + kCardMargin,
+                      vertical: kCardBetweenPadding / 2,
+                    ),
+                    child: MostReadingWidget(),
+                  ),
+                ),
                 const ArticleListSliver(),
               ],
             ),
