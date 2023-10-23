@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../component/language.dart';
 import '../../../common/exception/exception_helper.dart';
 import '../../../common/model/extension/enum_status.dart';
+import '../../settings/repository/language_repository.dart';
 import '../model/network/comment_list_response.dart';
 import '../repository/article_repository.dart';
 
@@ -13,16 +14,13 @@ class CommentListCubit extends Cubit<CommentListState> {
   CommentListCubit(
     String articleId, {
     required ArticleRepository repository,
-    required LanguageEnum langUI,
-    required List<LanguageEnum> langArticles,
+    required LanguageRepository languageRepository,
   })  : _repository = repository,
-        super(CommentListState(
-          articleId: articleId,
-          langUI: langUI,
-          langArticles: langArticles,
-        ));
+        _langRepository = languageRepository,
+        super(CommentListState(articleId: articleId));
 
   final ArticleRepository _repository;
+  final LanguageRepository _langRepository;
 
   Future<void> fetch() async {
     if (state.status.isLoading) return;
@@ -32,8 +30,8 @@ class CommentListCubit extends Cubit<CommentListState> {
     try {
       final newList = await _repository.fetchComments(
         articleId: state.articleId,
-        langUI: state.langUI,
-        langArticles: state.langArticles,
+        langUI: _langRepository.ui,
+        langArticles: _langRepository.articles,
       );
 
       emit(state.copyWith(list: newList, status: CommentListStatus.success));

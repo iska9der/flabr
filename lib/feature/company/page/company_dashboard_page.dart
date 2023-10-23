@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../common/widget/dashboard_drawer_link_widget.dart';
 import '../../../component/di/dependencies.dart';
 import '../../../component/router/app_router.dart';
-import '../../settings/cubit/settings_cubit.dart';
+import '../../settings/repository/language_repository.dart';
 import '../cubit/company_cubit.dart';
 import '../repository/company_repository.dart';
 import 'company_detail_page.dart';
@@ -27,11 +27,10 @@ class CompanyDashboardPage extends StatelessWidget {
     return BlocProvider(
       key: ValueKey('company-$alias-dashboard'),
       lazy: false,
-      create: (c) => CompanyCubit(
+      create: (_) => CompanyCubit(
         alias,
         repository: getIt.get<CompanyRepository>(),
-        langUI: context.read<SettingsCubit>().state.langUI,
-        langArticles: context.read<SettingsCubit>().state.langArticles,
+        languageRepository: getIt.get<LanguageRepository>(),
       ),
       child: AutoTabsRouter(
         routes: const [

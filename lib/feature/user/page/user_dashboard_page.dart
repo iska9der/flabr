@@ -6,7 +6,7 @@ import '../../../common/widget/dashboard_drawer_link_widget.dart';
 import '../../../component/di/dependencies.dart';
 import '../../../component/router/app_router.dart';
 import '../../enhancement/scaffold/cubit/scaffold_cubit.dart';
-import '../../settings/cubit/settings_cubit.dart';
+import '../../settings/repository/language_repository.dart';
 import '../cubit/user_cubit.dart';
 import '../repository/user_repository.dart';
 import 'user_article_list_page.dart';
@@ -27,22 +27,19 @@ class UserDashboardPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final settingsCubit = context.read<SettingsCubit>();
-
     return MultiBlocProvider(
       providers: [
         BlocProvider(
           key: ValueKey('user-$login-dashboard'),
           lazy: false,
-          create: (c) => UserCubit(
+          create: (_) => UserCubit(
             login,
             repository: getIt.get<UserRepository>(),
-            langUI: settingsCubit.state.langUI,
-            langArticles: settingsCubit.state.langArticles,
+            languageRepository: getIt.get<LanguageRepository>(),
           ),
         ),
         BlocProvider(
-          create: (c) => ScaffoldCubit(),
+          create: (_) => ScaffoldCubit(),
         ),
       ],
       child: const UserDashboardView(),

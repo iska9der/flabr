@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'language_enum.dart';
 
-extension LanguageX on LanguageEnum {
+extension LanguageEnumX on LanguageEnum {
   Locale get locale => switch (this) {
         LanguageEnum.ru => const Locale('ru', 'RU'),
         LanguageEnum.en => const Locale('en', 'EN'),

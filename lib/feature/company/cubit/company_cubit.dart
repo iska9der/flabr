@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../common/exception/displayable_exception.dart';
 import '../../../component/localization/language_enum.dart';
+import '../../settings/repository/language_repository.dart';
 import '../model/card/company_card_model.dart';
 import '../model/company_model.dart';
 import '../repository/company_repository.dart';
@@ -13,16 +14,13 @@ class CompanyCubit extends Cubit<CompanyState> {
   CompanyCubit(
     String alias, {
     required CompanyRepository repository,
-    required LanguageEnum langUI,
-    required List<LanguageEnum> langArticles,
+    required LanguageRepository languageRepository,
   })  : _repository = repository,
-        super(CompanyState(
-          alias: alias,
-          langUI: langUI,
-          langArticles: langArticles,
-        ));
+        _languageRepository = languageRepository,
+        super(CompanyState(alias: alias));
 
   final CompanyRepository _repository;
+  final LanguageRepository _languageRepository;
 
   void fetchCard() async {
     CompanyCardModel card = state.card;
@@ -33,8 +31,8 @@ class CompanyCubit extends Cubit<CompanyState> {
 
         card = await _repository.fetchCard(
           state.alias,
-          langUI: state.langUI,
-          langArticles: state.langArticles,
+          langUI: _languageRepository.ui,
+          langArticles: _languageRepository.articles,
         );
       }
 

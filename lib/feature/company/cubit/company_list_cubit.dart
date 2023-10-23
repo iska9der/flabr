@@ -1,22 +1,42 @@
+import 'dart:async';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../common/exception/displayable_exception.dart';
-import '../../../component/localization/language_enum.dart';
+import '../../settings/repository/language_repository.dart';
 import '../model/network/company_list_response.dart';
 import '../repository/company_repository.dart';
 
 part 'company_list_state.dart';
 
 class CompanyListCubit extends Cubit<CompanyListState> {
-  CompanyListCubit(
-    CompanyRepository repository, {
-    required LanguageEnum langUI,
-    required List<LanguageEnum> langArticles,
+  CompanyListCubit({
+    required CompanyRepository repository,
+    required LanguageRepository languageRepository,
   })  : _repository = repository,
-        super(CompanyListState(langUI: langUI, langArticles: langArticles));
+        _languageRepository = languageRepository,
+        super(const CompanyListState()) {
+    _uiLangSub = _languageRepository.uiStream.listen(
+      (_) => _reInit(),
+    );
+    _articlesLangSub = _languageRepository.articlesStream.listen(
+      (_) => _reInit(),
+    );
+  }
 
   final CompanyRepository _repository;
+  final LanguageRepository _languageRepository;
+
+  late final StreamSubscription _uiLangSub;
+  late final StreamSubscription _articlesLangSub;
+
+  @override
+  Future<void> close() {
+    _uiLangSub.cancel();
+    _articlesLangSub.cancel();
+    return super.close();
+  }
 
   void fetch() async {
     if (state.status == CompanyListStatus.loading ||
@@ -29,8 +49,8 @@ class CompanyListCubit extends Cubit<CompanyListState> {
     try {
       final response = await _repository.fetchAll(
         page: state.page,
-        langUI: state.langUI,
-        langArticles: state.langArticles,
+        langUI: _languageRepository.ui,
+        langArticles: _languageRepository.articles,
       );
 
       var newList = state.list.copyWith(
@@ -57,13 +77,7 @@ class CompanyListCubit extends Cubit<CompanyListState> {
     }
   }
 
-  void changeLanguage({
-    LanguageEnum? langUI,
-    List<LanguageEnum>? langArticles,
-  }) {
-    emit(CompanyListState(
-      langUI: langUI ?? state.langUI,
-      langArticles: langArticles ?? state.langArticles,
-    ));
+  void _reInit() {
+    emit(const CompanyListState());
   }
 }

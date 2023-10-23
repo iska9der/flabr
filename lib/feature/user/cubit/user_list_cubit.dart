@@ -1,22 +1,42 @@
+import 'dart:async';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../common/exception/exception_helper.dart';
-import '../../../component/localization/language_enum.dart';
+import '../../settings/repository/language_repository.dart';
 import '../model/user_model.dart';
 import '../repository/user_repository.dart';
 
 part 'user_list_state.dart';
 
 class UserListCubit extends Cubit<UserListState> {
-  UserListCubit(
-    UserRepository repository, {
-    required LanguageEnum langUI,
-    required List<LanguageEnum> langArticles,
+  UserListCubit({
+    required UserRepository repository,
+    required LanguageRepository languageRepository,
   })  : _repository = repository,
-        super(UserListState(langUI: langUI, langArticles: langArticles));
+        _languageRepository = languageRepository,
+        super(const UserListState()) {
+    _uiLangSub = _languageRepository.uiStream.listen(
+      (_) => _reInit(),
+    );
+    _articlesLangSub = _languageRepository.articlesStream.listen(
+      (_) => _reInit(),
+    );
+  }
 
   final UserRepository _repository;
+  final LanguageRepository _languageRepository;
+
+  late final StreamSubscription _uiLangSub;
+  late final StreamSubscription _articlesLangSub;
+
+  @override
+  Future<void> close() {
+    _uiLangSub.cancel();
+    _articlesLangSub.cancel();
+    return super.close();
+  }
 
   bool get isFirstFetch => state.page == 1;
   bool get isLastPage => state.page >= state.pagesCount;
@@ -30,8 +50,8 @@ class UserListCubit extends Cubit<UserListState> {
 
     try {
       var response = await _repository.fetchAll(
-        langUI: state.langUI,
-        langArticles: state.langArticles,
+        langUI: _languageRepository.ui,
+        langArticles: _languageRepository.articles,
         page: state.page.toString(),
       );
 
@@ -51,13 +71,7 @@ class UserListCubit extends Cubit<UserListState> {
     }
   }
 
-  changeLanguages({
-    LanguageEnum? langUI,
-    List<LanguageEnum>? langArticles,
-  }) {
-    emit(UserListState(
-      langUI: langUI ?? state.langUI,
-      langArticles: langArticles ?? state.langArticles,
-    ));
+  void _reInit() {
+    emit(const UserListState());
   }
 }

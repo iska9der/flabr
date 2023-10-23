@@ -229,7 +229,7 @@ class UILangWidget extends StatelessWidget {
       title: 'Язык интерфейса',
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: BlocBuilder<SettingsCubit, SettingsState>(
-        buildWhen: (p, c) => p.langUI != c.langUI,
+        buildWhen: (previous, current) => previous.langUI != current.langUI,
         builder: (context, state) {
           return DropdownButton(
             hint: const Text('Язык'),
@@ -276,10 +276,11 @@ class ArticlesLangWidget extends StatelessWidget {
                     initialValue: state.langArticles.contains(lang),
                     validate: (bool val) => context
                         .read<SettingsCubit>()
-                        .validateChangeArticlesLang(lang, isEnabled: val),
+                        .validateChangeArticlesLang(lang, isEnabled: val)
+                        .$1,
                     onChanged: (bool? val) => context
                         .read<SettingsCubit>()
-                        .changeArticlesLang(lang, isEnabled: val),
+                        .changeArticleLang(lang, isEnabled: val),
                   ),
                 )
                 .toList(),

@@ -8,18 +8,18 @@ part 'bookmark_state.dart';
 
 class BookmarkCubit extends Cubit<BookmarkState> {
   BookmarkCubit({
-    required ArticleRepository service,
+    required ArticleRepository repository,
     required String articleId,
     bool isBookmarked = false,
     int count = 0,
-  })  : _service = service,
+  })  : _repository = repository,
         super(BookmarkState(
           articleId: articleId,
           isBookmarked: isBookmarked,
           count: count,
         ));
 
-  final ArticleRepository _service;
+  final ArticleRepository _repository;
 
   toggle() async {
     emit(state.copyWith(status: BookmarkStatus.loading));
@@ -40,7 +40,7 @@ class BookmarkCubit extends Cubit<BookmarkState> {
   }
 
   Future<void> _addToBookmars() async {
-    await _service.addToBookmark(state.articleId);
+    await _repository.addToBookmark(state.articleId);
 
     emit(state.copyWith(
       status: BookmarkStatus.success,
@@ -50,7 +50,7 @@ class BookmarkCubit extends Cubit<BookmarkState> {
   }
 
   Future<void> _removeFromBookmars() async {
-    await _service.removeFromBookmark(state.articleId);
+    await _repository.removeFromBookmark(state.articleId);
 
     emit(state.copyWith(
       status: BookmarkStatus.success,

@@ -6,7 +6,7 @@ import '../../../common/widget/dashboard_drawer_link_widget.dart';
 import '../../../component/di/dependencies.dart';
 import '../../../component/router/app_router.dart';
 import '../../enhancement/scaffold/cubit/scaffold_cubit.dart';
-import '../../settings/cubit/settings_cubit.dart';
+import '../../settings/repository/language_repository.dart';
 import '../cubit/hub_cubit.dart';
 import '../repository/hub_repository.dart';
 import 'hub_detail_page.dart';
@@ -30,15 +30,14 @@ class HubDashboardPage extends StatelessWidget {
         BlocProvider(
           key: ValueKey('hub-$alias-dashboard'),
           lazy: false,
-          create: (c) => HubCubit(
+          create: (_) => HubCubit(
             alias,
             repository: getIt.get<HubRepository>(),
-            langUI: context.read<SettingsCubit>().state.langUI,
-            langArticles: context.read<SettingsCubit>().state.langArticles,
+            languageRepository: getIt.get<LanguageRepository>(),
           ),
         ),
         BlocProvider(
-          create: (c) => ScaffoldCubit(),
+          create: (_) => ScaffoldCubit(),
         ),
       ],
       child: const HubDashboardPageView(),

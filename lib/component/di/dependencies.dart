@@ -16,6 +16,7 @@ import '../../feature/hub/repository/hub_repository.dart';
 import '../../feature/hub/service/hub_service.dart';
 import '../../feature/search/repository/search_repository.dart';
 import '../../feature/search/service/search_service.dart';
+import '../../feature/settings/repository/language_repository.dart';
 import '../../feature/user/repository/user_repository.dart';
 import '../../feature/user/service/user_service.dart';
 import '../http/http_client.dart';
@@ -57,6 +58,11 @@ void setDependencies() {
       tokenRepository: getIt(),
     ),
     instanceName: 'siteClient',
+  );
+
+  /// Settings
+  getIt.registerSingleton<LanguageRepository>(
+    LanguageRepository(storage: getIt()),
   );
 
   /// Auth

@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../component/localization/language_enum.dart';
+import '../../settings/repository/language_repository.dart';
 import '../model/user_model.dart';
 import '../model/user_whois_model.dart';
 import '../repository/user_repository.dart';
@@ -12,12 +12,13 @@ class UserCubit extends Cubit<UserState> {
   UserCubit(
     String login, {
     required UserRepository repository,
-    required LanguageEnum langUI,
-    required List<LanguageEnum> langArticles,
+    required LanguageRepository languageRepository,
   })  : _repository = repository,
+        _languageRepository = languageRepository,
         super(UserState(login: login, model: UserModel.empty));
 
   final UserRepository _repository;
+  final LanguageRepository _languageRepository;
 
   void fetchByLogin() async {
     emit(state.copyWith(status: UserStatus.loading));
@@ -28,8 +29,8 @@ class UserCubit extends Cubit<UserState> {
       if (state.model.isEmpty) {
         model = await _repository.fetchByLogin(
           login: state.login,
-          langUI: state.langUI,
-          langArticles: state.langArticles,
+          langUI: _languageRepository.ui,
+          langArticles: _languageRepository.articles,
         );
       } else {
         model = state.model;
@@ -57,8 +58,8 @@ class UserCubit extends Cubit<UserState> {
     if (state.whoisModel.isEmpty) {
       model = await _repository.fetchWhois(
         login: state.login,
-        langUI: state.langUI,
-        langArticles: state.langArticles,
+        langUI: _languageRepository.ui,
+        langArticles: _languageRepository.articles,
       );
     } else {
       model = state.whoisModel;

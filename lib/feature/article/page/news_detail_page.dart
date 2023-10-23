@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../component/di/dependencies.dart';
-import '../../settings/cubit/settings_cubit.dart';
+import '../../settings/repository/language_repository.dart';
 import '../cubit/article_cubit.dart';
 import '../repository/article_repository.dart';
 import 'article_detail_page.dart';
@@ -27,9 +27,8 @@ class NewsDetailPage extends StatelessWidget {
       create: (c) => ArticleCubit(
         id,
         repository: getIt.get<ArticleRepository>(),
-        langUI: context.read<SettingsCubit>().state.langUI,
-        langArticles: context.read<SettingsCubit>().state.langArticles,
-      )..fetch(),
+        languageRepository: getIt.get<LanguageRepository>(),
+      ),
       child: const ArticleDetailPageView(),
     );
   }

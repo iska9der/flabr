@@ -9,7 +9,7 @@ import '../../../common/widget/enhancement/progress_indicator.dart';
 import '../../../component/di/dependencies.dart';
 import '../../../config/constants.dart';
 import '../../enhancement/scroll/scroll.dart';
-import '../../settings/cubit/settings_cubit.dart';
+import '../../settings/repository/language_repository.dart';
 import '../cubit/user_list_cubit.dart';
 import '../repository/user_repository.dart';
 import '../widget/user_card_widget.dart';
@@ -27,14 +27,13 @@ class UserListPage extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (c) => UserListCubit(
-            getIt.get<UserRepository>(),
-            langUI: context.read<SettingsCubit>().state.langUI,
-            langArticles: context.read<SettingsCubit>().state.langArticles,
+          create: (_) => UserListCubit(
+            repository: getIt.get<UserRepository>(),
+            languageRepository: getIt.get<LanguageRepository>(),
           ),
         ),
         BlocProvider(
-          create: (c) => ScrollCubit(),
+          create: (_) => ScrollCubit(),
         ),
       ],
       child: Builder(
@@ -44,18 +43,8 @@ class UserListPage extends StatelessWidget {
           return MultiBlocListener(
             listeners: [
               BlocListener<ScrollCubit, ScrollState>(
-                listenWhen: (p, c) => c.isBottomEdge,
-                listener: (c, s) => usersCubit.fetchAll(),
-              ),
-              BlocListener<SettingsCubit, SettingsState>(
-                listenWhen: (p, c) =>
-                    p.langArticles != c.langArticles || p.langUI != c.langUI,
-                listener: (context, state) {
-                  usersCubit.changeLanguages(
-                    langUI: state.langUI,
-                    langArticles: state.langArticles,
-                  );
-                },
+                listenWhen: (_, current) => current.isBottomEdge,
+                listener: (_, __) => usersCubit.fetchAll(),
               ),
             ],
             child: const UserListPageView(),

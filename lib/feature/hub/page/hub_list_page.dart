@@ -9,7 +9,7 @@ import '../../../common/widget/enhancement/progress_indicator.dart';
 import '../../../component/di/dependencies.dart';
 import '../../../config/constants.dart';
 import '../../enhancement/scroll/scroll.dart';
-import '../../settings/cubit/settings_cubit.dart';
+import '../../settings/repository/language_repository.dart';
 import '../cubit/hub_list_cubit.dart';
 import '../model/hub_model.dart';
 import '../repository/hub_repository.dart';
@@ -29,10 +29,9 @@ class HubListPage extends StatelessWidget {
       key: const ValueKey('hub-list'),
       providers: [
         BlocProvider(
-          create: (c) => HubListCubit(
-            getIt.get<HubRepository>(),
-            langUI: context.read<SettingsCubit>().state.langUI,
-            langArticles: context.read<SettingsCubit>().state.langArticles,
+          create: (_) => HubListCubit(
+            repository: getIt.get<HubRepository>(),
+            languageRepository: getIt.get<LanguageRepository>(),
           ),
         ),
         BlocProvider(
@@ -56,19 +55,8 @@ class HubListPageView extends StatelessWidget {
     return MultiBlocListener(
       listeners: [
         BlocListener<ScrollCubit, ScrollState>(
-          listenWhen: (previous, current) => current.isBottomEdge,
-          listener: (context, state) => cubit.fetch(),
-        ),
-        BlocListener<SettingsCubit, SettingsState>(
-          listenWhen: (previous, current) =>
-              previous.langUI != current.langUI ||
-              previous.langArticles != current.langArticles,
-          listener: (context, state) {
-            context.read<HubListCubit>().changeLanguage(
-                  langUI: state.langUI,
-                  langArticles: state.langArticles,
-                );
-          },
+          listenWhen: (_, current) => current.isBottomEdge,
+          listener: (_, __) => cubit.fetch(),
         ),
       ],
       child: Scaffold(

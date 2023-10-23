@@ -23,12 +23,12 @@ class ArticlesSortWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             _SortByWidget(
-              isEnabled: state.status != ArticlesStatus.loading,
+              isEnabled: state.status != ArticleListStatus.loading,
               currentValue: state.sort,
               onTap: (sort) => articlesCubit.changeSort(sort),
             ),
             _SortOptionsWidget(
-              isEnabled: state.status != ArticlesStatus.loading,
+              isEnabled: state.status != ArticleListStatus.loading,
               currentSort: state.sort,
               currentValue:
                   state.sort == SortEnum.byBest ? state.period : state.score,

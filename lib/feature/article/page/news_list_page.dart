@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../component/di/dependencies.dart';
 import '../../enhancement/scaffold/scaffold.dart';
 import '../../enhancement/scroll/scroll.dart';
-import '../../settings/cubit/settings_cubit.dart';
+import '../../settings/repository/language_repository.dart';
 import '../cubit/article_list_cubit.dart';
 import '../model/article_type.dart';
 import '../model/flow_enum.dart';
@@ -31,19 +31,18 @@ class NewsListPage extends StatelessWidget {
       key: ValueKey('news-$flow-flow'),
       providers: [
         BlocProvider(
-          create: (c) => ArticleListCubit(
-            getIt.get<ArticleRepository>(),
+          create: (_) => ArticleListCubit(
+            repository: getIt.get<ArticleRepository>(),
+            languageRepository: getIt.get<LanguageRepository>(),
             type: ArticleType.news,
             flow: FlowEnum.fromString(flow),
-            langUI: context.read<SettingsCubit>().state.langUI,
-            langArticles: context.read<SettingsCubit>().state.langArticles,
           ),
         ),
         BlocProvider(
-          create: (c) => ScrollCubit(),
+          create: (_) => ScrollCubit(),
         ),
         BlocProvider(
-          create: (c) => ScaffoldCubit(),
+          create: (_) => ScaffoldCubit(),
         ),
       ],
       child: const ArticleListView(type: ArticleType.news),

@@ -8,8 +8,6 @@ class ArticleState extends Equatable {
     this.error = '',
     required this.id,
     required this.article,
-    this.langUI = LanguageEnum.ru,
-    this.langArticles = const [LanguageEnum.ru],
   });
 
   final ArticleStatus status;
@@ -18,24 +16,17 @@ class ArticleState extends Equatable {
   final String id;
   final ArticleModel article;
 
-  final LanguageEnum langUI;
-  final List<LanguageEnum> langArticles;
-
   ArticleState copyWith({
     ArticleStatus? status,
     String? error,
     String? id,
     ArticleModel? article,
-    LanguageEnum? langUI,
-    List<LanguageEnum>? langArticles,
   }) {
     return ArticleState(
       status: status ?? this.status,
       error: error ?? this.error,
       id: id ?? this.id,
       article: article ?? this.article,
-      langUI: langUI ?? this.langUI,
-      langArticles: langArticles ?? this.langArticles,
     );
   }
 
@@ -45,7 +36,5 @@ class ArticleState extends Equatable {
         error,
         id,
         article,
-        langUI,
-        langArticles,
       ];
 }
