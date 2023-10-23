@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../common/exception/exception_helper.dart';
-import '../../../component/localization/language_enum.dart';
+import '../../settings/repository/language_repository.dart';
 import '../model/hub_model.dart';
 import '../model/hub_profile_model.dart';
 import '../repository/hub_repository.dart';
@@ -13,16 +13,13 @@ class HubCubit extends Cubit<HubState> {
   HubCubit(
     String alias, {
     required HubRepository repository,
-    required LanguageEnum langUI,
-    required List<LanguageEnum> langArticles,
+    required LanguageRepository languageRepository,
   })  : _repository = repository,
-        super(HubState(
-          alias: alias,
-          langUI: langUI,
-          langArticles: langArticles,
-        ));
+        _languageRepository = languageRepository,
+        super(HubState(alias: alias));
 
   final HubRepository _repository;
+  final LanguageRepository _languageRepository;
 
   void fetchProfile() async {
     HubProfileModel profile = state.profile;
@@ -33,8 +30,8 @@ class HubCubit extends Cubit<HubState> {
 
         profile = await _repository.fetchProfile(
           state.alias,
-          langUI: state.langUI,
-          langArticles: state.langArticles,
+          langUI: _languageRepository.ui,
+          langArticles: _languageRepository.articles,
         );
       }
 

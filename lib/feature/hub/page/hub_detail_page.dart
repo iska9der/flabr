@@ -14,6 +14,7 @@ import '../../article/repository/article_repository.dart';
 import '../../article/widget/sort/articles_sort_widget.dart';
 import '../../enhancement/scroll/scroll.dart';
 import '../../settings/cubit/settings_cubit.dart';
+import '../../settings/repository/language_repository.dart';
 import '../cubit/hub_cubit.dart';
 import '../widget/hub_profile_card_widget.dart';
 
@@ -35,17 +36,16 @@ class HubDetailPage extends StatelessWidget {
       key: ValueKey('hub-${cubit.state.alias}-detail'),
       providers: [
         BlocProvider(
-          create: (c) => ArticleListCubit(
-            getIt.get<ArticleRepository>(),
+          create: (_) => ArticleListCubit(
+            repository: getIt.get<ArticleRepository>(),
+            languageRepository: getIt.get<LanguageRepository>(),
             from: ArticleFromEnum.hub,
             hub: cubit.state.alias,
             flow: FlowEnum.fromString('all'),
-            langUI: context.read<SettingsCubit>().state.langUI,
-            langArticles: context.read<SettingsCubit>().state.langArticles,
           ),
         ),
         BlocProvider(
-          create: (c) => ScrollCubit(),
+          create: (_) => ScrollCubit(),
         ),
       ],
       child: const HubDetailPageView(),
@@ -102,25 +102,20 @@ class _HubArticleListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var articlesCubit = context.read<ArticleListCubit>();
+    final articlesCubit = context.read<ArticleListCubit>();
+    final scrollCubit = context.read<ScrollCubit>();
 
     return MultiBlocListener(
       listeners: [
         BlocListener<ScrollCubit, ScrollState>(
-          listenWhen: (p, c) => c.isBottomEdge,
-          listener: (c, state) => articlesCubit.fetch(),
+          listenWhen: (previous, current) => current.isBottomEdge,
+          listener: (_, __) => articlesCubit.fetch(),
         ),
         BlocListener<SettingsCubit, SettingsState>(
-          listenWhen: (p, c) =>
-              p.langUI != c.langUI || p.langArticles != c.langArticles,
-          listener: (context, state) {
-            articlesCubit.changeLanguage(
-              langUI: state.langUI,
-              langArticles: state.langArticles,
-            );
-
-            context.read<ScrollCubit>().animateToTop();
-          },
+          listenWhen: (previous, current) =>
+              previous.langUI != current.langUI ||
+              previous.langArticles != current.langArticles,
+          listener: (_, __) => scrollCubit.animateToTop(),
         ),
       ],
       child: const ArticleListSliver(),

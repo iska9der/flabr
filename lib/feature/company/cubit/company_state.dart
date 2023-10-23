@@ -6,8 +6,6 @@ class CompanyState extends Equatable {
   const CompanyState({
     this.status = CompanyStatus.initial,
     this.error = '',
-    this.langUI = LanguageEnum.ru,
-    this.langArticles = const [LanguageEnum.ru],
     required this.alias,
     this.model = CompanyModel.empty,
     this.card = CompanyCardModel.empty,
@@ -15,8 +13,6 @@ class CompanyState extends Equatable {
 
   final CompanyStatus status;
   final String error;
-  final LanguageEnum langUI;
-  final List<LanguageEnum> langArticles;
 
   final String alias;
   final CompanyModel model;
@@ -34,8 +30,6 @@ class CompanyState extends Equatable {
       alias: alias,
       status: status ?? this.status,
       error: error ?? this.error,
-      langUI: langUI ?? this.langUI,
-      langArticles: langArticles ?? this.langArticles,
       model: model ?? this.model,
       card: card ?? this.card,
     );
@@ -45,8 +39,6 @@ class CompanyState extends Equatable {
   List<Object> get props => [
         status,
         error,
-        langUI,
-        langArticles,
         alias,
         model,
         card,

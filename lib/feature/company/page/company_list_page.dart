@@ -10,6 +10,7 @@ import '../../../component/di/dependencies.dart';
 import '../../../config/constants.dart';
 import '../../enhancement/scroll/scroll.dart';
 import '../../settings/cubit/settings_cubit.dart';
+import '../../settings/repository/language_repository.dart';
 import '../cubit/company_list_cubit.dart';
 import '../model/company_model.dart';
 import '../repository/company_repository.dart';
@@ -29,14 +30,13 @@ class CompanyListPage extends StatelessWidget {
       key: const ValueKey('company-list'),
       providers: [
         BlocProvider(
-          create: (c) => CompanyListCubit(
-            getIt.get<CompanyRepository>(),
-            langUI: context.read<SettingsCubit>().state.langUI,
-            langArticles: context.read<SettingsCubit>().state.langArticles,
+          create: (_) => CompanyListCubit(
+            repository: getIt.get<CompanyRepository>(),
+            languageRepository: getIt.get<LanguageRepository>(),
           ),
         ),
         BlocProvider(
-          create: (c) => ScrollCubit(),
+          create: (_) => ScrollCubit(),
         ),
       ],
       child: const CompanyListPageView(),
@@ -63,12 +63,7 @@ class CompanyListPageView extends StatelessWidget {
           listenWhen: (previous, current) =>
               previous.langUI != current.langUI ||
               previous.langArticles != current.langArticles,
-          listener: (context, state) {
-            context.read<CompanyListCubit>().changeLanguage(
-                  langUI: state.langUI,
-                  langArticles: state.langArticles,
-                );
-          },
+          listener: (_, __) => scrollCubit.animateToTop(),
         ),
       ],
       child: Scaffold(

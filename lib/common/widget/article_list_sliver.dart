@@ -19,7 +19,8 @@ class ArticleListSliver extends StatelessWidget {
     final scrollCubit = context.read<ScrollCubit?>();
 
     return BlocConsumer<ArticleListCubit, ArticleListState>(
-      listenWhen: (p, c) => p.page != 1 && c.status == ArticlesStatus.failure,
+      listenWhen: (p, c) =>
+          p.page != 1 && c.status == ArticleListStatus.failure,
       listener: (c, state) {
         getIt.get<Utils>().showNotification(
               context: context,
@@ -28,7 +29,7 @@ class ArticleListSliver extends StatelessWidget {
       },
       builder: (context, state) {
         /// Инициализация
-        if (state.status == ArticlesStatus.initial) {
+        if (state.status == ArticleListStatus.initial) {
           context.read<ArticleListCubit>().fetch();
           return const SliverFillRemaining(
             child: CircleIndicator(),
@@ -37,14 +38,14 @@ class ArticleListSliver extends StatelessWidget {
 
         /// Если происходит загрузка первой страницы
         if (context.read<ArticleListCubit>().isFirstFetch) {
-          if (state.status == ArticlesStatus.loading) {
+          if (state.status == ArticleListStatus.loading) {
             return const SliverFillRemaining(
               child: CircleIndicator(),
             );
           }
 
           /// Ошибка при попытке получить статьи
-          if (state.status == ArticlesStatus.failure) {
+          if (state.status == ArticleListStatus.failure) {
             return SliverFillRemaining(
               child: Center(child: Text(state.error)),
             );
@@ -85,7 +86,7 @@ class ArticleListSliver extends StatelessWidget {
               );
             },
             childCount: articles.length +
-                (state.status == ArticlesStatus.loading ? 1 : 0),
+                (state.status == ArticleListStatus.loading ? 1 : 0),
           ),
         );
       },

@@ -6,16 +6,12 @@ class CommentListState extends Equatable {
   const CommentListState({
     this.status = CommentListStatus.initial,
     this.error = '',
-    this.langUI = LanguageEnum.ru,
-    this.langArticles = const [LanguageEnum.ru],
     required this.articleId,
     this.list = CommentListResponse.empty,
   });
 
   final CommentListStatus status;
   final String error;
-  final LanguageEnum langUI;
-  final List<LanguageEnum> langArticles;
 
   final String articleId;
   final CommentListResponse list;
@@ -31,8 +27,6 @@ class CommentListState extends Equatable {
       status: status ?? this.status,
       error: error ?? this.error,
       articleId: articleId,
-      langUI: langUI ?? this.langUI,
-      langArticles: langArticles ?? this.langArticles,
       list: list ?? this.list,
     );
   }
@@ -41,8 +35,6 @@ class CommentListState extends Equatable {
   List<Object> get props => [
         status,
         error,
-        langUI,
-        langArticles,
         articleId,
         list,
       ];

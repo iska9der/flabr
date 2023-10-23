@@ -21,6 +21,7 @@ import 'feature/auth/cubit/auth_cubit.dart';
 import 'feature/auth/repository/auth_repository.dart';
 import 'feature/auth/repository/token_repository.dart';
 import 'feature/settings/cubit/settings_cubit.dart';
+import 'feature/settings/repository/language_repository.dart';
 
 void main() async {
   runZonedGuarded(
@@ -58,7 +59,8 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(
           lazy: false,
-          create: (c) => SettingsCubit(
+          create: (_) => SettingsCubit(
+            languageRepository: getIt.get<LanguageRepository>(),
             storage: getIt.get<CacheStorage>(),
             router: router,
             appLinks: getIt.get<AppLinks>(),
@@ -66,7 +68,7 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           lazy: false,
-          create: (context) => AuthCubit(
+          create: (_) => AuthCubit(
             repository: getIt.get<AuthRepository>(),
             tokenRepository: getIt.get<TokenRepository>(),
           )..init(),
@@ -75,15 +77,16 @@ class MyApp extends StatelessWidget {
       child: MultiBlocListener(
         listeners: [
           BlocListener<AuthCubit, AuthState>(
-            listenWhen: (p, c) => p.status.isLoading && c.isAuthorized,
-            listener: (context, state) {
+            listenWhen: (previous, current) =>
+                previous.status.isLoading && current.isAuthorized,
+            listener: (context, _) {
               context.read<AuthCubit>().fetchMe();
               context.read<AuthCubit>().fetchCsrf();
             },
           ),
           BlocListener<SettingsCubit, SettingsState>(
-            listenWhen: (p, current) =>
-                p.status == SettingsStatus.loading &&
+            listenWhen: (previous, current) =>
+                previous.status == SettingsStatus.loading &&
                 current.status == SettingsStatus.success,
             listener: (context, state) {
               if (state.initialDeepLink.isNotEmpty) {

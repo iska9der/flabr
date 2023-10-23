@@ -1,22 +1,42 @@
+import 'dart:async';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../common/exception/exception_helper.dart';
-import '../../../component/language.dart';
+import '../../settings/repository/language_repository.dart';
 import '../model/network/hub_list_response.dart';
 import '../repository/hub_repository.dart';
 
 part 'hub_list_state.dart';
 
 class HubListCubit extends Cubit<HubListState> {
-  HubListCubit(
-    HubRepository repository, {
-    required LanguageEnum langUI,
-    required List<LanguageEnum> langArticles,
+  HubListCubit({
+    required HubRepository repository,
+    required LanguageRepository languageRepository,
   })  : _repository = repository,
-        super(HubListState(langUI: langUI, langArticles: langArticles));
+        _languageRepository = languageRepository,
+        super(const HubListState()) {
+    _uiLangSub = _languageRepository.uiStream.listen(
+      (_) => _reInit(),
+    );
+    _articlesLangSub = _languageRepository.articlesStream.listen(
+      (_) => _reInit(),
+    );
+  }
 
   final HubRepository _repository;
+  final LanguageRepository _languageRepository;
+
+  late final StreamSubscription _uiLangSub;
+  late final StreamSubscription _articlesLangSub;
+
+  @override
+  Future<void> close() {
+    _uiLangSub.cancel();
+    _articlesLangSub.cancel();
+    return super.close();
+  }
 
   void fetch() async {
     if (state.status == HubListStatus.loading ||
@@ -29,8 +49,8 @@ class HubListCubit extends Cubit<HubListState> {
     try {
       final response = await _repository.fetchAll(
         page: state.page,
-        langUI: state.langUI,
-        langArticles: state.langArticles,
+        langUI: _languageRepository.ui,
+        langArticles: _languageRepository.articles,
       );
 
       var newList = state.list.copyWith(
@@ -53,13 +73,7 @@ class HubListCubit extends Cubit<HubListState> {
     }
   }
 
-  void changeLanguage({
-    LanguageEnum? langUI,
-    List<LanguageEnum>? langArticles,
-  }) {
-    emit(HubListState(
-      langUI: langUI ?? state.langUI,
-      langArticles: langArticles ?? state.langArticles,
-    ));
+  void _reInit() {
+    emit(const HubListState());
   }
 }

@@ -6,8 +6,6 @@ class HubState extends Equatable {
   const HubState({
     this.status = HubStatus.initial,
     this.error = '',
-    this.langUI = LanguageEnum.ru,
-    this.langArticles = const [LanguageEnum.ru],
     required this.alias,
     this.model = HubModel.empty,
     this.profile = HubProfileModel.empty,
@@ -15,8 +13,6 @@ class HubState extends Equatable {
 
   final HubStatus status;
   final String error;
-  final LanguageEnum langUI;
-  final List<LanguageEnum> langArticles;
 
   final String alias;
   final HubModel model;
@@ -25,8 +21,6 @@ class HubState extends Equatable {
   HubState copyWith({
     HubStatus? status,
     String? error,
-    LanguageEnum? langUI,
-    List<LanguageEnum>? langArticles,
     HubModel? model,
     HubProfileModel? profile,
   }) {
@@ -34,8 +28,6 @@ class HubState extends Equatable {
       alias: alias,
       status: status ?? this.status,
       error: error ?? this.error,
-      langUI: langUI ?? this.langUI,
-      langArticles: langArticles ?? this.langArticles,
       model: model ?? this.model,
       profile: profile ?? this.profile,
     );
@@ -45,8 +37,6 @@ class HubState extends Equatable {
   List<Object> get props => [
         status,
         error,
-        langUI,
-        langArticles,
         alias,
         model,
         profile,

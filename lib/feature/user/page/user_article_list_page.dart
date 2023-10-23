@@ -9,7 +9,7 @@ import '../../article/cubit/article_list_cubit.dart';
 import '../../article/model/article_from_enum.dart';
 import '../../article/repository/article_repository.dart';
 import '../../enhancement/scroll/scroll.dart';
-import '../../settings/cubit/settings_cubit.dart';
+import '../../settings/repository/language_repository.dart';
 import '../cubit/user_cubit.dart';
 
 @RoutePage(name: UserArticleListPage.routeName)
@@ -28,16 +28,15 @@ class UserArticleListPage extends StatelessWidget {
       key: ValueKey('user-${cubit.state.login}-articles'),
       providers: [
         BlocProvider(
-          create: (c) => ArticleListCubit(
-            getIt.get<ArticleRepository>(),
+          create: (_) => ArticleListCubit(
+            repository: getIt.get<ArticleRepository>(),
+            languageRepository: getIt.get<LanguageRepository>(),
             from: ArticleFromEnum.userArticles,
             user: cubit.state.login,
-            langUI: context.read<SettingsCubit>().state.langUI,
-            langArticles: context.read<SettingsCubit>().state.langArticles,
           ),
         ),
         BlocProvider(
-          create: (c) => ScrollCubit(),
+          create: (_) => ScrollCubit(),
         ),
       ],
       child: const UserArticleListPageView(),

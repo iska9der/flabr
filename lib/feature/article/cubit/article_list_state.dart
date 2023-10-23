@@ -1,17 +1,15 @@
 part of 'article_list_cubit.dart';
 
-enum ArticlesStatus { initial, loading, success, failure }
+enum ArticleListStatus { initial, loading, success, failure }
 
 class ArticleListState extends Equatable {
   const ArticleListState({
-    this.status = ArticlesStatus.initial,
+    this.status = ArticleListStatus.initial,
     this.error = '',
     this.from = ArticleFromEnum.flow,
     this.flow = FlowEnum.all,
     this.hub = '',
     this.user = '',
-    this.langUI = LanguageEnum.ru,
-    this.langArticles = const [LanguageEnum.ru],
     this.type = ArticleType.article,
     this.sort = SortEnum.byNew,
     this.period = DatePeriodEnum.daily,
@@ -21,14 +19,12 @@ class ArticleListState extends Equatable {
     this.articles = const [],
   });
 
-  final ArticlesStatus status;
+  final ArticleListStatus status;
   final String error;
   final ArticleFromEnum from;
   final FlowEnum flow;
   final String hub;
   final String user;
-  final LanguageEnum langUI;
-  final List<LanguageEnum> langArticles;
   final ArticleType type;
   final SortEnum sort;
   final DatePeriodEnum period;
@@ -38,14 +34,12 @@ class ArticleListState extends Equatable {
   final List<ArticleModel> articles;
 
   ArticleListState copyWith({
-    ArticlesStatus? status,
+    ArticleListStatus? status,
     String? error,
     ArticleFromEnum? from,
     FlowEnum? flow,
     String? hub,
     String? user,
-    LanguageEnum? langUI,
-    List<LanguageEnum>? langArticles,
     ArticleType? type,
     SortEnum? sort,
     DatePeriodEnum? period,
@@ -61,8 +55,6 @@ class ArticleListState extends Equatable {
       flow: flow ?? this.flow,
       hub: hub ?? this.hub,
       user: user ?? this.user,
-      langUI: langUI ?? this.langUI,
-      langArticles: langArticles ?? this.langArticles,
       type: type ?? this.type,
       sort: sort ?? this.sort,
       period: period ?? this.period,
@@ -84,8 +76,6 @@ class ArticleListState extends Equatable {
         flow,
         hub,
         user,
-        langUI,
-        langArticles,
         type,
         sort,
         period,

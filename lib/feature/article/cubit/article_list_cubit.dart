@@ -1,9 +1,11 @@
+import 'dart:async';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../common/exception/exception_helper.dart';
 import '../../../common/exception/value_exception.dart';
-import '../../../component/localization/language_enum.dart';
+import '../../settings/repository/language_repository.dart';
 import '../model/article_from_enum.dart';
 import '../model/article_model.dart';
 import '../model/article_type.dart';
@@ -17,16 +19,16 @@ import '../repository/article_repository.dart';
 part 'article_list_state.dart';
 
 class ArticleListCubit extends Cubit<ArticleListState> {
-  ArticleListCubit(
-    ArticleRepository repository, {
+  ArticleListCubit({
+    required ArticleRepository repository,
+    required LanguageRepository languageRepository,
     from = ArticleFromEnum.flow,
     flow = FlowEnum.all,
     hub = '',
     user = '',
     type = ArticleType.article,
-    required LanguageEnum langUI,
-    required List<LanguageEnum> langArticles,
   })  : _repository = repository,
+        _languageRepository = languageRepository,
         super(
           ArticleListState(
             from: from,
@@ -34,8 +36,6 @@ class ArticleListCubit extends Cubit<ArticleListState> {
             hub: hub,
             user: user,
             type: type,
-            langUI: langUI,
-            langArticles: langArticles,
           ),
         ) {
     if (from == ArticleFromEnum.hub) {
@@ -44,12 +44,30 @@ class ArticleListCubit extends Cubit<ArticleListState> {
     if (from == ArticleFromEnum.userArticles) {
       assert(state.user.isNotEmpty, 'Нужно указать пользователя [user]');
     }
+
+    _uiLangSub = _languageRepository.uiStream.listen(
+      (_) => refetch(),
+    );
+    _articleLangsSub = _languageRepository.articlesStream.listen(
+      (_) => refetch(),
+    );
   }
 
   final ArticleRepository _repository;
+  final LanguageRepository _languageRepository;
+
+  late final StreamSubscription _uiLangSub;
+  late final StreamSubscription _articleLangsSub;
+
+  @override
+  Future<void> close() {
+    _uiLangSub.cancel();
+    _articleLangsSub.cancel();
+
+    return super.close();
+  }
 
   bool get isFirstFetch => state.page == 1;
-
   bool get isLastPage => state.page >= state.pagesCount;
 
   void changeFlow(FlowEnum value) {
@@ -60,8 +78,6 @@ class ArticleListCubit extends Cubit<ArticleListState> {
       flow: value,
       hub: state.hub,
       user: state.user,
-      langUI: state.langUI,
-      langArticles: state.langArticles,
       type: state.type,
     ));
   }
@@ -74,8 +90,6 @@ class ArticleListCubit extends Cubit<ArticleListState> {
       flow: state.flow,
       hub: state.hub,
       user: state.user,
-      langUI: state.langUI,
-      langArticles: state.langArticles,
       type: state.type,
       sort: value,
     ));
@@ -99,35 +113,19 @@ class ArticleListCubit extends Cubit<ArticleListState> {
       flow: state.flow,
       hub: state.hub,
       user: state.user,
-      langUI: state.langUI,
-      langArticles: state.langArticles,
       type: state.type,
       sort: sort,
     ));
   }
 
-  void changeLanguage({
-    LanguageEnum? langUI,
-    List<LanguageEnum>? langArticles,
-  }) {
-    emit(ArticleListState(
-      from: state.from,
-      flow: state.flow,
-      hub: state.hub,
-      user: state.user,
-      langUI: langUI ?? state.langUI,
-      langArticles: langArticles ?? state.langArticles,
-      type: state.type,
-    ));
-  }
-
   /// FETCH ARTICLES
   void fetch() async {
-    if (state.status == ArticlesStatus.loading || !isFirstFetch && isLastPage) {
+    if (state.status == ArticleListStatus.loading ||
+        !isFirstFetch && isLastPage) {
       return;
     }
 
-    emit(state.copyWith(status: ArticlesStatus.loading));
+    emit(state.copyWith(status: ArticleListStatus.loading));
 
     try {
       ArticleListResponse response = switch (state.from) {
@@ -138,7 +136,7 @@ class ArticleListCubit extends Cubit<ArticleListState> {
       };
 
       emit(state.copyWith(
-        status: ArticlesStatus.success,
+        status: ArticleListStatus.success,
         articles: [...state.articles, ...response.refs],
         page: state.page + 1,
         pagesCount: response.pagesCount,
@@ -146,15 +144,15 @@ class ArticleListCubit extends Cubit<ArticleListState> {
     } catch (e) {
       emit(state.copyWith(
         error: ExceptionHelper.parseMessage(e, 'Не удалось получить статьи'),
-        status: ArticlesStatus.failure,
+        status: ArticleListStatus.failure,
       ));
     }
   }
 
   Future<ArticleListResponse> _fetchFlowArticles() async {
     return await _repository.fetchFlowArticles(
-      langUI: state.langUI,
-      langArticles: state.langArticles,
+      langUI: _languageRepository.ui,
+      langArticles: _languageRepository.articles,
       type: state.type,
       flow: state.flow,
       sort: state.sort,
@@ -166,8 +164,8 @@ class ArticleListCubit extends Cubit<ArticleListState> {
 
   Future<ArticleListResponse> _fetchHubArticles() async {
     return await _repository.fetchHubArticles(
-      langUI: state.langUI,
-      langArticles: state.langArticles,
+      langUI: _languageRepository.ui,
+      langArticles: _languageRepository.articles,
       hub: state.hub,
       sort: state.sort,
       period: state.period,
@@ -178,8 +176,8 @@ class ArticleListCubit extends Cubit<ArticleListState> {
 
   Future<ArticleListResponse> _fetchUserArticles() async {
     return await _repository.fetchUserArticles(
-      langUI: state.langUI,
-      langArticles: state.langArticles,
+      langUI: _languageRepository.ui,
+      langArticles: _languageRepository.articles,
       user: state.user,
       sort: state.sort,
       period: state.period,
@@ -190,8 +188,8 @@ class ArticleListCubit extends Cubit<ArticleListState> {
 
   Future<ArticleListResponse> _fetchUserBookmarks() async {
     return await _repository.fetchUserBookmarks(
-      langUI: state.langUI,
-      langArticles: state.langArticles,
+      langUI: _languageRepository.ui,
+      langArticles: _languageRepository.articles,
       user: state.user,
       page: state.page.toString(),
     );
@@ -199,7 +197,7 @@ class ArticleListCubit extends Cubit<ArticleListState> {
 
   void refetch() {
     emit(state.copyWith(
-      status: ArticlesStatus.initial,
+      status: ArticleListStatus.initial,
       page: 1,
       articles: [],
       pagesCount: 0,

@@ -14,6 +14,7 @@ import '../../enhancement/scroll/cubit/scroll_cubit.dart';
 import '../../search/cubit/search_cubit.dart';
 import '../../search/repository/search_repository.dart';
 import '../../settings/cubit/settings_cubit.dart';
+import '../../settings/repository/language_repository.dart';
 import '../cubit/article_list_cubit.dart';
 import '../model/article_type.dart';
 import '../model/flow_enum.dart';
@@ -38,18 +39,16 @@ class ArticleListPage extends StatelessWidget {
       key: ValueKey('articles-$flow-flow'),
       providers: [
         BlocProvider(
-          create: (c) => ArticleListCubit(
-            getIt.get<ArticleRepository>(),
+          create: (_) => ArticleListCubit(
+            repository: getIt.get<ArticleRepository>(),
+            languageRepository: getIt.get<LanguageRepository>(),
             flow: FlowEnum.fromString(flow),
-            langUI: context.read<SettingsCubit>().state.langUI,
-            langArticles: context.read<SettingsCubit>().state.langArticles,
           ),
         ),
         BlocProvider(
-          create: (c) => SearchCubit(
-            getIt.get<SearchRepository>(),
-            langUI: context.read<SettingsCubit>().state.langUI,
-            langArticles: context.read<SettingsCubit>().state.langArticles,
+          create: (_) => SearchCubit(
+            repository: getIt.get<SearchRepository>(),
+            langRepository: getIt.get<LanguageRepository>(),
           ),
         ),
         BlocProvider(
@@ -128,16 +127,10 @@ class ArticleListView extends StatelessWidget {
 
         /// Смена языков
         BlocListener<SettingsCubit, SettingsState>(
-          listenWhen: (p, c) =>
-              p.langUI != c.langUI || p.langArticles != c.langArticles,
-          listener: (context, state) {
-            articlesCubit.changeLanguage(
-              langUI: state.langUI,
-              langArticles: state.langArticles,
-            );
-
-            scrollCubit.animateToTop();
-          },
+          listenWhen: (previous, current) =>
+              previous.langUI != current.langUI ||
+              previous.langArticles != current.langArticles,
+          listener: (_, __) => scrollCubit.animateToTop(),
         ),
 
         /// Когда скролл достиг предела, получаем следующую страницу

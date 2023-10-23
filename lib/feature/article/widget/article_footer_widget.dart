@@ -62,7 +62,7 @@ class _BookmarkIconButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => BookmarkCubit(
-        service: getIt.get<ArticleRepository>(),
+        repository: getIt.get<ArticleRepository>(),
         articleId: article.id,
         isBookmarked: article.relatedData.bookmarked,
         count: article.statistics.favoritesCount,

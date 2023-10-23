@@ -1,41 +1,61 @@
+import 'dart:async';
+
 import 'package:app_links/app_links.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../common/exception/value_exception.dart';
 import '../../../component/language.dart';
 import '../../../component/router/app_router.dart';
 import '../../../component/storage/cache_storage.dart';
 import '../model/article_config_model.dart';
 import '../model/feed_config_model.dart';
+import '../repository/language_repository.dart';
 
 part 'settings_state.dart';
 
 const isDarkThemeCacheKey = 'isDarkTheme';
-const langUICacheKey = 'langUI';
-const langArticlesCacheKey = 'langArticles';
 const feedConfigCacheKey = 'feedConfig';
 const articleConfigCacheKey = 'articleConfig';
 
 class SettingsCubit extends Cubit<SettingsState> {
   SettingsCubit({
     required CacheStorage storage,
-    required this.router,
+    required LanguageRepository languageRepository,
+    required AppRouter router,
     required AppLinks appLinks,
   })  : _storage = storage,
+        _langRepository = languageRepository,
+        _router = router,
         _appLinks = appLinks,
-        super(const SettingsState());
+        super(const SettingsState()) {
+    _langUiSub = _langRepository.uiStream.listen((lang) {
+      emit(state.copyWith(langUI: lang));
+    });
+    _langArticleSub = _langRepository.articlesStream.listen((langs) {
+      emit(state.copyWith(langArticles: langs));
+    });
+  }
 
+  final LanguageRepository _langRepository;
   final CacheStorage _storage;
   final AppLinks _appLinks;
-  final AppRouter router;
+  final AppRouter _router;
+
+  late final StreamSubscription _langUiSub;
+  late final StreamSubscription _langArticleSub;
+
+  @override
+  Future<void> close() {
+    _langUiSub.cancel();
+    _langArticleSub.cancel();
+    return super.close();
+  }
 
   void init() async {
     emit(state.copyWith(status: SettingsStatus.loading));
 
     /// todo: эту штуку можно оптимизировать, на мой блестящий взгляд:
     /// возвращать из функций значения и менять state одним поджопником
-    await initLocales();
     await initTheme();
     await initFeedConfig();
     await initArticleConfig();
@@ -44,81 +64,42 @@ class SettingsCubit extends Cubit<SettingsState> {
     emit(state.copyWith(status: SettingsStatus.success));
   }
 
-  Future<void> initLocales() async {
-    await initUILang();
-    await initArticlesLang();
-  }
-
-  Future<void> initUILang() async {
-    String? raw = await _storage.read(langUICacheKey);
-
-    if (raw == null) return;
-
-    try {
-      final uiLang = LanguageEnum.fromString(raw);
-
-      emit(state.copyWith(langUI: uiLang));
-    } on ValueException {
-      await _storage.delete(langUICacheKey);
-    }
-  }
-
-  Future<void> initArticlesLang() async {
-    String? raw = await _storage.read(langArticlesCacheKey);
-
-    if (raw == null) return;
-
-    try {
-      final langs = decodeLangs(raw);
-
-      emit(state.copyWith(langArticles: langs));
-    } on ValueException {
-      await _storage.delete(langArticlesCacheKey);
-    }
-  }
-
   changeUILang(LanguageEnum? uiLang) {
     if (uiLang == null) return;
 
-    _storage.write(langUICacheKey, uiLang.name);
-
     emit(state.copyWith(langUI: uiLang));
+
+    _langRepository.updateUILang(uiLang);
   }
 
-  bool validateChangeArticlesLang(
+  (bool, List<LanguageEnum>) validateChangeArticlesLang(
     LanguageEnum lang, {
     required bool isEnabled,
   }) {
-    var langs = [...state.langArticles];
+    var newLangs = [...state.langArticles];
 
     if (isEnabled) {
-      langs.add(lang);
+      newLangs.add(lang);
     } else {
-      langs.remove(lang);
+      newLangs.remove(lang);
     }
 
-    if (langs.isEmpty) return false;
+    if (newLangs.isEmpty) return (false, []);
 
-    return true;
+    return (true, newLangs);
   }
 
-  changeArticlesLang(LanguageEnum lang, {bool? isEnabled}) {
+  changeArticleLang(LanguageEnum lang, {bool? isEnabled}) async {
     if (isEnabled == null) return;
+    var (isValid, newLangs) = validateChangeArticlesLang(
+      lang,
+      isEnabled: isEnabled,
+    );
+    if (!isValid) return;
 
-    var langs = [...state.langArticles];
+    emit(state.copyWith(langArticles: newLangs));
 
-    if (isEnabled) {
-      langs.add(lang);
-    } else {
-      langs.remove(lang);
-    }
-
-    if (langs.isEmpty) return;
-
-    String langsAsString = encodeLangs(langs);
-    _storage.write(langArticlesCacheKey, langsAsString);
-
-    emit(state.copyWith(langArticles: langs));
+    _langRepository.updateArticleLang(newLangs);
   }
 
   Future<void> initTheme() async {
@@ -152,7 +133,7 @@ class SettingsCubit extends Cubit<SettingsState> {
     _appLinks.uriLinkStream.listen((uri) {
       String path = uri.path;
 
-      router.navigateNamed(path);
+      _router.navigateNamed(path);
     });
   }
 

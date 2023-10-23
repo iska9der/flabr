@@ -8,7 +8,7 @@ import '../../../common/widget/enhancement/progress_indicator.dart';
 import '../../../common/widget/html_view_widget.dart';
 import '../../../component/di/dependencies.dart';
 import '../../../config/constants.dart';
-import '../../settings/cubit/settings_cubit.dart';
+import '../../settings/repository/language_repository.dart';
 import '../cubit/article_cubit.dart';
 import '../repository/article_repository.dart';
 import '../widget/article_footer_widget.dart';
@@ -39,9 +39,8 @@ class ArticleDetailPage extends StatelessWidget {
       create: (c) => ArticleCubit(
         id,
         repository: getIt.get<ArticleRepository>(),
-        langUI: context.read<SettingsCubit>().state.langUI,
-        langArticles: context.read<SettingsCubit>().state.langArticles,
-      )..fetch(),
+        languageRepository: getIt.get<LanguageRepository>(),
+      ),
       child: const ArticleDetailPageView(),
     );
   }
@@ -84,196 +83,184 @@ class _ArticleDetailPageViewState extends State<ArticleDetailPageView> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<SettingsCubit, SettingsState>(
-      listenWhen: (p, c) =>
-          p.langUI != c.langUI || p.langArticles != c.langArticles,
-      listener: (context, state) {
-        /// Смена языков
-        context.read<ArticleCubit>().changeLanguage(
-              langUI: state.langUI,
-              langArticles: state.langArticles,
-            );
-      },
-      child: Scaffold(
-        floatingActionButton: ValueListenableBuilder(
-          valueListenable: isStatsVisible,
-          builder: (_, value, __) => _FloatingFooter(isVisible: value),
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        body: SafeArea(
-          child: BlocBuilder<ArticleCubit, ArticleState>(
-            builder: (context, state) {
-              if (state.status == ArticleStatus.initial) {
-                context.read<ArticleCubit>().fetch();
+    return Scaffold(
+      floatingActionButton: ValueListenableBuilder(
+        valueListenable: isStatsVisible,
+        builder: (_, value, __) => _FloatingFooter(isVisible: value),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      body: SafeArea(
+        child: BlocBuilder<ArticleCubit, ArticleState>(
+          builder: (context, state) {
+            if (state.status == ArticleStatus.initial) {
+              context.read<ArticleCubit>().fetch();
 
-                return const CircleIndicator();
-              }
-              if (state.status == ArticleStatus.loading) {
-                return const CircleIndicator();
-              }
-              if (state.status == ArticleStatus.failure) {
-                return Center(child: Text(state.error));
-              }
+              return const CircleIndicator();
+            }
+            if (state.status == ArticleStatus.loading) {
+              return const CircleIndicator();
+            }
+            if (state.status == ArticleStatus.failure) {
+              return Center(child: Text(state.error));
+            }
 
-              final article = state.article;
+            final article = state.article;
 
-              return Scrollbar(
-                controller: controller,
-                child: NotificationListener<UserScrollNotification>(
-                  onNotification: (notification) {
-                    final direction = notification.direction;
-                    final axis = notification.metrics.axisDirection;
+            return Scrollbar(
+              controller: controller,
+              child: NotificationListener<UserScrollNotification>(
+                onNotification: (notification) {
+                  final direction = notification.direction;
+                  final axis = notification.metrics.axisDirection;
 
-                    if (axis == AxisDirection.right ||
-                        axis == AxisDirection.left) {
-                      return true;
-                    }
-
-                    /// Если скроллим вверх, или скролл достиг какого-либо края,
-                    /// то показываем статистику
-                    if (direction == ScrollDirection.forward ||
-                        notification.metrics.atEdge &&
-                            notification.metrics.pixels != 0) {
-                      isStatsVisible.value = true;
-                    } else if (direction == ScrollDirection.reverse) {
-                      isStatsVisible.value = false;
-                    }
-
+                  if (axis == AxisDirection.right ||
+                      axis == AxisDirection.left) {
                     return true;
-                  },
-                  child: SelectionArea(
-                    child: CustomScrollView(
-                      controller: controller,
-                      slivers: [
-                        SliverAppBar(
-                          automaticallyImplyLeading: false,
-                          forceElevated: true,
-                          pinned: true,
-                          toolbarHeight: 40,
-                          titleSpacing: 0,
-                          title: Stack(
-                            children: [
-                              Row(
-                                children: [
-                                  const SizedBox(
-                                    width: 60,
-                                    child: AutoLeadingButton(),
+                  }
+
+                  /// Если скроллим вверх, или скролл достиг какого-либо края,
+                  /// то показываем статистику
+                  if (direction == ScrollDirection.forward ||
+                      notification.metrics.atEdge &&
+                          notification.metrics.pixels != 0) {
+                    isStatsVisible.value = true;
+                  } else if (direction == ScrollDirection.reverse) {
+                    isStatsVisible.value = false;
+                  }
+
+                  return true;
+                },
+                child: SelectionArea(
+                  child: CustomScrollView(
+                    controller: controller,
+                    slivers: [
+                      SliverAppBar(
+                        automaticallyImplyLeading: false,
+                        forceElevated: true,
+                        pinned: true,
+                        toolbarHeight: 40,
+                        titleSpacing: 0,
+                        title: Stack(
+                          children: [
+                            Row(
+                              children: [
+                                const SizedBox(
+                                  width: 60,
+                                  child: AutoLeadingButton(),
+                                ),
+                                Expanded(
+                                  child: Text(
+                                    article.titleHtml,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: Theme.of(context)
+                                        .appBarTheme
+                                        .titleTextStyle,
                                   ),
-                                  Expanded(
-                                    child: Text(
-                                      article.titleHtml,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: Theme.of(context)
-                                          .appBarTheme
-                                          .titleTextStyle,
-                                    ),
-                                  ),
-                                  const SizedBox(width: 14),
-                                  IconButton(
-                                    icon:
-                                        const Icon(Icons.brightness_6_rounded),
-                                    iconSize: 20,
-                                    tooltip: 'Настроить показ',
-                                    onPressed: () => showModalBottomSheet(
-                                      context: context,
-                                      builder: (context) {
-                                        return const Padding(
-                                          padding: EdgeInsets.symmetric(
-                                            horizontal: kScreenHPadding,
-                                            vertical: kScreenHPadding * 3,
-                                          ),
-                                          child: SizedBox(
-                                            height: 240,
-                                            child: ArticleSettingsWidget(),
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                  ),
-                                  const SizedBox(width: 14),
-                                ],
-                              ),
-                              IgnorePointer(
-                                child: SizedBox(
-                                  height: 45,
-                                  child: ValueListenableBuilder<double>(
-                                    valueListenable: progressValue,
-                                    builder: (context, value, child) {
-                                      return LinearProgressIndicator(
-                                        backgroundColor: Colors.transparent,
-                                        color: Colors.blue.withOpacity(.2),
-                                        value: value,
+                                ),
+                                const SizedBox(width: 14),
+                                IconButton(
+                                  icon: const Icon(Icons.brightness_6_rounded),
+                                  iconSize: 20,
+                                  tooltip: 'Настроить показ',
+                                  onPressed: () => showModalBottomSheet(
+                                    context: context,
+                                    builder: (context) {
+                                      return const Padding(
+                                        padding: EdgeInsets.symmetric(
+                                          horizontal: kScreenHPadding,
+                                          vertical: kScreenHPadding * 3,
+                                        ),
+                                        child: SizedBox(
+                                          height: 240,
+                                          child: ArticleSettingsWidget(),
+                                        ),
                                       );
                                     },
                                   ),
                                 ),
+                                const SizedBox(width: 14),
+                              ],
+                            ),
+                            IgnorePointer(
+                              child: SizedBox(
+                                height: 45,
+                                child: ValueListenableBuilder<double>(
+                                  valueListenable: progressValue,
+                                  builder: (context, value, child) {
+                                    return LinearProgressIndicator(
+                                      backgroundColor: Colors.transparent,
+                                      color: Colors.blue.withOpacity(.2),
+                                      value: value,
+                                    );
+                                  },
+                                ),
                               ),
-                            ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      SliverToBoxAdapter(
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                            top: vPadding,
+                            left: hPadding,
+                            right: hPadding,
+                          ),
+                          child: ArticleHeaderWidget(article),
+                        ),
+                      ),
+                      SliverToBoxAdapter(
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                            top: vPadding,
+                            left: hPadding,
+                            right: hPadding,
+                            bottom: vPadding,
+                          ),
+                          child: SelectableText(
+                            article.titleHtml,
+                            textAlign: TextAlign.left,
+                            style: Theme.of(context).textTheme.titleLarge,
                           ),
                         ),
-                        SliverToBoxAdapter(
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                              top: vPadding,
-                              left: hPadding,
-                              right: hPadding,
-                            ),
-                            child: ArticleHeaderWidget(article),
+                      ),
+                      SliverToBoxAdapter(
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                            top: vPadding,
+                            left: hPadding,
+                            right: hPadding,
+                            bottom: vPadding,
                           ),
+                          child: ArticleStatsWidget(article),
                         ),
-                        SliverToBoxAdapter(
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                              top: vPadding,
-                              left: hPadding,
-                              right: hPadding,
-                              bottom: vPadding,
-                            ),
-                            child: SelectableText(
-                              article.titleHtml,
-                              textAlign: TextAlign.left,
-                              style: Theme.of(context).textTheme.titleLarge,
-                            ),
+                      ),
+                      SliverToBoxAdapter(
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                            top: vPadding - 6,
+                            left: hPadding,
+                            right: hPadding,
                           ),
+                          child: ArticleHubsWidget(hubs: article.hubs),
                         ),
-                        SliverToBoxAdapter(
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                              top: vPadding,
-                              left: hPadding,
-                              right: hPadding,
-                              bottom: vPadding,
-                            ),
-                            child: ArticleStatsWidget(article),
+                      ),
+                      SliverToBoxAdapter(
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                            left: hPadding,
+                            right: hPadding,
                           ),
+                          child: ArticleLabelsWidget(article),
                         ),
-                        SliverToBoxAdapter(
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                              top: vPadding - 6,
-                              left: hPadding,
-                              right: hPadding,
-                            ),
-                            child: ArticleHubsWidget(hubs: article.hubs),
-                          ),
-                        ),
-                        SliverToBoxAdapter(
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                              left: hPadding,
-                              right: hPadding,
-                            ),
-                            child: ArticleLabelsWidget(article),
-                          ),
-                        ),
-                        HtmlView(textHtml: article.textHtml),
-                      ],
-                    ),
+                      ),
+                      HtmlView(textHtml: article.textHtml),
+                    ],
                   ),
                 ),
-              );
-            },
-          ),
+              ),
+            );
+          },
         ),
       ),
     );

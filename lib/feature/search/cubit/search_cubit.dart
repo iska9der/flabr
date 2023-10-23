@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../common/exception/exception_helper.dart';
 import '../../../common/model/extension/enum_status.dart';
 import '../../../common/model/network/list_response.dart';
-import '../../../component/localization/language_enum.dart';
+import '../../settings/repository/language_repository.dart';
 import '../model/search_order.dart';
 import '../model/search_target.dart';
 import '../repository/search_repository.dart';
@@ -12,21 +12,17 @@ import '../repository/search_repository.dart';
 part 'search_state.dart';
 
 class SearchCubit extends Cubit<SearchState> {
-  SearchCubit(
-    SearchRepository repository, {
+  SearchCubit({
+    required SearchRepository repository,
+    required LanguageRepository langRepository,
     SearchTarget target = SearchTarget.posts,
     SearchOrder order = SearchOrder.relevance,
-    required LanguageEnum langUI,
-    required List<LanguageEnum> langArticles,
   })  : _repository = repository,
-        super(SearchState(
-          langUI: langUI,
-          langArticles: langArticles,
-          target: target,
-          order: order,
-        ));
+        _langRepository = langRepository,
+        super(SearchState(target: target, order: order));
 
   final SearchRepository _repository;
+  final LanguageRepository _langRepository;
 
   Future<void> changeTarget(SearchTarget newTarget) async {
     if (state.target == newTarget) return;
@@ -77,8 +73,8 @@ class SearchCubit extends Cubit<SearchState> {
 
     try {
       ListResponse list = await _repository.fetch(
-        langUI: state.langUI,
-        langArticles: state.langArticles,
+        langUI: _langRepository.ui,
+        langArticles: _langRepository.articles,
         query: state.query,
         target: state.target,
         order: state.order,
