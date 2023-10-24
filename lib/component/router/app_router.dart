@@ -63,8 +63,9 @@ class AppRouter extends _$AppRouter {
   }
 
   String parseId(Uri url) {
-    Iterable<String> parts =
-        url.pathSegments.where((element) => element.isNotEmpty);
+    Iterable<String> parts = url.pathSegments.where(
+      (element) => element.isNotEmpty,
+    );
 
     return parts.last;
   }
@@ -101,6 +102,7 @@ class AppRouter extends _$AppRouter {
 
   @override
   RouteType get defaultRouteType => const RouteType.material();
+
   @override
   final List<AutoRoute> routes = [
     AutoRoute(
@@ -226,182 +228,184 @@ class AppRouter extends _$AppRouter {
         /// Редиректы с хабропутей
         ///
         /// расположение редиректов важно
-
-        /// Флоу в новостях
-        RedirectRoute(
-          path: '*/*/flows/:flow/news',
-          redirectTo: 'news/flows/:flow',
-        ),
-
-        /// Новости и комментарии к ним
-        RedirectRoute(
-          path: '*/*/news/',
-          redirectTo: 'news',
-        ),
-        RedirectRoute(
-          path: '*/*/news/:id',
-          redirectTo: 'news/details/:id',
-        ),
-        RedirectRoute(
-          path: '*/*/news/:id/comments',
-          redirectTo: 'articles/comments/:id',
-        ),
-        RedirectRoute(
-          path: '*/*/news/t/:id',
-          redirectTo: 'news/details/:id',
-        ),
-        RedirectRoute(
-          path: '*/*/news/t/:id/comments',
-          redirectTo: 'articles/comments/:id',
-        ),
-
-        /// /////////////////////
-        /// Флоу в статьях
-        RedirectRoute(
-          path: '*/*/flows/:flow/',
-          redirectTo: 'articles/flows/:flow',
-        ),
-
-        /// Статьи и комментарии к ним
-        /// Старый путь
-        RedirectRoute(
-          path: '*/*/post/:id',
-          redirectTo: 'articles/details/:id',
-        ),
-        RedirectRoute(
-          path: '*/*/post/:id/comments',
-          redirectTo: 'articles/comments/:id',
-        ),
-
-        /// Новые пути
-        RedirectRoute(
-          path: '*/*/posts/:id',
-          redirectTo: 'articles/details/:id',
-        ),
-        RedirectRoute(
-          path: '*/*/posts/:id/comments',
-          redirectTo: 'articles/comments/:id',
-        ),
-        RedirectRoute(
-          path: '*/*/articles/:id',
-          redirectTo: 'articles/details/:id',
-        ),
-        RedirectRoute(
-          path: '*/*/articles/:id/comments',
-          redirectTo: 'articles/comments/:id',
-        ),
-
-        /// Статьи из блогов и комментарии к ним
-        /// todo: пока через вкладку "статьи"
-        /// Старые пути
-        RedirectRoute(
-          path: '*/*/company/:companyName/blog/:id',
-          redirectTo: 'articles/details/:id',
-        ),
-        RedirectRoute(
-          path: '*/*/company/:companyName/blog/:id/comments',
-          redirectTo: 'articles/comments/:id',
-        ),
-
-        /// Новые пути
-        RedirectRoute(
-          path: '*/*/companies/:companyName/articles/:id',
-          redirectTo: 'articles/details/:id',
-        ),
-        RedirectRoute(
-          path: '*/*/companies/:companyName/articles/:id/comments',
-          redirectTo: 'articles/comments/:id',
-        ),
-
-        /// Статьи с AMP ссылками
-        RedirectRoute(
-          path: '*/*/amp/publications/:id',
-          redirectTo: 'articles/details/:id',
-        ),
-        RedirectRoute(
-          path: '*/*/amp/publications/:id/comments',
-          redirectTo: 'articles/comments/:id',
-        ),
-
-        /// /////////////////////
-        /// Пользователи
-        RedirectRoute(
-          path: '*/*/users',
-          redirectTo: 'services/users',
-        ),
-
-        /// Пользователь
-        RedirectRoute(
-          path: '*/*/users/:login',
-          redirectTo: 'services/users/:login',
-        ),
-
-        /// Посты пользователя
-        RedirectRoute(
-          path: '*/*/users/:login/posts',
-          redirectTo: 'services/users/:login/article',
-        ),
-
-        /// Остальные редиректы постов пользователя
-        /// todo: временный редирект на экран всех постов пользователя,
-        /// пока не реализованны вложенные разделы
-        /// (публикации, посты)
-        RedirectRoute(
-          path: '*/*/users/:login/posts/*',
-          redirectTo: 'services/users/:login/article',
-        ),
-
-        /// Закладки пользователя
-        /// Старый путь
-        RedirectRoute(
-          path: '*/*/users/:login/favorites',
-          redirectTo: 'services/users/:login/bookmarks',
-        ),
-
-        /// Новый путь
-        RedirectRoute(
-          path: '*/*/users/:login/bookmarks',
-          redirectTo: 'services/users/:login/bookmarks',
-        ),
-
-        /// Остальные редиректы для закладок
-        /// todo: временный редирект на закладки пользователя,
-        /// пока не реализованны вложенные разделы
-        /// (публикации, посты, комментарии)
-        RedirectRoute(
-          path: '*/*/users/:login/bookmarks/*',
-          redirectTo: 'services/users/:login/bookmarks',
-        ),
-
-        /// Остальные редиректы для пользователей
-        /// todo: временный редирект на детали пользователя,
-        /// пока не реализованы вложенные разделы
-        /// (комментарии, подписчики, подписки)
-        RedirectRoute(
-          path: '*/*/users/:login/*',
-          redirectTo: 'services/users/:login/detail',
-        ),
-
-        /// /////////////////////
-        /// Хабы
-        RedirectRoute(
-          path: '*/*/hubs',
-          redirectTo: 'services/hubs',
-        ),
-        RedirectRoute(
-          path: '*/*/hub/:alias',
-          redirectTo: 'services/hubs/:alias/profile',
-        ),
-
-        /// Остальные редиректы для хабов
-        /// todo: временный редирект в профиль хаба со статьями,
-        /// пока не реализованы вложенные разделы
-        /// (авторы, компании)
-        RedirectRoute(
-          path: '*/*/hub/:alias/*',
-          redirectTo: 'services/hubs/:alias',
-        ),
+        ..._newsRedirects(),
+        ..._articlesRedirects(),
+        ..._usersRedirects(),
+        ..._hubsRedirects(),
       ],
+    ),
+  ];
+}
+
+List<RedirectRoute> _newsRedirects() {
+  return [
+    /// Флоу в новостях
+    RedirectRoute(
+      path: '*/*/flows/:flow/news',
+      redirectTo: 'news/flows/:flow',
+    ),
+
+    /// Новости и комментарии к ним
+    RedirectRoute(
+      path: '*/*/news/',
+      redirectTo: 'news',
+    ),
+    RedirectRoute(
+      path: '*/*/news/:id',
+      redirectTo: 'news/details/:id',
+    ),
+    RedirectRoute(
+      path: '*/*/news/:id/comments',
+      redirectTo: 'articles/comments/:id',
+    ),
+    RedirectRoute(
+      path: '*/*/news/t/:id',
+      redirectTo: 'news/details/:id',
+    ),
+    RedirectRoute(
+      path: '*/*/news/t/:id/comments',
+      redirectTo: 'articles/comments/:id',
+    ),
+  ];
+}
+
+List<RedirectRoute> _articlesRedirects() {
+  List<String> externalPathList = [
+    '*/*/post/:id',
+    '*/*/posts/:id',
+    '*/*/articles/:id',
+
+    /// Статьи из блогов и комментарии к ним
+    /// todo: пока через вкладку "статьи"
+    '*/*/company/:companyName/blog/:id',
+    '*/*/companies/:companyName/articles/:id',
+
+    /// Статьи с AMP ссылками
+    '*/*/amp/publications/:id',
+  ];
+
+  List<RedirectRoute> internalRedirectList = [];
+  for (final path in externalPathList) {
+    final list = [
+      RedirectRoute(
+        path: path,
+        redirectTo: 'articles/details/:id',
+      ),
+      RedirectRoute(
+        path: '$path/comments',
+        redirectTo: 'articles/comments/:id',
+      ),
+    ];
+
+    internalRedirectList.addAll(list);
+  }
+
+  return [
+    /// Флоу в статьях
+    RedirectRoute(
+      path: '*/*/flows/:flow/',
+      redirectTo: 'articles/flows/:flow',
+    ),
+
+    /// Статьи и комментарии
+    ...internalRedirectList,
+  ];
+}
+
+List<RedirectRoute> _usersRedirects() {
+  const userList = UserListPage.routePath;
+  const basePath = 'services/$userList';
+  const details = UserDetailPage.routePath;
+  const articles = UserArticleListPage.routePath;
+  const bookmarks = UserBookmarkListPage.routePath;
+
+  return [
+    RedirectRoute(
+      path: '*/*/users',
+      redirectTo: basePath,
+    ),
+
+    /// Пользователь
+    RedirectRoute(
+      path: '*/*/users/:login',
+      redirectTo: '$basePath/:login',
+    ),
+
+    /// Посты пользователя
+    RedirectRoute(
+      path: '*/*/users/:login/posts',
+      redirectTo: '$basePath/:login/$articles',
+    ),
+
+    /// Остальные редиректы постов пользователя
+    /// todo: временный редирект на экран всех постов пользователя,
+    /// пока не реализованны вложенные разделы
+    /// (публикации, посты)
+    RedirectRoute(
+      path: '*/*/users/:login/posts/*',
+      redirectTo: '$basePath/:login/$articles',
+    ),
+
+    /// Закладки пользователя
+    RedirectRoute(
+      path: '*/*/users/:login/favorites',
+      redirectTo: '$basePath/:login/$bookmarks',
+    ),
+    RedirectRoute(
+      path: '*/*/users/:login/bookmarks',
+      redirectTo: '$basePath/:login/$bookmarks',
+    ),
+
+    /// Остальные редиректы для закладок
+    /// todo: временный редирект на закладки пользователя,
+    /// пока не реализованны вложенные разделы
+    /// (публикации, посты, комментарии)
+    RedirectRoute(
+      path: '*/*/users/:login/bookmarks/*',
+      redirectTo: '$basePath/:login/$bookmarks',
+    ),
+
+    /// Остальные редиректы для пользователей
+    /// todo: временный редирект на детали пользователя,
+    /// пока не реализованы вложенные разделы
+    /// (комментарии, подписчики, подписки)
+    RedirectRoute(
+      path: '*/*/users/:login/*',
+      redirectTo: '$basePath/:login/$details',
+    ),
+  ];
+}
+
+/// Редиректы для хабов
+List<RedirectRoute> _hubsRedirects() {
+  const hubList = HubListPage.routePath;
+  const basePath = 'services/$hubList';
+  const profile = HubDetailPage.routePath;
+
+  return [
+    RedirectRoute(
+      path: '*/*/hubs',
+      redirectTo: basePath,
+    ),
+    RedirectRoute(
+      path: '*/*/hub/:alias',
+      redirectTo: '$basePath/:alias/$profile',
+    ),
+    RedirectRoute(
+      path: '*/*/hubs/:alias',
+      redirectTo: '$basePath/:alias/$profile',
+    ),
+
+    /// todo: временный редирект в профиль хаба со статьями,
+    /// пока не реализованы вложенные разделы
+    /// (авторы, компании)
+    RedirectRoute(
+      path: '*/*/hub/:alias/*',
+      redirectTo: '$basePath/:alias',
+    ),
+    RedirectRoute(
+      path: '*/*/hubs/:alias/*',
+      redirectTo: '$basePath/:alias/$profile',
     ),
   ];
 }
