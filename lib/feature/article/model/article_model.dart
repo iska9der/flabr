@@ -92,7 +92,7 @@ class ArticleModel extends Equatable {
   bool get isEmpty => this == empty;
 
   @override
-  List<Object> get props => [
+  List<Object?> get props => [
         id,
         type,
         timePublished,
@@ -101,6 +101,10 @@ class ArticleModel extends Equatable {
         author,
         statistics,
         leadData,
+        relatedData,
         hubs,
+        complexity,
+        readingTime,
+        format,
       ];
 }

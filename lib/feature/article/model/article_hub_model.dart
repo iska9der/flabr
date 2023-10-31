@@ -42,5 +42,11 @@ class ArticleHubModel extends HubBase with EquatableMixin {
         type,
         relatedData,
         isProfiled,
+        titleHtml,
+        imageUrl,
+        descriptionHtml,
+        isOfftop,
+        statistics,
+        commonTags,
       ];
 }

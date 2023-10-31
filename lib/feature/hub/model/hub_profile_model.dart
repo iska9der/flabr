@@ -92,5 +92,7 @@ class HubProfileModel extends HubBase with EquatableMixin {
         statistics,
         keywords,
         isProfiled,
+        isOfftop,
+        commonTags,
       ];
 }

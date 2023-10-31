@@ -133,7 +133,7 @@ class _MostReadingViewState extends State<_MostReadingView> {
                                     ),
                                   ),
                                 ],
-                              )
+                              ),
                             ],
                           ),
                         );
@@ -142,7 +142,7 @@ class _MostReadingViewState extends State<_MostReadingView> {
                   );
                 },
               ),
-            )
+            ),
           ],
         ),
       ),

@@ -74,6 +74,7 @@ class CompanyModel extends CompanyBase with EquatableMixin {
         titleHtml,
         descriptionHtml,
         relatedData,
+        statistics,
         commonHubs,
       ];
 }
