@@ -42,14 +42,14 @@ class _DashboardPageState extends State<DashboardPage> {
       child: NotificationListener<UserScrollNotification>(
         onNotification: (notification) {
           if (visibleOnScroll) {
-            return true;
+            return false;
           }
 
           final direction = notification.direction;
           final axis = notification.metrics.axisDirection;
 
           if (axis == AxisDirection.right || axis == AxisDirection.left) {
-            return true;
+            return false;
           }
 
           double? newHeight = barHeight.value;
@@ -60,7 +60,7 @@ class _DashboardPageState extends State<DashboardPage> {
           }
           barHeight.value = newHeight;
 
-          return true;
+          return false;
         },
         child: AutoTabsScaffold(
           lazyLoad: false,
