@@ -5,12 +5,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../common/model/extension/enum_status.dart';
 import '../../../common/utils/utils.dart';
 import '../../../common/widget/article_list_sliver.dart';
-import '../../../common/widget/button/floating_buttons.dart';
 import '../../../component/di/dependencies.dart';
 import '../../../config/constants.dart';
 import '../../auth/cubit/auth_cubit.dart';
-import '../../enhancement/scaffold/cubit/scaffold_cubit.dart';
 import '../../enhancement/scroll/cubit/scroll_cubit.dart';
+import '../../enhancement/scroll/widget/floating_scroll_to_top_button.dart';
 import '../../search/cubit/search_cubit.dart';
 import '../../search/repository/search_repository.dart';
 import '../../settings/cubit/settings_cubit.dart';
@@ -20,7 +19,6 @@ import '../model/article_type.dart';
 import '../model/flow_enum.dart';
 import '../repository/article_repository.dart';
 import '../widget/article_list/article_list_appbar.dart';
-import '../widget/article_list/article_list_drawer.dart';
 import '../widget/most_reading_widget.dart';
 
 @RoutePage(name: ArticleListPage.routeName)
@@ -53,9 +51,6 @@ class ArticleListPage extends StatelessWidget {
         ),
         BlocProvider(
           create: (c) => ScrollCubit(),
-        ),
-        BlocProvider(
-          create: (c) => ScaffoldCubit(),
         ),
       ],
       child: const ArticleListView(),
@@ -140,10 +135,8 @@ class ArticleListView extends StatelessWidget {
         ),
       ],
       child: Scaffold(
-        key: context.read<ScaffoldCubit>().key,
-        drawer: ArticleListDrawer(type: type),
-        floatingActionButton: const FloatingButtons(),
-        floatingActionButtonLocation: FloatingButtons.location,
+        floatingActionButton: const FloatingScrollToTopButton(),
+        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
         body: SafeArea(
           child: Scrollbar(
             controller: scrollController,
