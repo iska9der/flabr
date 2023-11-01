@@ -55,6 +55,7 @@ ThemeData darkTheme() {
     checkboxTheme: appCheckboxThemeData,
     switchTheme: appSwitchThemeData,
     dialogTheme: dialogTheme,
+    navigationBarTheme: navigationBarThemeData,
   );
 
   return themeData;

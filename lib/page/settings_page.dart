@@ -13,6 +13,7 @@ import '../feature/auth/cubit/auth_cubit.dart';
 import '../feature/auth/cubit/login_cubit.dart';
 import '../feature/auth/repository/token_repository.dart';
 import '../feature/settings/cubit/settings_cubit.dart';
+import '../feature/settings/widget/setting_navigation_bar.dart';
 import '../feature/settings/widget/settings_card_widget.dart';
 import '../feature/settings/widget/settings_checkbox_widget.dart';
 import '../feature/settings/widget/settings_section_widget.dart';
@@ -64,6 +65,12 @@ class SettingsView extends StatelessWidget {
               padding: EdgeInsets.symmetric(vertical: 20),
               child: ArticleSettingsWidget(),
             ),
+          ],
+        ),
+        SettingsSectionWidget(
+          title: 'Разное',
+          children: [
+            SettingNavigationOnScroll(),
           ],
         ),
       ],
