@@ -11,6 +11,7 @@ class SettingsState extends Equatable {
     this.initialDeepLink = '',
     this.articleConfig = ArticleConfigModel.empty,
     this.feedConfig = FeedConfigModel.empty,
+    this.miscConfig = MiscConfigModel.empty,
   });
 
   final SettingsStatus status;
@@ -24,6 +25,7 @@ class SettingsState extends Equatable {
   final String initialDeepLink;
   final ArticleConfigModel articleConfig;
   final FeedConfigModel feedConfig;
+  final MiscConfigModel miscConfig;
 
   SettingsState copyWith({
     SettingsStatus? status,
@@ -33,6 +35,7 @@ class SettingsState extends Equatable {
     String? initialDeepLink,
     ArticleConfigModel? articleConfig,
     FeedConfigModel? feedConfig,
+    MiscConfigModel? miscConfig,
   }) {
     return SettingsState(
       status: status ?? this.status,
@@ -42,6 +45,7 @@ class SettingsState extends Equatable {
       initialDeepLink: initialDeepLink ?? this.initialDeepLink,
       articleConfig: articleConfig ?? this.articleConfig,
       feedConfig: feedConfig ?? this.feedConfig,
+      miscConfig: miscConfig ?? this.miscConfig,
     );
   }
 
@@ -57,5 +61,6 @@ class SettingsState extends Equatable {
         initialDeepLink,
         articleConfig,
         feedConfig,
+        miscConfig,
       ];
 }

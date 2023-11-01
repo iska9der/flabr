@@ -7,6 +7,7 @@ const double kAvatarHeight = 30.0;
 const double kImageHeightDefault = 200.0;
 
 /// Styles
+const navBarHeight = 68.0;
 const double kScreenHPadding = 8.0;
 const double kCardBetweenPadding = 16.0;
 const double kBorderRadiusDefault = 8.0;

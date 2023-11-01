@@ -60,6 +60,7 @@ ThemeData lightTheme() {
     sliderTheme: appSliderThemeData,
     chipTheme: appChipThemeData,
     dialogTheme: dialogTheme,
+    navigationBarTheme: navigationBarThemeData,
   );
 
   return themeData;

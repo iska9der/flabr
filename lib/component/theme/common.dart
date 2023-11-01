@@ -68,3 +68,6 @@ const DialogTheme dialogTheme = DialogTheme(
     borderRadius: BorderRadius.all(Radius.circular(kBorderRadiusDefault)),
   ),
 );
+
+const NavigationBarThemeData navigationBarThemeData =
+    NavigationBarThemeData(height: navBarHeight);
