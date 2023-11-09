@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -33,9 +34,9 @@ class LoginWidget extends StatelessWidget implements DialogUserWidget {
                 child: BlocListener<LoginCubit, LoginState>(
                   listener: (context, state) {
                     if (state.status.isSuccess) {
-                      Navigator.of(context).pop();
-
                       context.read<AuthCubit>().handleAuthData();
+
+                      Navigator.of(context).pop();
                     }
                   },
                   child: const _WebViewLogin(),
@@ -87,7 +88,6 @@ class _WebViewLoginState extends State<_WebViewLogin> {
   void initState() {
     super.initState();
 
-    final loginCubit = context.read<LoginCubit>();
     cookieManager = WebviewCookieManager();
     wvController = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
@@ -98,8 +98,13 @@ class _WebViewLoginState extends State<_WebViewLogin> {
             ConsoleLogger.info(request.url, title: 'URL');
 
             if (request.url.startsWith('https://habr.com/ru/all')) {
-              final connectSid = await getConnectSid(request.url);
-              loginCubit.submitConnectSid(connectSid);
+              final loginCubit = context.read<LoginCubit>();
+              await getConnectSid(request.url).then(
+                (value) => Timer(
+                  const Duration(milliseconds: 900),
+                  () => loginCubit.submitConnectSid(value),
+                ),
+              );
               return NavigationDecision.prevent;
             }
 

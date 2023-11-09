@@ -42,7 +42,7 @@ class AuthCubit extends Cubit<AuthState> {
 
   void fetchMe() async {
     try {
-      final me = await _repository.fetchMe(state.data.connectSID);
+      final me = await _repository.fetchMe();
 
       if (me == null) {
         return emit(state.copyWith(status: AuthStatus.anomaly));

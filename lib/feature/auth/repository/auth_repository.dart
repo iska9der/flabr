@@ -7,8 +7,8 @@ class AuthRepository {
 
   final AuthService _service;
 
-  Future<MeModel?> fetchMe(String connectSid) async {
-    final raw = await _service.fetchMe(connectSid);
+  Future<MeModel?> fetchMe() async {
+    final raw = await _service.fetchMe();
 
     if (raw == null) {
       return null;
