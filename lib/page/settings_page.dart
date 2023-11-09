@@ -119,58 +119,60 @@ class _ConnectSidWidgetState extends State<ConnectSidWidget> {
             return SettingsCardWidget(
               title: 'Connect SID',
               subtitle: 'Если не удается войти через форму логина',
-              padding: const EdgeInsets.all(6),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  TextFormField(
-                    onTapOutside: (event) {
-                      FocusManager.instance.primaryFocus?.unfocus();
-                    },
-                    enabled: !state.isAuthorized,
-                    controller: controller,
-                    keyboardType: TextInputType.text,
-                    decoration: const InputDecoration(
-                      floatingLabelBehavior: FloatingLabelBehavior.always,
-                      hintText: 'Можно найти в cookies',
-                      border: OutlineInputBorder(),
+              child: Padding(
+                padding: const EdgeInsets.only(top: 12.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    TextFormField(
+                      onTapOutside: (event) {
+                        FocusManager.instance.primaryFocus?.unfocus();
+                      },
+                      enabled: !state.isAuthorized,
+                      controller: controller,
+                      keyboardType: TextInputType.text,
+                      decoration: const InputDecoration(
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                        hintText: 'Можно найти в cookies',
+                        border: OutlineInputBorder(),
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 8),
-                  Row(
-                    children: [
-                      state.isAuthorized
-                          ? ElevatedButton(
-                              onPressed: () {
-                                authCubit.logOut();
-                              },
-                              child: const Text('Очистить'),
-                            )
-                          : FilledButton(
-                              onPressed: () {
-                                loginCubit.submitConnectSid(controller.text);
-                              },
-                              child: const Text('Сохранить'),
-                            ),
-                      const SizedBox(width: 12),
-                      if (state.isAuthorized)
-                        ElevatedButton(
-                          onPressed: () {
-                            Clipboard.setData(
-                              ClipboardData(text: controller.text),
-                            );
-                            getIt.get<Utils>().showNotification(
-                                  context: context,
-                                  content: const Text(
-                                    'Скопировано в буфер обмена',
-                                  ),
-                                );
-                          },
-                          child: const Text('Скопировать'),
-                        ),
-                    ],
-                  ),
-                ],
+                    const SizedBox(height: 8),
+                    Row(
+                      children: [
+                        state.isAuthorized
+                            ? ElevatedButton(
+                                onPressed: () {
+                                  authCubit.logOut();
+                                },
+                                child: const Text('Очистить'),
+                              )
+                            : FilledButton(
+                                onPressed: () {
+                                  loginCubit.submitConnectSid(controller.text);
+                                },
+                                child: const Text('Сохранить'),
+                              ),
+                        const SizedBox(width: 12),
+                        if (state.isAuthorized)
+                          ElevatedButton(
+                            onPressed: () {
+                              Clipboard.setData(
+                                ClipboardData(text: controller.text),
+                              );
+                              getIt.get<Utils>().showNotification(
+                                    context: context,
+                                    content: const Text(
+                                      'Скопировано в буфер обмена',
+                                    ),
+                                  );
+                            },
+                            child: const Text('Скопировать'),
+                          ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             );
           },
@@ -202,7 +204,6 @@ class _UIThemeWidgetState extends State<UIThemeWidget> {
   Widget build(BuildContext context) {
     return SettingsCardWidget(
       title: 'Цветовая схема',
-      padding: const EdgeInsets.symmetric(horizontal: 20),
       child: SwitchListTile.adaptive(
         title: const Text('Темная тема'),
         contentPadding: EdgeInsets.zero,
@@ -234,7 +235,6 @@ class UILangWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return SettingsCardWidget(
       title: 'Язык интерфейса',
-      padding: const EdgeInsets.symmetric(horizontal: 20),
       child: BlocBuilder<SettingsCubit, SettingsState>(
         buildWhen: (previous, current) => previous.langUI != current.langUI,
         builder: (context, state) {

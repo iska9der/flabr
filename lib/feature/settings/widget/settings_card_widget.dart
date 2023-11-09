@@ -18,26 +18,29 @@ class SettingsCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            if (title != null) Text(title!),
-            if (subtitle != null)
-              Text(
-                subtitle!,
-                style: Theme.of(context).textTheme.bodySmall,
-              ),
-          ],
-        ),
-        FlabrCard(
-          padding: padding,
-          child: child,
-        ),
-      ],
+    return FlabrCard(
+      margin: EdgeInsets.zero,
+      padding: padding,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (title != null)
+            Text(
+              title!,
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
+          if (subtitle != null)
+            Text(
+              subtitle!,
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12.0),
+            child: child,
+          ),
+        ],
+      ),
     );
   }
 }
