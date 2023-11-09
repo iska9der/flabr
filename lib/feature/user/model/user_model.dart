@@ -15,6 +15,7 @@ class UserModel extends Equatable {
     this.fullname = '',
     this.speciality = '',
     this.score = 0,
+    this.votesCount = 0,
     this.rating = 0,
     this.ratingPosition = 0,
     this.relatedData = UserRelatedData.empty,
@@ -35,15 +36,22 @@ class UserModel extends Equatable {
   final String fullname;
   final String speciality;
 
+  /// "карма" -> очки
+  final int score;
+
+  /// количество голосов
+  final int votesCount;
+
+  /// рейтинг
+  final double rating;
+
+  /// позиция в рейтинге
+  final int ratingPosition;
+
   final UserRelatedData relatedData;
   final UserLocationModel location;
   final List<UserWorkplaceModel> workplace;
   final ArticleModel lastPost;
-
-  /// "карма" -> очки
-  final int score;
-  final double rating;
-  final int ratingPosition;
 
   UserModel copyWith({
     String? id,
@@ -54,6 +62,7 @@ class UserModel extends Equatable {
     String? fullname,
     String? speciality,
     int? score,
+    int? votesCount,
     double? rating,
     int? ratingPosition,
     UserRelatedData? relatedData,
@@ -70,6 +79,7 @@ class UserModel extends Equatable {
       fullname: fullname ?? this.fullname,
       speciality: speciality ?? this.speciality,
       score: score ?? this.score,
+      votesCount: votesCount ?? this.votesCount,
       rating: rating ?? this.rating,
       ratingPosition: ratingPosition ?? this.ratingPosition,
       relatedData: relatedData ?? this.relatedData,
@@ -89,6 +99,7 @@ class UserModel extends Equatable {
       fullname: map['fullname'] ?? '',
       speciality: map['speciality'] ?? '',
       score: map['scoreStats']['score'],
+      votesCount: map['scoreStats']['votesCount'],
       rating:
           map['rating'] != null ? double.parse(map['rating'].toString()) : 0.00,
       ratingPosition:
@@ -127,6 +138,7 @@ class UserModel extends Equatable {
       fullname,
       speciality,
       score,
+      votesCount,
       rating,
       ratingPosition,
       relatedData,

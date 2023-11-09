@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../common/model/extension/num.dart';
 import '../../../common/model/stat_type.dart';
 import '../../../common/widget/enhancement/card.dart';
 import '../../../common/widget/feed/card_avatar_widget.dart';
@@ -72,10 +73,14 @@ class _UserProfileCardWidgetState extends State<UserProfileCardWidget> {
                         value: model.score,
                       ),
                       const SizedBox(width: 40),
-                      ProfileStatWidget(
-                        type: StatType.rating,
-                        title: 'Рейтинг',
-                        value: model.rating,
+                      Tooltip(
+                        message: '${model.votesCount.compact()} голосов',
+                        triggerMode: TooltipTriggerMode.tap,
+                        child: ProfileStatWidget(
+                          type: StatType.rating,
+                          title: 'Рейтинг',
+                          value: model.rating,
+                        ),
                       ),
                     ],
                   ),
