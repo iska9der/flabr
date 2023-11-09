@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../common/widget/article_list_sliver.dart';
-import '../../../common/widget/button/floating_buttons.dart';
 import '../../../common/widget/enhancement/progress_indicator.dart';
 import '../../../component/di/dependencies.dart';
 import '../../../config/constants.dart';
@@ -61,8 +60,7 @@ class HubDetailPageView extends StatelessWidget {
     var scrollCtrl = context.read<ScrollCubit>().state.controller;
 
     return Scaffold(
-      floatingActionButton: const FloatingButtons(),
-      floatingActionButtonLocation: FloatingButtons.location,
+      floatingActionButton: const FloatingScrollToTopButton(),
       body: BlocBuilder<HubCubit, HubState>(
         builder: (context, state) {
           if (state.status == HubStatus.loading) {
