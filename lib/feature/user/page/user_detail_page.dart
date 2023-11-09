@@ -24,7 +24,7 @@ class UserDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cubit = context.read<UserCubit>();
-    cubit.fetchByLogin();
+    cubit.fetchCard();
 
     return UserDetailPageView(
       key: ValueKey('user-${cubit.state.login}-detail'),

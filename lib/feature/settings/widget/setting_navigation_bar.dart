@@ -11,7 +11,6 @@ class SettingNavigationOnScroll extends StatelessWidget {
   Widget build(BuildContext context) {
     return SettingsCardWidget(
       title: 'Нижняя навигация',
-      padding: const EdgeInsets.symmetric(horizontal: 20),
       child: BlocBuilder<SettingsCubit, SettingsState>(
         buildWhen: (previous, current) =>
             previous.miscConfig.navigationOnScrollVisible !=
