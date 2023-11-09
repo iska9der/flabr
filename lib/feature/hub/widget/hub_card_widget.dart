@@ -52,18 +52,14 @@ class HubCardWidget extends StatelessWidget {
                     ),
                     const SizedBox(height: 20),
                     Wrap(
-                      children: model.commonTags
-                          .map((tag) => Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 8,
-                                  vertical: 4,
-                                ),
-                                child: Text(
-                                  tag,
-                                  style: Theme.of(context).textTheme.bodySmall,
-                                ),
-                              ))
-                          .toList(),
+                      children: model.commonTags.map((tag) {
+                        final style = Theme.of(context).textTheme.bodySmall;
+
+                        return Padding(
+                          padding: const EdgeInsets.fromLTRB(8, 4, 8, 4),
+                          child: Text(tag, style: style),
+                        );
+                      }).toList(),
                     ),
                   ],
                 ),
@@ -75,14 +71,18 @@ class HubCardWidget extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 8.0),
           child: Row(
             children: [
-              ProfileStatCardWidget(
-                type: StatType.rating,
-                title: 'Рейтинг',
-                value: stats.rating,
+              Expanded(
+                child: ProfileStatCardWidget(
+                  type: StatType.rating,
+                  title: 'Рейтинг',
+                  value: stats.rating,
+                ),
               ),
-              ProfileStatCardWidget(
-                title: 'Подписчики',
-                value: stats.subscribersCount,
+              Expanded(
+                child: ProfileStatCardWidget(
+                  title: 'Подписчики',
+                  value: stats.subscribersCount,
+                ),
               ),
             ],
           ),

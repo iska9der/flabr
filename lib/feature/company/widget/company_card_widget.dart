@@ -107,14 +107,18 @@ class CompanyCardWidget extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 8.0),
           child: Row(
             children: [
-              ProfileStatCardWidget(
-                type: StatType.rating,
-                title: 'Рейтинг',
-                value: stats.rating,
+              Expanded(
+                child: ProfileStatCardWidget(
+                  type: StatType.rating,
+                  title: 'Рейтинг',
+                  value: stats.rating,
+                ),
               ),
-              ProfileStatCardWidget(
-                title: 'Подписчики',
-                value: stats.subscribersCount,
+              Expanded(
+                child: ProfileStatCardWidget(
+                  title: 'Подписчики',
+                  value: stats.subscribersCount,
+                ),
               ),
             ],
           ),
