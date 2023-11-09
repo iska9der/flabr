@@ -88,7 +88,10 @@ void setDependencies() {
 
   /// Users
   getIt.registerLazySingleton<UserService>(
-    () => UserService(getIt(instanceName: 'mobileClient')),
+    () => UserService(
+      mobileClient: getIt(instanceName: 'mobileClient'),
+      siteClient: getIt(instanceName: 'siteClient'),
+    ),
   );
   getIt.registerLazySingleton<UserRepository>(
     () => UserRepository(getIt()),

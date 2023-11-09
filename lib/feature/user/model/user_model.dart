@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 
 import '../../article/model/article_model.dart';
 import 'user_location_model.dart';
+import 'user_related_data.dart';
 import 'user_workplace_model.dart';
 
 class UserModel extends Equatable {
@@ -16,6 +17,7 @@ class UserModel extends Equatable {
     this.score = 0,
     this.rating = 0,
     this.ratingPosition = 0,
+    this.relatedData = UserRelatedData.empty,
     this.location = UserLocationModel.empty,
     this.workplace = const [],
     this.lastPost = ArticleModel.empty,
@@ -32,6 +34,8 @@ class UserModel extends Equatable {
   final String avatarUrl;
   final String fullname;
   final String speciality;
+
+  final UserRelatedData relatedData;
   final UserLocationModel location;
   final List<UserWorkplaceModel> workplace;
   final ArticleModel lastPost;
@@ -52,6 +56,7 @@ class UserModel extends Equatable {
     int? score,
     double? rating,
     int? ratingPosition,
+    UserRelatedData? relatedData,
     UserLocationModel? location,
     List<UserWorkplaceModel>? workplace,
     ArticleModel? lastPost,
@@ -67,6 +72,7 @@ class UserModel extends Equatable {
       score: score ?? this.score,
       rating: rating ?? this.rating,
       ratingPosition: ratingPosition ?? this.ratingPosition,
+      relatedData: relatedData ?? this.relatedData,
       location: location ?? this.location,
       workplace: workplace ?? this.workplace,
       lastPost: lastPost ?? this.lastPost,
@@ -87,6 +93,9 @@ class UserModel extends Equatable {
           map['rating'] != null ? double.parse(map['rating'].toString()) : 0.00,
       ratingPosition:
           map['ratingPos'] != null ? int.parse(map['ratingPos'].toString()) : 0,
+      relatedData: map['relatedData'] != null
+          ? UserRelatedData.fromMap(map['relatedData'])
+          : UserRelatedData.empty,
       location: map['location'] != null
           ? UserLocationModel.fromMap(map['location'])
           : UserLocationModel.empty,
@@ -120,6 +129,7 @@ class UserModel extends Equatable {
       score,
       rating,
       ratingPosition,
+      relatedData,
       location,
       workplace,
       lastPost,

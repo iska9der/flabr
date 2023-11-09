@@ -20,31 +20,19 @@ class UserCubit extends Cubit<UserState> {
   final UserRepository _repository;
   final LanguageRepository _languageRepository;
 
-  void fetchByLogin() async {
+  void fetchCard() async {
     emit(state.copyWith(status: UserStatus.loading));
 
     try {
-      UserModel model;
+      UserModel model = state.model;
 
-      if (state.model.isEmpty) {
-        model = await _repository.fetchByLogin(
+      if (model.isEmpty) {
+        model = await _repository.fetchCard(
           login: state.login,
           langUI: _languageRepository.ui,
           langArticles: _languageRepository.articles,
         );
-      } else {
-        model = state.model;
       }
-
-      emit(state.copyWith(status: UserStatus.success, model: model));
-    } catch (e) {
-      emit(state.copyWith(status: UserStatus.failure));
-    }
-  }
-
-  void getByLogin() {
-    try {
-      UserModel model = _repository.getByLogin(state.login);
 
       emit(state.copyWith(status: UserStatus.success, model: model));
     } catch (e) {

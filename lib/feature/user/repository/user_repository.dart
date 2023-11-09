@@ -27,12 +27,12 @@ class UserRepository {
     return response;
   }
 
-  Future<UserModel> fetchByLogin({
+  Future<UserModel> fetchCard({
     required String login,
     required LanguageEnum langUI,
     required List<LanguageEnum> langArticles,
   }) async {
-    final raw = await _service.fetchByLogin(
+    final raw = await _service.fetchCard(
       login: login,
       langUI: langUI.name,
       langArticles: encodeLangs(langArticles),
