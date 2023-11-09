@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
+import '../../../common/model/extension/num.dart';
 import '../../../common/model/stat_type.dart';
 import '../../../common/widget/enhancement/card.dart';
 import '../../../common/widget/feed/card_avatar_widget.dart';
@@ -76,15 +77,16 @@ class _UserCard extends StatelessWidget {
                 ),
 
                 /// Последний пост
-                if (!model.lastPost.isEmpty) ...[
-                  const SizedBox(height: 12),
-                  TextButton(
-                    onPressed: () => context.navigateTo(MyArticlesRoute(
-                      children: [ArticleDetailRoute(id: model.lastPost.id)],
-                    )),
-                    child: Text(model.lastPost.titleHtml),
+                if (!model.lastPost.isEmpty)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 12.0),
+                    child: TextButton(
+                      onPressed: () => context.navigateTo(MyArticlesRoute(
+                        children: [ArticleDetailRoute(id: model.lastPost.id)],
+                      )),
+                      child: Text(model.lastPost.titleHtml),
+                    ),
                   ),
-                ],
               ],
             ),
           ),
@@ -113,10 +115,16 @@ class _UserScore extends StatelessWidget {
             title: 'Рейтинг',
             value: model.rating,
           ),
-          ProfileStatCardWidget(
-            type: StatType.score,
-            title: 'Очки',
-            value: model.score,
+          Expanded(
+            child: Tooltip(
+              message: '${model.votesCount.compact()} голосов',
+              triggerMode: TooltipTriggerMode.tap,
+              child: ProfileStatCardWidget(
+                type: StatType.score,
+                title: 'Очки',
+                value: model.score,
+              ),
+            ),
           ),
         ],
       ),
