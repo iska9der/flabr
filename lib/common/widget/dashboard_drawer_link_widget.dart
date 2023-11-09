@@ -13,16 +13,15 @@ class DashboardDrawerLinkWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final tabRouter = context.router;
+    final tabRouter = AutoRouter.of(context);
 
-    return ListTile(
-      title: Text(title),
-      onTap: () {
-        tabRouter.navigateNamed(route);
-
-        /// закрываем Drawer из DashboardPage
-        Navigator.of(context).pop();
-      },
+    return TextButton(
+      style: Theme.of(context).textButtonTheme.style?.copyWith(
+            padding: const MaterialStatePropertyAll(EdgeInsets.zero),
+            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          ),
+      onPressed: () => tabRouter.navigateNamed(route),
+      child: Text(title),
     );
   }
 }

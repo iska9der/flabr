@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../common/widget/dashboard_drawer_link_widget.dart';
 import '../../../component/di/dependencies.dart';
 import '../../../component/router/app_router.dart';
+import '../../../component/theme/constants.dart';
 import '../../enhancement/scaffold/cubit/scaffold_cubit.dart';
 import '../../settings/repository/language_repository.dart';
 import '../cubit/user_cubit.dart';
@@ -54,35 +55,49 @@ class UserDashboardView extends StatelessWidget {
   Widget build(BuildContext context) {
     final userCubit = context.read<UserCubit>();
 
-    return AutoTabsRouter(
+    return AutoTabsRouter.tabBar(
       routes: const [
         UserDetailRoute(),
         UserArticleListRoute(),
         UserBookmarkListRoute(),
       ],
-      builder: (context, child) {
+      builder: (context, child, controller) {
         return Scaffold(
           key: context.read<ScaffoldCubit>().key,
           appBar: AppBar(
+            toolbarHeight: fToolBarDashboardHeight,
             title: Text(userCubit.state.login),
           ),
-          drawer: const NavigationDrawer(
-            children: [
-              DashboardDrawerLinkWidget(
-                title: UserDetailPage.title,
-                route: UserDetailPage.routePath,
-              ),
-              DashboardDrawerLinkWidget(
-                title: UserArticleListPage.title,
-                route: UserArticleListPage.routePath,
-              ),
-              DashboardDrawerLinkWidget(
-                title: UserBookmarkListPage.title,
-                route: UserBookmarkListPage.routePath,
-              ),
-            ],
+          body: SafeArea(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                ColoredBox(
+                  color: Theme.of(context).colorScheme.surface,
+                  child: TabBar(
+                    controller: controller,
+                    isScrollable: true,
+                    dividerColor: Colors.transparent,
+                    tabs: const [
+                      DashboardDrawerLinkWidget(
+                        title: UserDetailPage.title,
+                        route: UserDetailPage.routePath,
+                      ),
+                      DashboardDrawerLinkWidget(
+                        title: UserArticleListPage.title,
+                        route: UserArticleListPage.routePath,
+                      ),
+                      DashboardDrawerLinkWidget(
+                        title: UserBookmarkListPage.title,
+                        route: UserBookmarkListPage.routePath,
+                      ),
+                    ],
+                  ),
+                ),
+                Expanded(child: child),
+              ],
+            ),
           ),
-          body: SafeArea(child: child),
         );
       },
     );

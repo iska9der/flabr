@@ -18,27 +18,25 @@ class ProfileStatCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Stack(
-        fit: StackFit.passthrough,
-        children: [
-          FlabrCard(
-            padding: const EdgeInsets.all(8.0),
-            child: StatTextWidget(
-              type: type,
-              value: value,
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.headlineSmall,
-            ),
+    return Stack(
+      fit: StackFit.passthrough,
+      children: [
+        FlabrCard(
+          padding: const EdgeInsets.all(8.0),
+          child: StatTextWidget(
+            type: type,
+            value: value,
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.headlineSmall,
           ),
-          Align(
-            child: Text(
-              title,
-              style: Theme.of(context).textTheme.labelMedium,
-            ),
+        ),
+        Align(
+          child: Text(
+            title,
+            style: Theme.of(context).textTheme.labelMedium,
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

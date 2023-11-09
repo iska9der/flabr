@@ -110,10 +110,12 @@ class _UserScore extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          ProfileStatCardWidget(
-            type: StatType.rating,
-            title: 'Рейтинг',
-            value: model.rating,
+          Expanded(
+            child: ProfileStatCardWidget(
+              type: StatType.rating,
+              title: 'Рейтинг',
+              value: model.rating,
+            ),
           ),
           Expanded(
             child: Tooltip(

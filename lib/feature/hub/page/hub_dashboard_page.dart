@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../common/widget/dashboard_drawer_link_widget.dart';
 import '../../../component/di/dependencies.dart';
 import '../../../component/router/app_router.dart';
+import '../../../component/theme.dart';
 import '../../enhancement/scaffold/cubit/scaffold_cubit.dart';
 import '../../settings/repository/language_repository.dart';
 import '../cubit/hub_cubit.dart';
@@ -50,31 +51,43 @@ class HubDashboardPageView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AutoTabsRouter(
+    return AutoTabsRouter.tabBar(
       routes: const [
         HubDetailRoute(),
       ],
-      builder: (context, child) {
+      builder: (context, child, controller) {
         return Scaffold(
           key: context.read<ScaffoldCubit>().key,
           appBar: AppBar(
-            scrolledUnderElevation: 0,
-            elevation: 0,
+            toolbarHeight: fToolBarDashboardHeight,
             title: BlocBuilder<HubCubit, HubState>(
               builder: (context, state) {
                 return Text(state.profile.titleHtml);
               },
             ),
           ),
-          drawer: const NavigationDrawer(
-            children: [
-              DashboardDrawerLinkWidget(
-                title: HubDetailPage.name,
-                route: HubDetailPage.routePath,
-              ),
-            ],
+          body: SafeArea(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                ColoredBox(
+                  color: Theme.of(context).colorScheme.surface,
+                  child: TabBar(
+                    controller: controller,
+                    isScrollable: true,
+                    dividerColor: Colors.transparent,
+                    tabs: const [
+                      DashboardDrawerLinkWidget(
+                        title: HubDetailPage.name,
+                        route: HubDetailPage.routePath,
+                      )
+                    ],
+                  ),
+                ),
+                Expanded(child: child),
+              ],
+            ),
           ),
-          body: SafeArea(child: child),
         );
       },
     );
