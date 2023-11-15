@@ -61,41 +61,43 @@ class CommentListView extends StatelessWidget {
         title: const Text('Комментарии'),
       ),
       body: SafeArea(
-        child: BlocBuilder<CommentListCubit, CommentListState>(
-          builder: (context, state) {
-            if (state.status.isInitial) {
-              context.read<CommentListCubit>().fetch();
-              return const CircleIndicator();
-            }
+        child: SelectionArea(
+          child: BlocBuilder<CommentListCubit, CommentListState>(
+            builder: (context, state) {
+              if (state.status.isInitial) {
+                context.read<CommentListCubit>().fetch();
+                return const CircleIndicator();
+              }
 
-            if (state.status.isLoading) {
-              return const CircleIndicator();
-            }
+              if (state.status.isLoading) {
+                return const CircleIndicator();
+              }
 
-            if (state.status.isFailure) {
-              return Center(child: Text(state.error));
-            }
+              if (state.status.isFailure) {
+                return Center(child: Text(state.error));
+              }
 
-            final comments = state.list.comments;
-            if (comments.isEmpty) {
-              return const Center(
-                child: Text('Нет комментариев'),
+              final comments = state.list.comments;
+              if (comments.isEmpty) {
+                return const Center(
+                  child: Text('Нет комментариев'),
+                );
+              }
+
+              return ListView.separated(
+                itemCount: comments.length,
+                padding: const EdgeInsets.fromLTRB(4, 4, 4, 16),
+                separatorBuilder: (c, i) => const SizedBox(
+                  height: _paddingBetweenTrees,
+                ),
+                itemBuilder: (context, index) {
+                  final comment = comments[index];
+
+                  return CommentTreeWidget(comment);
+                },
               );
-            }
-
-            return ListView.separated(
-              itemCount: comments.length,
-              padding: const EdgeInsets.fromLTRB(4, 4, 4, 16),
-              separatorBuilder: (c, i) => const SizedBox(
-                height: _paddingBetweenTrees,
-              ),
-              itemBuilder: (context, index) {
-                final comment = comments[index];
-
-                return CommentTreeWidget(comment);
-              },
-            );
-          },
+            },
+          ),
         ),
       ),
     );
