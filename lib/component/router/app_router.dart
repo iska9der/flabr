@@ -274,6 +274,7 @@ List<RedirectRoute> _articlesRedirects() {
     '*/*/post/:id',
     '*/*/posts/:id',
     '*/*/articles/:id',
+    '*/articles/:id',
 
     /// Статьи из блогов и комментарии к ним
     /// todo: пока через вкладку "статьи"

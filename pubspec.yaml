@@ -29,6 +29,7 @@ dependencies:
   photo_view: ^0.14.0
   webview_flutter: ^4.4.2
   webview_cookie_manager: ^2.0.6
+  share_plus: ^7.2.1
 
 dev_dependencies:
   flutter_test:

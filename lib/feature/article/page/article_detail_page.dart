@@ -2,11 +2,13 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../../../common/widget/article_settings_widget.dart';
 import '../../../common/widget/enhancement/progress_indicator.dart';
 import '../../../common/widget/html_view_widget.dart';
 import '../../../component/di/dependencies.dart';
+import '../../../config/constants.dart';
 import '../../settings/repository/language_repository.dart';
 import '../cubit/article_cubit.dart';
 import '../repository/article_repository.dart';
@@ -151,16 +153,14 @@ class _ArticleDetailPageViewState extends State<ArticleDetailPageView> {
                                   child: Text(
                                     article.titleHtml,
                                     overflow: TextOverflow.ellipsis,
-                                    style: Theme.of(context)
-                                        .appBarTheme
-                                        .titleTextStyle,
+                                    style:
+                                        Theme.of(context).textTheme.titleSmall,
                                   ),
                                 ),
-                                const SizedBox(width: 14),
                                 IconButton(
-                                  icon: const Icon(Icons.brightness_6_rounded),
-                                  iconSize: 20,
-                                  tooltip: 'Настроить показ',
+                                  icon: const Icon(Icons.tune_rounded),
+                                  iconSize: 18,
+                                  tooltip: 'Настроить',
                                   onPressed: () => showModalBottomSheet(
                                     context: context,
                                     showDragHandle: true,
@@ -172,7 +172,14 @@ class _ArticleDetailPageViewState extends State<ArticleDetailPageView> {
                                     },
                                   ),
                                 ),
-                                const SizedBox(width: 14),
+                                IconButton(
+                                  icon: const Icon(Icons.share_rounded),
+                                  iconSize: 18,
+                                  tooltip: 'Поделиться',
+                                  onPressed: () => Share.shareUri(Uri.parse(
+                                    '$baseUrl/articles/${article.id}',
+                                  )),
+                                ),
                               ],
                             ),
                             IgnorePointer(

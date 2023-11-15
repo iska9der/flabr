@@ -11,6 +11,7 @@ import '../../../common/utils/utils.dart';
 import '../../../common/widget/enhancement/card.dart';
 import '../../../component/di/dependencies.dart';
 import '../../../component/logger/console.dart';
+import '../../../config/constants.dart';
 import '../cubit/auth_cubit.dart';
 import '../cubit/login_cubit.dart';
 import '../repository/token_repository.dart';
@@ -58,7 +59,7 @@ class _WebViewLoginState extends State<_WebViewLogin> {
   late final WebViewController wvController;
   late final WebviewCookieManager cookieManager;
 
-  final Uri _authUri = Uri.parse('https://habr.com/kek/v1/auth/habrahabr/');
+  final Uri _authUri = Uri.parse('$siteApiUrl/v1/auth/habrahabr/');
 
   Future<String> getConnectSid(String url) async {
     final list = await cookieManager.getCookies(url);
@@ -97,18 +98,18 @@ class _WebViewLoginState extends State<_WebViewLogin> {
           onNavigationRequest: (NavigationRequest request) async {
             ConsoleLogger.info(request.url, title: 'URL');
 
-            if (request.url.startsWith('https://habr.com/ru/all')) {
+            if (request.url.startsWith('$baseUrl/ru/all')) {
               final loginCubit = context.read<LoginCubit>();
               await getConnectSid(request.url).then(
                 (value) => Timer(
-                  const Duration(milliseconds: 900),
+                  const Duration(seconds: 1),
                   () => loginCubit.submitConnectSid(value),
                 ),
               );
               return NavigationDecision.prevent;
             }
 
-            if (!request.url.startsWith('https://habr.com') &&
+            if (!request.url.startsWith(baseUrl) &&
                 !request.url.startsWith('https://account.habr.com')) {
               return NavigationDecision.prevent;
             }

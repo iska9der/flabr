@@ -1,6 +1,7 @@
 /// Urls
+const baseUrl = 'https://habr.com';
 const mobileApiUrl = 'https://m.habr.com/kek/v2';
-const siteApiUrl = 'https://habr.com/kek';
+const siteApiUrl = '$baseUrl/kek';
 
 /// Images
 const double kAvatarHeight = 30.0;
