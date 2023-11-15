@@ -114,7 +114,7 @@ class _ArticleDetailPageViewState extends State<ArticleDetailPageView> {
 
                   if (axis == AxisDirection.right ||
                       axis == AxisDirection.left) {
-                    return true;
+                    return false;
                   }
 
                   /// Если скроллим вверх, или скролл достиг какого-либо края,
@@ -127,7 +127,7 @@ class _ArticleDetailPageViewState extends State<ArticleDetailPageView> {
                     isStatsVisible.value = false;
                   }
 
-                  return true;
+                  return false;
                 },
                 child: SelectionArea(
                   child: CustomScrollView(
