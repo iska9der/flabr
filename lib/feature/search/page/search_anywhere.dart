@@ -80,7 +80,7 @@ class SearchAnywhereDelegate extends FlabrSearchDelegate {
             bloc: cubit,
             listenWhen: (p, c) => p.page != 1 && c.status.isFailure,
             listener: (c, state) {
-              getIt.get<Utils>().showNotification(
+              getIt.get<Utils>().showSnack(
                     context: context,
                     content: Text(state.error),
                   );

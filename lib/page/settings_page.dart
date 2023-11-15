@@ -160,7 +160,7 @@ class _ConnectSidWidgetState extends State<ConnectSidWidget> {
                               Clipboard.setData(
                                 ClipboardData(text: controller.text),
                               );
-                              getIt.get<Utils>().showNotification(
+                              getIt.get<Utils>().showSnack(
                                     context: context,
                                     content: const Text(
                                       'Скопировано в буфер обмена',

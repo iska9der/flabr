@@ -26,7 +26,7 @@ class SubscribeButton extends StatelessWidget {
       child: BlocListener<SubscriptionCubit, SubscriptionState>(
         listenWhen: (p, c) => p.status.isFailure,
         listener: (context, state) {
-          getIt.get<Utils>().showNotification(
+          getIt.get<Utils>().showSnack(
                 context: context,
                 content: Text(state.error),
               );

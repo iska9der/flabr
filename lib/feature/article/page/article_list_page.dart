@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../common/model/extension/enum_status.dart';
-import '../../../common/utils/utils.dart';
 import '../../../common/widget/article_list_sliver.dart';
 import '../../../component/di/dependencies.dart';
 import '../../../config/constants.dart';
@@ -74,27 +73,6 @@ class ArticleListView extends StatelessWidget {
 
     return MultiBlocListener(
       listeners: [
-        /// Выводим снэкбар об ошибке, если возникла ошибка при получении
-        /// данных о вошедшем юзере. Ошибка возникает, если при логине
-        /// пришел некорректный connectSSID и [AuthCubit.fetchMe()]
-        /// вернул null
-        BlocListener<AuthCubit, AuthState>(
-          listenWhen: (p, c) => p.isAuthorized && c.isAnomaly,
-          listener: (c, state) {
-            getIt.get<Utils>().showNotification(
-                  context: context,
-                  content: const Text(
-                    'Возникла неизвестная ошибка при авторизации',
-                  ),
-                  action: SnackBarAction(
-                    label: 'Выйти',
-                    onPressed: () => context.read<AuthCubit>().logOut(),
-                  ),
-                  duration: const Duration(seconds: 5),
-                );
-          },
-        ),
-
         /// Если пользователь вошел, надо переполучить статьи
         BlocListener<AuthCubit, AuthState>(
           listenWhen: (p, c) => p.status.isLoading && c.isAuthorized,

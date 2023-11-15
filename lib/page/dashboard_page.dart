@@ -3,8 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../common/utils/utils.dart';
+import '../component/di/dependencies.dart';
 import '../component/router/app_router.dart';
 import '../config/constants.dart';
+import '../feature/auth/cubit/auth_cubit.dart';
 import '../feature/settings/cubit/settings_cubit.dart';
 
 @RoutePage(name: DashboardPage.routeName)
@@ -35,16 +38,45 @@ class _DashboardPageState extends State<DashboardPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<SettingsCubit, SettingsState>(
-      listenWhen: (previous, current) =>
-          previous.miscConfig.navigationOnScrollVisible !=
-          current.miscConfig.navigationOnScrollVisible,
-      listener: (context, state) {
-        visibleOnScroll = state.miscConfig.navigationOnScrollVisible;
-        if (visibleOnScroll) {
-          barHeight.value = themeHeight;
-        }
-      },
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<SettingsCubit, SettingsState>(
+          listenWhen: (previous, current) =>
+              previous.miscConfig.navigationOnScrollVisible !=
+              current.miscConfig.navigationOnScrollVisible,
+          listener: (context, state) {
+            visibleOnScroll = state.miscConfig.navigationOnScrollVisible;
+            if (visibleOnScroll) {
+              barHeight.value = themeHeight;
+            }
+          },
+        ),
+
+        /// Выводим уведомление об ошибке, если возникла ошибка при получении
+        /// данных о вошедшем юзере. Ошибка возникает, если при логине
+        /// пришел некорректный connectSSID и [AuthCubit.fetchMe()]
+        /// вернул null
+        BlocListener<AuthCubit, AuthState>(
+          listenWhen: (p, c) => p.isAuthorized && c.isAnomaly,
+          listener: (context, state) {
+            getIt.get<Utils>().showAlert(
+                  context: context,
+                  content: const Text(
+                    'Возникла неизвестная ошибка при авторизации',
+                  ),
+                  actions: (context) => [
+                    TextButton(
+                      child: const Text('Выйти из аккаунта'),
+                      onPressed: () {
+                        context.read<AuthCubit>().logOut();
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ],
+                );
+          },
+        ),
+      ],
       child: NotificationListener<UserScrollNotification>(
         onNotification: (notification) {
           if (visibleOnScroll) {

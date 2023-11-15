@@ -90,7 +90,7 @@ class UserDetailPageView extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: model.workplace.map((e) {
                     return TextButton(
-                      onPressed: () => getIt.get<Utils>().showNotification(
+                      onPressed: () => getIt.get<Utils>().showSnack(
                             context: context,
                             content: const Text('Здесь так тихо...'),
                           ),

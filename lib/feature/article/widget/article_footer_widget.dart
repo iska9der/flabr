@@ -70,7 +70,7 @@ class _BookmarkIconButton extends StatelessWidget {
       child: BlocConsumer<BookmarkCubit, BookmarkState>(
         listenWhen: (p, c) => c.status.isFailure,
         listener: (context, state) {
-          getIt.get<Utils>().showNotification(
+          getIt.get<Utils>().showSnack(
                 context: context,
                 content: Text(state.error),
               );

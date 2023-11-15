@@ -127,7 +127,7 @@ class _WebViewLoginState extends State<_WebViewLogin> {
         listenWhen: (_, current) => current.status.isFailure,
         listener: (context, state) {
           _clearControllerData();
-          getIt.get<Utils>().showNotification(
+          getIt.get<Utils>().showSnack(
                 context: context,
                 content: Text(state.error),
                 duration: const Duration(seconds: 5),

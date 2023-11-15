@@ -64,7 +64,7 @@ class AuthCubit extends Cubit<AuthState> {
     emit(state.copyWith(status: AuthStatus.authorized, data: authData));
   }
 
-  logOut() async {
+  Future<void> logOut() async {
     emit(state.copyWith(status: AuthStatus.loading));
 
     await _tokenRepository.clearAll();

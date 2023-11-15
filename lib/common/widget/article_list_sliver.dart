@@ -22,7 +22,7 @@ class ArticleListSliver extends StatelessWidget {
       listenWhen: (p, c) =>
           p.page != 1 && c.status == ArticleListStatus.failure,
       listener: (c, state) {
-        getIt.get<Utils>().showNotification(
+        getIt.get<Utils>().showSnack(
               context: context,
               content: Text(state.error),
             );

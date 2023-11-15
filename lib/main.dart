@@ -121,12 +121,10 @@ class MyApp extends StatelessWidget {
               },
               child: MaterialApp.router(
                 title: 'Flabr',
-                routerConfig: router.config(
-                  deepLinkBuilder: (deepLink) {
-                    return const DeepLink.path('/');
-                  },
-                ),
                 theme: state.isDarkTheme ? darkTheme() : lightTheme(),
+                routerConfig: router.config(
+                  deepLinkBuilder: (_) => const DeepLink.path('/'),
+                ),
               ),
             );
           },
