@@ -8,7 +8,7 @@ class ArticleSettingsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final titleStyle = Theme.of(context).textTheme.titleMedium;
+    final titleStyle = Theme.of(context).textTheme.titleSmall;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -27,7 +27,7 @@ class ArticleSettingsWidget extends StatelessWidget {
         const SizedBox(height: 12),
         BlocBuilder<SettingsCubit, SettingsState>(
           builder: (context, state) {
-            return CheckboxListTile(
+            return SwitchListTile.adaptive(
               title: Text('Изображения', style: titleStyle),
               value: state.articleConfig.isImagesVisible,
               onChanged: (bool? value) {
@@ -41,7 +41,7 @@ class ArticleSettingsWidget extends StatelessWidget {
         const SizedBox(height: 12),
         BlocBuilder<SettingsCubit, SettingsState>(
           builder: (context, state) {
-            return CheckboxListTile(
+            return SwitchListTile.adaptive(
               title: Text('WebView', style: titleStyle),
               value: state.articleConfig.webViewEnabled,
               onChanged: (bool? value) {

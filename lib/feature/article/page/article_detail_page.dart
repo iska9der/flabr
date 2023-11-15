@@ -7,7 +7,6 @@ import '../../../common/widget/article_settings_widget.dart';
 import '../../../common/widget/enhancement/progress_indicator.dart';
 import '../../../common/widget/html_view_widget.dart';
 import '../../../component/di/dependencies.dart';
-import '../../../config/constants.dart';
 import '../../settings/repository/language_repository.dart';
 import '../cubit/article_cubit.dart';
 import '../repository/article_repository.dart';
@@ -164,16 +163,11 @@ class _ArticleDetailPageViewState extends State<ArticleDetailPageView> {
                                   tooltip: 'Настроить показ',
                                   onPressed: () => showModalBottomSheet(
                                     context: context,
+                                    showDragHandle: true,
                                     builder: (context) {
-                                      return const Padding(
-                                        padding: EdgeInsets.symmetric(
-                                          horizontal: kScreenHPadding,
-                                          vertical: kScreenHPadding * 3,
-                                        ),
-                                        child: SizedBox(
-                                          height: 240,
-                                          child: ArticleSettingsWidget(),
-                                        ),
+                                      return const SizedBox(
+                                        height: 240,
+                                        child: ArticleSettingsWidget(),
                                       );
                                     },
                                   ),

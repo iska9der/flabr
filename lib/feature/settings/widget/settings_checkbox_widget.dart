@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 
+enum SettingsCheckboxType {
+  checkboxTile,
+  switchTile;
+}
+
 class SettingsCheckboxWidget extends StatefulWidget {
   const SettingsCheckboxWidget({
     super.key,
     required this.initialValue,
     required this.title,
     this.subtitle,
+    this.type = SettingsCheckboxType.switchTile,
     this.validate,
     required this.onChanged,
   });
@@ -13,6 +19,7 @@ class SettingsCheckboxWidget extends StatefulWidget {
   final bool initialValue;
   final Widget title;
   final Widget? subtitle;
+  final SettingsCheckboxType type;
   final bool Function(bool value)? validate;
   final void Function(bool value) onChanged;
 
@@ -32,33 +39,63 @@ class _SettingsCheckboxWidgetState extends State<SettingsCheckboxWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return CheckboxListTile(
-      title: widget.title,
-      subtitle: widget.subtitle,
-      contentPadding: EdgeInsets.zero,
-      value: isChecked,
-      onChanged: (bool? value) {
-        if (value == null) return;
+    return switch (widget.type) {
+      SettingsCheckboxType.checkboxTile => CheckboxListTile.adaptive(
+          title: widget.title,
+          subtitle: widget.subtitle,
+          contentPadding: EdgeInsets.zero,
+          value: isChecked,
+          onChanged: (bool? value) {
+            if (value == null) return;
 
-        bool isValidated = true;
+            bool isValidated = true;
 
-        if (widget.validate != null) {
-          isValidated = widget.validate!(value);
-        }
+            if (widget.validate != null) {
+              isValidated = widget.validate!(value);
+            }
 
-        if (isValidated) {
-          setState(() {
-            isChecked = value;
-          });
+            if (isValidated) {
+              setState(() {
+                isChecked = value;
+              });
 
-          Future.delayed(
-            const Duration(milliseconds: 300),
-            () {
-              widget.onChanged(value);
-            },
-          );
-        }
-      },
-    );
+              Future.delayed(
+                const Duration(milliseconds: 300),
+                () {
+                  widget.onChanged(value);
+                },
+              );
+            }
+          },
+        ),
+      SettingsCheckboxType.switchTile => SwitchListTile.adaptive(
+          title: widget.title,
+          subtitle: widget.subtitle,
+          contentPadding: EdgeInsets.zero,
+          value: isChecked,
+          onChanged: (bool? value) {
+            if (value == null) return;
+
+            bool isValidated = true;
+
+            if (widget.validate != null) {
+              isValidated = widget.validate!(value);
+            }
+
+            if (isValidated) {
+              setState(() {
+                isChecked = value;
+              });
+
+              Future.delayed(
+                const Duration(milliseconds: 300),
+                () {
+                  widget.onChanged(value);
+                },
+              );
+            }
+          },
+        ),
+    };
   }
 }

@@ -279,6 +279,7 @@ class ArticlesLangWidget extends StatelessWidget {
             children: LanguageEnum.values
                 .map(
                   (lang) => SettingsCheckboxWidget(
+                    type: SettingsCheckboxType.checkboxTile,
                     title: Text(lang.label),
                     initialValue: state.langArticles.contains(lang),
                     validate: (bool val) => context
