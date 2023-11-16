@@ -4,6 +4,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:share_plus/share_plus.dart';
 
+import '../../../common/widget/article_more_widget.dart';
 import '../../../common/widget/article_settings_widget.dart';
 import '../../../common/widget/enhancement/progress_indicator.dart';
 import '../../../common/widget/html_view_widget.dart';
@@ -287,18 +288,37 @@ class _ArticleBottomBar extends StatelessWidget {
           curve: Curves.easeInOutCubicEmphasized,
           offset: isVisible ? const Offset(0, 0) : const Offset(0, 10),
           child: BottomAppBar(
-            elevation: 0,
             height: 36,
             padding: EdgeInsets.zero,
-            color: Colors.transparent,
-            shadowColor: Colors.transparent,
-            surfaceTintColor: Colors.transparent,
-            child: ColoredBox(
-              color: Theme.of(context).colorScheme.surface.withOpacity(.95),
-              child: ArticleFooterWidget(
-                article: article,
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              ),
+            elevation: 0,
+            color: Theme.of(context).colorScheme.surface.withOpacity(.94),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Expanded(
+                  flex: 7,
+                  child: ArticleFooterWidget(
+                    article: article,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  ),
+                ),
+                Expanded(
+                  flex: 3,
+                  child: IconButton(
+                    icon: const Icon(Icons.more_horiz_rounded),
+                    tooltip: 'Дополнительно',
+                    onPressed: () => showModalBottomSheet(
+                      context: context,
+                      showDragHandle: true,
+                      builder: (_) => SizedBox(
+                        width: double.infinity,
+                        height: 120,
+                        child: ArticleMoreOptionsWidget(article: article),
+                      ),
+                    ),
+                  ),
+                )
+              ],
             ),
           ),
         );
