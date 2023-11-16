@@ -40,6 +40,7 @@ class _DashboardPageState extends State<DashboardPage> {
   Widget build(BuildContext context) {
     return MultiBlocListener(
       listeners: [
+        /// Слушаем изменение настройки видимости нижней панели навигации
         BlocListener<SettingsCubit, SettingsState>(
           listenWhen: (previous, current) =>
               previous.miscConfig.navigationOnScrollVisible !=
@@ -61,10 +62,14 @@ class _DashboardPageState extends State<DashboardPage> {
           listener: (context, state) {
             getIt.get<Utils>().showAlert(
                   context: context,
+                  title: const Text('Ошибка авторизации'),
                   content: const Text(
-                    'Возникла неизвестная ошибка при авторизации',
+                    'Возникли проблемы с полученым токеном\n\n'
+                    'Попробуйте выйти и войти в аккаунт, или игнорируйте '
+                    'это назойливое окно\n\n'
+                    'Может само пройдет? 🤔',
                   ),
-                  actions: (context) => [
+                  actionsBuilder: (context) => [
                     TextButton(
                       child: const Text('Выйти из аккаунта'),
                       onPressed: () {
@@ -83,6 +88,8 @@ class _DashboardPageState extends State<DashboardPage> {
             return false;
           }
 
+          /// Слушаем уведомления о скролле, чтобы скрыть нижнюю навигацию,
+          /// когда пользователь скроллит вниз
           final direction = notification.direction;
           final axis = notification.metrics.axisDirection;
 

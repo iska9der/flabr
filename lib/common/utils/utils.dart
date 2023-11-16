@@ -27,8 +27,9 @@ class Utils with ImageUtilsMixin {
 
   Future showAlert({
     required BuildContext context,
+    Text? title,
     required Widget content,
-    required List<Widget>? Function(BuildContext context) actions,
+    required List<Widget>? Function(BuildContext context) actionsBuilder,
     bool isDismissible = true,
   }) async {
     return await showDialog(
@@ -36,25 +37,26 @@ class Utils with ImageUtilsMixin {
       barrierDismissible: isDismissible,
       useSafeArea: true,
       useRootNavigator: true,
-      builder: (context) {
-        final localActions = actions(context);
+      builder: (alertContext) {
+        final actions = actionsBuilder(alertContext);
 
         return WillPopScope(
           onWillPop: () async => isDismissible,
           child: AlertDialog.adaptive(
+            titleTextStyle: Theme.of(context).textTheme.titleLarge,
             title: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text('Внимание'),
+                Expanded(child: title ?? const Text('Внимание')),
                 if (isDismissible)
                   IconButton(
-                    onPressed: () => Navigator.of(context).pop(),
+                    onPressed: () => Navigator.of(alertContext).pop(),
                     icon: const Icon(Icons.close),
                   ),
               ],
             ),
             content: content,
-            actions: localActions,
+            actions: actions,
           ),
         );
       },
