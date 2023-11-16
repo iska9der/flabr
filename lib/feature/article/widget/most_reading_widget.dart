@@ -118,12 +118,12 @@ class _MostReadingViewState extends State<_MostReadingView> {
                                   StatIconButton(
                                     padding: EdgeInsets.zero,
                                     icon: Icons.remove_red_eye_rounded,
-                                    text:
+                                    value:
                                         model.statistics.readingCount.compact(),
                                   ),
                                   StatIconButton(
                                     icon: Icons.chat_bubble_rounded,
-                                    text: model.statistics.commentsCount
+                                    value: model.statistics.commentsCount
                                         .compact(),
                                     isHighlighted:
                                         model.relatedData.unreadCommentsCount >

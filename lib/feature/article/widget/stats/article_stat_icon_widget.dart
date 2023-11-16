@@ -7,7 +7,7 @@ class StatIconButton extends StatelessWidget {
   const StatIconButton({
     super.key,
     required this.icon,
-    required this.text,
+    required this.value,
     this.padding,
     this.color,
     this.isHighlighted = false,
@@ -16,7 +16,7 @@ class StatIconButton extends StatelessWidget {
   });
 
   final IconData icon;
-  final String text;
+  final String value;
   final EdgeInsetsGeometry? padding;
   final Color? color;
   final bool isHighlighted;
@@ -53,7 +53,7 @@ class StatIconButton extends StatelessWidget {
                     ),
               const SizedBox(width: 6),
               Text(
-                text,
+                value,
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       color: color,
                       fontWeight: FontWeight.w600,

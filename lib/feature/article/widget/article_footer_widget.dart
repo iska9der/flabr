@@ -33,7 +33,7 @@ class ArticleFooterWidget extends StatelessWidget {
       children: [
         StatIconButton(
           icon: Icons.insert_chart_rounded,
-          text: article.statistics.score.compact(),
+          value: article.statistics.score.compact(),
           isHighlighted: true,
           color: article.statistics.score >= 0
               ? StatType.score.color
@@ -41,7 +41,7 @@ class ArticleFooterWidget extends StatelessWidget {
         ),
         StatIconButton(
           icon: Icons.chat_bubble_rounded,
-          text: article.statistics.commentsCount.compact(),
+          value: article.statistics.commentsCount.compact(),
           isHighlighted: article.relatedData.unreadCommentsCount > 0,
           onTap: () => context.router.pushWidget(
             CommentListPage(articleId: article.id),
@@ -79,7 +79,7 @@ class _BookmarkIconButton extends StatelessWidget {
         builder: (context, state) {
           return StatIconButton(
             icon: Icons.bookmark_rounded,
-            text: state.count.compact(),
+            value: state.count.compact(),
             isHighlighted: state.isBookmarked,
             isLoading: state.status.isLoading,
             onTap: () => context.read<AuthCubit>().state.isUnauthorized

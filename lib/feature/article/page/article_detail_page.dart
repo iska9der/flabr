@@ -85,12 +85,13 @@ class _ArticleDetailPageViewState extends State<ArticleDetailPageView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: ValueListenableBuilder(
+      extendBody: true,
+      bottomNavigationBar: ValueListenableBuilder(
         valueListenable: isStatsVisible,
-        builder: (_, value, __) => _FloatingFooter(isVisible: value),
+        builder: (_, value, __) => _ArticleBottomBar(isVisible: value),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       body: SafeArea(
+        bottom: false,
         child: BlocBuilder<ArticleCubit, ArticleState>(
           builder: (context, state) {
             if (state.status == ArticleStatus.initial) {
@@ -268,8 +269,8 @@ class _ArticleDetailPageViewState extends State<ArticleDetailPageView> {
   }
 }
 
-class _FloatingFooter extends StatelessWidget {
-  const _FloatingFooter({this.isVisible = true});
+class _ArticleBottomBar extends StatelessWidget {
+  const _ArticleBottomBar({this.isVisible = true});
 
   final bool isVisible;
 
@@ -285,10 +286,15 @@ class _FloatingFooter extends StatelessWidget {
           duration: const Duration(milliseconds: 300),
           curve: Curves.easeInOutCubicEmphasized,
           offset: isVisible ? const Offset(0, 0) : const Offset(0, 10),
-          child: ColoredBox(
-            color: Theme.of(context).colorScheme.surface.withOpacity(.95),
-            child: SizedBox(
-              height: 36,
+          child: BottomAppBar(
+            elevation: 0,
+            height: 36,
+            padding: EdgeInsets.zero,
+            color: Colors.transparent,
+            shadowColor: Colors.transparent,
+            surfaceTintColor: Colors.transparent,
+            child: ColoredBox(
+              color: Theme.of(context).colorScheme.surface.withOpacity(.95),
               child: ArticleFooterWidget(
                 article: article,
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
