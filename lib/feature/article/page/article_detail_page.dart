@@ -4,7 +4,6 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:share_plus/share_plus.dart';
 
-import '../../../common/widget/article_more_widget.dart';
 import '../../../common/widget/article_settings_widget.dart';
 import '../../../common/widget/enhancement/progress_indicator.dart';
 import '../../../common/widget/html_view_widget.dart';
@@ -17,10 +16,11 @@ import '../widget/article_footer_widget.dart';
 import '../widget/article_header_widget.dart';
 import '../widget/article_hubs_widget.dart';
 import '../widget/article_labels_widget.dart';
+import '../widget/article_more_widget.dart';
 import '../widget/stats/article_stats_widget.dart';
 
-const double hPadding = 12.0;
-const double vPadding = 10.0;
+const double _hPadding = 12.0;
+const double _vPadding = 10.0;
 
 @RoutePage(name: ArticleDetailPage.routeName)
 class ArticleDetailPage extends StatelessWidget {
@@ -205,9 +205,9 @@ class _ArticleDetailPageViewState extends State<ArticleDetailPageView> {
                       SliverToBoxAdapter(
                         child: Padding(
                           padding: const EdgeInsets.only(
-                            top: vPadding,
-                            left: hPadding,
-                            right: hPadding,
+                            top: _vPadding,
+                            left: _hPadding,
+                            right: _hPadding,
                           ),
                           child: ArticleHeaderWidget(article),
                         ),
@@ -215,10 +215,10 @@ class _ArticleDetailPageViewState extends State<ArticleDetailPageView> {
                       SliverToBoxAdapter(
                         child: Padding(
                           padding: const EdgeInsets.only(
-                            top: vPadding,
-                            left: hPadding,
-                            right: hPadding,
-                            bottom: vPadding,
+                            top: _vPadding,
+                            left: _hPadding,
+                            right: _hPadding,
+                            bottom: _vPadding,
                           ),
                           child: SelectableText(
                             article.titleHtml,
@@ -230,10 +230,10 @@ class _ArticleDetailPageViewState extends State<ArticleDetailPageView> {
                       SliverToBoxAdapter(
                         child: Padding(
                           padding: const EdgeInsets.only(
-                            top: vPadding,
-                            left: hPadding,
-                            right: hPadding,
-                            bottom: vPadding,
+                            top: _vPadding,
+                            left: _hPadding,
+                            right: _hPadding,
+                            bottom: _vPadding,
                           ),
                           child: ArticleStatsWidget(article),
                         ),
@@ -241,9 +241,9 @@ class _ArticleDetailPageViewState extends State<ArticleDetailPageView> {
                       SliverToBoxAdapter(
                         child: Padding(
                           padding: const EdgeInsets.only(
-                            top: vPadding - 6,
-                            left: hPadding,
-                            right: hPadding,
+                            top: _vPadding - 6,
+                            left: _hPadding,
+                            right: _hPadding,
                           ),
                           child: ArticleHubsWidget(hubs: article.hubs),
                         ),
@@ -251,8 +251,8 @@ class _ArticleDetailPageViewState extends State<ArticleDetailPageView> {
                       SliverToBoxAdapter(
                         child: Padding(
                           padding: const EdgeInsets.only(
-                            left: hPadding,
-                            right: hPadding,
+                            left: _hPadding,
+                            right: _hPadding,
                           ),
                           child: ArticleLabelsWidget(article),
                         ),

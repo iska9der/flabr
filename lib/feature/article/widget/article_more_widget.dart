@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../../feature/article/model/article_model.dart';
+import '../../../config/constants.dart';
+import '../model/article_model.dart';
+import 'more/save_expansion_widget.dart';
 
 class ArticleMoreOptionsWidget extends StatelessWidget {
   const ArticleMoreOptionsWidget({super.key, required this.article});
@@ -13,15 +15,14 @@ class ArticleMoreOptionsWidget extends StatelessWidget {
       data: const TextButtonThemeData(
         style: ButtonStyle(alignment: Alignment.centerLeft),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          TextButton.icon(
-            icon: const Icon(Icons.save_alt_rounded),
-            label: const Text('Сохранить статью'),
-            onPressed: null,
-          ),
-        ],
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: kScreenHPadding),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            SaveExpansionWidget(article: article),
+          ],
+        ),
       ),
     );
   }
