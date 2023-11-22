@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 
 class SettingsSectionWidget extends StatelessWidget {
-  const SettingsSectionWidget(
-      {super.key, required this.title, required this.children});
+  const SettingsSectionWidget({
+    super.key,
+    required this.title,
+    required this.children,
+  });
 
   final String title;
   final List<Widget> children;
@@ -27,7 +30,7 @@ class SettingsSectionWidget extends StatelessWidget {
             padding: const EdgeInsets.only(bottom: paddingBetweenElements),
             child: child,
           );
-        }).toList(),
+        }),
       ],
     );
   }

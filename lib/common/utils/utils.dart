@@ -40,8 +40,8 @@ class Utils with ImageUtilsMixin {
       builder: (alertContext) {
         final actions = actionsBuilder(alertContext);
 
-        return WillPopScope(
-          onWillPop: () async => isDismissible,
+        return PopScope(
+          canPop: isDismissible,
           child: AlertDialog.adaptive(
             titleTextStyle: Theme.of(context).textTheme.titleLarge,
             title: Row(

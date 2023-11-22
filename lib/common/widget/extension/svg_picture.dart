@@ -30,7 +30,6 @@ extension SvgPictureX on SvgPicture {
       semanticsLabel: semanticsLabel ?? this.semanticsLabel,
       excludeFromSemantics: excludeFromSemantics ?? this.excludeFromSemantics,
       colorFilter: colorFilter ?? this.colorFilter,
-      theme: theme ?? this.theme,
     );
   }
 }

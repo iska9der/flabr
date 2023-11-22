@@ -40,7 +40,6 @@ ThemeData darkTheme() {
   var themeData = ThemeData.dark();
 
   themeData = themeData.copyWith(
-    useMaterial3: true,
     colorScheme: darkColorScheme,
     cardTheme: appCardTheme,
     appBarTheme: appAppBarTheme.copyWith(

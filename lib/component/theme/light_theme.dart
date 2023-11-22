@@ -41,7 +41,6 @@ ThemeData lightTheme() {
   var bgColor = Colors.grey.shade200;
 
   themeData = themeData.copyWith(
-    useMaterial3: true,
     colorScheme: lightColorScheme,
     scaffoldBackgroundColor: bgColor,
     cardTheme: appCardTheme.copyWith(elevation: 0),
