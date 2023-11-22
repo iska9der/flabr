@@ -13,23 +13,28 @@ class ArticleAuthorWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextButton(
-      onPressed: () {
-        context.navigateNamedTo('services/users/${author.alias}');
-      },
-      onLongPress: () {
-        showProfileDialog(
-          context,
-          child: DialogUserProfileWidget(user: author),
-        );
-      },
-      child: Wrap(
-        crossAxisAlignment: WrapCrossAlignment.center,
-        children: [
-          CardAvatarWidget(imageUrl: author.avatarUrl),
-          const SizedBox(width: 8),
-          Text(author.alias),
-        ],
+    return TextButtonTheme(
+      data: const TextButtonThemeData(
+        style: ButtonStyle(alignment: Alignment.centerLeft),
+      ),
+      child: TextButton(
+        onPressed: () {
+          context.navigateNamedTo('services/users/${author.alias}');
+        },
+        onLongPress: () {
+          showProfileDialog(
+            context,
+            child: DialogUserProfileWidget(user: author),
+          );
+        },
+        child: Wrap(
+          crossAxisAlignment: WrapCrossAlignment.center,
+          children: [
+            CardAvatarWidget(imageUrl: author.avatarUrl),
+            const SizedBox(width: 8),
+            Text(author.alias),
+          ],
+        ),
       ),
     );
   }
