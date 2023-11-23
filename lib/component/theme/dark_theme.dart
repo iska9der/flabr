@@ -42,9 +42,7 @@ ThemeData darkTheme() {
   themeData = themeData.copyWith(
     colorScheme: darkColorScheme,
     cardTheme: appCardTheme,
-    appBarTheme: appAppBarTheme.copyWith(
-      scrolledUnderElevation: 3,
-    ),
+    appBarTheme: appAppBarTheme,
     drawerTheme: appDrawerThemeData,
     pageTransitionsTheme: appPageTransitionsTheme,
     scrollbarTheme: appScrollBarThemeData,

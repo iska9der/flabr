@@ -43,10 +43,11 @@ ThemeData lightTheme() {
   themeData = themeData.copyWith(
     colorScheme: lightColorScheme,
     scaffoldBackgroundColor: bgColor,
-    cardTheme: appCardTheme.copyWith(elevation: 0),
+    cardTheme: appCardTheme.copyWith(
+      surfaceTintColor: lightColorScheme.surface,
+    ),
     appBarTheme: appAppBarTheme.copyWith(
       backgroundColor: bgColor,
-      scrolledUnderElevation: 3,
       titleTextStyle: appAppBarTheme.titleTextStyle?.copyWith(
         color: Colors.black87,
       ),

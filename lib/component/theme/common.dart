@@ -5,7 +5,7 @@ import '../../config/constants.dart';
 import 'constants.dart';
 
 const appCardTheme = CardTheme(
-  elevation: 0.8,
+  elevation: 1,
   margin: EdgeInsets.symmetric(
     horizontal: kCardMargin,
     vertical: kCardVMargin,
