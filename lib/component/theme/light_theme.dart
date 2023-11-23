@@ -23,6 +23,7 @@ const lightColorScheme = ColorScheme(
   background: Color(0xFFF8FDFF),
   onBackground: Color(0xFF001F25),
   surface: Color(0xFFF8FDFF),
+  surfaceTint: Color(0xFFF8FDFF),
   onSurface: Color(0xFF001F25),
   surfaceVariant: Color(0xFFDDE3EA),
   onSurfaceVariant: Color(0xFF41484D),
@@ -31,7 +32,6 @@ const lightColorScheme = ColorScheme(
   inverseSurface: Color(0xFF00363F),
   inversePrimary: Color(0xFF86CFFF),
   shadow: Color(0xFF000000),
-  surfaceTint: Color(0xFF00658F),
   outlineVariant: Color(0xFFC1C7CE),
   scrim: Color(0xFF000000),
 );
@@ -43,11 +43,8 @@ ThemeData lightTheme() {
   themeData = themeData.copyWith(
     colorScheme: lightColorScheme,
     scaffoldBackgroundColor: bgColor,
-    cardTheme: appCardTheme.copyWith(
-      surfaceTintColor: lightColorScheme.surface,
-    ),
+    cardTheme: appCardTheme,
     appBarTheme: appAppBarTheme.copyWith(
-      backgroundColor: bgColor,
       titleTextStyle: appAppBarTheme.titleTextStyle?.copyWith(
         color: Colors.black87,
       ),
