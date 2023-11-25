@@ -60,4 +60,4 @@ const DialogTheme dialogTheme = DialogTheme(
 );
 
 const NavigationBarThemeData navigationBarThemeData =
-    NavigationBarThemeData(height: navBarHeight);
+    NavigationBarThemeData(height: fNavBarHeight);

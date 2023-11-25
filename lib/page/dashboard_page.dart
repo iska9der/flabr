@@ -2,10 +2,12 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 
 import '../common/utils/utils.dart';
 import '../component/di/dependencies.dart';
 import '../component/router/app_router.dart';
+import '../component/theme/responsive.dart';
 import '../config/constants.dart';
 import '../feature/auth/cubit/auth_cubit.dart';
 import '../feature/settings/cubit/settings_cubit.dart';
@@ -21,8 +23,8 @@ class DashboardPage extends StatefulWidget {
 }
 
 class _DashboardPageState extends State<DashboardPage> {
-  double themeHeight = navBarHeight;
-  ValueNotifier<double> barHeight = ValueNotifier(navBarHeight);
+  double themeHeight = fNavBarHeight;
+  ValueNotifier<double> barHeight = ValueNotifier(fNavBarHeight);
   late bool visibleOnScroll;
 
   @override
@@ -42,16 +44,15 @@ class _DashboardPageState extends State<DashboardPage> {
       listeners: [
         /// Слушаем изменение настройки видимости нижней панели навигации
         BlocListener<SettingsCubit, SettingsState>(
-          listenWhen: (previous, current) =>
-              previous.miscConfig.navigationOnScrollVisible !=
-              current.miscConfig.navigationOnScrollVisible,
-          listener: (context, state) {
-            visibleOnScroll = state.miscConfig.navigationOnScrollVisible;
-            if (visibleOnScroll) {
-              barHeight.value = themeHeight;
-            }
-          },
-        ),
+            listenWhen: (previous, current) =>
+                previous.miscConfig.navigationOnScrollVisible !=
+                current.miscConfig.navigationOnScrollVisible,
+            listener: (context, state) {
+              visibleOnScroll = state.miscConfig.navigationOnScrollVisible;
+              if (visibleOnScroll) {
+                barHeight.value = fNavBarHeight;
+              }
+            }),
 
         /// Выводим уведомление об ошибке, если возникла ошибка при получении
         /// данных о вошедшем юзере. Ошибка возникает, если при логине
@@ -107,7 +108,7 @@ class _DashboardPageState extends State<DashboardPage> {
 
           return false;
         },
-        child: AutoTabsScaffold(
+        child: AutoTabsRouter(
           lazyLoad: false,
           routes: const [
             MyArticlesRoute(),
@@ -115,52 +116,130 @@ class _DashboardPageState extends State<DashboardPage> {
             MyServicesRoute(),
             SettingsRoute(),
           ],
-          bottomNavigationBuilder: (context, tabsRouter) {
-            return AnimatedBuilder(
-              animation: barHeight,
-              builder: (context, child) {
-                return AnimatedContainer(
-                  duration: const Duration(milliseconds: 200),
-                  height: barHeight.value,
+          builder: (context, child) {
+            final tabsRouter = context.tabsRouter;
+
+            return Scaffold(
+              body: SafeArea(
+                child: ResponsiveVisibility(
+                  hiddenConditions: [
+                    Condition.largerThan(name: ScreenType.mobile, value: true)
+                  ],
+                  replacement: Row(
+                    children: [
+                      _Drawer(router: tabsRouter),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 6.0),
+                          child: child,
+                        ),
+                      ),
+                    ],
+                  ),
                   child: child,
-                );
-              },
-              child: NavigationBar(
-                labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
-                selectedIndex: tabsRouter.activeIndex,
-                onDestinationSelected: (i) {
-                  /// при нажатию на таб, в котором
-                  /// мы уже находимся - выходим в корень
-                  if (tabsRouter.activeIndex == i) {
-                    var rootOfIndex = tabsRouter.stackRouterOfIndex(i);
-                    rootOfIndex?.popUntilRoot();
-                  } else {
-                    tabsRouter.setActiveIndex(i);
-                  }
-                },
-                destinations: const [
-                  NavigationDestination(
-                    label: 'Статьи',
-                    icon: Icon(Icons.article_outlined),
-                  ),
-                  NavigationDestination(
-                    label: 'Новости',
-                    icon: Icon(Icons.newspaper_outlined),
-                  ),
-                  NavigationDestination(
-                    label: 'Сервисы',
-                    icon: Icon(Icons.widgets_outlined),
-                  ),
-                  NavigationDestination(
-                    label: 'Настройки',
-                    icon: Icon(Icons.settings_outlined),
-                  ),
+                ),
+              ),
+              bottomNavigationBar: ResponsiveVisibility(
+                hiddenConditions: [
+                  Condition.largerThan(name: ScreenType.mobile, value: true)
                 ],
+                child: _BottomNavigation(router: tabsRouter),
               ),
             );
           },
         ),
       ),
+    );
+  }
+}
+
+class _Drawer extends StatelessWidget {
+  const _Drawer({required this.router});
+
+  final TabsRouter router;
+
+  @override
+  Widget build(BuildContext context) {
+    const padding = EdgeInsets.symmetric(vertical: 10);
+
+    return NavigationRail(
+      elevation: 5,
+      labelType: NavigationRailLabelType.all,
+      selectedIndex: router.activeIndex,
+      onDestinationSelected: (i) {
+        /// при нажатию на таб, в котором
+        /// мы уже находимся - выходим в корень
+        if (router.activeIndex == i) {
+          var rootOfIndex = router.stackRouterOfIndex(i);
+          rootOfIndex?.popUntilRoot();
+        } else {
+          router.setActiveIndex(i);
+        }
+      },
+      destinations: const [
+        NavigationRailDestination(
+          icon: Icon(Icons.article_outlined),
+          label: Text('Статьи'),
+          padding: padding,
+        ),
+        NavigationRailDestination(
+          icon: Icon(Icons.newspaper_outlined),
+          label: Text('Новости'),
+          padding: padding,
+        ),
+        NavigationRailDestination(
+          icon: Icon(Icons.widgets_outlined),
+          label: Text('Сервисы'),
+          padding: padding,
+        ),
+        NavigationRailDestination(
+          icon: Icon(Icons.settings_outlined),
+          label: Text('Настройки'),
+          padding: padding,
+        ),
+      ],
+    );
+  }
+}
+
+class _BottomNavigation extends StatelessWidget {
+  const _BottomNavigation({required this.router});
+
+  final TabsRouter router;
+
+  @override
+  Widget build(BuildContext context) {
+    return NavigationBar(
+      labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
+      selectedIndex: router.activeIndex,
+      onDestinationSelected: (i) {
+        /// при нажатию на таб, в котором
+        /// мы уже находимся - выходим в корень
+        if (router.activeIndex == i) {
+          var rootOfIndex = router.stackRouterOfIndex(i);
+          rootOfIndex?.popUntilRoot();
+        } else {
+          router.setActiveIndex(i);
+        }
+      },
+      destinations: const [
+        NavigationDestination(
+          label: 'Статьи',
+          icon: Icon(Icons.article_outlined),
+        ),
+        NavigationDestination(
+          label: 'Новости',
+          icon: Icon(Icons.newspaper_outlined),
+        ),
+        NavigationDestination(
+          label: 'Сервисы',
+          icon: Icon(Icons.widgets_outlined),
+        ),
+        NavigationDestination(
+          label: 'Настройки',
+          icon: Icon(Icons.settings_outlined),
+        ),
+      ],
     );
   }
 }

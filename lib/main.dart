@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 
 import 'common/model/extension/enum_status.dart';
 import 'common/widget/enhancement/progress_indicator.dart';
@@ -17,6 +18,7 @@ import 'component/logger/console.dart';
 import 'component/router/app_router.dart';
 import 'component/storage/cache_storage.dart';
 import 'component/theme.dart';
+import 'component/theme/responsive.dart';
 import 'feature/auth/cubit/auth_cubit.dart';
 import 'feature/auth/repository/auth_repository.dart';
 import 'feature/auth/repository/token_repository.dart';
@@ -125,6 +127,28 @@ class MyApp extends StatelessWidget {
                 routerConfig: router.config(
                   deepLinkBuilder: (_) => const DeepLink.path('/'),
                 ),
+                builder: (context, child) {
+                  return ResponsiveBreakpoints.builder(
+                    child: child!,
+                    breakpoints: [
+                      const Breakpoint(
+                        start: 0,
+                        end: 600,
+                        name: ScreenType.mobile,
+                      ),
+                      const Breakpoint(
+                        start: 601,
+                        end: 840,
+                        name: ScreenType.tablet,
+                      ),
+                      const Breakpoint(
+                        start: 841,
+                        end: double.infinity,
+                        name: ScreenType.desktop,
+                      ),
+                    ],
+                  );
+                },
               ),
             );
           },
