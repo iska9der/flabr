@@ -11,8 +11,8 @@ class FlowDropdownMenu extends StatelessWidget {
 
   final ArticleType type;
 
-  List<DropdownMenuEntry<FlowEnum>> setUpEntries(bool isAuthorized) {
-    List<DropdownMenuEntry<FlowEnum>> entries = [];
+  List<DropdownMenuItem<FlowEnum>> setUpEntries(bool isAuthorized) {
+    List<DropdownMenuItem<FlowEnum>> entries = [];
 
     for (final flow in FlowEnum.values) {
       /// дергаем пункт "Моя лента"
@@ -23,9 +23,9 @@ class FlowDropdownMenu extends StatelessWidget {
           continue;
         }
       }
-      final entry = DropdownMenuEntry(
+      final entry = DropdownMenuItem(
         value: flow,
-        label: flow.label,
+        child: Text(flow.label),
       );
       entries.add(entry);
     }
@@ -35,7 +35,7 @@ class FlowDropdownMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<DropdownMenuEntry<FlowEnum>> entries = [];
+    List<DropdownMenuItem<FlowEnum>> entries = [];
 
     return BlocBuilder<AuthCubit, AuthState>(
       buildWhen: (_, current) => current.isUnauthorized || current.isAuthorized,
@@ -45,23 +45,19 @@ class FlowDropdownMenu extends StatelessWidget {
         return BlocBuilder<ArticleListCubit, ArticleListState>(
           buildWhen: (previous, current) => previous.flow != current.flow,
           builder: (context, articlesState) {
-            return DropdownMenu(
-              initialSelection: articlesState.flow,
-              leadingIcon: const Icon(Icons.arrow_right),
-              trailingIcon: const SizedBox.shrink(),
-              selectedTrailingIcon: const SizedBox.shrink(),
-              inputDecorationTheme: const InputDecorationTheme(
-                border: InputBorder.none,
-                contentPadding: EdgeInsets.zero,
-              ),
-              onSelected: (value) {
+            return DropdownButton(
+              value: articlesState.flow,
+              underline: const SizedBox.shrink(),
+              elevation: 0,
+              padding: EdgeInsets.zero,
+              onChanged: (value) {
                 if (value == null) {
                   return;
                 }
 
                 context.read<ArticleListCubit>().changeFlow(value);
               },
-              dropdownMenuEntries: entries,
+              items: entries,
             );
           },
         );

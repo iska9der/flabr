@@ -12,7 +12,6 @@ class SettingsSectionWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const paddingBetweenElements = 14.0;
     final textTheme = Theme.of(context).textTheme;
 
     return Column(
@@ -25,12 +24,10 @@ class SettingsSectionWidget extends StatelessWidget {
             style: textTheme.headlineMedium,
           ),
         ),
-        ...children.map((child) {
-          return Padding(
-            padding: const EdgeInsets.only(bottom: paddingBetweenElements),
-            child: child,
-          );
-        }),
+        Wrap(
+          runSpacing: 14,
+          children: children,
+        ),
       ],
     );
   }

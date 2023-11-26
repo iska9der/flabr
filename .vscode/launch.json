@@ -20,6 +20,12 @@
             "request": "launch",
             "type": "dart",
             "flutterMode": "release"
+        },
+        {
+            "name": "web: debug",
+            "request": "launch",
+            "type": "dart",
+            "args": ["-d", "chrome", "--web-browser-flag", "--disable-web-security"]
         }
     ]
 }

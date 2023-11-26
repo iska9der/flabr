@@ -20,7 +20,9 @@ class ArticlesSortWidget extends StatelessWidget {
     return BlocBuilder<ArticleListCubit, ArticleListState>(
       builder: (context, state) {
         return Column(
-          mainAxisAlignment: MainAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
           children: [
             _SortByWidget(
               isEnabled: state.status != ArticleListStatus.loading,

@@ -36,7 +36,7 @@ class SettingsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView(
-      padding: const EdgeInsets.symmetric(horizontal: kScreenHPadding),
+      padding: const EdgeInsets.all(kScreenHPadding),
       children: const [
         SettingsSectionWidget(
           title: 'Аккаунт',

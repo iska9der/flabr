@@ -30,14 +30,17 @@ class _SortOptionsWidget extends StatelessWidget {
                 ))
             .toList();
 
-    return FittedBox(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    return SizedBox(
+      height: 40,
+      child: ListView(
+        shrinkWrap: true,
+        clipBehavior: Clip.none,
+        scrollDirection: Axis.horizontal,
         children: options
             .map((option) => Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 4),
+                  padding: const EdgeInsets.only(right: 8.0),
                   child: ChoiceChip(
-                    visualDensity: VisualDensity.compact,
+                    visualDensity: VisualDensity.adaptivePlatformDensity,
                     label: Text(
                       option.label,
                       overflow: TextOverflow.ellipsis,

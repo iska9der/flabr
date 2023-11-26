@@ -32,7 +32,8 @@ void main() async {
 
       /// Залочить вертикальную ориентацию
       await SystemChrome.setPreferredOrientations(
-          [DeviceOrientation.portraitUp]);
+        [DeviceOrientation.portraitUp],
+      );
 
       setDependencies();
 

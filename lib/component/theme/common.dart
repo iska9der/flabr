@@ -6,6 +6,7 @@ import 'constants.dart';
 
 const appCardTheme = CardTheme(
   elevation: 1,
+  surfaceTintColor: Colors.transparent,
   margin: EdgeInsets.symmetric(
     horizontal: kCardMargin,
     vertical: kCardVMargin,

@@ -121,29 +121,49 @@ class _DashboardPageState extends State<DashboardPage> {
 
             return Scaffold(
               body: SafeArea(
-                child: ResponsiveVisibility(
-                  hiddenConditions: [
-                    Condition.largerThan(name: ScreenType.mobile, value: true)
-                  ],
-                  replacement: Row(
-                    children: [
-                      _Drawer(router: tabsRouter),
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 6.0),
-                          child: child,
+                child: Center(
+                  child: MaxWidthBox(
+                    maxWidth: 1200,
+                    child: Row(
+                      children: [
+                        ResponsiveVisibility(
+                          visible: false,
+                          visibleConditions: [
+                            Condition.largerThan(
+                              name: ScreenType.mobile,
+                              value: true,
+                            )
+                          ],
+                          child: _Drawer(router: tabsRouter),
                         ),
-                      ),
-                    ],
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 6.0,
+                            ),
+                            child: child,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                  child: child,
                 ),
               ),
               bottomNavigationBar: ResponsiveVisibility(
                 hiddenConditions: [
-                  Condition.largerThan(name: ScreenType.mobile, value: true)
+                  Condition.largerThan(name: ScreenType.mobile, value: false)
                 ],
-                child: _BottomNavigation(router: tabsRouter),
+                child: AnimatedBuilder(
+                  animation: barHeight,
+                  builder: (context, child) {
+                    return AnimatedContainer(
+                      duration: const Duration(milliseconds: 200),
+                      height: barHeight.value,
+                      child: child,
+                    );
+                  },
+                  child: _BottomNavigation(router: tabsRouter),
+                ),
               ),
             );
           },

@@ -13,18 +13,16 @@ class _SortByWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    return Wrap(
+      runSpacing: 8,
+      spacing: 8,
       children: SortEnum.values
           .map((sort) => ChoiceChip(
                 visualDensity: VisualDensity.adaptivePlatformDensity,
-                label: SizedBox(
-                  width: MediaQuery.of(context).size.width * .35,
-                  child: Text(
-                    sort.label,
-                    overflow: TextOverflow.ellipsis,
-                    textAlign: TextAlign.center,
-                  ),
+                label: Text(
+                  sort.label,
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.center,
                 ),
                 selected: sort == currentValue,
                 onSelected: (bool value) => onTap(sort),

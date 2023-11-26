@@ -15,4 +15,4 @@ const double kBorderRadiusDefault = 8.0;
 const double kCardPadding = 12.0;
 const double kCardMargin = 4.0;
 const double kCardVMargin = 6.0;
-const double sortToolbarHeight = 86.0;
+const double sortToolbarHeight = 96.0;

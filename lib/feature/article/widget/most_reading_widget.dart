@@ -16,25 +16,28 @@ import '../repository/article_repository.dart';
 import 'stats/article_stat_icon_widget.dart';
 
 class MostReadingWidget extends StatelessWidget {
-  const MostReadingWidget({super.key});
+  const MostReadingWidget({super.key}) : isButton = false;
+  const MostReadingWidget.button({super.key}) : isButton = true;
+
+  final bool isButton;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => MostReadingCubit(getIt.get<ArticleRepository>()),
-      child: const _MostReadingView(),
+      child: isButton ? const _MostReadingButton() : const _MostReadingList(),
     );
   }
 }
 
-class _MostReadingView extends StatefulWidget {
-  const _MostReadingView();
+class _MostReadingButton extends StatefulWidget {
+  const _MostReadingButton();
 
   @override
-  State<_MostReadingView> createState() => _MostReadingViewState();
+  State<_MostReadingButton> createState() => _MostReadingButtonState();
 }
 
-class _MostReadingViewState extends State<_MostReadingView> {
+class _MostReadingButtonState extends State<_MostReadingButton> {
   bool isShow = false;
 
   @override
@@ -49,10 +52,6 @@ class _MostReadingViewState extends State<_MostReadingView> {
         child: AppExpansionPanelList(
           elevation: 0,
           expansionCallback: (panelIndex, isExpanded) {
-            if (!isExpanded) {
-              context.read<MostReadingCubit>().fetch();
-            }
-
             setState(() {
               isShow = !isExpanded;
             });
@@ -74,78 +73,98 @@ class _MostReadingViewState extends State<_MostReadingView> {
                   ),
                 );
               },
-              body: BlocBuilder<MostReadingCubit, MostReadingState>(
-                builder: (context, state) {
-                  if (state.status.isLoading || state.status.isFailure) {
-                    return const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 24),
-                      child: CircleIndicator.medium(),
-                    );
-                  }
-                  return Padding(
-                    padding: const EdgeInsets.all(kScreenHPadding),
-                    child: ListView.separated(
-                      physics: const NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      separatorBuilder: (c, i) => const SizedBox(height: 6),
-                      itemCount: state.articles.length,
-                      itemBuilder: (context, index) {
-                        final model = state.articles[index];
-
-                        return FlabrCard(
-                          margin: EdgeInsets.zero,
-                          padding: const EdgeInsets.fromLTRB(
-                            kScreenHPadding,
-                            6,
-                            kScreenHPadding,
-                            0,
-                          ),
-                          color: Colors.transparent,
-                          elevation: 0,
-                          onTap: () => context.router.pushWidget(
-                            ArticleDetailPage(id: model.id),
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                model.titleHtml,
-                                style: Theme.of(context).textTheme.titleSmall,
-                              ),
-                              const SizedBox(height: 4),
-                              Row(
-                                children: [
-                                  StatIconButton(
-                                    padding: EdgeInsets.zero,
-                                    icon: Icons.remove_red_eye_rounded,
-                                    value:
-                                        model.statistics.readingCount.compact(),
-                                  ),
-                                  StatIconButton(
-                                    icon: Icons.chat_bubble_rounded,
-                                    value: model.statistics.commentsCount
-                                        .compact(),
-                                    isHighlighted:
-                                        model.relatedData.unreadCommentsCount >
-                                            0,
-                                    onTap: () => context.router.pushWidget(
-                                      CommentListPage(articleId: model.id),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                    ),
-                  );
-                },
-              ),
+              body: const _MostReadingList(),
             ),
           ],
         ),
       ),
+    );
+  }
+}
+
+class _MostReadingList extends StatefulWidget {
+  const _MostReadingList();
+
+  @override
+  State<_MostReadingList> createState() => _MostReadingListState();
+}
+
+class _MostReadingListState extends State<_MostReadingList> {
+  final ScrollController controller = ScrollController();
+
+  @override
+  Widget build(BuildContext context) {
+    context.read<MostReadingCubit>().fetch();
+
+    return BlocBuilder<MostReadingCubit, MostReadingState>(
+      builder: (context, state) {
+        if (state.status.isLoading || state.status.isFailure) {
+          return const Padding(
+            padding: EdgeInsets.symmetric(vertical: 24),
+            child: CircleIndicator.medium(),
+          );
+        }
+        return Padding(
+          padding: const EdgeInsets.all(kScreenHPadding),
+          child: Scrollbar(
+            controller: controller,
+            thumbVisibility: true,
+            child: ListView.separated(
+              controller: controller,
+              primary: false,
+              shrinkWrap: true,
+              separatorBuilder: (c, i) => const SizedBox(height: 6),
+              itemCount: state.articles.length,
+              itemBuilder: (itemContext, index) {
+                final model = state.articles[index];
+
+                return FlabrCard(
+                  margin: EdgeInsets.zero,
+                  padding: const EdgeInsets.fromLTRB(
+                    kScreenHPadding,
+                    6,
+                    kScreenHPadding,
+                    0,
+                  ),
+                  color: Colors.transparent,
+                  elevation: 0,
+                  onTap: () => context.router.pushWidget(
+                    ArticleDetailPage(id: model.id),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        model.titleHtml,
+                        style: Theme.of(context).textTheme.titleSmall,
+                      ),
+                      const SizedBox(height: 4),
+                      Row(
+                        children: [
+                          StatIconButton(
+                            padding: EdgeInsets.zero,
+                            icon: Icons.remove_red_eye_rounded,
+                            value: model.statistics.readingCount.compact(),
+                          ),
+                          StatIconButton(
+                            icon: Icons.chat_bubble_rounded,
+                            value: model.statistics.commentsCount.compact(),
+                            isHighlighted:
+                                model.relatedData.unreadCommentsCount > 0,
+                            onTap: () => context.router.pushWidget(
+                              CommentListPage(articleId: model.id),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+          ),
+        );
+      },
     );
   }
 }
