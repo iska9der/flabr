@@ -1,7 +1,7 @@
 name: flabr
 description: Habr mobile client on Flutter
 publish_to: 'none'
-version: 1.1.4+6
+version: 1.1.5+7
 
 environment:
   sdk: '>=3.2.0 <4.0.0'
