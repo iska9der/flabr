@@ -4,26 +4,27 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:intl/intl.dart';
 
-import '../../../common/model/extension/enum_status.dart';
-import '../../../common/widget/enhancement/app_expansion_panel.dart';
-import '../../../common/widget/enhancement/progress_indicator.dart';
-import '../../../common/widget/html_view_widget.dart';
-import '../../../component/di/dependencies.dart';
-import '../../../config/constants.dart';
-import '../../settings/repository/language_repository.dart';
-import '../cubit/comment_hidden_cubit.dart';
-import '../cubit/comment_list_cubit.dart';
-import '../model/comment_model.dart';
-import '../repository/article_repository.dart';
-import '../widget/article_author_widget.dart';
-import '../widget/comment/comment_rating_widget.dart';
+import '../../../../common/model/extension/enum_status.dart';
+import '../../../../common/widget/enhancement/app_expansion_panel.dart';
+import '../../../../common/widget/enhancement/progress_indicator.dart';
+import '../../../../common/widget/html_view_widget.dart';
+import '../../../../component/di/dependencies.dart';
+import '../../../../config/constants.dart';
+import '../../../settings/repository/language_repository.dart';
+import '../../cubit/comment_hidden_cubit.dart';
+import '../../cubit/comment_list_cubit.dart';
+import '../../model/comment_model.dart';
+import '../../model/helper/article_source.dart';
+import '../../repository/article_repository.dart';
+import '../../widget/article_author_widget.dart';
+import '../../widget/comment/comment_rating_widget.dart';
 
 const _paddingBetweenTrees = 12.0;
 const _paddingBetweenChilds = 4.0;
 
-@RoutePage(name: CommentListPage.routeName)
-class CommentListPage extends StatelessWidget {
-  const CommentListPage({
+@RoutePage(name: ArticleCommentListPage.routeName)
+class ArticleCommentListPage extends StatelessWidget {
+  const ArticleCommentListPage({
     super.key,
     @PathParam() required this.articleId,
   });
@@ -40,6 +41,7 @@ class CommentListPage extends StatelessWidget {
         BlocProvider(
           create: (_) => CommentListCubit(
             articleId,
+            source: ArticleSource.article,
             repository: getIt.get<ArticleRepository>(),
             languageRepository: getIt.get<LanguageRepository>(),
           ),

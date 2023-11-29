@@ -21,14 +21,6 @@ class Params extends Equatable {
 
   final String page;
 
-  Map<String, dynamic> toMap() {
-    return {
-      'fl': langArticles,
-      'hl': langUI,
-      'page': page,
-    };
-  }
-
   factory Params.fromMap(map) {
     return Params(
       langArticles: map['fl'] ?? 'ru',

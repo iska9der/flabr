@@ -3,16 +3,20 @@ import 'package:dio/dio.dart';
 import '../../../common/exception/displayable_exception.dart';
 import '../../../common/exception/fetch_exception.dart';
 import '../../../common/exception/value_exception.dart';
+import '../../../common/model/network/list_response.dart';
 import '../../../common/model/network/params.dart';
 import '../../../component/http/http_client.dart';
 import '../model/article_type.dart';
 import '../model/flow_enum.dart';
+import '../model/helper/article_source.dart';
 import '../model/network/article_list_params.dart';
 import '../model/network/article_list_response.dart';
 import '../model/network/comment_list_exception.dart';
 import '../model/network/comment_list_params.dart';
 import '../model/network/comment_list_response.dart';
 import '../model/network/most_reading_response.dart';
+import '../model/network/post_list_params.dart';
+import '../model/network/post_list_response.dart';
 import '../model/sort/date_period_enum.dart';
 import '../model/sort/sort_enum.dart';
 
@@ -25,7 +29,7 @@ class ArticleService {
   final HttpClient _mobileClient;
   final HttpClient _siteClient;
 
-  Future<Map<String, dynamic>> fetchById(
+  Future<Map<String, dynamic>> fetchArticleById(
     String id, {
     required String langUI,
     required String langArticles,
@@ -43,7 +47,25 @@ class ArticleService {
     }
   }
 
-  Future<ArticleListResponse> fetchFlowArticles({
+  Future<Map<String, dynamic>> fetchPostById(
+    String id, {
+    required String langUI,
+    required String langArticles,
+  }) async {
+    try {
+      final params = Params(langArticles: langArticles, langUI: langUI);
+
+      final response = await _mobileClient.get(
+        '/threads/$id/?${params.toQueryString()}',
+      );
+
+      return response.data;
+    } catch (e) {
+      throw FetchException();
+    }
+  }
+
+  Future<ListResponse> fetchFlowArticles({
     required String langUI,
     required String langArticles,
     required ArticleType type,
@@ -54,30 +76,43 @@ class ArticleService {
     required String score,
   }) async {
     try {
-      final params = ArticleListParams(
-        langArticles: langArticles,
-        langUI: langUI,
-        flow: flow == FlowEnum.all ? null : flow.name,
-        news: type == ArticleType.news,
-        custom: flow == FlowEnum.feed ? 'true' : null,
+      final params = switch (type) {
+        ArticleType.post => PostListParams(
+            langArticles: langArticles,
+            langUI: langUI,
+            flow: flow == FlowEnum.all ? null : flow.name,
+            custom: flow == FlowEnum.feed ? 'true' : null,
+            sort: sort.postValue,
+            period: sort == SortEnum.byBest ? period.name : null,
+            score: sort == SortEnum.byNew ? score : null,
+            page: page,
+          ),
+        _ => ArticleListParams(
+            langArticles: langArticles,
+            langUI: langUI,
+            flow: flow == FlowEnum.all ? null : flow.name,
+            news: type == ArticleType.news,
+            custom: flow == FlowEnum.feed ? 'true' : null,
 
-        /// если мы находимся не во "Все потоки", в значение sort, по завету
-        /// костыльного api хабра, нужно передавать значение 'all'
-        sort: flow == FlowEnum.all ? sort.value : 'all',
-        period: sort == SortEnum.byBest ? period.name : null,
-        score: sort == SortEnum.byNew ? score : null,
-        page: page,
-      );
+            /// если мы находимся не во "Все потоки", в значение sort, по завету
+            /// костыльного api хабра, нужно передавать значение 'all'
+            sort: flow == FlowEnum.all ? sort.value : 'all',
+            period: sort == SortEnum.byBest ? period.name : null,
+            score: sort == SortEnum.byNew ? score : null,
+            page: page,
+          ),
+      };
 
       final queryString = params.toQueryString();
       final response = await _mobileClient.get('/articles/?$queryString');
 
-      return ArticleListResponse.fromMap(
-        response.data,
-      );
+      return switch (type) {
+        ArticleType.post => PostListResponse.fromMap(response.data),
+        _ => ArticleListResponse.fromMap(response.data),
+      } as ListResponse;
     } on DisplayableException {
       rethrow;
-    } on DioException {
+    } catch (e) {
       throw FetchException();
     }
   }
@@ -171,18 +206,25 @@ class ArticleService {
 
   Future<CommentListResponse> fetchComments({
     required String articleId,
+    required ArticleSource source,
     required String langUI,
     required String langArticles,
   }) async {
     try {
       final params = CommentListParams(
-        articleId: articleId,
         langArticles: langArticles,
         langUI: langUI,
       );
 
+      final firstPathPart = switch (source) {
+        ArticleSource.post => 'threads',
+        _ => 'articles',
+      };
+
       final queryString = params.toQueryString();
-      final response = await _mobileClient.get(queryString);
+      final response = await _mobileClient.get(
+        '/$firstPathPart/$articleId/comments/$queryString',
+      );
 
       return CommentListResponse.fromMap(response.data);
     } on DisplayableException {

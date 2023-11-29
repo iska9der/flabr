@@ -109,7 +109,7 @@ class MyApp extends StatelessWidget {
         child: BlocBuilder<SettingsCubit, SettingsState>(
           builder: (context, state) {
             if (state.status == SettingsStatus.loading) {
-              /// todo: Splash Page
+              /// TODO: Splash Page
               return const Material(
                 child: CircleIndicator(),
               );
@@ -126,7 +126,11 @@ class MyApp extends StatelessWidget {
                 title: 'Flabr',
                 theme: state.isDarkTheme ? darkTheme() : lightTheme(),
                 routerConfig: router.config(
-                  deepLinkBuilder: (_) => const DeepLink.path('/'),
+                  deepLinkBuilder: (link) {
+                    return link.initial
+                        ? const DeepLink.path('/')
+                        : DeepLink.none;
+                  },
                 ),
                 builder: (context, child) {
                   return ResponsiveBreakpoints.builder(

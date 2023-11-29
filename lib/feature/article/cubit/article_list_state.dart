@@ -6,7 +6,7 @@ class ArticleListState extends Equatable {
   const ArticleListState({
     this.status = ArticleListStatus.initial,
     this.error = '',
-    this.from = ArticleFromEnum.flow,
+    this.source = ArticleListSource.flow,
     this.flow = FlowEnum.all,
     this.hub = '',
     this.user = '',
@@ -21,7 +21,7 @@ class ArticleListState extends Equatable {
 
   final ArticleListStatus status;
   final String error;
-  final ArticleFromEnum from;
+  final ArticleListSource source;
   final FlowEnum flow;
   final String hub;
   final String user;
@@ -36,7 +36,7 @@ class ArticleListState extends Equatable {
   ArticleListState copyWith({
     ArticleListStatus? status,
     String? error,
-    ArticleFromEnum? from,
+    ArticleListSource? source,
     FlowEnum? flow,
     String? hub,
     String? user,
@@ -51,7 +51,7 @@ class ArticleListState extends Equatable {
     return ArticleListState(
       status: status ?? this.status,
       error: error ?? this.error,
-      from: from ?? this.from,
+      source: source ?? this.source,
       flow: flow ?? this.flow,
       hub: hub ?? this.hub,
       user: user ?? this.user,
@@ -72,7 +72,7 @@ class ArticleListState extends Equatable {
   List<Object> get props => [
         status,
         error,
-        from,
+        source,
         flow,
         hub,
         user,

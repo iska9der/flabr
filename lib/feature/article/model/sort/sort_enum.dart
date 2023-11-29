@@ -1,11 +1,12 @@
 enum SortEnum {
-  byNew('Новые', 'rating'),
-  byBest('Лучшие', 'date');
+  byNew('Новые', 'rating', 'all'),
+  byBest('Лучшие', 'date', 'top');
 
-  const SortEnum(this.label, this.value);
+  const SortEnum(this.label, this.value, this.postValue);
 
   final String label;
   final String value;
+  final String postValue;
 
   factory SortEnum.fromString(String value) {
     SortEnum.values.map((element) {

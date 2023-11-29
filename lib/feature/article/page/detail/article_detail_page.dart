@@ -4,20 +4,23 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:share_plus/share_plus.dart';
 
-import '../../../common/widget/article_settings_widget.dart';
-import '../../../common/widget/enhancement/progress_indicator.dart';
-import '../../../common/widget/html_view_widget.dart';
-import '../../../component/di/dependencies.dart';
-import '../../../config/constants.dart';
-import '../../settings/repository/language_repository.dart';
-import '../cubit/article_cubit.dart';
-import '../repository/article_repository.dart';
-import '../widget/article_footer_widget.dart';
-import '../widget/article_header_widget.dart';
-import '../widget/article_hubs_widget.dart';
-import '../widget/article_labels_widget.dart';
-import '../widget/article_more_widget.dart';
-import '../widget/stats/article_stats_widget.dart';
+import '../../../../common/widget/article_settings_widget.dart';
+import '../../../../common/widget/enhancement/progress_indicator.dart';
+import '../../../../common/widget/html_view_widget.dart';
+import '../../../../component/di/dependencies.dart';
+import '../../../../config/constants.dart';
+import '../../../settings/repository/language_repository.dart';
+import '../../cubit/article_cubit.dart';
+import '../../model/helper/article_source.dart';
+import '../../repository/article_repository.dart';
+import '../../widget/article_footer_widget.dart';
+import '../../widget/article_header_widget.dart';
+import '../../widget/article_hubs_widget.dart';
+import '../../widget/article_labels_widget.dart';
+import '../../widget/article_more_widget.dart';
+import '../../widget/detail/appbar_title_widget.dart';
+import '../../widget/detail/title_widget.dart';
+import '../../widget/stats/article_stats_widget.dart';
 
 const double _hPadding = 12.0;
 const double _vPadding = 10.0;
@@ -40,22 +43,23 @@ class ArticleDetailPage extends StatelessWidget {
       key: ValueKey('article-$id-detail'),
       create: (c) => ArticleCubit(
         id,
+        source: ArticleSource.article,
         repository: getIt.get<ArticleRepository>(),
         languageRepository: getIt.get<LanguageRepository>(),
       ),
-      child: const ArticleDetailPageView(),
+      child: const ItemDetailPageView(),
     );
   }
 }
 
-class ArticleDetailPageView extends StatefulWidget {
-  const ArticleDetailPageView({super.key});
+class ItemDetailPageView extends StatefulWidget {
+  const ItemDetailPageView({super.key});
 
   @override
-  State<ArticleDetailPageView> createState() => _ArticleDetailPageViewState();
+  State<ItemDetailPageView> createState() => _ItemDetailPageViewState();
 }
 
-class _ArticleDetailPageViewState extends State<ArticleDetailPageView> {
+class _ItemDetailPageViewState extends State<ItemDetailPageView> {
   late final ScrollController controller;
   ValueNotifier<bool> isStatsVisible = ValueNotifier(true);
   ValueNotifier<double> progressValue = ValueNotifier(0.0);
@@ -152,11 +156,8 @@ class _ArticleDetailPageViewState extends State<ArticleDetailPageView> {
                                   child: AutoLeadingButton(),
                                 ),
                                 Expanded(
-                                  child: Text(
-                                    article.titleHtml,
-                                    overflow: TextOverflow.ellipsis,
-                                    style:
-                                        Theme.of(context).textTheme.titleSmall,
+                                  child: ArticleDetailAppBarTitle(
+                                    article: article,
                                   ),
                                 ),
                                 IconButton(
@@ -213,17 +214,13 @@ class _ArticleDetailPageViewState extends State<ArticleDetailPageView> {
                         ),
                       ),
                       SliverToBoxAdapter(
-                        child: Padding(
+                        child: ArticleDetailTitle(
+                          article: article,
                           padding: const EdgeInsets.only(
                             top: _vPadding,
                             left: _hPadding,
                             right: _hPadding,
                             bottom: _vPadding,
-                          ),
-                          child: SelectableText(
-                            article.titleHtml,
-                            textAlign: TextAlign.left,
-                            style: Theme.of(context).textTheme.titleLarge,
                           ),
                         ),
                       ),

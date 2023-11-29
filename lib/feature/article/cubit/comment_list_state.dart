@@ -7,6 +7,7 @@ class CommentListState extends Equatable {
     this.status = CommentListStatus.initial,
     this.error = '',
     required this.articleId,
+    required this.source,
     this.list = CommentListResponse.empty,
   });
 
@@ -14,6 +15,7 @@ class CommentListState extends Equatable {
   final String error;
 
   final String articleId;
+  final ArticleSource source;
   final CommentListResponse list;
 
   CommentListState copyWith({
@@ -27,6 +29,7 @@ class CommentListState extends Equatable {
       status: status ?? this.status,
       error: error ?? this.error,
       articleId: articleId,
+      source: source,
       list: list ?? this.list,
     );
   }
@@ -36,6 +39,7 @@ class CommentListState extends Equatable {
         status,
         error,
         articleId,
+        source,
         list,
       ];
 }

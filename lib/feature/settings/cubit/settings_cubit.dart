@@ -56,7 +56,7 @@ class SettingsCubit extends Cubit<SettingsState> {
   void init() async {
     emit(state.copyWith(status: SettingsStatus.loading));
 
-    /// todo: эту штуку можно оптимизировать, на мой блестящий взгляд:
+    /// TODO: эту штуку можно оптимизировать, на мой блестящий взгляд:
     /// возвращать из функций значения и менять state одним поджопником
     await initTheme();
     await initConfig();

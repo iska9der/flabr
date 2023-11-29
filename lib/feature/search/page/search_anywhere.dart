@@ -9,7 +9,7 @@ import '../../../common/utils/utils.dart';
 import '../../../common/widget/enhancement/progress_indicator.dart';
 import '../../../component/di/dependencies.dart';
 import '../../../config/constants.dart';
-import '../../article/widget/article_card_widget.dart';
+import '../../article/widget/item_card/article_card_widget.dart';
 import '../../company/widget/company_card_widget.dart';
 import '../../enhancement/scroll/scroll.dart';
 import '../../hub/widget/hub_card_widget.dart';

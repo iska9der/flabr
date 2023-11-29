@@ -15,6 +15,19 @@ abstract class _$AppRouter extends RootStackRouter {
 
   @override
   final Map<String, PageFactory> pagesMap = {
+    ArticleCommentListRoute.name: (routeData) {
+      final pathParams = routeData.inheritedPathParams;
+      final args = routeData.argsAs<ArticleCommentListRouteArgs>(
+          orElse: () => ArticleCommentListRouteArgs(
+              articleId: pathParams.getString('articleId')));
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: ArticleCommentListPage(
+          key: args.key,
+          articleId: args.articleId,
+        ),
+      );
+    },
     ArticleDetailRoute.name: (routeData) {
       final pathParams = routeData.inheritedPathParams;
       final args = routeData.argsAs<ArticleDetailRouteArgs>(
@@ -40,17 +53,10 @@ abstract class _$AppRouter extends RootStackRouter {
         ),
       );
     },
-    ArticleCommentListRoute.name: (routeData) {
-      final pathParams = routeData.inheritedPathParams;
-      final args = routeData.argsAs<ArticleCommentListRouteArgs>(
-          orElse: () => ArticleCommentListRouteArgs(
-              articleId: pathParams.getString('articleId')));
+    ArticlesRouter.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: CommentListPage(
-          key: args.key,
-          articleId: args.articleId,
-        ),
+        child: ArticlesRouterData(),
       );
     },
     CompanyDashboardRoute.name: (routeData) {
@@ -109,30 +115,6 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const HubListPage(),
       );
     },
-    MyArticlesRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: MyArticlesRouteEmpty(),
-      );
-    },
-    MyNewsRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: MyNewsRouteEmpty(),
-      );
-    },
-    MyServicesRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: MyServicesRouteEmpty(),
-      );
-    },
-    MyUsersRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: MyUsersRouteEmpty(),
-      );
-    },
     NewsDetailRoute.name: (routeData) {
       final pathParams = routeData.inheritedPathParams;
       final args = routeData.argsAs<NewsDetailRouteArgs>(
@@ -157,13 +139,68 @@ abstract class _$AppRouter extends RootStackRouter {
         ),
       );
     },
+    NewsRouter.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: NewsRouterData(),
+      );
+    },
+    PostCommentListRoute.name: (routeData) {
+      final pathParams = routeData.inheritedPathParams;
+      final args = routeData.argsAs<PostCommentListRouteArgs>(
+          orElse: () => PostCommentListRouteArgs(
+              articleId: pathParams.getString('articleId')));
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: PostCommentListPage(
+          key: args.key,
+          articleId: args.articleId,
+        ),
+      );
+    },
+    PostDetailRoute.name: (routeData) {
+      final pathParams = routeData.inheritedPathParams;
+      final args = routeData.argsAs<PostDetailRouteArgs>(
+          orElse: () => PostDetailRouteArgs(id: pathParams.getString('id')));
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: PostDetailPage(
+          key: args.key,
+          id: args.id,
+        ),
+      );
+    },
+    PostListRoute.name: (routeData) {
+      final pathParams = routeData.inheritedPathParams;
+      final args = routeData.argsAs<PostListRouteArgs>(
+          orElse: () => PostListRouteArgs(flow: pathParams.getString('flow')));
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: PostListPage(
+          key: args.key,
+          flow: args.flow,
+        ),
+      );
+    },
+    PostsRouter.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: PostsRouterData(),
+      );
+    },
     ServicesRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const ServicesPage(),
       );
     },
-    SettingsRoute.name: (routeData) {
+    ServicesRouter.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: ServicesRouterData(),
+      );
+    },
+    SettingsRouter.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const SettingsPage(),
@@ -207,6 +244,46 @@ abstract class _$AppRouter extends RootStackRouter {
       );
     },
   };
+}
+
+/// generated route for
+/// [ArticleCommentListPage]
+class ArticleCommentListRoute
+    extends PageRouteInfo<ArticleCommentListRouteArgs> {
+  ArticleCommentListRoute({
+    Key? key,
+    required String articleId,
+    List<PageRouteInfo>? children,
+  }) : super(
+          ArticleCommentListRoute.name,
+          args: ArticleCommentListRouteArgs(
+            key: key,
+            articleId: articleId,
+          ),
+          rawPathParams: {'articleId': articleId},
+          initialChildren: children,
+        );
+
+  static const String name = 'ArticleCommentListRoute';
+
+  static const PageInfo<ArticleCommentListRouteArgs> page =
+      PageInfo<ArticleCommentListRouteArgs>(name);
+}
+
+class ArticleCommentListRouteArgs {
+  const ArticleCommentListRouteArgs({
+    this.key,
+    required this.articleId,
+  });
+
+  final Key? key;
+
+  final String articleId;
+
+  @override
+  String toString() {
+    return 'ArticleCommentListRouteArgs{key: $key, articleId: $articleId}';
+  }
 }
 
 /// generated route for
@@ -288,43 +365,17 @@ class ArticleListRouteArgs {
 }
 
 /// generated route for
-/// [CommentListPage]
-class ArticleCommentListRoute
-    extends PageRouteInfo<ArticleCommentListRouteArgs> {
-  ArticleCommentListRoute({
-    Key? key,
-    required String articleId,
-    List<PageRouteInfo>? children,
-  }) : super(
-          ArticleCommentListRoute.name,
-          args: ArticleCommentListRouteArgs(
-            key: key,
-            articleId: articleId,
-          ),
-          rawPathParams: {'articleId': articleId},
+/// [ArticlesRouterData]
+class ArticlesRouter extends PageRouteInfo<void> {
+  const ArticlesRouter({List<PageRouteInfo>? children})
+      : super(
+          ArticlesRouter.name,
           initialChildren: children,
         );
 
-  static const String name = 'ArticleCommentListRoute';
+  static const String name = 'ArticlesRouter';
 
-  static const PageInfo<ArticleCommentListRouteArgs> page =
-      PageInfo<ArticleCommentListRouteArgs>(name);
-}
-
-class ArticleCommentListRouteArgs {
-  const ArticleCommentListRouteArgs({
-    this.key,
-    required this.articleId,
-  });
-
-  final Key? key;
-
-  final String articleId;
-
-  @override
-  String toString() {
-    return 'ArticleCommentListRouteArgs{key: $key, articleId: $articleId}';
-  }
+  static const PageInfo<void> page = PageInfo<void>(name);
 }
 
 /// generated route for
@@ -476,62 +527,6 @@ class HubListRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [MyArticlesRouteEmpty]
-class MyArticlesRoute extends PageRouteInfo<void> {
-  const MyArticlesRoute({List<PageRouteInfo>? children})
-      : super(
-          MyArticlesRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'MyArticlesRoute';
-
-  static const PageInfo<void> page = PageInfo<void>(name);
-}
-
-/// generated route for
-/// [MyNewsRouteEmpty]
-class MyNewsRoute extends PageRouteInfo<void> {
-  const MyNewsRoute({List<PageRouteInfo>? children})
-      : super(
-          MyNewsRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'MyNewsRoute';
-
-  static const PageInfo<void> page = PageInfo<void>(name);
-}
-
-/// generated route for
-/// [MyServicesRouteEmpty]
-class MyServicesRoute extends PageRouteInfo<void> {
-  const MyServicesRoute({List<PageRouteInfo>? children})
-      : super(
-          MyServicesRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'MyServicesRoute';
-
-  static const PageInfo<void> page = PageInfo<void>(name);
-}
-
-/// generated route for
-/// [MyUsersRouteEmpty]
-class MyUsersRoute extends PageRouteInfo<void> {
-  const MyUsersRoute({List<PageRouteInfo>? children})
-      : super(
-          MyUsersRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'MyUsersRoute';
-
-  static const PageInfo<void> page = PageInfo<void>(name);
-}
-
-/// generated route for
 /// [NewsDetailPage]
 class NewsDetailRoute extends PageRouteInfo<NewsDetailRouteArgs> {
   NewsDetailRoute({
@@ -610,6 +605,151 @@ class NewsListRouteArgs {
 }
 
 /// generated route for
+/// [NewsRouterData]
+class NewsRouter extends PageRouteInfo<void> {
+  const NewsRouter({List<PageRouteInfo>? children})
+      : super(
+          NewsRouter.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'NewsRouter';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [PostCommentListPage]
+class PostCommentListRoute extends PageRouteInfo<PostCommentListRouteArgs> {
+  PostCommentListRoute({
+    Key? key,
+    required String articleId,
+    List<PageRouteInfo>? children,
+  }) : super(
+          PostCommentListRoute.name,
+          args: PostCommentListRouteArgs(
+            key: key,
+            articleId: articleId,
+          ),
+          rawPathParams: {'articleId': articleId},
+          initialChildren: children,
+        );
+
+  static const String name = 'PostCommentListRoute';
+
+  static const PageInfo<PostCommentListRouteArgs> page =
+      PageInfo<PostCommentListRouteArgs>(name);
+}
+
+class PostCommentListRouteArgs {
+  const PostCommentListRouteArgs({
+    this.key,
+    required this.articleId,
+  });
+
+  final Key? key;
+
+  final String articleId;
+
+  @override
+  String toString() {
+    return 'PostCommentListRouteArgs{key: $key, articleId: $articleId}';
+  }
+}
+
+/// generated route for
+/// [PostDetailPage]
+class PostDetailRoute extends PageRouteInfo<PostDetailRouteArgs> {
+  PostDetailRoute({
+    Key? key,
+    required String id,
+    List<PageRouteInfo>? children,
+  }) : super(
+          PostDetailRoute.name,
+          args: PostDetailRouteArgs(
+            key: key,
+            id: id,
+          ),
+          rawPathParams: {'id': id},
+          initialChildren: children,
+        );
+
+  static const String name = 'PostDetailRoute';
+
+  static const PageInfo<PostDetailRouteArgs> page =
+      PageInfo<PostDetailRouteArgs>(name);
+}
+
+class PostDetailRouteArgs {
+  const PostDetailRouteArgs({
+    this.key,
+    required this.id,
+  });
+
+  final Key? key;
+
+  final String id;
+
+  @override
+  String toString() {
+    return 'PostDetailRouteArgs{key: $key, id: $id}';
+  }
+}
+
+/// generated route for
+/// [PostListPage]
+class PostListRoute extends PageRouteInfo<PostListRouteArgs> {
+  PostListRoute({
+    Key? key,
+    required String flow,
+    List<PageRouteInfo>? children,
+  }) : super(
+          PostListRoute.name,
+          args: PostListRouteArgs(
+            key: key,
+            flow: flow,
+          ),
+          rawPathParams: {'flow': flow},
+          initialChildren: children,
+        );
+
+  static const String name = 'PostListRoute';
+
+  static const PageInfo<PostListRouteArgs> page =
+      PageInfo<PostListRouteArgs>(name);
+}
+
+class PostListRouteArgs {
+  const PostListRouteArgs({
+    this.key,
+    required this.flow,
+  });
+
+  final Key? key;
+
+  final String flow;
+
+  @override
+  String toString() {
+    return 'PostListRouteArgs{key: $key, flow: $flow}';
+  }
+}
+
+/// generated route for
+/// [PostsRouterData]
+class PostsRouter extends PageRouteInfo<void> {
+  const PostsRouter({List<PageRouteInfo>? children})
+      : super(
+          PostsRouter.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'PostsRouter';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
 /// [ServicesPage]
 class ServicesRoute extends PageRouteInfo<void> {
   const ServicesRoute({List<PageRouteInfo>? children})
@@ -624,15 +764,29 @@ class ServicesRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [SettingsPage]
-class SettingsRoute extends PageRouteInfo<void> {
-  const SettingsRoute({List<PageRouteInfo>? children})
+/// [ServicesRouterData]
+class ServicesRouter extends PageRouteInfo<void> {
+  const ServicesRouter({List<PageRouteInfo>? children})
       : super(
-          SettingsRoute.name,
+          ServicesRouter.name,
           initialChildren: children,
         );
 
-  static const String name = 'SettingsRoute';
+  static const String name = 'ServicesRouter';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [SettingsPage]
+class SettingsRouter extends PageRouteInfo<void> {
+  const SettingsRouter({List<PageRouteInfo>? children})
+      : super(
+          SettingsRouter.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'SettingsRouter';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }

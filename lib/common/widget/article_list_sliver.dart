@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../component/di/dependencies.dart';
 import '../../config/constants.dart';
 import '../../feature/article/cubit/article_list_cubit.dart';
-import '../../feature/article/widget/article_card_widget.dart';
+import '../../feature/article/widget/item_card/article_card_widget.dart';
 import '../../feature/enhancement/scroll/cubit/scroll_cubit.dart';
 import '../utils/utils.dart';
 import 'enhancement/progress_indicator.dart';

@@ -25,40 +25,25 @@ class ArticleListParams extends Params {
   final String? score;
 
   @override
-  Map<String, dynamic> toMap() {
-    return {
-      'fl': langArticles,
-      'hl': langUI,
-      'news': news,
-      'flow': flow,
-      'custom': custom,
-      'page': page,
-      'sort': sort,
-      'period': period,
-      'score': score,
-    };
-  }
-
-  @override
   String toQueryString() {
-    String? lSort = sort != null ? '&sort=$sort' : '';
+    String? sortParam = sort != null ? '&sort=$sort' : '';
 
-    String lNews = '';
+    String newsParam = '';
     if (news) {
-      lSort = '';
+      sortParam = '';
       if (flow != null) {
-        lNews = '&flowNews=true';
+        newsParam = '&flowNews=true';
       } else {
-        lNews = '&news=true';
+        newsParam = '&news=true';
       }
     }
 
-    String? lFlow = flow != null ? '&flow=$flow' : '';
-    String? lPeriod = period != null ? '&period=$period' : '';
-    String? lScore = score != null ? '&score=$score' : '';
-    String? lCustom = custom != null ? '&custom=$custom' : '';
+    String? flowParam = flow != null ? '&flow=$flow' : '';
+    String? periodParam = period != null ? '&period=$period' : '';
+    String? scoreParam = score != null ? '&score=$score' : '';
+    String? customParam = custom != null ? '&custom=$custom' : '';
 
-    return 'fl=$langArticles&hl=$langUI$lFlow$lCustom$lNews$lSort$lPeriod$lScore&page=$page';
+    return 'fl=$langArticles&hl=$langUI$flowParam$customParam$newsParam$sortParam$periodParam$scoreParam&page=$page';
   }
 
   @override

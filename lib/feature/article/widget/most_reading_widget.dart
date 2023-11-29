@@ -10,8 +10,8 @@ import '../../../common/widget/enhancement/progress_indicator.dart';
 import '../../../component/di/dependencies.dart';
 import '../../../config/constants.dart';
 import '../cubit/most_reading_cubit.dart';
-import '../page/article_detail_page.dart';
-import '../page/comment_list_page.dart';
+import '../page/comment/article_comment_page.dart';
+import '../page/detail/article_detail_page.dart';
 import '../repository/article_repository.dart';
 import 'stats/article_stat_icon_widget.dart';
 
@@ -152,7 +152,7 @@ class _MostReadingListState extends State<_MostReadingList> {
                             isHighlighted:
                                 model.relatedData.unreadCommentsCount > 0,
                             onTap: () => context.router.pushWidget(
-                              CommentListPage(articleId: model.id),
+                              ArticleCommentListPage(articleId: model.id),
                             ),
                           ),
                         ],

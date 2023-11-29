@@ -7,8 +7,7 @@ import '../../../common/widget/enhancement/progress_indicator.dart';
 import '../../../component/di/dependencies.dart';
 import '../../../config/constants.dart';
 import '../../article/cubit/article_list_cubit.dart';
-import '../../article/model/article_from_enum.dart';
-import '../../article/model/flow_enum.dart';
+import '../../article/model/helper/article_list_source.dart';
 import '../../article/repository/article_repository.dart';
 import '../../article/widget/sort/articles_sort_widget.dart';
 import '../../enhancement/scroll/scroll.dart';
@@ -38,9 +37,8 @@ class HubDetailPage extends StatelessWidget {
           create: (_) => ArticleListCubit(
             repository: getIt.get<ArticleRepository>(),
             languageRepository: getIt.get<LanguageRepository>(),
-            from: ArticleFromEnum.hub,
+            source: ArticleListSource.hubArticles,
             hub: cubit.state.alias,
-            flow: FlowEnum.fromString('all'),
           ),
         ),
         BlocProvider(

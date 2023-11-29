@@ -2,11 +2,14 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
-import '../../feature/article/page/article_detail_page.dart';
 import '../../feature/article/page/article_list_page.dart';
-import '../../feature/article/page/comment_list_page.dart';
-import '../../feature/article/page/news_detail_page.dart';
+import '../../feature/article/page/comment/article_comment_page.dart';
+import '../../feature/article/page/comment/post_comment_page.dart';
+import '../../feature/article/page/detail/article_detail_page.dart';
+import '../../feature/article/page/detail/news_detail_page.dart';
+import '../../feature/article/page/detail/post_detail_page.dart';
 import '../../feature/article/page/news_list_page.dart';
+import '../../feature/article/page/post_list_page.dart';
 import '../../feature/company/page/company_dashboard_page.dart';
 import '../../feature/company/page/company_detail_page.dart';
 import '../../feature/company/page/company_list_page.dart';
@@ -48,7 +51,7 @@ class AppRouter extends _$AppRouter {
 
     if (isUserUrl(uri)) {
       return await navigate(
-        MyServicesRoute(
+        ServicesRouter(
           children: [
             UserDashboardRoute(
               login: id,
@@ -112,8 +115,8 @@ class AppRouter extends _$AppRouter {
         /// Таб "статьи"
         AutoRoute(
           initial: true,
-          path: MyArticlesRouteInfo.routePath,
-          page: MyArticlesRoute.page,
+          path: ArticlesRouterData.routePath,
+          page: ArticlesRouter.page,
           children: [
             RedirectRoute(path: '', redirectTo: 'flows/all'),
             AutoRoute(
@@ -125,16 +128,38 @@ class AppRouter extends _$AppRouter {
               page: ArticleDetailRoute.page,
             ),
             AutoRoute(
-              path: CommentListPage.routePath,
+              path: ArticleCommentListPage.routePath,
               page: ArticleCommentListRoute.page,
+            ),
+          ],
+        ),
+
+        /// Таб "посты"
+        AutoRoute(
+          path: PostsRouterData.routePath,
+          page: PostsRouter.page,
+          children: [
+            RedirectRoute(path: '', redirectTo: 'flows/all'),
+            AutoRoute(
+              initial: true,
+              path: PostListPage.routePath,
+              page: PostListRoute.page,
+            ),
+            AutoRoute(
+              path: PostDetailPage.routePath,
+              page: PostDetailRoute.page,
+            ),
+            AutoRoute(
+              path: PostCommentListPage.routePath,
+              page: PostCommentListRoute.page,
             ),
           ],
         ),
 
         /// Таб "новости"
         AutoRoute(
-          path: MyNewsRouteInfo.routePath,
-          page: MyNewsRoute.page,
+          path: NewsRouterData.routePath,
+          page: NewsRouter.page,
           children: [
             RedirectRoute(path: '', redirectTo: 'flows/all'),
             AutoRoute(
@@ -151,8 +176,8 @@ class AppRouter extends _$AppRouter {
 
         /// Таб "сервисы"
         AutoRoute(
-          path: MyServicesRouteInfo.routePath,
-          page: MyServicesRoute.page,
+          path: ServicesRouterData.routePath,
+          page: ServicesRouter.page,
           children: [
             AutoRoute(
               initial: true,
@@ -221,7 +246,7 @@ class AppRouter extends _$AppRouter {
         /// Таб "Настройки"
         AutoRoute(
           path: 'settings',
-          page: SettingsRoute.page,
+          page: SettingsRouter.page,
         ),
 
         /// /////////////////////
@@ -230,6 +255,7 @@ class AppRouter extends _$AppRouter {
         /// расположение редиректов важно
         ..._newsRedirects(),
         ..._articlesRedirects(),
+        ..._postsRedirects(),
         ..._usersRedirects(),
         ..._hubsRedirects(),
       ],
@@ -271,13 +297,11 @@ List<RedirectRoute> _newsRedirects() {
 
 List<RedirectRoute> _articlesRedirects() {
   List<String> externalPathList = [
-    '*/*/post/:id',
-    '*/*/posts/:id',
     '*/*/articles/:id',
     '*/articles/:id',
 
     /// Статьи из блогов и комментарии к ним
-    /// todo: пока через вкладку "статьи"
+    /// TODO: пока через вкладку "статьи"
     '*/*/company/:companyName/blog/:id',
     '*/*/companies/:companyName/articles/:id',
 
@@ -313,6 +337,42 @@ List<RedirectRoute> _articlesRedirects() {
   ];
 }
 
+List<RedirectRoute> _postsRedirects() {
+  List<String> externalPathList = [
+    '*/*/posts/:id',
+    '*/posts/:id',
+    '*/*/post/:id',
+    '*/post/:id',
+  ];
+
+  List<RedirectRoute> internalRedirectList = [];
+  for (final path in externalPathList) {
+    final list = [
+      RedirectRoute(
+        path: path,
+        redirectTo: 'posts/details/:id',
+      ),
+      RedirectRoute(
+        path: '$path/comments',
+        redirectTo: 'posts/comments/:id',
+      ),
+    ];
+
+    internalRedirectList.addAll(list);
+  }
+
+  return [
+    /// Флоу в статьях
+    RedirectRoute(
+      path: '*/*/flows/:flow/',
+      redirectTo: 'posts/flows/:flow',
+    ),
+
+    /// Статьи и комментарии
+    ...internalRedirectList,
+  ];
+}
+
 List<RedirectRoute> _usersRedirects() {
   const userList = UserListPage.routePath;
   const basePath = 'services/$userList';
@@ -339,7 +399,7 @@ List<RedirectRoute> _usersRedirects() {
     ),
 
     /// Остальные редиректы постов пользователя
-    /// todo: временный редирект на экран всех постов пользователя,
+    /// TODO: временный редирект на экран всех постов пользователя,
     /// пока не реализованны вложенные разделы
     /// (публикации, посты)
     RedirectRoute(
@@ -358,7 +418,7 @@ List<RedirectRoute> _usersRedirects() {
     ),
 
     /// Остальные редиректы для закладок
-    /// todo: временный редирект на закладки пользователя,
+    /// TODO: временный редирект на закладки пользователя,
     /// пока не реализованны вложенные разделы
     /// (публикации, посты, комментарии)
     RedirectRoute(
@@ -367,7 +427,7 @@ List<RedirectRoute> _usersRedirects() {
     ),
 
     /// Остальные редиректы для пользователей
-    /// todo: временный редирект на детали пользователя,
+    /// TODO: временный редирект на детали пользователя,
     /// пока не реализованы вложенные разделы
     /// (комментарии, подписчики, подписки)
     RedirectRoute(
@@ -397,7 +457,7 @@ List<RedirectRoute> _hubsRedirects() {
       redirectTo: '$basePath/:alias/$profile',
     ),
 
-    /// todo: временный редирект в профиль хаба со статьями,
+    /// TODO: временный редирект в профиль хаба со статьями,
     /// пока не реализованы вложенные разделы
     /// (авторы, компании)
     RedirectRoute(

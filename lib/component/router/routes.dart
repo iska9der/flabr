@@ -1,34 +1,29 @@
 // ignore_for_file:use_key_in_widget_constructors
 import 'package:auto_route/auto_route.dart';
 
-@RoutePage(name: 'MyArticlesRoute')
-class MyArticlesRouteEmpty extends AutoRouter {}
-
-class MyArticlesRouteInfo {
+@RoutePage(name: ArticlesRouterData.routeName)
+class ArticlesRouterData extends AutoRouter {
   static const String routePath = 'articles';
-  static const String routeName = 'ArticlesEmptyRoute';
+  static const String routeName = 'ArticlesRouter';
 }
 
-@RoutePage(name: 'MyUsersRoute')
-class MyUsersRouteEmpty extends AutoRouter {}
-
-class MyUsersRouteInfo {
-  static const String routePath = 'users';
-  static const String routeName = 'UsersEmptyRoute';
+///////////
+@RoutePage(name: PostsRouterData.routeName)
+class PostsRouterData extends AutoRouter {
+  static const String routePath = 'posts';
+  static const String routeName = 'PostsRouter';
 }
 
-@RoutePage(name: 'MyNewsRoute')
-class MyNewsRouteEmpty extends AutoRouter {}
-
-class MyNewsRouteInfo {
+///////////
+@RoutePage(name: NewsRouterData.routeName)
+class NewsRouterData extends AutoRouter {
   static const String routePath = 'news';
-  static const String routeName = 'NewsEmptyRoute';
+  static const String routeName = 'NewsRouter';
 }
 
-@RoutePage(name: 'MyServicesRoute')
-class MyServicesRouteEmpty extends AutoRouter {}
-
-class MyServicesRouteInfo {
+///////////
+@RoutePage(name: ServicesRouterData.routeName)
+class ServicesRouterData extends AutoRouter {
   static const String routePath = 'services';
-  static const String routeName = 'ServicesEmptyRoute';
+  static const String routeName = 'ServicesRouter';
 }

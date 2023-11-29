@@ -19,7 +19,7 @@ class ArticleHubsWidget extends StatelessWidget {
   }
 }
 
-/// todo: когда появится авторизация, в `hub.relatedData`
+/// TODO: когда появится авторизация, в `hub.relatedData`
 /// будет свойство `isSubscribed` - при true, добавлять
 /// в билд методе к стилю зеленый цвет
 ///

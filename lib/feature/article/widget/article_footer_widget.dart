@@ -11,7 +11,9 @@ import '../../auth/cubit/auth_cubit.dart';
 import '../../auth/widget/dialog.dart';
 import '../cubit/bookmark_cubit.dart';
 import '../model/article_model.dart';
-import '../page/comment_list_page.dart';
+import '../model/article_type.dart';
+import '../page/comment/article_comment_page.dart';
+import '../page/comment/post_comment_page.dart';
 import '../repository/article_repository.dart';
 import 'stats/article_stat_icon_widget.dart';
 
@@ -44,7 +46,10 @@ class ArticleFooterWidget extends StatelessWidget {
           value: article.statistics.commentsCount.compact(),
           isHighlighted: article.relatedData.unreadCommentsCount > 0,
           onTap: () => context.router.pushWidget(
-            CommentListPage(articleId: article.id),
+            switch (article.type) {
+              ArticleType.post => PostCommentListPage(articleId: article.id),
+              _ => ArticleCommentListPage(articleId: article.id),
+            },
           ),
         ),
         _BookmarkIconButton(article: article),

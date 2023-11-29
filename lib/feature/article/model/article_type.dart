@@ -2,6 +2,7 @@ import '../../../common/exception/value_exception.dart';
 
 enum ArticleType {
   article,
+  post,
   news,
   megaproject,
 

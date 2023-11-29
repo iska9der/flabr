@@ -1,8 +1,10 @@
+import '../../../common/model/network/list_response.dart';
 import '../../../component/localization/language_enum.dart';
 import '../../../component/localization/language_helper.dart';
 import '../model/article_model.dart';
 import '../model/article_type.dart';
 import '../model/flow_enum.dart';
+import '../model/helper/article_source.dart';
 import '../model/network/article_list_response.dart';
 import '../model/network/comment_list_response.dart';
 import '../model/network/most_reading_response.dart';
@@ -15,18 +17,24 @@ class ArticleRepository {
 
   final ArticleService service;
 
-  ArticleListResponse cached = ArticleListResponse.empty;
-
   Future<ArticleModel> fetchById(
     String id, {
+    required ArticleSource source,
     required LanguageEnum langUI,
     required List<LanguageEnum> langArticles,
   }) async {
-    final rawData = await service.fetchById(
-      id,
-      langUI: langUI.name,
-      langArticles: encodeLangs(langArticles),
-    );
+    final rawData = switch (source) {
+      ArticleSource.post => await service.fetchPostById(
+          id,
+          langUI: langUI.name,
+          langArticles: encodeLangs(langArticles),
+        ),
+      _ => await service.fetchArticleById(
+          id,
+          langUI: langUI.name,
+          langArticles: encodeLangs(langArticles),
+        ),
+    };
 
     final article = ArticleModel.fromMap(rawData);
 
@@ -34,7 +42,7 @@ class ArticleRepository {
   }
 
   /// Сортируем статьи в полученном списке
-  void _sortListResponse(SortEnum sort, ArticleListResponse response) {
+  void _sortListResponse(SortEnum sort, ListResponse response) {
     if (sort == SortEnum.byBest) {
       response.refs.sort((a, b) => b.statistics.score.compareTo(
             a.statistics.score,
@@ -52,7 +60,7 @@ class ArticleRepository {
   /// если сортировка по лучшим [SortEnum.byBest], то надо сортировать по рейтингу;
   /// если по новым [SortEnum.byNew], сортируем по дате публикации
   ///
-  Future<ArticleListResponse> fetchFlowArticles({
+  Future<ListResponse> fetchFlowArticles({
     required LanguageEnum langUI,
     required List<LanguageEnum> langArticles,
     required ArticleType type,
@@ -75,9 +83,7 @@ class ArticleRepository {
 
     _sortListResponse(sort, response);
 
-    cached = response;
-
-    return cached;
+    return response;
   }
 
   Future<ArticleListResponse> fetchHubArticles({
@@ -101,9 +107,7 @@ class ArticleRepository {
 
     _sortListResponse(sort, response);
 
-    cached = response;
-
-    return cached;
+    return response;
   }
 
   Future<ArticleListResponse> fetchUserArticles({
@@ -127,9 +131,7 @@ class ArticleRepository {
 
     _sortListResponse(sort, response);
 
-    cached = response;
-
-    return cached;
+    return response;
   }
 
   fetchUserBookmarks({
@@ -152,18 +154,19 @@ class ArticleRepository {
         },
       ).toList(),
     );
-    cached = newResponse;
 
-    return cached;
+    return newResponse;
   }
 
   Future<CommentListResponse> fetchComments({
     required String articleId,
+    required ArticleSource source,
     required LanguageEnum langUI,
     required List<LanguageEnum> langArticles,
   }) async {
     final listResponse = await service.fetchComments(
       articleId: articleId,
+      source: source,
       langUI: langUI.name,
       langArticles: encodeLangs(langArticles),
     );

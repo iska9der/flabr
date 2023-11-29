@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../common/widget/article_list_sliver.dart';
 import '../../../component/di/dependencies.dart';
 import '../../article/cubit/article_list_cubit.dart';
-import '../../article/model/article_from_enum.dart';
+import '../../article/model/helper/article_list_source.dart';
 import '../../article/repository/article_repository.dart';
 import '../../enhancement/scroll/scroll.dart';
 import '../../settings/repository/language_repository.dart';
@@ -30,7 +30,7 @@ class UserArticleListPage extends StatelessWidget {
           create: (_) => ArticleListCubit(
             repository: getIt.get<ArticleRepository>(),
             languageRepository: getIt.get<LanguageRepository>(),
-            from: ArticleFromEnum.userArticles,
+            source: ArticleListSource.userArticles,
             user: cubit.state.login,
           ),
         ),

@@ -7,6 +7,7 @@ import '../../../common/exception/exception_helper.dart';
 import '../../../common/model/extension/enum_status.dart';
 import '../../settings/repository/language_repository.dart';
 import '../model/article_model.dart';
+import '../model/helper/article_source.dart';
 import '../repository/article_repository.dart';
 
 part 'article_state.dart';
@@ -14,11 +15,16 @@ part 'article_state.dart';
 class ArticleCubit extends Cubit<ArticleState> {
   ArticleCubit(
     String id, {
+    required ArticleSource source,
     required ArticleRepository repository,
     required LanguageRepository languageRepository,
   })  : _repository = repository,
         _languageRepository = languageRepository,
-        super(ArticleState(id: id, article: ArticleModel.empty)) {
+        super(ArticleState(
+          id: id,
+          source: source,
+          article: ArticleModel.empty,
+        )) {
     _uiLangSub = _languageRepository.uiStream.listen(
       (_) => _reInit(),
     );
@@ -49,16 +55,19 @@ class ArticleCubit extends Cubit<ArticleState> {
     try {
       final article = await _repository.fetchById(
         state.id,
+        source: state.source,
         langUI: _languageRepository.ui,
         langArticles: _languageRepository.articles,
       );
 
       emit(state.copyWith(status: ArticleStatus.success, article: article));
-    } catch (e) {
+    } catch (e, trace) {
       emit(state.copyWith(
         status: ArticleStatus.failure,
         error: ExceptionHelper.parseMessage(e),
       ));
+
+      Error.throwWithStackTrace(e, trace);
     }
   }
 

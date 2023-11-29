@@ -5,11 +5,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../common/exception/exception_helper.dart';
 import '../../../common/exception/value_exception.dart';
+import '../../../common/model/network/list_response.dart';
 import '../../settings/repository/language_repository.dart';
-import '../model/article_from_enum.dart';
 import '../model/article_model.dart';
 import '../model/article_type.dart';
 import '../model/flow_enum.dart';
+import '../model/helper/article_list_source.dart';
 import '../model/network/article_list_response.dart';
 import '../model/sort/date_period_enum.dart';
 import '../model/sort/sort_enum.dart';
@@ -19,29 +20,32 @@ import '../repository/article_repository.dart';
 part 'article_list_state.dart';
 
 class ArticleListCubit extends Cubit<ArticleListState> {
+  /// [source] откуда поступает запрос на получение списка статей.
+  /// От этого параметра зависит какой метод получения статей будет вызван.
+  ///
   ArticleListCubit({
     required ArticleRepository repository,
     required LanguageRepository languageRepository,
-    from = ArticleFromEnum.flow,
-    flow = FlowEnum.all,
-    hub = '',
-    user = '',
-    type = ArticleType.article,
+    ArticleListSource source = ArticleListSource.flow,
+    FlowEnum flow = FlowEnum.all,
+    String hub = '',
+    String user = '',
+    ArticleType type = ArticleType.article,
   })  : _repository = repository,
         _languageRepository = languageRepository,
         super(
           ArticleListState(
-            from: from,
+            source: source,
             flow: flow,
             hub: hub,
             user: user,
             type: type,
           ),
         ) {
-    if (from == ArticleFromEnum.hub) {
+    if (source == ArticleListSource.hubArticles) {
       assert(state.hub.isNotEmpty, 'Нужно указать хаб [hub]');
     }
-    if (from == ArticleFromEnum.userArticles) {
+    if (source == ArticleListSource.userArticles) {
       assert(state.user.isNotEmpty, 'Нужно указать пользователя [user]');
     }
 
@@ -74,7 +78,7 @@ class ArticleListCubit extends Cubit<ArticleListState> {
     if (state.flow == value) return;
 
     emit(ArticleListState(
-      from: state.from,
+      source: state.source,
       flow: value,
       hub: state.hub,
       user: state.user,
@@ -86,7 +90,7 @@ class ArticleListCubit extends Cubit<ArticleListState> {
     if (state.sort == value) return;
 
     emit(ArticleListState(
-      from: state.from,
+      source: state.source,
       flow: state.flow,
       hub: state.hub,
       user: state.user,
@@ -109,7 +113,7 @@ class ArticleListCubit extends Cubit<ArticleListState> {
     }
 
     emit(newState.copyWith(
-      from: state.from,
+      source: state.source,
       flow: state.flow,
       hub: state.hub,
       user: state.user,
@@ -128,11 +132,11 @@ class ArticleListCubit extends Cubit<ArticleListState> {
     emit(state.copyWith(status: ArticleListStatus.loading));
 
     try {
-      ArticleListResponse response = switch (state.from) {
-        ArticleFromEnum.flow => await _fetchFlowArticles(),
-        ArticleFromEnum.hub => await _fetchHubArticles(),
-        ArticleFromEnum.userArticles => await _fetchUserArticles(),
-        ArticleFromEnum.userBookmarks => await _fetchUserBookmarks()
+      ListResponse response = switch (state.source) {
+        ArticleListSource.flow => await _fetchFlowArticles(),
+        ArticleListSource.hubArticles => await _fetchHubArticles(),
+        ArticleListSource.userArticles => await _fetchUserArticles(),
+        ArticleListSource.userBookmarks => await _fetchUserBookmarks()
       };
 
       emit(state.copyWith(
@@ -141,15 +145,17 @@ class ArticleListCubit extends Cubit<ArticleListState> {
         page: state.page + 1,
         pagesCount: response.pagesCount,
       ));
-    } catch (e) {
+    } catch (e, trace) {
       emit(state.copyWith(
         error: ExceptionHelper.parseMessage(e, 'Не удалось получить статьи'),
         status: ArticleListStatus.failure,
       ));
+
+      Error.throwWithStackTrace(e, trace);
     }
   }
 
-  Future<ArticleListResponse> _fetchFlowArticles() async {
+  Future<ListResponse> _fetchFlowArticles() async {
     return await _repository.fetchFlowArticles(
       langUI: _languageRepository.ui,
       langArticles: _languageRepository.articles,

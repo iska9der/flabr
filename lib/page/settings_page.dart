@@ -18,7 +18,7 @@ import '../feature/settings/widget/settings_card_widget.dart';
 import '../feature/settings/widget/settings_checkbox_widget.dart';
 import '../feature/settings/widget/settings_section_widget.dart';
 
-@RoutePage(name: 'SettingsRoute')
+@RoutePage(name: 'SettingsRouter')
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
 

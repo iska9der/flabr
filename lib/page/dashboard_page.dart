@@ -111,10 +111,11 @@ class _DashboardPageState extends State<DashboardPage> {
         child: AutoTabsRouter(
           lazyLoad: false,
           routes: const [
-            MyArticlesRoute(),
-            MyNewsRoute(),
-            MyServicesRoute(),
-            SettingsRoute(),
+            ArticlesRouter(),
+            PostsRouter(),
+            NewsRouter(),
+            ServicesRouter(),
+            SettingsRouter(),
           ],
           builder: (context, child) {
             final tabsRouter = context.tabsRouter;
@@ -198,22 +199,27 @@ class _Drawer extends StatelessWidget {
       },
       destinations: const [
         NavigationRailDestination(
-          icon: Icon(Icons.article_outlined),
+          icon: Icon(Icons.article_rounded),
           label: Text('Статьи'),
           padding: padding,
         ),
         NavigationRailDestination(
-          icon: Icon(Icons.newspaper_outlined),
+          icon: Icon(Icons.description_rounded),
+          label: Text('Посты'),
+          padding: padding,
+        ),
+        NavigationRailDestination(
+          icon: Icon(Icons.newspaper_rounded),
           label: Text('Новости'),
           padding: padding,
         ),
         NavigationRailDestination(
-          icon: Icon(Icons.widgets_outlined),
+          icon: Icon(Icons.widgets_rounded),
           label: Text('Сервисы'),
           padding: padding,
         ),
         NavigationRailDestination(
-          icon: Icon(Icons.settings_outlined),
+          icon: Icon(Icons.settings_rounded),
           label: Text('Настройки'),
           padding: padding,
         ),
@@ -245,19 +251,23 @@ class _BottomNavigation extends StatelessWidget {
       destinations: const [
         NavigationDestination(
           label: 'Статьи',
-          icon: Icon(Icons.article_outlined),
+          icon: Icon(Icons.article_rounded),
+        ),
+        NavigationDestination(
+          label: 'Посты',
+          icon: Icon(Icons.description_rounded),
         ),
         NavigationDestination(
           label: 'Новости',
-          icon: Icon(Icons.newspaper_outlined),
+          icon: Icon(Icons.newspaper_rounded),
         ),
         NavigationDestination(
           label: 'Сервисы',
-          icon: Icon(Icons.widgets_outlined),
+          icon: Icon(Icons.widgets_rounded),
         ),
         NavigationDestination(
           label: 'Настройки',
-          icon: Icon(Icons.settings_outlined),
+          icon: Icon(Icons.settings_rounded),
         ),
       ],
     );

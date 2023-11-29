@@ -43,7 +43,7 @@ class HubCardWidget extends StatelessWidget {
                       title: model.titleHtml,
                       renderType: renderType,
                       onPressed: () => context.router.navigateNamed(
-                        '${MyServicesRouteInfo.routePath}/hubs/${model.alias}/profile',
+                        '${ServicesRouterData.routePath}/hubs/${model.alias}/profile',
                       ),
                     ),
                     Text(

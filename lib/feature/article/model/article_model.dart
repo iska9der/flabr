@@ -21,6 +21,7 @@ class ArticleModel extends Equatable {
     this.leadData = ArticleLeadDataModel.empty,
     this.relatedData = ArticleRelatedData.empty,
     this.hubs = const [],
+    this.tags = const [],
     this.complexity,
     this.readingTime = 0,
     this.format,
@@ -46,6 +47,7 @@ class ArticleModel extends Equatable {
   final ArticleRelatedData relatedData;
 
   final List<ArticleHubModel> hubs;
+  final List<String> tags;
 
   final ArticleComplexity? complexity;
   final int readingTime;
@@ -54,11 +56,11 @@ class ArticleModel extends Equatable {
   factory ArticleModel.fromMap(Map<String, dynamic> map) {
     return ArticleModel(
       id: map['id'],
-      type: map['postType'] != null
-          ? ArticleType.fromString(map['postType'])
+      type: map.containsKey('postType') || map.containsKey('publicationType')
+          ? ArticleType.fromString(map['postType'] ?? map['publicationType'])
           : ArticleType.article,
       timePublished: map['timePublished'],
-      titleHtml: map['titleHtml'],
+      titleHtml: map['titleHtml'] ?? '',
       textHtml: map['textHtml'] ?? '',
       author: map['author'] != null
           ? ArticleAuthorModel.fromMap(map['author'])
@@ -76,6 +78,10 @@ class ArticleModel extends Equatable {
           ? List<ArticleHubModel>.from(
               map['hubs'].map((e) => ArticleHubModel.fromMap(e)),
             ).toList()
+          : const [],
+      tags: map.containsKey('tags')
+          ? List<String>.from(map['tags'].map((tag) => tag['titleHtml']))
+              .toList()
           : const [],
       complexity: map['complexity'] != null
           ? ArticleComplexity.fromString(map['complexity'])
@@ -103,6 +109,7 @@ class ArticleModel extends Equatable {
         leadData,
         relatedData,
         hubs,
+        tags,
         complexity,
         readingTime,
         format,

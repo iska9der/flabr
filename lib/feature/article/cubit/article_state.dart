@@ -7,6 +7,7 @@ class ArticleState extends Equatable {
     this.status = ArticleStatus.initial,
     this.error = '',
     required this.id,
+    required this.source,
     required this.article,
   });
 
@@ -14,18 +15,19 @@ class ArticleState extends Equatable {
   final String error;
 
   final String id;
+  final ArticleSource source;
   final ArticleModel article;
 
   ArticleState copyWith({
     ArticleStatus? status,
     String? error,
-    String? id,
     ArticleModel? article,
   }) {
     return ArticleState(
+      id: id,
+      source: source,
       status: status ?? this.status,
       error: error ?? this.error,
-      id: id ?? this.id,
       article: article ?? this.article,
     );
   }
@@ -35,6 +37,7 @@ class ArticleState extends Equatable {
         status,
         error,
         id,
+        source,
         article,
       ];
 }
