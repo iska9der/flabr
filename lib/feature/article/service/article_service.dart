@@ -76,21 +76,24 @@ class ArticleService {
     required String score,
   }) async {
     try {
+      final flowStr =
+          (flow == FlowEnum.all || flow == FlowEnum.feed) ? null : flow.name;
+
       final params = switch (type) {
         ArticleType.post => PostListParams(
             langArticles: langArticles,
             langUI: langUI,
-            flow: flow == FlowEnum.all ? null : flow.name,
+            flow: flowStr,
             custom: flow == FlowEnum.feed ? 'true' : null,
             sort: sort.postValue,
             period: sort == SortEnum.byBest ? period.name : null,
-            score: sort == SortEnum.byNew ? score : null,
+            score: score,
             page: page,
           ),
         _ => ArticleListParams(
             langArticles: langArticles,
             langUI: langUI,
-            flow: flow == FlowEnum.all ? null : flow.name,
+            flow: flowStr,
             news: type == ArticleType.news,
             custom: flow == FlowEnum.feed ? 'true' : null,
 
@@ -98,7 +101,7 @@ class ArticleService {
             /// костыльного api хабра, нужно передавать значение 'all'
             sort: flow == FlowEnum.all ? sort.value : 'all',
             period: sort == SortEnum.byBest ? period.name : null,
-            score: sort == SortEnum.byNew ? score : null,
+            score: score,
             page: page,
           ),
       };
@@ -132,7 +135,7 @@ class ArticleService {
         langUI: langUI,
         sort: 'all',
         period: sort == SortEnum.byBest ? period.name : null,
-        score: sort == SortEnum.byNew ? score : null,
+        score: score,
         page: page,
       );
 

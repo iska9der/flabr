@@ -4,13 +4,13 @@ class ArticleListParams extends Params {
   const ArticleListParams({
     super.langArticles = 'ru',
     super.langUI = 'ru',
+    super.page = '',
     this.news = false,
     this.flow,
     this.custom,
-    super.page = '',
     this.sort,
     this.period,
-    this.score,
+    this.score = '',
   });
 
   final bool news;
@@ -22,7 +22,7 @@ class ArticleListParams extends Params {
   /// Sorting
   final String? sort;
   final String? period;
-  final String? score;
+  final String score;
 
   @override
   String toQueryString() {
@@ -38,22 +38,20 @@ class ArticleListParams extends Params {
       }
     }
 
-    String? flowParam = flow != null ? '&flow=$flow' : '';
-    String? periodParam = period != null ? '&period=$period' : '';
-    String? scoreParam = score != null ? '&score=$score' : '';
-    String? customParam = custom != null ? '&custom=$custom' : '';
+    String flowParam = flow != null ? '&flow=$flow' : '';
+    String periodParam = period != null ? '&period=$period' : '';
+    String scoreParam = score.isNotEmpty ? '&score=$score' : '';
+    String customParam = custom != null ? '&custom=$custom' : '';
 
     return 'fl=$langArticles&hl=$langUI$flowParam$customParam$newsParam$sortParam$periodParam$scoreParam&page=$page';
   }
 
   @override
   List<Object?> get props => [
-        langArticles,
-        langUI,
+        ...super.props,
         news,
         flow,
         custom,
-        page,
         sort,
         period,
         score,

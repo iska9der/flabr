@@ -4,12 +4,12 @@ class PostListParams extends Params {
   const PostListParams({
     super.langArticles = 'ru',
     super.langUI = 'ru',
+    super.page = '',
     this.flow,
     this.custom,
-    super.page = '',
     this.sort,
     this.period,
-    this.score,
+    this.score = '',
   });
 
   final String? flow;
@@ -20,7 +20,7 @@ class PostListParams extends Params {
   /// Sorting
   final String? sort;
   final String? period;
-  final String? score;
+  final String score;
 
   @override
   String toQueryString() {
@@ -36,8 +36,7 @@ class PostListParams extends Params {
 
     String flowParam = flow != null ? '&flow=$flow' : '';
     String periodParam = period != null ? '&period=$period' : '';
-    String scoreParam =
-        score != null && score!.isNotEmpty ? '&score=$score' : '';
+    String scoreParam = score.isNotEmpty ? '&score=$score' : '';
     String customParam = custom != null ? '&custom=$custom' : '';
 
     return 'fl=$langArticles&hl=$langUI$flowParam$customParam$postsParam$sortParam$periodParam$scoreParam&page=$page';

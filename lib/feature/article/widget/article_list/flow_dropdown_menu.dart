@@ -16,12 +16,9 @@ class FlowDropdownMenu extends StatelessWidget {
 
     for (final flow in FlowEnum.values) {
       /// дергаем пункт "Моя лента"
-      if (flow == FlowEnum.feed) {
-        /// если мы не в статьях и не авторизованы, то не показываем
-        /// этот пункт в drawer
-        if (type != ArticleType.article || !isAuthorized) {
-          continue;
-        }
+      if (flow == FlowEnum.feed && !isAuthorized) {
+        /// если мы не авторизованы, то не показываем этот пункт
+        continue;
       }
       final entry = DropdownMenuItem(
         value: flow,
