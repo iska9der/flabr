@@ -8,9 +8,6 @@ class HubRepository {
 
   final HubService _service;
 
-  /// пока не нужно
-  // HubListResponse cached = HubListResponse.empty;
-
   Future<HubListResponse> fetchAll({
     required int page,
     required LanguageEnum langUI,
@@ -21,8 +18,6 @@ class HubRepository {
       langUI: langUI.name,
       langArticles: encodeLangs(langArticles),
     );
-
-    // cached = cached.copyWith(refs: [...cached.refs, ...response.refs]);
 
     return response;
   }
