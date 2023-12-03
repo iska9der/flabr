@@ -6,8 +6,8 @@
   <a href="https://github.com/iska9der/flabr/stargazers"><img alt="Project stars" src="https://img.shields.io/github/stars/iska9der/flabr"></a>
 </p>
 
-<p align='center'><img src="art/promo.png" height="720" /></p>
-<hr style='height:1px;' />
+<p align='center'><img src="art/promo.png" width='800'/></p>
+<hr/>
 
 ### Приятности
 
