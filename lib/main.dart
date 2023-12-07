@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:app_links/app_links.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:device_preview/device_preview.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -43,7 +44,13 @@ void main() async {
         Bloc.observer = MyBlocObserver();
       }
 
-      runApp(MyApp());
+      runApp(
+        DevicePreview(
+          // ignore: avoid_redundant_argument_values
+          enabled: !kReleaseMode,
+          builder: (_) => MyApp(),
+        ),
+      );
     },
     (error, stack) {
       if (kDebugMode) ConsoleLogger.error(error, stack);
@@ -124,7 +131,12 @@ class MyApp extends StatelessWidget {
               },
               child: MaterialApp.router(
                 title: 'Flabr',
-                theme: state.isDarkTheme ? darkTheme() : lightTheme(),
+                useInheritedMediaQuery: true,
+                locale: DevicePreview.locale(context),
+                themeMode: state.isDarkTheme ? ThemeMode.dark : ThemeMode.light,
+                theme: lightTheme(),
+                darkTheme: darkTheme(),
+                scrollBehavior: BouncingScrollBehavior(),
                 routerConfig: router.config(
                   deepLinkBuilder: (link) {
                     return link.initial
@@ -133,25 +145,28 @@ class MyApp extends StatelessWidget {
                   },
                 ),
                 builder: (context, child) {
-                  return ResponsiveBreakpoints.builder(
-                    child: child!,
-                    breakpoints: [
-                      const Breakpoint(
-                        start: 0,
-                        end: 600,
-                        name: ScreenType.mobile,
-                      ),
-                      const Breakpoint(
-                        start: 601,
-                        end: 840,
-                        name: ScreenType.tablet,
-                      ),
-                      const Breakpoint(
-                        start: 841,
-                        end: double.infinity,
-                        name: ScreenType.desktop,
-                      ),
-                    ],
+                  return DevicePreview.appBuilder(
+                    context,
+                    ResponsiveBreakpoints.builder(
+                      child: child ?? const SizedBox.shrink(),
+                      breakpoints: [
+                        const Breakpoint(
+                          start: 0,
+                          end: 600,
+                          name: ScreenType.mobile,
+                        ),
+                        const Breakpoint(
+                          start: 601,
+                          end: 840,
+                          name: ScreenType.tablet,
+                        ),
+                        const Breakpoint(
+                          start: 841,
+                          end: double.infinity,
+                          name: ScreenType.desktop,
+                        ),
+                      ],
+                    ),
                   );
                 },
               ),
