@@ -12,7 +12,7 @@ class ArticleSettingsWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Padding(
-          padding: EdgeInsets.only(left: 18.0),
+          padding: const EdgeInsets.only(left: 18.0),
           child: Text(
             'Размер шрифта',
             style: Theme.of(context).textTheme.bodyLarge,
