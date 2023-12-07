@@ -52,29 +52,26 @@ class _FullImageWidgetState extends State<FullImageWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => Navigator.of(context).pop(),
-      child: Stack(
-        children: [
-          PhotoView(
-            controller: controller,
-            initialScale: PhotoViewComputedScale.contained,
-            backgroundDecoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.background,
-            ),
-            onScaleEnd: (context, details, controllerValue) {
-              // controller.value = controller.initial;
-            },
-            imageProvider: widget.provider,
-          ),
-          Align(
-            alignment: Alignment.topRight,
-            child: IconButton(
-              onPressed: () => Navigator.of(context).pop(),
-              icon: const Icon(Icons.close_rounded, size: 32),
-            ),
-          ),
-        ],
+    return Scaffold(
+      /// TODO: нижняя панель с действиями для изображений
+      /// bottomNavigationBar: const BottomAppBar(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: FloatingActionButton(
+        child: const Icon(Icons.close_rounded, size: 32),
+        onPressed: () => Navigator.of(context).pop(),
+      ),
+      backgroundColor: Theme.of(context).colorScheme.surface.withOpacity(.9),
+      body: GestureDetector(
+        onTap: () => Navigator.of(context).pop(),
+        child: PhotoView(
+          controller: controller,
+          initialScale: PhotoViewComputedScale.contained,
+          backgroundDecoration: const BoxDecoration(color: Colors.transparent),
+          onScaleEnd: (context, details, controllerValue) {
+            /// controller.value = controller.initial;
+          },
+          imageProvider: widget.provider,
+        ),
       ),
     );
   }
