@@ -27,8 +27,8 @@ class ArticleListResponse extends ListResponse with EquatableMixin {
   }
 
   factory ArticleListResponse.fromMap(Map<String, dynamic> map) {
-    var idsMap = map['articleIds'] ?? map['newsIds'];
-    Map refsMap = map['articleRefs'] ?? map['newsRefs'];
+    var idsMap = map['publicationIds'];
+    Map refsMap = map['publicationRefs'];
 
     return ArticleListResponse(
       pagesCount: map['pagesCount'] ?? 0,

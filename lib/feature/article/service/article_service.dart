@@ -84,7 +84,7 @@ class ArticleService {
             langArticles: langArticles,
             langUI: langUI,
             flow: flowStr,
-            custom: flow == FlowEnum.feed ? 'true' : null,
+            feed: flow == FlowEnum.feed ? 'true' : null,
             sort: sort.postValue,
             period: sort == SortEnum.byBest ? period.name : null,
             score: score,
@@ -95,7 +95,7 @@ class ArticleService {
             langUI: langUI,
             flow: flowStr,
             news: type == ArticleType.news,
-            custom: flow == FlowEnum.feed ? 'true' : null,
+            feed: flow == FlowEnum.feed ? 'true' : null,
 
             /// если мы находимся не во "Все потоки", в значение sort, по завету
             /// костыльного api хабра, нужно передавать значение 'all'

@@ -6,7 +6,7 @@ class PostListParams extends Params {
     super.langUI = 'ru',
     super.page = '',
     this.flow,
-    this.custom,
+    this.feed,
     this.sort,
     this.period,
     this.score = '',
@@ -15,7 +15,7 @@ class PostListParams extends Params {
   final String? flow;
 
   /// 'true', когда нужно получить "мою ленту"
-  final String? custom;
+  final String? feed;
 
   /// Sorting
   final String? sort;
@@ -37,16 +37,21 @@ class PostListParams extends Params {
     String flowParam = flow != null ? '&flow=$flow' : '';
     String periodParam = period != null ? '&period=$period' : '';
     String scoreParam = score.isNotEmpty ? '&score=$score' : '';
-    String customParam = custom != null ? '&custom=$custom' : '';
+    String feedParam = feed != null ? '&myFeed=$feed' : '';
+    if (feedParam.isNotEmpty) {
+      feedParam += '&types[0]=posts';
+      feedParam += '&complexity=all&score=all';
+      postsParam = '';
+    }
 
-    return 'fl=$langArticles&hl=$langUI$flowParam$customParam$postsParam$sortParam$periodParam$scoreParam&page=$page';
+    return 'fl=$langArticles&hl=$langUI$flowParam$feedParam$postsParam$sortParam$periodParam$scoreParam&page=$page';
   }
 
   @override
   List<Object?> get props => [
         ...super.props,
         flow,
-        custom,
+        feed,
         sort,
         period,
         score,

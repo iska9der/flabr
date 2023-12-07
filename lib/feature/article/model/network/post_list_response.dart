@@ -27,8 +27,8 @@ class PostListResponse extends ListResponse with EquatableMixin {
   }
 
   factory PostListResponse.fromMap(Map<String, dynamic> map) {
-    var idsMap = map['threadIds'];
-    Map refsMap = map['threadRefs'];
+    var idsMap = map['publicationIds'];
+    Map refsMap = map['publicationRefs'];
 
     return PostListResponse(
       pagesCount: map['pagesCount'] ?? 0,
