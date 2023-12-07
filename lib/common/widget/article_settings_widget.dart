@@ -8,16 +8,14 @@ class ArticleSettingsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final titleStyle = Theme.of(context).textTheme.titleSmall;
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Padding(
-          padding: const EdgeInsets.only(left: 18.0),
+          padding: EdgeInsets.only(left: 18.0),
           child: Text(
             'Размер шрифта',
-            style: titleStyle,
+            style: Theme.of(context).textTheme.bodyLarge,
           ),
         ),
         FontScaleSlider(
@@ -28,7 +26,7 @@ class ArticleSettingsWidget extends StatelessWidget {
         BlocBuilder<SettingsCubit, SettingsState>(
           builder: (context, state) {
             return SwitchListTile.adaptive(
-              title: Text('Изображения', style: titleStyle),
+              title: const Text('Изображения'),
               value: state.articleConfig.isImagesVisible,
               onChanged: (bool? value) {
                 context
@@ -42,7 +40,7 @@ class ArticleSettingsWidget extends StatelessWidget {
         BlocBuilder<SettingsCubit, SettingsState>(
           builder: (context, state) {
             return SwitchListTile.adaptive(
-              title: Text('WebView', style: titleStyle),
+              title: const Text('WebView'),
               value: state.articleConfig.webViewEnabled,
               onChanged: (bool? value) {
                 context
