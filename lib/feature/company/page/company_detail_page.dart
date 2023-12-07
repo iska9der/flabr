@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../common/model/extension/enum_status.dart';
 import '../../../common/widget/enhancement/progress_indicator.dart';
-import '../../../config/constants.dart';
 import '../cubit/company_cubit.dart';
 import '../widget/company_details_widget.dart';
 import '../widget/company_profile_card_widget.dart';
@@ -34,7 +33,6 @@ class CompanyDetailPage extends StatelessWidget {
         }
 
         return ListView(
-          padding: const EdgeInsets.all(kScreenHPadding),
           children: const [
             CompanyProfileCardWidget(),
             CompanyDetailsWidget(),

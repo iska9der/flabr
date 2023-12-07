@@ -134,9 +134,6 @@ class SearchAnywhereDelegate extends FlabrSearchDelegate {
                           cacheExtent: 5000,
                           shrinkWrap: true,
                           primary: false,
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: kScreenHPadding,
-                          ),
                           itemCount:
                               models.length + (state.status.isLoading ? 1 : 0),
                           itemBuilder: (context, index) {
@@ -251,29 +248,26 @@ class _OrderOptions extends StatelessWidget {
     return BlocBuilder<SearchCubit, SearchState>(
       bloc: cubit,
       builder: (context, state) {
-        return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: kScreenHPadding),
-          child: SizedBox(
-            width: MediaQuery.of(context).size.width,
-            child: FittedBox(
-              child: Row(
-                children: SearchOrder.values
-                    .map((order) => Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 4),
-                          child: ChoiceChip(
-                            label: Text(order.label),
-                            selected: state.order == order,
-                            onSelected: (value) {
-                              cubit.changeSort(order);
+        return SizedBox(
+          width: MediaQuery.of(context).size.width,
+          child: FittedBox(
+            child: Row(
+              children: SearchOrder.values
+                  .map((order) => Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 4),
+                        child: ChoiceChip(
+                          label: Text(order.label),
+                          selected: state.order == order,
+                          onSelected: (value) {
+                            cubit.changeSort(order);
 
-                              if (state.query.isNotEmpty) {
-                                delegate.showResults(context);
-                              }
-                            },
-                          ),
-                        ))
-                    .toList(),
-              ),
+                            if (state.query.isNotEmpty) {
+                              delegate.showResults(context);
+                            }
+                          },
+                        ),
+                      ))
+                  .toList(),
             ),
           ),
         );

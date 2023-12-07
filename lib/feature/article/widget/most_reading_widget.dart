@@ -113,18 +113,15 @@ class _MostReadingListState extends State<_MostReadingList> {
               controller: controller,
               primary: false,
               shrinkWrap: true,
-              separatorBuilder: (c, i) => const SizedBox(height: 6),
+              separatorBuilder: (c, i) => const SizedBox(height: 18),
               itemCount: state.articles.length,
               itemBuilder: (itemContext, index) {
                 final model = state.articles[index];
 
                 return FlabrCard(
                   margin: EdgeInsets.zero,
-                  padding: const EdgeInsets.fromLTRB(
-                    kScreenHPadding,
-                    6,
-                    kScreenHPadding,
-                    0,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: kScreenHPadding,
                   ),
                   color: Colors.transparent,
                   elevation: 0,
@@ -134,11 +131,13 @@ class _MostReadingListState extends State<_MostReadingList> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        model.titleHtml,
-                        style: Theme.of(context).textTheme.titleSmall,
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 4),
+                        child: Text(
+                          model.titleHtml,
+                          style: Theme.of(context).textTheme.titleSmall,
+                        ),
                       ),
-                      const SizedBox(height: 4),
                       Row(
                         children: [
                           StatIconButton(

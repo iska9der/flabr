@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../config/constants.dart';
+
 class FlabrCard extends StatelessWidget {
   const FlabrCard({
     super.key,
@@ -8,7 +10,7 @@ class FlabrCard extends StatelessWidget {
     this.color,
     this.elevation,
     this.margin,
-    this.padding = EdgeInsets.zero,
+    this.padding = const EdgeInsets.all(fCardPadding),
   });
 
   final Color? color;

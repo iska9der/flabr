@@ -35,7 +35,6 @@ class ArticleCardWidget extends StatelessWidget {
       ArticleType.voice => const SizedBox(),
       ArticleType.post => PostCardWidget(article: article),
       _ => FlabrCard(
-          padding: const EdgeInsets.all(kCardPadding),
           onTap: () => context.router.pushWidget(
             ArticleDetailPage(id: article.id),
           ),

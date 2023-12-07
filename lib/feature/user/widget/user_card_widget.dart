@@ -7,7 +7,6 @@ import '../../../common/widget/enhancement/card.dart';
 import '../../../common/widget/feed/card_avatar_widget.dart';
 import '../../../common/widget/profile_stat_card_widget.dart';
 import '../../../component/router/app_router.dart';
-import '../../../config/constants.dart';
 import '../model/user_model.dart';
 
 class UserCardWidget extends StatelessWidget {
@@ -40,7 +39,6 @@ class _UserCard extends StatelessWidget {
             UserModel.empty;
 
     return FlabrCard(
-      padding: const EdgeInsets.all(kCardPadding),
       onTap: () => _pushDetails(context, model.alias),
       child: Row(
         children: [

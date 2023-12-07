@@ -24,45 +24,43 @@ class DialogUserProfileWidget extends StatelessWidget
     return IntrinsicHeight(
       child: FlabrCard(
         elevation: 0,
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ListTile(
-                leading: CardAvatarWidget(imageUrl: user.avatarUrl),
-                subtitle: user.fullname.isNotEmpty ? Text(user.fullname) : null,
-                title: Text('@${user.alias}'),
-                onTap: () {
-                  context.navigateNamedTo(
-                    'services/users/${user.alias}',
-                  );
+        padding: EdgeInsets.zero,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ListTile(
+              leading: CardAvatarWidget(imageUrl: user.avatarUrl),
+              subtitle: user.fullname.isNotEmpty ? Text(user.fullname) : null,
+              title: Text('@${user.alias}'),
+              onTap: () {
+                context.navigateNamedTo(
+                  'services/users/${user.alias}',
+                );
 
-                  Navigator.of(context).pop();
-                },
-              ),
-              ListTile(
-                title: const Text('Статьи'),
-                onTap: () {
-                  context.navigateNamedTo(
-                    'services/users/${user.alias}/article',
-                  );
+                Navigator.of(context).pop();
+              },
+            ),
+            ListTile(
+              title: const Text('Статьи'),
+              onTap: () {
+                context.navigateNamedTo(
+                  'services/users/${user.alias}/article',
+                );
 
-                  Navigator.of(context).pop();
-                },
-              ),
-              ListTile(
-                title: const Text('Закладки'),
-                onTap: () {
-                  context.navigateNamedTo(
-                    'services/users/${user.alias}/bookmarks',
-                  );
+                Navigator.of(context).pop();
+              },
+            ),
+            ListTile(
+              title: const Text('Закладки'),
+              onTap: () {
+                context.navigateNamedTo(
+                  'services/users/${user.alias}/bookmarks',
+                );
 
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          ),
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
         ),
       ),
     );
@@ -93,12 +91,13 @@ class DialogMyProfileWidget extends StatelessWidget
         return IntrinsicHeight(
           child: FlabrCard(
             elevation: 0,
+            padding: EdgeInsets.zero,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 DialogUserProfileWidget(user: state.me),
-                const Divider(),
+                const Divider(height: 1),
                 ElevatedButton(
                   onPressed: () => context.read<AuthCubit>().logOut(),
                   child: const Text('Выход'),

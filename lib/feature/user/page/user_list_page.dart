@@ -102,9 +102,6 @@ class UserListPageView extends StatelessWidget {
               controller: scrollCtrl,
               child: ListView.separated(
                 controller: scrollCtrl,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: kScreenHPadding,
-                ),
                 separatorBuilder: (context, index) => const SizedBox(
                   height: kCardBetweenPadding,
                 ),

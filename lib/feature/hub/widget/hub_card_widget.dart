@@ -8,7 +8,6 @@ import '../../../common/widget/feed/card_avatar_widget.dart';
 import '../../../common/widget/feed/card_title_widget.dart';
 import '../../../common/widget/profile_stat_card_widget.dart';
 import '../../../component/router/routes.dart';
-import '../../../config/constants.dart';
 import '../model/hub_model.dart';
 import '../model/hub_statistics_model.dart';
 
@@ -30,7 +29,6 @@ class HubCardWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         FlabrCard(
-          padding: const EdgeInsets.all(kCardPadding),
           child: Row(
             children: [
               CardAvatarWidget(imageUrl: model.imageUrl),

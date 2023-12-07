@@ -49,7 +49,6 @@ class CompanyDetailsWidget extends StatelessWidget {
                               ? () =>
                                   getIt.get<AppRouter>().launchUrl(contact.url)
                               : null,
-                          padding: const EdgeInsets.all(8),
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [

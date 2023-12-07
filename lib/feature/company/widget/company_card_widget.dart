@@ -39,7 +39,6 @@ class CompanyCardWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         FlabrCard(
-          padding: const EdgeInsets.all(kCardPadding),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

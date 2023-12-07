@@ -139,7 +139,7 @@ class ArticleListView extends StatelessWidget {
                   sliver: const SliverToBoxAdapter(
                     child: Padding(
                       padding: EdgeInsets.symmetric(
-                        horizontal: kScreenHPadding + kCardMargin,
+                        horizontal: fCardMargin,
                         vertical: kCardBetweenPadding / 2,
                       ),
                       child: MostReadingWidget.button(),
@@ -231,13 +231,14 @@ class _SideWidgetListState extends State<_SideWidgetList> {
 
         return FlabrCard(
           margin: EdgeInsets.zero,
+          padding: EdgeInsets.zero,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               ListTile(
                 enabled: isEnabled,
                 contentPadding: const EdgeInsets.symmetric(
-                  horizontal: kCardPadding,
+                  horizontal: fCardPadding,
                 ),
                 title: Text(
                   sideWidget.title,

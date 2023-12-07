@@ -8,7 +8,6 @@ import '../common/utils/utils.dart';
 import '../common/widget/article_settings_widget.dart';
 import '../component/di/dependencies.dart';
 import '../component/language.dart';
-import '../config/constants.dart';
 import '../feature/auth/cubit/auth_cubit.dart';
 import '../feature/auth/cubit/login_cubit.dart';
 import '../feature/auth/repository/token_repository.dart';
@@ -24,9 +23,7 @@ class SettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: SafeArea(child: SettingsView()),
-    );
+    return const SettingsView();
   }
 }
 
@@ -35,45 +32,48 @@ class SettingsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      padding: const EdgeInsets.all(kScreenHPadding),
-      children: const [
-        SettingsSectionWidget(
-          title: 'Аккаунт',
-          children: [
-            ConnectSidWidget(),
-          ],
-        ),
-        SettingsSectionWidget(
-          title: 'Интерфейс',
-          children: [
-            UIThemeWidget(),
-            UILangWidget(),
-            ArticlesLangWidget(),
-          ],
-        ),
-        SettingsSectionWidget(
-          title: 'Лента',
-          children: [
-            SettingsFeedWidget(),
-          ],
-        ),
-        SettingsSectionWidget(
-          title: 'Статьи',
-          children: [
-            SettingsCardWidget(
-              padding: EdgeInsets.symmetric(vertical: 20),
-              child: ArticleSettingsWidget(),
+    return Scaffold(
+      body: SafeArea(
+        child: ListView(
+          children: const [
+            SettingsSectionWidget(
+              title: 'Аккаунт',
+              children: [
+                ConnectSidWidget(),
+              ],
+            ),
+            SettingsSectionWidget(
+              title: 'Интерфейс',
+              children: [
+                UIThemeWidget(),
+                UILangWidget(),
+                ArticlesLangWidget(),
+              ],
+            ),
+            SettingsSectionWidget(
+              title: 'Лента',
+              children: [
+                SettingsFeedWidget(),
+              ],
+            ),
+            SettingsSectionWidget(
+              title: 'Статьи',
+              children: [
+                SettingsCardWidget(
+                  padding: EdgeInsets.symmetric(vertical: 20),
+                  child: ArticleSettingsWidget(),
+                ),
+              ],
+            ),
+            SettingsSectionWidget(
+              title: 'Разное',
+              children: [
+                SettingNavigationOnScroll(),
+              ],
             ),
           ],
         ),
-        SettingsSectionWidget(
-          title: 'Разное',
-          children: [
-            SettingNavigationOnScroll(),
-          ],
-        ),
-      ],
+      ),
     );
   }
 }

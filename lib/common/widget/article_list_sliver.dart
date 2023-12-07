@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../component/di/dependencies.dart';
-import '../../config/constants.dart';
 import '../../feature/article/cubit/article_list_cubit.dart';
 import '../../feature/article/widget/item_card/article_card_widget.dart';
 import '../../feature/enhancement/scroll/cubit/scroll_cubit.dart';
@@ -67,12 +66,7 @@ class ArticleListSliver extends StatelessWidget {
               if (i < articles.length) {
                 final article = articles[i];
 
-                return Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: kScreenHPadding,
-                  ),
-                  child: ArticleCardWidget(article: article),
-                );
+                return ArticleCardWidget(article: article);
               }
 
               Timer(

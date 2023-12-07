@@ -26,6 +26,7 @@ class LoginWidget extends StatelessWidget implements DialogUserWidget {
 
     return Center(
       child: FlabrCard(
+        padding: EdgeInsets.zero,
         child: authState.isAuthorized
             ? Center(child: Text('Вы уже вошли, ${authState.me.alias}'))
             : BlocProvider(

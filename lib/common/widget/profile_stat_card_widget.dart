@@ -22,7 +22,6 @@ class ProfileStatCardWidget extends StatelessWidget {
       fit: StackFit.passthrough,
       children: [
         FlabrCard(
-          padding: const EdgeInsets.all(8.0),
           child: StatTextWidget(
             type: type,
             value: value,

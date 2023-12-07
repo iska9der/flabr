@@ -68,7 +68,6 @@ class _BadgetsWidget extends StatelessWidget {
                       message: badge.description,
                       triggerMode: TooltipTriggerMode.tap,
                       child: FlabrCard(
-                        padding: const EdgeInsets.all(8),
                         child: Text(badge.title),
                       ),
                     ),

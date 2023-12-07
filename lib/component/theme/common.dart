@@ -7,10 +7,7 @@ import 'constants.dart';
 const appCardTheme = CardTheme(
   elevation: 1,
   surfaceTintColor: Colors.transparent,
-  margin: EdgeInsets.symmetric(
-    horizontal: kCardMargin,
-    vertical: kCardVMargin,
-  ),
+  margin: EdgeInsets.all(fCardMargin),
   shape: RoundedRectangleBorder(
     borderRadius: BorderRadius.all(Radius.circular(kBorderRadiusDefault)),
   ),

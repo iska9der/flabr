@@ -15,9 +15,7 @@ class ServicesPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: SafeArea(child: ServicesPageView()),
-    );
+    return const ServicesPageView();
   }
 }
 
@@ -26,28 +24,32 @@ class ServicesPageView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GridView.count(
-      crossAxisCount: 3,
-      mainAxisSpacing: 8,
-      crossAxisSpacing: 8,
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-      children: [
-        ServiceCard(
-          title: HubListPage.name,
-          icon: Icons.hub_rounded,
-          onTap: () => context.router.pushWidget(const HubListPage()),
+    return Scaffold(
+      body: SafeArea(
+        child: GridView.count(
+          crossAxisCount: 3,
+          mainAxisSpacing: 8,
+          crossAxisSpacing: 8,
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+          children: [
+            ServiceCard(
+              title: HubListPage.name,
+              icon: Icons.hub_rounded,
+              onTap: () => context.router.pushWidget(const HubListPage()),
+            ),
+            ServiceCard(
+              title: UserListPage.name,
+              icon: Icons.supervisor_account_sharp,
+              onTap: () => context.router.pushWidget(const UserListPage()),
+            ),
+            ServiceCard(
+              title: 'Компании',
+              icon: Icons.cases_rounded,
+              onTap: () => context.router.pushWidget(const CompanyListPage()),
+            ),
+          ],
         ),
-        ServiceCard(
-          title: UserListPage.name,
-          icon: Icons.supervisor_account_sharp,
-          onTap: () => context.router.pushWidget(const UserListPage()),
-        ),
-        ServiceCard(
-          title: 'Компании',
-          icon: Icons.cases_rounded,
-          onTap: () => context.router.pushWidget(const CompanyListPage()),
-        ),
-      ],
+      ),
     );
   }
 }

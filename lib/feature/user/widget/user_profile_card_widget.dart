@@ -7,7 +7,6 @@ import '../../../common/widget/enhancement/card.dart';
 import '../../../common/widget/feed/card_avatar_widget.dart';
 import '../../../common/widget/profile_stat_widget.dart';
 import '../../../component/di/dependencies.dart';
-import '../../../config/constants.dart';
 import '../../auth/cubit/auth_cubit.dart';
 import '../../common/profile_subscribe/repository/subscription_repository.dart';
 import '../../common/profile_subscribe/widget/subscribe_button.dart';
@@ -48,7 +47,6 @@ class _UserProfileCardWidgetState extends State<UserProfileCardWidget> {
   @override
   Widget build(BuildContext context) {
     return FlabrCard(
-      padding: const EdgeInsets.all(kCardPadding),
       child: BlocBuilder<UserCubit, UserState>(
         builder: (context, state) {
           var model = state.model;
