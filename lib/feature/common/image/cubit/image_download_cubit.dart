@@ -1,4 +1,3 @@
-import 'dart:io' show Directory;
 import 'dart:typed_data';
 
 import 'package:dio/dio.dart';
@@ -6,11 +5,9 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_file_dialog/flutter_file_dialog.dart';
 import 'package:path/path.dart' as path;
-import 'package:path_provider/path_provider.dart';
 
 import '../../../../common/exception/fetch_exception.dart';
 import '../../../../component/http/http_client.dart';
-import '../../../../component/logger/console.dart';
 
 part 'image_download_state.dart';
 
@@ -27,25 +24,12 @@ class ImageDownloadCubit extends Cubit<ImageDownloadState> {
   final String additionalPath = 'images';
 
   _init() async {
-    try {
-      if (state.url.isEmpty) {
-        return emit(state.copyWith(status: ImageDownloadStatus.notSupported));
-      }
+    if (state.url.isEmpty) {
+      return emit(state.copyWith(status: ImageDownloadStatus.notSupported));
+    }
 
-      if (!await FlutterFileDialog.isPickDirectorySupported()) {
-        return emit(state.copyWith(status: ImageDownloadStatus.notSupported));
-      }
-
-      final path = (await getTemporaryDirectory()).path;
-      final saveDir = await Directory('$path/$additionalPath').create();
-      logger.info(saveDir.path, title: 'Path to save');
-
-      emit(state.copyWith(savePath: saveDir.path));
-    } catch (e) {
-      emit(state.copyWith(
-        status: ImageDownloadStatus.failure,
-        error: e.toString(),
-      ));
+    if (!await FlutterFileDialog.isPickDirectorySupported()) {
+      return emit(state.copyWith(status: ImageDownloadStatus.notSupported));
     }
   }
 
