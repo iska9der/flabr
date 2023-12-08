@@ -17,6 +17,7 @@ import '../../feature/hub/service/hub_service.dart';
 import '../../feature/search/repository/search_repository.dart';
 import '../../feature/search/service/search_service.dart';
 import '../../feature/settings/repository/language_repository.dart';
+import '../../feature/summary/repository/summary_token_repository.dart';
 import '../../feature/user/repository/user_repository.dart';
 import '../../feature/user/service/user_service.dart';
 import '../http/http_client.dart';
@@ -41,6 +42,9 @@ void setDependencies() {
   /// Token
   getIt.registerSingleton<TokenRepository>(
     TokenRepository(getIt()),
+  );
+  getIt.registerSingleton<SummaryTokenRepository>(
+    SummaryTokenRepository(getIt()),
   );
 
   /// Http Clients

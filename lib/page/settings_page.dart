@@ -1,17 +1,12 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../common/model/extension/enum_status.dart';
-import '../common/utils/utils.dart';
 import '../common/widget/article_settings_widget.dart';
-import '../component/di/dependencies.dart';
 import '../component/language.dart';
-import '../feature/auth/cubit/auth_cubit.dart';
-import '../feature/auth/cubit/login_cubit.dart';
-import '../feature/auth/repository/token_repository.dart';
 import '../feature/settings/cubit/settings_cubit.dart';
+import '../feature/settings/widget/account/connect_sid_widget.dart';
+import '../feature/settings/widget/account/summary_token_widget.dart';
 import '../feature/settings/widget/setting_navigation_bar.dart';
 import '../feature/settings/widget/settings_card_widget.dart';
 import '../feature/settings/widget/settings_checkbox_widget.dart';
@@ -40,6 +35,7 @@ class SettingsView extends StatelessWidget {
               title: 'Аккаунт',
               children: [
                 ConnectSidWidget(),
+                SummaryTokenWidget(),
               ],
             ),
             SettingsSectionWidget(
@@ -72,110 +68,6 @@ class SettingsView extends StatelessWidget {
               ],
             ),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class ConnectSidWidget extends StatefulWidget {
-  const ConnectSidWidget({super.key});
-
-  @override
-  State<ConnectSidWidget> createState() => _ConnectSidWidgetState();
-}
-
-class _ConnectSidWidgetState extends State<ConnectSidWidget> {
-  late final TextEditingController controller;
-
-  @override
-  void initState() {
-    controller = TextEditingController();
-
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final authCubit = context.read<AuthCubit>();
-
-    return BlocProvider(
-      create: (_) => LoginCubit(
-        tokenRepository: getIt.get<TokenRepository>(),
-      ),
-      child: BlocListener<LoginCubit, LoginState>(
-        listenWhen: (previous, current) => current.status.isSuccess,
-        listener: (_, state) => authCubit.handleAuthData(),
-        child: BlocBuilder<AuthCubit, AuthState>(
-          builder: (context, state) {
-            final loginCubit = context.read<LoginCubit>();
-
-            if (state.isAuthorized) {
-              controller.text = state.data.connectSID;
-            } else {
-              controller.text = '';
-            }
-
-            return SettingsCardWidget(
-              title: 'Connect SID',
-              subtitle: 'Если не удается войти через форму логина',
-              child: Padding(
-                padding: const EdgeInsets.only(top: 12.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    TextFormField(
-                      onTapOutside: (event) {
-                        FocusManager.instance.primaryFocus?.unfocus();
-                      },
-                      enabled: !state.isAuthorized,
-                      controller: controller,
-                      keyboardType: TextInputType.text,
-                      decoration: const InputDecoration(
-                        floatingLabelBehavior: FloatingLabelBehavior.always,
-                        hintText: 'Можно найти в cookies',
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Row(
-                      children: [
-                        state.isAuthorized
-                            ? ElevatedButton(
-                                onPressed: () {
-                                  authCubit.logOut();
-                                },
-                                child: const Text('Очистить'),
-                              )
-                            : FilledButton(
-                                onPressed: () {
-                                  loginCubit.submitConnectSid(controller.text);
-                                },
-                                child: const Text('Сохранить'),
-                              ),
-                        const SizedBox(width: 12),
-                        if (state.isAuthorized)
-                          ElevatedButton(
-                            onPressed: () {
-                              Clipboard.setData(
-                                ClipboardData(text: controller.text),
-                              );
-                              getIt.get<Utils>().showSnack(
-                                    context: context,
-                                    content: const Text(
-                                      'Скопировано в буфер обмена',
-                                    ),
-                                  );
-                            },
-                            child: const Text('Скопировать'),
-                          ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            );
-          },
         ),
       ),
     );

@@ -25,6 +25,8 @@ import 'feature/auth/repository/auth_repository.dart';
 import 'feature/auth/repository/token_repository.dart';
 import 'feature/settings/cubit/settings_cubit.dart';
 import 'feature/settings/repository/language_repository.dart';
+import 'feature/summary/cubit/summary_auth_cubit.dart';
+import 'feature/summary/repository/summary_token_repository.dart';
 
 void main() async {
   runZonedGuarded(
@@ -81,6 +83,12 @@ class MyApp extends StatelessWidget {
           create: (_) => AuthCubit(
             repository: getIt.get<AuthRepository>(),
             tokenRepository: getIt.get<TokenRepository>(),
+          )..init(),
+        ),
+        BlocProvider(
+          lazy: false,
+          create: (_) => SummaryAuthCubit(
+            tokenRepository: getIt.get<SummaryTokenRepository>(),
           )..init(),
         ),
       ],
