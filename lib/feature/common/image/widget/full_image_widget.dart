@@ -98,6 +98,8 @@ class FullImageBottomAppBar extends StatelessWidget {
       child: Row(
         children: [
           BlocBuilder<ImageActionCubit, ImageActionState>(
+            buildWhen: (previous, current) =>
+                previous.canSave != current.canSave,
             builder: (context, state) {
               return IconButton(
                 icon: const Icon(Icons.download),
@@ -110,6 +112,8 @@ class FullImageBottomAppBar extends StatelessWidget {
             },
           ),
           BlocBuilder<ImageActionCubit, ImageActionState>(
+            buildWhen: (previous, current) =>
+                previous.canShare != current.canShare,
             builder: (context, state) {
               return IconButton(
                 icon: const Icon(Icons.share),

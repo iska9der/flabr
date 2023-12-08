@@ -131,6 +131,7 @@ class MyApp extends StatelessWidget {
               },
               child: MaterialApp.router(
                 title: 'Flabr',
+                // ignore: deprecated_member_use
                 useInheritedMediaQuery: true,
                 locale: DevicePreview.locale(context),
                 themeMode: state.isDarkTheme ? ThemeMode.dark : ThemeMode.light,
