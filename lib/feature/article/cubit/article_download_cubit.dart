@@ -1,11 +1,9 @@
-import 'dart:io';
+import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_file_dialog/flutter_file_dialog.dart';
-import 'package:path_provider/path_provider.dart';
 
-import '../../../component/logger/console.dart';
 import '../model/article_model.dart';
 import '../model/download/format.dart';
 import '../model/download/format_converter.dart';
@@ -33,26 +31,14 @@ class ArticleDownloadCubit extends Cubit<ArticleDownloadState> {
   final ArticleDownloadFormatConverter converter;
 
   _init() async {
-    try {
-      if (!await FlutterFileDialog.isPickDirectorySupported()) {
-        return emit(state.copyWith(status: ArticleDownloadStatus.notSupported));
-      }
-
-      final path = (await getTemporaryDirectory()).path;
-      final articlesDir = await Directory('$path/$additionalPath').create();
-      logger.info(articlesDir.path, title: 'Path to save');
-
-      emit(state.copyWith(savePath: articlesDir.path));
-    } catch (e) {
-      emit(state.copyWith(
-        status: ArticleDownloadStatus.failure,
-        error: e.toString(),
-      ));
+    if (!await FlutterFileDialog.isPickDirectorySupported()) {
+      return emit(state.copyWith(status: ArticleDownloadStatus.notSupported));
     }
   }
 
   pickAndSave() async {
-    if (state.status == ArticleDownloadStatus.notSupported) return;
+    if (state.status == ArticleDownloadStatus.loading ||
+        state.status == ArticleDownloadStatus.notSupported) return;
 
     try {
       emit(state.copyWith(status: ArticleDownloadStatus.loading));
@@ -62,13 +48,12 @@ class ArticleDownloadCubit extends Cubit<ArticleDownloadState> {
         return emit(state.copyWith(status: ArticleDownloadStatus.initial));
       }
 
-      String path = '${state.savePath}/${state.fileName}';
-      String text = converter.convert();
-      File file = await File(path).writeAsString(text);
+      final text = converter.convert();
+      final data = utf8.encode(text);
 
       await FlutterFileDialog.saveFileToDirectory(
         directory: pickedDirectory,
-        data: file.readAsBytesSync(),
+        data: data,
         mimeType: state.format.mimeType,
         fileName: state.fileName,
         replace: true,

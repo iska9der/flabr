@@ -9,7 +9,6 @@ class ArticleDownloadState extends Equatable {
     this.articleTitle = '',
     this.articleHtmlText = '',
     this.format = ArticleDownloadFormat.html,
-    this.savePath = '',
     this.status = ArticleDownloadStatus.initial,
     this.error = '',
   });
@@ -18,7 +17,6 @@ class ArticleDownloadState extends Equatable {
   final String articleTitle;
   final String articleHtmlText;
   final ArticleDownloadFormat format;
-  final String savePath;
   final ArticleDownloadStatus status;
   final String error;
 
@@ -27,7 +25,6 @@ class ArticleDownloadState extends Equatable {
   ArticleDownloadState copyWith({
     String? error,
     ArticleDownloadStatus? status,
-    String? savePath,
   }) {
     return ArticleDownloadState(
       articleId: articleId,
@@ -36,7 +33,6 @@ class ArticleDownloadState extends Equatable {
       format: format,
       error: error ?? this.error,
       status: status ?? this.status,
-      savePath: savePath ?? this.savePath,
     );
   }
 
@@ -46,7 +42,6 @@ class ArticleDownloadState extends Equatable {
         articleTitle,
         articleHtmlText,
         format,
-        savePath,
         status,
         error,
       ];
