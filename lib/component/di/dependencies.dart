@@ -17,9 +17,13 @@ import '../../feature/hub/service/hub_service.dart';
 import '../../feature/search/repository/search_repository.dart';
 import '../../feature/search/service/search_service.dart';
 import '../../feature/settings/repository/language_repository.dart';
+import '../../feature/summary/component/summary_client.dart';
+import '../../feature/summary/repository/summary_repository.dart';
 import '../../feature/summary/repository/summary_token_repository.dart';
+import '../../feature/summary/service/summary_service.dart';
 import '../../feature/user/repository/user_repository.dart';
 import '../../feature/user/service/user_service.dart';
+import '../http/habra_client.dart';
 import '../http/http_client.dart';
 import '../router/app_router.dart';
 import '../storage/cache_storage.dart';
@@ -32,7 +36,7 @@ void setDependencies() {
   getIt.registerSingleton<AppLinks>(AppLinks());
 
   /// Utils
-  getIt.registerSingleton<Utils>(Utils(router: getIt()));
+  getIt.registerSingleton<Utils>(const Utils());
 
   /// Cache
   getIt.registerSingleton<CacheStorage>(CacheStorage(
@@ -49,19 +53,18 @@ void setDependencies() {
 
   /// Http Clients
   getIt.registerSingleton<HttpClient>(
-    HttpClient(
+    instanceName: 'mobileClient',
+    HabraClient(
       Dio(BaseOptions(baseUrl: mobileApiUrl)),
       tokenRepository: getIt(),
     ),
-    instanceName: 'mobileClient',
   );
-
   getIt.registerSingleton<HttpClient>(
-    HttpClient(
+    instanceName: 'siteClient',
+    HabraClient(
       Dio(BaseOptions(baseUrl: siteApiUrl)),
       tokenRepository: getIt(),
     ),
-    instanceName: 'siteClient',
   );
 
   /// Settings
@@ -130,4 +133,15 @@ void setDependencies() {
   getIt.registerLazySingleton<SearchRepository>(
     () => SearchRepository(getIt()),
   );
+
+  /// Summary
+  getIt.registerSingleton<HttpClient>(
+    instanceName: 'ya300client',
+    SummaryClient(Dio(), tokenRepository: getIt()),
+  );
+  getIt.registerLazySingleton<SummaryService>(
+    () => SummaryService(client: getIt(instanceName: 'ya300client')),
+  );
+  getIt.registerLazySingleton<SummaryRepository>(
+      () => SummaryRepository(getIt()));
 }

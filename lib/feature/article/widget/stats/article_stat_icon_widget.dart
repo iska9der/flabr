@@ -7,7 +7,7 @@ class StatIconButton extends StatelessWidget {
   const StatIconButton({
     super.key,
     required this.icon,
-    required this.value,
+    this.value = '',
     this.padding,
     this.color,
     this.isHighlighted = false,
@@ -51,14 +51,17 @@ class StatIconButton extends StatelessWidget {
                               .color
                               ?.withOpacity(isHighlighted ? 1 : .3),
                     ),
-              const SizedBox(width: 6),
-              Text(
-                value,
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: color,
-                      fontWeight: FontWeight.w600,
-                    ),
-              ),
+              if (value.isNotEmpty)
+                Padding(
+                  padding: const EdgeInsets.only(left: 6),
+                  child: Text(
+                    value,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: color,
+                          fontWeight: FontWeight.w600,
+                        ),
+                  ),
+                ),
             ],
           ),
         ),
