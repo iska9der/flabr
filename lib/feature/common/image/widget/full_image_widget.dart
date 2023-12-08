@@ -5,7 +5,7 @@ import 'package:photo_view/photo_view.dart';
 
 import '../../../../component/di/dependencies.dart';
 import '../../../../component/http/http_client.dart';
-import '../cubit/image_download_cubit.dart';
+import '../cubit/image_action_cubit.dart';
 
 class FullAssetImageWidget extends StatelessWidget {
   const FullAssetImageWidget({super.key, required this.assetPath});
@@ -29,7 +29,7 @@ class FullNetworkImageWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: BlocProvider(
-        create: (_) => ImageDownloadCubit(
+        create: (_) => ImageActionCubit(
           client: getIt.get<HttpClient>(instanceName: 'siteClient'),
           url: imageUrl,
         ),
@@ -97,16 +97,26 @@ class FullImageBottomAppBar extends StatelessWidget {
     return BottomAppBar(
       child: Row(
         children: [
-          BlocBuilder<ImageDownloadCubit, ImageDownloadState>(
+          BlocBuilder<ImageActionCubit, ImageActionState>(
             builder: (context, state) {
               return IconButton(
                 icon: const Icon(Icons.download),
                 tooltip: 'Скачать',
-                onPressed: switch (state.status) {
-                  ImageDownloadStatus.notSupported ||
-                  ImageDownloadStatus.loading =>
-                    null,
-                  _ => () => context.read<ImageDownloadCubit>().pickAndSave(),
+                onPressed: switch (state.canSave) {
+                  true => () => context.read<ImageActionCubit>().pickAndSave(),
+                  false => null,
+                },
+              );
+            },
+          ),
+          BlocBuilder<ImageActionCubit, ImageActionState>(
+            builder: (context, state) {
+              return IconButton(
+                icon: const Icon(Icons.share),
+                tooltip: 'Поделиться',
+                onPressed: switch (state.canShare) {
+                  true => () => context.read<ImageActionCubit>().share(),
+                  false => null,
                 },
               );
             },
