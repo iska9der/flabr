@@ -9,10 +9,10 @@ import 'package:path/path.dart' as p;
 import '../../../component/di/dependencies.dart';
 import '../../../component/router/app_router.dart';
 import '../../config/constants.dart';
+import '../../feature/common/image/widget/network_image_widget.dart';
 import '../../feature/settings/cubit/settings_cubit.dart';
 import 'enhancement/progress_indicator.dart';
 import 'extension/extension.dart';
-import 'image/network_image_widget.dart';
 
 class HtmlView extends StatelessWidget {
   const HtmlView({

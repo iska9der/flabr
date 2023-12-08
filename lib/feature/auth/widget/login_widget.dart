@@ -97,7 +97,7 @@ class _WebViewLoginState extends State<_WebViewLogin> {
         NavigationDelegate(
           onWebResourceError: (WebResourceError error) {},
           onNavigationRequest: (NavigationRequest request) async {
-            ConsoleLogger.info(request.url, title: 'URL');
+            logger.info(request.url, title: 'URL');
 
             if (request.url.startsWith('$baseUrl/ru/all')) {
               final loginCubit = context.read<LoginCubit>();

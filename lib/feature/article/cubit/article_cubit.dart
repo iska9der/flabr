@@ -61,13 +61,13 @@ class ArticleCubit extends Cubit<ArticleState> {
       );
 
       emit(state.copyWith(status: ArticleStatus.success, article: article));
-    } catch (e, trace) {
+    } catch (e) {
       emit(state.copyWith(
         status: ArticleStatus.failure,
         error: ExceptionHelper.parseMessage(e),
       ));
 
-      Error.throwWithStackTrace(e, trace);
+      rethrow;
     }
   }
 

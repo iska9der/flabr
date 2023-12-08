@@ -40,7 +40,7 @@ class ArticleDownloadCubit extends Cubit<ArticleDownloadState> {
 
       final path = (await getTemporaryDirectory()).path;
       final articlesDir = await Directory('$path/$additionalPath').create();
-      ConsoleLogger.info(articlesDir.path, title: 'Path to save');
+      logger.info(articlesDir.path, title: 'Path to save');
 
       emit(state.copyWith(savePath: articlesDir.path));
     } catch (e) {

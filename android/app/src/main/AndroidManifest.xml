@@ -4,8 +4,8 @@
     <!-- Permissions -->
     <uses-permission android:name="android.permission.INTERNET" />
 
-    <!-- For url_launcher -->
     <queries>
+        <!-- For url_launcher -->
         <intent>
             <action android:name="android.intent.action.VIEW" />
             <data android:scheme="https" />
@@ -14,6 +14,7 @@
             <action android:name="android.intent.action.VIEW" />
             <data android:scheme="http" />
         </intent>
+        <!--  -->
     </queries>
 
     <!-- Application -->

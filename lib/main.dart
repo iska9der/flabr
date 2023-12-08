@@ -53,7 +53,7 @@ void main() async {
       );
     },
     (error, stack) {
-      if (kDebugMode) ConsoleLogger.error(error, stack);
+      if (kDebugMode) logger.error(error, stack);
     },
   );
 }

@@ -1,7 +1,16 @@
 import 'dart:developer' as dev;
 
-class ConsoleLogger {
-  static void info(String message, {String? title}) {
+final Logger logger = ConsoleLogger();
+
+abstract interface class Logger {
+  void info(String message, {String? title});
+
+  void error(Object exception, StackTrace trace);
+}
+
+class ConsoleLogger implements Logger {
+  @override
+  void info(String message, {String? title}) {
     if (title != null) {
       dev.log(
         '$title >',
@@ -17,7 +26,8 @@ class ConsoleLogger {
     );
   }
 
-  static void error(Object exception, StackTrace trace) {
+  @override
+  void error(Object exception, StackTrace trace) {
     dev.log(
       '${exception.toString()} >',
       name: 'ERROR',

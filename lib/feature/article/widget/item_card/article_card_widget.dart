@@ -5,8 +5,8 @@ import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart
 
 import '../../../../common/model/render_type.dart';
 import '../../../../common/widget/enhancement/card.dart';
-import '../../../../common/widget/image/network_image_widget.dart';
 import '../../../../config/constants.dart';
+import '../../../common/image/widget/network_image_widget.dart';
 import '../../../settings/cubit/settings_cubit.dart';
 import '../../model/article_model.dart';
 import '../../model/article_type.dart';

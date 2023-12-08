@@ -7,9 +7,9 @@ import '../../../common/model/extension/enum_status.dart';
 import '../../../common/widget/detail/section_container_widget.dart';
 import '../../../common/widget/enhancement/card.dart';
 import '../../../common/widget/enhancement/progress_indicator.dart';
-import '../../../common/widget/image/network_image_widget.dart';
 import '../../../component/di/dependencies.dart';
 import '../../../component/router/app_router.dart';
+import '../../common/image/widget/network_image_widget.dart';
 import '../cubit/company_cubit.dart';
 
 class CompanyDetailsWidget extends StatelessWidget {

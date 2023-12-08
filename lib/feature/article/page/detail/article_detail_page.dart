@@ -176,7 +176,7 @@ class _ItemDetailPageViewState extends State<ItemDetailPageView> {
                                   ),
                                 ),
                                 IconButton(
-                                  icon: const Icon(Icons.share_rounded),
+                                  icon: const Icon(Icons.share),
                                   iconSize: 18,
                                   tooltip: 'Поделиться',
                                   onPressed: () => Share.shareUri(Uri.parse(

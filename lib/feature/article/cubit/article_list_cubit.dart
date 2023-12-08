@@ -145,13 +145,13 @@ class ArticleListCubit extends Cubit<ArticleListState> {
         page: state.page + 1,
         pagesCount: response.pagesCount,
       ));
-    } catch (e, trace) {
+    } catch (e) {
       emit(state.copyWith(
         error: ExceptionHelper.parseMessage(e, 'Не удалось получить статьи'),
         status: ArticleListStatus.failure,
       ));
 
-      Error.throwWithStackTrace(e, trace);
+      rethrow;
     }
   }
 
