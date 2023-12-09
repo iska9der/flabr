@@ -15,13 +15,12 @@ class DashboardDrawerLinkWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final tabRouter = AutoRouter.of(context);
 
-    return TextButton(
-      style: Theme.of(context).textButtonTheme.style?.copyWith(
-            padding: const MaterialStatePropertyAll(EdgeInsets.zero),
-            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-          ),
-      onPressed: () => tabRouter.navigateNamed(route),
-      child: Text(title),
+    return GestureDetector(
+      onTap: () => tabRouter.navigateNamed(route),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+        child: Text(title),
+      ),
     );
   }
 }

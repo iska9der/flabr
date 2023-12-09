@@ -59,18 +59,17 @@ class HubDashboardPageView extends StatelessWidget {
         return Scaffold(
           key: context.read<ScaffoldCubit>().key,
           appBar: AppBar(
-            toolbarHeight: fToolBarDashboardHeight,
+            titleSpacing: 0,
             title: BlocBuilder<HubCubit, HubState>(
               builder: (context, state) {
                 return Text(state.profile.titleHtml);
               },
             ),
-          ),
-          body: SafeArea(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                ColoredBox(
+            bottom: PreferredSize(
+              preferredSize: const Size.fromHeight(fDashboardTabHeight),
+              child: SizedBox(
+                height: fDashboardTabHeight,
+                child: ColoredBox(
                   color: Theme.of(context).colorScheme.surface,
                   child: TabBar(
                     controller: controller,
@@ -84,10 +83,10 @@ class HubDashboardPageView extends StatelessWidget {
                     ],
                   ),
                 ),
-                Expanded(child: child),
-              ],
+              ),
             ),
           ),
+          body: SafeArea(child: child),
         );
       },
     );

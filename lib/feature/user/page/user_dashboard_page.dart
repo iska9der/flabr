@@ -65,39 +65,34 @@ class UserDashboardView extends StatelessWidget {
         return Scaffold(
           key: context.read<ScaffoldCubit>().key,
           appBar: AppBar(
-            toolbarHeight: fToolBarDashboardHeight,
             title: Text(userCubit.state.login),
-          ),
-          body: SafeArea(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                ColoredBox(
-                  color: Theme.of(context).colorScheme.surface,
-                  child: TabBar(
-                    controller: controller,
-                    isScrollable: true,
-                    dividerColor: Colors.transparent,
-                    tabs: const [
-                      DashboardDrawerLinkWidget(
-                        title: UserDetailPage.title,
-                        route: UserDetailPage.routePath,
-                      ),
-                      DashboardDrawerLinkWidget(
-                        title: UserArticleListPage.title,
-                        route: UserArticleListPage.routePath,
-                      ),
-                      DashboardDrawerLinkWidget(
-                        title: UserBookmarkListPage.title,
-                        route: UserBookmarkListPage.routePath,
-                      ),
-                    ],
-                  ),
+            bottom: PreferredSize(
+              preferredSize: const Size.fromHeight(fDashboardTabHeight),
+              child: SizedBox(
+                height: fDashboardTabHeight,
+                child: TabBar(
+                  controller: controller,
+                  isScrollable: true,
+                  dividerColor: Colors.transparent,
+                  tabs: const [
+                    DashboardDrawerLinkWidget(
+                      title: UserDetailPage.title,
+                      route: UserDetailPage.routePath,
+                    ),
+                    DashboardDrawerLinkWidget(
+                      title: UserArticleListPage.title,
+                      route: UserArticleListPage.routePath,
+                    ),
+                    DashboardDrawerLinkWidget(
+                      title: UserBookmarkListPage.title,
+                      route: UserBookmarkListPage.routePath,
+                    ),
+                  ],
                 ),
-                Expanded(child: child),
-              ],
+              ),
             ),
           ),
+          body: SafeArea(child: child),
         );
       },
     );

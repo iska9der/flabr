@@ -61,14 +61,12 @@ class CompanyDashboardPageView extends StatelessWidget {
         return Scaffold(
           key: context.read<ScaffoldCubit>().key,
           appBar: AppBar(
-            toolbarHeight: fToolBarDashboardHeight,
             title: Text(companyCubit.state.alias),
-          ),
-          body: SafeArea(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                ColoredBox(
+            bottom: PreferredSize(
+              preferredSize: const Size.fromHeight(fDashboardTabHeight),
+              child: SizedBox(
+                height: fDashboardTabHeight,
+                child: ColoredBox(
                   color: Theme.of(context).colorScheme.surface,
                   child: TabBar(
                     controller: controller,
@@ -82,10 +80,10 @@ class CompanyDashboardPageView extends StatelessWidget {
                     ],
                   ),
                 ),
-                Expanded(child: child),
-              ],
+              ),
             ),
           ),
+          body: SafeArea(child: child),
         );
       },
     );
