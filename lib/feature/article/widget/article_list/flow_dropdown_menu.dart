@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 
+import '../../../../component/theme/responsive.dart';
 import '../../../auth/cubit/auth_cubit.dart';
 import '../../cubit/article_list_cubit.dart';
 import '../../model/article_type.dart';
@@ -47,6 +49,16 @@ class FlowDropdownMenu extends StatelessWidget {
               underline: const SizedBox.shrink(),
               elevation: 0,
               padding: EdgeInsets.zero,
+              isExpanded: ResponsiveValue<bool>(
+                context,
+                defaultValue: true,
+                conditionalValues: [
+                  Condition.largerThan(
+                    name: ScreenType.mobile,
+                    value: false,
+                  ),
+                ],
+              ).value!,
               onChanged: (value) {
                 if (value == null) {
                   return;
