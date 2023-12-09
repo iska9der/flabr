@@ -20,8 +20,24 @@ class SummaryWidget extends StatelessWidget {
           SummaryStatus.loading =>
             const CircleIndicator(),
           SummaryStatus.failure => Center(child: Text(state.error)),
-          SummaryStatus.success => ListView(
-              children: state.model.content.map((line) => Text(line)).toList(),
+          SummaryStatus.success => Scrollbar(
+              thumbVisibility: true,
+              child: ListView(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 12.0),
+                    child: Text(
+                      state.model.title,
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                  ),
+                  ...state.model.content.map((line) => Padding(
+                        padding: const EdgeInsets.only(bottom: 8.0),
+                        child: Text('• $line'),
+                      ))
+                ],
+              ),
             ),
         };
       },

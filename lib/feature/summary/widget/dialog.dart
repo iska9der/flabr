@@ -22,7 +22,10 @@ Future showSummaryDialog(
         repository: getIt.get<SummaryRepository>(),
       ),
       child: AlertDialog.adaptive(
-        insetPadding: const EdgeInsets.symmetric(vertical: 12),
+        insetPadding: const EdgeInsets.symmetric(vertical: 24),
+        titlePadding: const EdgeInsets.all(18),
+        actionsPadding: const EdgeInsets.all(12),
+        contentPadding: EdgeInsets.zero,
         actions: [
           BlocBuilder<SummaryCubit, SummaryState>(
             builder: (context, state) {
@@ -38,11 +41,32 @@ Future showSummaryDialog(
               );
             },
           ),
+          TextButton(
+            onPressed: () => getIt.get<AppRouter>().navigate(
+                  ArticleDetailRoute(id: articleId),
+                ),
+            child: const Text('Открыть статью'),
+          )
         ],
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Text('Кратко'),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  const Text('YandexGPT'),
+                  FittedBox(
+                    fit: BoxFit.scaleDown,
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      'краткий пересказ статьи от нейросети',
+                      style: DefaultTextStyle.of(context).style,
+                    ),
+                  ),
+                ],
+              ),
+            ),
             IconButton(
               onPressed: () => Navigator.of(context).pop(),
               icon: const Icon(Icons.close),
