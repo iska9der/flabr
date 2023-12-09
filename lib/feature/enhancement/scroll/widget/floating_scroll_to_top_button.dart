@@ -39,10 +39,13 @@ class _FloatingScrollToTopButtonState extends State<FloatingScrollToTopButton> {
 
         isVisible.value = visible;
 
-        return AnimatedOpacity(
-          duration: scrollCubit.duration,
-          opacity: isVisible.value ? 1 : 0,
-          child: child,
+        return IgnorePointer(
+          ignoring: !isVisible.value,
+          child: AnimatedOpacity(
+            duration: scrollCubit.duration,
+            opacity: isVisible.value ? 1 : 0,
+            child: child,
+          ),
         );
       },
       child: FloatingActionButton(
