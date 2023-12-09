@@ -66,18 +66,18 @@ class _UserProfileCardWidgetState extends State<UserProfileCardWidget> {
                   Row(
                     children: [
                       ProfileStatWidget(
-                        type: StatType.score,
-                        title: 'Очки',
-                        value: model.score,
+                        type: StatType.rating,
+                        title: 'Рейтинг',
+                        value: model.rating,
                       ),
                       const SizedBox(width: 40),
                       Tooltip(
                         message: '${model.votesCount.compact()} голосов',
                         triggerMode: TooltipTriggerMode.tap,
                         child: ProfileStatWidget(
-                          type: StatType.rating,
-                          title: 'Рейтинг',
-                          value: model.rating,
+                          type: StatType.score,
+                          title: 'Очки',
+                          value: model.score,
                         ),
                       ),
                     ],

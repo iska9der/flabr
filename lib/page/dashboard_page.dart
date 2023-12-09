@@ -137,14 +137,7 @@ class _DashboardPageState extends State<DashboardPage> {
                           ],
                           child: _Drawer(router: tabsRouter),
                         ),
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 6.0,
-                            ),
-                            child: child,
-                          ),
-                        ),
+                        Expanded(child: child),
                       ],
                     ),
                   ),

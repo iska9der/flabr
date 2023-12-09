@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../common/widget/article_settings_widget.dart';
 import '../component/language.dart';
+import '../config/constants.dart';
 import '../feature/settings/cubit/settings_cubit.dart';
 import '../feature/settings/widget/account/connect_sid_widget.dart';
 import '../feature/settings/widget/account/summary_token_widget.dart';
@@ -30,6 +31,7 @@ class SettingsView extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: ListView(
+          padding: const EdgeInsets.symmetric(horizontal: kScreenHPadding),
           children: const [
             SettingsSectionWidget(
               title: 'Аккаунт',
