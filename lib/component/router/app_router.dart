@@ -364,7 +364,7 @@ List<RedirectRoute> _postsRedirects() {
   return [
     /// Флоу в статьях
     RedirectRoute(
-      path: '*/*/flows/:flow/',
+      path: '*/*/flows/:flow/posts',
       redirectTo: 'posts/flows/:flow',
     ),
 
