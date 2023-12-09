@@ -20,8 +20,8 @@ class FullAssetImageWidget extends StatelessWidget {
   }
 }
 
-class FullNetworkImageWidget extends StatelessWidget {
-  const FullNetworkImageWidget({super.key, required this.imageUrl});
+class FullNetworkImageModalWidget extends StatelessWidget {
+  const FullNetworkImageModalWidget({super.key, required this.imageUrl});
 
   final String imageUrl;
 
@@ -35,12 +35,13 @@ class FullNetworkImageWidget extends StatelessWidget {
         ),
         child: const FullImageBottomAppBar(),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.close_rounded, size: 32),
-        onPressed: () => Navigator.of(context).pop(),
-      ),
       backgroundColor: Colors.transparent,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: FloatingActionButton(
+        mini: true,
+        onPressed: () => Navigator.of(context).pop(),
+        child: const Icon(Icons.close_rounded, size: 32),
+      ),
       body: FullImageWidget(
         provider: CachedNetworkImageProvider(
           imageUrl,
@@ -77,9 +78,7 @@ class _FullImageWidgetState extends State<FullImageWidget> {
       child: PhotoView(
         controller: controller,
         initialScale: PhotoViewComputedScale.contained,
-        backgroundDecoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.surface.withOpacity(.9),
-        ),
+        backgroundDecoration: const BoxDecoration(color: Colors.transparent),
         onScaleEnd: (context, details, controllerValue) {
           /// controller.value = controller.initial;
         },

@@ -27,14 +27,16 @@ class NetworkImageWidget extends StatelessWidget {
     int? cacheHeight = height != null
         ? (height! * MediaQuery.of(context).devicePixelRatio).round()
         : null;
+    final barrierColor = Theme.of(context).colorScheme.surface.withOpacity(.9);
 
     return GestureDetector(
       onTap: isTapable
           ? () => showDialog(
                 context: context,
-                builder: (_) {
-                  return FullNetworkImageWidget(imageUrl: imageUrl);
-                },
+                useSafeArea: true,
+                useRootNavigator: false,
+                barrierColor: barrierColor,
+                builder: (_) => FullNetworkImageModalWidget(imageUrl: imageUrl),
               )
           : null,
       child: imageUrl.contains('.svg')

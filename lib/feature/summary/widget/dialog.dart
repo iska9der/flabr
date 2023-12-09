@@ -15,6 +15,7 @@ Future showSummaryDialog(
     context: context,
     useSafeArea: true,
     useRootNavigator: false,
+    barrierColor: Theme.of(context).colorScheme.surface.withOpacity(.9),
     builder: (context) => BlocProvider(
       create: (_) => SummaryCubit(
         articleId: articleId,
