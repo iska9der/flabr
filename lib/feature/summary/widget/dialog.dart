@@ -15,14 +15,14 @@ Future showSummaryDialog(
     context: context,
     useSafeArea: true,
     useRootNavigator: false,
-    barrierColor: Colors.transparent,
     builder: (context) => BlocProvider(
       create: (_) => SummaryCubit(
         articleId: articleId,
         repository: getIt.get<SummaryRepository>(),
       ),
       child: AlertDialog.adaptive(
-        insetPadding: const EdgeInsets.symmetric(vertical: 24),
+        clipBehavior: Clip.hardEdge,
+        insetPadding: const EdgeInsets.fromLTRB(6, 6, 6, 64),
         titlePadding: const EdgeInsets.all(18),
         actionsPadding: const EdgeInsets.all(12),
         contentPadding: EdgeInsets.zero,
@@ -41,12 +41,6 @@ Future showSummaryDialog(
               );
             },
           ),
-          TextButton(
-            onPressed: () => getIt.get<AppRouter>().navigate(
-                  ArticleDetailRoute(id: articleId),
-                ),
-            child: const Text('Открыть статью'),
-          )
         ],
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
