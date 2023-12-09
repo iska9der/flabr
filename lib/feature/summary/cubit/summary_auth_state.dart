@@ -26,7 +26,7 @@ class SummaryAuthState extends Equatable {
   }
 
   bool get isAuthorized => status == SummaryAuthStatus.authorized;
-  bool get isUnauthorized => status == SummaryAuthStatus.unauthorized;
+  bool get isUnauthorized => status != SummaryAuthStatus.authorized;
 
   @override
   List<Object> get props => [

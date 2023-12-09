@@ -9,6 +9,8 @@ import '../../../common/utils/utils.dart';
 import '../../../component/di/dependencies.dart';
 import '../../auth/cubit/auth_cubit.dart';
 import '../../auth/widget/dialog.dart';
+import '../../summary/cubit/summary_auth_cubit.dart';
+import '../../summary/widget/dialog.dart';
 import '../cubit/bookmark_cubit.dart';
 import '../model/article_model.dart';
 import '../model/article_type.dart';
@@ -53,6 +55,12 @@ class ArticleFooterWidget extends StatelessWidget {
           ),
         ),
         _BookmarkIconButton(article: article),
+        if (context.watch<SummaryAuthCubit>().state.isAuthorized)
+          StatIconButton(
+            icon: Icons.auto_awesome,
+            isHighlighted: true,
+            onTap: () => showSummaryDialog(context, articleId: article.id),
+          ),
       ],
     );
   }
