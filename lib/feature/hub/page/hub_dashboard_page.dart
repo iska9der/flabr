@@ -59,7 +59,6 @@ class HubDashboardPageView extends StatelessWidget {
         return Scaffold(
           key: context.read<ScaffoldCubit>().key,
           appBar: AppBar(
-            titleSpacing: 0,
             title: BlocBuilder<HubCubit, HubState>(
               builder: (context, state) {
                 return Text(state.profile.titleHtml);

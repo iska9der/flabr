@@ -60,7 +60,9 @@ class _WebViewLoginState extends State<_WebViewLogin> {
   late final WebViewController wvController;
   late final WebviewCookieManager cookieManager;
 
-  final Uri _authUri = Uri.parse('$siteApiUrl/v1/auth/habrahabr/');
+  final Uri _authUri = Uri.parse(
+    '$siteApiUrl/v1/auth/habrahabr/?back=/ru/all',
+  );
 
   Future<String> getConnectSid(String url) async {
     final list = await cookieManager.getCookies(url);
