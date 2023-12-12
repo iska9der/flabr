@@ -8,9 +8,9 @@ import '../../enhancement/scroll/scroll.dart';
 import '../../publication/model/flow_enum.dart';
 import '../../publication/model/publication_type.dart';
 import '../../publication/repository/publication_repository.dart';
+import '../../publication/view/publication_list_view.dart';
 import '../../settings/repository/language_repository.dart';
 import '../cubit/article_list_cubit.dart';
-import 'article_list_page.dart';
 
 @RoutePage(name: NewsListPage.routeName)
 class NewsListPage extends StatelessWidget {
@@ -45,7 +45,7 @@ class NewsListPage extends StatelessWidget {
           create: (_) => ScaffoldCubit(),
         ),
       ],
-      child: const ArticleListView(type: PublicationType.news),
+      child: const PublicationListView(type: PublicationType.news),
     );
   }
 }

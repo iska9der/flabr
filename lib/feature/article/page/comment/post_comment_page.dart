@@ -5,10 +5,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../component/di/dependencies.dart';
 import '../../../publication/model/source/publication_source.dart';
 import '../../../publication/repository/publication_repository.dart';
+import '../../../publication/view/comment_list_view.dart';
 import '../../../settings/repository/language_repository.dart';
 import '../../cubit/comment_hidden_cubit.dart';
 import '../../cubit/comment_list_cubit.dart';
-import 'article_comment_page.dart';
 
 @RoutePage(name: PostCommentListPage.routeName)
 class PostCommentListPage extends StatelessWidget {

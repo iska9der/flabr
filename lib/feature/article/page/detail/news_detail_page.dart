@@ -5,9 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../component/di/dependencies.dart';
 import '../../../publication/model/source/publication_source.dart';
 import '../../../publication/repository/publication_repository.dart';
+import '../../../publication/view/publication_detail_view.dart';
 import '../../../settings/repository/language_repository.dart';
 import '../../cubit/article_cubit.dart';
-import 'article_detail_page.dart';
 
 @RoutePage(name: NewsDetailPage.routeName)
 class NewsDetailPage extends StatelessWidget {
@@ -31,7 +31,7 @@ class NewsDetailPage extends StatelessWidget {
         repository: getIt.get<PublicationRepository>(),
         languageRepository: getIt.get<LanguageRepository>(),
       ),
-      child: const ItemDetailPageView(),
+      child: const PublicationDetailView(),
     );
   }
 }
