@@ -4,17 +4,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../common/exception/exception_helper.dart';
 import '../../../common/model/extension/enum_status.dart';
 import '../../../component/localization/language_enum.dart';
+import '../../publication/repository/publication_repository.dart';
 import '../model/article_model.dart';
-import '../repository/article_repository.dart';
 
 part 'most_reading_state.dart';
 
 class MostReadingCubit extends Cubit<MostReadingState> {
-  MostReadingCubit(ArticleRepository repository)
+  MostReadingCubit(PublicationRepository repository)
       : _repository = repository,
         super(const MostReadingState());
 
-  final ArticleRepository _repository;
+  final PublicationRepository _repository;
 
   void fetch() async {
     if (state.status.isLoading || state.articles.isNotEmpty) {

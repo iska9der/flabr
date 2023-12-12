@@ -5,8 +5,6 @@ import 'package:get_it/get_it.dart';
 
 import '../../common/utils/utils.dart';
 import '../../config/constants.dart';
-import '../../feature/article/repository/article_repository.dart';
-import '../../feature/article/service/article_service.dart';
 import '../../feature/auth/repository/auth_repository.dart';
 import '../../feature/auth/repository/token_repository.dart';
 import '../../feature/auth/service/auth_service.dart';
@@ -14,6 +12,8 @@ import '../../feature/company/repository/company_repository.dart';
 import '../../feature/company/service/company_service.dart';
 import '../../feature/hub/repository/hub_repository.dart';
 import '../../feature/hub/service/hub_service.dart';
+import '../../feature/publication/repository/publication_repository.dart';
+import '../../feature/publication/service/publication_service.dart';
 import '../../feature/search/repository/search_repository.dart';
 import '../../feature/search/service/search_service.dart';
 import '../../feature/settings/repository/language_repository.dart';
@@ -83,14 +83,14 @@ void setDependencies() {
   );
 
   /// Articles
-  getIt.registerLazySingleton<ArticleService>(
-    () => ArticleService(
+  getIt.registerLazySingleton<PublicationService>(
+    () => PublicationService(
       mobileClient: getIt(instanceName: 'mobileClient'),
       siteClient: getIt(instanceName: 'siteClient'),
     ),
   );
-  getIt.registerLazySingleton<ArticleRepository>(
-    () => ArticleRepository(getIt()),
+  getIt.registerLazySingleton<PublicationRepository>(
+    () => PublicationRepository(getIt()),
   );
 
   /// Users

@@ -10,13 +10,13 @@ import '../../../component/di/dependencies.dart';
 import '../../auth/cubit/auth_cubit.dart';
 import '../../auth/widget/dialog.dart';
 import '../../publication/model/publication_type.dart';
+import '../../publication/repository/publication_repository.dart';
 import '../../summary/cubit/summary_auth_cubit.dart';
 import '../../summary/widget/dialog.dart';
 import '../cubit/bookmark_cubit.dart';
 import '../model/article_model.dart';
 import '../page/comment/article_comment_page.dart';
 import '../page/comment/post_comment_page.dart';
-import '../repository/article_repository.dart';
 import 'stats/article_stat_icon_widget.dart';
 
 class ArticleFooterWidget extends StatelessWidget {
@@ -76,7 +76,7 @@ class _BookmarkIconButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => BookmarkCubit(
-        repository: getIt.get<ArticleRepository>(),
+        repository: getIt.get<PublicationRepository>(),
         articleId: article.id,
         isBookmarked: article.relatedData.bookmarked,
         count: article.statistics.favoritesCount,

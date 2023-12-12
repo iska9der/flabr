@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../component/di/dependencies.dart';
+import '../../../publication/repository/publication_repository.dart';
 import '../../../settings/repository/language_repository.dart';
 import '../../cubit/comment_hidden_cubit.dart';
 import '../../cubit/comment_list_cubit.dart';
 import '../../model/helper/article_source.dart';
-import '../../repository/article_repository.dart';
 import 'article_comment_page.dart';
 
 @RoutePage(name: PostCommentListPage.routeName)
@@ -30,7 +30,7 @@ class PostCommentListPage extends StatelessWidget {
           create: (_) => CommentListCubit(
             articleId,
             source: ArticleSource.post,
-            repository: getIt.get<ArticleRepository>(),
+            repository: getIt.get<PublicationRepository>(),
             languageRepository: getIt.get<LanguageRepository>(),
           ),
         ),

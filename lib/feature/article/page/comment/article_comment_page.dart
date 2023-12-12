@@ -10,12 +10,12 @@ import '../../../../common/widget/enhancement/progress_indicator.dart';
 import '../../../../common/widget/html_view_widget.dart';
 import '../../../../component/di/dependencies.dart';
 import '../../../../config/constants.dart';
+import '../../../publication/repository/publication_repository.dart';
 import '../../../settings/repository/language_repository.dart';
 import '../../cubit/comment_hidden_cubit.dart';
 import '../../cubit/comment_list_cubit.dart';
 import '../../model/comment_model.dart';
 import '../../model/helper/article_source.dart';
-import '../../repository/article_repository.dart';
 import '../../widget/article_author_widget.dart';
 import '../../widget/comment/comment_rating_widget.dart';
 
@@ -42,7 +42,7 @@ class ArticleCommentListPage extends StatelessWidget {
           create: (_) => CommentListCubit(
             articleId,
             source: ArticleSource.article,
-            repository: getIt.get<ArticleRepository>(),
+            repository: getIt.get<PublicationRepository>(),
             languageRepository: getIt.get<LanguageRepository>(),
           ),
         ),

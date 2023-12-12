@@ -6,22 +6,22 @@ import '../../../common/exception/value_exception.dart';
 import '../../../common/model/network/list_response.dart';
 import '../../../common/model/network/params.dart';
 import '../../../component/http/http_client.dart';
-import '../../publication/model/publication_type.dart';
-import '../model/flow_enum.dart';
-import '../model/helper/article_source.dart';
-import '../model/network/article_list_params.dart';
-import '../model/network/article_list_response.dart';
-import '../model/network/comment_list_exception.dart';
-import '../model/network/comment_list_params.dart';
-import '../model/network/comment_list_response.dart';
-import '../model/network/most_reading_response.dart';
-import '../model/network/post_list_params.dart';
-import '../model/network/post_list_response.dart';
-import '../model/sort/date_period_enum.dart';
-import '../model/sort/sort_enum.dart';
+import '../../article/model/flow_enum.dart';
+import '../../article/model/helper/article_source.dart';
+import '../../article/model/network/article_list_params.dart';
+import '../../article/model/network/article_list_response.dart';
+import '../../article/model/network/comment_list_exception.dart';
+import '../../article/model/network/comment_list_params.dart';
+import '../../article/model/network/comment_list_response.dart';
+import '../../article/model/network/most_reading_response.dart';
+import '../../article/model/network/post_list_params.dart';
+import '../../article/model/network/post_list_response.dart';
+import '../../article/model/sort/date_period_enum.dart';
+import '../../article/model/sort/sort_enum.dart';
+import '../model/publication_type.dart';
 
-class ArticleService {
-  const ArticleService(
+class PublicationService {
+  const PublicationService(
       {required HttpClient mobileClient, required HttpClient siteClient})
       : _mobileClient = mobileClient,
         _siteClient = siteClient;

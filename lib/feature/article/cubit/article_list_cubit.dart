@@ -7,6 +7,7 @@ import '../../../common/exception/exception_helper.dart';
 import '../../../common/exception/value_exception.dart';
 import '../../../common/model/network/list_response.dart';
 import '../../publication/model/publication_type.dart';
+import '../../publication/repository/publication_repository.dart';
 import '../../settings/repository/language_repository.dart';
 import '../model/article_model.dart';
 import '../model/flow_enum.dart';
@@ -15,7 +16,6 @@ import '../model/network/article_list_response.dart';
 import '../model/sort/date_period_enum.dart';
 import '../model/sort/sort_enum.dart';
 import '../model/sort/sort_option_model.dart';
-import '../repository/article_repository.dart';
 
 part 'article_list_state.dart';
 
@@ -24,7 +24,7 @@ class ArticleListCubit extends Cubit<ArticleListState> {
   /// От этого параметра зависит какой метод получения статей будет вызван.
   ///
   ArticleListCubit({
-    required ArticleRepository repository,
+    required PublicationRepository repository,
     required LanguageRepository languageRepository,
     ArticleListSource source = ArticleListSource.flow,
     FlowEnum flow = FlowEnum.all,
@@ -57,7 +57,7 @@ class ArticleListCubit extends Cubit<ArticleListState> {
     );
   }
 
-  final ArticleRepository _repository;
+  final PublicationRepository _repository;
   final LanguageRepository _languageRepository;
 
   late final StreamSubscription _uiLangSub;

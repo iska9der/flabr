@@ -5,10 +5,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../common/exception/exception_helper.dart';
 import '../../../common/model/extension/enum_status.dart';
+import '../../publication/repository/publication_repository.dart';
 import '../../settings/repository/language_repository.dart';
 import '../model/article_model.dart';
 import '../model/helper/article_source.dart';
-import '../repository/article_repository.dart';
 
 part 'article_state.dart';
 
@@ -16,7 +16,7 @@ class ArticleCubit extends Cubit<ArticleState> {
   ArticleCubit(
     String id, {
     required ArticleSource source,
-    required ArticleRepository repository,
+    required PublicationRepository repository,
     required LanguageRepository languageRepository,
   })  : _repository = repository,
         _languageRepository = languageRepository,
@@ -33,7 +33,7 @@ class ArticleCubit extends Cubit<ArticleState> {
     );
   }
 
-  final ArticleRepository _repository;
+  final PublicationRepository _repository;
   final LanguageRepository _languageRepository;
 
   late final StreamSubscription _uiLangSub;

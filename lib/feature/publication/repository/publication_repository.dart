@@ -1,21 +1,21 @@
 import '../../../common/model/network/list_response.dart';
 import '../../../component/localization/language_enum.dart';
 import '../../../component/localization/language_helper.dart';
-import '../../publication/model/publication_type.dart';
-import '../model/article_model.dart';
-import '../model/flow_enum.dart';
-import '../model/helper/article_source.dart';
-import '../model/network/article_list_response.dart';
-import '../model/network/comment_list_response.dart';
-import '../model/network/most_reading_response.dart';
-import '../model/sort/date_period_enum.dart';
-import '../model/sort/sort_enum.dart';
-import '../service/article_service.dart';
+import '../../article/model/article_model.dart';
+import '../../article/model/flow_enum.dart';
+import '../../article/model/helper/article_source.dart';
+import '../../article/model/network/article_list_response.dart';
+import '../../article/model/network/comment_list_response.dart';
+import '../../article/model/network/most_reading_response.dart';
+import '../../article/model/sort/date_period_enum.dart';
+import '../../article/model/sort/sort_enum.dart';
+import '../model/publication_type.dart';
+import '../service/publication_service.dart';
 
-class ArticleRepository {
-  ArticleRepository(this.service);
+class PublicationRepository {
+  PublicationRepository(this.service);
 
-  final ArticleService service;
+  final PublicationService service;
 
   Future<ArticleModel> fetchById(
     String id, {

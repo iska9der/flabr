@@ -6,10 +6,10 @@ import '../../../component/di/dependencies.dart';
 import '../../enhancement/scaffold/scaffold.dart';
 import '../../enhancement/scroll/scroll.dart';
 import '../../publication/model/publication_type.dart';
+import '../../publication/repository/publication_repository.dart';
 import '../../settings/repository/language_repository.dart';
 import '../cubit/article_list_cubit.dart';
 import '../model/flow_enum.dart';
-import '../repository/article_repository.dart';
 import 'article_list_page.dart';
 
 @RoutePage(name: PostListPage.routeName)
@@ -32,7 +32,7 @@ class PostListPage extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (_) => ArticleListCubit(
-            repository: getIt.get<ArticleRepository>(),
+            repository: getIt.get<PublicationRepository>(),
             languageRepository: getIt.get<LanguageRepository>(),
             type: PublicationType.post,
             flow: FlowEnum.fromString(flow),

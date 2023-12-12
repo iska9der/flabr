@@ -8,9 +8,9 @@ import '../../../component/di/dependencies.dart';
 import '../../../config/constants.dart';
 import '../../article/cubit/article_list_cubit.dart';
 import '../../article/model/helper/article_list_source.dart';
-import '../../article/repository/article_repository.dart';
 import '../../article/widget/sort/articles_sort_widget.dart';
 import '../../enhancement/scroll/scroll.dart';
+import '../../publication/repository/publication_repository.dart';
 import '../../settings/cubit/settings_cubit.dart';
 import '../../settings/repository/language_repository.dart';
 import '../cubit/hub_cubit.dart';
@@ -35,7 +35,7 @@ class HubDetailPage extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (_) => ArticleListCubit(
-            repository: getIt.get<ArticleRepository>(),
+            repository: getIt.get<PublicationRepository>(),
             languageRepository: getIt.get<LanguageRepository>(),
             source: ArticleListSource.hubArticles,
             hub: cubit.state.alias,

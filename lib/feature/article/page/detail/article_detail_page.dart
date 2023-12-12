@@ -9,10 +9,10 @@ import '../../../../common/widget/enhancement/progress_indicator.dart';
 import '../../../../common/widget/html_view_widget.dart';
 import '../../../../component/di/dependencies.dart';
 import '../../../../config/constants.dart';
+import '../../../publication/repository/publication_repository.dart';
 import '../../../settings/repository/language_repository.dart';
 import '../../cubit/article_cubit.dart';
 import '../../model/helper/article_source.dart';
-import '../../repository/article_repository.dart';
 import '../../widget/article_footer_widget.dart';
 import '../../widget/article_header_widget.dart';
 import '../../widget/article_hubs_widget.dart';
@@ -44,7 +44,7 @@ class ArticleDetailPage extends StatelessWidget {
       create: (c) => ArticleCubit(
         id,
         source: ArticleSource.article,
-        repository: getIt.get<ArticleRepository>(),
+        repository: getIt.get<PublicationRepository>(),
         languageRepository: getIt.get<LanguageRepository>(),
       ),
       child: const ItemDetailPageView(),

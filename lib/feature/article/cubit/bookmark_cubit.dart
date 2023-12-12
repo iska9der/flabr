@@ -2,13 +2,13 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../common/exception/exception_helper.dart';
-import '../repository/article_repository.dart';
+import '../../publication/repository/publication_repository.dart';
 
 part 'bookmark_state.dart';
 
 class BookmarkCubit extends Cubit<BookmarkState> {
   BookmarkCubit({
-    required ArticleRepository repository,
+    required PublicationRepository repository,
     required String articleId,
     bool isBookmarked = false,
     int count = 0,
@@ -19,7 +19,7 @@ class BookmarkCubit extends Cubit<BookmarkState> {
           count: count,
         ));
 
-  final ArticleRepository _repository;
+  final PublicationRepository _repository;
 
   toggle() async {
     emit(state.copyWith(status: BookmarkStatus.loading));
