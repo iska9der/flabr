@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../publication/model/publication_type.dart';
 import '../../model/article_model.dart';
-import '../../model/article_type.dart';
 
 class ArticleDetailAppBarTitle extends StatelessWidget {
   const ArticleDetailAppBarTitle({super.key, required this.article});
@@ -11,7 +11,7 @@ class ArticleDetailAppBarTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final title = switch (article.type) {
-      ArticleType.post => 'Пост',
+      PublicationType.post => 'Пост',
       _ => article.titleHtml,
     };
 

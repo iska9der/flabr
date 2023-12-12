@@ -1,8 +1,8 @@
 import '../../../common/model/network/list_response.dart';
 import '../../../component/localization/language_enum.dart';
 import '../../../component/localization/language_helper.dart';
+import '../../publication/model/publication_type.dart';
 import '../model/article_model.dart';
-import '../model/article_type.dart';
 import '../model/flow_enum.dart';
 import '../model/helper/article_source.dart';
 import '../model/network/article_list_response.dart';
@@ -63,7 +63,7 @@ class ArticleRepository {
   Future<ListResponse> fetchFlowArticles({
     required LanguageEnum langUI,
     required List<LanguageEnum> langArticles,
-    required ArticleType type,
+    required PublicationType type,
     required FlowEnum flow,
     required SortEnum sort,
     required DatePeriodEnum period,

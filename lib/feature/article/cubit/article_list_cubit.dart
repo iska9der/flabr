@@ -6,9 +6,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../common/exception/exception_helper.dart';
 import '../../../common/exception/value_exception.dart';
 import '../../../common/model/network/list_response.dart';
+import '../../publication/model/publication_type.dart';
 import '../../settings/repository/language_repository.dart';
 import '../model/article_model.dart';
-import '../model/article_type.dart';
 import '../model/flow_enum.dart';
 import '../model/helper/article_list_source.dart';
 import '../model/network/article_list_response.dart';
@@ -30,7 +30,7 @@ class ArticleListCubit extends Cubit<ArticleListState> {
     FlowEnum flow = FlowEnum.all,
     String hub = '',
     String user = '',
-    ArticleType type = ArticleType.article,
+    PublicationType type = PublicationType.article,
   })  : _repository = repository,
         _languageRepository = languageRepository,
         super(

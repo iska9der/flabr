@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 
 import '../../../common/model/hub_type.dart';
 import '../../hub/model/hub_related_data.dart';
-import '../model/article_hub_model.dart';
+import '../../publication/model/publication_hub_model.dart';
 
 class ArticleHubsWidget extends StatelessWidget {
   const ArticleHubsWidget({super.key, required this.hubs});
 
-  final List<ArticleHubModel> hubs;
+  final List<PublicationHubModel> hubs;
 
   @override
   Widget build(BuildContext context) {
@@ -19,14 +19,7 @@ class ArticleHubsWidget extends StatelessWidget {
   }
 }
 
-/// TODO: когда появится авторизация, в `hub.relatedData`
-/// будет свойство `isSubscribed` - при true, добавлять
-/// в билд методе к стилю зеленый цвет
-///
-/// ``` style = style.copyWith(color: Colors.green) ```
-///
-///
-/// так же у `ArticleHubModel` есть свойство `type`
+/// TODO: у `ArticleHubModel` есть свойство `type`
 /// который может быть коллективным(хаб), или корпоративным (блог компании)
 ///
 /// в зависимости от типа, ссылка перехода в методе `onTap` будет меняться
@@ -34,7 +27,7 @@ class ArticleHubsWidget extends StatelessWidget {
 class _ArticleHubWidget extends StatelessWidget {
   const _ArticleHubWidget(this.hub);
 
-  final ArticleHubModel hub;
+  final PublicationHubModel hub;
 
   @override
   Widget build(BuildContext context) {

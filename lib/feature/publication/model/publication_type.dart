@@ -1,6 +1,6 @@
 import '../../../common/exception/value_exception.dart';
 
-enum ArticleType {
+enum PublicationType {
   article,
   post,
   news,
@@ -39,8 +39,8 @@ enum ArticleType {
   ///
   voice;
 
-  factory ArticleType.fromString(String value) {
-    return ArticleType.values.firstWhere(
+  factory PublicationType.fromString(String value) {
+    return PublicationType.values.firstWhere(
       (type) => type.name == value,
       orElse: () => throw ValueException('Тип статьи $value не существует'),
     );

@@ -1,54 +1,35 @@
 import 'package:equatable/equatable.dart';
 
-import 'article_author_model.dart';
+import '../../publication/model/publication.dart';
+import '../../publication/model/publication_author_model.dart';
+import '../../publication/model/publication_hub_model.dart';
+import '../../publication/model/publication_lead_data_model.dart';
+import '../../publication/model/publication_related_data_model.dart';
+import '../../publication/model/publication_statistics_model.dart';
+import '../../publication/model/publication_type.dart';
 import 'article_complexity.dart';
 import 'article_format.dart';
-import 'article_hub_model.dart';
-import 'article_lead_data_model.dart';
-import 'article_related_data.dart';
-import 'article_statistics_model.dart';
-import 'article_type.dart';
 
-class ArticleModel extends Equatable {
+class ArticleModel extends Publication with EquatableMixin {
   const ArticleModel({
-    required this.id,
-    this.type = ArticleType.article,
-    this.timePublished = '2022-12-22T10:10:00+00:00',
+    required super.id,
+    super.type,
+    super.timePublished,
+    super.textHtml,
+    super.author,
+    super.statistics,
+    super.relatedData,
+    super.hubs,
+    super.tags,
     this.titleHtml = '',
-    this.textHtml = '',
-    this.author = ArticleAuthorModel.empty,
-    this.statistics = ArticleStatisticsModel.empty,
-    this.leadData = ArticleLeadDataModel.empty,
-    this.relatedData = ArticleRelatedData.empty,
-    this.hubs = const [],
-    this.tags = const [],
+    this.leadData = PublicationLeadDataModel.empty,
     this.complexity,
     this.readingTime = 0,
     this.format,
   });
 
-  final String id;
-  final ArticleType type;
-
-  final String timePublished;
-
-  DateTime get publishedAt => DateTime.parse(timePublished).toLocal();
-
-  /// Заголовок
   final String titleHtml;
-
-  /// Полный текст статьи
-  /// прилетает, только если получаем конкретную статью по id
-  final String textHtml;
-
-  final ArticleAuthorModel author;
-  final ArticleStatisticsModel statistics;
-  final ArticleLeadDataModel leadData;
-  final ArticleRelatedData relatedData;
-
-  final List<ArticleHubModel> hubs;
-  final List<String> tags;
-
+  final PublicationLeadDataModel leadData;
   final ArticleComplexity? complexity;
   final int readingTime;
   final ArticleFormat? format;
@@ -57,26 +38,27 @@ class ArticleModel extends Equatable {
     return ArticleModel(
       id: map['id'],
       type: map.containsKey('postType') || map.containsKey('publicationType')
-          ? ArticleType.fromString(map['postType'] ?? map['publicationType'])
-          : ArticleType.article,
+          ? PublicationType.fromString(
+              map['postType'] ?? map['publicationType'])
+          : PublicationType.article,
       timePublished: map['timePublished'],
       titleHtml: map['titleHtml'] ?? '',
       textHtml: map['textHtml'] ?? '',
       author: map['author'] != null
-          ? ArticleAuthorModel.fromMap(map['author'])
-          : ArticleAuthorModel.empty,
+          ? PublicationAuthorModel.fromMap(map['author'])
+          : PublicationAuthorModel.empty,
       statistics: map['statistics'] != null
-          ? ArticleStatisticsModel.fromMap(map['statistics'])
-          : ArticleStatisticsModel.empty,
+          ? PublicationStatisticsModel.fromMap(map['statistics'])
+          : PublicationStatisticsModel.empty,
       leadData: map['leadData'] != null
-          ? ArticleLeadDataModel.fromMap(map['leadData'])
-          : ArticleLeadDataModel.empty,
+          ? PublicationLeadDataModel.fromMap(map['leadData'])
+          : PublicationLeadDataModel.empty,
       relatedData: map['relatedData'] != null
-          ? ArticleRelatedData.fromMap(map['relatedData'])
-          : ArticleRelatedData.empty,
+          ? PublicationRelatedDataModel.fromMap(map['relatedData'])
+          : PublicationRelatedDataModel.empty,
       hubs: map['hubs'] != null
-          ? List<ArticleHubModel>.from(
-              map['hubs'].map((e) => ArticleHubModel.fromMap(e)),
+          ? List<PublicationHubModel>.from(
+              map['hubs'].map((e) => PublicationHubModel.fromMap(e)),
             ).toList()
           : const [],
       tags: map.containsKey('tags')
@@ -113,5 +95,6 @@ class ArticleModel extends Equatable {
         complexity,
         readingTime,
         format,
+        publishedAt,
       ];
 }

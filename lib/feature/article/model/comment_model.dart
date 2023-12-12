@@ -2,13 +2,12 @@
 
 import 'package:equatable/equatable.dart';
 
-import 'article_author_model.dart';
-
+import '../../publication/model/publication_author_model.dart';
 
 class CommentModel extends Equatable {
   const CommentModel({
     required this.id,
-    this.author = ArticleAuthorModel.empty,
+    this.author = PublicationAuthorModel.empty,
     this.isPostAuthor = false,
     this.isAuthor = false,
     this.isFavorite = false,
@@ -30,7 +29,7 @@ class CommentModel extends Equatable {
   });
 
   final String id;
-  final ArticleAuthorModel author;
+  final PublicationAuthorModel author;
 
   final bool isPostAuthor;
   final bool isAuthor;
@@ -58,7 +57,7 @@ class CommentModel extends Equatable {
 
   CommentModel copyWith({
     String? id,
-    ArticleAuthorModel? author,
+    PublicationAuthorModel? author,
     bool? isPostAuthor,
     bool? isFavorite,
     bool? isNew,
@@ -106,8 +105,8 @@ class CommentModel extends Equatable {
     return CommentModel(
       id: map['id'],
       author: map['author'] != null && map['author'].isNotEmpty
-          ? ArticleAuthorModel.fromMap(map['author'])
-          : ArticleAuthorModel.empty,
+          ? PublicationAuthorModel.fromMap(map['author'])
+          : PublicationAuthorModel.empty,
       isPostAuthor: map['isPostAuthor'] as bool,
       isAuthor: map['isAuthor'] as bool,
       isFavorite: map['isFavorite'] as bool,

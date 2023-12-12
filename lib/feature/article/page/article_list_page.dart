@@ -15,12 +15,12 @@ import '../../../config/constants.dart';
 import '../../auth/cubit/auth_cubit.dart';
 import '../../enhancement/scroll/cubit/scroll_cubit.dart';
 import '../../enhancement/scroll/widget/floating_scroll_to_top_button.dart';
+import '../../publication/model/publication_type.dart';
 import '../../search/cubit/search_cubit.dart';
 import '../../search/repository/search_repository.dart';
 import '../../settings/cubit/settings_cubit.dart';
 import '../../settings/repository/language_repository.dart';
 import '../cubit/article_list_cubit.dart';
-import '../model/article_type.dart';
 import '../model/flow_enum.dart';
 import '../repository/article_repository.dart';
 import '../widget/article_list/article_list_appbar.dart';
@@ -66,10 +66,10 @@ class ArticleListPage extends StatelessWidget {
 class ArticleListView extends StatelessWidget {
   const ArticleListView({
     super.key,
-    this.type = ArticleType.article,
+    this.type = PublicationType.article,
   });
 
-  final ArticleType type;
+  final PublicationType type;
 
   @override
   Widget build(BuildContext context) {

@@ -4,8 +4,8 @@ import '../../../common/model/hub.dart';
 import '../../../common/model/hub_type.dart';
 import '../../hub/model/hub_related_data.dart';
 
-class ArticleHubModel extends HubBase with EquatableMixin {
-  const ArticleHubModel({
+class PublicationHubModel extends HubBase with EquatableMixin {
+  const PublicationHubModel({
     required this.id,
     super.alias = '',
     this.title = '',
@@ -19,8 +19,8 @@ class ArticleHubModel extends HubBase with EquatableMixin {
   final HubType type;
 
   @override
-  factory ArticleHubModel.fromMap(Map<String, dynamic> map) {
-    return ArticleHubModel(
+  factory PublicationHubModel.fromMap(Map<String, dynamic> map) {
+    return PublicationHubModel(
       id: map['id'],
       alias: map['alias'] as String,
       title: map['title'] as String,
@@ -32,7 +32,7 @@ class ArticleHubModel extends HubBase with EquatableMixin {
     );
   }
 
-  static const empty = ArticleHubModel(id: '0');
+  static const empty = PublicationHubModel(id: '0');
 
   @override
   List<Object?> get props => [

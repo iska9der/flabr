@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 import '../../../common/widget/feed/card_avatar_widget.dart';
 import '../../auth/widget/dialog.dart';
 import '../../auth/widget/profile_widget.dart';
-import '../model/article_author_model.dart';
+import '../../publication/model/publication_author_model.dart';
 
 class ArticleAuthorWidget extends StatelessWidget {
   const ArticleAuthorWidget(this.author, {super.key});
 
-  final ArticleAuthorModel author;
+  final PublicationAuthorModel author;
 
   @override
   Widget build(BuildContext context) {

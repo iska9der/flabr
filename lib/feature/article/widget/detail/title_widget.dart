@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../publication/model/publication_type.dart';
 import '../../model/article_model.dart';
-import '../../model/article_type.dart';
 
 class ArticleDetailTitle extends StatelessWidget {
   const ArticleDetailTitle(
@@ -13,7 +13,7 @@ class ArticleDetailTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return switch (article.type) {
-      ArticleType.post => const SizedBox(),
+      PublicationType.post => const SizedBox(),
       _ => Padding(
           padding: padding,
           child: SelectableText(

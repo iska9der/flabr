@@ -10,7 +10,7 @@ class ArticleListState extends Equatable {
     this.flow = FlowEnum.all,
     this.hub = '',
     this.user = '',
-    this.type = ArticleType.article,
+    this.type = PublicationType.article,
     this.sort = SortEnum.byNew,
     this.period = DatePeriodEnum.daily,
     this.score = '',
@@ -25,7 +25,7 @@ class ArticleListState extends Equatable {
   final FlowEnum flow;
   final String hub;
   final String user;
-  final ArticleType type;
+  final PublicationType type;
   final SortEnum sort;
   final DatePeriodEnum period;
   final String score;
@@ -40,7 +40,7 @@ class ArticleListState extends Equatable {
     FlowEnum? flow,
     String? hub,
     String? user,
-    ArticleType? type,
+    PublicationType? type,
     SortEnum? sort,
     DatePeriodEnum? period,
     String? score,

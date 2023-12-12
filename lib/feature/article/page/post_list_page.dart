@@ -5,9 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../component/di/dependencies.dart';
 import '../../enhancement/scaffold/scaffold.dart';
 import '../../enhancement/scroll/scroll.dart';
+import '../../publication/model/publication_type.dart';
 import '../../settings/repository/language_repository.dart';
 import '../cubit/article_list_cubit.dart';
-import '../model/article_type.dart';
 import '../model/flow_enum.dart';
 import '../repository/article_repository.dart';
 import 'article_list_page.dart';
@@ -34,7 +34,7 @@ class PostListPage extends StatelessWidget {
           create: (_) => ArticleListCubit(
             repository: getIt.get<ArticleRepository>(),
             languageRepository: getIt.get<LanguageRepository>(),
-            type: ArticleType.post,
+            type: PublicationType.post,
             flow: FlowEnum.fromString(flow),
           ),
         ),
@@ -45,7 +45,7 @@ class PostListPage extends StatelessWidget {
           create: (_) => ScaffoldCubit(),
         ),
       ],
-      child: const ArticleListView(type: ArticleType.post),
+      child: const ArticleListView(type: PublicationType.post),
     );
   }
 }

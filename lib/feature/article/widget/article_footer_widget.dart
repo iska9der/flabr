@@ -9,11 +9,11 @@ import '../../../common/utils/utils.dart';
 import '../../../component/di/dependencies.dart';
 import '../../auth/cubit/auth_cubit.dart';
 import '../../auth/widget/dialog.dart';
+import '../../publication/model/publication_type.dart';
 import '../../summary/cubit/summary_auth_cubit.dart';
 import '../../summary/widget/dialog.dart';
 import '../cubit/bookmark_cubit.dart';
 import '../model/article_model.dart';
-import '../model/article_type.dart';
 import '../page/comment/article_comment_page.dart';
 import '../page/comment/post_comment_page.dart';
 import '../repository/article_repository.dart';
@@ -49,7 +49,8 @@ class ArticleFooterWidget extends StatelessWidget {
           isHighlighted: article.relatedData.unreadCommentsCount > 0,
           onTap: () => context.router.pushWidget(
             switch (article.type) {
-              ArticleType.post => PostCommentListPage(articleId: article.id),
+              PublicationType.post =>
+                PostCommentListPage(articleId: article.id),
               _ => ArticleCommentListPage(articleId: article.id),
             },
           ),

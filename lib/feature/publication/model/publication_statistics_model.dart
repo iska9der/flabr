@@ -1,13 +1,7 @@
 import 'package:equatable/equatable.dart';
 
-class ArticleStatisticsModel extends Equatable {
-  final int commentsCount;
-  final int favoritesCount;
-  final int readingCount;
-  final int score;
-  final int votesCount;
-
-  const ArticleStatisticsModel({
+class PublicationStatisticsModel extends Equatable {
+  const PublicationStatisticsModel({
     this.commentsCount = 0,
     this.favoritesCount = 0,
     this.readingCount = 0,
@@ -15,8 +9,14 @@ class ArticleStatisticsModel extends Equatable {
     this.votesCount = 0,
   });
 
-  factory ArticleStatisticsModel.fromMap(Map<String, dynamic> map) {
-    return ArticleStatisticsModel(
+  final int commentsCount;
+  final int favoritesCount;
+  final int readingCount;
+  final int score;
+  final int votesCount;
+
+  factory PublicationStatisticsModel.fromMap(Map<String, dynamic> map) {
+    return PublicationStatisticsModel(
       commentsCount: map['commentsCount'],
       favoritesCount: map['favoritesCount'],
       readingCount: map['readingCount'],
@@ -25,7 +25,7 @@ class ArticleStatisticsModel extends Equatable {
     );
   }
 
-  static const empty = ArticleStatisticsModel();
+  static const empty = PublicationStatisticsModel();
 
   @override
   List<Object> get props => [

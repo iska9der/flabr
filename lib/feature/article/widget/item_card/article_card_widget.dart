@@ -7,9 +7,9 @@ import '../../../../common/model/render_type.dart';
 import '../../../../common/widget/enhancement/card.dart';
 import '../../../../config/constants.dart';
 import '../../../common/image/widget/network_image_widget.dart';
+import '../../../publication/model/publication_type.dart';
 import '../../../settings/cubit/settings_cubit.dart';
 import '../../model/article_model.dart';
-import '../../model/article_type.dart';
 import '../../page/detail/article_detail_page.dart';
 import '../article_footer_widget.dart';
 import '../article_header_widget.dart';
@@ -32,8 +32,8 @@ class ArticleCardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return switch (article.type) {
       /// Неопознанный отлетает в мусорку
-      ArticleType.voice => const SizedBox(),
-      ArticleType.post => PostCardWidget(article: article),
+      PublicationType.voice => const SizedBox(),
+      PublicationType.post => PostCardWidget(article: article),
       _ => FlabrCard(
           onTap: () => context.router.pushWidget(
             ArticleDetailPage(id: article.id),

@@ -6,7 +6,7 @@ import '../../../common/exception/value_exception.dart';
 import '../../../common/model/network/list_response.dart';
 import '../../../common/model/network/params.dart';
 import '../../../component/http/http_client.dart';
-import '../model/article_type.dart';
+import '../../publication/model/publication_type.dart';
 import '../model/flow_enum.dart';
 import '../model/helper/article_source.dart';
 import '../model/network/article_list_params.dart';
@@ -68,7 +68,7 @@ class ArticleService {
   Future<ListResponse> fetchFlowArticles({
     required String langUI,
     required String langArticles,
-    required ArticleType type,
+    required PublicationType type,
     required FlowEnum flow,
     required SortEnum sort,
     required String page,
@@ -80,7 +80,7 @@ class ArticleService {
           (flow == FlowEnum.all || flow == FlowEnum.feed) ? null : flow.name;
 
       final params = switch (type) {
-        ArticleType.post => PostListParams(
+        PublicationType.post => PostListParams(
             langArticles: langArticles,
             langUI: langUI,
             flow: flowStr,
@@ -94,7 +94,7 @@ class ArticleService {
             langArticles: langArticles,
             langUI: langUI,
             flow: flowStr,
-            news: type == ArticleType.news,
+            news: type == PublicationType.news,
             feed: flow == FlowEnum.feed ? 'true' : null,
 
             /// если мы находимся не во "Все потоки", в значение sort, по завету
@@ -110,7 +110,7 @@ class ArticleService {
       final response = await _mobileClient.get('/articles/?$queryString');
 
       return switch (type) {
-        ArticleType.post => PostListResponse.fromMap(response.data),
+        PublicationType.post => PostListResponse.fromMap(response.data),
         _ => ArticleListResponse.fromMap(response.data),
       } as ListResponse;
     } on DisplayableException {

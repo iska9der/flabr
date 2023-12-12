@@ -4,11 +4,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../component/theme.dart';
 import '../../../../config/constants.dart';
 import '../../../auth/widget/profile_icon_button.dart';
+import '../../../publication/model/publication_type.dart';
 import '../../../search/cubit/search_cubit.dart';
 import '../../../search/page/search.dart';
 import '../../../search/page/search_anywhere.dart';
 import '../../cubit/article_list_cubit.dart';
-import '../../model/article_type.dart';
 import '../../model/flow_enum.dart';
 import '../sort/articles_sort_widget.dart';
 import 'flow_dropdown_menu.dart';
@@ -18,7 +18,7 @@ import 'flow_dropdown_menu.dart';
 class ArticleListAppBar extends StatelessWidget {
   const ArticleListAppBar({super.key, required this.type});
 
-  final ArticleType type;
+  final PublicationType type;
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +40,7 @@ class _AppBar extends StatefulWidget {
     this.isFilterable = false,
   });
 
-  final ArticleType type;
+  final PublicationType type;
   final bool isFilterable;
 
   @override
@@ -111,7 +111,7 @@ class _AppBarState extends State<_AppBar> {
             padding: EdgeInsets.zero,
             onPressed: onFilterPress,
           ),
-        if (widget.type == ArticleType.article)
+        if (widget.type == PublicationType.article)
           IconButton(
             icon: const Icon(Icons.search_rounded),
             onPressed: () async {

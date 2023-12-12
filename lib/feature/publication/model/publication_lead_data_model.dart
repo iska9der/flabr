@@ -1,9 +1,9 @@
 import 'package:equatable/equatable.dart';
 
-import 'article_image_model.dart';
+import '../../article/model/article_image_model.dart';
 
-class ArticleLeadDataModel extends Equatable {
-  const ArticleLeadDataModel({
+class PublicationLeadDataModel extends Equatable {
+  const PublicationLeadDataModel({
     required this.textHtml,
     this.image = ArticleImageModel.empty,
     this.imageUrl = '',
@@ -15,8 +15,8 @@ class ArticleLeadDataModel extends Equatable {
   final String imageUrl;
   final String buttonTextHtml;
 
-  factory ArticleLeadDataModel.fromMap(Map<String, dynamic> map) {
-    return ArticleLeadDataModel(
+  factory PublicationLeadDataModel.fromMap(Map<String, dynamic> map) {
+    return PublicationLeadDataModel(
       textHtml: map['textHtml'],
       imageUrl: map['imageUrl'] ?? '',
       image: map['image'] != null
@@ -26,7 +26,7 @@ class ArticleLeadDataModel extends Equatable {
     );
   }
 
-  static const empty = ArticleLeadDataModel(textHtml: '');
+  static const empty = PublicationLeadDataModel(textHtml: '');
 
   @override
   List<Object?> get props => [textHtml, imageUrl, image, buttonTextHtml];
