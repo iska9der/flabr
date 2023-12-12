@@ -10,12 +10,12 @@ import '../../../../common/widget/enhancement/progress_indicator.dart';
 import '../../../../common/widget/html_view_widget.dart';
 import '../../../../component/di/dependencies.dart';
 import '../../../../config/constants.dart';
+import '../../../publication/model/comment/comment_model.dart';
+import '../../../publication/model/source/publication_source.dart';
 import '../../../publication/repository/publication_repository.dart';
 import '../../../settings/repository/language_repository.dart';
 import '../../cubit/comment_hidden_cubit.dart';
 import '../../cubit/comment_list_cubit.dart';
-import '../../model/comment_model.dart';
-import '../../model/helper/article_source.dart';
 import '../../widget/article_author_widget.dart';
 import '../../widget/comment/comment_rating_widget.dart';
 
@@ -41,7 +41,7 @@ class ArticleCommentListPage extends StatelessWidget {
         BlocProvider(
           create: (_) => CommentListCubit(
             articleId,
-            source: ArticleSource.article,
+            source: PublicationSource.article,
             repository: getIt.get<PublicationRepository>(),
             languageRepository: getIt.get<LanguageRepository>(),
           ),

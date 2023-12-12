@@ -1,10 +1,10 @@
 import 'package:equatable/equatable.dart';
 
 import '../../../../common/model/network/list_response.dart';
-import '../article_model.dart';
+import '../../../article/model/article_model.dart';
 
-class ArticleListResponse extends ListResponse with EquatableMixin {
-  const ArticleListResponse({
+class PublicationListResponse extends ListResponse with EquatableMixin {
+  const PublicationListResponse({
     super.pagesCount = 1,
     super.ids = const [],
     List<ArticleModel> super.refs = const [],
@@ -14,23 +14,23 @@ class ArticleListResponse extends ListResponse with EquatableMixin {
   List<ArticleModel> get refs => super.refs as List<ArticleModel>;
 
   @override
-  ArticleListResponse copyWith({
+  PublicationListResponse copyWith({
     int? pagesCount,
     List<String>? ids,
     List<dynamic>? refs,
   }) {
-    return ArticleListResponse(
+    return PublicationListResponse(
       pagesCount: pagesCount ?? this.pagesCount,
       ids: ids ?? this.ids,
       refs: List<ArticleModel>.from((refs ?? this.refs)),
     );
   }
 
-  factory ArticleListResponse.fromMap(Map<String, dynamic> map) {
+  factory PublicationListResponse.fromMap(Map<String, dynamic> map) {
     var idsMap = map['publicationIds'];
     Map refsMap = map['publicationRefs'];
 
-    return ArticleListResponse(
+    return PublicationListResponse(
       pagesCount: map['pagesCount'] ?? 0,
       ids: List<String>.from(idsMap),
       refs: Map.from(refsMap)
@@ -40,7 +40,7 @@ class ArticleListResponse extends ListResponse with EquatableMixin {
     );
   }
 
-  static const empty = ArticleListResponse(pagesCount: 0);
+  static const empty = PublicationListResponse(pagesCount: 0);
   get isEmpty => this == empty;
 
   @override

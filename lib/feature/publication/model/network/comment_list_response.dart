@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
-import '../comment_access_model.dart';
-import '../comment_model.dart';
+import '../comment/comment_access_model.dart';
+import '../comment/comment_model.dart';
 
 class CommentListResponse extends Equatable {
   const CommentListResponse({

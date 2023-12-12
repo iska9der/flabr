@@ -5,11 +5,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../component/di/dependencies.dart';
 import '../../enhancement/scaffold/scaffold.dart';
 import '../../enhancement/scroll/scroll.dart';
+import '../../publication/model/flow_enum.dart';
 import '../../publication/model/publication_type.dart';
 import '../../publication/repository/publication_repository.dart';
 import '../../settings/repository/language_repository.dart';
 import '../cubit/article_list_cubit.dart';
-import '../model/flow_enum.dart';
 import 'article_list_page.dart';
 
 @RoutePage(name: NewsListPage.routeName)

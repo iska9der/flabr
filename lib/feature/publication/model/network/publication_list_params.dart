@@ -1,7 +1,7 @@
 import '../../../../common/model/network/params.dart';
 
-class ArticleListParams extends Params {
-  const ArticleListParams({
+class PublicationListParams extends Params {
+  const PublicationListParams({
     super.langArticles = 'ru',
     super.langUI = 'ru',
     super.page = '',

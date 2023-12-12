@@ -1,2 +1,2 @@
 /// Источник запроса на получение списка статей
-enum ArticleListSource { flow, hubArticles, userArticles, userBookmarks }
+enum PublicationListSource { flow, hubArticles, userArticles, userBookmarks }

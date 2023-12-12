@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 import '../../../common/model/hub.dart';
-import '../../article/model/flow_enum.dart';
+import '../../publication/model/flow_enum.dart';
 import 'hub_related_data.dart';
 import 'hub_statistics_model.dart';
 

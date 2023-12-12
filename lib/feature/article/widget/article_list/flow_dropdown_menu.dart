@@ -4,9 +4,9 @@ import 'package:responsive_framework/responsive_framework.dart';
 
 import '../../../../component/theme/responsive.dart';
 import '../../../auth/cubit/auth_cubit.dart';
+import '../../../publication/model/flow_enum.dart';
 import '../../../publication/model/publication_type.dart';
 import '../../cubit/article_list_cubit.dart';
-import '../../model/flow_enum.dart';
 
 class FlowDropdownMenu extends StatelessWidget {
   const FlowDropdownMenu({super.key, required this.type});

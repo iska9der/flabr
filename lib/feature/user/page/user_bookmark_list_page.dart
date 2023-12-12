@@ -5,8 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../common/widget/article_list_sliver.dart';
 import '../../../component/di/dependencies.dart';
 import '../../article/cubit/article_list_cubit.dart';
-import '../../article/model/helper/article_list_source.dart';
 import '../../enhancement/scroll/scroll.dart';
+import '../../publication/model/source/publication_list_source.dart';
 import '../../publication/repository/publication_repository.dart';
 import '../../settings/repository/language_repository.dart';
 import '../cubit/user_cubit.dart';
@@ -30,7 +30,7 @@ class UserBookmarkListPage extends StatelessWidget {
           create: (_) => ArticleListCubit(
             repository: getIt.get<PublicationRepository>(),
             languageRepository: getIt.get<LanguageRepository>(),
-            source: ArticleListSource.userBookmarks,
+            source: PublicationListSource.userBookmarks,
             user: cubit.state.login,
           ),
         ),

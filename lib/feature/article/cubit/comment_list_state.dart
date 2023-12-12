@@ -15,7 +15,7 @@ class CommentListState extends Equatable {
   final String error;
 
   final String articleId;
-  final ArticleSource source;
+  final PublicationSource source;
   final CommentListResponse list;
 
   CommentListState copyWith({

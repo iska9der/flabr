@@ -6,19 +6,19 @@ import '../../../common/exception/value_exception.dart';
 import '../../../common/model/network/list_response.dart';
 import '../../../common/model/network/params.dart';
 import '../../../component/http/http_client.dart';
-import '../../article/model/flow_enum.dart';
-import '../../article/model/helper/article_source.dart';
-import '../../article/model/network/article_list_params.dart';
-import '../../article/model/network/article_list_response.dart';
-import '../../article/model/network/comment_list_exception.dart';
-import '../../article/model/network/comment_list_params.dart';
-import '../../article/model/network/comment_list_response.dart';
 import '../../article/model/network/most_reading_response.dart';
 import '../../article/model/network/post_list_params.dart';
 import '../../article/model/network/post_list_response.dart';
-import '../../article/model/sort/date_period_enum.dart';
-import '../../article/model/sort/sort_enum.dart';
+import '../model/flow_enum.dart';
+import '../model/network/comment_list_exception.dart';
+import '../model/network/comment_list_params.dart';
+import '../model/network/comment_list_response.dart';
+import '../model/network/publication_list_params.dart';
+import '../model/network/publication_list_response.dart';
 import '../model/publication_type.dart';
+import '../model/sort/date_period_enum.dart';
+import '../model/sort/sort_enum.dart';
+import '../model/source/publication_source.dart';
 
 class PublicationService {
   const PublicationService(
@@ -90,7 +90,7 @@ class PublicationService {
             score: score,
             page: page,
           ),
-        _ => ArticleListParams(
+        _ => PublicationListParams(
             langArticles: langArticles,
             langUI: langUI,
             flow: flowStr,
@@ -111,7 +111,7 @@ class PublicationService {
 
       return switch (type) {
         PublicationType.post => PostListResponse.fromMap(response.data),
-        _ => ArticleListResponse.fromMap(response.data),
+        _ => PublicationListResponse.fromMap(response.data),
       } as ListResponse;
     } on DisplayableException {
       rethrow;
@@ -120,7 +120,7 @@ class PublicationService {
     }
   }
 
-  Future<ArticleListResponse> fetchHubArticles({
+  Future<PublicationListResponse> fetchHubArticles({
     required String langUI,
     required String langArticles,
     required String hub,
@@ -130,7 +130,7 @@ class PublicationService {
     required String page,
   }) async {
     try {
-      final params = ArticleListParams(
+      final params = PublicationListParams(
         langArticles: langArticles,
         langUI: langUI,
         sort: 'all',
@@ -144,7 +144,7 @@ class PublicationService {
         '/articles/?hub=$hub&$queryString',
       );
 
-      return ArticleListResponse.fromMap(response.data);
+      return PublicationListResponse.fromMap(response.data);
     } on DisplayableException {
       rethrow;
     } on DioException {
@@ -152,7 +152,7 @@ class PublicationService {
     }
   }
 
-  Future<ArticleListResponse> fetchUserArticles({
+  Future<PublicationListResponse> fetchUserArticles({
     required String langUI,
     required String langArticles,
     required String user,
@@ -162,7 +162,7 @@ class PublicationService {
     required String page,
   }) async {
     try {
-      final params = ArticleListParams(
+      final params = PublicationListParams(
         langArticles: langArticles,
         langUI: langUI,
         page: page,
@@ -173,7 +173,7 @@ class PublicationService {
         '/articles/?user=$user&$queryString',
       );
 
-      return ArticleListResponse.fromMap(response.data);
+      return PublicationListResponse.fromMap(response.data);
     } on DisplayableException {
       rethrow;
     } on DioException {
@@ -181,14 +181,14 @@ class PublicationService {
     }
   }
 
-  Future<ArticleListResponse> fetchUserBookmarks({
+  Future<PublicationListResponse> fetchUserBookmarks({
     required String langUI,
     required String langArticles,
     required String user,
     required String page,
   }) async {
     try {
-      final params = ArticleListParams(
+      final params = PublicationListParams(
         langArticles: langArticles,
         langUI: langUI,
         page: page,
@@ -199,7 +199,7 @@ class PublicationService {
         '/articles/?user=$user&user_bookmarks=true&$queryString',
       );
 
-      return ArticleListResponse.fromMap(response.data);
+      return PublicationListResponse.fromMap(response.data);
     } on DisplayableException {
       rethrow;
     } on DioException {
@@ -209,7 +209,7 @@ class PublicationService {
 
   Future<CommentListResponse> fetchComments({
     required String articleId,
-    required ArticleSource source,
+    required PublicationSource source,
     required String langUI,
     required String langArticles,
   }) async {
@@ -220,7 +220,7 @@ class PublicationService {
       );
 
       final firstPathPart = switch (source) {
-        ArticleSource.post => 'threads',
+        PublicationSource.post => 'threads',
         _ => 'articles',
       };
 
@@ -279,7 +279,7 @@ class PublicationService {
     required String langArticles,
   }) async {
     try {
-      final params = ArticleListParams(
+      final params = PublicationListParams(
         langArticles: langArticles,
         langUI: langUI,
       );

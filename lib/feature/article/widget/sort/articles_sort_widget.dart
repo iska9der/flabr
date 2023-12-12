@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../publication/model/sort/date_period_enum.dart';
+import '../../../publication/model/sort/rating_score_enum.dart';
+import '../../../publication/model/sort/sort_enum.dart';
+import '../../../publication/model/sort/sort_option_model.dart';
 import '../../cubit/article_list_cubit.dart';
-import '../../model/sort/date_period_enum.dart';
-import '../../model/sort/rating_score_enum.dart';
-import '../../model/sort/sort_enum.dart';
-import '../../model/sort/sort_option_model.dart';
 
 part 'sort_by_widget.dart';
 part 'sort_options_widget.dart';

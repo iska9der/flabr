@@ -2,20 +2,20 @@ import 'package:html2md/html2md.dart' as html2md;
 
 import 'format.dart';
 
-class ArticleDownloadFormatConverter {
-  ArticleDownloadFormatConverter({
+class PublicationTextFormatConverter {
+  PublicationTextFormatConverter({
     required this.text,
     required this.desiredFormat,
   });
 
   final String text;
-  final ArticleDownloadFormat desiredFormat;
+  final PublicationDownloadFormat desiredFormat;
 
   String convert() {
     switch (desiredFormat) {
-      case ArticleDownloadFormat.html:
+      case PublicationDownloadFormat.html:
         return _foldHtml(text);
-      case ArticleDownloadFormat.markdown:
+      case PublicationDownloadFormat.markdown:
         return html2md.convert(text);
     }
   }

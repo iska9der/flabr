@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../publication/model/download/format.dart';
 import '../../cubit/article_download_cubit.dart';
 import '../../model/article_model.dart';
-import '../../model/download/format.dart';
 
 class SaveExpansionWidget extends StatelessWidget {
   const SaveExpansionWidget({super.key, required this.article});
@@ -24,7 +24,7 @@ class SaveExpansionWidget extends StatelessWidget {
             BlocProvider(
               create: (_) => ArticleDownloadCubit(
                 article: article,
-                format: ArticleDownloadFormat.markdown,
+                format: PublicationDownloadFormat.markdown,
               ),
               child: const Expanded(
                 child: _SaveButton(label: 'Markdown'),
@@ -34,7 +34,7 @@ class SaveExpansionWidget extends StatelessWidget {
             BlocProvider(
               create: (_) => ArticleDownloadCubit(
                 article: article,
-                format: ArticleDownloadFormat.html,
+                format: PublicationDownloadFormat.html,
               ),
               child: const Expanded(
                 child: _SaveButton(label: 'HTML'),

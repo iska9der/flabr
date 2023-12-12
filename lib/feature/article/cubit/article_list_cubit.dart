@@ -6,16 +6,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../common/exception/exception_helper.dart';
 import '../../../common/exception/value_exception.dart';
 import '../../../common/model/network/list_response.dart';
+import '../../publication/model/flow_enum.dart';
+import '../../publication/model/network/publication_list_response.dart';
 import '../../publication/model/publication_type.dart';
+import '../../publication/model/sort/date_period_enum.dart';
+import '../../publication/model/sort/sort_enum.dart';
+import '../../publication/model/sort/sort_option_model.dart';
+import '../../publication/model/source/publication_list_source.dart';
 import '../../publication/repository/publication_repository.dart';
 import '../../settings/repository/language_repository.dart';
 import '../model/article_model.dart';
-import '../model/flow_enum.dart';
-import '../model/helper/article_list_source.dart';
-import '../model/network/article_list_response.dart';
-import '../model/sort/date_period_enum.dart';
-import '../model/sort/sort_enum.dart';
-import '../model/sort/sort_option_model.dart';
 
 part 'article_list_state.dart';
 
@@ -26,7 +26,7 @@ class ArticleListCubit extends Cubit<ArticleListState> {
   ArticleListCubit({
     required PublicationRepository repository,
     required LanguageRepository languageRepository,
-    ArticleListSource source = ArticleListSource.flow,
+    PublicationListSource source = PublicationListSource.flow,
     FlowEnum flow = FlowEnum.all,
     String hub = '',
     String user = '',
@@ -42,10 +42,10 @@ class ArticleListCubit extends Cubit<ArticleListState> {
             type: type,
           ),
         ) {
-    if (source == ArticleListSource.hubArticles) {
+    if (source == PublicationListSource.hubArticles) {
       assert(state.hub.isNotEmpty, 'Нужно указать хаб [hub]');
     }
-    if (source == ArticleListSource.userArticles) {
+    if (source == PublicationListSource.userArticles) {
       assert(state.user.isNotEmpty, 'Нужно указать пользователя [user]');
     }
 
@@ -133,10 +133,10 @@ class ArticleListCubit extends Cubit<ArticleListState> {
 
     try {
       ListResponse response = switch (state.source) {
-        ArticleListSource.flow => await _fetchFlowArticles(),
-        ArticleListSource.hubArticles => await _fetchHubArticles(),
-        ArticleListSource.userArticles => await _fetchUserArticles(),
-        ArticleListSource.userBookmarks => await _fetchUserBookmarks()
+        PublicationListSource.flow => await _fetchFlowArticles(),
+        PublicationListSource.hubArticles => await _fetchHubArticles(),
+        PublicationListSource.userArticles => await _fetchUserArticles(),
+        PublicationListSource.userBookmarks => await _fetchUserBookmarks()
       };
 
       emit(state.copyWith(
@@ -168,7 +168,7 @@ class ArticleListCubit extends Cubit<ArticleListState> {
     );
   }
 
-  Future<ArticleListResponse> _fetchHubArticles() async {
+  Future<PublicationListResponse> _fetchHubArticles() async {
     return await _repository.fetchHubArticles(
       langUI: _languageRepository.ui,
       langArticles: _languageRepository.articles,
@@ -180,7 +180,7 @@ class ArticleListCubit extends Cubit<ArticleListState> {
     );
   }
 
-  Future<ArticleListResponse> _fetchUserArticles() async {
+  Future<PublicationListResponse> _fetchUserArticles() async {
     return await _repository.fetchUserArticles(
       langUI: _languageRepository.ui,
       langArticles: _languageRepository.articles,
@@ -192,7 +192,7 @@ class ArticleListCubit extends Cubit<ArticleListState> {
     );
   }
 
-  Future<ArticleListResponse> _fetchUserBookmarks() async {
+  Future<PublicationListResponse> _fetchUserBookmarks() async {
     return await _repository.fetchUserBookmarks(
       langUI: _languageRepository.ui,
       langArticles: _languageRepository.articles,

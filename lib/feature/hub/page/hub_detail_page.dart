@@ -7,9 +7,9 @@ import '../../../common/widget/enhancement/progress_indicator.dart';
 import '../../../component/di/dependencies.dart';
 import '../../../config/constants.dart';
 import '../../article/cubit/article_list_cubit.dart';
-import '../../article/model/helper/article_list_source.dart';
 import '../../article/widget/sort/articles_sort_widget.dart';
 import '../../enhancement/scroll/scroll.dart';
+import '../../publication/model/source/publication_list_source.dart';
 import '../../publication/repository/publication_repository.dart';
 import '../../settings/cubit/settings_cubit.dart';
 import '../../settings/repository/language_repository.dart';
@@ -37,7 +37,7 @@ class HubDetailPage extends StatelessWidget {
           create: (_) => ArticleListCubit(
             repository: getIt.get<PublicationRepository>(),
             languageRepository: getIt.get<LanguageRepository>(),
-            source: ArticleListSource.hubArticles,
+            source: PublicationListSource.hubArticles,
             hub: cubit.state.alias,
           ),
         ),

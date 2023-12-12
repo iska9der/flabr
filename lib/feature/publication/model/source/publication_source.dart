@@ -1,4 +1,4 @@
-enum ArticleSource {
+enum PublicationSource {
   article,
   post,
   news,

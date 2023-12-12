@@ -8,7 +8,7 @@ class ArticleDownloadState extends Equatable {
     this.articleId = '',
     this.articleTitle = '',
     this.articleHtmlText = '',
-    this.format = ArticleDownloadFormat.html,
+    this.format = PublicationDownloadFormat.html,
     this.status = ArticleDownloadStatus.initial,
     this.error = '',
   });
@@ -16,7 +16,7 @@ class ArticleDownloadState extends Equatable {
   final String articleId;
   final String articleTitle;
   final String articleHtmlText;
-  final ArticleDownloadFormat format;
+  final PublicationDownloadFormat format;
   final ArticleDownloadStatus status;
   final String error;
 

@@ -4,17 +4,17 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_file_dialog/flutter_file_dialog.dart';
 
+import '../../publication/model/download/format.dart';
+import '../../publication/model/download/format_converter.dart';
 import '../model/article_model.dart';
-import '../model/download/format.dart';
-import '../model/download/format_converter.dart';
 
 part 'article_download_state.dart';
 
 class ArticleDownloadCubit extends Cubit<ArticleDownloadState> {
   ArticleDownloadCubit({
     required ArticleModel article,
-    required ArticleDownloadFormat format,
-  })  : converter = ArticleDownloadFormatConverter(
+    required PublicationDownloadFormat format,
+  })  : converter = PublicationTextFormatConverter(
           text: article.textHtml,
           desiredFormat: format,
         ),
@@ -28,7 +28,7 @@ class ArticleDownloadCubit extends Cubit<ArticleDownloadState> {
   }
 
   final String additionalPath = 'articles';
-  final ArticleDownloadFormatConverter converter;
+  final PublicationTextFormatConverter converter;
 
   _init() async {
     if (!await FlutterFileDialog.isPickDirectorySupported()) {

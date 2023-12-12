@@ -4,17 +4,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../component/language.dart';
 import '../../../common/exception/exception_helper.dart';
 import '../../../common/model/extension/enum_status.dart';
+import '../../publication/model/network/comment_list_response.dart';
+import '../../publication/model/source/publication_source.dart';
 import '../../publication/repository/publication_repository.dart';
 import '../../settings/repository/language_repository.dart';
-import '../model/helper/article_source.dart';
-import '../model/network/comment_list_response.dart';
 
 part 'comment_list_state.dart';
 
 class CommentListCubit extends Cubit<CommentListState> {
   CommentListCubit(
     String articleId, {
-    required ArticleSource source,
+    required PublicationSource source,
     required PublicationRepository repository,
     required LanguageRepository languageRepository,
   })  : _repository = repository,

@@ -15,7 +15,7 @@ class ArticleState extends Equatable {
   final String error;
 
   final String id;
-  final ArticleSource source;
+  final PublicationSource source;
   final ArticleModel article;
 
   ArticleState copyWith({

@@ -2,14 +2,14 @@ import '../../../common/model/network/list_response.dart';
 import '../../../component/localization/language_enum.dart';
 import '../../../component/localization/language_helper.dart';
 import '../../article/model/article_model.dart';
-import '../../article/model/flow_enum.dart';
-import '../../article/model/helper/article_source.dart';
-import '../../article/model/network/article_list_response.dart';
-import '../../article/model/network/comment_list_response.dart';
 import '../../article/model/network/most_reading_response.dart';
-import '../../article/model/sort/date_period_enum.dart';
-import '../../article/model/sort/sort_enum.dart';
+import '../model/flow_enum.dart';
+import '../model/network/comment_list_response.dart';
+import '../model/network/publication_list_response.dart';
 import '../model/publication_type.dart';
+import '../model/sort/date_period_enum.dart';
+import '../model/sort/sort_enum.dart';
+import '../model/source/publication_source.dart';
 import '../service/publication_service.dart';
 
 class PublicationRepository {
@@ -19,12 +19,12 @@ class PublicationRepository {
 
   Future<ArticleModel> fetchById(
     String id, {
-    required ArticleSource source,
+    required PublicationSource source,
     required LanguageEnum langUI,
     required List<LanguageEnum> langArticles,
   }) async {
     final rawData = switch (source) {
-      ArticleSource.post => await service.fetchPostById(
+      PublicationSource.post => await service.fetchPostById(
           id,
           langUI: langUI.name,
           langArticles: encodeLangs(langArticles),
@@ -86,7 +86,7 @@ class PublicationRepository {
     return response;
   }
 
-  Future<ArticleListResponse> fetchHubArticles({
+  Future<PublicationListResponse> fetchHubArticles({
     required LanguageEnum langUI,
     required List<LanguageEnum> langArticles,
     required String hub,
@@ -110,7 +110,7 @@ class PublicationRepository {
     return response;
   }
 
-  Future<ArticleListResponse> fetchUserArticles({
+  Future<PublicationListResponse> fetchUserArticles({
     required LanguageEnum langUI,
     required List<LanguageEnum> langArticles,
     required String user,
@@ -160,7 +160,7 @@ class PublicationRepository {
 
   Future<CommentListResponse> fetchComments({
     required String articleId,
-    required ArticleSource source,
+    required PublicationSource source,
     required LanguageEnum langUI,
     required List<LanguageEnum> langArticles,
   }) async {
