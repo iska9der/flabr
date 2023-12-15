@@ -5,12 +5,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../component/di/dependencies.dart';
 import '../../enhancement/scaffold/scaffold.dart';
 import '../../enhancement/scroll/scroll.dart';
+import '../../publication/cubit/publication_list_cubit.dart';
 import '../../publication/model/flow_enum.dart';
 import '../../publication/model/publication_type.dart';
 import '../../publication/repository/publication_repository.dart';
 import '../../publication/view/publication_list_view.dart';
 import '../../settings/repository/language_repository.dart';
-import '../cubit/article_list_cubit.dart';
 
 @RoutePage(name: PostListPage.routeName)
 class PostListPage extends StatelessWidget {
@@ -31,7 +31,7 @@ class PostListPage extends StatelessWidget {
       key: ValueKey('posts-$flow-flow'),
       providers: [
         BlocProvider(
-          create: (_) => ArticleListCubit(
+          create: (_) => PublicationListCubit(
             repository: getIt.get<PublicationRepository>(),
             languageRepository: getIt.get<LanguageRepository>(),
             type: PublicationType.post,

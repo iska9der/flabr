@@ -8,10 +8,10 @@ import '../../../common/widget/enhancement/app_expansion_panel.dart';
 import '../../../common/widget/enhancement/progress_indicator.dart';
 import '../../../common/widget/html_view_widget.dart';
 import '../../../config/constants.dart';
-import '../../article/cubit/comment_hidden_cubit.dart';
-import '../../article/cubit/comment_list_cubit.dart';
 import '../../article/widget/article_author_widget.dart';
 import '../../article/widget/comment/comment_rating_widget.dart';
+import '../cubit/comment/comment_hidden_cubit.dart';
+import '../cubit/comment/comment_list_cubit.dart';
 import '../model/comment/comment_model.dart';
 
 const _paddingBetweenTrees = 12.0;

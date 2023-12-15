@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 import '../../../../common/model/network/list_response.dart';
-import '../article_model.dart';
+import '../../../article/model/article_model.dart';
 
 class MostReadingResponse extends ListResponse with EquatableMixin {
   const MostReadingResponse({

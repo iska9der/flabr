@@ -4,11 +4,10 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:share_plus/share_plus.dart';
 
-import '../../../common/widget/article_settings_widget.dart';
 import '../../../common/widget/enhancement/progress_indicator.dart';
 import '../../../common/widget/html_view_widget.dart';
+import '../../../common/widget/publication_settings_widget.dart';
 import '../../../config/constants.dart';
-import '../../article/cubit/article_cubit.dart';
 import '../../article/widget/article_footer_widget.dart';
 import '../../article/widget/article_header_widget.dart';
 import '../../article/widget/article_hubs_widget.dart';
@@ -17,6 +16,7 @@ import '../../article/widget/article_more_widget.dart';
 import '../../article/widget/detail/appbar_title_widget.dart';
 import '../../article/widget/detail/title_widget.dart';
 import '../../article/widget/stats/article_stats_widget.dart';
+import '../cubit/publication_detail_cubit.dart';
 
 const double _hPadding = 12.0;
 const double _vPadding = 10.0;
@@ -66,10 +66,10 @@ class _PublicationDetailViewState extends State<PublicationDetailView> {
       ),
       body: SafeArea(
         bottom: false,
-        child: BlocBuilder<ArticleCubit, ArticleState>(
+        child: BlocBuilder<PublicationDetailCubit, PublicationDetailState>(
           builder: (context, state) {
             if (state.status == ArticleStatus.initial) {
-              context.read<ArticleCubit>().fetch();
+              context.read<PublicationDetailCubit>().fetch();
 
               return const CircleIndicator();
             }
@@ -139,7 +139,7 @@ class _PublicationDetailViewState extends State<PublicationDetailView> {
                                     builder: (context) {
                                       return const SizedBox(
                                         height: 240,
-                                        child: ArticleSettingsWidget(),
+                                        child: PublicationSettingsWidget(),
                                       );
                                     },
                                   ),
@@ -243,7 +243,7 @@ class _ArticleBottomBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ArticleCubit, ArticleState>(
+    return BlocBuilder<PublicationDetailCubit, PublicationDetailState>(
       builder: (context, state) {
         if (state.article.isEmpty) return const SizedBox();
 

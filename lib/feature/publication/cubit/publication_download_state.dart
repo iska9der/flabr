@@ -1,15 +1,21 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-part of 'article_download_cubit.dart';
+part of 'publication_download_cubit.dart';
 
-enum ArticleDownloadStatus { initial, notSupported, loading, success, failure }
+enum PublicationDownloadStatus {
+  initial,
+  notSupported,
+  loading,
+  success,
+  failure
+}
 
-class ArticleDownloadState extends Equatable {
-  const ArticleDownloadState({
+class PublicationDownloadState extends Equatable {
+  const PublicationDownloadState({
     this.articleId = '',
     this.articleTitle = '',
     this.articleHtmlText = '',
     this.format = PublicationDownloadFormat.html,
-    this.status = ArticleDownloadStatus.initial,
+    this.status = PublicationDownloadStatus.initial,
     this.error = '',
   });
 
@@ -17,16 +23,16 @@ class ArticleDownloadState extends Equatable {
   final String articleTitle;
   final String articleHtmlText;
   final PublicationDownloadFormat format;
-  final ArticleDownloadStatus status;
+  final PublicationDownloadStatus status;
   final String error;
 
   String get fileName => '$articleId.${format.ext}';
 
-  ArticleDownloadState copyWith({
+  PublicationDownloadState copyWith({
     String? error,
-    ArticleDownloadStatus? status,
+    PublicationDownloadStatus? status,
   }) {
-    return ArticleDownloadState(
+    return PublicationDownloadState(
       articleId: articleId,
       articleTitle: articleTitle,
       articleHtmlText: articleHtmlText,

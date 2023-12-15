@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../publication/cubit/publication_download_cubit.dart';
 import '../../../publication/model/download/format.dart';
-import '../../cubit/article_download_cubit.dart';
 import '../../model/article_model.dart';
 
 class SaveExpansionWidget extends StatelessWidget {
@@ -22,7 +22,7 @@ class SaveExpansionWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             BlocProvider(
-              create: (_) => ArticleDownloadCubit(
+              create: (_) => PublicationDownloadCubit(
                 article: article,
                 format: PublicationDownloadFormat.markdown,
               ),
@@ -32,7 +32,7 @@ class SaveExpansionWidget extends StatelessWidget {
             ),
             const SizedBox(width: 16),
             BlocProvider(
-              create: (_) => ArticleDownloadCubit(
+              create: (_) => PublicationDownloadCubit(
                 article: article,
                 format: PublicationDownloadFormat.html,
               ),
@@ -54,21 +54,21 @@ class _SaveButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ArticleDownloadCubit, ArticleDownloadState>(
+    return BlocBuilder<PublicationDownloadCubit, PublicationDownloadState>(
       builder: (context, state) {
         return OutlinedButton.icon(
           icon: const Icon(Icons.save_alt_rounded),
           label: switch (state.status) {
-            ArticleDownloadStatus.success => const Text('Сохранено'),
-            ArticleDownloadStatus.notSupported => const Text('Недоступно'),
+            PublicationDownloadStatus.success => const Text('Сохранено'),
+            PublicationDownloadStatus.notSupported => const Text('Недоступно'),
             _ => Text(label),
           },
           onPressed: switch (state.status) {
-            ArticleDownloadStatus.notSupported ||
-            ArticleDownloadStatus.loading ||
-            ArticleDownloadStatus.success =>
+            PublicationDownloadStatus.notSupported ||
+            PublicationDownloadStatus.loading ||
+            PublicationDownloadStatus.success =>
               null,
-            _ => () => context.read<ArticleDownloadCubit>().pickAndSave(),
+            _ => () => context.read<PublicationDownloadCubit>().pickAndSave(),
           },
         );
       },

@@ -4,12 +4,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../component/theme.dart';
 import '../../../../config/constants.dart';
 import '../../../auth/widget/profile_icon_button.dart';
+import '../../../publication/cubit/publication_list_cubit.dart';
 import '../../../publication/model/flow_enum.dart';
 import '../../../publication/model/publication_type.dart';
 import '../../../search/cubit/search_cubit.dart';
 import '../../../search/page/search.dart';
 import '../../../search/page/search_anywhere.dart';
-import '../../cubit/article_list_cubit.dart';
 import '../sort/articles_sort_widget.dart';
 import 'flow_dropdown_menu.dart';
 
@@ -22,7 +22,7 @@ class ArticleListAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ArticleListCubit, ArticleListState>(
+    return BlocBuilder<PublicationListCubit, PublicationListState>(
       buildWhen: (previous, current) => previous.flow != current.flow,
       builder: (context, state) {
         return _AppBar(

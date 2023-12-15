@@ -4,19 +4,19 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_framework/responsive_value.dart';
 
 import '../../../common/model/extension/enum_status.dart';
-import '../../../common/widget/article_list_sliver.dart';
 import '../../../common/widget/enhancement/card.dart';
 import '../../../common/widget/enhancement/responsive_visibility.dart';
+import '../../../common/widget/publication_sliver_list.dart';
 import '../../../component/theme/constants.dart';
 import '../../../component/theme/responsive.dart';
 import '../../../config/constants.dart';
-import '../../article/cubit/article_list_cubit.dart';
 import '../../article/widget/article_list/article_list_appbar.dart';
 import '../../article/widget/most_reading_widget.dart';
 import '../../auth/cubit/auth_cubit.dart';
 import '../../enhancement/scroll/cubit/scroll_cubit.dart';
 import '../../enhancement/scroll/widget/floating_scroll_to_top_button.dart';
 import '../../settings/cubit/settings_cubit.dart';
+import '../cubit/publication_list_cubit.dart';
 import '../model/flow_enum.dart';
 import '../model/publication_type.dart';
 
@@ -30,7 +30,7 @@ class PublicationListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final articlesCubit = context.read<ArticleListCubit>();
+    final pubCubit = context.read<PublicationListCubit>();
     final scrollCubit = context.read<ScrollCubit>();
     final scrollController = scrollCubit.state.controller;
 
@@ -43,7 +43,7 @@ class PublicationListView extends StatelessWidget {
         BlocListener<AuthCubit, AuthState>(
           listenWhen: (p, c) => p.status.isLoading && c.isAuthorized,
           listener: (context, state) {
-            articlesCubit.refetch();
+            pubCubit.refetch();
           },
         ),
 
@@ -56,11 +56,11 @@ class PublicationListView extends StatelessWidget {
         BlocListener<AuthCubit, AuthState>(
           listenWhen: (p, c) => p.status.isLoading && c.isUnauthorized,
           listener: (context, state) {
-            if (articlesCubit.state.flow == FlowEnum.feed) {
-              return articlesCubit.changeFlow(FlowEnum.all);
+            if (pubCubit.state.flow == FlowEnum.feed) {
+              return pubCubit.changeFlow(FlowEnum.all);
             }
 
-            articlesCubit.refetch();
+            pubCubit.refetch();
           },
         ),
 
@@ -75,7 +75,7 @@ class PublicationListView extends StatelessWidget {
         /// Когда скролл достиг предела, получаем следующую страницу
         BlocListener<ScrollCubit, ScrollState>(
           listenWhen: (p, c) => c.isBottomEdge,
-          listener: (c, state) => articlesCubit.fetch(),
+          listener: (c, state) => pubCubit.fetch(),
         ),
       ],
       child: Scaffold(
@@ -105,7 +105,7 @@ class PublicationListView extends StatelessWidget {
                 ),
                 SliverCrossAxisGroup(
                   slivers: [
-                    const ArticleListSliver(),
+                    const PublicationSliverList(),
                     ResponsiveVisibilitySliver(
                       visible: false,
                       visibleConditions: [

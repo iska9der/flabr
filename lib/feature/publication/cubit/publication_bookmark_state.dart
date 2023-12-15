@@ -1,10 +1,10 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-part of 'bookmark_cubit.dart';
+part of 'publication_bookmark_cubit.dart';
 
 enum BookmarkStatus { success, loading, failure }
 
-class BookmarkState extends Equatable {
-  const BookmarkState({
+class PublicationBookmarkState extends Equatable {
+  const PublicationBookmarkState({
     this.status = BookmarkStatus.success,
     this.error = '',
     required this.articleId,
@@ -18,13 +18,13 @@ class BookmarkState extends Equatable {
   final bool isBookmarked;
   final int count;
 
-  BookmarkState copyWith({
+  PublicationBookmarkState copyWith({
     BookmarkStatus? status,
     String? error,
     bool? isBookmarked,
     int? count,
   }) {
-    return BookmarkState(
+    return PublicationBookmarkState(
       status: status ?? this.status,
       error: error ?? this.error,
       articleId: articleId,

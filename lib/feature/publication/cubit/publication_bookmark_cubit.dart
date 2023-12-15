@@ -2,18 +2,18 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../common/exception/exception_helper.dart';
-import '../../publication/repository/publication_repository.dart';
+import '../repository/publication_repository.dart';
 
-part 'bookmark_state.dart';
+part 'publication_bookmark_state.dart';
 
-class BookmarkCubit extends Cubit<BookmarkState> {
-  BookmarkCubit({
+class PublicationBookmarkCubit extends Cubit<PublicationBookmarkState> {
+  PublicationBookmarkCubit({
     required PublicationRepository repository,
     required String articleId,
     bool isBookmarked = false,
     int count = 0,
   })  : _repository = repository,
-        super(BookmarkState(
+        super(PublicationBookmarkState(
           articleId: articleId,
           isBookmarked: isBookmarked,
           count: count,

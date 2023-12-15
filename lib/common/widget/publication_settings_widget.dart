@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../feature/settings/cubit/settings_cubit.dart';
 
-class ArticleSettingsWidget extends StatelessWidget {
-  const ArticleSettingsWidget({super.key});
+class PublicationSettingsWidget extends StatelessWidget {
+  const PublicationSettingsWidget({super.key});
 
   @override
   Widget build(BuildContext context) {

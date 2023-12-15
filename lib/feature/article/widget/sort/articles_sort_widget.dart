@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../publication/cubit/publication_list_cubit.dart';
 import '../../../publication/model/sort/date_period_enum.dart';
 import '../../../publication/model/sort/rating_score_enum.dart';
 import '../../../publication/model/sort/sort_enum.dart';
 import '../../../publication/model/sort/sort_option_model.dart';
-import '../../cubit/article_list_cubit.dart';
 
 part 'sort_by_widget.dart';
 part 'sort_options_widget.dart';
@@ -15,9 +15,9 @@ class ArticlesSortWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final articlesCubit = context.read<ArticleListCubit>();
+    final articlesCubit = context.read<PublicationListCubit>();
 
-    return BlocBuilder<ArticleListCubit, ArticleListState>(
+    return BlocBuilder<PublicationListCubit, PublicationListState>(
       builder: (context, state) {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,

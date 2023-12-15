@@ -1,9 +1,9 @@
-part of 'article_cubit.dart';
+part of 'publication_detail_cubit.dart';
 
 enum ArticleStatus { initial, loading, success, failure }
 
-class ArticleState extends Equatable {
-  const ArticleState({
+class PublicationDetailState extends Equatable {
+  const PublicationDetailState({
     this.status = ArticleStatus.initial,
     this.error = '',
     required this.id,
@@ -18,12 +18,12 @@ class ArticleState extends Equatable {
   final PublicationSource source;
   final ArticleModel article;
 
-  ArticleState copyWith({
+  PublicationDetailState copyWith({
     ArticleStatus? status,
     String? error,
     ArticleModel? article,
   }) {
-    return ArticleState(
+    return PublicationDetailState(
       id: id,
       source: source,
       status: status ?? this.status,

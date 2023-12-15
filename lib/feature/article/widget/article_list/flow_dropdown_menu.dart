@@ -4,9 +4,9 @@ import 'package:responsive_framework/responsive_framework.dart';
 
 import '../../../../component/theme/responsive.dart';
 import '../../../auth/cubit/auth_cubit.dart';
+import '../../../publication/cubit/publication_list_cubit.dart';
 import '../../../publication/model/flow_enum.dart';
 import '../../../publication/model/publication_type.dart';
-import '../../cubit/article_list_cubit.dart';
 
 class FlowDropdownMenu extends StatelessWidget {
   const FlowDropdownMenu({super.key, required this.type});
@@ -41,7 +41,7 @@ class FlowDropdownMenu extends StatelessWidget {
       builder: (context, authState) {
         entries = setUpEntries(authState.isAuthorized);
 
-        return BlocBuilder<ArticleListCubit, ArticleListState>(
+        return BlocBuilder<PublicationListCubit, PublicationListState>(
           buildWhen: (previous, current) => previous.flow != current.flow,
           builder: (context, articlesState) {
             return DropdownButton(
@@ -64,7 +64,7 @@ class FlowDropdownMenu extends StatelessWidget {
                   return;
                 }
 
-                context.read<ArticleListCubit>().changeFlow(value);
+                context.read<PublicationListCubit>().changeFlow(value);
               },
               items: entries,
             );

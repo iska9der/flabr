@@ -5,22 +5,22 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../common/exception/exception_helper.dart';
 import '../../../common/model/extension/enum_status.dart';
-import '../../publication/model/source/publication_source.dart';
-import '../../publication/repository/publication_repository.dart';
+import '../../article/model/article_model.dart';
 import '../../settings/repository/language_repository.dart';
-import '../model/article_model.dart';
+import '../model/source/publication_source.dart';
+import '../repository/publication_repository.dart';
 
-part 'article_state.dart';
+part 'publication_detail_state.dart';
 
-class ArticleCubit extends Cubit<ArticleState> {
-  ArticleCubit(
+class PublicationDetailCubit extends Cubit<PublicationDetailState> {
+  PublicationDetailCubit(
     String id, {
     required PublicationSource source,
     required PublicationRepository repository,
     required LanguageRepository languageRepository,
   })  : _repository = repository,
         _languageRepository = languageRepository,
-        super(ArticleState(
+        super(PublicationDetailState(
           id: id,
           source: source,
           article: ArticleModel.empty,

@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../component/di/dependencies.dart';
 import '../../enhancement/scroll/cubit/scroll_cubit.dart';
+import '../../publication/cubit/publication_list_cubit.dart';
 import '../../publication/model/flow_enum.dart';
 import '../../publication/model/publication_type.dart';
 import '../../publication/repository/publication_repository.dart';
@@ -11,7 +12,6 @@ import '../../publication/view/publication_list_view.dart';
 import '../../search/cubit/search_cubit.dart';
 import '../../search/repository/search_repository.dart';
 import '../../settings/repository/language_repository.dart';
-import '../cubit/article_list_cubit.dart';
 
 @RoutePage(name: ArticleListPage.routeName)
 class ArticleListPage extends StatelessWidget {
@@ -29,7 +29,7 @@ class ArticleListPage extends StatelessWidget {
       key: ValueKey('articles-$flow-flow'),
       providers: [
         BlocProvider(
-          create: (_) => ArticleListCubit(
+          create: (_) => PublicationListCubit(
             repository: getIt.get<PublicationRepository>(),
             languageRepository: getIt.get<LanguageRepository>(),
             flow: FlowEnum.fromString(flow),

@@ -6,24 +6,24 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../common/exception/exception_helper.dart';
 import '../../../common/exception/value_exception.dart';
 import '../../../common/model/network/list_response.dart';
-import '../../publication/model/flow_enum.dart';
-import '../../publication/model/network/publication_list_response.dart';
-import '../../publication/model/publication_type.dart';
-import '../../publication/model/sort/date_period_enum.dart';
-import '../../publication/model/sort/sort_enum.dart';
-import '../../publication/model/sort/sort_option_model.dart';
-import '../../publication/model/source/publication_list_source.dart';
-import '../../publication/repository/publication_repository.dart';
+import '../../article/model/article_model.dart';
 import '../../settings/repository/language_repository.dart';
-import '../model/article_model.dart';
+import '../model/flow_enum.dart';
+import '../model/network/publication_list_response.dart';
+import '../model/publication_type.dart';
+import '../model/sort/date_period_enum.dart';
+import '../model/sort/sort_enum.dart';
+import '../model/sort/sort_option_model.dart';
+import '../model/source/publication_list_source.dart';
+import '../repository/publication_repository.dart';
 
-part 'article_list_state.dart';
+part 'publication_list_state.dart';
 
-class ArticleListCubit extends Cubit<ArticleListState> {
+class PublicationListCubit extends Cubit<PublicationListState> {
   /// [source] откуда поступает запрос на получение списка статей.
   /// От этого параметра зависит какой метод получения статей будет вызван.
   ///
-  ArticleListCubit({
+  PublicationListCubit({
     required PublicationRepository repository,
     required LanguageRepository languageRepository,
     PublicationListSource source = PublicationListSource.flow,
@@ -34,7 +34,7 @@ class ArticleListCubit extends Cubit<ArticleListState> {
   })  : _repository = repository,
         _languageRepository = languageRepository,
         super(
-          ArticleListState(
+          PublicationListState(
             source: source,
             flow: flow,
             hub: hub,
@@ -77,7 +77,7 @@ class ArticleListCubit extends Cubit<ArticleListState> {
   void changeFlow(FlowEnum value) {
     if (state.flow == value) return;
 
-    emit(ArticleListState(
+    emit(PublicationListState(
       source: state.source,
       flow: value,
       hub: state.hub,
@@ -89,7 +89,7 @@ class ArticleListCubit extends Cubit<ArticleListState> {
   void changeSort(SortEnum value) {
     if (state.sort == value) return;
 
-    emit(ArticleListState(
+    emit(PublicationListState(
       source: state.source,
       flow: state.flow,
       hub: state.hub,
@@ -100,14 +100,14 @@ class ArticleListCubit extends Cubit<ArticleListState> {
   }
 
   void changeSortOption(SortEnum sort, SortOptionModel option) {
-    ArticleListState newState;
+    PublicationListState newState;
     switch (sort) {
       case SortEnum.byBest:
         if (state.period == option.value) return;
-        newState = ArticleListState(period: option.value);
+        newState = PublicationListState(period: option.value);
       case SortEnum.byNew:
         if (state.score == option.value) return;
-        newState = ArticleListState(score: option.value);
+        newState = PublicationListState(score: option.value);
       default:
         throw ValueException('Неизвестный вариант сортировки статей');
     }

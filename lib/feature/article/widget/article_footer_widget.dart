@@ -9,11 +9,11 @@ import '../../../common/utils/utils.dart';
 import '../../../component/di/dependencies.dart';
 import '../../auth/cubit/auth_cubit.dart';
 import '../../auth/widget/dialog.dart';
+import '../../publication/cubit/publication_bookmark_cubit.dart';
 import '../../publication/model/publication_type.dart';
 import '../../publication/repository/publication_repository.dart';
 import '../../summary/cubit/summary_auth_cubit.dart';
 import '../../summary/widget/dialog.dart';
-import '../cubit/bookmark_cubit.dart';
 import '../model/article_model.dart';
 import '../page/comment/article_comment_page.dart';
 import '../page/comment/post_comment_page.dart';
@@ -75,13 +75,13 @@ class _BookmarkIconButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => BookmarkCubit(
+      create: (context) => PublicationBookmarkCubit(
         repository: getIt.get<PublicationRepository>(),
         articleId: article.id,
         isBookmarked: article.relatedData.bookmarked,
         count: article.statistics.favoritesCount,
       ),
-      child: BlocConsumer<BookmarkCubit, BookmarkState>(
+      child: BlocConsumer<PublicationBookmarkCubit, PublicationBookmarkState>(
         listenWhen: (p, c) => c.status.isFailure,
         listener: (context, state) {
           getIt.get<Utils>().showSnack(
@@ -98,7 +98,7 @@ class _BookmarkIconButton extends StatelessWidget {
             isLoading: state.status.isLoading,
             onTap: () => context.read<AuthCubit>().state.isUnauthorized
                 ? showLoginDialog(context)
-                : context.read<BookmarkCubit>().toggle(),
+                : context.read<PublicationBookmarkCubit>().toggle(),
           );
         },
       ),
