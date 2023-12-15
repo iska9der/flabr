@@ -4,8 +4,8 @@ import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart
 
 import '../../../../common/model/render_type.dart';
 import '../../../../common/widget/enhancement/card.dart';
-import '../../model/article_model.dart';
-import '../../page/detail/post_detail_page.dart';
+import '../../../publication/model/article/article_model.dart';
+import '../../../publication/page/post_detail_page.dart';
 import '../article_footer_widget.dart';
 import '../article_header_widget.dart';
 import '../article_hubs_widget.dart';

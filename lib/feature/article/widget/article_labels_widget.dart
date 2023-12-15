@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../config/constants.dart';
-import '../model/article_model.dart';
+import '../../publication/model/article/article_model.dart';
 
 class ArticleLabelsWidget extends StatelessWidget {
   const ArticleLabelsWidget(

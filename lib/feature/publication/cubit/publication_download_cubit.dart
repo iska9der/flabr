@@ -4,7 +4,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_file_dialog/flutter_file_dialog.dart';
 
-import '../../article/model/article_model.dart';
+import '../model/article/article_model.dart';
 import '../model/download/format.dart';
 import '../model/download/format_converter.dart';
 

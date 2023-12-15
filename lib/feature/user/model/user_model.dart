@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import '../../article/model/article_model.dart';
+import '../../publication/model/article/article_model.dart';
 import 'user_location_model.dart';
 import 'user_related_data.dart';
 import 'user_workplace_model.dart';

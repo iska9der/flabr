@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import '../model/article_model.dart';
+import '../../publication/model/article/article_model.dart';
 import 'article_author_widget.dart';
 
 class ArticleHeaderWidget extends StatelessWidget {

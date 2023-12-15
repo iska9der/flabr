@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../publication/model/article/article_model.dart';
 import '../../../publication/model/publication_type.dart';
-import '../../model/article_model.dart';
 
 class ArticleDetailAppBarTitle extends StatelessWidget {
   const ArticleDetailAppBarTitle({super.key, required this.article});

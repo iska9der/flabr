@@ -15,16 +15,16 @@ abstract class _$AppRouter extends RootStackRouter {
 
   @override
   final Map<String, PageFactory> pagesMap = {
-    ArticleCommentListRoute.name: (routeData) {
+    ArticleCommentsRoute.name: (routeData) {
       final pathParams = routeData.inheritedPathParams;
-      final args = routeData.argsAs<ArticleCommentListRouteArgs>(
-          orElse: () => ArticleCommentListRouteArgs(
-              articleId: pathParams.getString('articleId')));
+      final args = routeData.argsAs<ArticleCommentsRouteArgs>(
+          orElse: () =>
+              ArticleCommentsRouteArgs(id: pathParams.getString('id')));
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: ArticleCommentListPage(
           key: args.key,
-          articleId: args.articleId,
+          id: args.id,
         ),
       );
     },
@@ -115,6 +115,18 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const HubListPage(),
       );
     },
+    NewsCommentsRoute.name: (routeData) {
+      final pathParams = routeData.inheritedPathParams;
+      final args = routeData.argsAs<NewsCommentsRouteArgs>(
+          orElse: () => NewsCommentsRouteArgs(id: pathParams.getString('id')));
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: NewsCommentListPage(
+          key: args.key,
+          id: args.id,
+        ),
+      );
+    },
     NewsDetailRoute.name: (routeData) {
       final pathParams = routeData.inheritedPathParams;
       final args = routeData.argsAs<NewsDetailRouteArgs>(
@@ -145,16 +157,15 @@ abstract class _$AppRouter extends RootStackRouter {
         child: NewsRouterData(),
       );
     },
-    PostCommentListRoute.name: (routeData) {
+    PostCommentsRoute.name: (routeData) {
       final pathParams = routeData.inheritedPathParams;
-      final args = routeData.argsAs<PostCommentListRouteArgs>(
-          orElse: () => PostCommentListRouteArgs(
-              articleId: pathParams.getString('articleId')));
+      final args = routeData.argsAs<PostCommentsRouteArgs>(
+          orElse: () => PostCommentsRouteArgs(id: pathParams.getString('id')));
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: PostCommentListPage(
           key: args.key,
-          articleId: args.articleId,
+          id: args.id,
         ),
       );
     },
@@ -248,41 +259,40 @@ abstract class _$AppRouter extends RootStackRouter {
 
 /// generated route for
 /// [ArticleCommentListPage]
-class ArticleCommentListRoute
-    extends PageRouteInfo<ArticleCommentListRouteArgs> {
-  ArticleCommentListRoute({
+class ArticleCommentsRoute extends PageRouteInfo<ArticleCommentsRouteArgs> {
+  ArticleCommentsRoute({
     Key? key,
-    required String articleId,
+    required String id,
     List<PageRouteInfo>? children,
   }) : super(
-          ArticleCommentListRoute.name,
-          args: ArticleCommentListRouteArgs(
+          ArticleCommentsRoute.name,
+          args: ArticleCommentsRouteArgs(
             key: key,
-            articleId: articleId,
+            id: id,
           ),
-          rawPathParams: {'articleId': articleId},
+          rawPathParams: {'id': id},
           initialChildren: children,
         );
 
-  static const String name = 'ArticleCommentListRoute';
+  static const String name = 'ArticleCommentsRoute';
 
-  static const PageInfo<ArticleCommentListRouteArgs> page =
-      PageInfo<ArticleCommentListRouteArgs>(name);
+  static const PageInfo<ArticleCommentsRouteArgs> page =
+      PageInfo<ArticleCommentsRouteArgs>(name);
 }
 
-class ArticleCommentListRouteArgs {
-  const ArticleCommentListRouteArgs({
+class ArticleCommentsRouteArgs {
+  const ArticleCommentsRouteArgs({
     this.key,
-    required this.articleId,
+    required this.id,
   });
 
   final Key? key;
 
-  final String articleId;
+  final String id;
 
   @override
   String toString() {
-    return 'ArticleCommentListRouteArgs{key: $key, articleId: $articleId}';
+    return 'ArticleCommentsRouteArgs{key: $key, id: $id}';
   }
 }
 
@@ -527,6 +537,45 @@ class HubListRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [NewsCommentListPage]
+class NewsCommentsRoute extends PageRouteInfo<NewsCommentsRouteArgs> {
+  NewsCommentsRoute({
+    Key? key,
+    required String id,
+    List<PageRouteInfo>? children,
+  }) : super(
+          NewsCommentsRoute.name,
+          args: NewsCommentsRouteArgs(
+            key: key,
+            id: id,
+          ),
+          rawPathParams: {'id': id},
+          initialChildren: children,
+        );
+
+  static const String name = 'NewsCommentsRoute';
+
+  static const PageInfo<NewsCommentsRouteArgs> page =
+      PageInfo<NewsCommentsRouteArgs>(name);
+}
+
+class NewsCommentsRouteArgs {
+  const NewsCommentsRouteArgs({
+    this.key,
+    required this.id,
+  });
+
+  final Key? key;
+
+  final String id;
+
+  @override
+  String toString() {
+    return 'NewsCommentsRouteArgs{key: $key, id: $id}';
+  }
+}
+
+/// generated route for
 /// [NewsDetailPage]
 class NewsDetailRoute extends PageRouteInfo<NewsDetailRouteArgs> {
   NewsDetailRoute({
@@ -620,40 +669,40 @@ class NewsRouter extends PageRouteInfo<void> {
 
 /// generated route for
 /// [PostCommentListPage]
-class PostCommentListRoute extends PageRouteInfo<PostCommentListRouteArgs> {
-  PostCommentListRoute({
+class PostCommentsRoute extends PageRouteInfo<PostCommentsRouteArgs> {
+  PostCommentsRoute({
     Key? key,
-    required String articleId,
+    required String id,
     List<PageRouteInfo>? children,
   }) : super(
-          PostCommentListRoute.name,
-          args: PostCommentListRouteArgs(
+          PostCommentsRoute.name,
+          args: PostCommentsRouteArgs(
             key: key,
-            articleId: articleId,
+            id: id,
           ),
-          rawPathParams: {'articleId': articleId},
+          rawPathParams: {'id': id},
           initialChildren: children,
         );
 
-  static const String name = 'PostCommentListRoute';
+  static const String name = 'PostCommentsRoute';
 
-  static const PageInfo<PostCommentListRouteArgs> page =
-      PageInfo<PostCommentListRouteArgs>(name);
+  static const PageInfo<PostCommentsRouteArgs> page =
+      PageInfo<PostCommentsRouteArgs>(name);
 }
 
-class PostCommentListRouteArgs {
-  const PostCommentListRouteArgs({
+class PostCommentsRouteArgs {
+  const PostCommentsRouteArgs({
     this.key,
-    required this.articleId,
+    required this.id,
   });
 
   final Key? key;
 
-  final String articleId;
+  final String id;
 
   @override
   String toString() {
-    return 'PostCommentListRouteArgs{key: $key, articleId: $articleId}';
+    return 'PostCommentsRouteArgs{key: $key, id: $id}';
   }
 }
 

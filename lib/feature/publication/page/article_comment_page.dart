@@ -2,25 +2,24 @@ import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../component/di/dependencies.dart';
-import '../../../publication/cubit/comment/comment_hidden_cubit.dart';
-import '../../../publication/cubit/comment/comment_list_cubit.dart';
-import '../../../publication/model/source/publication_source.dart';
-import '../../../publication/repository/publication_repository.dart';
-import '../../../publication/view/comment_list_view.dart';
-import '../../../settings/repository/language_repository.dart';
+import '../../../component/di/dependencies.dart';
+import '../../settings/repository/language_repository.dart';
+import '../cubit/comment/comment_hidden_cubit.dart';
+import '../cubit/comment/comment_list_cubit.dart';
+import '../model/source/publication_source.dart';
+import '../repository/publication_repository.dart';
+import 'view/comment_list_view.dart';
 
-@RoutePage(name: ArticleCommentListPage.routeName)
+@RoutePage(name: 'ArticleCommentsRoute')
 class ArticleCommentListPage extends StatelessWidget {
   const ArticleCommentListPage({
     super.key,
-    @PathParam() required this.articleId,
+    @PathParam() required this.id,
   });
 
-  final String articleId;
+  final String id;
 
-  static const routePath = 'comments/:articleId';
-  static const routeName = 'ArticleCommentListRoute';
+  static const routePath = 'comments/:id';
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +27,7 @@ class ArticleCommentListPage extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (_) => CommentListCubit(
-            articleId,
+            id,
             source: PublicationSource.article,
             repository: getIt.get<PublicationRepository>(),
             languageRepository: getIt.get<LanguageRepository>(),

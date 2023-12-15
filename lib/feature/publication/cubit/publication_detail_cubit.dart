@@ -5,8 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../common/exception/exception_helper.dart';
 import '../../../common/model/extension/enum_status.dart';
-import '../../article/model/article_model.dart';
 import '../../settings/repository/language_repository.dart';
+import '../model/article/article_model.dart';
 import '../model/source/publication_source.dart';
 import '../repository/publication_repository.dart';
 

@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 
-import '../../../../common/exception/displayable_exception.dart';
+import '../../../../../common/exception/displayable_exception.dart';
 
 class CommentsListException implements DisplayableException {
   int httpCode;

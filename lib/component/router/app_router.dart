@@ -2,20 +2,21 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
-import '../../feature/article/page/article_list_page.dart';
-import '../../feature/article/page/comment/article_comment_page.dart';
-import '../../feature/article/page/comment/post_comment_page.dart';
-import '../../feature/article/page/detail/article_detail_page.dart';
-import '../../feature/article/page/detail/news_detail_page.dart';
-import '../../feature/article/page/detail/post_detail_page.dart';
-import '../../feature/article/page/news_list_page.dart';
-import '../../feature/article/page/post_list_page.dart';
 import '../../feature/company/page/company_dashboard_page.dart';
 import '../../feature/company/page/company_detail_page.dart';
 import '../../feature/company/page/company_list_page.dart';
 import '../../feature/hub/page/hub_dashboard_page.dart';
 import '../../feature/hub/page/hub_detail_page.dart';
 import '../../feature/hub/page/hub_list_page.dart';
+import '../../feature/publication/page/article_comment_page.dart';
+import '../../feature/publication/page/article_detail_page.dart';
+import '../../feature/publication/page/article_list_page.dart';
+import '../../feature/publication/page/news_comment_page.dart';
+import '../../feature/publication/page/news_detail_page.dart';
+import '../../feature/publication/page/news_list_page.dart';
+import '../../feature/publication/page/post_comment_page.dart';
+import '../../feature/publication/page/post_detail_page.dart';
+import '../../feature/publication/page/post_list_page.dart';
 import '../../feature/user/page/user_article_list_page.dart';
 import '../../feature/user/page/user_bookmark_list_page.dart';
 import '../../feature/user/page/user_dashboard_page.dart';
@@ -128,8 +129,8 @@ class AppRouter extends _$AppRouter {
               page: ArticleDetailRoute.page,
             ),
             AutoRoute(
-              path: ArticleCommentListPage.routePath,
-              page: ArticleCommentListRoute.page,
+              path: 'comments/:id',
+              page: ArticleCommentsRoute.page,
             ),
           ],
         ),
@@ -150,8 +151,8 @@ class AppRouter extends _$AppRouter {
               page: PostDetailRoute.page,
             ),
             AutoRoute(
-              path: PostCommentListPage.routePath,
-              page: PostCommentListRoute.page,
+              path: 'comments/:id',
+              page: PostCommentsRoute.page,
             ),
           ],
         ),
@@ -170,6 +171,10 @@ class AppRouter extends _$AppRouter {
             AutoRoute(
               path: NewsDetailPage.routePath,
               page: NewsDetailRoute.page,
+            ),
+            AutoRoute(
+              path: 'comments/:id',
+              page: NewsCommentsRoute.page,
             ),
           ],
         ),
@@ -299,6 +304,8 @@ List<RedirectRoute> _articlesRedirects() {
   List<String> externalPathList = [
     '*/*/articles/:id',
     '*/articles/:id',
+    '*/*/post/:id',
+    '*/post/:id',
 
     /// Статьи из блогов и комментарии к ним
     /// TODO: пока через вкладку "статьи"
@@ -341,8 +348,6 @@ List<RedirectRoute> _postsRedirects() {
   List<String> externalPathList = [
     '*/*/posts/:id',
     '*/posts/:id',
-    '*/*/post/:id',
-    '*/post/:id',
   ];
 
   List<RedirectRoute> internalRedirectList = [];

@@ -10,13 +10,13 @@ import '../../../component/di/dependencies.dart';
 import '../../auth/cubit/auth_cubit.dart';
 import '../../auth/widget/dialog.dart';
 import '../../publication/cubit/publication_bookmark_cubit.dart';
+import '../../publication/model/article/article_model.dart';
 import '../../publication/model/publication_type.dart';
+import '../../publication/page/article_comment_page.dart';
+import '../../publication/page/post_comment_page.dart';
 import '../../publication/repository/publication_repository.dart';
 import '../../summary/cubit/summary_auth_cubit.dart';
 import '../../summary/widget/dialog.dart';
-import '../model/article_model.dart';
-import '../page/comment/article_comment_page.dart';
-import '../page/comment/post_comment_page.dart';
 import 'stats/article_stat_icon_widget.dart';
 
 class ArticleFooterWidget extends StatelessWidget {
@@ -49,9 +49,8 @@ class ArticleFooterWidget extends StatelessWidget {
           isHighlighted: article.relatedData.unreadCommentsCount > 0,
           onTap: () => context.router.pushWidget(
             switch (article.type) {
-              PublicationType.post =>
-                PostCommentListPage(articleId: article.id),
-              _ => ArticleCommentListPage(articleId: article.id),
+              PublicationType.post => PostCommentListPage(id: article.id),
+              _ => ArticleCommentListPage(id: article.id),
             },
           ),
         ),

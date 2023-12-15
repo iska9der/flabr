@@ -1,4 +1,4 @@
-import '../../../common/exception/value_exception.dart';
+import '../../../../common/exception/value_exception.dart';
 
 enum ArticleComplexity {
   low,

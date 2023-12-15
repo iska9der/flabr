@@ -4,14 +4,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../component/di/dependencies.dart';
 import '../../enhancement/scroll/cubit/scroll_cubit.dart';
-import '../../publication/cubit/publication_list_cubit.dart';
-import '../../publication/model/flow_enum.dart';
-import '../../publication/model/publication_type.dart';
-import '../../publication/repository/publication_repository.dart';
-import '../../publication/view/publication_list_view.dart';
 import '../../search/cubit/search_cubit.dart';
 import '../../search/repository/search_repository.dart';
 import '../../settings/repository/language_repository.dart';
+import '../cubit/publication_list_cubit.dart';
+import '../model/flow_enum.dart';
+import '../model/publication_type.dart';
+import '../repository/publication_repository.dart';
+import 'view/publication_list_view.dart';
 
 @RoutePage(name: ArticleListPage.routeName)
 class ArticleListPage extends StatelessWidget {

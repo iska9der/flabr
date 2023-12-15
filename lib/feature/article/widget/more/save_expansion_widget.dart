@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../publication/cubit/publication_download_cubit.dart';
+import '../../../publication/model/article/article_model.dart';
 import '../../../publication/model/download/format.dart';
-import '../../model/article_model.dart';
 
 class SaveExpansionWidget extends StatelessWidget {
   const SaveExpansionWidget({super.key, required this.article});

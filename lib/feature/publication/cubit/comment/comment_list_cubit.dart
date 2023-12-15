@@ -5,7 +5,7 @@ import '../../../../../component/language.dart';
 import '../../../../common/exception/exception_helper.dart';
 import '../../../../common/model/extension/enum_status.dart';
 import '../../../settings/repository/language_repository.dart';
-import '../../model/network/comment_list_response.dart';
+import '../../model/comment/network/comment_list_response.dart';
 import '../../model/source/publication_source.dart';
 import '../../repository/publication_repository.dart';
 
@@ -13,14 +13,14 @@ part 'comment_list_state.dart';
 
 class CommentListCubit extends Cubit<CommentListState> {
   CommentListCubit(
-    String articleId, {
+    String publicationId, {
     required PublicationSource source,
     required PublicationRepository repository,
     required LanguageRepository languageRepository,
   })  : _repository = repository,
         _langRepository = languageRepository,
         super(CommentListState(
-          articleId: articleId,
+          publicationId: publicationId,
           source: source,
         ));
 
@@ -34,7 +34,7 @@ class CommentListCubit extends Cubit<CommentListState> {
 
     try {
       final newList = await _repository.fetchComments(
-        articleId: state.articleId,
+        articleId: state.publicationId,
         source: state.source,
         langUI: _langRepository.ui,
         langArticles: _langRepository.articles,

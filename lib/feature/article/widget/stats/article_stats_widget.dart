@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../../../../common/model/extension/num.dart';
-import '../../model/article_complexity.dart';
-import '../../model/article_model.dart';
+import '../../../publication/model/article/article_complexity.dart';
+import '../../../publication/model/article/article_model.dart';
 import 'article_stat_widget.dart';
 
 class ArticleStatsWidget extends StatelessWidget {

@@ -1,12 +1,12 @@
 import 'package:equatable/equatable.dart';
 
-import '../../publication/model/lead/publication_lead_data_model.dart';
-import '../../publication/model/publication.dart';
-import '../../publication/model/publication_author_model.dart';
-import '../../publication/model/publication_hub_model.dart';
-import '../../publication/model/publication_related_data_model.dart';
-import '../../publication/model/publication_statistics_model.dart';
-import '../../publication/model/publication_type.dart';
+import '../lead/publication_lead_data_model.dart';
+import '../publication.dart';
+import '../publication_author_model.dart';
+import '../publication_hub_model.dart';
+import '../publication_related_data_model.dart';
+import '../publication_statistics_model.dart';
+import '../publication_type.dart';
 import 'article_complexity.dart';
 import 'article_format.dart';
 

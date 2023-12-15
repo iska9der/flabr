@@ -6,7 +6,7 @@ class CommentListState extends Equatable {
   const CommentListState({
     this.status = CommentListStatus.initial,
     this.error = '',
-    required this.articleId,
+    required this.publicationId,
     required this.source,
     this.list = CommentListResponse.empty,
   });
@@ -14,7 +14,7 @@ class CommentListState extends Equatable {
   final CommentListStatus status;
   final String error;
 
-  final String articleId;
+  final String publicationId;
   final PublicationSource source;
   final CommentListResponse list;
 
@@ -26,10 +26,10 @@ class CommentListState extends Equatable {
     CommentListResponse? list,
   }) {
     return CommentListState(
+      publicationId: publicationId,
+      source: source,
       status: status ?? this.status,
       error: error ?? this.error,
-      articleId: articleId,
-      source: source,
       list: list ?? this.list,
     );
   }
@@ -38,7 +38,7 @@ class CommentListState extends Equatable {
   List<Object> get props => [
         status,
         error,
-        articleId,
+        publicationId,
         source,
         list,
       ];

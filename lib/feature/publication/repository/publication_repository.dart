@@ -1,9 +1,9 @@
 import '../../../common/model/network/list_response.dart';
 import '../../../component/localization/language_enum.dart';
 import '../../../component/localization/language_helper.dart';
-import '../../article/model/article_model.dart';
+import '../model/article/article_model.dart';
+import '../model/comment/network/comment_list_response.dart';
 import '../model/flow_enum.dart';
-import '../model/network/comment_list_response.dart';
 import '../model/network/most_reading_response.dart';
 import '../model/network/publication_list_response.dart';
 import '../model/publication_type.dart';
