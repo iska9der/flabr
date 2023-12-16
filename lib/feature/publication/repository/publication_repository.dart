@@ -1,11 +1,13 @@
 import '../../../common/model/network/list_response.dart';
 import '../../../component/localization/language_enum.dart';
 import '../../../component/localization/language_helper.dart';
-import '../model/article/article_model.dart';
 import '../model/comment/network/comment_list_response.dart';
+import '../model/common_model.dart';
 import '../model/flow_enum.dart';
 import '../model/network/most_reading_response.dart';
 import '../model/network/publication_list_response.dart';
+import '../model/post/post_model.dart';
+import '../model/publication.dart';
 import '../model/publication_type.dart';
 import '../model/sort/date_period_enum.dart';
 import '../model/sort/sort_enum.dart';
@@ -17,28 +19,56 @@ class PublicationRepository {
 
   final PublicationService service;
 
-  Future<ArticleModel> fetchById(
+  Future<Publication> fetchById(
     String id, {
     required PublicationSource source,
     required LanguageEnum langUI,
     required List<LanguageEnum> langArticles,
   }) async {
-    final rawData = switch (source) {
-      PublicationSource.post => await service.fetchPostById(
+    return switch (source) {
+      PublicationSource.post => await fetchPostById(
           id,
-          langUI: langUI.name,
-          langArticles: encodeLangs(langArticles),
+          langUI: langUI,
+          langArticles: langArticles,
         ),
-      _ => await service.fetchArticleById(
+      _ => await fetchArticleById(
           id,
-          langUI: langUI.name,
-          langArticles: encodeLangs(langArticles),
+          langUI: langUI,
+          langArticles: langArticles,
         ),
-    };
+    } as Publication;
+  }
 
-    final article = ArticleModel.fromMap(rawData);
+  Future<CommonModel> fetchArticleById(
+    String id, {
+    required LanguageEnum langUI,
+    required List<LanguageEnum> langArticles,
+  }) async {
+    final rawData = await service.fetchArticleById(
+      id,
+      langUI: langUI.name,
+      langArticles: encodeLangs(langArticles),
+    );
+
+    final article = CommonModel.fromMap(rawData);
 
     return article;
+  }
+
+  Future<PostModel> fetchPostById(
+    String id, {
+    required LanguageEnum langUI,
+    required List<LanguageEnum> langArticles,
+  }) async {
+    final rawData = await service.fetchPostById(
+      id,
+      langUI: langUI.name,
+      langArticles: encodeLangs(langArticles),
+    );
+
+    final post = PostModel.fromMap(rawData);
+
+    return post;
   }
 
   /// Сортируем статьи в полученном списке
@@ -184,7 +214,7 @@ class PublicationRepository {
     return await service.removeFromBookmark(articleId);
   }
 
-  Future<List<ArticleModel>> fetchMostReading({
+  Future<List<CommonModel>> fetchMostReading({
     required LanguageEnum langUI,
     required List<LanguageEnum> langArticles,
   }) async {
@@ -193,7 +223,7 @@ class PublicationRepository {
       langArticles: encodeLangs(langArticles),
     );
 
-    List<ArticleModel> articles = [...raw.refs];
+    List<CommonModel> articles = [...raw.refs];
 
     articles.sort((a, b) =>
         a.statistics.readingCount > b.statistics.readingCount ? 0 : 1);

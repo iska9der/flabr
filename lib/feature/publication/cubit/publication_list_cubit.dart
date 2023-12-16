@@ -7,9 +7,9 @@ import '../../../common/exception/exception_helper.dart';
 import '../../../common/exception/value_exception.dart';
 import '../../../common/model/network/list_response.dart';
 import '../../settings/repository/language_repository.dart';
-import '../model/article/article_model.dart';
 import '../model/flow_enum.dart';
 import '../model/network/publication_list_response.dart';
+import '../model/publication.dart';
 import '../model/publication_type.dart';
 import '../model/sort/date_period_enum.dart';
 import '../model/sort/sort_enum.dart';
@@ -42,10 +42,10 @@ class PublicationListCubit extends Cubit<PublicationListState> {
             type: type,
           ),
         ) {
-    if (source == PublicationListSource.hubArticles) {
+    if (source == PublicationListSource.hubPublications) {
       assert(state.hub.isNotEmpty, 'Нужно указать хаб [hub]');
     }
-    if (source == PublicationListSource.userArticles) {
+    if (source == PublicationListSource.userPublications) {
       assert(state.user.isNotEmpty, 'Нужно указать пользователя [user]');
     }
 
@@ -124,31 +124,31 @@ class PublicationListCubit extends Cubit<PublicationListState> {
 
   /// FETCH ARTICLES
   void fetch() async {
-    if (state.status == ArticleListStatus.loading ||
+    if (state.status == PublicationListStatus.loading ||
         !isFirstFetch && isLastPage) {
       return;
     }
 
-    emit(state.copyWith(status: ArticleListStatus.loading));
+    emit(state.copyWith(status: PublicationListStatus.loading));
 
     try {
       ListResponse response = switch (state.source) {
         PublicationListSource.flow => await _fetchFlowArticles(),
-        PublicationListSource.hubArticles => await _fetchHubArticles(),
-        PublicationListSource.userArticles => await _fetchUserArticles(),
+        PublicationListSource.hubPublications => await _fetchHubArticles(),
+        PublicationListSource.userPublications => await _fetchUserArticles(),
         PublicationListSource.userBookmarks => await _fetchUserBookmarks()
       };
 
       emit(state.copyWith(
-        status: ArticleListStatus.success,
-        articles: [...state.articles, ...response.refs],
+        status: PublicationListStatus.success,
+        publications: [...state.publications, ...response.refs],
         page: state.page + 1,
         pagesCount: response.pagesCount,
       ));
     } catch (e) {
       emit(state.copyWith(
         error: ExceptionHelper.parseMessage(e, 'Не удалось получить статьи'),
-        status: ArticleListStatus.failure,
+        status: PublicationListStatus.failure,
       ));
 
       rethrow;
@@ -203,9 +203,9 @@ class PublicationListCubit extends Cubit<PublicationListState> {
 
   void refetch() {
     emit(state.copyWith(
-      status: ArticleListStatus.initial,
+      status: PublicationListStatus.initial,
       page: 1,
-      articles: [],
+      publications: [],
       pagesCount: 0,
     ));
   }

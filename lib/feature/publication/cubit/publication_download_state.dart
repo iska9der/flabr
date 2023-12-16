@@ -11,31 +11,28 @@ enum PublicationDownloadStatus {
 
 class PublicationDownloadState extends Equatable {
   const PublicationDownloadState({
-    this.articleId = '',
-    this.articleTitle = '',
-    this.articleHtmlText = '',
+    this.id = '',
+    this.htmlText = '',
     this.format = PublicationDownloadFormat.html,
     this.status = PublicationDownloadStatus.initial,
     this.error = '',
   });
 
-  final String articleId;
-  final String articleTitle;
-  final String articleHtmlText;
+  final String id;
+  final String htmlText;
   final PublicationDownloadFormat format;
   final PublicationDownloadStatus status;
   final String error;
 
-  String get fileName => '$articleId.${format.ext}';
+  String get fileName => '$id.${format.ext}';
 
   PublicationDownloadState copyWith({
     String? error,
     PublicationDownloadStatus? status,
   }) {
     return PublicationDownloadState(
-      articleId: articleId,
-      articleTitle: articleTitle,
-      articleHtmlText: articleHtmlText,
+      id: id,
+      htmlText: htmlText,
       format: format,
       error: error ?? this.error,
       status: status ?? this.status,
@@ -44,9 +41,8 @@ class PublicationDownloadState extends Equatable {
 
   @override
   List<Object> get props => [
-        articleId,
-        articleTitle,
-        articleHtmlText,
+        id,
+        htmlText,
         format,
         status,
         error,

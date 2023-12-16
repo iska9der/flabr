@@ -55,7 +55,7 @@ class SettingsView extends StatelessWidget {
               ],
             ),
             SettingsSectionWidget(
-              title: 'Статьи',
+              title: 'Публикации',
               children: [
                 SettingsCardWidget(
                   padding: EdgeInsets.symmetric(vertical: 20),

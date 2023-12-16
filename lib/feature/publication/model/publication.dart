@@ -4,7 +4,8 @@ import 'publication_related_data_model.dart';
 import 'publication_statistics_model.dart';
 import 'publication_type.dart';
 
-abstract class Publication {
+/// Базовая модель публикации с общими свойствами
+class Publication {
   const Publication({
     required this.id,
     this.type = PublicationType.article,
@@ -31,4 +32,8 @@ abstract class Publication {
 
   final List<PublicationHubModel> hubs;
   final List<String> tags;
+
+  static const empty = Publication(id: '0');
+
+  bool get isEmpty => this == empty;
 }

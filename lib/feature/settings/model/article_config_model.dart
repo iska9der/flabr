@@ -2,8 +2,8 @@ import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
 
-class ArticleConfigModel extends Equatable {
-  const ArticleConfigModel({
+class PublicationConfigModel extends Equatable {
+  const PublicationConfigModel({
     this.fontScale = 1,
     this.isImagesVisible = true,
     this.webViewEnabled = true,
@@ -13,12 +13,12 @@ class ArticleConfigModel extends Equatable {
   final bool isImagesVisible;
   final bool webViewEnabled;
 
-  ArticleConfigModel copyWith({
+  PublicationConfigModel copyWith({
     double? fontScale,
     bool? isImagesVisible,
     bool? webViewEnabled,
   }) {
-    return ArticleConfigModel(
+    return PublicationConfigModel(
       fontScale: fontScale ?? this.fontScale,
       isImagesVisible: isImagesVisible ?? this.isImagesVisible,
       webViewEnabled: webViewEnabled ?? this.webViewEnabled,
@@ -33,8 +33,8 @@ class ArticleConfigModel extends Equatable {
     };
   }
 
-  factory ArticleConfigModel.fromMap(Map<String, dynamic> map) {
-    return ArticleConfigModel(
+  factory PublicationConfigModel.fromMap(Map<String, dynamic> map) {
+    return PublicationConfigModel(
       fontScale: map['fontScale'] as double? ?? 1,
       isImagesVisible: map['isImagesVisible'] as bool? ?? true,
       webViewEnabled: map['webViewEnabled'] as bool? ?? true,
@@ -43,10 +43,11 @@ class ArticleConfigModel extends Equatable {
 
   String toJson() => json.encode(toMap());
 
-  factory ArticleConfigModel.fromJson(String source) =>
-      ArticleConfigModel.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory PublicationConfigModel.fromJson(String source) =>
+      PublicationConfigModel.fromMap(
+          json.decode(source) as Map<String, dynamic>);
 
-  static const empty = ArticleConfigModel();
+  static const empty = PublicationConfigModel();
 
   @override
   List<Object> get props => [fontScale, isImagesVisible, webViewEnabled];

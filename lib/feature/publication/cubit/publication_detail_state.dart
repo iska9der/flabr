@@ -1,34 +1,34 @@
 part of 'publication_detail_cubit.dart';
 
-enum ArticleStatus { initial, loading, success, failure }
+enum PublicationStatus { initial, loading, success, failure }
 
 class PublicationDetailState extends Equatable {
   const PublicationDetailState({
-    this.status = ArticleStatus.initial,
+    this.status = PublicationStatus.initial,
     this.error = '',
     required this.id,
     required this.source,
-    required this.article,
+    required this.publication,
   });
 
-  final ArticleStatus status;
+  final PublicationStatus status;
   final String error;
 
   final String id;
   final PublicationSource source;
-  final ArticleModel article;
+  final Publication publication;
 
   PublicationDetailState copyWith({
-    ArticleStatus? status,
+    PublicationStatus? status,
     String? error,
-    ArticleModel? article,
+    Publication? publication,
   }) {
     return PublicationDetailState(
       id: id,
       source: source,
       status: status ?? this.status,
       error: error ?? this.error,
-      article: article ?? this.article,
+      publication: publication ?? this.publication,
     );
   }
 
@@ -38,6 +38,6 @@ class PublicationDetailState extends Equatable {
         error,
         id,
         source,
-        article,
+        publication,
       ];
 }

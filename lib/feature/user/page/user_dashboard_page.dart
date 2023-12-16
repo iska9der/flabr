@@ -10,9 +10,9 @@ import '../../enhancement/scaffold/cubit/scaffold_cubit.dart';
 import '../../settings/repository/language_repository.dart';
 import '../cubit/user_cubit.dart';
 import '../repository/user_repository.dart';
-import 'user_article_list_page.dart';
 import 'user_bookmark_list_page.dart';
 import 'user_detail_page.dart';
+import 'user_publication_list_page.dart';
 
 @RoutePage(name: UserDashboardPage.routeName)
 class UserDashboardPage extends StatelessWidget {
@@ -58,7 +58,7 @@ class UserDashboardView extends StatelessWidget {
     return AutoTabsRouter.tabBar(
       routes: const [
         UserDetailRoute(),
-        UserArticleListRoute(),
+        UserPublicationListRoute(),
         UserBookmarkListRoute(),
       ],
       builder: (context, child, controller) {
@@ -80,8 +80,8 @@ class UserDashboardView extends StatelessWidget {
                       route: UserDetailPage.routePath,
                     ),
                     DashboardDrawerLinkWidget(
-                      title: UserArticleListPage.title,
-                      route: UserArticleListPage.routePath,
+                      title: UserPublicationListPage.title,
+                      route: UserPublicationListPage.routePath,
                     ),
                     DashboardDrawerLinkWidget(
                       title: UserBookmarkListPage.title,

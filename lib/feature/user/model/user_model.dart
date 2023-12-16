@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import '../../publication/model/article/article_model.dart';
+import '../../publication/model/common_model.dart';
 import 'user_location_model.dart';
 import 'user_related_data.dart';
 import 'user_workplace_model.dart';
@@ -21,7 +21,7 @@ class UserModel extends Equatable {
     this.relatedData = UserRelatedData.empty,
     this.location = UserLocationModel.empty,
     this.workplace = const [],
-    this.lastPost = ArticleModel.empty,
+    this.lastPost = CommonModel.empty,
   });
 
   final String id;
@@ -51,7 +51,7 @@ class UserModel extends Equatable {
   final UserRelatedData relatedData;
   final UserLocationModel location;
   final List<UserWorkplaceModel> workplace;
-  final ArticleModel lastPost;
+  final CommonModel lastPost;
 
   UserModel copyWith({
     String? id,
@@ -68,7 +68,7 @@ class UserModel extends Equatable {
     UserRelatedData? relatedData,
     UserLocationModel? location,
     List<UserWorkplaceModel>? workplace,
-    ArticleModel? lastPost,
+    CommonModel? lastPost,
   }) {
     return UserModel(
       id: id ?? this.id,
@@ -116,8 +116,8 @@ class UserModel extends Equatable {
             )
           : const [],
       lastPost: map['lastPost'] != null
-          ? ArticleModel.fromMap(map['lastPost'])
-          : ArticleModel.empty,
+          ? CommonModel.fromMap(map['lastPost'])
+          : CommonModel.empty,
     );
   }
 

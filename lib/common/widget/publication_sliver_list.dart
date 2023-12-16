@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../component/di/dependencies.dart';
-import '../../feature/article/widget/item_card/article_card_widget.dart';
 import '../../feature/enhancement/scroll/cubit/scroll_cubit.dart';
 import '../../feature/publication/cubit/publication_list_cubit.dart';
+import '../../feature/publication/widget/card/publication_card_widget.dart';
 import '../utils/utils.dart';
 import 'enhancement/progress_indicator.dart';
 
@@ -19,7 +19,7 @@ class PublicationSliverList extends StatelessWidget {
 
     return BlocConsumer<PublicationListCubit, PublicationListState>(
       listenWhen: (p, c) =>
-          p.page != 1 && c.status == ArticleListStatus.failure,
+          p.page != 1 && c.status == PublicationListStatus.failure,
       listener: (c, state) {
         getIt.get<Utils>().showSnack(
               context: context,
@@ -28,7 +28,7 @@ class PublicationSliverList extends StatelessWidget {
       },
       builder: (context, state) {
         /// Инициализация
-        if (state.status == ArticleListStatus.initial) {
+        if (state.status == PublicationListStatus.initial) {
           context.read<PublicationListCubit>().fetch();
           return const SliverFillRemaining(
             child: CircleIndicator(),
@@ -37,22 +37,22 @@ class PublicationSliverList extends StatelessWidget {
 
         /// Если происходит загрузка первой страницы
         if (context.read<PublicationListCubit>().isFirstFetch) {
-          if (state.status == ArticleListStatus.loading) {
+          if (state.status == PublicationListStatus.loading) {
             return const SliverFillRemaining(
               child: CircleIndicator(),
             );
           }
 
           /// Ошибка при попытке получить статьи
-          if (state.status == ArticleListStatus.failure) {
+          if (state.status == PublicationListStatus.failure) {
             return SliverFillRemaining(
               child: Center(child: Text(state.error)),
             );
           }
         }
 
-        var articles = state.articles;
-        if (articles.isEmpty) {
+        var publications = state.publications;
+        if (publications.isEmpty) {
           return const SliverFillRemaining(
             child: Center(
               child: Text('Ничего нет'),
@@ -63,10 +63,10 @@ class PublicationSliverList extends StatelessWidget {
         return SliverList(
           delegate: SliverChildBuilderDelegate(
             (c, i) {
-              if (i < articles.length) {
-                final article = articles[i];
+              if (i < publications.length) {
+                final publication = publications[i];
 
-                return ArticleCardWidget(article: article);
+                return PublicationCardWidget(publication);
               }
 
               Timer(
@@ -79,8 +79,8 @@ class PublicationSliverList extends StatelessWidget {
                 child: CircleIndicator.medium(),
               );
             },
-            childCount: articles.length +
-                (state.status == ArticleListStatus.loading ? 1 : 0),
+            childCount: publications.length +
+                (state.status == PublicationListStatus.loading ? 1 : 0),
           ),
         );
       },

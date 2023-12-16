@@ -17,11 +17,11 @@ import '../../feature/publication/page/news_list_page.dart';
 import '../../feature/publication/page/post_comment_page.dart';
 import '../../feature/publication/page/post_detail_page.dart';
 import '../../feature/publication/page/post_list_page.dart';
-import '../../feature/user/page/user_article_list_page.dart';
 import '../../feature/user/page/user_bookmark_list_page.dart';
 import '../../feature/user/page/user_dashboard_page.dart';
 import '../../feature/user/page/user_detail_page.dart';
 import '../../feature/user/page/user_list_page.dart';
+import '../../feature/user/page/user_publication_list_page.dart';
 import '../../page/dashboard_page.dart';
 import '../../page/services_page.dart';
 import '../../page/settings_page.dart';
@@ -220,8 +220,8 @@ class AppRouter extends _$AppRouter {
                   page: UserDetailRoute.page,
                 ),
                 AutoRoute(
-                  path: UserArticleListPage.routePath,
-                  page: UserArticleListRoute.page,
+                  path: UserPublicationListPage.routePath,
+                  page: UserPublicationListRoute.page,
                 ),
                 AutoRoute(
                   path: UserBookmarkListPage.routePath,
@@ -287,7 +287,7 @@ List<RedirectRoute> _newsRedirects() {
     ),
     RedirectRoute(
       path: '*/*/news/:id/comments',
-      redirectTo: 'articles/comments/:id',
+      redirectTo: 'news/comments/:id',
     ),
     RedirectRoute(
       path: '*/*/news/t/:id',
@@ -295,7 +295,7 @@ List<RedirectRoute> _newsRedirects() {
     ),
     RedirectRoute(
       path: '*/*/news/t/:id/comments',
-      redirectTo: 'articles/comments/:id',
+      redirectTo: 'news/comments/:id',
     ),
   ];
 }
@@ -382,7 +382,7 @@ List<RedirectRoute> _usersRedirects() {
   const userList = UserListPage.routePath;
   const basePath = 'services/$userList';
   const details = UserDetailPage.routePath;
-  const articles = UserArticleListPage.routePath;
+  const publications = UserPublicationListPage.routePath;
   const bookmarks = UserBookmarkListPage.routePath;
 
   return [
@@ -397,37 +397,33 @@ List<RedirectRoute> _usersRedirects() {
       redirectTo: '$basePath/:login',
     ),
 
-    /// Посты пользователя
+    /// Публикации пользователя
+    /// TODO: временный редирект на экран публикаций пользователя,
+    /// пока не реализованны вложенные разделы
+    /// (статьи, посты, новости)
     RedirectRoute(
-      path: '*/*/users/:login/posts',
-      redirectTo: '$basePath/:login/$articles',
+      path: '*/*/users/:login/publications/*',
+      redirectTo: '$basePath/:login/$publications',
     ),
 
-    /// Остальные редиректы постов пользователя
-    /// TODO: временный редирект на экран всех постов пользователя,
-    /// пока не реализованны вложенные разделы
-    /// (публикации, посты)
+    /// Старый роут публикаций
     RedirectRoute(
-      path: '*/*/users/:login/posts/*',
-      redirectTo: '$basePath/:login/$articles',
+      path: '*/*/users/:login/posts',
+      redirectTo: '$basePath/:login/$publications',
     ),
 
     /// Закладки пользователя
-    RedirectRoute(
-      path: '*/*/users/:login/favorites',
-      redirectTo: '$basePath/:login/$bookmarks',
-    ),
-    RedirectRoute(
-      path: '*/*/users/:login/bookmarks',
-      redirectTo: '$basePath/:login/$bookmarks',
-    ),
-
-    /// Остальные редиректы для закладок
     /// TODO: временный редирект на закладки пользователя,
     /// пока не реализованны вложенные разделы
     /// (публикации, посты, комментарии)
     RedirectRoute(
       path: '*/*/users/:login/bookmarks/*',
+      redirectTo: '$basePath/:login/$bookmarks',
+    ),
+
+    /// Старый роут закладок
+    RedirectRoute(
+      path: '*/*/users/:login/favorites',
       redirectTo: '$basePath/:login/$bookmarks',
     ),
 

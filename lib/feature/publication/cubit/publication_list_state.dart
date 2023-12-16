@@ -1,10 +1,10 @@
 part of 'publication_list_cubit.dart';
 
-enum ArticleListStatus { initial, loading, success, failure }
+enum PublicationListStatus { initial, loading, success, failure }
 
 class PublicationListState extends Equatable {
   const PublicationListState({
-    this.status = ArticleListStatus.initial,
+    this.status = PublicationListStatus.initial,
     this.error = '',
     this.source = PublicationListSource.flow,
     this.flow = FlowEnum.all,
@@ -16,10 +16,10 @@ class PublicationListState extends Equatable {
     this.score = '',
     this.page = 1,
     this.pagesCount = 0,
-    this.articles = const [],
+    this.publications = const [],
   });
 
-  final ArticleListStatus status;
+  final PublicationListStatus status;
   final String error;
   final PublicationListSource source;
   final FlowEnum flow;
@@ -31,10 +31,10 @@ class PublicationListState extends Equatable {
   final String score;
   final int page;
   final int pagesCount;
-  final List<ArticleModel> articles;
+  final List<Publication> publications;
 
   PublicationListState copyWith({
-    ArticleListStatus? status,
+    PublicationListStatus? status,
     String? error,
     PublicationListSource? source,
     FlowEnum? flow,
@@ -46,7 +46,7 @@ class PublicationListState extends Equatable {
     String? score,
     int? page,
     int? pagesCount,
-    List<ArticleModel>? articles,
+    List<Publication>? publications,
   }) {
     return PublicationListState(
       status: status ?? this.status,
@@ -61,7 +61,7 @@ class PublicationListState extends Equatable {
       score: score ?? this.score,
       page: page ?? this.page,
       pagesCount: pagesCount ?? this.pagesCount,
-      articles: articles ?? this.articles,
+      publications: publications ?? this.publications,
     );
   }
 
@@ -82,6 +82,6 @@ class PublicationListState extends Equatable {
         score,
         page,
         pagesCount,
-        articles,
+        publications,
       ];
 }

@@ -9,10 +9,10 @@ import '../../../common/utils/utils.dart';
 import '../../../common/widget/enhancement/progress_indicator.dart';
 import '../../../component/di/dependencies.dart';
 import '../../../config/constants.dart';
-import '../../article/widget/item_card/article_card_widget.dart';
 import '../../company/widget/company_card_widget.dart';
 import '../../enhancement/scroll/scroll.dart';
 import '../../hub/widget/hub_card_widget.dart';
+import '../../publication/widget/card/article_card_widget.dart';
 import '../../user/widget/user_card_widget.dart';
 import '../cubit/search_cubit.dart';
 import '../model/search_order.dart';
@@ -141,8 +141,8 @@ class SearchAnywhereDelegate extends FlabrSearchDelegate {
                               var model = models[index];
 
                               return switch (state.target) {
-                                SearchTarget.posts => ArticleCardWidget(
-                                    article: model,
+                                SearchTarget.posts => CommonCardWidget(
+                                    publication: model,
                                     renderType: RenderType.html,
                                   ),
                                 SearchTarget.hubs => HubCardWidget(

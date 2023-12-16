@@ -16,14 +16,14 @@ class MostReadingState extends Equatable {
   final String error;
   final LanguageEnum langUI;
   final List<LanguageEnum> langArticles;
-  final List<ArticleModel> articles;
+  final List<CommonModel> articles;
 
   MostReadingState copyWith({
     ArticleMostReadingStatus? status,
     String? error,
     LanguageEnum? langUI,
     List<LanguageEnum>? langArticles,
-    List<ArticleModel>? articles,
+    List<CommonModel>? articles,
   }) {
     return MostReadingState(
       status: status ?? this.status,

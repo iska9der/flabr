@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../common/exception/exception_helper.dart';
 import '../../../common/model/extension/enum_status.dart';
 import '../../../component/localization/language_enum.dart';
-import '../model/article/article_model.dart';
+import '../model/common_model.dart';
 import '../repository/publication_repository.dart';
 
 part 'most_reading_state.dart';

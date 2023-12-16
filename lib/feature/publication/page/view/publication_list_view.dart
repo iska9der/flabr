@@ -10,8 +10,6 @@ import '../../../../common/widget/publication_sliver_list.dart';
 import '../../../../component/theme/constants.dart';
 import '../../../../component/theme/responsive.dart';
 import '../../../../config/constants.dart';
-import '../../../article/widget/article_list/article_list_appbar.dart';
-import '../../../article/widget/most_reading_widget.dart';
 import '../../../auth/cubit/auth_cubit.dart';
 import '../../../enhancement/scroll/cubit/scroll_cubit.dart';
 import '../../../enhancement/scroll/widget/floating_scroll_to_top_button.dart';
@@ -19,6 +17,8 @@ import '../../../settings/cubit/settings_cubit.dart';
 import '../../cubit/publication_list_cubit.dart';
 import '../../model/flow_enum.dart';
 import '../../model/publication_type.dart';
+import '../../widget/appbar/publication_list_appbar.dart';
+import '../../widget/most_reading_widget.dart';
 
 class PublicationListView extends StatelessWidget {
   const PublicationListView({
@@ -88,7 +88,7 @@ class PublicationListView extends StatelessWidget {
               cacheExtent: 1000,
               controller: scrollController,
               slivers: [
-                ArticleListAppBar(type: type),
+                PublicationListAppBar(type: type),
                 ResponsiveVisibilitySliver(
                   hiddenConditions: [
                     Condition.largerThan(name: ScreenType.mobile, value: false)

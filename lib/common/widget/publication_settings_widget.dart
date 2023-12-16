@@ -20,14 +20,14 @@ class PublicationSettingsWidget extends StatelessWidget {
         ),
         FontScaleSlider(
           initialScale:
-              context.read<SettingsCubit>().state.articleConfig.fontScale,
+              context.read<SettingsCubit>().state.publicationConfig.fontScale,
         ),
         const SizedBox(height: 12),
         BlocBuilder<SettingsCubit, SettingsState>(
           builder: (context, state) {
             return SwitchListTile.adaptive(
               title: const Text('Изображения'),
-              value: state.articleConfig.isImagesVisible,
+              value: state.publicationConfig.isImagesVisible,
               onChanged: (bool? value) {
                 context
                     .read<SettingsCubit>()
@@ -41,7 +41,7 @@ class PublicationSettingsWidget extends StatelessWidget {
           builder: (context, state) {
             return SwitchListTile.adaptive(
               title: const Text('WebView'),
-              value: state.articleConfig.webViewEnabled,
+              value: state.publicationConfig.webViewEnabled,
               onChanged: (bool? value) {
                 context
                     .read<SettingsCubit>()

@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../common/exception/exception_helper.dart';
 import '../../../common/model/extension/enum_status.dart';
 import '../../settings/repository/language_repository.dart';
-import '../model/article/article_model.dart';
+import '../model/publication.dart';
 import '../model/source/publication_source.dart';
 import '../repository/publication_repository.dart';
 
@@ -23,7 +23,7 @@ class PublicationDetailCubit extends Cubit<PublicationDetailState> {
         super(PublicationDetailState(
           id: id,
           source: source,
-          article: ArticleModel.empty,
+          publication: Publication.empty,
         )) {
     _uiLangSub = _languageRepository.uiStream.listen(
       (_) => _reInit(),
@@ -50,20 +50,23 @@ class PublicationDetailCubit extends Cubit<PublicationDetailState> {
   void fetch() async {
     if (state.status.isLoading) return;
 
-    emit(state.copyWith(status: ArticleStatus.loading));
+    emit(state.copyWith(status: PublicationStatus.loading));
 
     try {
-      final article = await _repository.fetchById(
+      final publication = await _repository.fetchById(
         state.id,
         source: state.source,
         langUI: _languageRepository.ui,
         langArticles: _languageRepository.articles,
       );
 
-      emit(state.copyWith(status: ArticleStatus.success, article: article));
+      emit(state.copyWith(
+        status: PublicationStatus.success,
+        publication: publication,
+      ));
     } catch (e) {
       emit(state.copyWith(
-        status: ArticleStatus.failure,
+        status: PublicationStatus.failure,
         error: ExceptionHelper.parseMessage(e),
       ));
 
@@ -72,6 +75,6 @@ class PublicationDetailCubit extends Cubit<PublicationDetailState> {
   }
 
   void _reInit() {
-    emit(state.copyWith(status: ArticleStatus.initial));
+    emit(state.copyWith(status: PublicationStatus.initial));
   }
 }

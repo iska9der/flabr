@@ -147,9 +147,9 @@ class SettingsCubit extends Cubit<SettingsState> {
     }
 
     raw = await _storage.read(articleConfigCacheKey);
-    ArticleConfigModel? articleConfig;
+    PublicationConfigModel? articleConfig;
     if (raw != null) {
-      articleConfig = ArticleConfigModel.fromJson(raw);
+      articleConfig = PublicationConfigModel.fromJson(raw);
     }
 
     raw = await _storage.read(miscConfigCacheKey);
@@ -160,7 +160,7 @@ class SettingsCubit extends Cubit<SettingsState> {
 
     emit(state.copyWith(
       feedConfig: feedConfig,
-      articleConfig: articleConfig,
+      publicationConfig: articleConfig,
       miscConfig: miscConfig,
     ));
   }
@@ -188,28 +188,29 @@ class SettingsCubit extends Cubit<SettingsState> {
   }
 
   void changeArticleFontScale(double newScale) {
-    if (state.articleConfig.fontScale == newScale) return;
+    if (state.publicationConfig.fontScale == newScale) return;
 
-    var newConfig = state.articleConfig.copyWith(fontScale: newScale);
-    emit(state.copyWith(articleConfig: newConfig));
+    var newConfig = state.publicationConfig.copyWith(fontScale: newScale);
+    emit(state.copyWith(publicationConfig: newConfig));
 
     _storage.write(articleConfigCacheKey, newConfig.toJson());
   }
 
   void changeArticleImageVisibility({bool? isVisible}) {
-    if (state.articleConfig.isImagesVisible == isVisible) return;
+    if (state.publicationConfig.isImagesVisible == isVisible) return;
 
-    var newConfig = state.articleConfig.copyWith(isImagesVisible: isVisible);
-    emit(state.copyWith(articleConfig: newConfig));
+    var newConfig =
+        state.publicationConfig.copyWith(isImagesVisible: isVisible);
+    emit(state.copyWith(publicationConfig: newConfig));
 
     _storage.write(articleConfigCacheKey, newConfig.toJson());
   }
 
   void changeWebViewVisibility({bool? isVisible}) {
-    if (state.articleConfig.webViewEnabled == isVisible) return;
+    if (state.publicationConfig.webViewEnabled == isVisible) return;
 
-    var newConfig = state.articleConfig.copyWith(webViewEnabled: isVisible);
-    emit(state.copyWith(articleConfig: newConfig));
+    var newConfig = state.publicationConfig.copyWith(webViewEnabled: isVisible);
+    emit(state.copyWith(publicationConfig: newConfig));
 
     _storage.write(articleConfigCacheKey, newConfig.toJson());
   }

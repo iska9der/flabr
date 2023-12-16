@@ -4,30 +4,28 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_file_dialog/flutter_file_dialog.dart';
 
-import '../model/article/article_model.dart';
 import '../model/download/format.dart';
 import '../model/download/format_converter.dart';
+import '../model/publication.dart';
 
 part 'publication_download_state.dart';
 
 class PublicationDownloadCubit extends Cubit<PublicationDownloadState> {
   PublicationDownloadCubit({
-    required ArticleModel article,
+    required Publication publication,
     required PublicationDownloadFormat format,
   })  : converter = PublicationTextFormatConverter(
-          text: article.textHtml,
+          text: publication.textHtml,
           desiredFormat: format,
         ),
         super(PublicationDownloadState(
-          articleId: article.id,
-          articleTitle: article.titleHtml,
-          articleHtmlText: article.textHtml,
+          id: publication.id,
+          htmlText: publication.textHtml,
           format: format,
         )) {
     _init();
   }
 
-  final String additionalPath = 'articles';
   final PublicationTextFormatConverter converter;
 
   _init() async {

@@ -8,15 +8,16 @@ import '../../../../common/widget/enhancement/progress_indicator.dart';
 import '../../../../common/widget/html_view_widget.dart';
 import '../../../../common/widget/publication_settings_widget.dart';
 import '../../../../config/constants.dart';
-import '../../../article/widget/article_footer_widget.dart';
-import '../../../article/widget/article_header_widget.dart';
-import '../../../article/widget/article_hubs_widget.dart';
-import '../../../article/widget/article_labels_widget.dart';
-import '../../../article/widget/article_more_widget.dart';
-import '../../../article/widget/detail/appbar_title_widget.dart';
-import '../../../article/widget/detail/title_widget.dart';
-import '../../../article/widget/stats/article_stats_widget.dart';
 import '../../cubit/publication_detail_cubit.dart';
+import '../../model/common_model.dart';
+import '../../widget/card/components/footer_widget.dart';
+import '../../widget/card/components/format_widget.dart';
+import '../../widget/card/components/header_widget.dart';
+import '../../widget/card/components/hubs_widget.dart';
+import '../../widget/detail/appbar_title_widget.dart';
+import '../../widget/detail/title_widget.dart';
+import '../../widget/more/more_widget.dart';
+import '../../widget/stats/stats_widget.dart';
 
 const double _hPadding = 12.0;
 const double _vPadding = 10.0;
@@ -68,19 +69,19 @@ class _PublicationDetailViewState extends State<PublicationDetailView> {
         bottom: false,
         child: BlocBuilder<PublicationDetailCubit, PublicationDetailState>(
           builder: (context, state) {
-            if (state.status == ArticleStatus.initial) {
+            if (state.status == PublicationStatus.initial) {
               context.read<PublicationDetailCubit>().fetch();
 
               return const CircleIndicator();
             }
-            if (state.status == ArticleStatus.loading) {
+            if (state.status == PublicationStatus.loading) {
               return const CircleIndicator();
             }
-            if (state.status == ArticleStatus.failure) {
+            if (state.status == PublicationStatus.failure) {
               return Center(child: Text(state.error));
             }
 
-            final article = state.article;
+            final publication = state.publication;
 
             return Scrollbar(
               controller: controller,
@@ -125,8 +126,8 @@ class _PublicationDetailViewState extends State<PublicationDetailView> {
                                   child: AutoLeadingButton(),
                                 ),
                                 Expanded(
-                                  child: ArticleDetailAppBarTitle(
-                                    article: article,
+                                  child: PublicationDetailAppBarTitle(
+                                    publication: publication,
                                   ),
                                 ),
                                 IconButton(
@@ -149,7 +150,7 @@ class _PublicationDetailViewState extends State<PublicationDetailView> {
                                   iconSize: 18,
                                   tooltip: 'Поделиться',
                                   onPressed: () => Share.shareUri(Uri.parse(
-                                    '$baseUrl/articles/${article.id}',
+                                    '$baseUrl/articles/${publication.id}',
                                   )),
                                 ),
                               ],
@@ -179,12 +180,12 @@ class _PublicationDetailViewState extends State<PublicationDetailView> {
                             left: _hPadding,
                             right: _hPadding,
                           ),
-                          child: ArticleHeaderWidget(article),
+                          child: PublicationHeaderWidget(publication),
                         ),
                       ),
                       SliverToBoxAdapter(
-                        child: ArticleDetailTitle(
-                          article: article,
+                        child: PublicationDetailTitle(
+                          publication: publication,
                           padding: const EdgeInsets.only(
                             top: _vPadding,
                             left: _hPadding,
@@ -201,7 +202,7 @@ class _PublicationDetailViewState extends State<PublicationDetailView> {
                             right: _hPadding,
                             bottom: _vPadding,
                           ),
-                          child: ArticleStatsWidget(article),
+                          child: PublicationStatsWidget(publication),
                         ),
                       ),
                       SliverToBoxAdapter(
@@ -211,19 +212,22 @@ class _PublicationDetailViewState extends State<PublicationDetailView> {
                             left: _hPadding,
                             right: _hPadding,
                           ),
-                          child: ArticleHubsWidget(hubs: article.hubs),
+                          child: PublicationHubsWidget(hubs: publication.hubs),
                         ),
                       ),
                       SliverToBoxAdapter(
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                            left: _hPadding,
-                            right: _hPadding,
-                          ),
-                          child: ArticleLabelsWidget(article),
-                        ),
+                        child: switch (publication) {
+                          (CommonModel a) when a.format != null => Padding(
+                              padding: const EdgeInsets.only(
+                                left: _hPadding,
+                                right: _hPadding,
+                              ),
+                              child: PublicationFormatWidget(a.format!),
+                            ),
+                          _ => const SizedBox(),
+                        },
                       ),
-                      HtmlView(textHtml: article.textHtml),
+                      HtmlView(textHtml: publication.textHtml),
                     ],
                   ),
                 ),
@@ -245,9 +249,9 @@ class _ArticleBottomBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<PublicationDetailCubit, PublicationDetailState>(
       builder: (context, state) {
-        if (state.article.isEmpty) return const SizedBox();
+        if (state.publication.isEmpty) return const SizedBox();
 
-        final article = state.article;
+        final publication = state.publication;
 
         return AnimatedSlide(
           duration: const Duration(milliseconds: 300),
@@ -264,7 +268,7 @@ class _ArticleBottomBar extends StatelessWidget {
                 Expanded(
                   flex: 7,
                   child: ArticleFooterWidget(
-                    article: article,
+                    publication: publication,
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   ),
                 ),
@@ -279,7 +283,7 @@ class _ArticleBottomBar extends StatelessWidget {
                       builder: (_) => SizedBox(
                         width: double.infinity,
                         height: 120,
-                        child: ArticleMoreOptionsWidget(article: article),
+                        child: PublicationMoreWidget(publication: publication),
                       ),
                     ),
                   ),
