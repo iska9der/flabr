@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../model/common_model.dart';
-import '../../model/publication.dart';
+import '../../model/publication/publication.dart';
 import '../../model/publication_type.dart';
 
 class PublicationDetailTitle extends StatelessWidget {
@@ -21,7 +20,7 @@ class PublicationDetailTitle extends StatelessWidget {
       _ => Padding(
           padding: padding,
           child: SelectableText(
-            (publication as CommonModel).titleHtml,
+            (publication as PublicationCommon).titleHtml,
             textAlign: TextAlign.left,
             style: Theme.of(context).textTheme.titleLarge,
           ),

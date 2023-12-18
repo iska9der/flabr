@@ -1,17 +1,17 @@
 import 'package:equatable/equatable.dart';
 
 import '../../../../common/model/network/list_response.dart';
-import '../common_model.dart';
+import '../publication/publication.dart';
 
 class MostReadingResponse extends ListResponse with EquatableMixin {
   const MostReadingResponse({
     super.pagesCount = 1,
     super.ids = const [],
-    List<CommonModel> super.refs = const [],
+    List<PublicationCommon> super.refs = const [],
   });
 
   @override
-  List<CommonModel> get refs => super.refs as List<CommonModel>;
+  List<PublicationCommon> get refs => super.refs as List<PublicationCommon>;
 
   @override
   MostReadingResponse copyWith({
@@ -22,7 +22,7 @@ class MostReadingResponse extends ListResponse with EquatableMixin {
     return MostReadingResponse(
       pagesCount: pagesCount ?? this.pagesCount,
       ids: ids ?? this.ids,
-      refs: List<CommonModel>.from((refs ?? this.refs)),
+      refs: List<PublicationCommon>.from((refs ?? this.refs)),
     );
   }
 
@@ -35,7 +35,7 @@ class MostReadingResponse extends ListResponse with EquatableMixin {
       ids: List<String>.from(idsMap),
       refs: Map.from(refsMap)
           .entries
-          .map((e) => CommonModel.fromMap(e.value))
+          .map((e) => PublicationCommon.fromMap(e.value))
           .toList(),
     );
   }

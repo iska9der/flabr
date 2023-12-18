@@ -2,12 +2,10 @@ import '../../../common/model/network/list_response.dart';
 import '../../../component/localization/language_enum.dart';
 import '../../../component/localization/language_helper.dart';
 import '../model/comment/network/comment_list_response.dart';
-import '../model/common_model.dart';
 import '../model/flow_enum.dart';
 import '../model/network/most_reading_response.dart';
 import '../model/network/publication_list_response.dart';
-import '../model/post/post_model.dart';
-import '../model/publication.dart';
+import '../model/publication/publication.dart';
 import '../model/publication_type.dart';
 import '../model/sort/date_period_enum.dart';
 import '../model/sort/sort_enum.dart';
@@ -36,10 +34,10 @@ class PublicationRepository {
           langUI: langUI,
           langArticles: langArticles,
         ),
-    } as Publication;
+    };
   }
 
-  Future<CommonModel> fetchArticleById(
+  Future<PublicationCommon> fetchArticleById(
     String id, {
     required LanguageEnum langUI,
     required List<LanguageEnum> langArticles,
@@ -50,12 +48,12 @@ class PublicationRepository {
       langArticles: encodeLangs(langArticles),
     );
 
-    final article = CommonModel.fromMap(rawData);
+    final article = PublicationCommon.fromMap(rawData);
 
     return article;
   }
 
-  Future<PostModel> fetchPostById(
+  Future<PublicationPost> fetchPostById(
     String id, {
     required LanguageEnum langUI,
     required List<LanguageEnum> langArticles,
@@ -66,7 +64,7 @@ class PublicationRepository {
       langArticles: encodeLangs(langArticles),
     );
 
-    final post = PostModel.fromMap(rawData);
+    final post = PublicationPost.fromMap(rawData);
 
     return post;
   }
@@ -214,7 +212,7 @@ class PublicationRepository {
     return await service.removeFromBookmark(articleId);
   }
 
-  Future<List<CommonModel>> fetchMostReading({
+  Future<List<PublicationCommon>> fetchMostReading({
     required LanguageEnum langUI,
     required List<LanguageEnum> langArticles,
   }) async {
@@ -223,7 +221,7 @@ class PublicationRepository {
       langArticles: encodeLangs(langArticles),
     );
 
-    List<CommonModel> articles = [...raw.refs];
+    List<PublicationCommon> articles = [...raw.refs];
 
     articles.sort((a, b) =>
         a.statistics.readingCount > b.statistics.readingCount ? 0 : 1);

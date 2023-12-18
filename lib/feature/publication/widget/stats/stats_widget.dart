@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../common/model/extension/num.dart';
-import '../../model/common_model.dart';
-import '../../model/publication.dart';
+import '../../model/publication/publication.dart';
 import '../../model/publication_complexity.dart';
 import '../../model/publication_type.dart';
 import 'article_stat_widget.dart';
@@ -17,7 +16,7 @@ class PublicationStatsWidget extends StatelessWidget {
     return switch (publication.type) {
       PublicationType.article ||
       PublicationType.news =>
-        ArticleStatsWidget(publication as CommonModel),
+        ArticleStatsWidget(publication as PublicationCommon),
       _ => ArticleStat(
           icon: Icons.remove_red_eye_rounded,
           text: publication.statistics.readingCount.compact(),
@@ -29,7 +28,7 @@ class PublicationStatsWidget extends StatelessWidget {
 class ArticleStatsWidget extends StatelessWidget {
   const ArticleStatsWidget(this.article, {super.key});
 
-  final CommonModel article;
+  final PublicationCommon article;
 
   @override
   Widget build(BuildContext context) {

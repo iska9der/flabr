@@ -6,7 +6,7 @@ import 'package:flutter_file_dialog/flutter_file_dialog.dart';
 
 import '../model/download/format.dart';
 import '../model/download/format_converter.dart';
-import '../model/publication.dart';
+import '../model/publication/publication.dart';
 
 part 'publication_download_state.dart';
 

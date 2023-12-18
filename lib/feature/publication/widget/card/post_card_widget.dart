@@ -4,7 +4,7 @@ import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart
 
 import '../../../../common/model/render_type.dart';
 import '../../../../common/widget/enhancement/card.dart';
-import '../../model/post/post_model.dart';
+import '../../model/publication/publication.dart';
 import '../../page/post_detail_page.dart';
 import '../stats/stats_widget.dart';
 import 'components/footer_widget.dart';
@@ -18,7 +18,7 @@ class PostCardWidget extends StatelessWidget {
     this.renderType = RenderType.plain,
   });
 
-  final PostModel post;
+  final PublicationPost post;
   final RenderType renderType;
 
   @override

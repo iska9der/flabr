@@ -1,11 +1,19 @@
-import 'publication_author_model.dart';
-import 'publication_hub_model.dart';
-import 'publication_related_data_model.dart';
-import 'publication_statistics_model.dart';
-import 'publication_type.dart';
+import 'package:equatable/equatable.dart';
 
-/// Базовая модель публикации с общими свойствами
-class Publication {
+import '../lead/publication_lead_data_model.dart';
+import '../publication_author_model.dart';
+import '../publication_complexity.dart';
+import '../publication_format.dart';
+import '../publication_hub_model.dart';
+import '../publication_related_data_model.dart';
+import '../publication_statistics_model.dart';
+import '../publication_type.dart';
+
+part 'common.dart';
+part 'post.dart';
+
+/// Базовый класс с общими свойствами
+sealed class Publication extends Equatable {
   const Publication({
     required this.id,
     this.type = PublicationType.article,
@@ -33,7 +41,19 @@ class Publication {
   final List<PublicationHubModel> hubs;
   final List<String> tags;
 
-  static const empty = Publication(id: '0');
-
+  static const empty = PublicationCommon(id: '0');
   bool get isEmpty => this == empty;
+
+  @override
+  List<Object?> get props => [
+        id,
+        type,
+        timePublished,
+        textHtml,
+        author,
+        statistics,
+        relatedData,
+        hubs,
+        tags,
+      ];
 }

@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../cubit/publication_download_cubit.dart';
 import '../../model/download/format.dart';
-import '../../model/publication.dart';
+import '../../model/publication/publication.dart';
 
 class SaveExpansionWidget extends StatelessWidget {
   const SaveExpansionWidget({super.key, required this.publication});

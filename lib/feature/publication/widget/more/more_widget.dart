@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../config/constants.dart';
-import '../../model/publication.dart';
+import '../../model/publication/publication.dart';
 import 'save_expansion_widget.dart';
 
 class PublicationMoreWidget extends StatelessWidget {

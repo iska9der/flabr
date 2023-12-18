@@ -1,17 +1,8 @@
-import 'package:equatable/equatable.dart';
+part of 'publication.dart';
 
-import 'lead/publication_lead_data_model.dart';
-import 'publication.dart';
-import 'publication_author_model.dart';
-import 'publication_complexity.dart';
-import 'publication_format.dart';
-import 'publication_hub_model.dart';
-import 'publication_related_data_model.dart';
-import 'publication_statistics_model.dart';
-import 'publication_type.dart';
-
-class CommonModel extends Publication with EquatableMixin {
-  const CommonModel({
+/// Общий класс для статей и новостей, так как у них идентичные свойства
+class PublicationCommon extends Publication {
+  const PublicationCommon({
     required super.id,
     super.type,
     super.timePublished,
@@ -34,8 +25,8 @@ class CommonModel extends Publication with EquatableMixin {
   final int readingTime;
   final PublicationFormat? format;
 
-  factory CommonModel.fromMap(Map<String, dynamic> map) {
-    return CommonModel(
+  factory PublicationCommon.fromMap(Map<String, dynamic> map) {
+    return PublicationCommon(
       id: map['id'],
       type: map.containsKey('postType')
           ? PublicationType.fromString(map['postType'])
@@ -74,25 +65,15 @@ class CommonModel extends Publication with EquatableMixin {
     );
   }
 
-  static const empty = CommonModel(id: '0');
+  static const empty = PublicationCommon(id: '0');
 
   @override
   List<Object?> get props => [
-        id,
-        type,
-        timePublished,
+        ...super.props,
         titleHtml,
-        textHtml,
-        author,
-        statistics,
         leadData,
-        relatedData,
-        hubs,
-        tags,
         complexity,
         readingTime,
         format,
-        publishedAt,
-        isEmpty,
       ];
 }

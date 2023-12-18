@@ -1,17 +1,17 @@
 import 'package:equatable/equatable.dart';
 
-import '../post/post_model.dart';
+import '../publication/publication.dart';
 import '/common/model/network/list_response.dart';
 
 class PostListResponse extends ListResponse with EquatableMixin {
   const PostListResponse({
     super.pagesCount = 1,
     super.ids = const [],
-    List<PostModel> super.refs = const [],
+    List<PublicationPost> super.refs = const [],
   });
 
   @override
-  List<PostModel> get refs => super.refs as List<PostModel>;
+  List<PublicationPost> get refs => super.refs as List<PublicationPost>;
 
   @override
   PostListResponse copyWith({
@@ -22,7 +22,7 @@ class PostListResponse extends ListResponse with EquatableMixin {
     return PostListResponse(
       pagesCount: pagesCount ?? this.pagesCount,
       ids: ids ?? this.ids,
-      refs: List<PostModel>.from((refs ?? this.refs)),
+      refs: List<PublicationPost>.from((refs ?? this.refs)),
     );
   }
 
@@ -35,7 +35,7 @@ class PostListResponse extends ListResponse with EquatableMixin {
       ids: List<String>.from(idsMap),
       refs: Map.from(refsMap)
           .entries
-          .map((e) => PostModel.fromMap(e.value))
+          .map((e) => PublicationPost.fromMap(e.value))
           .toList(),
     );
   }

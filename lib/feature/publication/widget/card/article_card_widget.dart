@@ -8,7 +8,7 @@ import '../../../../common/widget/enhancement/card.dart';
 import '../../../../config/constants.dart';
 import '../../../common/image/widget/network_image_widget.dart';
 import '../../../settings/cubit/settings_cubit.dart';
-import '../../model/common_model.dart';
+import '../../model/publication/publication.dart';
 import '../../page/article_detail_page.dart';
 import '../stats/stats_widget.dart';
 import 'components/footer_widget.dart';
@@ -23,7 +23,7 @@ class CommonCardWidget extends StatelessWidget {
     this.renderType = RenderType.plain,
   });
 
-  final CommonModel publication;
+  final PublicationCommon publication;
   final RenderType renderType;
 
   @override

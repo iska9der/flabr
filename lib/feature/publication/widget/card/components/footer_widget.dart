@@ -12,7 +12,7 @@ import '../../../../auth/widget/dialog.dart';
 import '../../../../summary/cubit/summary_auth_cubit.dart';
 import '../../../../summary/widget/dialog.dart';
 import '../../../cubit/publication_bookmark_cubit.dart';
-import '../../../model/publication.dart';
+import '../../../model/publication/publication.dart';
 import '../../../model/publication_type.dart';
 import '../../../page/article_comment_page.dart';
 import '../../../page/post_comment_page.dart';

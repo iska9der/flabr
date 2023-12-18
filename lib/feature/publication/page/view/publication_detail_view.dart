@@ -9,7 +9,7 @@ import '../../../../common/widget/html_view_widget.dart';
 import '../../../../common/widget/publication_settings_widget.dart';
 import '../../../../config/constants.dart';
 import '../../cubit/publication_detail_cubit.dart';
-import '../../model/common_model.dart';
+import '../../model/publication/publication.dart';
 import '../../widget/card/components/footer_widget.dart';
 import '../../widget/card/components/format_widget.dart';
 import '../../widget/card/components/header_widget.dart';
@@ -217,7 +217,8 @@ class _PublicationDetailViewState extends State<PublicationDetailView> {
                       ),
                       SliverToBoxAdapter(
                         child: switch (publication) {
-                          (CommonModel a) when a.format != null => Padding(
+                          (PublicationCommon a) when a.format != null =>
+                            Padding(
                               padding: const EdgeInsets.symmetric(
                                 horizontal: _hPadding,
                               ),

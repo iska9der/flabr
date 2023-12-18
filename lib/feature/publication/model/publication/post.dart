@@ -1,14 +1,8 @@
-import 'package:equatable/equatable.dart';
+part of 'publication.dart';
 
-import '../publication.dart';
-import '../publication_author_model.dart';
-import '../publication_hub_model.dart';
-import '../publication_related_data_model.dart';
-import '../publication_statistics_model.dart';
-import '../publication_type.dart';
-
-class PostModel extends Publication with EquatableMixin {
-  const PostModel({
+/// Класс для публикации с типом "Пост"
+class PublicationPost extends Publication {
+  const PublicationPost({
     required super.id,
     super.type,
     super.timePublished,
@@ -20,8 +14,8 @@ class PostModel extends Publication with EquatableMixin {
     super.tags,
   });
 
-  factory PostModel.fromMap(Map<String, dynamic> map) {
-    return PostModel(
+  factory PublicationPost.fromMap(Map<String, dynamic> map) {
+    return PublicationPost(
       id: map['id'],
       type: PublicationType.post,
       timePublished: map['timePublished'],
@@ -47,20 +41,10 @@ class PostModel extends Publication with EquatableMixin {
     );
   }
 
-  static const empty = PostModel(id: '0');
+  static const empty = PublicationPost(id: '0');
 
   @override
   List<Object?> get props => [
-        id,
-        type,
-        timePublished,
-        textHtml,
-        author,
-        statistics,
-        relatedData,
-        hubs,
-        tags,
-        publishedAt,
-        isEmpty,
+        ...super.props,
       ];
 }

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../model/common_model.dart';
-import '../../model/publication.dart';
+import '../../model/publication/publication.dart';
 import '../../model/publication_type.dart';
 
 class PublicationDetailAppBarTitle extends StatelessWidget {
@@ -13,7 +12,7 @@ class PublicationDetailAppBarTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     final title = switch (publication.type) {
       PublicationType.post => 'Пост',
-      _ => (publication as CommonModel).titleHtml,
+      _ => (publication as PublicationCommon).titleHtml,
     };
 
     return Text(

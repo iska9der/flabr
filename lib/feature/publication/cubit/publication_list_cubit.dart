@@ -9,7 +9,7 @@ import '../../../common/model/network/list_response.dart';
 import '../../settings/repository/language_repository.dart';
 import '../model/flow_enum.dart';
 import '../model/network/publication_list_response.dart';
-import '../model/publication.dart';
+import '../model/publication/publication.dart';
 import '../model/publication_type.dart';
 import '../model/sort/date_period_enum.dart';
 import '../model/sort/sort_enum.dart';
