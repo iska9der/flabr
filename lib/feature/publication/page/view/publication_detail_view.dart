@@ -218,9 +218,8 @@ class _PublicationDetailViewState extends State<PublicationDetailView> {
                       SliverToBoxAdapter(
                         child: switch (publication) {
                           (CommonModel a) when a.format != null => Padding(
-                              padding: const EdgeInsets.only(
-                                left: _hPadding,
-                                right: _hPadding,
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: _hPadding,
                               ),
                               child: PublicationFormatWidget(a.format!),
                             ),
