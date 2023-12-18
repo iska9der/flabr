@@ -373,6 +373,11 @@ List<RedirectRoute> _postsRedirects() {
       redirectTo: 'posts/flows/:flow',
     ),
 
+    RedirectRoute(
+      path: '*/*/posts/',
+      redirectTo: 'posts',
+    ),
+
     /// Статьи и комментарии
     ...internalRedirectList,
   ];
