@@ -7,6 +7,7 @@ import '../../../common/model/user.dart';
 import '../../../common/widget/enhancement/card.dart';
 import '../../../common/widget/enhancement/progress_indicator.dart';
 import '../../../common/widget/feed/card_avatar_widget.dart';
+import '../../user/page/user_publication_list_page.dart';
 import '../cubit/auth_cubit.dart';
 
 abstract class DialogUserWidget extends StatelessWidget {
@@ -41,10 +42,10 @@ class DialogUserProfileWidget extends StatelessWidget
               },
             ),
             ListTile(
-              title: const Text('Статьи'),
+              title: const Text('Публикации'),
               onTap: () {
                 context.navigateNamedTo(
-                  'services/users/${user.alias}/article',
+                  'services/users/${user.alias}/${UserPublicationListPage.routePath}',
                 );
 
                 Navigator.of(context).pop();

@@ -1,9 +1,9 @@
 import '../../../common/exception/value_exception.dart';
 import '../../../common/model/network/list_response.dart';
 import '../../../component/language.dart';
-import '../../article/model/network/article_list_response.dart';
 import '../../company/model/network/company_list_response.dart';
 import '../../hub/model/network/hub_list_response.dart';
+import '../../publication/model/network/publication_list_response.dart';
 import '../../user/model/network/user_list_response.dart';
 import '../model/search_order.dart';
 import '../model/search_target.dart';
@@ -33,7 +33,7 @@ class SearchRepository {
 
     switch (target) {
       case SearchTarget.posts:
-        final response = ArticleListResponse.fromMap(raw);
+        final response = PublicationListResponse.fromMap(raw);
         _sortArticles(order, response);
         return response;
       case SearchTarget.hubs:
@@ -47,7 +47,7 @@ class SearchRepository {
     }
   }
 
-  void _sortArticles(SearchOrder order, ArticleListResponse response) {
+  void _sortArticles(SearchOrder order, PublicationListResponse response) {
     if (order == SearchOrder.date) {
       response.refs.sort((a, b) => b.timePublished.compareTo(
             a.timePublished,

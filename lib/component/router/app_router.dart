@@ -2,25 +2,26 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
-import '../../feature/article/page/article_list_page.dart';
-import '../../feature/article/page/comment/article_comment_page.dart';
-import '../../feature/article/page/comment/post_comment_page.dart';
-import '../../feature/article/page/detail/article_detail_page.dart';
-import '../../feature/article/page/detail/news_detail_page.dart';
-import '../../feature/article/page/detail/post_detail_page.dart';
-import '../../feature/article/page/news_list_page.dart';
-import '../../feature/article/page/post_list_page.dart';
 import '../../feature/company/page/company_dashboard_page.dart';
 import '../../feature/company/page/company_detail_page.dart';
 import '../../feature/company/page/company_list_page.dart';
 import '../../feature/hub/page/hub_dashboard_page.dart';
 import '../../feature/hub/page/hub_detail_page.dart';
 import '../../feature/hub/page/hub_list_page.dart';
-import '../../feature/user/page/user_article_list_page.dart';
+import '../../feature/publication/page/article_comment_page.dart';
+import '../../feature/publication/page/article_detail_page.dart';
+import '../../feature/publication/page/article_list_page.dart';
+import '../../feature/publication/page/news_comment_page.dart';
+import '../../feature/publication/page/news_detail_page.dart';
+import '../../feature/publication/page/news_list_page.dart';
+import '../../feature/publication/page/post_comment_page.dart';
+import '../../feature/publication/page/post_detail_page.dart';
+import '../../feature/publication/page/post_list_page.dart';
 import '../../feature/user/page/user_bookmark_list_page.dart';
 import '../../feature/user/page/user_dashboard_page.dart';
 import '../../feature/user/page/user_detail_page.dart';
 import '../../feature/user/page/user_list_page.dart';
+import '../../feature/user/page/user_publication_list_page.dart';
 import '../../page/dashboard_page.dart';
 import '../../page/services_page.dart';
 import '../../page/settings_page.dart';
@@ -128,8 +129,8 @@ class AppRouter extends _$AppRouter {
               page: ArticleDetailRoute.page,
             ),
             AutoRoute(
-              path: ArticleCommentListPage.routePath,
-              page: ArticleCommentListRoute.page,
+              path: 'comments/:id',
+              page: ArticleCommentsRoute.page,
             ),
           ],
         ),
@@ -150,8 +151,8 @@ class AppRouter extends _$AppRouter {
               page: PostDetailRoute.page,
             ),
             AutoRoute(
-              path: PostCommentListPage.routePath,
-              page: PostCommentListRoute.page,
+              path: 'comments/:id',
+              page: PostCommentsRoute.page,
             ),
           ],
         ),
@@ -170,6 +171,10 @@ class AppRouter extends _$AppRouter {
             AutoRoute(
               path: NewsDetailPage.routePath,
               page: NewsDetailRoute.page,
+            ),
+            AutoRoute(
+              path: 'comments/:id',
+              page: NewsCommentsRoute.page,
             ),
           ],
         ),
@@ -215,8 +220,8 @@ class AppRouter extends _$AppRouter {
                   page: UserDetailRoute.page,
                 ),
                 AutoRoute(
-                  path: UserArticleListPage.routePath,
-                  page: UserArticleListRoute.page,
+                  path: UserPublicationListPage.routePath,
+                  page: UserPublicationListRoute.page,
                 ),
                 AutoRoute(
                   path: UserBookmarkListPage.routePath,
@@ -282,7 +287,7 @@ List<RedirectRoute> _newsRedirects() {
     ),
     RedirectRoute(
       path: '*/*/news/:id/comments',
-      redirectTo: 'articles/comments/:id',
+      redirectTo: 'news/comments/:id',
     ),
     RedirectRoute(
       path: '*/*/news/t/:id',
@@ -290,7 +295,7 @@ List<RedirectRoute> _newsRedirects() {
     ),
     RedirectRoute(
       path: '*/*/news/t/:id/comments',
-      redirectTo: 'articles/comments/:id',
+      redirectTo: 'news/comments/:id',
     ),
   ];
 }
@@ -299,6 +304,8 @@ List<RedirectRoute> _articlesRedirects() {
   List<String> externalPathList = [
     '*/*/articles/:id',
     '*/articles/:id',
+    '*/*/post/:id',
+    '*/post/:id',
 
     /// Статьи из блогов и комментарии к ним
     /// TODO: пока через вкладку "статьи"
@@ -341,8 +348,6 @@ List<RedirectRoute> _postsRedirects() {
   List<String> externalPathList = [
     '*/*/posts/:id',
     '*/posts/:id',
-    '*/*/post/:id',
-    '*/post/:id',
   ];
 
   List<RedirectRoute> internalRedirectList = [];
@@ -368,6 +373,11 @@ List<RedirectRoute> _postsRedirects() {
       redirectTo: 'posts/flows/:flow',
     ),
 
+    RedirectRoute(
+      path: '*/*/posts/',
+      redirectTo: 'posts',
+    ),
+
     /// Статьи и комментарии
     ...internalRedirectList,
   ];
@@ -377,7 +387,7 @@ List<RedirectRoute> _usersRedirects() {
   const userList = UserListPage.routePath;
   const basePath = 'services/$userList';
   const details = UserDetailPage.routePath;
-  const articles = UserArticleListPage.routePath;
+  const publications = UserPublicationListPage.routePath;
   const bookmarks = UserBookmarkListPage.routePath;
 
   return [
@@ -392,37 +402,33 @@ List<RedirectRoute> _usersRedirects() {
       redirectTo: '$basePath/:login',
     ),
 
-    /// Посты пользователя
+    /// Публикации пользователя
+    /// TODO: временный редирект на экран публикаций пользователя,
+    /// пока не реализованны вложенные разделы
+    /// (статьи, посты, новости)
     RedirectRoute(
-      path: '*/*/users/:login/posts',
-      redirectTo: '$basePath/:login/$articles',
+      path: '*/*/users/:login/publications/*',
+      redirectTo: '$basePath/:login/$publications',
     ),
 
-    /// Остальные редиректы постов пользователя
-    /// TODO: временный редирект на экран всех постов пользователя,
-    /// пока не реализованны вложенные разделы
-    /// (публикации, посты)
+    /// Старый роут публикаций
     RedirectRoute(
-      path: '*/*/users/:login/posts/*',
-      redirectTo: '$basePath/:login/$articles',
+      path: '*/*/users/:login/posts',
+      redirectTo: '$basePath/:login/$publications',
     ),
 
     /// Закладки пользователя
-    RedirectRoute(
-      path: '*/*/users/:login/favorites',
-      redirectTo: '$basePath/:login/$bookmarks',
-    ),
-    RedirectRoute(
-      path: '*/*/users/:login/bookmarks',
-      redirectTo: '$basePath/:login/$bookmarks',
-    ),
-
-    /// Остальные редиректы для закладок
     /// TODO: временный редирект на закладки пользователя,
     /// пока не реализованны вложенные разделы
     /// (публикации, посты, комментарии)
     RedirectRoute(
       path: '*/*/users/:login/bookmarks/*',
+      redirectTo: '$basePath/:login/$bookmarks',
+    ),
+
+    /// Старый роут закладок
+    RedirectRoute(
+      path: '*/*/users/:login/favorites',
       redirectTo: '$basePath/:login/$bookmarks',
     ),
 

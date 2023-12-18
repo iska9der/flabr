@@ -9,7 +9,7 @@ class SettingsState extends Equatable {
     this.langArticles = const [LanguageEnum.ru],
     this.isDarkTheme = false,
     this.initialDeepLink = '',
-    this.articleConfig = ArticleConfigModel.empty,
+    this.publicationConfig = PublicationConfigModel.empty,
     this.feedConfig = FeedConfigModel.empty,
     this.miscConfig = MiscConfigModel.empty,
   });
@@ -23,7 +23,7 @@ class SettingsState extends Equatable {
   final List<LanguageEnum> langArticles;
   final bool isDarkTheme;
   final String initialDeepLink;
-  final ArticleConfigModel articleConfig;
+  final PublicationConfigModel publicationConfig;
   final FeedConfigModel feedConfig;
   final MiscConfigModel miscConfig;
 
@@ -33,7 +33,7 @@ class SettingsState extends Equatable {
     List<LanguageEnum>? langArticles,
     bool? isDarkTheme,
     String? initialDeepLink,
-    ArticleConfigModel? articleConfig,
+    PublicationConfigModel? publicationConfig,
     FeedConfigModel? feedConfig,
     MiscConfigModel? miscConfig,
   }) {
@@ -43,7 +43,7 @@ class SettingsState extends Equatable {
       langArticles: langArticles ?? this.langArticles,
       isDarkTheme: isDarkTheme ?? this.isDarkTheme,
       initialDeepLink: initialDeepLink ?? this.initialDeepLink,
-      articleConfig: articleConfig ?? this.articleConfig,
+      publicationConfig: publicationConfig ?? this.publicationConfig,
       feedConfig: feedConfig ?? this.feedConfig,
       miscConfig: miscConfig ?? this.miscConfig,
     );
@@ -59,7 +59,7 @@ class SettingsState extends Equatable {
         langArticles,
         isDarkTheme,
         initialDeepLink,
-        articleConfig,
+        publicationConfig,
         feedConfig,
         miscConfig,
       ];

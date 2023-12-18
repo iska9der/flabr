@@ -2,15 +2,15 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../common/widget/article_list_sliver.dart';
 import '../../../common/widget/enhancement/progress_indicator.dart';
+import '../../../common/widget/publication_sliver_list.dart';
 import '../../../component/di/dependencies.dart';
 import '../../../config/constants.dart';
-import '../../article/cubit/article_list_cubit.dart';
-import '../../article/model/helper/article_list_source.dart';
-import '../../article/repository/article_repository.dart';
-import '../../article/widget/sort/articles_sort_widget.dart';
 import '../../enhancement/scroll/scroll.dart';
+import '../../publication/cubit/publication_list_cubit.dart';
+import '../../publication/model/source/publication_list_source.dart';
+import '../../publication/repository/publication_repository.dart';
+import '../../publication/widget/sort/articles_sort_widget.dart';
 import '../../settings/cubit/settings_cubit.dart';
 import '../../settings/repository/language_repository.dart';
 import '../cubit/hub_cubit.dart';
@@ -34,10 +34,10 @@ class HubDetailPage extends StatelessWidget {
       key: ValueKey('hub-${cubit.state.alias}-detail'),
       providers: [
         BlocProvider(
-          create: (_) => ArticleListCubit(
-            repository: getIt.get<ArticleRepository>(),
+          create: (_) => PublicationListCubit(
+            repository: getIt.get<PublicationRepository>(),
             languageRepository: getIt.get<LanguageRepository>(),
-            source: ArticleListSource.hubArticles,
+            source: PublicationListSource.hubPublications,
             hub: cubit.state.alias,
           ),
         ),
@@ -98,23 +98,20 @@ class _HubArticleListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final articlesCubit = context.read<ArticleListCubit>();
-    final scrollCubit = context.read<ScrollCubit>();
-
     return MultiBlocListener(
       listeners: [
         BlocListener<ScrollCubit, ScrollState>(
           listenWhen: (previous, current) => current.isBottomEdge,
-          listener: (_, __) => articlesCubit.fetch(),
+          listener: (_, __) => context.read<PublicationListCubit>().fetch(),
         ),
         BlocListener<SettingsCubit, SettingsState>(
           listenWhen: (previous, current) =>
               previous.langUI != current.langUI ||
               previous.langArticles != current.langArticles,
-          listener: (_, __) => scrollCubit.animateToTop(),
+          listener: (_, __) => context.read<ScrollCubit>().animateToTop(),
         ),
       ],
-      child: const ArticleListSliver(),
+      child: const PublicationSliverList(),
     );
   }
 }

@@ -2,7 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../common/widget/article_settings_widget.dart';
+import '../common/widget/publication_settings_widget.dart';
 import '../component/language.dart';
 import '../config/constants.dart';
 import '../feature/settings/cubit/settings_cubit.dart';
@@ -55,11 +55,11 @@ class SettingsView extends StatelessWidget {
               ],
             ),
             SettingsSectionWidget(
-              title: 'Статьи',
+              title: 'Публикации',
               children: [
                 SettingsCardWidget(
                   padding: EdgeInsets.symmetric(vertical: 20),
-                  child: ArticleSettingsWidget(),
+                  child: PublicationSettingsWidget(),
                 ),
               ],
             ),
