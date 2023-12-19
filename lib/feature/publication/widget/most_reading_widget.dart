@@ -8,6 +8,7 @@ import '../../../common/widget/enhancement/app_expansion_panel.dart';
 import '../../../common/widget/enhancement/card.dart';
 import '../../../common/widget/enhancement/progress_indicator.dart';
 import '../../../component/di/dependencies.dart';
+import '../../../component/router/app_router.dart';
 import '../../../config/constants.dart';
 import '../cubit/most_reading_cubit.dart';
 import '../page/article/article_comment_page.dart';
@@ -125,9 +126,9 @@ class _MostReadingListState extends State<_MostReadingList> {
                   ),
                   color: Colors.transparent,
                   elevation: 0,
-                  onTap: () => context.router.pushWidget(
-                    ArticleDetailPage(id: model.id),
-                  ),
+                  onTap: () => getIt.get<AppRouter>().pushWidget(
+                        ArticleDetailPage(id: model.id),
+                      ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
