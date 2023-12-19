@@ -10,8 +10,8 @@ import '../../../common/widget/enhancement/progress_indicator.dart';
 import '../../../component/di/dependencies.dart';
 import '../../../config/constants.dart';
 import '../cubit/most_reading_cubit.dart';
-import '../page/article_comment_page.dart';
-import '../page/article_detail_page.dart';
+import '../page/article/article_comment_page.dart';
+import '../page/article/article_detail_page.dart';
 import '../repository/publication_repository.dart';
 import 'stats/icon_widget.dart';
 

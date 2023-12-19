@@ -5,11 +5,12 @@ import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart
 
 import '../../../../common/model/render_type.dart';
 import '../../../../common/widget/enhancement/card.dart';
+import '../../../../component/router/app_router.dart';
 import '../../../../config/constants.dart';
 import '../../../common/image/widget/network_image_widget.dart';
 import '../../../settings/cubit/settings_cubit.dart';
 import '../../model/publication/publication.dart';
-import '../../page/article_detail_page.dart';
+import '../../model/publication_type.dart';
 import '../stats/stats_widget.dart';
 import 'components/footer_widget.dart';
 import 'components/format_widget.dart';
@@ -29,8 +30,11 @@ class CommonCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FlabrCard(
-      onTap: () => context.router.pushWidget(
-        ArticleDetailPage(id: publication.id),
+      onTap: () => context.router.push(
+        switch (publication.type) {
+          PublicationType.news => NewsDetailRoute(id: publication.id),
+          _ => ArticleDetailRoute(id: publication.id),
+        } as PageRouteInfo,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

@@ -32,3 +32,6 @@ dart_code_metrics:
     - avoid-cubits: false
     - prefer-number-format: false
     - avoid-read-inside-build: false
+  pubspec-rules:
+    - avoid-any-version: false
+    - prefer-caret-version-syntax: false

@@ -14,8 +14,8 @@ import '../../../../summary/widget/dialog.dart';
 import '../../../cubit/publication_bookmark_cubit.dart';
 import '../../../model/publication/publication.dart';
 import '../../../model/publication_type.dart';
-import '../../../page/article_comment_page.dart';
-import '../../../page/post_comment_page.dart';
+import '../../../page/article/article_comment_page.dart';
+import '../../../page/post/post_comment_page.dart';
 import '../../../repository/publication_repository.dart';
 import '../../stats/icon_widget.dart';
 

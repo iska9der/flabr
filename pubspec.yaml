@@ -8,10 +8,12 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  collection: any
+  meta: any
+  
   app_links: ^3.5.0
   auto_route: ^7.8.4
   cached_network_image: ^3.3.0
-  collection: ^1.17.1
   cupertino_icons: ^1.0.6
   dio: ^5.4.0
   equatable: ^2.0.5
