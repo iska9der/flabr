@@ -145,7 +145,7 @@ class MyApp extends StatelessWidget {
                 themeMode: state.isDarkTheme ? ThemeMode.dark : ThemeMode.light,
                 theme: lightTheme(),
                 darkTheme: darkTheme(),
-                scrollBehavior: BouncingScrollBehavior(),
+                scrollBehavior: const MaterialScrollBehavior(),
                 routerConfig: router.config(
                   deepLinkBuilder: (link) {
                     return link.initial
