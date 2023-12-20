@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
@@ -24,11 +26,32 @@ class _PublicationDashboardPageState extends State<PublicationDashboardPage> {
     PostListRoute.name,
   ];
 
-  final ValueNotifier<bool> hideTabs = ValueNotifier(false);
+  final ValueNotifier<bool> isTabsVisible = ValueNotifier(false);
+  ScrollPhysics? physics;
+
+  @override
+  void initState() {
+    isTabsVisible.addListener(() {
+      Timer(const Duration(milliseconds: 100), () {
+        setState(() {
+          physics =
+              isTabsVisible.value ? null : const NeverScrollableScrollPhysics();
+        });
+      });
+    });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    isTabsVisible.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return AutoTabsRouter.tabBar(
+      physics: physics,
       routes: const [
         ArticlesRouter(),
         PostsRouter(),
@@ -37,15 +60,16 @@ class _PublicationDashboardPageState extends State<PublicationDashboardPage> {
       builder: (context, child, controller) {
         final currentName = AutoRouter.of(context).topMatch.name;
 
-        hideTabs.value = _listRouteNames.any((name) => name == currentName);
+        final isHidden = _listRouteNames.any((name) => name == currentName);
+        isTabsVisible.value = isHidden;
 
         return Column(
           children: [
             AnimatedBuilder(
-              animation: hideTabs,
+              animation: isTabsVisible,
               builder: (context, child) {
                 return AnimatedContainer(
-                  height: hideTabs.value ? fDashboardTabHeight : 0,
+                  height: isTabsVisible.value ? fDashboardTabHeight : 0,
                   duration: const Duration(milliseconds: 200),
                   child: child,
                 );
@@ -57,9 +81,9 @@ class _PublicationDashboardPageState extends State<PublicationDashboardPage> {
                   child: TabBar(
                     controller: controller,
                     isScrollable: true,
+                    tabAlignment: TabAlignment.start,
                     padding: EdgeInsets.zero,
                     labelPadding: const EdgeInsets.symmetric(horizontal: 12),
-                    tabAlignment: TabAlignment.start,
                     dividerColor: Colors.transparent,
                     tabs: const [
                       DashboardDrawerLinkWidget(
