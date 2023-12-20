@@ -69,7 +69,7 @@ class CompanyListPageView extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           leading: const AutoLeadingButton(),
-          title: const Text('Компании'),
+          title: const Text(CompanyListPage.name),
         ),
         floatingActionButton: const FloatingScrollToTopButton(),
         body: SafeArea(

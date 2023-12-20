@@ -1,4 +1,3 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -95,6 +94,7 @@ class _MostReadingListState extends State<_MostReadingList> {
 
   @override
   Widget build(BuildContext context) {
+    final appRouter = getIt.get<AppRouter>();
     context.read<MostReadingCubit>().fetch();
 
     return BlocBuilder<MostReadingCubit, MostReadingState>(
@@ -126,9 +126,9 @@ class _MostReadingListState extends State<_MostReadingList> {
                   ),
                   color: Colors.transparent,
                   elevation: 0,
-                  onTap: () => getIt.get<AppRouter>().pushWidget(
-                        ArticleDetailPage(id: model.id),
-                      ),
+                  onTap: () => appRouter.pushWidget(
+                    ArticleDetailPage(id: model.id),
+                  ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -151,10 +151,8 @@ class _MostReadingListState extends State<_MostReadingList> {
                             value: model.statistics.commentsCount.compact(),
                             isHighlighted:
                                 model.relatedData.unreadCommentsCount > 0,
-                            onTap: () => context.router.pushWidget(
-                              ArticleCommentListPage(
-                                id: model.id,
-                              ),
+                            onTap: () => appRouter.pushWidget(
+                              ArticleCommentListPage(id: model.id),
                             ),
                           ),
                         ],

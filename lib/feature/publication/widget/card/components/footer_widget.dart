@@ -1,4 +1,3 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -7,6 +6,7 @@ import '../../../../../common/model/extension/num.dart';
 import '../../../../../common/model/stat_type.dart';
 import '../../../../../common/utils/utils.dart';
 import '../../../../../component/di/dependencies.dart';
+import '../../../../../component/router/app_router.dart';
 import '../../../../auth/cubit/auth_cubit.dart';
 import '../../../../auth/widget/dialog.dart';
 import '../../../../summary/cubit/summary_auth_cubit.dart';
@@ -47,12 +47,13 @@ class ArticleFooterWidget extends StatelessWidget {
           icon: Icons.chat_bubble_rounded,
           value: publication.statistics.commentsCount.compact(),
           isHighlighted: publication.relatedData.unreadCommentsCount > 0,
-          onTap: () => context.router.pushWidget(
-            switch (publication.type) {
-              PublicationType.post => PostCommentListPage(id: publication.id),
-              _ => ArticleCommentListPage(id: publication.id),
-            },
-          ),
+          onTap: () => getIt.get<AppRouter>().pushWidget(
+                switch (publication.type) {
+                  PublicationType.post =>
+                    PostCommentListPage(id: publication.id),
+                  _ => ArticleCommentListPage(id: publication.id),
+                },
+              ),
         ),
         _BookmarkIconButton(publication: publication),
         if (context.watch<SummaryAuthCubit>().state.isAuthorized)
