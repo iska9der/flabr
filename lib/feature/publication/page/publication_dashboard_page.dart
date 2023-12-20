@@ -26,15 +26,33 @@ class _PublicationDashboardPageState extends State<PublicationDashboardPage> {
     PostListRoute.name,
   ];
 
+  /// Прячем табы когда мы не находимся в корне раздела "Публикации".
+  /// Если не прятать, то когда мы переходим на какой-нибудь экран с помощью роутера
+  /// это выглядит ущербно и занимает лишнее место сверху экрана
   final ValueNotifier<bool> isTabsVisible = ValueNotifier(false);
-  ScrollPhysics? physics;
+  ScrollPhysics? tabBarPhysics;
 
   @override
   void initState() {
     isTabsVisible.addListener(() {
+      /// Если мы прячем табы, значит мы находимся не в корне раздела публикации,
+      /// и нужно отключать горизонтальные жесты для переключения между табами,
+      /// так как на запушенных экранах могут быть другие горизонтальные
+      /// обработчики жестов, и табовый обработчик будет перехватывать их и
+      /// переключать между табами вместо желаемого действия.
+      /// Например:
+      /// > открываем статью
+      /// > открываем изображение
+      /// > увеличиваем
+      /// > пытаемся сместить центр к влево или вправо, чтобы увидеть
+      /// необходимую часть изображения, то вместо смещения центра
+      /// происходит переключение с таба "Статьи" на "Посты".
+      ///
+      /// Меняем стейт с помощью таймера, так как нельзя вызывать setState
+      /// во время билда
       Timer(const Duration(milliseconds: 100), () {
         setState(() {
-          physics =
+          tabBarPhysics =
               isTabsVisible.value ? null : const NeverScrollableScrollPhysics();
         });
       });
@@ -51,7 +69,7 @@ class _PublicationDashboardPageState extends State<PublicationDashboardPage> {
   @override
   Widget build(BuildContext context) {
     return AutoTabsRouter.tabBar(
-      physics: physics,
+      physics: tabBarPhysics,
       routes: const [
         ArticlesRouter(),
         PostsRouter(),
