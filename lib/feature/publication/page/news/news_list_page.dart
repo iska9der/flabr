@@ -2,15 +2,15 @@ import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../component/di/dependencies.dart';
-import '../../enhancement/scaffold/scaffold.dart';
-import '../../enhancement/scroll/scroll.dart';
-import '../../settings/repository/language_repository.dart';
-import '../cubit/publication_list_cubit.dart';
-import '../model/flow_enum.dart';
-import '../model/publication_type.dart';
-import '../repository/publication_repository.dart';
-import 'view/publication_list_view.dart';
+import '../../../../component/di/dependencies.dart';
+import '../../../enhancement/scaffold/scaffold.dart';
+import '../../../enhancement/scroll/scroll.dart';
+import '../../../settings/repository/language_repository.dart';
+import '../../cubit/publication_list_cubit.dart';
+import '../../model/flow_enum.dart';
+import '../../model/publication_type.dart';
+import '../../repository/publication_repository.dart';
+import '../view/publication_list_view.dart';
 
 @RoutePage(name: NewsListPage.routeName)
 class NewsListPage extends StatelessWidget {

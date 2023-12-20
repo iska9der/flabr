@@ -1,4 +1,3 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -8,10 +7,11 @@ import '../../../common/widget/enhancement/app_expansion_panel.dart';
 import '../../../common/widget/enhancement/card.dart';
 import '../../../common/widget/enhancement/progress_indicator.dart';
 import '../../../component/di/dependencies.dart';
+import '../../../component/router/app_router.dart';
 import '../../../config/constants.dart';
 import '../cubit/most_reading_cubit.dart';
-import '../page/article_comment_page.dart';
-import '../page/article_detail_page.dart';
+import '../page/article/article_comment_page.dart';
+import '../page/article/article_detail_page.dart';
 import '../repository/publication_repository.dart';
 import 'stats/icon_widget.dart';
 
@@ -94,6 +94,7 @@ class _MostReadingListState extends State<_MostReadingList> {
 
   @override
   Widget build(BuildContext context) {
+    final appRouter = getIt.get<AppRouter>();
     context.read<MostReadingCubit>().fetch();
 
     return BlocBuilder<MostReadingCubit, MostReadingState>(
@@ -125,7 +126,7 @@ class _MostReadingListState extends State<_MostReadingList> {
                   ),
                   color: Colors.transparent,
                   elevation: 0,
-                  onTap: () => context.router.pushWidget(
+                  onTap: () => appRouter.pushWidget(
                     ArticleDetailPage(id: model.id),
                   ),
                   child: Column(
@@ -150,10 +151,8 @@ class _MostReadingListState extends State<_MostReadingList> {
                             value: model.statistics.commentsCount.compact(),
                             isHighlighted:
                                 model.relatedData.unreadCommentsCount > 0,
-                            onTap: () => context.router.pushWidget(
-                              ArticleCommentListPage(
-                                id: model.id,
-                              ),
+                            onTap: () => appRouter.pushWidget(
+                              ArticleCommentListPage(id: model.id),
                             ),
                           ),
                         ],

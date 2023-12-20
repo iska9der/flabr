@@ -12,7 +12,7 @@ import '../../../config/constants.dart';
 import '../../company/widget/company_card_widget.dart';
 import '../../enhancement/scroll/scroll.dart';
 import '../../hub/widget/hub_card_widget.dart';
-import '../../publication/widget/card/article_card_widget.dart';
+import '../../publication/widget/card/common_card_widget.dart';
 import '../../user/widget/user_card_widget.dart';
 import '../cubit/search_cubit.dart';
 import '../model/search_order.dart';

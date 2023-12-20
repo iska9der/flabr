@@ -62,7 +62,7 @@ class HubListPageView extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           leading: const AutoLeadingButton(),
-          title: const Text('Хабы'),
+          title: const Text(HubListPage.name),
         ),
         floatingActionButton: const FloatingScrollToTopButton(),
         body: SafeArea(

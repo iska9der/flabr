@@ -199,6 +199,12 @@ abstract class _$AppRouter extends RootStackRouter {
         child: PostsRouterData(),
       );
     },
+    PublicationsDashboardRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const PublicationDashboardPage(),
+      );
+    },
     ServicesRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -794,6 +800,20 @@ class PostsRouter extends PageRouteInfo<void> {
         );
 
   static const String name = 'PostsRouter';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [PublicationDashboardPage]
+class PublicationsDashboardRoute extends PageRouteInfo<void> {
+  const PublicationsDashboardRoute({List<PageRouteInfo>? children})
+      : super(
+          PublicationsDashboardRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'PublicationsDashboardRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }

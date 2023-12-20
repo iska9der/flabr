@@ -8,15 +8,16 @@ import '../../feature/company/page/company_list_page.dart';
 import '../../feature/hub/page/hub_dashboard_page.dart';
 import '../../feature/hub/page/hub_detail_page.dart';
 import '../../feature/hub/page/hub_list_page.dart';
-import '../../feature/publication/page/article_comment_page.dart';
-import '../../feature/publication/page/article_detail_page.dart';
-import '../../feature/publication/page/article_list_page.dart';
-import '../../feature/publication/page/news_comment_page.dart';
-import '../../feature/publication/page/news_detail_page.dart';
-import '../../feature/publication/page/news_list_page.dart';
-import '../../feature/publication/page/post_comment_page.dart';
-import '../../feature/publication/page/post_detail_page.dart';
-import '../../feature/publication/page/post_list_page.dart';
+import '../../feature/publication/page/article/article_comment_page.dart';
+import '../../feature/publication/page/article/article_detail_page.dart';
+import '../../feature/publication/page/article/article_list_page.dart';
+import '../../feature/publication/page/news/news_comment_page.dart';
+import '../../feature/publication/page/news/news_detail_page.dart';
+import '../../feature/publication/page/news/news_list_page.dart';
+import '../../feature/publication/page/post/post_comment_page.dart';
+import '../../feature/publication/page/post/post_detail_page.dart';
+import '../../feature/publication/page/post/post_list_page.dart';
+import '../../feature/publication/page/publication_dashboard_page.dart';
 import '../../feature/user/page/user_bookmark_list_page.dart';
 import '../../feature/user/page/user_dashboard_page.dart';
 import '../../feature/user/page/user_detail_page.dart';
@@ -113,68 +114,72 @@ class AppRouter extends _$AppRouter {
       page: DashboardRoute.page,
       path: '/',
       children: [
-        /// Таб "статьи"
         AutoRoute(
           initial: true,
-          path: ArticlesRouterData.routePath,
-          page: ArticlesRouter.page,
+          path: PublicationDashboardPage.routePath,
+          page: PublicationsDashboardRoute.page,
           children: [
-            RedirectRoute(path: '', redirectTo: 'flows/all'),
+            /// Таб "статьи"
             AutoRoute(
-              path: ArticleListPage.routePath,
-              page: ArticleListRoute.page,
+              path: ArticlesRouterData.routePath,
+              page: ArticlesRouter.page,
+              children: [
+                RedirectRoute(path: '', redirectTo: 'flows/all'),
+                AutoRoute(
+                  path: ArticleListPage.routePath,
+                  page: ArticleListRoute.page,
+                ),
+                AutoRoute(
+                  path: ArticleDetailPage.routePath,
+                  page: ArticleDetailRoute.page,
+                ),
+                AutoRoute(
+                  path: 'comments/:id',
+                  page: ArticleCommentsRoute.page,
+                ),
+              ],
             ),
-            AutoRoute(
-              path: ArticleDetailPage.routePath,
-              page: ArticleDetailRoute.page,
-            ),
-            AutoRoute(
-              path: 'comments/:id',
-              page: ArticleCommentsRoute.page,
-            ),
-          ],
-        ),
 
-        /// Таб "посты"
-        AutoRoute(
-          path: PostsRouterData.routePath,
-          page: PostsRouter.page,
-          children: [
-            RedirectRoute(path: '', redirectTo: 'flows/all'),
+            /// Таб "посты"
             AutoRoute(
-              initial: true,
-              path: PostListPage.routePath,
-              page: PostListRoute.page,
+              path: PostsRouterData.routePath,
+              page: PostsRouter.page,
+              children: [
+                RedirectRoute(path: '', redirectTo: 'flows/all'),
+                AutoRoute(
+                  path: PostListPage.routePath,
+                  page: PostListRoute.page,
+                ),
+                AutoRoute(
+                  path: PostDetailPage.routePath,
+                  page: PostDetailRoute.page,
+                ),
+                AutoRoute(
+                  path: 'comments/:id',
+                  page: PostCommentsRoute.page,
+                ),
+              ],
             ),
-            AutoRoute(
-              path: PostDetailPage.routePath,
-              page: PostDetailRoute.page,
-            ),
-            AutoRoute(
-              path: 'comments/:id',
-              page: PostCommentsRoute.page,
-            ),
-          ],
-        ),
 
-        /// Таб "новости"
-        AutoRoute(
-          path: NewsRouterData.routePath,
-          page: NewsRouter.page,
-          children: [
-            RedirectRoute(path: '', redirectTo: 'flows/all'),
+            /// Таб "новости"
             AutoRoute(
-              initial: true,
-              path: NewsListPage.routePath,
-              page: NewsListRoute.page,
-            ),
-            AutoRoute(
-              path: NewsDetailPage.routePath,
-              page: NewsDetailRoute.page,
-            ),
-            AutoRoute(
-              path: 'comments/:id',
-              page: NewsCommentsRoute.page,
+              path: NewsRouterData.routePath,
+              page: NewsRouter.page,
+              children: [
+                RedirectRoute(path: '', redirectTo: 'flows/all'),
+                AutoRoute(
+                  path: NewsListPage.routePath,
+                  page: NewsListRoute.page,
+                ),
+                AutoRoute(
+                  path: NewsDetailPage.routePath,
+                  page: NewsDetailRoute.page,
+                ),
+                AutoRoute(
+                  path: 'comments/:id',
+                  page: NewsCommentsRoute.page,
+                ),
+              ],
             ),
           ],
         ),
@@ -337,6 +342,11 @@ List<RedirectRoute> _articlesRedirects() {
     RedirectRoute(
       path: '*/*/flows/:flow/',
       redirectTo: 'articles/flows/:flow',
+    ),
+
+    RedirectRoute(
+      path: '*/*/articles/',
+      redirectTo: 'articles',
     ),
 
     /// Статьи и комментарии

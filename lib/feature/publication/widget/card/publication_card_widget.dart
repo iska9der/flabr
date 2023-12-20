@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../model/publication/publication.dart';
 import '../../model/publication_type.dart';
-import 'article_card_widget.dart';
+import 'common_card_widget.dart';
 import 'post_card_widget.dart';
 
 class PublicationCardWidget extends StatelessWidget {
