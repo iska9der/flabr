@@ -105,7 +105,8 @@ class PublicationListView extends StatelessWidget {
                 ),
                 SliverCrossAxisGroup(
                   slivers: [
-                    const PublicationSliverList(),
+                    const PublicationSliverList<PublicationListCubit,
+                        PublicationListState>(),
                     ResponsiveVisibilitySliver(
                       visible: false,
                       visibleConditions: [

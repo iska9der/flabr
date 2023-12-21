@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../common/cubit/publication_list.dart';
 import '../../../publication/cubit/publication_list_cubit.dart';
 import '../../../publication/model/sort/date_period_enum.dart';
 import '../../../publication/model/sort/rating_score_enum.dart';

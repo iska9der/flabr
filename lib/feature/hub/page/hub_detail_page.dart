@@ -5,15 +5,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../common/widget/enhancement/progress_indicator.dart';
 import '../../../common/widget/publication_sliver_list.dart';
 import '../../../component/di/dependencies.dart';
-import '../../../config/constants.dart';
 import '../../enhancement/scroll/scroll.dart';
-import '../../publication/cubit/publication_list_cubit.dart';
-import '../../publication/model/source/publication_list_source.dart';
 import '../../publication/repository/publication_repository.dart';
-import '../../publication/widget/sort/articles_sort_widget.dart';
 import '../../settings/cubit/settings_cubit.dart';
 import '../../settings/repository/language_repository.dart';
 import '../cubit/hub_cubit.dart';
+import '../cubit/hub_publication_list_cubit.dart';
 import '../widget/hub_profile_card_widget.dart';
 
 @RoutePage(name: HubDetailPage.routeName)
@@ -34,10 +31,9 @@ class HubDetailPage extends StatelessWidget {
       key: ValueKey('hub-${cubit.state.alias}-detail'),
       providers: [
         BlocProvider(
-          create: (_) => PublicationListCubit(
+          create: (_) => HubPublicationListCubit(
             repository: getIt.get<PublicationRepository>(),
             languageRepository: getIt.get<LanguageRepository>(),
-            source: PublicationListSource.hubPublications,
             hub: cubit.state.alias,
           ),
         ),
@@ -75,14 +71,14 @@ class HubDetailPageView extends StatelessWidget {
               controller: scrollCtrl,
               slivers: const [
                 SliverToBoxAdapter(child: HubProfileCardWidget()),
-                SliverAppBar(
-                  automaticallyImplyLeading: false,
-                  elevation: 0,
-                  scrolledUnderElevation: 0,
-                  floating: true,
-                  toolbarHeight: sortToolbarHeight,
-                  title: ArticlesSortWidget(),
-                ),
+                // SliverAppBar(
+                //   automaticallyImplyLeading: false,
+                //   elevation: 0,
+                //   scrolledUnderElevation: 0,
+                //   floating: true,
+                //   toolbarHeight: sortToolbarHeight,
+                //   title: ArticlesSortWidget(),
+                // ),
                 _HubArticleListView(),
               ],
             ),
@@ -102,7 +98,7 @@ class _HubArticleListView extends StatelessWidget {
       listeners: [
         BlocListener<ScrollCubit, ScrollState>(
           listenWhen: (previous, current) => current.isBottomEdge,
-          listener: (_, __) => context.read<PublicationListCubit>().fetch(),
+          listener: (_, __) => context.read<HubPublicationListCubit>().fetch(),
         ),
         BlocListener<SettingsCubit, SettingsState>(
           listenWhen: (previous, current) =>
@@ -111,7 +107,8 @@ class _HubArticleListView extends StatelessWidget {
           listener: (_, __) => context.read<ScrollCubit>().animateToTop(),
         ),
       ],
-      child: const PublicationSliverList(),
+      child: const PublicationSliverList<HubPublicationListCubit,
+          HubPublicationListState>(),
     );
   }
 }

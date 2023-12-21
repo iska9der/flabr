@@ -62,7 +62,8 @@ class UserPublicationListView extends StatelessWidget {
             controller: scrollCtrl,
             cacheExtent: 2000,
             slivers: const [
-              PublicationSliverList(),
+              PublicationSliverList<PublicationListCubit,
+                  PublicationListState>(),
             ],
           ),
         ),

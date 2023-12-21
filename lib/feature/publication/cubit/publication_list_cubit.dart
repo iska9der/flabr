@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:equatable/equatable.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../common/cubit/publication_list.dart';
 import '../../../common/exception/exception_helper.dart';
 import '../../../common/exception/value_exception.dart';
 import '../../../common/model/network/list_response.dart';
@@ -19,7 +19,7 @@ import '../repository/publication_repository.dart';
 
 part 'publication_list_state.dart';
 
-class PublicationListCubit extends Cubit<PublicationListState> {
+class PublicationListCubit extends PublicationListC<PublicationListState> {
   /// [source] - откуда поступает запрос на получение списка публикаций.
   /// От этого параметра зависит какой метод получения публикации будет вызван.
   PublicationListCubit({
@@ -41,9 +41,6 @@ class PublicationListCubit extends Cubit<PublicationListState> {
             type: type,
           ),
         ) {
-    if (source == PublicationListSource.hubPublications) {
-      assert(state.hub.isNotEmpty, 'Нужно указать хаб [hub]');
-    }
     if (source == PublicationListSource.userPublications) {
       assert(state.user.isNotEmpty, 'Нужно указать пользователя [user]');
     }
@@ -70,6 +67,7 @@ class PublicationListCubit extends Cubit<PublicationListState> {
     return super.close();
   }
 
+  @override
   bool get isFirstFetch => state.page == 1;
   bool get isLastPage => state.page >= state.pagesCount;
 
@@ -121,8 +119,8 @@ class PublicationListCubit extends Cubit<PublicationListState> {
     ));
   }
 
-  /// FETCH ARTICLES
-  void fetch() async {
+  @override
+  Future<void> fetch() async {
     if (state.status == PublicationListStatus.loading ||
         !isFirstFetch && isLastPage) {
       return;
@@ -133,7 +131,6 @@ class PublicationListCubit extends Cubit<PublicationListState> {
     try {
       ListResponse response = switch (state.source) {
         PublicationListSource.flow => await _fetchFlowArticles(),
-        PublicationListSource.hubPublications => await _fetchHubArticles(),
         PublicationListSource.userPublications => await _fetchUserArticles(),
         PublicationListSource.userBookmarks => await _fetchUserBookmarks()
       };
@@ -160,18 +157,6 @@ class PublicationListCubit extends Cubit<PublicationListState> {
       langArticles: _languageRepository.articles,
       type: state.type,
       flow: state.flow,
-      sort: state.sort,
-      period: state.period,
-      score: state.score,
-      page: state.page.toString(),
-    );
-  }
-
-  Future<PublicationListResponse> _fetchHubArticles() async {
-    return await _repository.fetchHubArticles(
-      langUI: _languageRepository.ui,
-      langArticles: _languageRepository.articles,
-      hub: state.hub,
       sort: state.sort,
       period: state.period,
       score: state.score,

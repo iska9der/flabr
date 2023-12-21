@@ -5,19 +5,20 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../component/di/dependencies.dart';
 import '../../feature/enhancement/scroll/cubit/scroll_cubit.dart';
-import '../../feature/publication/cubit/publication_list_cubit.dart';
 import '../../feature/publication/widget/card/publication_card_widget.dart';
+import '../cubit/publication_list.dart';
 import '../utils/utils.dart';
 import 'enhancement/progress_indicator.dart';
 
-class PublicationSliverList extends StatelessWidget {
+class PublicationSliverList<C extends PublicationListC<S>,
+    S extends PublicationListS> extends StatelessWidget {
   const PublicationSliverList({super.key});
 
   @override
   Widget build(BuildContext context) {
     final scrollCubit = context.read<ScrollCubit?>();
 
-    return BlocConsumer<PublicationListCubit, PublicationListState>(
+    return BlocConsumer<C, S>(
       listenWhen: (p, c) =>
           p.page != 1 && c.status == PublicationListStatus.failure,
       listener: (c, state) {
@@ -29,14 +30,14 @@ class PublicationSliverList extends StatelessWidget {
       builder: (context, state) {
         /// Инициализация
         if (state.status == PublicationListStatus.initial) {
-          context.read<PublicationListCubit>().fetch();
+          context.read<C>().fetch();
           return const SliverFillRemaining(
             child: CircleIndicator(),
           );
         }
 
         /// Если происходит загрузка первой страницы
-        if (context.read<PublicationListCubit>().isFirstFetch) {
+        if (context.read<C>().isFirstFetch) {
           if (state.status == PublicationListStatus.loading) {
             return const SliverFillRemaining(
               child: CircleIndicator(),

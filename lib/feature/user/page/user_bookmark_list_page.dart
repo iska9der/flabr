@@ -64,7 +64,8 @@ class UserBookmarkListView extends StatelessWidget {
             controller: scrollCtrl,
             cacheExtent: 1000,
             slivers: const [
-              PublicationSliverList(),
+              PublicationSliverList<PublicationListCubit,
+                  PublicationListState>(),
             ],
           ),
         ),
