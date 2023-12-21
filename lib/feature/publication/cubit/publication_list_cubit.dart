@@ -20,9 +20,8 @@ import '../repository/publication_repository.dart';
 part 'publication_list_state.dart';
 
 class PublicationListCubit extends Cubit<PublicationListState> {
-  /// [source] откуда поступает запрос на получение списка статей.
-  /// От этого параметра зависит какой метод получения статей будет вызван.
-  ///
+  /// [source] - откуда поступает запрос на получение списка публикаций.
+  /// От этого параметра зависит какой метод получения публикации будет вызван.
   PublicationListCubit({
     required PublicationRepository repository,
     required LanguageRepository languageRepository,

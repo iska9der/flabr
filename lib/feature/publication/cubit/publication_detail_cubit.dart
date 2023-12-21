@@ -53,7 +53,7 @@ class PublicationDetailCubit extends Cubit<PublicationDetailState> {
     emit(state.copyWith(status: PublicationStatus.loading));
 
     try {
-      final publication = await _repository.fetchById(
+      final publication = await _repository.fetchPublicationById(
         state.id,
         source: state.source,
         langUI: _languageRepository.ui,

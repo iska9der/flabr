@@ -17,19 +17,19 @@ class PublicationRepository {
 
   final PublicationService service;
 
-  Future<Publication> fetchById(
+  Future<Publication> fetchPublicationById(
     String id, {
     required PublicationSource source,
     required LanguageEnum langUI,
     required List<LanguageEnum> langArticles,
   }) async {
     return switch (source) {
-      PublicationSource.post => await fetchPostById(
+      PublicationSource.post => await _fetchPostById(
           id,
           langUI: langUI,
           langArticles: langArticles,
         ),
-      _ => await fetchArticleById(
+      _ => await _fetchCommonById(
           id,
           langUI: langUI,
           langArticles: langArticles,
@@ -37,7 +37,7 @@ class PublicationRepository {
     };
   }
 
-  Future<PublicationCommon> fetchArticleById(
+  Future<PublicationCommon> _fetchCommonById(
     String id, {
     required LanguageEnum langUI,
     required List<LanguageEnum> langArticles,
@@ -53,7 +53,7 @@ class PublicationRepository {
     return article;
   }
 
-  Future<PublicationPost> fetchPostById(
+  Future<PublicationPost> _fetchPostById(
     String id, {
     required LanguageEnum langUI,
     required List<LanguageEnum> langArticles,
@@ -72,13 +72,13 @@ class PublicationRepository {
   /// Сортируем статьи в полученном списке
   void _sortListResponse(SortEnum sort, ListResponse response) {
     if (sort == SortEnum.byBest) {
-      response.refs.sort((a, b) => b.statistics.score.compareTo(
-            a.statistics.score,
-          ));
+      response.refs.sort(
+        (a, b) => b.statistics.score.compareTo(a.statistics.score),
+      );
     } else {
-      response.refs.sort((a, b) => b.timePublished.compareTo(
-            a.timePublished,
-          ));
+      response.refs.sort(
+        (a, b) => b.timePublished.compareTo(a.timePublished),
+      );
     }
   }
 
