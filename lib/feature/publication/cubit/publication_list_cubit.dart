@@ -8,39 +8,31 @@ import '../../../common/exception/value_exception.dart';
 import '../../../common/model/network/list_response.dart';
 import '../../settings/repository/language_repository.dart';
 import '../model/flow_enum.dart';
-import '../model/network/publication_list_response.dart';
 import '../model/publication/publication.dart';
 import '../model/publication_type.dart';
 import '../model/sort/date_period_enum.dart';
 import '../model/sort/sort_enum.dart';
 import '../model/sort/sort_option_model.dart';
-import '../model/source/publication_list_source.dart';
 import '../repository/publication_repository.dart';
 
 part 'publication_list_state.dart';
 
 class PublicationListCubit extends PublicationListC<PublicationListState> {
-  /// [source] - откуда поступает запрос на получение списка публикаций.
-  /// От этого параметра зависит какой метод получения публикации будет вызван.
   PublicationListCubit({
     required PublicationRepository repository,
     required LanguageRepository languageRepository,
-    PublicationListSource source = PublicationListSource.flow,
     FlowEnum flow = FlowEnum.all,
     String hub = '',
     String user = '',
     PublicationType type = PublicationType.article,
   })  : _repository = repository,
         _languageRepository = languageRepository,
-        super(
-          PublicationListState(
-            source: source,
-            flow: flow,
-            hub: hub,
-            user: user,
-            type: type,
-          ),
-        ) {
+        super(PublicationListState(
+          flow: flow,
+          hub: hub,
+          user: user,
+          type: type,
+        )) {
     _uiLangSub = _languageRepository.uiStream.listen(
       (_) => refetch(),
     );
@@ -67,7 +59,6 @@ class PublicationListCubit extends PublicationListC<PublicationListState> {
     if (state.flow == value) return;
 
     emit(PublicationListState(
-      source: state.source,
       flow: value,
       hub: state.hub,
       user: state.user,
@@ -79,7 +70,6 @@ class PublicationListCubit extends PublicationListC<PublicationListState> {
     if (state.sort == value) return;
 
     emit(PublicationListState(
-      source: state.source,
       flow: state.flow,
       hub: state.hub,
       user: state.user,
@@ -102,7 +92,6 @@ class PublicationListCubit extends PublicationListC<PublicationListState> {
     }
 
     emit(newState.copyWith(
-      source: state.source,
       flow: state.flow,
       hub: state.hub,
       user: state.user,
@@ -121,10 +110,7 @@ class PublicationListCubit extends PublicationListC<PublicationListState> {
     emit(state.copyWith(status: PublicationListStatus.loading));
 
     try {
-      ListResponse response = switch (state.source) {
-        PublicationListSource.flow => await _fetchFlowArticles(),
-        PublicationListSource.userBookmarks => await _fetchUserBookmarks()
-      };
+      ListResponse response = await _fetchFlowArticles();
 
       emit(state.copyWith(
         status: PublicationListStatus.success,
@@ -151,15 +137,6 @@ class PublicationListCubit extends PublicationListC<PublicationListState> {
       sort: state.sort,
       period: state.period,
       score: state.score,
-      page: state.page.toString(),
-    );
-  }
-
-  Future<PublicationListResponse> _fetchUserBookmarks() async {
-    return await _repository.fetchUserBookmarks(
-      langUI: _languageRepository.ui,
-      langArticles: _languageRepository.articles,
-      user: state.user,
       page: state.page.toString(),
     );
   }

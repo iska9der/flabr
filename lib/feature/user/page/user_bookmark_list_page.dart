@@ -5,10 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../common/widget/publication_sliver_list.dart';
 import '../../../component/di/dependencies.dart';
 import '../../enhancement/scroll/scroll.dart';
-import '../../publication/cubit/publication_list_cubit.dart';
-import '../../publication/model/source/publication_list_source.dart';
 import '../../publication/repository/publication_repository.dart';
 import '../../settings/repository/language_repository.dart';
+import '../cubit/user_bookmark_list_cubit.dart';
 import '../cubit/user_cubit.dart';
 
 @RoutePage(name: UserBookmarkListPage.routeName)
@@ -27,10 +26,9 @@ class UserBookmarkListPage extends StatelessWidget {
       key: ValueKey('user-${cubit.state.login}-bookmarks'),
       providers: [
         BlocProvider(
-          create: (_) => PublicationListCubit(
+          create: (_) => UserBookmarkListCubit(
             repository: getIt.get<PublicationRepository>(),
             languageRepository: getIt.get<LanguageRepository>(),
-            source: PublicationListSource.userBookmarks,
             user: cubit.state.login,
           ),
         ),
@@ -50,12 +48,11 @@ class UserBookmarkListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final articlesCubit = context.read<PublicationListCubit>();
     final scrollCtrl = context.read<ScrollCubit>().state.controller;
 
     return BlocListener<ScrollCubit, ScrollState>(
       listenWhen: (p, c) => c.isBottomEdge,
-      listener: (c, state) => articlesCubit.fetch(),
+      listener: (c, state) => context.read<UserBookmarkListCubit>().fetch(),
       child: Scaffold(
         floatingActionButton: const FloatingScrollToTopButton(),
         body: Scrollbar(
@@ -64,8 +61,8 @@ class UserBookmarkListView extends StatelessWidget {
             controller: scrollCtrl,
             cacheExtent: 1000,
             slivers: const [
-              PublicationSliverList<PublicationListCubit,
-                  PublicationListState>(),
+              PublicationSliverList<UserBookmarkListCubit,
+                  UserBookmarkListState>(),
             ],
           ),
         ),
