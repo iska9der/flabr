@@ -9,36 +9,20 @@ import '../../publication/model/publication/publication.dart';
 import '../../publication/model/publication_type.dart';
 import '../../publication/model/sort/date_period_enum.dart';
 import '../../publication/model/sort/sort_enum.dart';
-import '../../publication/repository/publication_repository.dart';
-import '../../settings/repository/language_repository.dart';
 
 part 'hub_publication_list_state.dart';
 
 class HubPublicationListCubit
     extends PublicationListC<HubPublicationListState> {
   HubPublicationListCubit({
-    required PublicationRepository repository,
-    required LanguageRepository languageRepository,
+    required super.repository,
+    required super.languageRepository,
     String hub = '',
     PublicationType type = PublicationType.article,
-  })  : _repository = repository,
-        _languageRepository = languageRepository,
-        super(HubPublicationListState(
+  }) : super(HubPublicationListState(
           hub: hub,
           type: type,
         ));
-
-  final PublicationRepository _repository;
-  final LanguageRepository _languageRepository;
-
-  void refetch() {
-    emit(state.copyWith(
-      status: PublicationListStatus.initial,
-      page: 1,
-      publications: [],
-      pagesCount: 0,
-    ));
-  }
 
   @override
   Future<void> fetch() async {
@@ -50,9 +34,9 @@ class HubPublicationListCubit
     emit(state.copyWith(status: PublicationListStatus.loading));
 
     try {
-      ListResponse response = await _repository.fetchHubArticles(
-        langUI: _languageRepository.ui,
-        langArticles: _languageRepository.articles,
+      ListResponse response = await repository.fetchHubArticles(
+        langUI: languageRepository.ui,
+        langArticles: languageRepository.articles,
         hub: state.hub,
         sort: state.sort,
         period: state.period,
@@ -74,5 +58,15 @@ class HubPublicationListCubit
 
       rethrow;
     }
+  }
+
+  @override
+  void refetch() {
+    emit(state.copyWith(
+      status: PublicationListStatus.initial,
+      page: 1,
+      publications: [],
+      pagesCount: 0,
+    ));
   }
 }

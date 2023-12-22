@@ -5,35 +5,19 @@ import '../../../common/exception/exception_helper.dart';
 import '../../../common/model/network/list_response.dart';
 import '../../publication/model/publication/publication.dart';
 import '../../publication/model/publication_type.dart';
-import '../../publication/repository/publication_repository.dart';
-import '../../settings/repository/language_repository.dart';
 
 part 'user_bookmark_list_state.dart';
 
 class UserBookmarkListCubit extends PublicationListC<UserBookmarkListState> {
   UserBookmarkListCubit({
-    required PublicationRepository repository,
-    required LanguageRepository languageRepository,
+    required super.repository,
+    required super.languageRepository,
     String user = '',
     PublicationType type = PublicationType.article,
-  })  : _repository = repository,
-        _languageRepository = languageRepository,
-        super(UserBookmarkListState(
+  }) : super(UserBookmarkListState(
           user: user,
           type: type,
         ));
-
-  final PublicationRepository _repository;
-  final LanguageRepository _languageRepository;
-
-  void refetch() {
-    emit(state.copyWith(
-      status: PublicationListStatus.initial,
-      page: 1,
-      publications: [],
-      pagesCount: 0,
-    ));
-  }
 
   @override
   Future<void> fetch() async {
@@ -45,9 +29,9 @@ class UserBookmarkListCubit extends PublicationListC<UserBookmarkListState> {
     emit(state.copyWith(status: PublicationListStatus.loading));
 
     try {
-      ListResponse response = await _repository.fetchUserBookmarks(
-        langUI: _languageRepository.ui,
-        langArticles: _languageRepository.articles,
+      ListResponse response = await repository.fetchUserBookmarks(
+        langUI: languageRepository.ui,
+        langArticles: languageRepository.articles,
         user: state.user,
         page: state.page.toString(),
       );
@@ -66,5 +50,15 @@ class UserBookmarkListCubit extends PublicationListC<UserBookmarkListState> {
 
       rethrow;
     }
+  }
+
+  @override
+  void refetch() {
+    emit(state.copyWith(
+      status: PublicationListStatus.initial,
+      page: 1,
+      publications: [],
+      pagesCount: 0,
+    ));
   }
 }

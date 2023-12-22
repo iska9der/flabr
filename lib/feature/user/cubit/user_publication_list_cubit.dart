@@ -7,36 +7,20 @@ import '../../publication/model/publication/publication.dart';
 import '../../publication/model/publication_type.dart';
 import '../../publication/model/sort/date_period_enum.dart';
 import '../../publication/model/sort/sort_enum.dart';
-import '../../publication/repository/publication_repository.dart';
-import '../../settings/repository/language_repository.dart';
 
 part 'user_publication_list_state.dart';
 
 class UserPublicationListCubit
     extends PublicationListC<UserPublicationListState> {
   UserPublicationListCubit({
-    required PublicationRepository repository,
-    required LanguageRepository languageRepository,
+    required super.repository,
+    required super.languageRepository,
     String user = '',
     PublicationType type = PublicationType.article,
-  })  : _repository = repository,
-        _languageRepository = languageRepository,
-        super(UserPublicationListState(
+  }) : super(UserPublicationListState(
           user: user,
           type: type,
         ));
-
-  final PublicationRepository _repository;
-  final LanguageRepository _languageRepository;
-
-  void refetch() {
-    emit(state.copyWith(
-      status: PublicationListStatus.initial,
-      page: 1,
-      publications: [],
-      pagesCount: 0,
-    ));
-  }
 
   @override
   Future<void> fetch() async {
@@ -48,9 +32,9 @@ class UserPublicationListCubit
     emit(state.copyWith(status: PublicationListStatus.loading));
 
     try {
-      ListResponse response = await _repository.fetchUserArticles(
-        langUI: _languageRepository.ui,
-        langArticles: _languageRepository.articles,
+      ListResponse response = await repository.fetchUserArticles(
+        langUI: languageRepository.ui,
+        langArticles: languageRepository.articles,
         user: state.user,
         sort: state.sort,
         period: state.period,
@@ -72,5 +56,15 @@ class UserPublicationListCubit
 
       rethrow;
     }
+  }
+
+  @override
+  void refetch() {
+    emit(state.copyWith(
+      status: PublicationListStatus.initial,
+      page: 1,
+      publications: [],
+      pagesCount: 0,
+    ));
   }
 }

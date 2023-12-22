@@ -6,54 +6,29 @@ import '../../../common/cubit/publication_list.dart';
 import '../../../common/exception/exception_helper.dart';
 import '../../../common/exception/value_exception.dart';
 import '../../../common/model/network/list_response.dart';
-import '../../settings/repository/language_repository.dart';
 import '../model/flow_enum.dart';
 import '../model/publication/publication.dart';
 import '../model/publication_type.dart';
 import '../model/sort/date_period_enum.dart';
 import '../model/sort/sort_enum.dart';
 import '../model/sort/sort_option_model.dart';
-import '../repository/publication_repository.dart';
 
 part 'publication_list_state.dart';
 
 class PublicationListCubit extends PublicationListC<PublicationListState> {
   PublicationListCubit({
-    required PublicationRepository repository,
-    required LanguageRepository languageRepository,
+    required super.repository,
+    required super.languageRepository,
     FlowEnum flow = FlowEnum.all,
     String hub = '',
     String user = '',
     PublicationType type = PublicationType.article,
-  })  : _repository = repository,
-        _languageRepository = languageRepository,
-        super(PublicationListState(
+  }) : super(PublicationListState(
           flow: flow,
           hub: hub,
           user: user,
           type: type,
-        )) {
-    _uiLangSub = _languageRepository.uiStream.listen(
-      (_) => refetch(),
-    );
-    _articleLangsSub = _languageRepository.articlesStream.listen(
-      (_) => refetch(),
-    );
-  }
-
-  final PublicationRepository _repository;
-  final LanguageRepository _languageRepository;
-
-  late final StreamSubscription _uiLangSub;
-  late final StreamSubscription _articleLangsSub;
-
-  @override
-  Future<void> close() {
-    _uiLangSub.cancel();
-    _articleLangsSub.cancel();
-
-    return super.close();
-  }
+        ));
 
   void changeFlow(FlowEnum value) {
     if (state.flow == value) return;
@@ -110,7 +85,16 @@ class PublicationListCubit extends PublicationListC<PublicationListState> {
     emit(state.copyWith(status: PublicationListStatus.loading));
 
     try {
-      ListResponse response = await _fetchFlowArticles();
+      ListResponse response = await repository.fetchFlowArticles(
+        langUI: languageRepository.ui,
+        langArticles: languageRepository.articles,
+        type: state.type,
+        flow: state.flow,
+        sort: state.sort,
+        period: state.period,
+        score: state.score,
+        page: state.page.toString(),
+      );
 
       emit(state.copyWith(
         status: PublicationListStatus.success,
@@ -128,19 +112,7 @@ class PublicationListCubit extends PublicationListC<PublicationListState> {
     }
   }
 
-  Future<ListResponse> _fetchFlowArticles() async {
-    return await _repository.fetchFlowArticles(
-      langUI: _languageRepository.ui,
-      langArticles: _languageRepository.articles,
-      type: state.type,
-      flow: state.flow,
-      sort: state.sort,
-      period: state.period,
-      score: state.score,
-      page: state.page.toString(),
-    );
-  }
-
+  @override
   void refetch() {
     emit(state.copyWith(
       status: PublicationListStatus.initial,
