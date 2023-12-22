@@ -41,10 +41,6 @@ class PublicationListCubit extends PublicationListC<PublicationListState> {
             type: type,
           ),
         ) {
-    if (source == PublicationListSource.userPublications) {
-      assert(state.user.isNotEmpty, 'Нужно указать пользователя [user]');
-    }
-
     _uiLangSub = _languageRepository.uiStream.listen(
       (_) => refetch(),
     );
@@ -131,7 +127,6 @@ class PublicationListCubit extends PublicationListC<PublicationListState> {
     try {
       ListResponse response = switch (state.source) {
         PublicationListSource.flow => await _fetchFlowArticles(),
-        PublicationListSource.userPublications => await _fetchUserArticles(),
         PublicationListSource.userBookmarks => await _fetchUserBookmarks()
       };
 
@@ -157,18 +152,6 @@ class PublicationListCubit extends PublicationListC<PublicationListState> {
       langArticles: _languageRepository.articles,
       type: state.type,
       flow: state.flow,
-      sort: state.sort,
-      period: state.period,
-      score: state.score,
-      page: state.page.toString(),
-    );
-  }
-
-  Future<PublicationListResponse> _fetchUserArticles() async {
-    return await _repository.fetchUserArticles(
-      langUI: _languageRepository.ui,
-      langArticles: _languageRepository.articles,
-      user: state.user,
       sort: state.sort,
       period: state.period,
       score: state.score,

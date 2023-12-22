@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:equatable/equatable.dart';
 
 import '../../../common/cubit/publication_list.dart';
@@ -12,20 +10,20 @@ import '../../publication/model/sort/sort_enum.dart';
 import '../../publication/repository/publication_repository.dart';
 import '../../settings/repository/language_repository.dart';
 
-part 'hub_publication_list_state.dart';
+part 'user_publication_list_state.dart';
 
-class HubPublicationListCubit
-    extends PublicationListC<HubPublicationListState> {
-  HubPublicationListCubit({
+class UserPublicationListCubit
+    extends PublicationListC<UserPublicationListState> {
+  UserPublicationListCubit({
     required PublicationRepository repository,
     required LanguageRepository languageRepository,
-    String hub = '',
+    String user = '',
     PublicationType type = PublicationType.article,
   })  : _repository = repository,
         _languageRepository = languageRepository,
         super(
-          HubPublicationListState(
-            hub: hub,
+          UserPublicationListState(
+            user: user,
             type: type,
           ),
         );
@@ -56,10 +54,10 @@ class HubPublicationListCubit
     emit(state.copyWith(status: PublicationListStatus.loading));
 
     try {
-      ListResponse response = await _repository.fetchHubArticles(
+      ListResponse response = await _repository.fetchUserArticles(
         langUI: _languageRepository.ui,
         langArticles: _languageRepository.articles,
-        hub: state.hub,
+        user: state.user,
         sort: state.sort,
         period: state.period,
         score: state.score,
