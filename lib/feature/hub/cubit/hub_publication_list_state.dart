@@ -1,6 +1,7 @@
 part of 'hub_publication_list_cubit.dart';
 
-class HubPublicationListState extends Equatable implements PublicationListS {
+class HubPublicationListState extends Equatable
+    implements SortablePublicationListState {
   const HubPublicationListState({
     this.status = PublicationListStatus.initial,
     this.error = '',
@@ -20,8 +21,11 @@ class HubPublicationListState extends Equatable implements PublicationListS {
   final String error;
   final String hub;
   final PublicationType type;
+  @override
   final SortEnum sort;
+  @override
   final DatePeriodEnum period;
+  @override
   final String score;
   @override
   final int page;

@@ -1,14 +1,15 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../common/cubit/publication_list.dart';
 import '../../../common/exception/exception_helper.dart';
 import '../../../common/model/network/list_response.dart';
+import '../../publication/cubit/publication_list_cubit.dart';
 import '../../publication/model/publication/publication.dart';
 import '../../publication/model/publication_type.dart';
 
 part 'user_bookmark_list_state.dart';
 
-class UserBookmarkListCubit extends PublicationListC<UserBookmarkListState> {
+class UserBookmarkListCubit
+    extends PublicationListCubit<UserBookmarkListState> {
   UserBookmarkListCubit({
     required super.repository,
     required super.languageRepository,

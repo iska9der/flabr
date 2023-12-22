@@ -7,7 +7,7 @@ import '../../../auth/widget/profile_icon_button.dart';
 import '../../../search/cubit/search_cubit.dart';
 import '../../../search/page/search.dart';
 import '../../../search/page/search_anywhere.dart';
-import '../../cubit/publication_list_cubit.dart';
+import '../../cubit/flow_publication_list_cubit.dart';
 import '../../model/flow_enum.dart';
 import '../../model/publication_type.dart';
 import '../sort/articles_sort_widget.dart';
@@ -20,7 +20,7 @@ class PublicationListAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<PublicationListCubit, PublicationListState>(
+    return BlocBuilder<FlowPublicationListCubit, FlowPublicationListState>(
       buildWhen: (previous, current) => previous.flow != current.flow,
       builder: (context, state) {
         return _AppBar(
@@ -58,7 +58,7 @@ class _AppBarState extends State<_AppBar> {
 
   double calcExpandedHeight() {
     return fToolBarHeight +
-        (widget.isFilterable && isFilterShown ? sortToolbarHeight : 0);
+        (widget.isFilterable && isFilterShown ? fSortToolbarHeight : 0);
   }
 
   void onFilterPress() {
@@ -97,7 +97,8 @@ class _AppBarState extends State<_AppBar> {
                     kScreenHPadding,
                     kScreenHPadding,
                   ),
-                  child: ArticlesSortWidget(),
+                  child: ArticlesSortWidget<FlowPublicationListCubit,
+                      FlowPublicationListState>(),
                 ),
               )
             : null,

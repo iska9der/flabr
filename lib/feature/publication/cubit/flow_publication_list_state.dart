@@ -1,7 +1,8 @@
-part of 'publication_list_cubit.dart';
+part of 'flow_publication_list_cubit.dart';
 
-class PublicationListState extends Equatable implements PublicationListS {
-  const PublicationListState({
+class FlowPublicationListState extends Equatable
+    implements SortablePublicationListState {
+  const FlowPublicationListState({
     this.status = PublicationListStatus.initial,
     this.error = '',
     this.flow = FlowEnum.all,
@@ -24,8 +25,11 @@ class PublicationListState extends Equatable implements PublicationListS {
   final String hub;
   final String user;
   final PublicationType type;
+  @override
   final SortEnum sort;
+  @override
   final DatePeriodEnum period;
+  @override
   final String score;
   @override
   final int page;
@@ -34,7 +38,7 @@ class PublicationListState extends Equatable implements PublicationListS {
   @override
   final List<Publication> publications;
 
-  PublicationListState copyWith({
+  FlowPublicationListState copyWith({
     PublicationListStatus? status,
     String? error,
     FlowEnum? flow,
@@ -48,7 +52,7 @@ class PublicationListState extends Equatable implements PublicationListS {
     int? pagesCount,
     List<Publication>? publications,
   }) {
-    return PublicationListState(
+    return FlowPublicationListState(
       status: status ?? this.status,
       error: error ?? this.error,
       flow: flow ?? this.flow,

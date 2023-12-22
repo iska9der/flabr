@@ -3,15 +3,15 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../component/di/dependencies.dart';
-import '../../feature/enhancement/scroll/cubit/scroll_cubit.dart';
-import '../../feature/publication/widget/card/publication_card_widget.dart';
-import '../cubit/publication_list.dart';
-import '../utils/utils.dart';
-import 'enhancement/progress_indicator.dart';
+import '../../../common/utils/utils.dart';
+import '../../../common/widget/enhancement/progress_indicator.dart';
+import '../../../component/di/dependencies.dart';
+import '../../enhancement/scroll/cubit/scroll_cubit.dart';
+import '../cubit/publication_list_cubit.dart';
+import 'card/publication_card_widget.dart';
 
-class PublicationSliverList<C extends PublicationListC<S>,
-    S extends PublicationListS> extends StatelessWidget {
+class PublicationSliverList<C extends PublicationListCubit<S>,
+    S extends PublicationListState> extends StatelessWidget {
   const PublicationSliverList({super.key});
 
   @override

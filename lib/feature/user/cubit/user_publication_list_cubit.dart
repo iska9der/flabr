@@ -1,8 +1,8 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../common/cubit/publication_list.dart';
 import '../../../common/exception/exception_helper.dart';
 import '../../../common/model/network/list_response.dart';
+import '../../publication/cubit/publication_list_cubit.dart';
 import '../../publication/model/publication/publication.dart';
 import '../../publication/model/publication_type.dart';
 import '../../publication/model/sort/date_period_enum.dart';
@@ -11,7 +11,7 @@ import '../../publication/model/sort/sort_enum.dart';
 part 'user_publication_list_state.dart';
 
 class UserPublicationListCubit
-    extends PublicationListC<UserPublicationListState> {
+    extends PublicationListCubit<UserPublicationListState> {
   UserPublicationListCubit({
     required super.repository,
     required super.languageRepository,

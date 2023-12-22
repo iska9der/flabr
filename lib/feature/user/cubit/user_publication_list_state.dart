@@ -1,6 +1,7 @@
 part of 'user_publication_list_cubit.dart';
 
-class UserPublicationListState extends Equatable implements PublicationListS {
+class UserPublicationListState extends Equatable
+    implements PublicationListState {
   const UserPublicationListState({
     this.status = PublicationListStatus.initial,
     this.error = '',

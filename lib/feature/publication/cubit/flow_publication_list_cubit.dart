@@ -5,33 +5,51 @@ import 'package:equatable/equatable.dart';
 import '../../../common/exception/exception_helper.dart';
 import '../../../common/exception/value_exception.dart';
 import '../../../common/model/network/list_response.dart';
-import '../../publication/cubit/publication_list_cubit.dart';
-import '../../publication/model/publication/publication.dart';
-import '../../publication/model/publication_type.dart';
-import '../../publication/model/sort/date_period_enum.dart';
-import '../../publication/model/sort/sort_enum.dart';
-import '../../publication/model/sort/sort_option_model.dart';
+import '../model/flow_enum.dart';
+import '../model/publication/publication.dart';
+import '../model/publication_type.dart';
+import '../model/sort/date_period_enum.dart';
+import '../model/sort/sort_enum.dart';
+import '../model/sort/sort_option_model.dart';
+import 'publication_list_cubit.dart';
 
-part 'hub_publication_list_state.dart';
+part 'flow_publication_list_state.dart';
 
-class HubPublicationListCubit
-    extends SortablePublicationListCubit<HubPublicationListState> {
-  HubPublicationListCubit({
+class FlowPublicationListCubit
+    extends SortablePublicationListCubit<FlowPublicationListState> {
+  FlowPublicationListCubit({
     required super.repository,
     required super.languageRepository,
+    FlowEnum flow = FlowEnum.all,
     String hub = '',
+    String user = '',
     PublicationType type = PublicationType.article,
-  }) : super(HubPublicationListState(
+  }) : super(FlowPublicationListState(
+          flow: flow,
           hub: hub,
+          user: user,
           type: type,
         ));
+
+  void changeFlow(FlowEnum value) {
+    if (state.flow == value) return;
+
+    emit(FlowPublicationListState(
+      flow: value,
+      hub: state.hub,
+      user: state.user,
+      type: state.type,
+    ));
+  }
 
   @override
   void changeSort(SortEnum sort) {
     if (state.sort == sort) return;
 
-    emit(HubPublicationListState(
+    emit(FlowPublicationListState(
+      flow: state.flow,
       hub: state.hub,
+      user: state.user,
       type: state.type,
       sort: sort,
     ));
@@ -39,20 +57,22 @@ class HubPublicationListCubit
 
   @override
   void changeSortOption(SortEnum sort, SortOptionModel option) {
-    HubPublicationListState newState;
+    FlowPublicationListState newState;
     switch (sort) {
       case SortEnum.byBest:
         if (state.period == option.value) return;
-        newState = HubPublicationListState(period: option.value);
+        newState = FlowPublicationListState(period: option.value);
       case SortEnum.byNew:
         if (state.score == option.value) return;
-        newState = HubPublicationListState(score: option.value);
+        newState = FlowPublicationListState(score: option.value);
       default:
         throw ValueException('Неизвестный вариант сортировки статей');
     }
 
     emit(newState.copyWith(
+      flow: state.flow,
       hub: state.hub,
+      user: state.user,
       type: state.type,
       sort: sort,
     ));
@@ -68,10 +88,11 @@ class HubPublicationListCubit
     emit(state.copyWith(status: PublicationListStatus.loading));
 
     try {
-      ListResponse response = await repository.fetchHubArticles(
+      ListResponse response = await repository.fetchFlowArticles(
         langUI: languageRepository.ui,
         langArticles: languageRepository.articles,
-        hub: state.hub,
+        type: state.type,
+        flow: state.flow,
         sort: state.sort,
         period: state.period,
         score: state.score,
