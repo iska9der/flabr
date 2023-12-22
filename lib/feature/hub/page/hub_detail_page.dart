@@ -71,6 +71,7 @@ class HubDetailPageView extends StatelessWidget {
               controller: scrollCtrl,
               slivers: const [
                 SliverToBoxAdapter(child: HubProfileCardWidget()),
+                // TODO: GENERIC SORT WIDGET
                 // SliverAppBar(
                 //   automaticallyImplyLeading: false,
                 //   elevation: 0,

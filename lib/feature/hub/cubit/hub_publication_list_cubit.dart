@@ -23,19 +23,13 @@ class HubPublicationListCubit
     PublicationType type = PublicationType.article,
   })  : _repository = repository,
         _languageRepository = languageRepository,
-        super(
-          HubPublicationListState(
-            hub: hub,
-            type: type,
-          ),
-        );
+        super(HubPublicationListState(
+          hub: hub,
+          type: type,
+        ));
 
   final PublicationRepository _repository;
   final LanguageRepository _languageRepository;
-
-  @override
-  bool get isFirstFetch => state.page == 1;
-  bool get isLastPage => state.page >= state.pagesCount;
 
   void refetch() {
     emit(state.copyWith(

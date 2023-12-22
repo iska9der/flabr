@@ -19,11 +19,9 @@ class PublicationHubsWidget extends StatelessWidget {
   }
 }
 
-/// TODO: у `ArticleHubModel` есть свойство `type`
-/// который может быть коллективным(хаб), или корпоративным (блог компании)
-///
+/// у `PublicationHubModel` есть свойство `type`
+/// который может быть коллективным (хаб), или корпоративным (блог компании).
 /// в зависимости от типа, ссылка перехода в методе `onTap` будет меняться
-///
 class _PublicationHub extends StatelessWidget {
   const _PublicationHub(this.hub);
 

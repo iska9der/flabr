@@ -10,7 +10,8 @@ abstract class PublicationListC<State extends PublicationListS>
     extends Cubit<State> {
   PublicationListC(super.initialState);
 
-  bool get isFirstFetch;
+  bool get isFirstFetch => state.page == 1;
+  bool get isLastPage => state.page >= state.pagesCount;
 
   /// Получение списка публикаций
   FutureOr<void> fetch();

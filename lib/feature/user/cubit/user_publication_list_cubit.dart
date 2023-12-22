@@ -21,19 +21,13 @@ class UserPublicationListCubit
     PublicationType type = PublicationType.article,
   })  : _repository = repository,
         _languageRepository = languageRepository,
-        super(
-          UserPublicationListState(
-            user: user,
-            type: type,
-          ),
-        );
+        super(UserPublicationListState(
+          user: user,
+          type: type,
+        ));
 
   final PublicationRepository _repository;
   final LanguageRepository _languageRepository;
-
-  @override
-  bool get isFirstFetch => state.page == 1;
-  bool get isLastPage => state.page >= state.pagesCount;
 
   void refetch() {
     emit(state.copyWith(

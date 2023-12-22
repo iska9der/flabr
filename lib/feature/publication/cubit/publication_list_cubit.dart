@@ -63,10 +63,6 @@ class PublicationListCubit extends PublicationListC<PublicationListState> {
     return super.close();
   }
 
-  @override
-  bool get isFirstFetch => state.page == 1;
-  bool get isLastPage => state.page >= state.pagesCount;
-
   void changeFlow(FlowEnum value) {
     if (state.flow == value) return;
 
