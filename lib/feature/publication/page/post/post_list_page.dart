@@ -6,7 +6,7 @@ import '../../../../component/di/dependencies.dart';
 import '../../../enhancement/scaffold/scaffold.dart';
 import '../../../enhancement/scroll/scroll.dart';
 import '../../../settings/repository/language_repository.dart';
-import '../../cubit/publication_list_cubit.dart';
+import '../../cubit/flow_publication_list_cubit.dart';
 import '../../model/flow_enum.dart';
 import '../../model/publication_type.dart';
 import '../../repository/publication_repository.dart';
@@ -31,7 +31,7 @@ class PostListPage extends StatelessWidget {
       key: ValueKey('posts-$flow-flow'),
       providers: [
         BlocProvider(
-          create: (_) => PublicationListCubit(
+          create: (_) => FlowPublicationListCubit(
             repository: getIt.get<PublicationRepository>(),
             languageRepository: getIt.get<LanguageRepository>(),
             type: PublicationType.post,

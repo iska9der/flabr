@@ -8,7 +8,9 @@ const langUICacheKey = 'langUI';
 const langArticlesCacheKey = 'langArticles';
 
 class LanguageRepository {
-  LanguageRepository({required CacheStorage storage}) : _storage = storage {
+  LanguageRepository({
+    required CacheStorage storage,
+  }) : _storage = storage {
     _init();
   }
 
@@ -22,10 +24,14 @@ class LanguageRepository {
 
   /// Последние значения из стрима
   LanguageEnum _ui = LanguageEnum.ru;
-  List<LanguageEnum> _articles = [LanguageEnum.ru];
   get ui => _ui;
+
+  List<LanguageEnum> _articles = [LanguageEnum.ru];
   get articles => _articles;
 
+  /// Получаем кэшированные значения из хранилища
+  /// и сохраняем как последния значения, а так же
+  /// пушим значения в стрим
   Future<void> _init() async {
     final lang = await _getCachedUILanguage();
     _ui = lang ?? _ui;

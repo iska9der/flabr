@@ -7,7 +7,7 @@ import '../../../enhancement/scroll/cubit/scroll_cubit.dart';
 import '../../../search/cubit/search_cubit.dart';
 import '../../../search/repository/search_repository.dart';
 import '../../../settings/repository/language_repository.dart';
-import '../../cubit/publication_list_cubit.dart';
+import '../../cubit/flow_publication_list_cubit.dart';
 import '../../model/flow_enum.dart';
 import '../../model/publication_type.dart';
 import '../../repository/publication_repository.dart';
@@ -29,7 +29,7 @@ class ArticleListPage extends StatelessWidget {
       key: ValueKey('articles-$flow-flow'),
       providers: [
         BlocProvider(
-          create: (_) => PublicationListCubit(
+          create: (_) => FlowPublicationListCubit(
             repository: getIt.get<PublicationRepository>(),
             languageRepository: getIt.get<LanguageRepository>(),
             flow: FlowEnum.fromString(flow),
