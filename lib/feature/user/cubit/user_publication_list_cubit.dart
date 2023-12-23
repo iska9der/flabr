@@ -32,7 +32,7 @@ class UserPublicationListCubit
     emit(state.copyWith(status: PublicationListStatus.loading));
 
     try {
-      ListResponse response = await repository.fetchUserArticles(
+      ListResponse response = await repository.fetchUserPublications(
         langUI: languageRepository.ui,
         langArticles: languageRepository.articles,
         user: state.user,

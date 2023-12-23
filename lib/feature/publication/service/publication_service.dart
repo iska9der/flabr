@@ -154,7 +154,7 @@ class PublicationService {
     }
   }
 
-  Future<PublicationListResponse> fetchUserArticles({
+  Future<ListResponse> fetchUserPublications({
     required String langUI,
     required String langArticles,
     required String user,
@@ -179,7 +179,10 @@ class PublicationService {
         '/articles/?user=$user$typeQuery&$queryString',
       );
 
-      return PublicationListResponse.fromMap(response.data);
+      return switch (type) {
+        UserPublicationType.posts => PostListResponse.fromMap(response.data),
+        _ => PublicationListResponse.fromMap(response.data),
+      } as ListResponse;
     } on DisplayableException {
       rethrow;
     } on DioException {
@@ -187,7 +190,7 @@ class PublicationService {
     }
   }
 
-  Future<PublicationListResponse> fetchUserBookmarks({
+  Future<ListResponse> fetchUserBookmarks({
     required String langUI,
     required String langArticles,
     required String user,
@@ -212,7 +215,10 @@ class PublicationService {
         '/articles/?user=$user&$typeQuery&$queryString',
       );
 
-      return PublicationListResponse.fromMap(response.data);
+      return switch (type) {
+        UserBookmarksType.posts => PostListResponse.fromMap(response.data),
+        _ => PublicationListResponse.fromMap(response.data),
+      } as ListResponse;
     } on DisplayableException {
       rethrow;
     } on DioException {

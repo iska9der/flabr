@@ -140,14 +140,14 @@ class PublicationRepository {
     return response;
   }
 
-  Future<PublicationListResponse> fetchUserArticles({
+  Future<ListResponse> fetchUserPublications({
     required LanguageEnum langUI,
     required List<LanguageEnum> langArticles,
     required String user,
     required String page,
     required UserPublicationType type,
   }) async {
-    final response = await service.fetchUserArticles(
+    final response = await service.fetchUserPublications(
       langUI: langUI.name,
       langArticles: encodeLangs(langArticles),
       user: user,
@@ -160,7 +160,7 @@ class PublicationRepository {
     return response;
   }
 
-  fetchUserBookmarks({
+  Future<ListResponse> fetchUserBookmarks({
     required LanguageEnum langUI,
     required List<LanguageEnum> langArticles,
     required String user,
@@ -176,11 +176,9 @@ class PublicationRepository {
     );
 
     var newResponse = response.copyWith(
-      refs: response.ids.map(
-        (id) {
-          return response.refs.firstWhere((ref) => id == ref.id);
-        },
-      ).toList(),
+      refs: response.ids
+          .map((id) => response.refs.firstWhere((ref) => id == ref.id))
+          .toList(),
     );
 
     return newResponse;
