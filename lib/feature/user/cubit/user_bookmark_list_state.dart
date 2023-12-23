@@ -5,7 +5,7 @@ class UserBookmarkListState extends Equatable implements PublicationListState {
     this.status = PublicationListStatus.initial,
     this.error = '',
     this.user = '',
-    this.type = PublicationType.article,
+    this.type = UserBookmarksType.articles,
     this.page = 1,
     this.pagesCount = 0,
     this.publications = const [],
@@ -16,7 +16,7 @@ class UserBookmarkListState extends Equatable implements PublicationListState {
   @override
   final String error;
   final String user;
-  final PublicationType type;
+  final UserBookmarksType type;
   @override
   final int page;
   @override
@@ -28,7 +28,7 @@ class UserBookmarkListState extends Equatable implements PublicationListState {
     PublicationListStatus? status,
     String? error,
     String? user,
-    PublicationType? type,
+    UserBookmarksType? type,
     int? page,
     int? pagesCount,
     List<Publication>? publications,

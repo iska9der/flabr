@@ -1,6 +1,7 @@
 import '../../../common/model/network/list_response.dart';
 import '../../../component/localization/language_enum.dart';
 import '../../../component/localization/language_helper.dart';
+import '../../user/model/user_bookmarks_type.dart';
 import '../model/comment/network/comment_list_response.dart';
 import '../model/flow_enum.dart';
 import '../model/network/most_reading_response.dart';
@@ -167,12 +168,14 @@ class PublicationRepository {
     required List<LanguageEnum> langArticles,
     required String user,
     required String page,
+    required UserBookmarksType type,
   }) async {
     final response = await service.fetchUserBookmarks(
       langUI: langUI.name,
       langArticles: encodeLangs(langArticles),
       user: user,
       page: page,
+      type: type,
     );
 
     var newResponse = response.copyWith(

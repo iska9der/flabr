@@ -428,12 +428,13 @@ List<RedirectRoute> _usersRedirects() {
     ),
 
     /// Закладки пользователя
-    /// TODO: временный редирект на закладки пользователя,
-    /// пока не реализованны вложенные разделы
-    /// (публикации, посты, комментарии)
     RedirectRoute(
-      path: '*/*/users/:login/bookmarks/*',
+      path: '*/*/users/:login/bookmarks',
       redirectTo: '$basePath/:login/$bookmarks',
+    ),
+    RedirectRoute(
+      path: '*/*/users/:login/bookmarks/:type',
+      redirectTo: '$basePath/:login/$bookmarks/:type',
     ),
 
     /// Старый роут закладок

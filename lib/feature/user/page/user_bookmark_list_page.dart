@@ -9,13 +9,17 @@ import '../../publication/widget/publication_sliver_list.dart';
 import '../../settings/repository/language_repository.dart';
 import '../cubit/user_bookmark_list_cubit.dart';
 import '../cubit/user_cubit.dart';
+import '../model/user_bookmarks_type.dart';
+import '../widget/type_dropdown_widget.dart';
 
 @RoutePage(name: UserBookmarkListPage.routeName)
 class UserBookmarkListPage extends StatelessWidget {
-  const UserBookmarkListPage({super.key});
+  const UserBookmarkListPage({super.key, @PathParam() this.type = ''});
+
+  final String type;
 
   static const String title = 'Закладки';
-  static const String routePath = 'bookmarks';
+  static const String routePath = 'bookmarks/:type';
   static const String routeName = 'UserBookmarkListRoute';
 
   @override
@@ -23,13 +27,14 @@ class UserBookmarkListPage extends StatelessWidget {
     final cubit = context.read<UserCubit>();
 
     return MultiBlocProvider(
-      key: ValueKey('user-${cubit.state.login}-bookmarks'),
+      key: ValueKey('user-${cubit.state.login}-bookmarks-$type'),
       providers: [
         BlocProvider(
           create: (_) => UserBookmarkListCubit(
             repository: getIt.get<PublicationRepository>(),
             languageRepository: getIt.get<LanguageRepository>(),
             user: cubit.state.login,
+            type: UserBookmarksType.fromString(type),
           ),
         ),
         BlocProvider(
@@ -60,8 +65,29 @@ class UserBookmarkListView extends StatelessWidget {
           child: CustomScrollView(
             controller: scrollCtrl,
             cacheExtent: 1000,
-            slivers: const [
-              PublicationSliverList<UserBookmarkListCubit,
+            slivers: [
+              BlocBuilder<UserBookmarkListCubit, UserBookmarkListState>(
+                builder: (context, state) {
+                  return SliverToBoxAdapter(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: TypeDropdownMenu(
+                        type: state.type.name,
+                        onChanged: (type) => context
+                            .read<UserBookmarkListCubit>()
+                            .changeType(UserBookmarksType.fromString(type)),
+                        entries: UserBookmarksType.values
+                            .map((type) => DropdownMenuItem(
+                                  value: type.name,
+                                  child: Text(type.label),
+                                ))
+                            .toList(),
+                      ),
+                    ),
+                  );
+                },
+              ),
+              const PublicationSliverList<UserBookmarkListCubit,
                   UserBookmarkListState>(),
             ],
           ),

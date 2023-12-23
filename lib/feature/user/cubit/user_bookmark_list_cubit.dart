@@ -4,7 +4,7 @@ import '../../../common/exception/exception_helper.dart';
 import '../../../common/model/network/list_response.dart';
 import '../../publication/cubit/publication_list_cubit.dart';
 import '../../publication/model/publication/publication.dart';
-import '../../publication/model/publication_type.dart';
+import '../model/user_bookmarks_type.dart';
 
 part 'user_bookmark_list_state.dart';
 
@@ -14,7 +14,7 @@ class UserBookmarkListCubit
     required super.repository,
     required super.languageRepository,
     String user = '',
-    PublicationType type = PublicationType.article,
+    UserBookmarksType type = UserBookmarksType.articles,
   }) : super(UserBookmarkListState(
           user: user,
           type: type,
@@ -35,6 +35,7 @@ class UserBookmarkListCubit
         langArticles: languageRepository.articles,
         user: state.user,
         page: state.page.toString(),
+        type: state.type,
       );
 
       emit(state.copyWith(
@@ -45,7 +46,7 @@ class UserBookmarkListCubit
       ));
     } catch (e) {
       emit(state.copyWith(
-        error: ExceptionHelper.parseMessage(e, 'Не удалось получить статьи'),
+        error: ExceptionHelper.parseMessage(e, 'Не удалось получить закладки'),
         status: PublicationListStatus.failure,
       ));
 
@@ -61,5 +62,11 @@ class UserBookmarkListCubit
       publications: [],
       pagesCount: 0,
     ));
+  }
+
+  changeType(UserBookmarksType type) {
+    if (type == state.type) return;
+
+    emit(UserBookmarkListState(user: state.user, type: type));
   }
 }

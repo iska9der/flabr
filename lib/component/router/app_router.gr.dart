@@ -224,9 +224,19 @@ abstract class _$AppRouter extends RootStackRouter {
       );
     },
     UserBookmarkListRoute.name: (routeData) {
+      final pathParams = routeData.inheritedPathParams;
+      final args = routeData.argsAs<UserBookmarkListRouteArgs>(
+          orElse: () => UserBookmarkListRouteArgs(
+                  type: pathParams.getString(
+                'type',
+                '',
+              )));
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const UserBookmarkListPage(),
+        child: UserBookmarkListPage(
+          key: args.key,
+          type: args.type,
+        ),
       );
     },
     UserDashboardRoute.name: (routeData) {
@@ -862,16 +872,41 @@ class SettingsRouter extends PageRouteInfo<void> {
 
 /// generated route for
 /// [UserBookmarkListPage]
-class UserBookmarkListRoute extends PageRouteInfo<void> {
-  const UserBookmarkListRoute({List<PageRouteInfo>? children})
-      : super(
+class UserBookmarkListRoute extends PageRouteInfo<UserBookmarkListRouteArgs> {
+  UserBookmarkListRoute({
+    Key? key,
+    String type = '',
+    List<PageRouteInfo>? children,
+  }) : super(
           UserBookmarkListRoute.name,
+          args: UserBookmarkListRouteArgs(
+            key: key,
+            type: type,
+          ),
+          rawPathParams: {'type': type},
           initialChildren: children,
         );
 
   static const String name = 'UserBookmarkListRoute';
 
-  static const PageInfo<void> page = PageInfo<void>(name);
+  static const PageInfo<UserBookmarkListRouteArgs> page =
+      PageInfo<UserBookmarkListRouteArgs>(name);
+}
+
+class UserBookmarkListRouteArgs {
+  const UserBookmarkListRouteArgs({
+    this.key,
+    this.type = '',
+  });
+
+  final Key? key;
+
+  final String type;
+
+  @override
+  String toString() {
+    return 'UserBookmarkListRouteArgs{key: $key, type: $type}';
+  }
 }
 
 /// generated route for
