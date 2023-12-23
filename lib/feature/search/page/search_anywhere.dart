@@ -25,6 +25,13 @@ class SearchAnywhereDelegate extends FlabrSearchDelegate {
   final SearchCubit cubit;
 
   @override
+  ThemeData appBarTheme(BuildContext context) {
+    return super.appBarTheme(context).copyWith(
+          appBarTheme: Theme.of(context).appBarTheme,
+        );
+  }
+
+  @override
   String? get searchFieldLabel => 'Поиск';
 
   @override
@@ -91,100 +98,92 @@ class SearchAnywhereDelegate extends FlabrSearchDelegate {
             listener: (c, state) => cubit.fetch(),
           ),
         ],
-        child: BlocBuilder<SearchCubit, SearchState>(
-          bloc: cubit,
-          builder: (context, state) {
-            final scrollCubit = context.read<ScrollCubit>();
-            final scrollCtrl = scrollCubit.state.controller;
+        child: Scaffold(
+          floatingActionButton: const FloatingScrollToTopButton(),
+          body: BlocBuilder<SearchCubit, SearchState>(
+            bloc: cubit,
+            builder: (context, state) {
+              final scrollCubit = context.read<ScrollCubit>();
+              final scrollCtrl = scrollCubit.state.controller;
 
-            if (state.isFirstFetch) {
-              if (state.status.isLoading) {
-                return const CircleIndicator();
+              if (state.isFirstFetch) {
+                if (state.status.isLoading) {
+                  return const CircleIndicator();
+                }
+                if (state.status.isFailure) {
+                  return Center(child: Text(state.error));
+                }
               }
-              if (state.status.isFailure) {
-                return Center(child: Text(state.error));
+
+              var models = state.listResponse.refs;
+
+              if (models.isEmpty) {
+                return const Padding(
+                  padding: EdgeInsets.all(kScreenHPadding),
+                  child: Align(
+                    child: Text('Поиск не дал результатов'),
+                  ),
+                );
               }
-            }
 
-            var models = state.listResponse.refs;
+              return Scrollbar(
+                controller: scrollCtrl,
+                child: CustomScrollView(
+                  controller: scrollCtrl,
+                  slivers: [
+                    SliverToBoxAdapter(
+                      child: _TargetOptions(cubit: cubit, delegate: this),
+                    ),
+                    if (state.target == SearchTarget.posts ||
+                        state.target == SearchTarget.users)
+                      SliverToBoxAdapter(
+                        child: _OrderOptions(cubit: cubit, delegate: this),
+                      ),
+                    SliverList.builder(
+                      itemCount:
+                          models.length + (state.status.isLoading ? 1 : 0),
+                      itemBuilder: (context, index) {
+                        if (index < models.length) {
+                          var model = models[index];
 
-            if (models.isEmpty) {
-              return const Padding(
-                padding: EdgeInsets.all(kScreenHPadding),
-                child: Align(
-                  child: Text('Поиск не дал результатов'),
+                          return switch (state.target) {
+                            SearchTarget.posts => CommonCardWidget(
+                                publication: model,
+                                renderType: RenderType.html,
+                              ),
+                            SearchTarget.hubs => HubCardWidget(
+                                model: model,
+                                renderType: RenderType.html,
+                              ),
+                            SearchTarget.companies => CompanyCardWidget(
+                                model: model,
+                                renderType: RenderType.html,
+                              ),
+                            SearchTarget.users => UserCardWidget(
+                                model: model,
+                              ),
+                            SearchTarget.comments => const Center(
+                                child: Text('Не реализовано'),
+                              )
+                          };
+                        }
+
+                        Timer(
+                          scrollCubit.duration,
+                          () => scrollCubit.animateToBottom(),
+                        );
+
+                        return const SizedBox(
+                          height: 60,
+                          child: CircleIndicator.medium(),
+                        );
+                      },
+                    )
+                  ],
                 ),
               );
-            }
-
-            return Stack(
-              children: [
-                Scrollbar(
-                  controller: scrollCtrl,
-                  child: SingleChildScrollView(
-                    controller: scrollCtrl,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        _TargetOptions(cubit: cubit, delegate: this),
-                        if (state.target == SearchTarget.posts ||
-                            state.target == SearchTarget.users)
-                          _OrderOptions(cubit: cubit, delegate: this),
-                        ListView.builder(
-                          cacheExtent: 5000,
-                          shrinkWrap: true,
-                          primary: false,
-                          itemCount:
-                              models.length + (state.status.isLoading ? 1 : 0),
-                          itemBuilder: (context, index) {
-                            if (index < models.length) {
-                              var model = models[index];
-
-                              return switch (state.target) {
-                                SearchTarget.posts => CommonCardWidget(
-                                    publication: model,
-                                    renderType: RenderType.html,
-                                  ),
-                                SearchTarget.hubs => HubCardWidget(
-                                    model: model,
-                                    renderType: RenderType.html,
-                                  ),
-                                SearchTarget.companies => CompanyCardWidget(
-                                    model: model,
-                                    renderType: RenderType.html,
-                                  ),
-                                SearchTarget.users => UserCardWidget(
-                                    model: model,
-                                  ),
-                                SearchTarget.comments => const Center(
-                                    child: Text('Не реализовано'),
-                                  )
-                              };
-                            }
-
-                            Timer(
-                              scrollCubit.duration,
-                              () => scrollCubit.animateToBottom(),
-                            );
-
-                            return const SizedBox(
-                              height: 60,
-                              child: CircleIndicator.medium(),
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                const Positioned(
-                  bottom: 16,
-                  right: 16,
-                  child: FloatingScrollToTopButton(),
-                ),
-              ],
-            );
-          },
+            },
+          ),
         ),
       ),
     );
