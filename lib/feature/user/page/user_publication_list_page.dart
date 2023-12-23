@@ -9,13 +9,17 @@ import '../../publication/widget/publication_sliver_list.dart';
 import '../../settings/repository/language_repository.dart';
 import '../cubit/user_cubit.dart';
 import '../cubit/user_publication_list_cubit.dart';
+import '../model/user_publication_type.dart';
+import '../widget/type_dropdown_widget.dart';
 
 @RoutePage(name: UserPublicationListPage.routeName)
 class UserPublicationListPage extends StatelessWidget {
-  const UserPublicationListPage({super.key});
+  const UserPublicationListPage({super.key, @PathParam() this.type = ''});
+
+  final String type;
 
   static const String title = 'Публикации';
-  static const String routePath = 'publications';
+  static const String routePath = 'publications/:type';
   static const String routeName = 'UserPublicationListRoute';
 
   @override
@@ -23,13 +27,14 @@ class UserPublicationListPage extends StatelessWidget {
     final cubit = context.read<UserCubit>();
 
     return MultiBlocProvider(
-      key: ValueKey('user-${cubit.state.login}-publications'),
+      key: ValueKey('user-${cubit.state.login}-publications-$type'),
       providers: [
         BlocProvider(
           create: (_) => UserPublicationListCubit(
             repository: getIt.get<PublicationRepository>(),
             languageRepository: getIt.get<LanguageRepository>(),
             user: cubit.state.login,
+            type: UserPublicationType.fromString(type),
           ),
         ),
         BlocProvider(
@@ -58,8 +63,29 @@ class UserPublicationListView extends StatelessWidget {
           child: CustomScrollView(
             controller: scrollCtrl,
             cacheExtent: 2000,
-            slivers: const [
-              PublicationSliverList<UserPublicationListCubit,
+            slivers: [
+              BlocBuilder<UserPublicationListCubit, UserPublicationListState>(
+                builder: (context, state) {
+                  return SliverToBoxAdapter(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: TypeDropdownMenu(
+                        type: state.type.name,
+                        onChanged: (type) => context
+                            .read<UserPublicationListCubit>()
+                            .changeType(UserPublicationType.fromString(type)),
+                        entries: UserPublicationType.values
+                            .map((type) => DropdownMenuItem(
+                                  value: type.name,
+                                  child: Text(type.label),
+                                ))
+                            .toList(),
+                      ),
+                    ),
+                  );
+                },
+              ),
+              const PublicationSliverList<UserPublicationListCubit,
                   UserPublicationListState>(),
             ],
           ),

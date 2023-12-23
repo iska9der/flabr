@@ -58,7 +58,7 @@ class UserDashboardView extends StatelessWidget {
     return AutoTabsRouter.tabBar(
       routes: [
         const UserDetailRoute(),
-        const UserPublicationListRoute(),
+        UserPublicationListRoute(),
         UserBookmarkListRoute(),
       ],
       builder: (context, child, controller) {

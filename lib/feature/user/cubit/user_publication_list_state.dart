@@ -6,7 +6,7 @@ class UserPublicationListState extends Equatable
     this.status = PublicationListStatus.initial,
     this.error = '',
     this.user = '',
-    this.type = PublicationType.article,
+    this.type = UserPublicationType.articles,
     this.sort = SortEnum.byNew,
     this.period = DatePeriodEnum.daily,
     this.score = '',
@@ -20,7 +20,7 @@ class UserPublicationListState extends Equatable
   @override
   final String error;
   final String user;
-  final PublicationType type;
+  final UserPublicationType type;
   final SortEnum sort;
   final DatePeriodEnum period;
   final String score;
@@ -35,7 +35,7 @@ class UserPublicationListState extends Equatable
     PublicationListStatus? status,
     String? error,
     String? user,
-    PublicationType? type,
+    UserPublicationType? type,
     SortEnum? sort,
     DatePeriodEnum? period,
     String? score,

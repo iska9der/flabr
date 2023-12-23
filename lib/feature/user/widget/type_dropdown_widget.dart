@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
-class TypeDropdownMenu<C extends Cubit<S>, S> extends StatelessWidget {
+class TypeDropdownMenu extends StatelessWidget {
   const TypeDropdownMenu({
     super.key,
     required this.type,

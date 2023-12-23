@@ -265,9 +265,19 @@ abstract class _$AppRouter extends RootStackRouter {
       );
     },
     UserPublicationListRoute.name: (routeData) {
+      final pathParams = routeData.inheritedPathParams;
+      final args = routeData.argsAs<UserPublicationListRouteArgs>(
+          orElse: () => UserPublicationListRouteArgs(
+                  type: pathParams.getString(
+                'type',
+                '',
+              )));
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const UserPublicationListPage(),
+        child: UserPublicationListPage(
+          key: args.key,
+          type: args.type,
+        ),
       );
     },
   };
@@ -978,14 +988,40 @@ class UserListRoute extends PageRouteInfo<void> {
 
 /// generated route for
 /// [UserPublicationListPage]
-class UserPublicationListRoute extends PageRouteInfo<void> {
-  const UserPublicationListRoute({List<PageRouteInfo>? children})
-      : super(
+class UserPublicationListRoute
+    extends PageRouteInfo<UserPublicationListRouteArgs> {
+  UserPublicationListRoute({
+    Key? key,
+    String type = '',
+    List<PageRouteInfo>? children,
+  }) : super(
           UserPublicationListRoute.name,
+          args: UserPublicationListRouteArgs(
+            key: key,
+            type: type,
+          ),
+          rawPathParams: {'type': type},
           initialChildren: children,
         );
 
   static const String name = 'UserPublicationListRoute';
 
-  static const PageInfo<void> page = PageInfo<void>(name);
+  static const PageInfo<UserPublicationListRouteArgs> page =
+      PageInfo<UserPublicationListRouteArgs>(name);
+}
+
+class UserPublicationListRouteArgs {
+  const UserPublicationListRouteArgs({
+    this.key,
+    this.type = '',
+  });
+
+  final Key? key;
+
+  final String type;
+
+  @override
+  String toString() {
+    return 'UserPublicationListRouteArgs{key: $key, type: $type}';
+  }
 }

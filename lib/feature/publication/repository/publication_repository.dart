@@ -2,6 +2,7 @@ import '../../../common/model/network/list_response.dart';
 import '../../../component/localization/language_enum.dart';
 import '../../../component/localization/language_helper.dart';
 import '../../user/model/user_bookmarks_type.dart';
+import '../../user/model/user_publication_type.dart';
 import '../model/comment/network/comment_list_response.dart';
 import '../model/flow_enum.dart';
 import '../model/network/most_reading_response.dart';
@@ -143,22 +144,18 @@ class PublicationRepository {
     required LanguageEnum langUI,
     required List<LanguageEnum> langArticles,
     required String user,
-    required SortEnum sort,
-    required DatePeriodEnum period,
-    required String score,
     required String page,
+    required UserPublicationType type,
   }) async {
     final response = await service.fetchUserArticles(
       langUI: langUI.name,
       langArticles: encodeLangs(langArticles),
       user: user,
-      sort: sort,
-      period: period,
-      score: score,
       page: page,
+      type: type,
     );
 
-    _sortListResponse(sort, response);
+    _sortListResponse(SortEnum.byNew, response);
 
     return response;
   }

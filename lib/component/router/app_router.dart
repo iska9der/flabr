@@ -413,12 +413,13 @@ List<RedirectRoute> _usersRedirects() {
     ),
 
     /// Публикации пользователя
-    /// TODO: временный редирект на экран публикаций пользователя,
-    /// пока не реализованны вложенные разделы
-    /// (статьи, посты, новости)
     RedirectRoute(
-      path: '*/*/users/:login/publications/*',
+      path: '*/*/users/:login/publications',
       redirectTo: '$basePath/:login/$publications',
+    ),
+    RedirectRoute(
+      path: '*/*/users/:login/publications/:type',
+      redirectTo: '$basePath/:login/$publications/:type',
     ),
 
     /// Старый роут публикаций

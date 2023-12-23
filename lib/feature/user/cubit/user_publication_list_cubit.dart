@@ -4,9 +4,9 @@ import '../../../common/exception/exception_helper.dart';
 import '../../../common/model/network/list_response.dart';
 import '../../publication/cubit/publication_list_cubit.dart';
 import '../../publication/model/publication/publication.dart';
-import '../../publication/model/publication_type.dart';
 import '../../publication/model/sort/date_period_enum.dart';
 import '../../publication/model/sort/sort_enum.dart';
+import '../model/user_publication_type.dart';
 
 part 'user_publication_list_state.dart';
 
@@ -16,7 +16,7 @@ class UserPublicationListCubit
     required super.repository,
     required super.languageRepository,
     String user = '',
-    PublicationType type = PublicationType.article,
+    UserPublicationType type = UserPublicationType.articles,
   }) : super(UserPublicationListState(
           user: user,
           type: type,
@@ -36,10 +36,8 @@ class UserPublicationListCubit
         langUI: languageRepository.ui,
         langArticles: languageRepository.articles,
         user: state.user,
-        sort: state.sort,
-        period: state.period,
-        score: state.score,
         page: state.page.toString(),
+        type: state.type,
       );
 
       emit(state.copyWith(
@@ -65,6 +63,15 @@ class UserPublicationListCubit
       page: 1,
       publications: [],
       pagesCount: 0,
+    ));
+  }
+
+  changeType(UserPublicationType type) {
+    if (state.type == type) return;
+
+    emit(UserPublicationListState(
+      user: state.user,
+      type: type,
     ));
   }
 }

@@ -7,6 +7,7 @@ import '../../../common/model/network/list_response.dart';
 import '../../../common/model/network/params.dart';
 import '../../../component/http/http_client.dart';
 import '../../user/model/user_bookmarks_type.dart';
+import '../../user/model/user_publication_type.dart';
 import '../model/comment/network/comment_list_exception.dart';
 import '../model/comment/network/comment_list_params.dart';
 import '../model/comment/network/comment_list_response.dart';
@@ -157,10 +158,8 @@ class PublicationService {
     required String langUI,
     required String langArticles,
     required String user,
-    required SortEnum sort,
-    required DatePeriodEnum period,
-    required String score,
     required String page,
+    required UserPublicationType type,
   }) async {
     try {
       final params = PublicationListParams(
@@ -169,9 +168,15 @@ class PublicationService {
         page: page,
       );
 
+      final String typeQuery = switch (type) {
+        UserPublicationType.articles => '',
+        UserPublicationType.posts => '&posts=true',
+        UserPublicationType.news => '&news=true',
+      };
+
       final queryString = params.toQueryString();
       final response = await _mobileClient.get(
-        '/articles/?user=$user&$queryString',
+        '/articles/?user=$user$typeQuery&$queryString',
       );
 
       return PublicationListResponse.fromMap(response.data);
