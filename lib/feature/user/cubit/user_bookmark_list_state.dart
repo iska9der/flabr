@@ -9,6 +9,7 @@ class UserBookmarkListState extends Equatable implements PublicationListState {
     this.page = 1,
     this.pagesCount = 0,
     this.publications = const [],
+    this.comments = const [],
   });
 
   @override
@@ -23,6 +24,7 @@ class UserBookmarkListState extends Equatable implements PublicationListState {
   final int pagesCount;
   @override
   final List<Publication> publications;
+  final List<CommentModel> comments;
 
   UserBookmarkListState copyWith({
     PublicationListStatus? status,
@@ -32,6 +34,7 @@ class UserBookmarkListState extends Equatable implements PublicationListState {
     int? page,
     int? pagesCount,
     List<Publication>? publications,
+    List<CommentModel>? comments,
   }) {
     return UserBookmarkListState(
       status: status ?? this.status,
@@ -41,6 +44,7 @@ class UserBookmarkListState extends Equatable implements PublicationListState {
       page: page ?? this.page,
       pagesCount: pagesCount ?? this.pagesCount,
       publications: publications ?? this.publications,
+      comments: comments ?? this.comments,
     );
   }
 
@@ -56,5 +60,6 @@ class UserBookmarkListState extends Equatable implements PublicationListState {
         page,
         pagesCount,
         publications,
+        comments,
       ];
 }

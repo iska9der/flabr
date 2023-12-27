@@ -6,6 +6,7 @@ import 'package:responsive_framework/responsive_value.dart';
 import '../../../../common/model/extension/enum_status.dart';
 import '../../../../common/widget/enhancement/card.dart';
 import '../../../../common/widget/enhancement/responsive_visibility.dart';
+import '../../../../common/widget/publication_sliver_list.dart';
 import '../../../../component/theme/constants.dart';
 import '../../../../component/theme/responsive.dart';
 import '../../../../config/constants.dart';
@@ -18,7 +19,6 @@ import '../../model/flow_enum.dart';
 import '../../model/publication_type.dart';
 import '../../widget/appbar/publication_list_appbar.dart';
 import '../../widget/most_reading_widget.dart';
-import '../../widget/publication_sliver_list.dart';
 
 class PublicationListView extends StatelessWidget {
   const PublicationListView({

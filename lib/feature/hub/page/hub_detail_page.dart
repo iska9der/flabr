@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../common/widget/enhancement/progress_indicator.dart';
+import '../../../common/widget/publication_sliver_list.dart';
 import '../../../component/di/dependencies.dart';
 import '../../../config/constants.dart';
 import '../../enhancement/scroll/scroll.dart';
 import '../../publication/repository/publication_repository.dart';
-import '../../publication/widget/publication_sliver_list.dart';
 import '../../publication/widget/sort/articles_sort_widget.dart';
 import '../../settings/cubit/settings_cubit.dart';
 import '../../settings/repository/language_repository.dart';

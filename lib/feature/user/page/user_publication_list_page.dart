@@ -2,10 +2,10 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../common/widget/publication_sliver_list.dart';
 import '../../../component/di/dependencies.dart';
 import '../../enhancement/scroll/scroll.dart';
 import '../../publication/repository/publication_repository.dart';
-import '../../publication/widget/publication_sliver_list.dart';
 import '../../settings/repository/language_repository.dart';
 import '../cubit/user_cubit.dart';
 import '../cubit/user_publication_list_cubit.dart';

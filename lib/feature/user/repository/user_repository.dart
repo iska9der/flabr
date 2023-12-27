@@ -1,4 +1,5 @@
 import '../../../component/language.dart';
+import '../model/network/user_comment_list_response.dart';
 import '../model/network/user_list_response.dart';
 import '../model/user_model.dart';
 import '../model/user_whois_model.dart';
@@ -33,7 +34,7 @@ class UserRepository {
     required List<LanguageEnum> langArticles,
   }) async {
     final raw = await _service.fetchCard(
-      login: login,
+      alias: login,
       langUI: langUI.name,
       langArticles: encodeLangs(langArticles),
     );
@@ -53,7 +54,7 @@ class UserRepository {
     required List<LanguageEnum> langArticles,
   }) async {
     final raw = await _service.fetchWhois(
-      login: login,
+      alias: login,
       langUI: langUI.name,
       langArticles: encodeLangs(langArticles),
     );
@@ -61,5 +62,17 @@ class UserRepository {
     UserWhoisModel model = UserWhoisModel.fromMap(raw);
 
     return model;
+  }
+
+  Future<UserCommentListResponse> fetchComments({
+    required String alias,
+    int page = 1,
+  }) async {
+    final UserCommentListResponse response = await _service.fetchComments(
+      alias: alias,
+      page: page,
+    );
+
+    return response;
   }
 }

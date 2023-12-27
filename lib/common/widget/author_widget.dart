@@ -1,13 +1,13 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../../common/widget/feed/card_avatar_widget.dart';
-import '../../../../auth/widget/dialog.dart';
-import '../../../../auth/widget/profile_widget.dart';
-import '../../../model/publication_author_model.dart';
+import '../../feature/auth/widget/dialog.dart';
+import '../../feature/auth/widget/profile_widget.dart';
+import '../../feature/publication/model/publication_author_model.dart';
+import 'feed/card_avatar_widget.dart';
 
-class PublicationAuthorWidget extends StatelessWidget {
-  const PublicationAuthorWidget(this.author, {super.key});
+class AuthorWidget extends StatelessWidget {
+  const AuthorWidget(this.author, {super.key});
 
   final PublicationAuthorModel author;
 

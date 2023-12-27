@@ -208,6 +208,8 @@ class PublicationService {
         UserBookmarksType.articles => 'user_bookmarks=true',
         UserBookmarksType.posts => 'user_bookmarks_posts=true',
         UserBookmarksType.news => 'user_bookmarks_news=true',
+        UserBookmarksType.comments =>
+          throw ValueException('Вы не туда попали...'),
       };
 
       final queryString = params.toQueryString();

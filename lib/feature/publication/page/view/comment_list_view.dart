@@ -1,18 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
-import 'package:intl/intl.dart';
 
 import '../../../../common/model/extension/enum_status.dart';
+import '../../../../common/widget/author_widget.dart';
+import '../../../../common/widget/comment_widget.dart';
 import '../../../../common/widget/enhancement/app_expansion_panel.dart';
 import '../../../../common/widget/enhancement/progress_indicator.dart';
-import '../../../../common/widget/html_view_widget.dart';
-import '../../../../config/constants.dart';
 import '../../cubit/comment/comment_hidden_cubit.dart';
 import '../../cubit/comment/comment_list_cubit.dart';
 import '../../model/comment/comment_model.dart';
-import '../../widget/card/components/author_widget.dart';
-import '../../widget/comment/comment_rating_widget.dart';
 
 const _paddingBetweenTrees = 12.0;
 const _paddingBetweenChilds = 4.0;
@@ -97,38 +93,22 @@ class CommentTreeWidget extends StatelessWidget {
               isExpanded: !state.isHidden(comment.id),
               backgroundColor: Theme.of(context).scaffoldBackgroundColor,
               iconBuilder: (child, isExpanded) {
-                return DecoratedBox(
-                  decoration: BoxDecoration(
-                    color: authorColor,
-                    borderRadius: BorderRadius.only(
-                      topRight: const Radius.circular(kBorderRadiusDefault),
-                      bottomRight: !isExpanded
-                          ? const Radius.circular(kBorderRadiusDefault)
-                          : Radius.zero,
-                    ),
-                  ),
+                return ColoredBox(
+                  color: authorColor,
                   child: child,
                 );
               },
               headerBuilder: (context, isExpanded) {
-                return DecoratedBox(
-                  decoration: BoxDecoration(
-                    color: authorColor,
-                    borderRadius: BorderRadius.only(
-                      topLeft: const Radius.circular(kBorderRadiusDefault),
-                      bottomLeft: !isExpanded
-                          ? const Radius.circular(kBorderRadiusDefault)
-                          : Radius.zero,
-                    ),
-                  ),
-                  child: PublicationAuthorWidget(comment.author),
+                return ColoredBox(
+                  color: authorColor,
+                  child: AuthorWidget(comment.author),
                 );
               },
               body: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  CommentWidget(comment),
+                  _CommentWidget(comment),
                   ListView.builder(
                     physics: const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
@@ -149,62 +129,21 @@ class CommentTreeWidget extends StatelessWidget {
   }
 }
 
-class CommentWidget extends StatelessWidget {
-  const CommentWidget(this.comment, {super.key});
+class _CommentWidget extends StatelessWidget {
+  // ignore: unused_element
+  const _CommentWidget(this.comment, {super.key});
 
   final CommentModel comment;
 
   @override
   Widget build(BuildContext context) {
-    const basePadding = 10.0;
-    final additional = comment.level == 0 ? 0 : comment.level + 6;
-    final paddingLeft = basePadding + additional;
     final bgColor = comment.isPostAuthor
         ? Colors.yellowAccent.withOpacity(.12)
         : Theme.of(context).colorScheme.surface;
 
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: bgColor,
-        borderRadius: const BorderRadius.only(
-          bottomRight: Radius.circular(kBorderRadiusDefault),
-          bottomLeft: Radius.circular(kBorderRadiusDefault),
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          /// Текст
-          Padding(
-            padding: EdgeInsets.only(left: paddingLeft, right: basePadding),
-            child: HtmlView(
-              textHtml: comment.message,
-              renderMode: RenderMode.column,
-              padding: EdgeInsets.zero,
-            ),
-          ),
-
-          /// Футер
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: basePadding,
-              vertical: basePadding,
-            ),
-            child: Row(
-              children: [
-                CommentRatingWidget(comment),
-                const Spacer(),
-                Text(
-                  DateFormat.yMd().add_jm().format(comment.publishedAt),
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        fontWeight: FontWeight.w600,
-                      ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
+    return ColoredBox(
+      color: bgColor,
+      child: CommentWidget(comment),
     );
   }
 }

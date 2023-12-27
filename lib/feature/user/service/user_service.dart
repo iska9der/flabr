@@ -2,6 +2,7 @@ import '../../../common/exception/displayable_exception.dart';
 import '../../../common/exception/fetch_exception.dart';
 import '../../../common/model/network/params.dart';
 import '../../../component/http/http_client.dart';
+import '../model/network/user_comment_list_response.dart';
 import '../model/network/user_list_response.dart';
 
 class UserService {
@@ -20,8 +21,11 @@ class UserService {
     required String page,
   }) async {
     try {
-      final params =
-          Params(langArticles: langArticles, langUI: langUI, page: page);
+      final params = Params(
+        langArticles: langArticles,
+        langUI: langUI,
+        page: page,
+      );
 
       final response = await _mobileClient.get(
         '/users?${params.toQueryString()}',
@@ -34,7 +38,7 @@ class UserService {
   }
 
   Future<Map<String, dynamic>> fetchCard({
-    required String login,
+    required String alias,
     required String langUI,
     required String langArticles,
   }) async {
@@ -42,7 +46,7 @@ class UserService {
       final params = Params(langArticles: langArticles, langUI: langUI);
 
       final response = await _mobileClient.get(
-        '/users/$login/card?${params.toQueryString()}',
+        '/users/$alias/card?${params.toQueryString()}',
       );
 
       return response.data;
@@ -52,7 +56,7 @@ class UserService {
   }
 
   Future<Map<String, dynamic>> fetchWhois({
-    required String login,
+    required String alias,
     required String langUI,
     required String langArticles,
   }) async {
@@ -60,7 +64,7 @@ class UserService {
       final params = Params(langArticles: langArticles, langUI: langUI);
 
       final response = await _mobileClient.get(
-        '/users/$login/whois?${params.toQueryString()}',
+        '/users/$alias/whois?${params.toQueryString()}',
       );
 
       return response.data;
@@ -75,6 +79,23 @@ class UserService {
         '/v2/users/$alias/following/toggle',
         body: {},
       );
+    } on DisplayableException {
+      rethrow;
+    } catch (e) {
+      throw FetchException();
+    }
+  }
+
+  Future<UserCommentListResponse> fetchComments({
+    required String alias,
+    required int page,
+  }) async {
+    try {
+      final response = await _siteClient.get(
+        '/v2/users/$alias/bookmarks/comments?fl=ru&hl=ru&page=$page',
+      );
+
+      return UserCommentListResponse.fromMap(response.data);
     } on DisplayableException {
       rethrow;
     } catch (e) {

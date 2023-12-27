@@ -1,15 +1,14 @@
 enum UserBookmarksType {
   articles,
   posts,
-  news;
-
-  /// TODO: реализовать получение комментов в закладках
-  /// comments;
+  news,
+  comments;
 
   String get label => switch (this) {
         UserBookmarksType.articles => 'Статьи',
         UserBookmarksType.posts => 'Посты',
         UserBookmarksType.news => 'Новости',
+        UserBookmarksType.comments => 'Комментарии',
       };
 
   factory UserBookmarksType.fromString(String value) {
