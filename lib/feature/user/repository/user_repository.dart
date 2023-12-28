@@ -64,15 +64,12 @@ class UserRepository {
     return model;
   }
 
-  Future<UserCommentListResponse> fetchComments({
+  Future<UserCommentListResponse> fetchCommentsInBookmarks({
     required String alias,
     int page = 1,
-  }) async {
-    final UserCommentListResponse response = await _service.fetchComments(
-      alias: alias,
-      page: page,
-    );
-
-    return response;
-  }
+  }) =>
+      _service.fetchCommentsInBookmarks(
+        alias: alias,
+        page: page,
+      );
 }

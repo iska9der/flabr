@@ -101,9 +101,10 @@ class UserBookmarkListView extends StatelessWidget {
                     BlocListener<ScrollCubit, ScrollState>(
                       listenWhen: (p, c) => c.isBottomEdge,
                       listener: (c, state) =>
-                          context.read<UserCommentListCubit>().fetch(),
+                          context.read<UserCommentListCubit>().fetchBookmarks(),
                       child: CommentSliverList(
-                        fetch: context.read<UserCommentListCubit>().fetch,
+                        fetch:
+                            context.read<UserCommentListCubit>().fetchBookmarks,
                       ),
                     ),
                   _ => BlocListener<ScrollCubit, ScrollState>(

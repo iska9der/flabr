@@ -86,7 +86,7 @@ class UserService {
     }
   }
 
-  Future<UserCommentListResponse> fetchComments({
+  Future<UserCommentListResponse> fetchCommentsInBookmarks({
     required String alias,
     required int page,
   }) async {
