@@ -6,8 +6,6 @@ class FlowPublicationListState extends Equatable
     this.status = PublicationListStatus.initial,
     this.error = '',
     this.flow = FlowEnum.all,
-    this.hub = '',
-    this.user = '',
     this.type = PublicationType.article,
     this.sort = SortEnum.byNew,
     this.period = DatePeriodEnum.daily,
@@ -22,8 +20,6 @@ class FlowPublicationListState extends Equatable
   @override
   final String error;
   final FlowEnum flow;
-  final String hub;
-  final String user;
   final PublicationType type;
   @override
   final SortEnum sort;
@@ -42,8 +38,6 @@ class FlowPublicationListState extends Equatable
     PublicationListStatus? status,
     String? error,
     FlowEnum? flow,
-    String? hub,
-    String? user,
     PublicationType? type,
     SortEnum? sort,
     DatePeriodEnum? period,
@@ -56,8 +50,6 @@ class FlowPublicationListState extends Equatable
       status: status ?? this.status,
       error: error ?? this.error,
       flow: flow ?? this.flow,
-      hub: hub ?? this.hub,
-      user: user ?? this.user,
       type: type ?? this.type,
       sort: sort ?? this.sort,
       period: period ?? this.period,
@@ -76,8 +68,6 @@ class FlowPublicationListState extends Equatable
         status,
         error,
         flow,
-        hub,
-        user,
         type,
         sort,
         period,

@@ -21,13 +21,9 @@ class FlowPublicationListCubit
     required super.repository,
     required super.languageRepository,
     FlowEnum flow = FlowEnum.all,
-    String hub = '',
-    String user = '',
     PublicationType type = PublicationType.article,
   }) : super(FlowPublicationListState(
           flow: flow,
-          hub: hub,
-          user: user,
           type: type,
         ));
 
@@ -36,8 +32,6 @@ class FlowPublicationListCubit
 
     emit(FlowPublicationListState(
       flow: value,
-      hub: state.hub,
-      user: state.user,
       type: state.type,
     ));
   }
@@ -48,8 +42,6 @@ class FlowPublicationListCubit
 
     emit(FlowPublicationListState(
       flow: state.flow,
-      hub: state.hub,
-      user: state.user,
       type: state.type,
       sort: sort,
     ));
@@ -71,8 +63,6 @@ class FlowPublicationListCubit
 
     emit(newState.copyWith(
       flow: state.flow,
-      hub: state.hub,
-      user: state.user,
       type: state.type,
       sort: sort,
     ));
