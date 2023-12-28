@@ -98,8 +98,31 @@ class UserService {
       return UserCommentListResponse.fromMap(response.data);
     } on DisplayableException {
       rethrow;
-    } catch (e) {
-      throw FetchException();
+    } catch (e, trace) {
+      Error.throwWithStackTrace(
+        FetchException('Не удалось получить комментарии в закладках'),
+        trace,
+      );
+    }
+  }
+
+  Future<UserCommentListResponse> fetchComments({
+    required String alias,
+    required int page,
+  }) async {
+    try {
+      final response = await _siteClient.get(
+        '/v2/users/$alias/comments?fl=ru&hl=ru&page=$page',
+      );
+
+      return UserCommentListResponse.fromMap(response.data);
+    } on DisplayableException {
+      rethrow;
+    } catch (e, trace) {
+      Error.throwWithStackTrace(
+        FetchException('Не удалось получить комментарии пользователя'),
+        trace,
+      );
     }
   }
 }

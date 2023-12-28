@@ -8,6 +8,7 @@ import '../../../common/widget/enhancement/card.dart';
 import '../../../common/widget/enhancement/progress_indicator.dart';
 import '../../../common/widget/feed/card_avatar_widget.dart';
 import '../../user/page/user_bookmark_list_page.dart';
+import '../../user/page/user_comment_list_page.dart';
 import '../../user/page/user_publication_list_page.dart';
 import '../cubit/auth_cubit.dart';
 
@@ -57,6 +58,16 @@ class DialogUserProfileWidget extends StatelessWidget
               onTap: () {
                 context.navigateNamedTo(
                   'services/users/${user.alias}/${UserBookmarkListPage.routePath}',
+                );
+
+                Navigator.of(context).pop();
+              },
+            ),
+            ListTile(
+              title: const Text('Комментарии'),
+              onTap: () {
+                context.navigateNamedTo(
+                  'services/users/${user.alias}/${UserCommentListPage.routePath}',
                 );
 
                 Navigator.of(context).pop();

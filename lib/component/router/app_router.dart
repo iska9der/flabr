@@ -19,6 +19,7 @@ import '../../feature/publication/page/post/post_detail_page.dart';
 import '../../feature/publication/page/post/post_list_page.dart';
 import '../../feature/publication/page/publication_dashboard_page.dart';
 import '../../feature/user/page/user_bookmark_list_page.dart';
+import '../../feature/user/page/user_comment_list_page.dart';
 import '../../feature/user/page/user_dashboard_page.dart';
 import '../../feature/user/page/user_detail_page.dart';
 import '../../feature/user/page/user_list_page.dart';
@@ -56,7 +57,7 @@ class AppRouter extends _$AppRouter {
         ServicesRouter(
           children: [
             UserDashboardRoute(
-              login: id,
+              alias: id,
               children: const [UserDetailRoute()],
             )
           ],
@@ -98,6 +99,7 @@ class AppRouter extends _$AppRouter {
     if (_isHostCompatible(uri) && uri.path.contains('users/')) {
       return true;
     }
+
     if (uri.host.isEmpty && uri.path.contains('/users/')) {
       return true;
     }
@@ -114,12 +116,13 @@ class AppRouter extends _$AppRouter {
       page: DashboardRoute.page,
       path: '/',
       children: [
+        /// Таб "Публикации"
         AutoRoute(
           initial: true,
           path: PublicationDashboardPage.routePath,
           page: PublicationsDashboardRoute.page,
           children: [
-            /// Таб "статьи"
+            /// Таб "Статьи"
             AutoRoute(
               path: ArticlesRouterData.routePath,
               page: ArticlesRouter.page,
@@ -140,7 +143,7 @@ class AppRouter extends _$AppRouter {
               ],
             ),
 
-            /// Таб "посты"
+            /// Таб "Посты"
             AutoRoute(
               path: PostsRouterData.routePath,
               page: PostsRouter.page,
@@ -161,7 +164,7 @@ class AppRouter extends _$AppRouter {
               ],
             ),
 
-            /// Таб "новости"
+            /// Таб "Новости"
             AutoRoute(
               path: NewsRouterData.routePath,
               page: NewsRouter.page,
@@ -184,7 +187,7 @@ class AppRouter extends _$AppRouter {
           ],
         ),
 
-        /// Таб "сервисы"
+        /// Таб "Сервисы"
         AutoRoute(
           path: ServicesRouterData.routePath,
           page: ServicesRouter.page,
@@ -227,6 +230,10 @@ class AppRouter extends _$AppRouter {
                 AutoRoute(
                   path: UserPublicationListPage.routePath,
                   page: UserPublicationListRoute.page,
+                ),
+                AutoRoute(
+                  path: UserCommentListPage.routePath,
+                  page: UserCommentListRoute.page,
                 ),
                 AutoRoute(
                   path: UserBookmarkListPage.routePath,
@@ -281,11 +288,13 @@ List<RedirectRoute> _newsRedirects() {
       redirectTo: 'news/flows/:flow',
     ),
 
-    /// Новости и комментарии к ним
+    /// Новости
     RedirectRoute(
       path: '*/*/news/',
       redirectTo: 'news',
     ),
+
+    /// Полная версия и комментарии
     RedirectRoute(
       path: '*/*/news/:id',
       redirectTo: 'news/details/:id',
@@ -344,12 +353,13 @@ List<RedirectRoute> _articlesRedirects() {
       redirectTo: 'articles/flows/:flow',
     ),
 
+    /// Статьи
     RedirectRoute(
       path: '*/*/articles/',
       redirectTo: 'articles',
     ),
 
-    /// Статьи и комментарии
+    /// Полная версия и комментарии
     ...internalRedirectList,
   ];
 }
@@ -377,18 +387,19 @@ List<RedirectRoute> _postsRedirects() {
   }
 
   return [
-    /// Флоу в статьях
+    /// Флоу в постах
     RedirectRoute(
       path: '*/*/flows/:flow/posts',
       redirectTo: 'posts/flows/:flow',
     ),
 
+    /// Посты
     RedirectRoute(
       path: '*/*/posts/',
       redirectTo: 'posts',
     ),
 
-    /// Статьи и комментарии
+    /// Полная версия и комментарии
     ...internalRedirectList,
   ];
 }
@@ -398,6 +409,7 @@ List<RedirectRoute> _usersRedirects() {
   const basePath = 'services/$userList';
   const details = UserDetailPage.routePath;
   const publications = UserPublicationListPage.routePath;
+  const comments = UserCommentListPage.routePath;
   const bookmarks = UserBookmarkListPage.routePath;
 
   return [
@@ -421,11 +433,19 @@ List<RedirectRoute> _usersRedirects() {
       path: '*/*/users/:login/publications/:type',
       redirectTo: '$basePath/:login/$publications/:type',
     ),
-
-    /// Старый роут публикаций
     RedirectRoute(
-      path: '*/*/users/:login/posts',
+      path: '*/*/users/:login/posts', // Старый роут публикаций
       redirectTo: '$basePath/:login/$publications',
+    ),
+
+    /// Комментарии пользователя
+    RedirectRoute(
+      path: '*/*/users/:login/comments',
+      redirectTo: '$basePath/:login/$comments',
+    ),
+    RedirectRoute(
+      path: '*/*/users/:login/comments/*',
+      redirectTo: '$basePath/:login/$comments',
     ),
 
     /// Закладки пользователя
@@ -437,17 +457,15 @@ List<RedirectRoute> _usersRedirects() {
       path: '*/*/users/:login/bookmarks/:type',
       redirectTo: '$basePath/:login/$bookmarks/:type',
     ),
-
-    /// Старый роут закладок
     RedirectRoute(
-      path: '*/*/users/:login/favorites',
+      path: '*/*/users/:login/favorites', // Старый роут закладок
       redirectTo: '$basePath/:login/$bookmarks',
     ),
 
     /// Остальные редиректы для пользователей
     /// TODO: временный редирект на детали пользователя,
     /// пока не реализованы вложенные разделы
-    /// (комментарии, подписчики, подписки)
+    /// (подписчики, подписки)
     RedirectRoute(
       path: '*/*/users/:login/*',
       redirectTo: '$basePath/:login/$details',

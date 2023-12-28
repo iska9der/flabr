@@ -18,7 +18,35 @@ class UserCommentListCubit extends Cubit<UserCommentListState> {
   bool get isFirstFetch => state.page == 1;
   bool get isLastPage => state.page >= state.pages;
 
-  void fetchBookmarks() async {
+  Future<void> fetch() async {
+    if (state.status == CommentListStatus.loading ||
+        !isFirstFetch && isLastPage) {
+      return;
+    }
+
+    emit(state.copyWith(status: CommentListStatus.loading));
+
+    try {
+      final response = await _repository.fetchComments(
+        alias: state.user,
+        page: state.page,
+      );
+
+      emit(state.copyWith(
+        status: CommentListStatus.success,
+        comments: [...state.comments, ...response.refs],
+        page: state.page + 1,
+        pages: response.pagesCount,
+      ));
+    } catch (e) {
+      emit(state.copyWith(
+        status: CommentListStatus.failure,
+        error: e.toString(),
+      ));
+    }
+  }
+
+  Future<void> fetchBookmarks() async {
     if (state.status == CommentListStatus.loading ||
         !isFirstFetch && isLastPage) {
       return;
@@ -34,7 +62,7 @@ class UserCommentListCubit extends Cubit<UserCommentListState> {
 
       emit(state.copyWith(
         status: CommentListStatus.success,
-        comments: response.refs,
+        comments: [...state.comments, ...response.refs],
         page: state.page + 1,
         pages: response.pagesCount,
       ));

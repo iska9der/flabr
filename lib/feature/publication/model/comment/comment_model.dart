@@ -7,6 +7,7 @@ import '../publication_author_model.dart';
 class CommentModel extends Equatable {
   const CommentModel({
     required this.id,
+    this.parentId = '',
     this.author = PublicationAuthorModel.empty,
     this.isPostAuthor = false,
     this.isAuthor = false,
@@ -23,12 +24,12 @@ class CommentModel extends Equatable {
     this.score = 0,
     this.votesCount = 0,
     this.level = 0,
-    this.parentId = '',
     this.childrenRaw = const [],
     this.children = const [],
   });
 
   final String id;
+  final String parentId;
   final PublicationAuthorModel author;
 
   final bool isPostAuthor;
@@ -51,12 +52,12 @@ class CommentModel extends Equatable {
   final int votesCount;
 
   final int level;
-  final String parentId;
   final List<String> childrenRaw;
   final List<CommentModel> children;
 
   CommentModel copyWith({
     String? id,
+    String? parentId,
     PublicationAuthorModel? author,
     bool? isPostAuthor,
     bool? isFavorite,
@@ -73,12 +74,12 @@ class CommentModel extends Equatable {
     int? score,
     int? votesCount,
     int? level,
-    String? parentId,
     List<String>? childrenRaw,
     List<CommentModel>? children,
   }) {
     return CommentModel(
       id: id ?? this.id,
+      parentId: parentId ?? this.parentId,
       author: author ?? this.author,
       isPostAuthor: isPostAuthor ?? this.isPostAuthor,
       isFavorite: isFavorite ?? this.isFavorite,
@@ -95,7 +96,6 @@ class CommentModel extends Equatable {
       score: score ?? this.score,
       votesCount: votesCount ?? this.votesCount,
       level: level ?? this.level,
-      parentId: parentId ?? this.parentId,
       childrenRaw: childrenRaw ?? this.childrenRaw,
       children: children ?? this.children,
     );
@@ -104,6 +104,7 @@ class CommentModel extends Equatable {
   factory CommentModel.fromMap(Map<String, dynamic> map) {
     return CommentModel(
       id: map['id'],
+      parentId: map['parentId'] ?? '',
       author: map['author'] != null && map['author'].isNotEmpty
           ? PublicationAuthorModel.fromMap(map['author'])
           : PublicationAuthorModel.empty,
@@ -122,7 +123,6 @@ class CommentModel extends Equatable {
       score: map['score'],
       votesCount: map['votesCount'],
       level: map['level'],
-      parentId: map['parentId'] ?? '',
       childrenRaw: map['children'] != null
           ? List<String>.from(map['children'])
           : const [],
@@ -132,6 +132,7 @@ class CommentModel extends Equatable {
   @override
   List<Object?> get props => [
         id,
+        parentId,
         author,
         isPostAuthor,
         isAuthor,
@@ -148,7 +149,6 @@ class CommentModel extends Equatable {
         score,
         votesCount,
         level,
-        parentId,
         childrenRaw,
         children,
       ];

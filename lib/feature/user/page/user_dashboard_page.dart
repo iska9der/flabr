@@ -11,6 +11,7 @@ import '../../settings/repository/language_repository.dart';
 import '../cubit/user_cubit.dart';
 import '../repository/user_repository.dart';
 import 'user_bookmark_list_page.dart';
+import 'user_comment_list_page.dart';
 import 'user_detail_page.dart';
 import 'user_publication_list_page.dart';
 
@@ -18,12 +19,12 @@ import 'user_publication_list_page.dart';
 class UserDashboardPage extends StatelessWidget {
   const UserDashboardPage({
     super.key,
-    @PathParam() required this.login,
+    @PathParam() required this.alias,
   });
 
-  final String login;
+  final String alias;
 
-  static const String routePath = 'users/:login';
+  static const String routePath = 'users/:alias';
   static const String routeName = 'UserDashboardRoute';
 
   @override
@@ -31,10 +32,10 @@ class UserDashboardPage extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          key: ValueKey('user-$login-dashboard'),
+          key: ValueKey('user-$alias-dashboard'),
           lazy: false,
           create: (_) => UserCubit(
-            login,
+            alias,
             repository: getIt.get<UserRepository>(),
             languageRepository: getIt.get<LanguageRepository>(),
           ),
@@ -59,6 +60,7 @@ class UserDashboardView extends StatelessWidget {
       routes: [
         const UserDetailRoute(),
         UserPublicationListRoute(),
+        UserCommentListRoute(),
         UserBookmarkListRoute(),
       ],
       builder: (context, child, controller) {
@@ -82,6 +84,10 @@ class UserDashboardView extends StatelessWidget {
                     DashboardDrawerLinkWidget(
                       title: UserPublicationListPage.title,
                       route: UserPublicationListPage.routePath,
+                    ),
+                    DashboardDrawerLinkWidget(
+                      title: UserCommentListPage.title,
+                      route: UserCommentListPage.routePath,
                     ),
                     DashboardDrawerLinkWidget(
                       title: UserBookmarkListPage.title,

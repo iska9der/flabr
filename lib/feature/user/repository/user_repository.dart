@@ -64,6 +64,22 @@ class UserRepository {
     return model;
   }
 
+  Future<UserCommentListResponse> fetchComments({
+    required String alias,
+    required int page,
+  }) async {
+    final response = await _service.fetchComments(
+      alias: alias,
+      page: page,
+    );
+
+    response.refs.sort(
+      (a, b) => b.timePublished.compareTo(a.timePublished),
+    );
+
+    return response;
+  }
+
   Future<UserCommentListResponse> fetchCommentsInBookmarks({
     required String alias,
     int page = 1,

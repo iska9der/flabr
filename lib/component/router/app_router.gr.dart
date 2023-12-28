@@ -239,16 +239,28 @@ abstract class _$AppRouter extends RootStackRouter {
         ),
       );
     },
+    UserCommentListRoute.name: (routeData) {
+      final pathParams = routeData.inheritedPathParams;
+      final args = routeData.argsAs<UserCommentListRouteArgs>(
+          orElse: () => UserCommentListRouteArgs());
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: UserCommentListPage(
+          key: args.key,
+          alias: pathParams.getString('alias'),
+        ),
+      );
+    },
     UserDashboardRoute.name: (routeData) {
       final pathParams = routeData.inheritedPathParams;
       final args = routeData.argsAs<UserDashboardRouteArgs>(
           orElse: () =>
-              UserDashboardRouteArgs(login: pathParams.getString('login')));
+              UserDashboardRouteArgs(alias: pathParams.getString('alias')));
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: UserDashboardPage(
           key: args.key,
-          login: args.login,
+          alias: args.alias,
         ),
       );
     },
@@ -920,19 +932,48 @@ class UserBookmarkListRouteArgs {
 }
 
 /// generated route for
+/// [UserCommentListPage]
+class UserCommentListRoute extends PageRouteInfo<UserCommentListRouteArgs> {
+  UserCommentListRoute({
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
+          UserCommentListRoute.name,
+          args: UserCommentListRouteArgs(key: key),
+          initialChildren: children,
+        );
+
+  static const String name = 'UserCommentListRoute';
+
+  static const PageInfo<UserCommentListRouteArgs> page =
+      PageInfo<UserCommentListRouteArgs>(name);
+}
+
+class UserCommentListRouteArgs {
+  const UserCommentListRouteArgs({this.key});
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'UserCommentListRouteArgs{key: $key}';
+  }
+}
+
+/// generated route for
 /// [UserDashboardPage]
 class UserDashboardRoute extends PageRouteInfo<UserDashboardRouteArgs> {
   UserDashboardRoute({
     Key? key,
-    required String login,
+    required String alias,
     List<PageRouteInfo>? children,
   }) : super(
           UserDashboardRoute.name,
           args: UserDashboardRouteArgs(
             key: key,
-            login: login,
+            alias: alias,
           ),
-          rawPathParams: {'login': login},
+          rawPathParams: {'alias': alias},
           initialChildren: children,
         );
 
@@ -945,16 +986,16 @@ class UserDashboardRoute extends PageRouteInfo<UserDashboardRouteArgs> {
 class UserDashboardRouteArgs {
   const UserDashboardRouteArgs({
     this.key,
-    required this.login,
+    required this.alias,
   });
 
   final Key? key;
 
-  final String login;
+  final String alias;
 
   @override
   String toString() {
-    return 'UserDashboardRouteArgs{key: $key, login: $login}';
+    return 'UserDashboardRouteArgs{key: $key, alias: $alias}';
   }
 }
 
