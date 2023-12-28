@@ -37,41 +37,45 @@ part 'app_router.gr.dart';
 // extend the generated private router
 class AppRouter extends _$AppRouter {
   /// Открыть внешнюю ссылку
-  Future launchUrl(String url) async {
-    return await launchUrlString(
-      url,
-      mode: LaunchMode.externalApplication,
-    );
-  }
+  Future launchUrl(String url) => launchUrlString(
+        url,
+        mode: LaunchMode.externalApplication,
+      );
 
   /// Открыть ссылку в приложении, либо в браузере
   Future navigateOrLaunchUrl(Uri uri) async {
-    String id = parseId(uri);
+    final id = parseId(uri);
 
-    if (isArticleUrl(uri)) {
-      return await pushWidget(ArticleDetailPage(id: id));
-    }
+    if (id != null) {
+      if (isArticleUrl(uri)) {
+        return await pushWidget(ArticleDetailPage(id: id));
+      }
 
-    if (isUserUrl(uri)) {
-      return await navigate(
-        ServicesRouter(
-          children: [
-            UserDashboardRoute(
-              alias: id,
-              children: const [UserDetailRoute()],
-            )
-          ],
-        ),
-      );
+      if (isUserUrl(uri)) {
+        return await navigate(
+          ServicesRouter(
+            children: [
+              UserDashboardRoute(
+                alias: id,
+                children: const [UserDetailRoute()],
+              )
+            ],
+          ),
+        );
+      }
     }
 
     return await launchUrl(uri.toString());
   }
 
-  String parseId(Uri url) {
+  String? parseId(Uri url) {
     Iterable<String> parts = url.pathSegments.where(
       (element) => element.isNotEmpty,
     );
+
+    if (parts.isEmpty) {
+      return null;
+    }
 
     return parts.last;
   }
