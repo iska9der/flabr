@@ -161,6 +161,10 @@ class CustomFactory extends WidgetFactory with SvgFactory, WebViewFactory {
   @override
   bool get webViewMediaPlaybackAlwaysAllow => true;
 
+  List<String> iframeBanList = [
+    'video.yandex.ru/iframe',
+  ];
+
   @override
   Widget? buildImageWidget(BuildTree meta, ImageSource src) {
     Widget? widget = super.buildImageWidget(meta, src);
@@ -192,9 +196,12 @@ class CustomFactory extends WidgetFactory with SvgFactory, WebViewFactory {
           final op = BuildOp(
             onRenderBlock: (meta, widgets) {
               String src = attributes['data-src'] ?? attributes['src'] ?? '';
+              final isBanned = iframeBanList.any(
+                (element) => src.contains(element),
+              );
               final attrs = meta.element.attributes;
               final sandboxAttrs = attrs['sanbox'] ?? attrs['sandbox'];
-              final widget = isWebViewEnabled
+              final widget = isWebViewEnabled && !isBanned
                   ? buildWebView(
                       meta,
                       src,
