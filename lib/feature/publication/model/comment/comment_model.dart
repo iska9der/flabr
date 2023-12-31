@@ -7,7 +7,6 @@ import '../publication_author_model.dart';
 class CommentModel extends Equatable {
   const CommentModel({
     required this.id,
-    this.parentId = '',
     this.author = PublicationAuthorModel.empty,
     this.isPostAuthor = false,
     this.isAuthor = false,
@@ -24,12 +23,15 @@ class CommentModel extends Equatable {
     this.score = 0,
     this.votesCount = 0,
     this.level = 0,
+    this.parentId = '',
+    this.parent,
     this.childrenRaw = const [],
     this.children = const [],
   });
 
   final String id;
   final String parentId;
+  final CommentModel? parent;
   final PublicationAuthorModel author;
 
   final bool isPostAuthor;
@@ -57,7 +59,6 @@ class CommentModel extends Equatable {
 
   CommentModel copyWith({
     String? id,
-    String? parentId,
     PublicationAuthorModel? author,
     bool? isPostAuthor,
     bool? isFavorite,
@@ -74,12 +75,13 @@ class CommentModel extends Equatable {
     int? score,
     int? votesCount,
     int? level,
+    String? parentId,
+    CommentModel? parent,
     List<String>? childrenRaw,
     List<CommentModel>? children,
   }) {
     return CommentModel(
       id: id ?? this.id,
-      parentId: parentId ?? this.parentId,
       author: author ?? this.author,
       isPostAuthor: isPostAuthor ?? this.isPostAuthor,
       isFavorite: isFavorite ?? this.isFavorite,
@@ -96,6 +98,8 @@ class CommentModel extends Equatable {
       score: score ?? this.score,
       votesCount: votesCount ?? this.votesCount,
       level: level ?? this.level,
+      parentId: parentId ?? this.parentId,
+      parent: parent ?? this.parent,
       childrenRaw: childrenRaw ?? this.childrenRaw,
       children: children ?? this.children,
     );
@@ -132,7 +136,6 @@ class CommentModel extends Equatable {
   @override
   List<Object?> get props => [
         id,
-        parentId,
         author,
         isPostAuthor,
         isAuthor,
@@ -149,6 +152,8 @@ class CommentModel extends Equatable {
         score,
         votesCount,
         level,
+        parentId,
+        parent,
         childrenRaw,
         children,
       ];

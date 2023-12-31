@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../component/di/dependencies.dart';
 import '../../../settings/repository/language_repository.dart';
-import '../../cubit/comment/comment_hidden_cubit.dart';
 import '../../cubit/comment/comment_list_cubit.dart';
 import '../../model/source/publication_source.dart';
 import '../../repository/publication_repository.dart';
@@ -33,7 +32,6 @@ class NewsCommentListPage extends StatelessWidget {
             languageRepository: getIt.get<LanguageRepository>(),
           ),
         ),
-        BlocProvider(create: (_) => CommentHiddenCubit()),
       ],
       child: const CommentListView(),
     );

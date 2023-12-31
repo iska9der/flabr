@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
+import 'package:html/parser.dart';
 import 'package:intl/intl.dart';
 
+import '../../config/constants.dart';
 import '../../feature/publication/model/comment/comment_model.dart';
 import '../../feature/publication/widget/comment/comment_rating_widget.dart';
 import 'html_view_widget.dart';
@@ -20,6 +22,8 @@ class CommentWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
+        if (comment.parent != null) ParentComment(parent: comment.parent!),
+
         /// Текст
         Padding(
           padding: EdgeInsets.only(left: paddingLeft, right: basePadding),
@@ -32,10 +36,7 @@ class CommentWidget extends StatelessWidget {
 
         /// Футер
         Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: basePadding,
-            vertical: basePadding,
-          ),
+          padding: const EdgeInsets.all(basePadding),
           child: Row(
             children: [
               CommentRatingWidget(comment),
@@ -50,6 +51,39 @@ class CommentWidget extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+class ParentComment extends StatelessWidget {
+  const ParentComment({super.key, required this.parent});
+
+  final CommentModel parent;
+
+  @override
+  Widget build(BuildContext context) {
+    final text = parse(parent.message).documentElement?.text ?? '';
+
+    if (text.isEmpty) {
+      return const SizedBox();
+    }
+
+    return Padding(
+      padding: const EdgeInsets.all(10),
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(kBorderRadiusDefault),
+          color: Theme.of(context).colorScheme.onInverseSurface,
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(8),
+          child: Text(
+            text,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+      ),
     );
   }
 }

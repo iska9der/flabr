@@ -94,7 +94,8 @@ CommentModel _recursive(
 
   for (var child in childs) {
     /// ищем внуков... вдруг и дети уже паханы?
-    var newChild = _recursive(comments, child);
+    CommentModel newChild = _recursive(comments, child);
+    newChild = newChild.copyWith(parent: parent);
 
     newChilds.add(newChild);
   }

@@ -36,6 +36,8 @@ dependencies:
   webview_cookie_manager: ^2.0.6
   webview_flutter: ^4.4.2
   device_preview: ^1.1.0
+  flutter_fancy_tree_view: ^1.4.1
+  html: ^0.15.4
 
 dev_dependencies:
   flutter_test:

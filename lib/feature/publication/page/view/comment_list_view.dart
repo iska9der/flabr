@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_fancy_tree_view/flutter_fancy_tree_view.dart';
 
 import '../../../../common/model/extension/enum_status.dart';
 import '../../../../common/widget/author_widget.dart';
 import '../../../../common/widget/comment_widget.dart';
-import '../../../../common/widget/enhancement/app_expansion_panel.dart';
 import '../../../../common/widget/enhancement/progress_indicator.dart';
-import '../../cubit/comment/comment_hidden_cubit.dart';
+import '../../../../config/constants.dart';
 import '../../cubit/comment/comment_list_cubit.dart';
 import '../../model/comment/comment_model.dart';
-
-const _paddingBetweenTrees = 12.0;
-const _paddingBetweenChilds = 4.0;
 
 class CommentListView extends StatelessWidget {
   const CommentListView({super.key});
@@ -46,18 +43,7 @@ class CommentListView extends StatelessWidget {
                 );
               }
 
-              return ListView.separated(
-                itemCount: comments.length,
-                padding: const EdgeInsets.fromLTRB(4, 4, 4, 16),
-                separatorBuilder: (c, i) => const SizedBox(
-                  height: _paddingBetweenTrees,
-                ),
-                itemBuilder: (context, index) {
-                  final comment = comments[index];
-
-                  return CommentTreeWidget(comment);
-                },
-              );
+              return CommentTreeWidget(comments);
             },
           ),
         ),
@@ -67,83 +53,87 @@ class CommentListView extends StatelessWidget {
 }
 
 /// Рекурсивный виджет для отрисовки дерева комментариев
-class CommentTreeWidget extends StatelessWidget {
-  const CommentTreeWidget(this.comment, {super.key});
+class CommentTreeWidget extends StatefulWidget {
+  const CommentTreeWidget(this.comments, {super.key});
 
-  final CommentModel comment;
+  final List<CommentModel> comments;
 
   @override
-  Widget build(BuildContext context) {
-    final authorColor = comment.isPostAuthor
-        ? Colors.yellowAccent.withOpacity(.12)
-        : Theme.of(context).colorScheme.surface;
-
-    return BlocBuilder<CommentHiddenCubit, CommentHiddenState>(
-      builder: (context, state) {
-        return AppExpansionPanelList(
-          elevation: 0,
-          expansionCallback: (int index, bool isExpanded) {
-            context.read<CommentHiddenCubit>().setIsHidden(
-                  comment.id,
-                  isExpanded,
-                );
-          },
-          children: [
-            AppExpansionPanel(
-              isExpanded: !state.isHidden(comment.id),
-              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-              iconBuilder: (child, isExpanded) {
-                return ColoredBox(
-                  color: authorColor,
-                  child: child,
-                );
-              },
-              headerBuilder: (context, isExpanded) {
-                return ColoredBox(
-                  color: authorColor,
-                  child: AuthorWidget(comment.author),
-                );
-              },
-              body: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  _CommentWidget(comment),
-                  ListView.builder(
-                    physics: const NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: comment.children.length,
-                    itemBuilder: (_, i) => Padding(
-                      padding:
-                          const EdgeInsets.only(top: _paddingBetweenChilds),
-                      child: CommentTreeWidget(comment.children[i]),
-                    ),
-                  )
-                ],
-              ),
-            ),
-          ],
-        );
-      },
-    );
-  }
+  State<CommentTreeWidget> createState() => _CommentTreeWidgetState();
 }
 
-class _CommentWidget extends StatelessWidget {
-  // ignore: unused_element
-  const _CommentWidget(this.comment, {super.key});
+class _CommentTreeWidgetState extends State<CommentTreeWidget> {
+  late final ScrollController scrollController;
+  late final CommentModel root;
+  late final TreeController<CommentModel> treeController;
 
-  final CommentModel comment;
+  @override
+  void initState() {
+    super.initState();
+
+    scrollController = ScrollController();
+    root = CommentModel(id: '0', children: widget.comments);
+    treeController = TreeController<CommentModel>(
+      roots: root.children,
+      childrenProvider: (CommentModel comment) => comment.children,
+    )..expandAll();
+  }
+
+  @override
+  void dispose() {
+    treeController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final bgColor = comment.isPostAuthor
-        ? Colors.yellowAccent.withOpacity(.12)
-        : Theme.of(context).colorScheme.surface;
+    return TreeView<CommentModel>(
+      treeController: treeController,
+      controller: scrollController,
+      padding: const EdgeInsets.fromLTRB(4, 4, 4, 16),
+      nodeBuilder: (BuildContext context, TreeEntry<CommentModel> entry) {
+        final authorColor = entry.node.isPostAuthor
+            ? Colors.yellowAccent.withOpacity(.12)
+            : Theme.of(context).colorScheme.surface;
 
-    return ColoredBox(
-      color: bgColor,
-      child: CommentWidget(comment),
+        double topPadding = entry.index == 0
+            ? 0
+            : entry.node.parentId.isNotEmpty
+                ? 2
+                : 8;
+
+        return Padding(
+          padding: EdgeInsets.only(top: topPadding),
+          child: TreeIndentation(
+            entry: entry,
+            guide: const IndentGuide(indent: 0),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(kBorderRadiusDefault),
+              child: ColoredBox(
+                color: authorColor,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Row(
+                      children: [
+                        AuthorWidget(entry.node.author),
+                        const Spacer(),
+                        ExpandIcon(
+                          key: GlobalObjectKey(entry.node),
+                          isExpanded: entry.isExpanded,
+                          onPressed: (_) =>
+                              treeController.toggleExpansion(entry.node),
+                        ),
+                      ],
+                    ),
+                    if (entry.isExpanded) CommentWidget(entry.node),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }
