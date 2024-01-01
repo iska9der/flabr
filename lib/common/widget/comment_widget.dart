@@ -9,9 +9,10 @@ import '../../feature/publication/widget/comment/comment_rating_widget.dart';
 import 'html_view_widget.dart';
 
 class CommentWidget extends StatelessWidget {
-  const CommentWidget(this.comment, {super.key});
+  const CommentWidget(this.comment, {super.key, this.onParentTap});
 
   final CommentModel comment;
+  final VoidCallback? onParentTap;
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +23,11 @@ class CommentWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        if (comment.parent != null) ParentComment(parent: comment.parent!),
+        if (comment.parent != null)
+          GestureDetector(
+            onTap: onParentTap,
+            child: ParentComment(parent: comment.parent!),
+          ),
 
         /// Текст
         Padding(

@@ -66,6 +66,7 @@ class _CommentTreeWidgetState extends State<CommentTreeWidget> {
   late final ScrollController scrollController;
   late final CommentModel root;
   late final TreeController<CommentModel> treeController;
+  final _parentKeys = <String, GlobalKey>{};
 
   @override
   void initState() {
@@ -81,8 +82,39 @@ class _CommentTreeWidgetState extends State<CommentTreeWidget> {
 
   @override
   void dispose() {
+    scrollController.dispose();
     treeController.dispose();
     super.dispose();
+  }
+
+  void _moveToParent(String id) async {
+    const curve = Curves.linear;
+
+    final key = _parentKeys[id];
+    if (key == null) {
+      return;
+    }
+
+    final context = key.currentContext;
+
+    /// если не найден контекст - значит необходимый элемент отлетел в мусорку,
+    /// поэтому мы скроллимся вверх пока он снова не создатся
+    if (context == null) {
+      final shift =
+          scrollController.offset < 400 ? scrollController.offset : 400;
+      await scrollController.animateTo(
+        scrollController.offset - shift,
+        duration: const Duration(milliseconds: 50),
+        curve: curve,
+      );
+      return _moveToParent(id);
+    }
+
+    Scrollable.ensureVisible(
+      context,
+      duration: const Duration(milliseconds: 300),
+      curve: curve,
+    );
   }
 
   @override
@@ -92,6 +124,11 @@ class _CommentTreeWidgetState extends State<CommentTreeWidget> {
       controller: scrollController,
       padding: const EdgeInsets.fromLTRB(4, 4, 4, 16),
       nodeBuilder: (BuildContext context, TreeEntry<CommentModel> entry) {
+        final key = entry.node.childrenRaw.isNotEmpty ? GlobalKey() : null;
+        if (key != null) {
+          _parentKeys[entry.node.id] = key;
+        }
+
         final authorColor = entry.node.isPostAuthor
             ? Colors.yellowAccent.withOpacity(.12)
             : Theme.of(context).colorScheme.surface;
@@ -103,6 +140,7 @@ class _CommentTreeWidgetState extends State<CommentTreeWidget> {
                 : 8;
 
         return Padding(
+          key: key,
           padding: EdgeInsets.only(top: topPadding),
           child: TreeIndentation(
             entry: entry,
@@ -126,7 +164,11 @@ class _CommentTreeWidgetState extends State<CommentTreeWidget> {
                         ),
                       ],
                     ),
-                    if (entry.isExpanded) CommentWidget(entry.node),
+                    if (entry.isExpanded)
+                      CommentWidget(
+                        entry.node,
+                        onParentTap: () => _moveToParent(entry.node.parentId),
+                      ),
                   ],
                 ),
               ),
