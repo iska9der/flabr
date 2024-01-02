@@ -20,11 +20,13 @@ class HtmlView extends StatelessWidget {
     required this.textHtml,
     this.renderMode = RenderMode.sliverList,
     this.padding = const EdgeInsets.only(left: 20, right: 20, bottom: 40),
+    this.textStyle,
   });
 
   final String textHtml;
   final RenderMode renderMode;
   final EdgeInsets padding;
+  final TextStyle? textStyle;
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +42,7 @@ class HtmlView extends StatelessWidget {
         return HtmlWidget(
           textHtml,
           renderMode: renderMode,
+          textStyle: textStyle,
           rebuildTriggers: [
             Theme.of(context).brightness,
             fontSize,
@@ -63,7 +66,7 @@ class HtmlView extends StatelessWidget {
           onErrorBuilder: (context, element, error) =>
               Text('$element error: $error'),
           onLoadingBuilder: (ctx, el, prgrs) => const CircleIndicator.medium(),
-          factoryBuilder: () => CustomFactory(context),
+          factoryBuilder: () => CustomFactory(context, textStyle: textStyle),
           customStylesBuilder: (element) {
             if (element.localName == 'div' && element.parent == null) {
               return {
@@ -152,9 +155,10 @@ class HtmlView extends StatelessWidget {
 }
 
 class CustomFactory extends WidgetFactory with SvgFactory, WebViewFactory {
-  CustomFactory(this.context);
+  CustomFactory(this.context, {this.textStyle});
 
   final BuildContext context;
+  final TextStyle? textStyle;
 
   @override
   bool get webView => true;
@@ -248,7 +252,10 @@ class CustomFactory extends WidgetFactory with SvgFactory, WebViewFactory {
         child: SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           padding: const EdgeInsets.all(12),
-          child: Text(text),
+          child: Text(
+            text,
+            style: textStyle,
+          ),
         ),
       ),
     );
