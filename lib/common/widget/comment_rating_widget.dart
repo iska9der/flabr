@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-import '../../../../common/model/stat_type.dart';
-import '../../../../common/widget/stat_text_widget.dart';
-import '../../model/comment/comment_model.dart';
+import '../model/comment.dart';
+import '../model/stat_type.dart';
+import 'stat_text_widget.dart';
 
 class CommentRatingWidget extends StatelessWidget {
   const CommentRatingWidget(this.comment, {super.key});
 
-  final CommentModel comment;
+  final CommentBase comment;
 
   @override
   Widget build(BuildContext context) {

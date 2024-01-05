@@ -1,12 +1,11 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-
 import 'package:equatable/equatable.dart';
 
-import '../../../../common/model/comment.dart';
-import '../publication_author_model.dart';
+import '../../../common/model/comment.dart';
+import '../../publication/model/publication_author_model.dart';
+import 'user_comment_publication_model.dart';
 
-class CommentModel extends CommentBase with EquatableMixin {
-  const CommentModel({
+class UserCommentModel extends CommentBase with EquatableMixin {
+  const UserCommentModel({
     required super.id,
     super.author = PublicationAuthorModel.empty,
     super.isPostAuthor = false,
@@ -25,20 +24,17 @@ class CommentModel extends CommentBase with EquatableMixin {
     super.votesCount = 0,
     super.level = 0,
     super.parentId = '',
-    this.parent,
     super.childrenRaw = const [],
-    this.children = const [],
+    this.publication = UserCommentPublication.empty,
   });
 
   @override
   PublicationAuthorModel get author => super.author as PublicationAuthorModel;
 
-  final CommentModel? parent;
-
-  final List<CommentModel> children;
+  final UserCommentPublication publication;
 
   @override
-  CommentModel copyWith({
+  UserCommentModel copyWith({
     String? id,
     PublicationAuthorModel? author,
     bool? isPostAuthor,
@@ -57,11 +53,10 @@ class CommentModel extends CommentBase with EquatableMixin {
     int? votesCount,
     int? level,
     String? parentId,
-    CommentModel? parent,
     List<String>? childrenRaw,
-    List<CommentModel>? children,
+    UserCommentPublication? publication,
   }) {
-    return CommentModel(
+    return UserCommentModel(
       id: id ?? this.id,
       author: author ?? this.author,
       isPostAuthor: isPostAuthor ?? this.isPostAuthor,
@@ -80,14 +75,13 @@ class CommentModel extends CommentBase with EquatableMixin {
       votesCount: votesCount ?? this.votesCount,
       level: level ?? this.level,
       parentId: parentId ?? this.parentId,
-      parent: parent ?? this.parent,
       childrenRaw: childrenRaw ?? this.childrenRaw,
-      children: children ?? this.children,
+      publication: publication ?? this.publication,
     );
   }
 
-  factory CommentModel.fromMap(Map<String, dynamic> map) {
-    return CommentModel(
+  factory UserCommentModel.fromMap(Map<String, dynamic> map) {
+    return UserCommentModel(
       id: map['id'],
       parentId: map['parentId'] ?? '',
       author: map['author'] != null && map['author'].isNotEmpty
@@ -111,6 +105,9 @@ class CommentModel extends CommentBase with EquatableMixin {
       childrenRaw: map['children'] != null
           ? List<String>.from(map['children'])
           : const [],
+      publication: map['publication'] != null
+          ? UserCommentPublication.fromMap(map['publication'])
+          : UserCommentPublication.empty,
     );
   }
 
@@ -135,8 +132,7 @@ class CommentModel extends CommentBase with EquatableMixin {
         votesCount,
         level,
         parentId,
-        parent,
         childrenRaw,
-        children,
+        publication,
       ];
 }

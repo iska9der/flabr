@@ -6,10 +6,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../common/utils/utils.dart';
 import '../../../common/widget/author_widget.dart';
 import '../../../common/widget/comment_widget.dart';
+import '../../../common/widget/enhancement/button.dart';
 import '../../../common/widget/enhancement/progress_indicator.dart';
 import '../../../component/di/dependencies.dart';
+import '../../../component/router/app_router.dart';
 import '../../../config/constants.dart';
 import '../../enhancement/scroll/cubit/scroll_cubit.dart';
+import '../../publication/page/article/article_detail_page.dart';
 import '../cubit/user_comment_list_cubit.dart';
 
 class CommentSliverList extends StatelessWidget {
@@ -71,19 +74,36 @@ class CommentSliverList extends StatelessWidget {
                 final model = comments[i];
 
                 return Padding(
-                  padding: const EdgeInsets.all(fCardMargin),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      ColoredBox(
-                        color: Theme.of(context).colorScheme.surface,
-                        child: AuthorWidget(model.author),
+                  padding: const EdgeInsets.fromLTRB(
+                    fCardMargin,
+                    fCardMargin,
+                    fCardMargin,
+                    12,
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(kBorderRadiusDefault),
+                    child: ColoredBox(
+                      color: Theme.of(context).colorScheme.surface,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          FlabrTextButton.rectangle(
+                            onPressed: () {
+                              getIt.get<AppRouter>().pushWidget(
+                                    ArticleDetailPage(id: model.publication.id),
+                                  );
+                            },
+                            child: Text(
+                              model.publication.title,
+                              style: Theme.of(context).textTheme.titleLarge,
+                            ),
+                          ),
+                          const Divider(thickness: 1),
+                          AuthorWidget(model.author),
+                          CommentWidget(model),
+                        ],
                       ),
-                      ColoredBox(
-                        color: Theme.of(context).colorScheme.surface,
-                        child: CommentWidget(model),
-                      ),
-                    ],
+                    ),
                   ),
                 );
               }

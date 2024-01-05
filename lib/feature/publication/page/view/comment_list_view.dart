@@ -10,6 +10,7 @@ import '../../../../common/widget/enhancement/progress_indicator.dart';
 import '../../../../config/constants.dart';
 import '../../cubit/comment/comment_list_cubit.dart';
 import '../../model/comment/comment_model.dart';
+import '../../widget/comment/comment_parent_widget.dart';
 
 class CommentListView extends StatelessWidget {
   const CommentListView({super.key});
@@ -183,18 +184,27 @@ class _CommentTreeWidgetState extends State<CommentTreeWidget> {
                             ],
                           ),
                           if (entry.isExpanded)
-                            CommentWidget(
-                              entry.node,
-                              onParentTap: () {
-                                /// добавляем в историю текущий оффсет скролла
-                                _history.push(
-                                  entry.node.id,
-                                  scrollController.offset,
-                                );
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                if (entry.node.parent != null)
+                                  GestureDetector(
+                                    onTap: () {
+                                      /// добавляем в историю текущий оффсет скролла
+                                      _history.push(
+                                        entry.node.id,
+                                        scrollController.offset,
+                                      );
 
-                                /// перемещаемся к родительскому комментарию
-                                _moveToParent(entry.node.parentId);
-                              },
+                                      /// перемещаемся к родительскому комментарию
+                                      _moveToParent(entry.node.parentId);
+                                    },
+                                    child: ParentComment(
+                                      parent: entry.node.parent!,
+                                    ),
+                                  ),
+                                CommentWidget(entry.node),
+                              ],
                             ),
                         ],
                       ),

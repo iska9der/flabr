@@ -18,7 +18,7 @@ class UserCommentListState extends Equatable {
   final String user;
   final int page;
   final int pages;
-  final List<CommentModel> comments;
+  final List<UserCommentModel> comments;
 
   UserCommentListState copyWith({
     CommentListStatus? status,
@@ -26,7 +26,7 @@ class UserCommentListState extends Equatable {
     String? user,
     int? page,
     int? pages,
-    List<CommentModel>? comments,
+    List<UserCommentModel>? comments,
   }) {
     return UserCommentListState(
       status: status ?? this.status,
