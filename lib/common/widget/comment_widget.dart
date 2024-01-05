@@ -105,7 +105,10 @@ class ParentComment extends StatelessWidget {
                     Icons.remove_red_eye_sharp,
                     size: 16,
                   ),
-                  onPressed: () => Navigator.of(context).push(
+                  onPressed: () => Navigator.of(
+                    context,
+                    rootNavigator: true,
+                  ).push(
                     PageRouteBuilder(
                       opaque: false,
                       barrierDismissible: true,
