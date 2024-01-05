@@ -1,11 +1,9 @@
-import 'dart:async';
-
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_fancy_tree_view/flutter_fancy_tree_view.dart';
 
 import '../../../../common/model/extension/enum_status.dart';
+import '../../../../common/utils/offset_history.dart';
 import '../../../../common/widget/author_widget.dart';
 import '../../../../common/widget/comment_widget.dart';
 import '../../../../common/widget/enhancement/progress_indicator.dart';
@@ -71,7 +69,7 @@ class _CommentTreeWidgetState extends State<CommentTreeWidget> {
   late final TreeController<CommentModel> treeController;
 
   final _parentKeys = <String, GlobalKey>{};
-  final _history = _OffsetHistory();
+  final _history = OffsetHistory();
 
   final scrollDuration = const Duration(milliseconds: 300);
   final scrollCurve = Curves.linear;
@@ -217,18 +215,18 @@ class _CommentTreeWidgetState extends State<CommentTreeWidget> {
                       return const SizedBox();
                     }
 
-                    final data = snapshot.data!;
+                    final history = snapshot.data!;
 
                     return IgnorePointer(
-                      ignoring: data.isEmpty,
+                      ignoring: history.isEmpty,
                       child: AnimatedOpacity(
-                        opacity: data.isEmpty ? 0 : 1,
+                        opacity: history.isEmpty ? 0 : 1,
                         duration: const Duration(milliseconds: 200),
                         child: FloatingActionButton(
                           heroTag: null,
                           mini: true,
                           onPressed: () => scrollController.animateTo(
-                            data.pop(),
+                            history.pop(),
                             duration: scrollDuration,
                             curve: scrollCurve,
                           ),
@@ -243,45 +241,4 @@ class _CommentTreeWidgetState extends State<CommentTreeWidget> {
       ),
     );
   }
-}
-
-class _OffsetHistory {
-  final Map<String, double> _data = {};
-
-  final _stream = StreamController<_OffsetHistory>();
-  Stream<_OffsetHistory> get stream => _stream.stream;
-  void close() => _stream.close();
-
-  void push(String id, double value) {
-    _data[id] = value;
-    _stream.add(this);
-  }
-
-  void remove(String id) {
-    _data.remove(id);
-    _stream.add(this);
-  }
-
-  double pop() {
-    final value = _data.remove(_data.keys.last);
-    if (value == null) {
-      throw Exception('Пусто');
-    }
-
-    _stream.add(this);
-    return value;
-  }
-
-  String? lessThan(double value) {
-    final entry = _data.entries.firstWhereOrNull(
-      (e) => value > e.value,
-    );
-    return entry?.key;
-  }
-
-  bool get isEmpty => _data.isEmpty;
-  bool get isNotEmpty => _data.isNotEmpty;
-
-  @override
-  String toString() => _data.toString();
 }
