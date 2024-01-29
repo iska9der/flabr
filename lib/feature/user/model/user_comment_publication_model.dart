@@ -16,8 +16,8 @@ class UserCommentPublication extends Equatable {
   factory UserCommentPublication.fromMap(Map<String, dynamic> map) {
     return UserCommentPublication(
       id: map['id'],
-      type: map.containsKey('postType')
-          ? PublicationType.fromString(map['postType'])
+      type: map.containsKey('publicationType')
+          ? PublicationType.fromString(map['publicationType'])
           : PublicationType.article,
       title: map['title'] ?? '',
     );

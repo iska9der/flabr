@@ -22,7 +22,7 @@ enum PublicationType {
   /// "lang": "ru",
   /// "titleHtml": "",
   /// "editorVersion": "1.0",
-  /// "postType": "voice",
+  /// "publicationType": "voice",
   /// "postLabels": [],
   /// "author": null,
   /// "statistics": null,

@@ -1,4 +1,4 @@
-part of 'articles_sort_widget.dart';
+part of 'publication_sort_widget.dart';
 
 class _SortOptionsWidget extends StatelessWidget {
   const _SortOptionsWidget({
@@ -16,19 +16,20 @@ class _SortOptionsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<SortOptionModel> options = currentSort == SortEnum.byBest
-        ? DatePeriodEnum.values
-            .map((period) => SortOptionModel(
-                  label: period.label,
-                  value: period,
-                ))
-            .toList()
-        : RatingScoreEnum.values
-            .map((score) => SortOptionModel(
-                  label: score.label,
-                  value: score.value,
-                ))
-            .toList();
+    final options = switch (currentSort) {
+      SortEnum.byNew => RatingScoreEnum.values
+          .map((score) => SortOptionModel(
+                label: score.label,
+                value: score.value,
+              ))
+          .toList(),
+      SortEnum.byBest => DatePeriodEnum.values
+          .map((period) => SortOptionModel(
+                label: period.label,
+                value: period,
+              ))
+          .toList(),
+    };
 
     return SizedBox(
       height: 40,

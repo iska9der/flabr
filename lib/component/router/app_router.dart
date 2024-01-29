@@ -11,6 +11,7 @@ import '../../feature/hub/page/hub_list_page.dart';
 import '../../feature/publication/page/article/article_comment_page.dart';
 import '../../feature/publication/page/article/article_detail_page.dart';
 import '../../feature/publication/page/article/article_list_page.dart';
+import '../../feature/publication/page/feed/feed_list_page.dart';
 import '../../feature/publication/page/news/news_comment_page.dart';
 import '../../feature/publication/page/news/news_detail_page.dart';
 import '../../feature/publication/page/news/news_list_page.dart';
@@ -126,6 +127,12 @@ class AppRouter extends _$AppRouter {
           path: PublicationDashboardPage.routePath,
           page: PublicationsDashboardRoute.page,
           children: [
+/// Таб "Моя лента"
+AutoRoute(
+                  path: FeedListPage.routePath,
+                  page: FeedListRoute.page,
+                ),
+
             /// Таб "Статьи"
             AutoRoute(
               path: ArticlesRouterData.routePath,

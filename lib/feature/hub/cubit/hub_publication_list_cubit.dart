@@ -15,7 +15,7 @@ import '../../publication/model/sort/sort_option_model.dart';
 part 'hub_publication_list_state.dart';
 
 class HubPublicationListCubit
-    extends SortablePublicationListCubit<HubPublicationListState> {
+    extends PublicationListCubit<HubPublicationListState> {
   HubPublicationListCubit({
     required super.repository,
     required super.languageRepository,
@@ -26,7 +26,6 @@ class HubPublicationListCubit
           type: type,
         ));
 
-  @override
   void changeSort(SortEnum sort) {
     if (state.sort == sort) return;
 
@@ -37,7 +36,6 @@ class HubPublicationListCubit
     ));
   }
 
-  @override
   void changeSortOption(SortEnum sort, SortOptionModel option) {
     HubPublicationListState newState;
     switch (sort) {

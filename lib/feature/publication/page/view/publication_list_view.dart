@@ -14,23 +14,21 @@ import '../../../auth/cubit/auth_cubit.dart';
 import '../../../enhancement/scroll/cubit/scroll_cubit.dart';
 import '../../../enhancement/scroll/widget/floating_scroll_to_top_button.dart';
 import '../../../settings/cubit/settings_cubit.dart';
-import '../../cubit/flow_publication_list_cubit.dart';
-import '../../model/flow_enum.dart';
-import '../../model/publication_type.dart';
-import '../../widget/appbar/publication_list_appbar.dart';
+import '../../cubit/publication_list_cubit.dart';
 import '../../widget/most_reading_widget.dart';
 
-class PublicationListView extends StatelessWidget {
+class PublicationListView<C extends PublicationListCubit<S>,
+    S extends PublicationListState> extends StatelessWidget {
   const PublicationListView({
     super.key,
-    required this.type,
+    this.appBar,
   });
 
-  final PublicationType type;
+  final Widget? appBar;
 
   @override
   Widget build(BuildContext context) {
-    final pubCubit = context.read<FlowPublicationListCubit>();
+    final pubCubit = context.read<C>();
     final scrollCubit = context.read<ScrollCubit>();
     final scrollController = scrollCubit.state.controller;
 
@@ -47,19 +45,10 @@ class PublicationListView extends StatelessWidget {
           },
         ),
 
-        /// Если пользователь вышел
-        ///
-        /// к тому же он находится в потоке "Моя лента", то отправляем его
-        /// на поток "Все", виджет сам стриггерит получение статей
-        ///
-        /// иначе переполучаем статьи напрямую
+        /// Если пользователь вышел, переполучаем статьи напрямую
         BlocListener<AuthCubit, AuthState>(
           listenWhen: (p, c) => p.status.isLoading && c.isUnauthorized,
           listener: (context, state) {
-            if (pubCubit.state.flow == FlowEnum.feed) {
-              return pubCubit.changeFlow(FlowEnum.all);
-            }
-
             pubCubit.refetch();
           },
         ),
@@ -88,7 +77,7 @@ class PublicationListView extends StatelessWidget {
               cacheExtent: 1000,
               controller: scrollController,
               slivers: [
-                PublicationListAppBar(type: type),
+                if (appBar != null) appBar!,
                 ResponsiveVisibilitySliver(
                   hiddenConditions: [
                     Condition.largerThan(name: ScreenType.mobile, value: false)
@@ -105,8 +94,7 @@ class PublicationListView extends StatelessWidget {
                 ),
                 SliverCrossAxisGroup(
                   slivers: [
-                    const PublicationSliverList<FlowPublicationListCubit,
-                        FlowPublicationListState>(),
+                    PublicationSliverList<C, S>(),
                     ResponsiveVisibilitySliver(
                       visible: false,
                       visibleConditions: [

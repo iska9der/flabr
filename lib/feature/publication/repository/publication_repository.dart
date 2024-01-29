@@ -84,6 +84,20 @@ class PublicationRepository {
     }
   }
 
+  Future<ListResponse> fetchFeed({
+    required LanguageEnum langUI,
+    required List<LanguageEnum> langArticles,
+    required String page,
+  }) async {
+    final response = await service.fetchFeed(
+      langUI: langUI.name,
+      langArticles: encodeLangs(langArticles),
+      page: page,
+    );
+
+    return response;
+  }
+
   /// Получение статей/новостей
   ///
   /// Сортировка полученных статей происходит как на сайте:

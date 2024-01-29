@@ -28,8 +28,8 @@ class PublicationCommon extends Publication {
   factory PublicationCommon.fromMap(Map<String, dynamic> map) {
     return PublicationCommon(
       id: map['id'],
-      type: map.containsKey('postType')
-          ? PublicationType.fromString(map['postType'])
+      type: map.containsKey('publicationType')
+          ? PublicationType.fromString(map['publicationType'])
           : PublicationType.article,
       timePublished: map['timePublished'],
       titleHtml: map['titleHtml'] ?? '',

@@ -10,6 +10,7 @@ import '../../cubit/flow_publication_list_cubit.dart';
 import '../../model/flow_enum.dart';
 import '../../model/publication_type.dart';
 import '../../repository/publication_repository.dart';
+import '../../widget/appbar/flow_list_appbar.dart';
 import '../view/publication_list_view.dart';
 
 @RoutePage(name: NewsListPage.routeName)
@@ -45,7 +46,10 @@ class NewsListPage extends StatelessWidget {
           create: (_) => ScaffoldCubit(),
         ),
       ],
-      child: const PublicationListView(type: PublicationType.news),
+      child: const PublicationListView<FlowPublicationListCubit,
+          FlowPublicationListState>(
+        appBar: FlowListAppBar(),
+      ),
     );
   }
 }

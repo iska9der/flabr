@@ -6,22 +6,14 @@ import '../../../../component/theme/responsive.dart';
 import '../../../auth/cubit/auth_cubit.dart';
 import '../../cubit/flow_publication_list_cubit.dart';
 import '../../model/flow_enum.dart';
-import '../../model/publication_type.dart';
 
 class FlowDropdownMenu extends StatelessWidget {
-  const FlowDropdownMenu({super.key, required this.type});
-
-  final PublicationType type;
+  const FlowDropdownMenu({super.key});
 
   List<DropdownMenuItem<FlowEnum>> setUpEntries(bool isAuthorized) {
     List<DropdownMenuItem<FlowEnum>> entries = [];
 
     for (final flow in FlowEnum.values) {
-      /// дергаем пункт "Моя лента"
-      if (flow == FlowEnum.feed && !isAuthorized) {
-        /// если мы не авторизованы, то не показываем этот пункт
-        continue;
-      }
       final entry = DropdownMenuItem(
         value: flow,
         child: Text(flow.label),

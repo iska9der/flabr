@@ -1,4 +1,4 @@
-part of 'articles_sort_widget.dart';
+part of 'publication_sort_widget.dart';
 
 class _SortByWidget extends StatelessWidget {
   const _SortByWidget({

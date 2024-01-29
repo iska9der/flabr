@@ -4,9 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../settings/repository/language_repository.dart';
 import '../model/publication/publication.dart';
-import '../model/sort/date_period_enum.dart';
-import '../model/sort/sort_enum.dart';
-import '../model/sort/sort_option_model.dart';
 import '../repository/publication_repository.dart';
 
 enum PublicationListStatus { initial, loading, success, failure }
@@ -58,26 +55,4 @@ abstract interface class PublicationListState {
   int get page;
   int get pagesCount;
   List<Publication> get publications;
-}
-
-/// Абстрактный класс для кубита списка публикаций
-/// с возможностью сортировки
-abstract class SortablePublicationListCubit<
-    S extends SortablePublicationListState> extends PublicationListCubit<S> {
-  SortablePublicationListCubit(
-    super.initialState, {
-    required super.repository,
-    required super.languageRepository,
-  });
-
-  void changeSort(SortEnum sort);
-  void changeSortOption(SortEnum sort, SortOptionModel option);
-}
-
-/// Интерфейс для стейта списка публикаций с возможностью сортировки
-abstract interface class SortablePublicationListState
-    implements PublicationListState {
-  SortEnum get sort;
-  DatePeriodEnum get period;
-  String get score;
 }

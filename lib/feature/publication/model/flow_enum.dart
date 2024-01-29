@@ -1,7 +1,6 @@
 import '../../../common/exception/value_exception.dart';
 
 enum FlowEnum {
-  feed,
   all,
   develop,
   admin,
@@ -22,7 +21,6 @@ enum FlowEnum {
 
 extension FlowX on FlowEnum {
   String get label => switch (this) {
-        FlowEnum.feed => 'Моя лента',
         FlowEnum.all => 'Все',
         FlowEnum.develop => 'Разработка',
         FlowEnum.admin => 'Администрирование',

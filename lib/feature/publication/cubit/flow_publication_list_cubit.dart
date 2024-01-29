@@ -16,7 +16,7 @@ import 'publication_list_cubit.dart';
 part 'flow_publication_list_state.dart';
 
 class FlowPublicationListCubit
-    extends SortablePublicationListCubit<FlowPublicationListState> {
+    extends PublicationListCubit<FlowPublicationListState> {
   FlowPublicationListCubit({
     required super.repository,
     required super.languageRepository,
@@ -36,7 +36,6 @@ class FlowPublicationListCubit
     ));
   }
 
-  @override
   void changeSort(SortEnum sort) {
     if (state.sort == sort) return;
 
@@ -47,7 +46,6 @@ class FlowPublicationListCubit
     ));
   }
 
-  @override
   void changeSortOption(SortEnum sort, SortOptionModel option) {
     FlowPublicationListState newState;
     switch (sort) {
