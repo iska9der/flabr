@@ -1,52 +1,53 @@
 name: flabr
 description: Habr mobile client on Flutter
-publish_to: 'none'
+publish_to: "none"
 version: 1.1.10+12
 
 environment:
-  sdk: '>=3.2.0 <4.0.0'
+  sdk: ">=3.2.0 <4.0.0"
 dependencies:
   flutter:
     sdk: flutter
   collection: any
   meta: any
-  
-  app_links: ^3.5.0
+
+  app_links: ^6.1.1
   auto_route: ^7.8.4
-  cached_network_image: ^3.3.0
-  cupertino_icons: ^1.0.6
-  dio: ^5.4.0
+  cached_network_image: ^3.3.1
+  cupertino_icons: ^1.0.8
+  dio: ^5.4.3+1
   equatable: ^2.0.5
-  flutter_bloc: ^8.1.3
+  flutter_bloc: ^8.1.5
   flutter_file_dialog: ^3.0.2
-  flutter_secure_storage: ^9.0.0
-  flutter_svg: ^2.0.9
-  flutter_widget_from_html_core: ^0.14.9
-  fwfh_svg: ^0.8.0+4
-  fwfh_webview: ^0.14.8
-  get_it: ^7.6.4
+  flutter_secure_storage: ^9.2.2
+  flutter_svg: ^2.0.10+1
+  flutter_widget_from_html_core: ^0.14.12
+  fwfh_svg: ^0.8.1
+  fwfh_webview: ^0.15.0
+  get_it: ^7.7.0
   html2md: ^1.3.1
   intl: ^0.18.1
-  path: ^1.8.3
-  path_provider: ^2.1.1
+  path: ^1.9.0
+  path_provider: ^2.1.3
   photo_view: ^0.14.0
-  responsive_framework: ^1.1.1
-  share_plus: ^7.2.1
-  url_launcher: ^6.2.2
+  responsive_framework: ^1.4.0
+  share_plus: ^9.0.0
+  url_launcher: ^6.2.6
   webview_cookie_manager: ^2.0.6
-  webview_flutter: ^4.4.2
+  webview_flutter: ^4.7.0
   device_preview: ^1.1.0
-  flutter_fancy_tree_view: ^1.4.1
+  flutter_fancy_tree_view: ^1.6.0
   html: ^0.15.4
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  analyzer: ^6.4.1
   auto_route_generator: ^7.3.2
-  build_runner: ^2.4.6
-  dart_code_metrics_presets: ^2.7.0
+  build_runner: ^2.4.9
+  dart_code_metrics_presets: ^2.12.0
   flutter_launcher_icons: ^0.13.1
-  flutter_lints: ^3.0.1
+  flutter_lints: ^4.0.0
 
 flutter:
   uses-material-design: true

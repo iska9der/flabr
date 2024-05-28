@@ -1,7 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:responsive_framework/responsive_value.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 
 import '../../../../common/model/extension/enum_status.dart';
 import '../../../../common/widget/enhancement/card.dart';
@@ -89,11 +89,11 @@ class PublicationListView extends StatelessWidget {
               controller: scrollController,
               slivers: [
                 PublicationListAppBar(type: type),
-                ResponsiveVisibilitySliver(
+                const ResponsiveVisibilitySliver(
                   hiddenConditions: [
                     Condition.largerThan(name: ScreenType.mobile, value: false)
                   ],
-                  sliver: const SliverToBoxAdapter(
+                  sliver: SliverToBoxAdapter(
                     child: Padding(
                       padding: EdgeInsets.symmetric(
                         horizontal: fCardMargin,
@@ -109,7 +109,7 @@ class PublicationListView extends StatelessWidget {
                         FlowPublicationListState>(),
                     ResponsiveVisibilitySliver(
                       visible: false,
-                      visibleConditions: [
+                      visibleConditions: const [
                         Condition.largerThan(
                           name: ScreenType.mobile,
                           value: true,
@@ -129,7 +129,7 @@ class PublicationListView extends StatelessWidget {
                               value: Device.getWidth(context) / 3,
                             ),
                           ],
-                        ).value!,
+                        ).value,
                         sliver: SliverAppBar(
                           backgroundColor: Colors.transparent,
                           clipBehavior: Clip.none,
