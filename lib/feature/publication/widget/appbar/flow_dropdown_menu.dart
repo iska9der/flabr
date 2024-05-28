@@ -45,12 +45,12 @@ class FlowDropdownMenu extends StatelessWidget {
                 context,
                 defaultValue: true,
                 conditionalValues: [
-                  Condition.largerThan(
+                  const Condition.largerThan(
                     name: ScreenType.mobile,
                     value: false,
                   ),
                 ],
-              ).value!,
+              ).value,
               onChanged: (value) {
                 if (value == null) {
                   return;

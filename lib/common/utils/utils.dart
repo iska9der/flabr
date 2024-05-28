@@ -32,8 +32,6 @@ class Utils with ImageUtilsMixin {
     return await showDialog(
       context: context,
       barrierDismissible: isDismissible,
-      useSafeArea: true,
-      useRootNavigator: true,
       builder: (alertContext) {
         final actions = actionsBuilder(alertContext);
 

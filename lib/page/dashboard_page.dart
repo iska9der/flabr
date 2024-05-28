@@ -127,7 +127,7 @@ class _DashboardPageState extends State<DashboardPage> {
                       children: [
                         ResponsiveVisibility(
                           visible: false,
-                          visibleConditions: [
+                          visibleConditions: const [
                             Condition.largerThan(
                               name: ScreenType.mobile,
                               value: true,
@@ -142,7 +142,7 @@ class _DashboardPageState extends State<DashboardPage> {
                 ),
               ),
               bottomNavigationBar: ResponsiveVisibility(
-                hiddenConditions: [
+                hiddenConditions: const [
                   Condition.largerThan(name: ScreenType.mobile, value: false)
                 ],
                 child: AnimatedBuilder(

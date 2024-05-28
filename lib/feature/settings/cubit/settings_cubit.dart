@@ -125,7 +125,7 @@ class SettingsCubit extends Cubit<SettingsState> {
   }
 
   Future<void> initDeepLink() async {
-    final lastUri = await _appLinks.getLatestAppLink();
+    final lastUri = await _appLinks.getLatestLink();
 
     if (lastUri != null) {
       emit(state.copyWith(initialDeepLink: lastUri.path));

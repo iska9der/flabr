@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:responsive_framework/responsive_value.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 
 /// Эквивалент [ResponsiveVisibility] для сливеров.
 class ResponsiveVisibilitySliver extends StatelessWidget {
