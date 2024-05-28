@@ -37,8 +37,8 @@ class SubscribeButton extends StatelessWidget {
 
             if (state.isSubscribed) {
               style = style.copyWith(
-                foregroundColor: MaterialStateProperty.all(Colors.white),
-                backgroundColor: MaterialStateProperty.all(Colors.green),
+                foregroundColor: WidgetStateProperty.all(Colors.white),
+                backgroundColor: WidgetStateProperty.all(Colors.green),
               );
             }
 

@@ -33,7 +33,6 @@ class NetworkImageWidget extends StatelessWidget {
       onTap: isTapable
           ? () => showDialog(
                 context: context,
-                useSafeArea: true,
                 useRootNavigator: false,
                 barrierColor: barrierColor,
                 builder: (_) => FullNetworkImageModalWidget(imageUrl: imageUrl),

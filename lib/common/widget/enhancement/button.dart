@@ -21,7 +21,7 @@ class FlabrTextButton extends TextButton {
   @override
   ButtonStyle defaultStyleOf(BuildContext context) {
     return super.defaultStyleOf(context).copyWith(
-          shape: MaterialStatePropertyAll<OutlinedBorder>(
+          shape: WidgetStatePropertyAll<OutlinedBorder>(
             RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(kBorderRadiusDefault),
             ),

@@ -26,8 +26,6 @@ Future showProfileDialog(
 Future showLoginDialog(BuildContext context) async {
   return await showDialog(
     context: context,
-    useSafeArea: true,
-    useRootNavigator: true,
     builder: (context) => AlertDialog.adaptive(
       insetPadding: EdgeInsets.zero,
       contentPadding: EdgeInsets.zero,

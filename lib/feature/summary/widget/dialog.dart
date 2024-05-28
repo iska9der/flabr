@@ -13,7 +13,6 @@ Future showSummaryDialog(
 }) async {
   return await showDialog(
     context: context,
-    useSafeArea: true,
     useRootNavigator: false,
     barrierColor: Theme.of(context).colorScheme.surface.withOpacity(.9),
     builder: (context) => BlocProvider(
