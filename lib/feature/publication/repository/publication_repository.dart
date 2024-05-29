@@ -10,6 +10,7 @@ import '../model/network/publication_list_response.dart';
 import '../model/publication/publication.dart';
 import '../model/publication_type.dart';
 import '../model/sort/date_period_enum.dart';
+import '../model/sort/feed_publication_type.dart';
 import '../model/sort/score_enum.dart';
 import '../model/sort/sort_enum.dart';
 import '../model/source/publication_source.dart';
@@ -90,12 +91,14 @@ class PublicationRepository {
     required List<LanguageEnum> langArticles,
     required String page,
     required ScoreEnum score,
+    required List<FeedPublicationType> types,
   }) async {
     final response = await service.fetchFeed(
       langUI: langUI.name,
       langArticles: encodeLangs(langArticles),
       page: page,
       score: score == ScoreEnum.all ? 'all' : score.value,
+      types: types.map((t) => t.name).toList(),
     );
 
     _sortListResponse(SortEnum.byNew, response);

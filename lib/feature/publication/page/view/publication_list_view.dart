@@ -22,9 +22,11 @@ class PublicationListView<C extends PublicationListCubit<S>,
   const PublicationListView({
     super.key,
     this.appBar,
+    this.showMostReading = true,
   });
 
   final Widget? appBar;
+  final bool showMostReading;
 
   @override
   Widget build(BuildContext context) {
@@ -78,20 +80,22 @@ class PublicationListView<C extends PublicationListCubit<S>,
               controller: scrollController,
               slivers: [
                 if (appBar != null) appBar!,
-                const ResponsiveVisibilitySliver(
-                  hiddenConditions: [
-                    Condition.largerThan(name: ScreenType.mobile, value: false)
-                  ],
-                  sliver: SliverToBoxAdapter(
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: fCardMargin,
-                        vertical: kCardBetweenPadding / 2,
+                if (showMostReading)
+                  const ResponsiveVisibilitySliver(
+                    hiddenConditions: [
+                      Condition.largerThan(
+                          name: ScreenType.mobile, value: false)
+                    ],
+                    sliver: SliverToBoxAdapter(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: fCardMargin,
+                          vertical: kCardBetweenPadding / 2,
+                        ),
+                        child: MostReadingWidget.button(),
                       ),
-                      child: MostReadingWidget.button(),
                     ),
                   ),
-                ),
                 SliverCrossAxisGroup(
                   slivers: [
                     PublicationSliverList<C, S>(),

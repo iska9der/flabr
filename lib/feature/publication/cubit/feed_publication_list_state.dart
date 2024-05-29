@@ -9,7 +9,7 @@ class FeedPublicationListState extends Equatable
     this.pagesCount = 0,
     this.publications = const [],
     this.score = ScoreEnum.all,
-    this.types = availableTypes,
+    this.types = FeedPublicationType.values,
   });
 
   @override
@@ -25,12 +25,7 @@ class FeedPublicationListState extends Equatable
 
   /// Filters
   final ScoreEnum score;
-  final List<PublicationType> types;
-  static const List<PublicationType> availableTypes = [
-    PublicationType.article,
-    PublicationType.post,
-    PublicationType.news,
-  ];
+  final List<FeedPublicationType> types;
 
   FeedPublicationListState copyWith({
     PublicationListStatus? status,
@@ -39,7 +34,7 @@ class FeedPublicationListState extends Equatable
     int? pagesCount,
     List<Publication>? publications,
     ScoreEnum? score,
-    List<PublicationType>? types,
+    List<FeedPublicationType>? types,
   }) {
     return FeedPublicationListState(
       status: status ?? this.status,

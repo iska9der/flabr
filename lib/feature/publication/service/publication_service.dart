@@ -75,6 +75,7 @@ class PublicationService {
     required String langArticles,
     required String page,
     required String score,
+    required List<String> types,
   }) async {
     try {
       final params = FeedListParams(
@@ -82,10 +83,12 @@ class PublicationService {
         langUI: langUI,
         page: page,
         score: score,
+        types: types,
       );
-      final queryString = params.toQueryString();
+
       final response = await _mobileClient.get(
-        '/articles/?myFeed=true&$queryString',
+        '/articles',
+        queryParams: params.toMap(),
       );
 
       return FeedListResponse.fromMap(response.data);
@@ -133,8 +136,11 @@ class PublicationService {
             score: score,
           ),
       };
-      final queryString = params.toQueryString();
-      final response = await _mobileClient.get('/articles/?$queryString');
+
+      final response = await _mobileClient.get(
+        '/articles',
+        queryParams: params.toMap(),
+      );
 
       return switch (type) {
         PublicationType.post => PostListResponse.fromMap(response.data),
@@ -165,9 +171,10 @@ class PublicationService {
         period: sort == SortEnum.byBest ? period.name : null,
         score: score,
       );
-      final queryString = params.toQueryString();
+
       final response = await _mobileClient.get(
-        '/articles/?hub=$hub&$queryString',
+        '/articles/?hub=$hub',
+        queryParams: params.toMap(),
       );
 
       return PublicationListResponse.fromMap(response.data);
@@ -198,9 +205,9 @@ class PublicationService {
         UserPublicationType.news => '&news=true',
       };
 
-      final queryString = params.toQueryString();
       final response = await _mobileClient.get(
-        '/articles/?user=$user$typeQuery&$queryString',
+        '/articles/?user=$user$typeQuery',
+        queryParams: params.toMap(),
       );
 
       return switch (type) {

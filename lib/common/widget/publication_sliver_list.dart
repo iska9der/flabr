@@ -10,18 +10,18 @@ import '../../feature/publication/widget/card/publication_card_widget.dart';
 import '../utils/utils.dart';
 import 'enhancement/progress_indicator.dart';
 
-class PublicationSliverList<C extends PublicationListCubit<S>,
-    S extends PublicationListState> extends StatelessWidget {
+class PublicationSliverList<ListCubit extends PublicationListCubit<ListState>,
+    ListState extends PublicationListState> extends StatelessWidget {
   const PublicationSliverList({super.key});
 
   @override
   Widget build(BuildContext context) {
     final scrollCubit = context.read<ScrollCubit?>();
 
-    return BlocConsumer<C, S>(
-      listenWhen: (p, c) =>
-          p.page != 1 && c.status == PublicationListStatus.failure,
-      listener: (c, state) {
+    return BlocConsumer<ListCubit, ListState>(
+      listenWhen: (previous, current) =>
+          previous.page != 1 && current.status == PublicationListStatus.failure,
+      listener: (_, state) {
         getIt.get<Utils>().showSnack(
               context: context,
               content: Text(state.error),
@@ -30,14 +30,14 @@ class PublicationSliverList<C extends PublicationListCubit<S>,
       builder: (context, state) {
         /// Инициализация
         if (state.status == PublicationListStatus.initial) {
-          context.read<C>().fetch();
+          context.read<ListCubit>().fetch();
           return const SliverFillRemaining(
             child: CircleIndicator(),
           );
         }
 
         /// Если происходит загрузка первой страницы
-        if (context.read<C>().isFirstFetch) {
+        if (context.read<ListCubit>().isFirstFetch) {
           if (state.status == PublicationListStatus.loading) {
             return const SliverFillRemaining(
               child: CircleIndicator(),
@@ -67,7 +67,10 @@ class PublicationSliverList<C extends PublicationListCubit<S>,
               if (i < publications.length) {
                 final publication = publications[i];
 
-                return PublicationCardWidget(publication);
+                return PublicationCardWidget(
+                  publication,
+                  showType: context.read<ListCubit>().showType,
+                );
               }
 
               Timer(

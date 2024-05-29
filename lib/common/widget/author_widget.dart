@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
+import '../../config/constants.dart';
 import '../../feature/auth/widget/dialog.dart';
 import '../../feature/auth/widget/profile_widget.dart';
 import '../../feature/publication/model/publication_author_model.dart';
@@ -14,8 +15,16 @@ class AuthorWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextButtonTheme(
-      data: const TextButtonThemeData(
-        style: ButtonStyle(alignment: Alignment.centerLeft),
+      data: TextButtonThemeData(
+        style: ButtonStyle(
+          alignment: Alignment.centerLeft,
+          padding: const WidgetStatePropertyAll(EdgeInsets.zero),
+          shape: WidgetStatePropertyAll(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(kBorderRadiusDefault),
+            ),
+          ),
+        ),
       ),
       child: TextButton(
         onPressed: () {

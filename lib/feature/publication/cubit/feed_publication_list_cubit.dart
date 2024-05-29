@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 import '../../../common/exception/exception_helper.dart';
 import '../../../common/model/network/list_response.dart';
 import '../model/publication/publication.dart';
-import '../model/publication_type.dart';
+import '../model/sort/feed_publication_type.dart';
 import '../model/sort/score_enum.dart';
 import '../model/sort/sort_option_model.dart';
 import 'publication_list_cubit.dart';
@@ -16,6 +16,9 @@ class FeedPublicationListCubit
     required super.repository,
     required super.languageRepository,
   }) : super(const FeedPublicationListState());
+
+  @override
+  bool get showType => true;
 
   @override
   Future<void> fetch() async {
@@ -32,6 +35,7 @@ class FeedPublicationListCubit
         langArticles: languageRepository.articles,
         page: state.page.toString(),
         score: state.score,
+        types: state.types,
       );
 
       emit(state.copyWith(
@@ -70,14 +74,15 @@ class FeedPublicationListCubit
       return;
     }
 
-    emit(FeedPublicationListState(score: newScore));
+    emit(FeedPublicationListState(types: state.types, score: newScore));
   }
 
-  void changeFilterTypes(List<PublicationType> types) {
-    types.removeWhere(
-      (type) => !FeedPublicationListState.availableTypes.contains(type),
-    );
+  void changeFilterTypes(List<FeedPublicationType> types) {
+    /// Выбран хотя бы один тип публикации
+    if (types.isEmpty) {
+      return;
+    }
 
-    emit(state.copyWith(types: types));
+    emit(FeedPublicationListState(score: state.score, types: types));
   }
 }

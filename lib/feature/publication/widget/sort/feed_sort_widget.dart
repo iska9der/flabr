@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../cubit/feed_publication_list_cubit.dart';
-import '../../model/publication_type.dart';
+import '../../model/sort/feed_publication_type.dart';
 import '../../model/sort/score_enum.dart';
 import '../../model/sort/sort_option_model.dart';
 import 'sort_options_widget.dart';
@@ -9,9 +8,9 @@ import 'sort_options_widget.dart';
 class FeedSortWidget extends StatelessWidget {
   const FeedSortWidget({
     super.key,
+    this.isLoading = false,
     required this.currentScore,
     required this.onScoreChange,
-    this.isLoading = false,
     required this.currentTypes,
     required this.onTypesChange,
   });
@@ -21,8 +20,8 @@ class FeedSortWidget extends StatelessWidget {
   final ScoreEnum currentScore;
   final Function(SortOptionModel score) onScoreChange;
 
-  final List<PublicationType> currentTypes;
-  final void Function(List<PublicationType> newTypes) onTypesChange;
+  final List<FeedPublicationType> currentTypes;
+  final void Function(List<FeedPublicationType> newTypes) onTypesChange;
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +37,7 @@ class FeedSortWidget extends StatelessWidget {
         Wrap(
           runSpacing: 8,
           spacing: 8,
-          children: FeedPublicationListState.availableTypes
+          children: FeedPublicationType.values
               .map((type) => ChoiceChip(
                     label: Text(type.label),
                     selected: currentTypes.contains(type),

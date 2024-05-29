@@ -9,8 +9,8 @@ import '../repository/publication_repository.dart';
 enum PublicationListStatus { initial, loading, success, failure }
 
 /// Абстрактный класс для кубита списка публикаций
-abstract class PublicationListCubit<S extends PublicationListState>
-    extends Cubit<S> {
+abstract class PublicationListCubit<State extends PublicationListState>
+    extends Cubit<State> {
   PublicationListCubit(
     super.initialState, {
     required this.repository,
@@ -29,6 +29,8 @@ abstract class PublicationListCubit<S extends PublicationListState>
 
   late final StreamSubscription _uiLangSub;
   late final StreamSubscription _articleLangsSub;
+
+  bool get showType => false;
 
   @override
   Future<void> close() {

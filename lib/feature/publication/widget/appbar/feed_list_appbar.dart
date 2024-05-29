@@ -6,6 +6,7 @@ import '../../../../config/constants.dart';
 import '../../cubit/feed_publication_list_cubit.dart';
 import '../../cubit/publication_list_cubit.dart';
 import '../sort/feed_sort_widget.dart';
+import 'list_appbar.dart';
 
 class FeedListAppBar extends StatefulWidget {
   const FeedListAppBar({super.key});
@@ -46,52 +47,23 @@ class _AppBarState extends State<FeedListAppBar> {
 
   @override
   Widget build(BuildContext context) {
-    return SliverAppBar(
-      automaticallyImplyLeading: false,
-      floating: true,
-      snap: true,
-      toolbarHeight: fToolBarHeight,
-      expandedHeight: expandedHeight,
-      flexibleSpace: FlexibleSpaceBar(
-        expandedTitleScale: 1,
-        background: isFilterShown
-            ? Align(
-                alignment: Alignment.bottomCenter,
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(
-                    kScreenHPadding,
-                    0,
-                    kScreenHPadding,
-                    kScreenHPadding,
-                  ),
-                  child: BlocBuilder<FeedPublicationListCubit,
-                      FeedPublicationListState>(
-                    builder: (context, state) {
-                      return FeedSortWidget(
-                        isLoading:
-                            state.status == PublicationListStatus.loading,
-                        currentScore: state.score,
-                        onScoreChange: (option) => context
-                            .read<FeedPublicationListCubit>()
-                            .changeFilterScore(option),
-                        currentTypes: state.types,
-                        onTypesChange: (newTypes) => context
-                            .read<FeedPublicationListCubit>()
-                            .changeFilterTypes(newTypes),
-                      );
-                    },
-                  ),
-                ),
-              )
-            : null,
+    return ListAppBar(
+      filterHeight: feedSortToolbarHeight,
+      filter: BlocBuilder<FeedPublicationListCubit, FeedPublicationListState>(
+        builder: (context, state) {
+          return FeedSortWidget(
+            isLoading: state.status == PublicationListStatus.loading,
+            currentScore: state.score,
+            onScoreChange: (option) => context
+                .read<FeedPublicationListCubit>()
+                .changeFilterScore(option),
+            currentTypes: state.types,
+            onTypesChange: (newTypes) => context
+                .read<FeedPublicationListCubit>()
+                .changeFilterTypes(newTypes),
+          );
+        },
       ),
-      actions: [
-        IconButton(
-          icon: const Icon(Icons.filter_list_rounded),
-          padding: EdgeInsets.zero,
-          onPressed: onFilterPress,
-        ),
-      ],
     );
   }
 }
