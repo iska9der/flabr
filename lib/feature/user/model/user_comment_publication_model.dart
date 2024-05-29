@@ -5,7 +5,7 @@ import '../../publication/model/publication_type.dart';
 class UserCommentPublication extends Equatable {
   const UserCommentPublication({
     required this.id,
-    this.type = PublicationType.article,
+    this.type = PublicationType.unknown,
     this.title = '',
   });
 
@@ -18,7 +18,7 @@ class UserCommentPublication extends Equatable {
       id: map['id'],
       type: map.containsKey('publicationType')
           ? PublicationType.fromString(map['publicationType'])
-          : PublicationType.article,
+          : PublicationType.unknown,
       title: map['title'] ?? '',
     );
   }

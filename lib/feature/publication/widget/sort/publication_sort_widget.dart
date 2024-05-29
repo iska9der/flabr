@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
 import '../../../publication/model/sort/date_period_enum.dart';
-import '../../../publication/model/sort/rating_score_enum.dart';
 import '../../../publication/model/sort/sort_enum.dart';
 import '../../../publication/model/sort/sort_option_model.dart';
+import '../../model/sort/score_enum.dart';
+import 'sort_options_widget.dart';
 
 part 'sort_by_widget.dart';
-part 'sort_options_widget.dart';
 
 class PublicationSortWidget extends StatelessWidget {
   const PublicationSortWidget({
@@ -37,11 +37,24 @@ class PublicationSortWidget extends StatelessWidget {
           currentValue: sortValue,
           onTap: (sort) => sortChange(sort),
         ),
-        _SortOptionsWidget(
+        SortOptionsWidget(
           isEnabled: !isLoading,
-          currentSort: sortValue,
+          options: switch (sortValue) {
+            SortEnum.byNew => ScoreEnum.values
+                .map((score) => SortOptionModel(
+                      label: score.label,
+                      value: score.value,
+                    ))
+                .toList(),
+            SortEnum.byBest => DatePeriodEnum.values
+                .map((period) => SortOptionModel(
+                      label: period.label,
+                      value: period,
+                    ))
+                .toList(),
+          },
           currentValue: optionValue,
-          onTap: (option) => optionChange(option),
+          onSelected: (option) => optionChange(option),
         ),
       ],
     );

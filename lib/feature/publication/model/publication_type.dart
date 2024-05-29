@@ -1,6 +1,6 @@
-import '../../../common/exception/value_exception.dart';
-
 enum PublicationType {
+  /// для всех неопознанных типов
+  unknown,
   article,
   post,
   news,
@@ -42,7 +42,7 @@ enum PublicationType {
   factory PublicationType.fromString(String value) {
     return PublicationType.values.firstWhere(
       (type) => type.name == value,
-      orElse: () => throw ValueException('Тип статьи $value не существует'),
+      orElse: () => PublicationType.unknown,
     );
   }
 }

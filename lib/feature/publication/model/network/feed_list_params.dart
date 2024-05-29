@@ -16,10 +16,10 @@ class FeedListParams extends Params {
   String toQueryString() {
     /// TODO: parse filter
     String filterParams = '';
-    if (filterParams.isNotEmpty) {
-      filterParams += '&types[0]=posts';
-      filterParams += '&complexity=$complexity&score=$score';
-    }
+    // if (filterParams.isNotEmpty) {
+    // filterParams += '&types[0]=articles&types[1]=posts&types[2]=news';
+    filterParams += '&complexity=$complexity&score=$score';
+    // }
 
     return 'myFeed=true&fl=$langArticles&hl=$langUI$filterParams&page=$page';
   }

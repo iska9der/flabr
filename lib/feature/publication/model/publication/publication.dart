@@ -16,7 +16,7 @@ part 'post.dart';
 sealed class Publication extends Equatable {
   const Publication({
     required this.id,
-    this.type = PublicationType.article,
+    this.type = PublicationType.unknown,
     this.timePublished = '2022-12-22T10:10:00+00:00',
     this.textHtml = '',
     this.author = PublicationAuthorModel.empty,
@@ -56,4 +56,17 @@ sealed class Publication extends Equatable {
         hubs,
         tags,
       ];
+
+  factory Publication.fromMap(Map<String, dynamic> map) {
+    final type = map.containsKey('publicationType')
+        ? PublicationType.fromString(map['publicationType'])
+        : PublicationType.unknown;
+
+    return switch (type) {
+      PublicationType.article => PublicationCommon.fromMap(map),
+      PublicationType.news => PublicationCommon.fromMap(map),
+      PublicationType.post => PublicationPost.fromMap(map),
+      _ => const PublicationCommon(id: '0'),
+    };
+  }
 }

@@ -13,11 +13,15 @@ class PublicationCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return switch (publication.type) {
-      /// Неопознанный отлетает в мусорку
-      PublicationType.voice => const SizedBox(),
       PublicationType.post =>
         PostCardWidget(post: publication as PublicationPost),
-      _ => CommonCardWidget(publication: publication as PublicationCommon),
+      PublicationType.news =>
+        CommonCardWidget(publication: publication as PublicationCommon),
+      PublicationType.article =>
+        CommonCardWidget(publication: publication as PublicationCommon),
+
+      /// Неопознанный отлетает в мусорку
+      _ => const SizedBox(),
     };
   }
 }

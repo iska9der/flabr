@@ -13,6 +13,7 @@ import '../model/comment/network/comment_list_params.dart';
 import '../model/comment/network/comment_list_response.dart';
 import '../model/flow_enum.dart';
 import '../model/network/feed_list_params.dart';
+import '../model/network/feed_list_response.dart';
 import '../model/network/most_reading_response.dart';
 import '../model/network/post_list_params.dart';
 import '../model/network/post_list_response.dart';
@@ -73,19 +74,21 @@ class PublicationService {
     required String langUI,
     required String langArticles,
     required String page,
+    required String score,
   }) async {
     try {
       final params = FeedListParams(
         langArticles: langArticles,
         langUI: langUI,
         page: page,
+        score: score,
       );
       final queryString = params.toQueryString();
       final response = await _mobileClient.get(
         '/articles/?myFeed=true&$queryString',
       );
 
-      return PublicationListResponse.fromMap(response.data);
+      return FeedListResponse.fromMap(response.data);
     } on DisplayableException {
       rethrow;
     } catch (e, trace) {

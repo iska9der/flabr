@@ -1,36 +1,24 @@
-part of 'publication_sort_widget.dart';
+import 'package:flutter/material.dart';
 
-class _SortOptionsWidget extends StatelessWidget {
-  const _SortOptionsWidget({
-    required this.currentSort,
+import '../../model/sort/sort_option_model.dart';
+
+class SortOptionsWidget extends StatelessWidget {
+  const SortOptionsWidget({
+    super.key,
+    required this.options,
     required this.currentValue,
-    required this.onTap,
+    required this.onSelected,
     this.isEnabled = true,
   });
 
-  final SortEnum currentSort;
+  final List<SortOptionModel> options;
   final dynamic currentValue;
-  final ValueChanged<SortOptionModel> onTap;
+  final ValueChanged<SortOptionModel> onSelected;
 
   final bool isEnabled;
 
   @override
   Widget build(BuildContext context) {
-    final options = switch (currentSort) {
-      SortEnum.byNew => RatingScoreEnum.values
-          .map((score) => SortOptionModel(
-                label: score.label,
-                value: score.value,
-              ))
-          .toList(),
-      SortEnum.byBest => DatePeriodEnum.values
-          .map((period) => SortOptionModel(
-                label: period.label,
-                value: period,
-              ))
-          .toList(),
-    };
-
     return SizedBox(
       height: 40,
       child: ListView(
@@ -49,7 +37,7 @@ class _SortOptionsWidget extends StatelessWidget {
                       style: Theme.of(context).textTheme.labelMedium,
                     ),
                     selected: option.value == currentValue,
-                    onSelected: (bool value) => onTap(option),
+                    onSelected: (bool value) => onSelected(option),
                   ),
                 ))
             .toList(),

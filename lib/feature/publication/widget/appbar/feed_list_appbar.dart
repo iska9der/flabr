@@ -3,10 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../component/theme.dart';
 import '../../../../config/constants.dart';
-import '../../cubit/flow_publication_list_cubit.dart';
+import '../../cubit/feed_publication_list_cubit.dart';
 import '../../cubit/publication_list_cubit.dart';
-import '../../model/sort/sort_enum.dart';
-import '../sort/publication_sort_widget.dart';
+import '../sort/feed_sort_widget.dart';
 
 class FeedListAppBar extends StatefulWidget {
   const FeedListAppBar({super.key});
@@ -65,25 +64,16 @@ class _AppBarState extends State<FeedListAppBar> {
                     kScreenHPadding,
                     kScreenHPadding,
                   ),
-                  child: BlocBuilder<FlowPublicationListCubit,
-                      FlowPublicationListState>(
+                  child: BlocBuilder<FeedPublicationListCubit,
+                      FeedPublicationListState>(
                     builder: (context, state) {
-                      return PublicationSortWidget(
+                      return FeedSortWidget(
                         isLoading:
                             state.status == PublicationListStatus.loading,
-                        sortValue: state.sort,
-                        sortChange: (sort) => context
-                            .read<FlowPublicationListCubit>()
-                            .changeSort(sort),
-                        optionValue: state.sort == SortEnum.byBest
-                            ? state.period
-                            : state.score,
-                        optionChange: (option) => context
-                            .read<FlowPublicationListCubit>()
-                            .changeSortOption(
-                              state.sort,
-                              option,
-                            ),
+                        currentScore: state.score,
+                        onScoreChange: (option) => context
+                            .read<FeedPublicationListCubit>()
+                            .changeFilterScore(option),
                       );
                     },
                   ),

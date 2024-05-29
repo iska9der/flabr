@@ -8,6 +8,7 @@ class FeedPublicationListState extends Equatable
     this.page = 1,
     this.pagesCount = 0,
     this.publications = const [],
+    this.score = ScoreEnum.all,
   });
 
   @override
@@ -21,12 +22,16 @@ class FeedPublicationListState extends Equatable
   @override
   final List<Publication> publications;
 
+  /// Filters
+  final ScoreEnum score;
+
   FeedPublicationListState copyWith({
     PublicationListStatus? status,
     String? error,
     int? page,
     int? pagesCount,
     List<Publication>? publications,
+    ScoreEnum? score,
   }) {
     return FeedPublicationListState(
       status: status ?? this.status,
@@ -34,6 +39,7 @@ class FeedPublicationListState extends Equatable
       page: page ?? this.page,
       pagesCount: pagesCount ?? this.pagesCount,
       publications: publications ?? this.publications,
+      score: score ?? this.score,
     );
   }
 
@@ -47,5 +53,6 @@ class FeedPublicationListState extends Equatable
         page,
         pagesCount,
         publications,
+        score,
       ];
 }

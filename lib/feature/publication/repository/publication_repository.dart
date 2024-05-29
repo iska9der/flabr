@@ -10,6 +10,7 @@ import '../model/network/publication_list_response.dart';
 import '../model/publication/publication.dart';
 import '../model/publication_type.dart';
 import '../model/sort/date_period_enum.dart';
+import '../model/sort/score_enum.dart';
 import '../model/sort/sort_enum.dart';
 import '../model/source/publication_source.dart';
 import '../service/publication_service.dart';
@@ -88,12 +89,16 @@ class PublicationRepository {
     required LanguageEnum langUI,
     required List<LanguageEnum> langArticles,
     required String page,
+    required ScoreEnum score,
   }) async {
     final response = await service.fetchFeed(
       langUI: langUI.name,
       langArticles: encodeLangs(langArticles),
       page: page,
+      score: score == ScoreEnum.all ? 'all' : score.value,
     );
+
+    _sortListResponse(SortEnum.byNew, response);
 
     return response;
   }

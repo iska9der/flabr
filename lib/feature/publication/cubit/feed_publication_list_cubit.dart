@@ -3,6 +3,8 @@ import 'package:equatable/equatable.dart';
 import '../../../common/exception/exception_helper.dart';
 import '../../../common/model/network/list_response.dart';
 import '../model/publication/publication.dart';
+import '../model/sort/score_enum.dart';
+import '../model/sort/sort_option_model.dart';
 import 'publication_list_cubit.dart';
 
 part 'feed_publication_list_state.dart';
@@ -28,6 +30,7 @@ class FeedPublicationListCubit
         langUI: languageRepository.ui,
         langArticles: languageRepository.articles,
         page: state.page.toString(),
+        score: state.score,
       );
 
       emit(state.copyWith(
@@ -57,5 +60,15 @@ class FeedPublicationListCubit
       publications: [],
       pagesCount: 0,
     ));
+  }
+
+  void changeFilterScore(SortOptionModel option) {
+    final newScore = ScoreEnum.fromString(option.value);
+
+    if (state.score == newScore) {
+      return;
+    }
+
+    emit(FeedPublicationListState(score: newScore));
   }
 }

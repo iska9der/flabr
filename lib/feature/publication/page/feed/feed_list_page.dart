@@ -6,7 +6,6 @@ import '../../../../component/di/dependencies.dart';
 import '../../../enhancement/scroll/cubit/scroll_cubit.dart';
 import '../../../settings/repository/language_repository.dart';
 import '../../cubit/feed_publication_list_cubit.dart';
-import '../../cubit/publication_list_cubit.dart';
 import '../../repository/publication_repository.dart';
 import '../../widget/appbar/feed_list_appbar.dart';
 import '../view/publication_list_view.dart';
@@ -35,7 +34,7 @@ class FeedListPage extends StatelessWidget {
         ),
       ],
       child: const PublicationListView<FeedPublicationListCubit,
-          PublicationListState>(
+          FeedPublicationListState>(
         appBar: FeedListAppBar(),
       ),
     );
