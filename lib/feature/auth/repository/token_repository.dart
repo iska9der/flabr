@@ -5,7 +5,7 @@ const authDataCacheKey = 'aData';
 const authCsrfCacheKey = 'cData';
 
 class TokenRepository {
-  TokenRepository(CacheStorage storage) : _storage = storage;
+  TokenRepository(this._storage);
 
   final CacheStorage _storage;
 
@@ -13,7 +13,6 @@ class TokenRepository {
   AuthDataModel get authData => _authData;
 
   String _csrf = '';
-  String get csrf => _csrf;
 
   Future<AuthDataModel?> getData() async {
     if (!_authData.isEmpty) return _authData;
@@ -36,7 +35,7 @@ class TokenRepository {
   }
 
   Future<String?> getCsrf() async {
-    if (csrf.isNotEmpty) return _csrf;
+    if (_csrf.isNotEmpty) return _csrf;
 
     final raw = await _storage.read(authCsrfCacheKey);
 
@@ -46,7 +45,7 @@ class TokenRepository {
 
     _csrf = raw;
 
-    return _csrf;
+    return raw;
   }
 
   Future<void> setCsrf(String value) async {

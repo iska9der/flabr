@@ -5,41 +5,37 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../component/di/dependencies.dart';
 import '../../../enhancement/scroll/cubit/scroll_cubit.dart';
 import '../../../settings/repository/language_repository.dart';
-import '../../cubit/flow_publication_list_cubit.dart';
-import '../../model/flow_enum.dart';
+import '../../cubit/feed_publication_list_cubit.dart';
 import '../../repository/publication_repository.dart';
-import '../../widget/appbar/flow_list_appbar.dart';
+import '../../widget/appbar/feed_list_appbar.dart';
 import '../view/publication_list_view.dart';
 
-@RoutePage(name: ArticleListPage.routeName)
-class ArticleListPage extends StatelessWidget {
-  const ArticleListPage({super.key, @PathParam() required this.flow});
+@RoutePage(name: FeedListPage.routeName)
+class FeedListPage extends StatelessWidget {
+  const FeedListPage({super.key});
 
-  final String flow;
-
-  static const String name = 'Статьи';
-  static const String routePath = 'flows/:flow';
-  static const String routeName = 'ArticleListRoute';
+  static const String name = 'Моя лента';
+  static const String routePath = 'feed';
+  static const String routeName = 'FeedListRoute';
 
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      key: ValueKey('articles-$flow-flow'),
+      key: const ValueKey('feed-list'),
       providers: [
         BlocProvider(
-          create: (_) => FlowPublicationListCubit(
+          create: (_) => FeedPublicationListCubit(
             repository: getIt.get<PublicationRepository>(),
             languageRepository: getIt.get<LanguageRepository>(),
-            flow: FlowEnum.fromString(flow),
           ),
         ),
         BlocProvider(
           create: (c) => ScrollCubit(),
         ),
       ],
-      child: const PublicationListView<FlowPublicationListCubit,
-          FlowPublicationListState>(
-        appBar: FlowListAppBar(),
+      child: const PublicationListView<FeedPublicationListCubit,
+          FeedPublicationListState>(
+        appBar: FeedListAppBar(),
       ),
     );
   }

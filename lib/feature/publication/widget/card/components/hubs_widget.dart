@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../common/model/hub_type.dart';
+import '../../../../../config/constants.dart';
 import '../../../../hub/model/hub_related_data.dart';
 import '../../../model/publication_hub_model.dart';
 
@@ -44,6 +45,7 @@ class _PublicationHub extends StatelessWidget {
 
     return InkWell(
       onTap: () => context.navigateNamedTo('services/$path/${hub.alias}'),
+      borderRadius: BorderRadius.circular(kBorderRadiusDefault),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8.0),
         child: Text(

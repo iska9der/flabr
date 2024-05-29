@@ -12,6 +12,8 @@ import '../model/comment/network/comment_list_exception.dart';
 import '../model/comment/network/comment_list_params.dart';
 import '../model/comment/network/comment_list_response.dart';
 import '../model/flow_enum.dart';
+import '../model/network/feed_list_params.dart';
+import '../model/network/feed_list_response.dart';
 import '../model/network/most_reading_response.dart';
 import '../model/network/post_list_params.dart';
 import '../model/network/post_list_response.dart';
@@ -23,9 +25,10 @@ import '../model/sort/sort_enum.dart';
 import '../model/source/publication_source.dart';
 
 class PublicationService {
-  const PublicationService(
-      {required HttpClient mobileClient, required HttpClient siteClient})
-      : _mobileClient = mobileClient,
+  const PublicationService({
+    required HttpClient mobileClient,
+    required HttpClient siteClient,
+  })  : _mobileClient = mobileClient,
         _siteClient = siteClient;
 
   final HttpClient _mobileClient;
@@ -44,8 +47,8 @@ class PublicationService {
       );
 
       return response.data;
-    } catch (e) {
-      throw FetchException();
+    } catch (e, trace) {
+      Error.throwWithStackTrace(FetchException(), trace);
     }
   }
 
@@ -62,8 +65,37 @@ class PublicationService {
       );
 
       return response.data;
-    } catch (e) {
-      throw FetchException();
+    } catch (e, trace) {
+      Error.throwWithStackTrace(FetchException(), trace);
+    }
+  }
+
+  Future<ListResponse> fetchFeed({
+    required String langUI,
+    required String langArticles,
+    required String page,
+    required String score,
+    required List<String> types,
+  }) async {
+    try {
+      final params = FeedListParams(
+        langArticles: langArticles,
+        langUI: langUI,
+        page: page,
+        score: score,
+        types: types,
+      );
+
+      final response = await _mobileClient.get(
+        '/articles',
+        queryParams: params.toMap(),
+      );
+
+      return FeedListResponse.fromMap(response.data);
+    } on DisplayableException {
+      rethrow;
+    } catch (e, trace) {
+      Error.throwWithStackTrace(FetchException(), trace);
     }
   }
 
@@ -78,38 +110,37 @@ class PublicationService {
     required String score,
   }) async {
     try {
-      final flowStr =
-          (flow == FlowEnum.all || flow == FlowEnum.feed) ? null : flow.name;
+      final flowStr = (flow == FlowEnum.all) ? null : flow.name;
 
       final params = switch (type) {
         PublicationType.post => PostListParams(
             langArticles: langArticles,
             langUI: langUI,
+            page: page,
             flow: flowStr,
-            feed: flow == FlowEnum.feed ? 'true' : null,
             sort: sort.postValue,
             period: sort == SortEnum.byBest ? period.name : null,
             score: score,
-            page: page,
           ),
         _ => PublicationListParams(
             langArticles: langArticles,
             langUI: langUI,
+            page: page,
             flow: flowStr,
             news: type == PublicationType.news,
-            feed: flow == FlowEnum.feed ? 'true' : null,
 
             /// если мы находимся не во "Все потоки", в значение sort, по завету
             /// костыльного api хабра, нужно передавать значение 'all'
             sort: flow == FlowEnum.all ? sort.value : 'all',
             period: sort == SortEnum.byBest ? period.name : null,
             score: score,
-            page: page,
           ),
       };
 
-      final queryString = params.toQueryString();
-      final response = await _mobileClient.get('/articles/?$queryString');
+      final response = await _mobileClient.get(
+        '/articles',
+        queryParams: params.toMap(),
+      );
 
       return switch (type) {
         PublicationType.post => PostListResponse.fromMap(response.data),
@@ -117,8 +148,8 @@ class PublicationService {
       } as ListResponse;
     } on DisplayableException {
       rethrow;
-    } catch (e) {
-      throw FetchException();
+    } catch (e, trace) {
+      Error.throwWithStackTrace(FetchException(), trace);
     }
   }
 
@@ -135,22 +166,22 @@ class PublicationService {
       final params = PublicationListParams(
         langArticles: langArticles,
         langUI: langUI,
+        page: page,
         sort: 'all',
         period: sort == SortEnum.byBest ? period.name : null,
         score: score,
-        page: page,
       );
 
-      final queryString = params.toQueryString();
       final response = await _mobileClient.get(
-        '/articles/?hub=$hub&$queryString',
+        '/articles/?hub=$hub',
+        queryParams: params.toMap(),
       );
 
       return PublicationListResponse.fromMap(response.data);
     } on DisplayableException {
       rethrow;
-    } on DioException {
-      throw FetchException();
+    } catch (e, trace) {
+      Error.throwWithStackTrace(FetchException(), trace);
     }
   }
 
@@ -174,9 +205,9 @@ class PublicationService {
         UserPublicationType.news => '&news=true',
       };
 
-      final queryString = params.toQueryString();
       final response = await _mobileClient.get(
-        '/articles/?user=$user$typeQuery&$queryString',
+        '/articles/?user=$user$typeQuery',
+        queryParams: params.toMap(),
       );
 
       return switch (type) {
@@ -185,8 +216,8 @@ class PublicationService {
       } as ListResponse;
     } on DisplayableException {
       rethrow;
-    } on DioException {
-      throw FetchException();
+    } catch (e, trace) {
+      Error.throwWithStackTrace(FetchException(), trace);
     }
   }
 
@@ -223,8 +254,8 @@ class PublicationService {
       } as ListResponse;
     } on DisplayableException {
       rethrow;
-    } on DioException {
-      throw FetchException();
+    } catch (e, trace) {
+      Error.throwWithStackTrace(FetchException(), trace);
     }
   }
 
@@ -253,8 +284,13 @@ class PublicationService {
       return CommentListResponse.fromMap(response.data);
     } on DisplayableException {
       rethrow;
-    } on DioException catch (e) {
-      throw CommentsListException.fromDioException(e);
+    } on DioException catch (e, trace) {
+      Error.throwWithStackTrace(
+        CommentsListException.fromDioException(e),
+        trace,
+      );
+    } catch (e, trace) {
+      Error.throwWithStackTrace(FetchException(), trace);
     }
   }
 
@@ -272,8 +308,8 @@ class PublicationService {
       return true;
     } on DisplayableException {
       rethrow;
-    } on DioException {
-      throw FetchException();
+    } catch (e, trace) {
+      Error.throwWithStackTrace(FetchException(), trace);
     }
   }
 
@@ -290,8 +326,8 @@ class PublicationService {
       return true;
     } on DisplayableException {
       rethrow;
-    } on DioException {
-      throw FetchException();
+    } catch (e, trace) {
+      Error.throwWithStackTrace(FetchException(), trace);
     }
   }
 
@@ -313,8 +349,8 @@ class PublicationService {
       return MostReadingResponse.fromMap(response.data);
     } on DisplayableException {
       rethrow;
-    } on DioException {
-      throw FetchException();
+    } catch (e, trace) {
+      Error.throwWithStackTrace(FetchException(), trace);
     }
   }
 }

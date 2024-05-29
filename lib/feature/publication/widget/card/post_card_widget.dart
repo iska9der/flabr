@@ -11,16 +11,19 @@ import '../stats/stats_widget.dart';
 import 'components/footer_widget.dart';
 import 'components/header_widget.dart';
 import 'components/hubs_widget.dart';
+import 'components/publication_type_widget.dart';
 
 class PostCardWidget extends StatelessWidget {
   const PostCardWidget({
     super.key,
     required this.post,
     this.renderType = RenderType.plain,
+    this.showType = false,
   });
 
   final PublicationPost post;
   final RenderType renderType;
+  final bool showType;
 
   @override
   Widget build(BuildContext context) {
@@ -28,27 +31,29 @@ class PostCardWidget extends StatelessWidget {
       onTap: () => getIt.get<AppRouter>().pushWidget(
             PostDetailPage(id: post.id),
           ),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.min,
         children: [
+          if (showType) PublicationTypeWidget(type: post.type),
           PublicationHeaderWidget(post),
           Padding(
-            padding: const EdgeInsets.fromLTRB(8, 18, 8, 0),
+            padding: const EdgeInsets.only(top: 18),
             child: PublicationStatsWidget(post),
           ),
           Padding(
-            padding: const EdgeInsets.fromLTRB(8, 12, 8, 0),
+            padding: const EdgeInsets.only(top: 12),
             child: PublicationHubsWidget(hubs: post.hubs),
           ),
           Padding(
-            padding: const EdgeInsets.fromLTRB(8, 24, 8, 0),
+            padding: const EdgeInsets.only(top: 24),
             child: HtmlWidget(
               post.textHtml,
             ),
           ),
           Padding(
-            padding: const EdgeInsets.fromLTRB(8, 12, 8, 0),
+            padding: const EdgeInsets.only(top: 12),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [

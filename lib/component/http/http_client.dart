@@ -5,23 +5,51 @@ class HttpClient {
 
   final Dio client;
 
-  Future<Response> get(String url, {Options? options}) => client.get(
+  Future<Response> get(
+    String url, {
+    Map<String, dynamic>? queryParams,
+    Options? options,
+  }) =>
+      client.get(
         url,
+        queryParameters: queryParams,
         options: options,
       );
 
-  Future<Response> post(String url, {dynamic body, Options? options}) =>
+  Future<Response> post(
+    String url, {
+    dynamic body,
+    Map<String, dynamic>? queryParams,
+    Options? options,
+  }) =>
       client.post(
         url,
         data: body,
+        queryParameters: queryParams,
         options: options,
       );
 
-  Future<Response> put(String url, {dynamic body}) =>
-      client.put(url, data: body);
+  Future<Response> put(
+    String url, {
+    dynamic body,
+    Map<String, dynamic>? queryParams,
+  }) =>
+      client.put(
+        url,
+        data: body,
+        queryParameters: queryParams,
+      );
 
-  Future<Response> patch(String url, {dynamic body}) =>
-      client.patch(url, data: body);
+  Future<Response> patch(
+    String url, {
+    dynamic body,
+    Map<String, dynamic>? queryParams,
+  }) =>
+      client.patch(
+        url,
+        data: body,
+        queryParameters: queryParams,
+      );
 
   Future<Response> delete(String url, {dynamic body}) => client.delete(url);
 }

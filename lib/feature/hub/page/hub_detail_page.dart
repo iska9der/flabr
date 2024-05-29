@@ -7,8 +7,10 @@ import '../../../common/widget/publication_sliver_list.dart';
 import '../../../component/di/dependencies.dart';
 import '../../../config/constants.dart';
 import '../../enhancement/scroll/scroll.dart';
+import '../../publication/cubit/publication_list_cubit.dart';
+import '../../publication/model/sort/sort_enum.dart';
 import '../../publication/repository/publication_repository.dart';
-import '../../publication/widget/sort/articles_sort_widget.dart';
+import '../../publication/widget/sort/publication_sort_widget.dart';
 import '../../settings/cubit/settings_cubit.dart';
 import '../../settings/repository/language_repository.dart';
 import '../cubit/hub_cubit.dart';
@@ -71,18 +73,35 @@ class HubDetailPageView extends StatelessWidget {
             controller: scrollCtrl,
             child: CustomScrollView(
               controller: scrollCtrl,
-              slivers: const [
-                SliverToBoxAdapter(child: HubProfileCardWidget()),
+              slivers: [
+                const SliverToBoxAdapter(child: HubProfileCardWidget()),
                 SliverAppBar(
                   automaticallyImplyLeading: false,
                   elevation: 0,
                   scrolledUnderElevation: 0,
                   floating: true,
-                  toolbarHeight: fSortToolbarHeight,
-                  title: ArticlesSortWidget<HubPublicationListCubit,
-                      HubPublicationListState>(),
+                  toolbarHeight: flowSortToolbarHeight,
+                  title: BlocBuilder<HubPublicationListCubit,
+                      HubPublicationListState>(
+                    builder: (context, state) {
+                      return PublicationSortWidget(
+                        isLoading:
+                            state.status == PublicationListStatus.loading,
+                        sortBy: state.sort,
+                        sortByChange: (option) => context
+                            .read<HubPublicationListCubit>()
+                            .changeSortBy(option.value),
+                        sortByDetail: state.sort == SortEnum.byBest
+                            ? state.period
+                            : state.score,
+                        sortByDetailChange: (option) => context
+                            .read<HubPublicationListCubit>()
+                            .changeSortByOption(state.sort, option.value),
+                      );
+                    },
+                  ),
                 ),
-                _HubArticleListView(),
+                const _HubArticleListView(),
               ],
             ),
           );

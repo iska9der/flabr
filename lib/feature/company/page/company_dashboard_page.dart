@@ -66,11 +66,12 @@ class CompanyDashboardPageView extends StatelessWidget {
               preferredSize: const Size.fromHeight(fDashboardTabHeight),
               child: SizedBox(
                 height: fDashboardTabHeight,
-                child: ColoredBox(
-                  color: Theme.of(context).colorScheme.surface,
+                child: Align(
+                  alignment: Alignment.centerLeft,
                   child: TabBar(
                     controller: controller,
                     isScrollable: true,
+                    padding: EdgeInsets.zero,
                     dividerColor: Colors.transparent,
                     tabs: const [
                       DashboardDrawerLinkWidget(

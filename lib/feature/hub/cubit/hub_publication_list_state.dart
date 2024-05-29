@@ -1,38 +1,35 @@
 part of 'hub_publication_list_cubit.dart';
 
 class HubPublicationListState extends Equatable
-    implements SortablePublicationListState {
+    implements PublicationListState {
   const HubPublicationListState({
     this.status = PublicationListStatus.initial,
     this.error = '',
+    this.page = 1,
+    this.pagesCount = 0,
+    this.publications = const [],
     this.hub = '',
     this.type = PublicationType.article,
     this.sort = SortEnum.byNew,
     this.period = DatePeriodEnum.daily,
     this.score = '',
-    this.page = 1,
-    this.pagesCount = 0,
-    this.publications = const [],
   });
 
   @override
   final PublicationListStatus status;
   @override
   final String error;
-  final String hub;
-  final PublicationType type;
-  @override
-  final SortEnum sort;
-  @override
-  final DatePeriodEnum period;
-  @override
-  final String score;
   @override
   final int page;
   @override
   final int pagesCount;
   @override
   final List<Publication> publications;
+  final String hub;
+  final PublicationType type;
+  final SortEnum sort;
+  final DatePeriodEnum period;
+  final String score;
 
   HubPublicationListState copyWith({
     PublicationListStatus? status,

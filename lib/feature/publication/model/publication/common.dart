@@ -28,11 +28,10 @@ class PublicationCommon extends Publication {
   factory PublicationCommon.fromMap(Map<String, dynamic> map) {
     return PublicationCommon(
       id: map['id'],
-      type: map.containsKey('postType')
-          ? PublicationType.fromString(map['postType'])
-          : PublicationType.article,
+      type: map.containsKey('publicationType')
+          ? PublicationType.fromString(map['publicationType'])
+          : PublicationType.unknown,
       timePublished: map['timePublished'],
-      titleHtml: map['titleHtml'] ?? '',
       textHtml: map['textHtml'] ?? '',
       author: map['author'] != null
           ? PublicationAuthorModel.fromMap(map['author'])
@@ -40,9 +39,6 @@ class PublicationCommon extends Publication {
       statistics: map['statistics'] != null
           ? PublicationStatisticsModel.fromMap(map['statistics'])
           : PublicationStatisticsModel.empty,
-      leadData: map['leadData'] != null
-          ? PublicationLeadDataModel.fromMap(map['leadData'])
-          : PublicationLeadDataModel.empty,
       relatedData: map['relatedData'] != null
           ? PublicationRelatedDataModel.fromMap(map['relatedData'])
           : PublicationRelatedDataModel.empty,
@@ -55,6 +51,12 @@ class PublicationCommon extends Publication {
           ? List<String>.from(map['tags'].map((tag) => tag['titleHtml']))
               .toList()
           : const [],
+
+      /// добавленные поля
+      titleHtml: map['titleHtml'] ?? '',
+      leadData: map['leadData'] != null
+          ? PublicationLeadDataModel.fromMap(map['leadData'])
+          : PublicationLeadDataModel.empty,
       complexity: map['complexity'] != null
           ? PublicationComplexity.fromString(map['complexity'])
           : null,

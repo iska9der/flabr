@@ -33,6 +33,13 @@ class Params extends Equatable {
     return 'fl=$langArticles&hl=$langUI&page=$page';
   }
 
+  Map<String, dynamic> toMap() {
+    final asString = toQueryString();
+    final uri = Uri(query: asString);
+
+    return uri.queryParameters;
+  }
+
   @override
   List<Object?> get props => [langArticles, langUI, page];
 }

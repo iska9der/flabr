@@ -1,7 +1,7 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class CacheStorage {
-  CacheStorage(FlutterSecureStorage storage) : _storage = storage;
+  CacheStorage(this._storage);
 
   final FlutterSecureStorage _storage;
 

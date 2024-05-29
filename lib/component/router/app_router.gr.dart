@@ -90,6 +90,12 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const DashboardPage(),
       );
     },
+    FeedListRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const FeedListPage(),
+      );
+    },
     HubDashboardRoute.name: (routeData) {
       final pathParams = routeData.inheritedPathParams;
       final args = routeData.argsAs<HubDashboardRouteArgs>(
@@ -503,6 +509,20 @@ class DashboardRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'DashboardRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [FeedListPage]
+class FeedListRoute extends PageRouteInfo<void> {
+  const FeedListRoute({List<PageRouteInfo>? children})
+      : super(
+          FeedListRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'FeedListRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }

@@ -10,13 +10,12 @@ import '../model/publication/publication.dart';
 import '../model/publication_type.dart';
 import '../model/sort/date_period_enum.dart';
 import '../model/sort/sort_enum.dart';
-import '../model/sort/sort_option_model.dart';
 import 'publication_list_cubit.dart';
 
 part 'flow_publication_list_state.dart';
 
 class FlowPublicationListCubit
-    extends SortablePublicationListCubit<FlowPublicationListState> {
+    extends PublicationListCubit<FlowPublicationListState> {
   FlowPublicationListCubit({
     required super.repository,
     required super.languageRepository,
@@ -36,8 +35,7 @@ class FlowPublicationListCubit
     ));
   }
 
-  @override
-  void changeSort(SortEnum sort) {
+  void changeSortBy(SortEnum sort) {
     if (state.sort == sort) return;
 
     emit(FlowPublicationListState(
@@ -47,16 +45,15 @@ class FlowPublicationListCubit
     ));
   }
 
-  @override
-  void changeSortOption(SortEnum sort, SortOptionModel option) {
+  void changeSortByOption(SortEnum sort, dynamic value) {
     FlowPublicationListState newState;
     switch (sort) {
       case SortEnum.byBest:
-        if (state.period == option.value) return;
-        newState = FlowPublicationListState(period: option.value);
+        if (state.period == value) return;
+        newState = FlowPublicationListState(period: value);
       case SortEnum.byNew:
-        if (state.score == option.value) return;
-        newState = FlowPublicationListState(score: option.value);
+        if (state.score == value) return;
+        newState = FlowPublicationListState(score: value);
       default:
         throw ValueException('Неизвестный вариант сортировки статей');
     }

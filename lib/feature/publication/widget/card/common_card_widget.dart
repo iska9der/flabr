@@ -16,16 +16,19 @@ import 'components/footer_widget.dart';
 import 'components/format_widget.dart';
 import 'components/header_widget.dart';
 import 'components/hubs_widget.dart';
+import 'components/publication_type_widget.dart';
 
 class CommonCardWidget extends StatelessWidget {
   const CommonCardWidget({
     super.key,
     required this.publication,
     this.renderType = RenderType.plain,
+    this.showType = false,
   });
 
   final PublicationCommon publication;
   final RenderType renderType;
+  final bool showType;
 
   @override
   Widget build(BuildContext context) {
@@ -33,31 +36,27 @@ class CommonCardWidget extends StatelessWidget {
       onTap: () => getIt.get<AppRouter>().pushWidget(
             ArticleDetailPage(id: publication.id),
           ),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
+          if (showType) PublicationTypeWidget(type: publication.type),
           PublicationHeaderWidget(publication),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
-            child: _ArticleTitleWidget(
-              title: publication.titleHtml,
-              renderType: renderType,
-            ),
+          _ArticleTitleWidget(
+            title: publication.titleHtml,
+            renderType: renderType,
           ),
           Padding(
-            padding: const EdgeInsets.fromLTRB(8, 18, 8, 0),
+            padding: const EdgeInsets.only(top: 18),
             child: PublicationStatsWidget(publication),
           ),
           Padding(
-            padding: const EdgeInsets.fromLTRB(8, 12, 8, 0),
+            padding: const EdgeInsets.only(top: 12),
             child: PublicationHubsWidget(hubs: publication.hubs),
           ),
           if (publication.format != null)
-            Padding(
-              padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
-              child: PublicationFormatWidget(publication.format!),
-            ),
+            PublicationFormatWidget(publication.format!),
           Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisSize: MainAxisSize.min,
@@ -83,10 +82,11 @@ class CommonCardWidget extends StatelessWidget {
                   },
                 ),
               BlocBuilder<SettingsCubit, SettingsState>(
-                buildWhen: (p, c) =>
-                    p.feedConfig.isDescriptionVisible !=
-                        c.feedConfig.isDescriptionVisible ||
-                    p.feedConfig.isImageVisible != c.feedConfig.isImageVisible,
+                buildWhen: (previous, current) =>
+                    previous.feedConfig.isDescriptionVisible !=
+                        current.feedConfig.isDescriptionVisible ||
+                    previous.feedConfig.isImageVisible !=
+                        current.feedConfig.isImageVisible,
                 builder: (context, state) {
                   if (!state.feedConfig.isDescriptionVisible) {
                     return const SizedBox();

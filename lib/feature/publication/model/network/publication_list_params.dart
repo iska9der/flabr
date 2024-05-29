@@ -7,7 +7,6 @@ class PublicationListParams extends Params {
     super.page = '',
     this.news = false,
     this.flow,
-    this.feed,
     this.sort,
     this.period,
     this.score = '',
@@ -15,9 +14,6 @@ class PublicationListParams extends Params {
 
   final bool news;
   final String? flow;
-
-  /// 'true', когда нужно получить "мою ленту"
-  final String? feed;
 
   /// Sorting
   final String? sort;
@@ -41,14 +37,8 @@ class PublicationListParams extends Params {
     String flowParam = flow != null ? '&flow=$flow' : '';
     String periodParam = period != null ? '&period=$period' : '';
     String scoreParam = score.isNotEmpty ? '&score=$score' : '';
-    String feedParam = feed != null ? '&myFeed=$feed' : '';
-    if (feedParam.isNotEmpty) {
-      feedParam += news ? '&types[0]=news' : '&types[0]=articles';
-      feedParam += '&complexity=all&score=all';
-      newsParam = '';
-    }
 
-    return 'fl=$langArticles&hl=$langUI$flowParam$feedParam$newsParam$sortParam$periodParam$scoreParam&page=$page';
+    return 'fl=$langArticles&hl=$langUI$flowParam$newsParam$sortParam$periodParam$scoreParam&page=$page';
   }
 
   @override
@@ -56,7 +46,6 @@ class PublicationListParams extends Params {
         ...super.props,
         news,
         flow,
-        feed,
         sort,
         period,
         score,
