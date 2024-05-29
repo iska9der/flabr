@@ -122,7 +122,6 @@ class _PublicationDashboardPageState extends State<PublicationDashboardPage> {
                           child: TabBar(
                             controller: controller,
                             isScrollable: true,
-                            tabAlignment: TabAlignment.start,
                             padding: EdgeInsets.zero,
                             labelPadding: const EdgeInsets.symmetric(
                               horizontal: 12,

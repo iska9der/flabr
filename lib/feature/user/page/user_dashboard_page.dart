@@ -72,28 +72,32 @@ class UserDashboardView extends StatelessWidget {
               preferredSize: const Size.fromHeight(fDashboardTabHeight),
               child: SizedBox(
                 height: fDashboardTabHeight,
-                child: TabBar(
-                  controller: controller,
-                  isScrollable: true,
-                  dividerColor: Colors.transparent,
-                  tabs: const [
-                    DashboardDrawerLinkWidget(
-                      title: UserDetailPage.title,
-                      route: UserDetailPage.routePath,
-                    ),
-                    DashboardDrawerLinkWidget(
-                      title: UserPublicationListPage.title,
-                      route: UserPublicationListPage.routePath,
-                    ),
-                    DashboardDrawerLinkWidget(
-                      title: UserCommentListPage.title,
-                      route: UserCommentListPage.routePath,
-                    ),
-                    DashboardDrawerLinkWidget(
-                      title: UserBookmarkListPage.title,
-                      route: UserBookmarkListPage.routePath,
-                    ),
-                  ],
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: TabBar(
+                    controller: controller,
+                    isScrollable: true,
+                    padding: EdgeInsets.zero,
+                    dividerColor: Colors.transparent,
+                    tabs: const [
+                      DashboardDrawerLinkWidget(
+                        title: UserDetailPage.title,
+                        route: UserDetailPage.routePath,
+                      ),
+                      DashboardDrawerLinkWidget(
+                        title: UserPublicationListPage.title,
+                        route: UserPublicationListPage.routePath,
+                      ),
+                      DashboardDrawerLinkWidget(
+                        title: UserCommentListPage.title,
+                        route: UserCommentListPage.routePath,
+                      ),
+                      DashboardDrawerLinkWidget(
+                        title: UserBookmarkListPage.title,
+                        route: UserBookmarkListPage.routePath,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
