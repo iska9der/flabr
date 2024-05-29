@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 import '../../../common/exception/exception_helper.dart';
 import '../../../common/model/network/list_response.dart';
 import '../model/publication/publication.dart';
+import '../model/publication_type.dart';
 import '../model/sort/score_enum.dart';
 import '../model/sort/sort_option_model.dart';
 import 'publication_list_cubit.dart';
@@ -70,5 +71,13 @@ class FeedPublicationListCubit
     }
 
     emit(FeedPublicationListState(score: newScore));
+  }
+
+  void changeFilterTypes(List<PublicationType> types) {
+    types.removeWhere(
+      (type) => !FeedPublicationListState.availableTypes.contains(type),
+    );
+
+    emit(state.copyWith(types: types));
   }
 }

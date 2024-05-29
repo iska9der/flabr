@@ -80,7 +80,7 @@ class HubDetailPageView extends StatelessWidget {
                   elevation: 0,
                   scrolledUnderElevation: 0,
                   floating: true,
-                  toolbarHeight: fSortToolbarHeight,
+                  toolbarHeight: flowSortToolbarHeight,
                   title: BlocBuilder<HubPublicationListCubit,
                       HubPublicationListState>(
                     builder: (context, state) {

@@ -28,7 +28,7 @@ class _AppBarState extends State<FlowListAppBar> {
   }
 
   double calcExpandedHeight() {
-    return fToolBarHeight + (isFilterShown ? fSortToolbarHeight : 0);
+    return fToolBarHeight + (isFilterShown ? flowSortToolbarHeight : 0);
   }
 
   void onFilterPress() {

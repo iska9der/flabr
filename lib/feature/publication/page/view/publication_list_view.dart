@@ -33,7 +33,7 @@ class PublicationListView<C extends PublicationListCubit<S>,
     final scrollController = scrollCubit.state.controller;
 
     final sidebarHeight =
-        Device.getHeight(context) - fSortToolbarHeight - fToolBarHeight;
+        Device.getHeight(context) - flowSortToolbarHeight - fToolBarHeight;
 
     return MultiBlocListener(
       listeners: [

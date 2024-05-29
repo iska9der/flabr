@@ -26,7 +26,7 @@ class _AppBarState extends State<FeedListAppBar> {
   }
 
   double calcExpandedHeight() {
-    return fToolBarHeight + (isFilterShown ? fSortToolbarHeight : 0);
+    return fToolBarHeight + (isFilterShown ? feedSortToolbarHeight : 0);
   }
 
   void onFilterPress() {
@@ -74,6 +74,10 @@ class _AppBarState extends State<FeedListAppBar> {
                         onScoreChange: (option) => context
                             .read<FeedPublicationListCubit>()
                             .changeFilterScore(option),
+                        currentTypes: state.types,
+                        onTypesChange: (newTypes) => context
+                            .read<FeedPublicationListCubit>()
+                            .changeFilterTypes(newTypes),
                       );
                     },
                   ),

@@ -1,10 +1,10 @@
 enum PublicationType {
   /// для всех неопознанных типов
-  unknown,
-  article,
-  post,
-  news,
-  megaproject,
+  unknown(label: 'Неизвестно'),
+  article(label: 'Статья'),
+  post(label: 'Пост'),
+  news(label: 'Новость'),
+  megaproject(label: 'Мегапроект'),
 
   /// Этот тип постов прилетает к нам, но мы не понимать каково их предназначение.
   /// Почти все поля у них пустые.
@@ -37,7 +37,11 @@ enum PublicationType {
   /// },
   /// ```
   ///
-  voice;
+  voice(label: 'Голос');
+
+  const PublicationType({required this.label});
+
+  final String label;
 
   factory PublicationType.fromString(String value) {
     return PublicationType.values.firstWhere(
