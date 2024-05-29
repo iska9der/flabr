@@ -85,21 +85,19 @@ class HubDetailPageView extends StatelessWidget {
                       HubPublicationListState>(
                     builder: (context, state) {
                       return PublicationSortWidget(
-                          isLoading:
-                              state.status == PublicationListStatus.loading,
-                          sortValue: state.sort,
-                          sortChange: (sort) => context
-                              .read<HubPublicationListCubit>()
-                              .changeSort(sort),
-                          optionValue: state.sort == SortEnum.byBest
-                              ? state.period
-                              : state.score,
-                          optionChange: (option) => context
-                              .read<HubPublicationListCubit>()
-                              .changeSortOption(
-                                state.sort,
-                                option,
-                              ));
+                        isLoading:
+                            state.status == PublicationListStatus.loading,
+                        sortBy: state.sort,
+                        sortByChange: (option) => context
+                            .read<HubPublicationListCubit>()
+                            .changeSortBy(option.value),
+                        sortByDetail: state.sort == SortEnum.byBest
+                            ? state.period
+                            : state.score,
+                        sortByDetailChange: (option) => context
+                            .read<HubPublicationListCubit>()
+                            .changeSortByOption(state.sort, option.value),
+                      );
                     },
                   ),
                 ),

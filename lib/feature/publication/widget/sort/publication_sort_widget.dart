@@ -6,24 +6,23 @@ import '../../../publication/model/sort/sort_option_model.dart';
 import '../../model/sort/score_enum.dart';
 import 'sort_options_widget.dart';
 
-part 'sort_by_widget.dart';
-
 class PublicationSortWidget extends StatelessWidget {
   const PublicationSortWidget({
     super.key,
-    required this.sortValue,
-    required this.sortChange,
-    required this.optionValue,
-    required this.optionChange,
+    required this.sortBy,
+    required this.sortByChange,
+    required this.sortByDetail,
+    required this.sortByDetailChange,
     this.isLoading = false,
   });
 
   final bool isLoading;
-  final SortEnum sortValue;
-  final Function(SortEnum sort) sortChange;
 
-  final dynamic optionValue;
-  final Function(SortOptionModel option) optionChange;
+  final SortEnum sortBy;
+  final Function(SortOptionModel option) sortByChange;
+
+  final dynamic sortByDetail;
+  final Function(SortOptionModel option) sortByDetailChange;
 
   @override
   Widget build(BuildContext context) {
@@ -32,14 +31,20 @@ class PublicationSortWidget extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       mainAxisSize: MainAxisSize.min,
       children: [
-        _SortByWidget(
+        SortOptionsWidget(
           isEnabled: !isLoading,
-          currentValue: sortValue,
-          onTap: (sort) => sortChange(sort),
+          options: SortEnum.values
+              .map((sort) => SortOptionModel(
+                    label: sort.label,
+                    value: sort,
+                  ))
+              .toList(),
+          currentValue: sortBy,
+          onSelected: sortByChange,
         ),
         SortOptionsWidget(
           isEnabled: !isLoading,
-          options: switch (sortValue) {
+          options: switch (sortBy) {
             SortEnum.byNew => ScoreEnum.values
                 .map((score) => SortOptionModel(
                       label: score.label,
@@ -53,8 +58,8 @@ class PublicationSortWidget extends StatelessWidget {
                     ))
                 .toList(),
           },
-          currentValue: optionValue,
-          onSelected: (option) => optionChange(option),
+          currentValue: sortByDetail,
+          onSelected: sortByDetailChange,
         ),
       ],
     );

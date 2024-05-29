@@ -73,19 +73,16 @@ class _AppBarState extends State<FlowListAppBar> {
                       return PublicationSortWidget(
                         isLoading:
                             state.status == PublicationListStatus.loading,
-                        sortValue: state.sort,
-                        sortChange: (sort) => context
+                        sortBy: state.sort,
+                        sortByChange: (option) => context
                             .read<FlowPublicationListCubit>()
-                            .changeSort(sort),
-                        optionValue: state.sort == SortEnum.byBest
+                            .changeSortBy(option.value),
+                        sortByDetail: state.sort == SortEnum.byBest
                             ? state.period
                             : state.score,
-                        optionChange: (option) => context
+                        sortByDetailChange: (option) => context
                             .read<FlowPublicationListCubit>()
-                            .changeSortOption(
-                              state.sort,
-                              option,
-                            ),
+                            .changeSortByOption(state.sort, option.value),
                       );
                     },
                   ),

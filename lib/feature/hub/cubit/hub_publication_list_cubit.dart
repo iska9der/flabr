@@ -10,7 +10,6 @@ import '../../publication/model/publication/publication.dart';
 import '../../publication/model/publication_type.dart';
 import '../../publication/model/sort/date_period_enum.dart';
 import '../../publication/model/sort/sort_enum.dart';
-import '../../publication/model/sort/sort_option_model.dart';
 
 part 'hub_publication_list_state.dart';
 
@@ -26,7 +25,7 @@ class HubPublicationListCubit
           type: type,
         ));
 
-  void changeSort(SortEnum sort) {
+  void changeSortBy(SortEnum sort) {
     if (state.sort == sort) return;
 
     emit(HubPublicationListState(
@@ -36,15 +35,15 @@ class HubPublicationListCubit
     ));
   }
 
-  void changeSortOption(SortEnum sort, SortOptionModel option) {
+  void changeSortByOption(SortEnum sort, dynamic value) {
     HubPublicationListState newState;
     switch (sort) {
       case SortEnum.byBest:
-        if (state.period == option.value) return;
-        newState = HubPublicationListState(period: option.value);
+        if (state.period == value) return;
+        newState = HubPublicationListState(period: value);
       case SortEnum.byNew:
-        if (state.score == option.value) return;
-        newState = HubPublicationListState(score: option.value);
+        if (state.score == value) return;
+        newState = HubPublicationListState(score: value);
       default:
         throw ValueException('Неизвестный вариант сортировки статей');
     }

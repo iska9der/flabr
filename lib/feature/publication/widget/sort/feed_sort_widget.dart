@@ -29,6 +29,7 @@ class FeedSortWidget extends StatelessWidget {
           style: Theme.of(context).textTheme.labelLarge,
         ),
         SortOptionsWidget(
+          isEnabled: !isLoading,
           options: ScoreEnum.values
               .map((e) => SortOptionModel(label: e.label, value: e.value))
               .toList(),
