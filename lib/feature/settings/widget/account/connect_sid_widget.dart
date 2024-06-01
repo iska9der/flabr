@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../common/utils/utils.dart';
-import '../../../../component/di/dependencies.dart';
+import '../../../../component/di/injector.dart';
 import '../../../auth/cubit/auth_cubit.dart';
 import '../../../auth/cubit/login_cubit.dart';
 import '../../../auth/repository/token_repository.dart';

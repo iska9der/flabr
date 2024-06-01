@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../common/widget/dashboard_drawer_link_widget.dart';
-import '../../../component/di/dependencies.dart';
+import '../../../component/di/injector.dart';
 import '../../../component/router/app_router.dart';
 import '../../../component/theme/constants.dart';
 import '../../auth/widget/profile_icon_button.dart';

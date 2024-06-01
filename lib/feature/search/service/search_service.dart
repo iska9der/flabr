@@ -5,9 +5,9 @@ import '../model/network/search_params.dart';
 import '../model/search_target.dart';
 
 class SearchService {
-  const SearchService(HttpClient client) : _client = client;
+  const SearchService(HttpClient client) : _mobileClient = client;
 
-  final HttpClient _client;
+  final HttpClient _mobileClient;
 
   Future fetch({
     required String langUI,
@@ -28,7 +28,7 @@ class SearchService {
       );
 
       final queryString = params.toQueryString();
-      final response = await _client.get(queryString);
+      final response = await _mobileClient.get(queryString);
 
       return response.data;
     } on DisplayableException {

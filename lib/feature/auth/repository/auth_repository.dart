@@ -1,7 +1,10 @@
+import 'package:injectable/injectable.dart';
+
 import '../model/auth_data_model.dart';
 import '../model/me_model.dart';
 import '../service/auth_service.dart';
 
+@Singleton()
 class AuthRepository {
   AuthRepository(AuthService service) : _service = service;
 

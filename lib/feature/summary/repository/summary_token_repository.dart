@@ -1,7 +1,10 @@
+import 'package:injectable/injectable.dart';
+
 import '../../../component/storage/cache_storage.dart';
 
 const yaTokenCacheKey = 'yaGptToken';
 
+@Singleton()
 class SummaryTokenRepository {
   SummaryTokenRepository(CacheStorage storage) : _storage = storage;
 

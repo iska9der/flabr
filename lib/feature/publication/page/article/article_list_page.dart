@@ -2,7 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../component/di/dependencies.dart';
+import '../../../../component/di/injector.dart';
 import '../../../enhancement/scroll/cubit/scroll_cubit.dart';
 import '../../../settings/repository/language_repository.dart';
 import '../../cubit/flow_publication_list_cubit.dart';

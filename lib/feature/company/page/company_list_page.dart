@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../common/utils/utils.dart';
 import '../../../common/widget/enhancement/progress_indicator.dart';
-import '../../../component/di/dependencies.dart';
+import '../../../component/di/injector.dart';
 import '../../../config/constants.dart';
 import '../../enhancement/scroll/scroll.dart';
 import '../../settings/cubit/settings_cubit.dart';

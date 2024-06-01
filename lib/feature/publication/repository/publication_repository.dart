@@ -1,3 +1,5 @@
+import 'package:injectable/injectable.dart';
+
 import '../../../common/model/network/list_response.dart';
 import '../../../component/localization/language_enum.dart';
 import '../../../component/localization/language_helper.dart';
@@ -16,6 +18,7 @@ import '../model/sort/sort_enum.dart';
 import '../model/source/publication_source.dart';
 import '../service/publication_service.dart';
 
+@LazySingleton()
 class PublicationRepository {
   PublicationRepository(this.service);
 

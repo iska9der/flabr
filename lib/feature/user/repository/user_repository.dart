@@ -1,3 +1,5 @@
+import 'package:injectable/injectable.dart';
+
 import '../../../component/language.dart';
 import '../model/network/user_comment_list_response.dart';
 import '../model/network/user_list_response.dart';
@@ -5,6 +7,7 @@ import '../model/user_model.dart';
 import '../model/user_whois_model.dart';
 import '../service/user_service.dart';
 
+@LazySingleton()
 class UserRepository {
   UserRepository(UserService service) : _service = service;
 

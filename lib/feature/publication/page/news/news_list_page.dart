@@ -2,7 +2,7 @@ import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../component/di/dependencies.dart';
+import '../../../../component/di/injector.dart';
 import '../../../enhancement/scaffold/scaffold.dart';
 import '../../../enhancement/scroll/scroll.dart';
 import '../../../settings/repository/language_repository.dart';

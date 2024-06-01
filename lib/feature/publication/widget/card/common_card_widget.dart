@@ -4,7 +4,7 @@ import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart
 
 import '../../../../common/model/render_type.dart';
 import '../../../../common/widget/enhancement/card.dart';
-import '../../../../component/di/dependencies.dart';
+import '../../../../component/di/injector.dart';
 import '../../../../component/router/app_router.dart';
 import '../../../../config/constants.dart';
 import '../../../common/image/widget/network_image_widget.dart';

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:photo_view/photo_view.dart';
 
-import '../../../../component/di/dependencies.dart';
+import '../../../../component/di/injector.dart';
 import '../../../../component/http/http_client.dart';
 import '../cubit/image_action_cubit.dart';
 

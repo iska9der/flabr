@@ -6,7 +6,7 @@ import '../../../common/model/extension/num.dart';
 import '../../../common/widget/enhancement/app_expansion_panel.dart';
 import '../../../common/widget/enhancement/card.dart';
 import '../../../common/widget/enhancement/progress_indicator.dart';
-import '../../../component/di/dependencies.dart';
+import '../../../component/di/injector.dart';
 import '../../../component/router/app_router.dart';
 import '../../../config/constants.dart';
 import '../cubit/most_reading_cubit.dart';

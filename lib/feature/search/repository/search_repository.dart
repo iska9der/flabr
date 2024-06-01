@@ -1,3 +1,5 @@
+import 'package:injectable/injectable.dart';
+
 import '../../../common/exception/value_exception.dart';
 import '../../../common/model/network/list_response.dart';
 import '../../../component/language.dart';
@@ -9,6 +11,7 @@ import '../model/search_order.dart';
 import '../model/search_target.dart';
 import '../service/search_service.dart';
 
+@LazySingleton()
 class SearchRepository {
   const SearchRepository(SearchService service) : _service = service;
 

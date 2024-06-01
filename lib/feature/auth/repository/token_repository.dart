@@ -1,9 +1,12 @@
+import 'package:injectable/injectable.dart';
+
 import '../../../component/storage/cache_storage.dart';
 import '../model/auth_data_model.dart';
 
 const authDataCacheKey = 'aData';
 const authCsrfCacheKey = 'cData';
 
+@Singleton()
 class TokenRepository {
   TokenRepository(this._storage);
 

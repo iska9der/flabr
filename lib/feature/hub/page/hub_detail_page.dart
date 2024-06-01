@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../common/widget/enhancement/progress_indicator.dart';
 import '../../../common/widget/publication_sliver_list.dart';
-import '../../../component/di/dependencies.dart';
+import '../../../component/di/injector.dart';
 import '../../../config/constants.dart';
 import '../../enhancement/scroll/scroll.dart';
 import '../../publication/cubit/publication_list_cubit.dart';

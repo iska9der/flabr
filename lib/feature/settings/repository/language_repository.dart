@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:injectable/injectable.dart';
+
 import '../../../common/exception/value_exception.dart';
 import '../../../component/language.dart';
 import '../../../component/storage/cache_storage.dart';
@@ -7,6 +9,7 @@ import '../../../component/storage/cache_storage.dart';
 const langUICacheKey = 'langUI';
 const langArticlesCacheKey = 'langArticles';
 
+@Singleton()
 class LanguageRepository {
   LanguageRepository({
     required CacheStorage storage,

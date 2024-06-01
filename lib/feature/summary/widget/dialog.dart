@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../component/di/dependencies.dart';
+import '../../../component/di/injector.dart';
 import '../../../component/router/app_router.dart';
 import '../cubit/summary_cubit.dart';
 import '../repository/summary_repository.dart';

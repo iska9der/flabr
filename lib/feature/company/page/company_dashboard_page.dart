@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../common/widget/dashboard_drawer_link_widget.dart';
-import '../../../component/di/dependencies.dart';
+import '../../../component/di/injector.dart';
 import '../../../component/router/app_router.dart';
 import '../../../component/theme.dart';
 import '../../enhancement/scaffold/cubit/scaffold_cubit.dart';

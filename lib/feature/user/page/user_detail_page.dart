@@ -7,7 +7,7 @@ import '../../../common/model/extension/enum_status.dart';
 import '../../../common/utils/utils.dart';
 import '../../../common/widget/detail/section_container_widget.dart';
 import '../../../common/widget/enhancement/progress_indicator.dart';
-import '../../../component/di/dependencies.dart';
+import '../../../component/di/injector.dart';
 import '../../../config/constants.dart';
 import '../cubit/user_cubit.dart';
 import '../widget/user_profile_card_widget.dart';

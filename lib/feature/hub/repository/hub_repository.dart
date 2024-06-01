@@ -1,8 +1,11 @@
+import 'package:injectable/injectable.dart';
+
 import '../../../component/language.dart';
 import '../model/hub_profile_model.dart';
 import '../model/network/hub_list_response.dart';
 import '../service/hub_service.dart';
 
+@LazySingleton()
 class HubRepository {
   HubRepository(HubService service) : _service = service;
 

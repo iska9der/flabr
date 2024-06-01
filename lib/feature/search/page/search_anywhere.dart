@@ -7,7 +7,7 @@ import '../../../common/model/extension/enum_status.dart';
 import '../../../common/model/render_type.dart';
 import '../../../common/utils/utils.dart';
 import '../../../common/widget/enhancement/progress_indicator.dart';
-import '../../../component/di/dependencies.dart';
+import '../../../component/di/injector.dart';
 import '../../../config/constants.dart';
 import '../../company/widget/company_card_widget.dart';
 import '../../enhancement/scroll/scroll.dart';

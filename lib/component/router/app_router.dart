@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:injectable/injectable.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 import '../../feature/company/page/company_dashboard_page.dart';
@@ -32,6 +33,7 @@ import 'routes.dart';
 
 part 'app_router.gr.dart';
 
+@Singleton()
 @AutoRouterConfig(
   replaceInRouteName: 'Page,Route',
 )
@@ -127,11 +129,11 @@ class AppRouter extends _$AppRouter {
           path: PublicationDashboardPage.routePath,
           page: PublicationsDashboardRoute.page,
           children: [
-/// Таб "Моя лента"
-AutoRoute(
-                  path: FeedListPage.routePath,
-                  page: FeedListRoute.page,
-                ),
+            /// Таб "Моя лента"
+            AutoRoute(
+              path: FeedListPage.routePath,
+              page: FeedListRoute.page,
+            ),
 
             /// Таб "Статьи"
             AutoRoute(

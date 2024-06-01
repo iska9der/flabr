@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../common/model/extension/enum_status.dart';
 import '../../../../common/utils/utils.dart';
-import '../../../../component/di/dependencies.dart';
+import '../../../../component/di/injector.dart';
 import '../cubit/subscription_cubit.dart';
 import '../repository/subscription_repository.dart';
 

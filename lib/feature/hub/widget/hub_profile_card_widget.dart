@@ -5,7 +5,7 @@ import '../../../common/model/stat_type.dart';
 import '../../../common/widget/enhancement/card.dart';
 import '../../../common/widget/feed/card_avatar_widget.dart';
 import '../../../common/widget/profile_stat_widget.dart';
-import '../../../component/di/dependencies.dart';
+import '../../../component/di/injector.dart';
 import '../../../config/constants.dart';
 import '../../auth/cubit/auth_cubit.dart';
 import '../../common/profile_subscribe/repository/subscription_repository.dart';

@@ -1,10 +1,13 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:injectable/injectable.dart';
+
 import '../../../component/localization/language_enum.dart';
 import '../../../component/localization/language_helper.dart';
 import '../model/card/company_card_model.dart';
 import '../model/network/company_list_response.dart';
 import '../service/company_service.dart';
 
+@LazySingleton()
 class CompanyRepository {
   CompanyRepository(CompanyService service) : _service = service;
 

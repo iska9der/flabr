@@ -9,7 +9,7 @@ import 'package:webview_flutter/webview_flutter.dart';
 import '../../../common/model/extension/enum_status.dart';
 import '../../../common/utils/utils.dart';
 import '../../../common/widget/enhancement/card.dart';
-import '../../../component/di/dependencies.dart';
+import '../../../component/di/injector.dart';
 import '../../../component/logger/console.dart';
 import '../../../config/constants.dart';
 import '../cubit/auth_cubit.dart';

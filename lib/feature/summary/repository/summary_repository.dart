@@ -1,7 +1,10 @@
+import 'package:injectable/injectable.dart';
+
 import '../../../config/constants.dart';
 import '../model/summary_model.dart';
 import '../service/summary_service.dart';
 
+@LazySingleton()
 class SummaryRepository {
   SummaryRepository(this._service);
 

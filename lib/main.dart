@@ -14,7 +14,7 @@ import 'package:responsive_framework/responsive_framework.dart';
 import 'common/model/extension/enum_status.dart';
 import 'common/widget/enhancement/progress_indicator.dart';
 import 'component/bloc/observer.dart';
-import 'component/di/dependencies.dart';
+import 'component/di/injector.dart';
 import 'component/logger/console.dart';
 import 'component/router/app_router.dart';
 import 'component/storage/cache_storage.dart';
@@ -38,7 +38,7 @@ void main() async {
         [DeviceOrientation.portraitUp],
       );
 
-      setDependencies();
+      configureDependencies();
 
       Intl.defaultLocale = 'ru_RU';
       await initializeDateFormatting('ru_RU');

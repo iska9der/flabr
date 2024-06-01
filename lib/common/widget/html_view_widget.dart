@@ -6,8 +6,8 @@ import 'package:fwfh_svg/fwfh_svg.dart';
 import 'package:fwfh_webview/fwfh_webview.dart';
 import 'package:path/path.dart' as p;
 
-import '../../../component/di/dependencies.dart';
 import '../../../component/router/app_router.dart';
+import '../../component/di/injector.dart';
 import '../../config/constants.dart';
 import '../../feature/common/image/widget/network_image_widget.dart';
 import '../../feature/settings/cubit/settings_cubit.dart';

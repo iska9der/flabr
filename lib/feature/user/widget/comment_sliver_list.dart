@@ -8,7 +8,7 @@ import '../../../common/widget/author_widget.dart';
 import '../../../common/widget/comment_widget.dart';
 import '../../../common/widget/enhancement/button.dart';
 import '../../../common/widget/enhancement/progress_indicator.dart';
-import '../../../component/di/dependencies.dart';
+import '../../../component/di/injector.dart';
 import '../../../component/router/app_router.dart';
 import '../../../config/constants.dart';
 import '../../enhancement/scroll/cubit/scroll_cubit.dart';
