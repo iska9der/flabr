@@ -1,16 +1,10 @@
-import 'package:injectable/injectable.dart';
-
-import '../../../config/constants.dart';
-import 'summary_model.dart';
-import 'summary_service.dart';
+part of 'repository_part.dart';
 
 abstract interface class SummaryRepository {
-  SummaryRepository();
-
   Future<SummaryModel> fetchArticleSummary(String articleId);
 }
 
-@LazySingleton(as: SummaryRepository)
+@Singleton(as: SummaryRepository)
 class SummaryRepositoryImpl implements SummaryRepository {
   SummaryRepositoryImpl(this._service);
 

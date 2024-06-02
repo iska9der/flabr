@@ -1,6 +1,4 @@
-import 'package:injectable/injectable.dart';
-
-import '../../../component/storage/storage_part.dart';
+part of 'repository_part.dart';
 
 abstract interface class SummaryTokenRepository {
   static const String cacheKey = 'yaGptToken';

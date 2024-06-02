@@ -1,22 +1,20 @@
-import 'package:dio/dio.dart';
-
-import '../../../component/http/http_part.dart';
-import '../data/summary_token_repository.dart';
+part of 'http_part.dart';
 
 class SummaryClient extends DioClient {
-  SummaryClient(super.client, {required this.tokenRepository}) {
+  SummaryClient(super.client, {required SummaryTokenRepository tokenRepository})
+      : _tokenRepository = tokenRepository {
     client.options = client.options.copyWith(baseUrl: 'https://300.ya.ru/api');
 
     client.interceptors.clear();
     client.interceptors.add(_interceptor());
   }
 
-  final SummaryTokenRepository tokenRepository;
+  final SummaryTokenRepository _tokenRepository;
 
   Interceptor _interceptor() {
     return InterceptorsWrapper(
       onRequest: (request, handler) async {
-        String? token = await tokenRepository.getToken();
+        String? token = await _tokenRepository.getToken();
 
         if (token != null) {
           request.headers['Authorization'] = 'OAuth $token';

@@ -38,4 +38,5 @@ part 'company_service.dart';
 part 'hub_service.dart';
 part 'publication_service.dart';
 part 'search_service.dart';
+part 'summary_service.dart';
 part 'user_service.dart';

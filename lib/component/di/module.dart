@@ -5,7 +5,6 @@ import 'package:injectable/injectable.dart';
 
 import '../../config/constants.dart';
 import '../../data/repository/repository_part.dart';
-import '../../feature/summary/summary.dart';
 import '../http/http_part.dart';
 import '../storage/storage_part.dart';
 

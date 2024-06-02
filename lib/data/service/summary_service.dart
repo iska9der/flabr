@@ -1,8 +1,4 @@
-import 'package:dio/dio.dart';
-import 'package:injectable/injectable.dart';
-
-import '../../../common/exception/fetch_exception.dart';
-import '../../../component/http/http_part.dart';
+part of 'service_part.dart';
 
 abstract interface class SummaryService {
   Future<String> fetchSharingUrl(String articleUrl);
