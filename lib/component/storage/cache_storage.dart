@@ -1,28 +1,11 @@
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+part of 'storage_part.dart';
 
-class CacheStorage {
-  CacheStorage(this._storage);
+abstract interface class CacheStorage {
+  Future<void> write(String key, String value);
 
-  final FlutterSecureStorage _storage;
+  Future<String?> read(String key);
 
-  /// see [FlutterSecureStorage.write]
-  Future<void> write(String key, String value) async {
-    await _storage.write(key: key, value: value);
-  }
+  Future<void> delete(String key);
 
-  /// see [FlutterSecureStorage.read]
-  Future<String?> read(String key) async {
-    String? value = await _storage.read(key: key);
-    return value;
-  }
-
-  /// see [FlutterSecureStorage.delete]
-  Future<void> delete(String key) async {
-    await _storage.delete(key: key);
-  }
-
-  /// see [FlutterSecureStorage.deleteAll]
-  Future<void> deleteAll() async {
-    await _storage.deleteAll();
-  }
+  Future<void> deleteAll();
 }

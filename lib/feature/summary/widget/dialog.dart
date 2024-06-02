@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../component/di/injector.dart';
 import '../../../component/router/app_router.dart';
 import '../cubit/summary_cubit.dart';
-import '../repository/summary_repository.dart';
 import 'summary_widget.dart';
 
 Future showSummaryDialog(
@@ -18,7 +17,7 @@ Future showSummaryDialog(
     builder: (context) => BlocProvider(
       create: (_) => SummaryCubit(
         articleId: articleId,
-        repository: getIt.get<SummaryRepository>(),
+        repository: getIt(),
       ),
       child: AlertDialog.adaptive(
         clipBehavior: Clip.hardEdge,
@@ -34,9 +33,9 @@ Future showSummaryDialog(
               }
 
               return TextButton(
-                onPressed: () => getIt.get<AppRouter>().launchUrl(
-                      state.model.sharingUrl,
-                    ),
+                onPressed: () => getIt<AppRouter>().launchUrl(
+                  state.model.sharingUrl,
+                ),
                 child: const Text('Ссылка на пересказ'),
               );
             },

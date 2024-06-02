@@ -1,8 +1,4 @@
-import 'package:auto_route/auto_route.dart';
-import 'package:flutter/material.dart';
-
-import '../../config/constants.dart';
-import 'constants.dart';
+part of 'theme_part.dart';
 
 const appCardTheme = CardTheme(
   elevation: 1,

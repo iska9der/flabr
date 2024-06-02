@@ -8,11 +8,10 @@ import '../../../common/widget/enhancement/card.dart';
 import '../../../common/widget/enhancement/progress_indicator.dart';
 import '../../../component/di/injector.dart';
 import '../../../component/router/app_router.dart';
-import '../../../config/constants.dart';
+import '../../../component/theme/theme_part.dart';
 import '../cubit/most_reading_cubit.dart';
 import '../page/article/article_comment_page.dart';
 import '../page/article/article_detail_page.dart';
-import '../repository/publication_repository.dart';
 import 'stats/icon_widget.dart';
 
 class MostReadingWidget extends StatelessWidget {
@@ -24,7 +23,7 @@ class MostReadingWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => MostReadingCubit(getIt.get<PublicationRepository>()),
+      create: (_) => MostReadingCubit(getIt()),
       child: isButton ? const _MostReadingButton() : const _MostReadingList(),
     );
   }
@@ -94,7 +93,7 @@ class _MostReadingListState extends State<_MostReadingList> {
 
   @override
   Widget build(BuildContext context) {
-    final appRouter = getIt.get<AppRouter>();
+    final appRouter = getIt<AppRouter>();
     context.read<MostReadingCubit>().fetch();
 
     return BlocBuilder<MostReadingCubit, MostReadingState>(

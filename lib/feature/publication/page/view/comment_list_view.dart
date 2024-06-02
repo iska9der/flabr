@@ -7,7 +7,7 @@ import '../../../../common/utils/offset_history.dart';
 import '../../../../common/widget/author_widget.dart';
 import '../../../../common/widget/comment_widget.dart';
 import '../../../../common/widget/enhancement/progress_indicator.dart';
-import '../../../../config/constants.dart';
+import '../../../../component/theme/theme_part.dart';
 import '../../cubit/comment/comment_list_cubit.dart';
 import '../../model/comment/comment_model.dart';
 import '../../widget/comment/comment_parent_widget.dart';

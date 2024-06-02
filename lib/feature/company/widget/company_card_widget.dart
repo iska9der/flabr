@@ -10,7 +10,7 @@ import '../../../common/widget/feed/card_avatar_widget.dart';
 import '../../../common/widget/feed/card_title_widget.dart';
 import '../../../common/widget/profile_stat_card_widget.dart';
 import '../../../component/router/routes.dart';
-import '../../../config/constants.dart';
+import '../../../component/theme/theme_part.dart';
 import '../model/company_model.dart';
 import '../model/company_statistics_model.dart';
 import '../page/company_list_page.dart';

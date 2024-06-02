@@ -46,8 +46,7 @@ class CompanyDetailsWidget extends StatelessWidget {
                       .map(
                         (contact) => FlabrCard(
                           onTap: contact.url.isNotEmpty
-                              ? () =>
-                                  getIt.get<AppRouter>().launchUrl(contact.url)
+                              ? () => getIt<AppRouter>().launchUrl(contact.url)
                               : null,
                           child: Row(
                             mainAxisSize: MainAxisSize.min,

@@ -10,7 +10,7 @@ import '../../../common/widget/enhancement/button.dart';
 import '../../../common/widget/enhancement/progress_indicator.dart';
 import '../../../component/di/injector.dart';
 import '../../../component/router/app_router.dart';
-import '../../../config/constants.dart';
+import '../../../component/theme/theme_part.dart';
 import '../../enhancement/scroll/cubit/scroll_cubit.dart';
 import '../../publication/page/article/article_detail_page.dart';
 import '../cubit/user_comment_list_cubit.dart';
@@ -28,10 +28,10 @@ class CommentSliverList extends StatelessWidget {
       listenWhen: (p, c) =>
           p.page != 1 && c.status == CommentListStatus.failure,
       listener: (c, state) {
-        getIt.get<Utils>().showSnack(
-              context: context,
-              content: Text(state.error),
-            );
+        getIt<Utils>().showSnack(
+          context: context,
+          content: Text(state.error),
+        );
       },
       builder: (context, state) {
         /// Инициализация
@@ -88,11 +88,9 @@ class CommentSliverList extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           FlabrTextButton.rectangle(
-                            onPressed: () {
-                              getIt.get<AppRouter>().pushWidget(
-                                    ArticleDetailPage(id: model.publication.id),
-                                  );
-                            },
+                            onPressed: () => getIt<AppRouter>().pushWidget(
+                              ArticleDetailPage(id: model.publication.id),
+                            ),
                             child: Text(
                               model.publication.title,
                               style: Theme.of(context).textTheme.titleLarge,

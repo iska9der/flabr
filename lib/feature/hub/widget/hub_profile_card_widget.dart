@@ -6,14 +6,12 @@ import '../../../common/widget/enhancement/card.dart';
 import '../../../common/widget/feed/card_avatar_widget.dart';
 import '../../../common/widget/profile_stat_widget.dart';
 import '../../../component/di/injector.dart';
-import '../../../config/constants.dart';
+import '../../../component/theme/theme_part.dart';
+import '../../../data/repository/repository_part.dart';
 import '../../auth/cubit/auth_cubit.dart';
-import '../../common/profile_subscribe/repository/subscription_repository.dart';
 import '../../common/profile_subscribe/widget/subscribe_button.dart';
 import '../cubit/hub_cubit.dart';
 import '../model/hub_related_data.dart';
-import '../repository/hub_subscription_repository.dart';
-import '../service/hub_service.dart';
 
 class HubProfileCardWidget extends StatefulWidget {
   const HubProfileCardWidget({super.key});
@@ -28,7 +26,7 @@ class _HubProfileCardWidgetState extends State<HubProfileCardWidget> {
     /// Регистрируем репозиторий подписки для [SubscribeButton]
     getIt.allowReassignment = true;
     getIt.registerFactory<SubscriptionRepository>(
-      () => HubSubscriptionRepository(getIt.get<HubService>()),
+      () => HubSubscriptionRepository(getIt()),
     );
 
     super.initState();

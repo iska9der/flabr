@@ -7,13 +7,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../common/utils/utils.dart';
 import '../../../common/widget/enhancement/progress_indicator.dart';
 import '../../../component/di/injector.dart';
-import '../../../config/constants.dart';
+import '../../../component/theme/theme_part.dart';
 import '../../enhancement/scroll/scroll.dart';
 import '../../settings/cubit/settings_cubit.dart';
-import '../../settings/repository/language_repository.dart';
 import '../cubit/company_list_cubit.dart';
 import '../model/company_model.dart';
-import '../repository/company_repository.dart';
 import '../widget/company_card_widget.dart';
 
 @RoutePage(name: CompanyListPage.routeName)
@@ -31,8 +29,8 @@ class CompanyListPage extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (_) => CompanyListCubit(
-            repository: getIt.get<CompanyRepository>(),
-            languageRepository: getIt.get<LanguageRepository>(),
+            repository: getIt(),
+            languageRepository: getIt(),
           ),
         ),
         BlocProvider(
@@ -77,10 +75,10 @@ class CompanyListPageView extends StatelessWidget {
             listenWhen: (p, c) =>
                 p.page != 1 && c.status == CompanyListStatus.failure,
             listener: (c, state) {
-              getIt.get<Utils>().showSnack(
-                    context: context,
-                    content: Text(state.error),
-                  );
+              getIt<Utils>().showSnack(
+                context: context,
+                content: Text(state.error),
+              );
             },
             builder: (context, state) {
               if (state.status == CompanyListStatus.initial) {

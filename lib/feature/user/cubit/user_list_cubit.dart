@@ -4,9 +4,8 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../common/exception/exception_helper.dart';
-import '../../settings/repository/language_repository.dart';
+import '../../../data/repository/repository_part.dart';
 import '../model/user_model.dart';
-import '../repository/user_repository.dart';
 
 part 'user_list_state.dart';
 

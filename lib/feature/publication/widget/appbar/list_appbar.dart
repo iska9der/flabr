@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../component/theme/constants.dart';
-import '../../../../config/constants.dart';
+import '../../../../component/theme/theme_part.dart';
 
 class ListAppBar extends StatefulWidget {
   const ListAppBar({

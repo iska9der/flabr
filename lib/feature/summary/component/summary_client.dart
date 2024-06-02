@@ -1,9 +1,9 @@
 import 'package:dio/dio.dart';
 
-import '../../../component/http/http_client.dart';
-import '../repository/summary_token_repository.dart';
+import '../../../component/http/http_part.dart';
+import '../data/summary_token_repository.dart';
 
-class SummaryClient extends HttpClient {
+class SummaryClient extends DioClient {
   SummaryClient(super.client, {required this.tokenRepository}) {
     client.options = client.options.copyWith(baseUrl: 'https://300.ya.ru/api');
 

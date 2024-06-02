@@ -6,7 +6,7 @@ import '../../../../common/model/render_type.dart';
 import '../../../../common/widget/enhancement/card.dart';
 import '../../../../component/di/injector.dart';
 import '../../../../component/router/app_router.dart';
-import '../../../../config/constants.dart';
+import '../../../../component/theme/theme_part.dart';
 import '../../../common/image/widget/network_image_widget.dart';
 import '../../../settings/cubit/settings_cubit.dart';
 import '../../model/publication/publication.dart';
@@ -33,9 +33,9 @@ class CommonCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FlabrCard(
-      onTap: () => getIt.get<AppRouter>().pushWidget(
-            ArticleDetailPage(id: publication.id),
-          ),
+      onTap: () => getIt<AppRouter>().pushWidget(
+        ArticleDetailPage(id: publication.id),
+      ),
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

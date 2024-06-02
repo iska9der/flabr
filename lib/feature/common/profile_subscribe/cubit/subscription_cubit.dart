@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../common/exception/exception_helper.dart';
 import '../../../../common/model/extension/enum_status.dart';
-import '../repository/subscription_repository.dart';
+import '../../../../data/repository/repository_part.dart';
 
 part 'subscription_state.dart';
 

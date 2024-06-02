@@ -5,11 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../component/di/injector.dart';
 import '../../../enhancement/scaffold/scaffold.dart';
 import '../../../enhancement/scroll/scroll.dart';
-import '../../../settings/repository/language_repository.dart';
 import '../../cubit/flow_publication_list_cubit.dart';
 import '../../model/flow_enum.dart';
 import '../../model/publication_type.dart';
-import '../../repository/publication_repository.dart';
 import '../../widget/appbar/flow_list_appbar.dart';
 import '../view/publication_list_view.dart';
 
@@ -33,8 +31,8 @@ class NewsListPage extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (_) => FlowPublicationListCubit(
-            repository: getIt.get<PublicationRepository>(),
-            languageRepository: getIt.get<LanguageRepository>(),
+            repository: getIt(),
+            languageRepository: getIt(),
             type: PublicationType.news,
             flow: FlowEnum.fromString(flow),
           ),

@@ -8,7 +8,7 @@ import 'package:path/path.dart' as path;
 import 'package:share_plus/share_plus.dart';
 
 import '../../../../common/exception/fetch_exception.dart';
-import '../../../../component/http/http_client.dart';
+import '../../../../component/http/http_part.dart';
 
 part 'image_action_state.dart';
 

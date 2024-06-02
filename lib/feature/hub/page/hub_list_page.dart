@@ -7,12 +7,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../common/utils/utils.dart';
 import '../../../common/widget/enhancement/progress_indicator.dart';
 import '../../../component/di/injector.dart';
-import '../../../config/constants.dart';
+import '../../../component/theme/theme_part.dart';
 import '../../enhancement/scroll/scroll.dart';
-import '../../settings/repository/language_repository.dart';
 import '../cubit/hub_list_cubit.dart';
 import '../model/hub_model.dart';
-import '../repository/hub_repository.dart';
 import '../widget/hub_card_widget.dart';
 
 @RoutePage(name: HubListPage.routeName)
@@ -30,8 +28,8 @@ class HubListPage extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (_) => HubListCubit(
-            repository: getIt.get<HubRepository>(),
-            languageRepository: getIt.get<LanguageRepository>(),
+            repository: getIt(),
+            languageRepository: getIt(),
           ),
         ),
         BlocProvider(
@@ -70,10 +68,10 @@ class HubListPageView extends StatelessWidget {
             listenWhen: (p, c) =>
                 p.page != 1 && c.status == HubListStatus.failure,
             listener: (c, state) {
-              getIt.get<Utils>().showSnack(
-                    context: context,
-                    content: Text(state.error),
-                  );
+              getIt<Utils>().showSnack(
+                context: context,
+                content: Text(state.error),
+              );
             },
             builder: (context, state) {
               if (state.status == HubListStatus.initial) {

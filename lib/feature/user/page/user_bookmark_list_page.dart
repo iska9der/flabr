@@ -5,13 +5,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../common/widget/publication_sliver_list.dart';
 import '../../../component/di/injector.dart';
 import '../../enhancement/scroll/scroll.dart';
-import '../../publication/repository/publication_repository.dart';
-import '../../settings/repository/language_repository.dart';
 import '../cubit/user_bookmark_list_cubit.dart';
 import '../cubit/user_comment_list_cubit.dart';
 import '../cubit/user_cubit.dart';
 import '../model/user_bookmarks_type.dart';
-import '../repository/user_repository.dart';
 import '../widget/comment_sliver_list.dart';
 import '../widget/type_dropdown_widget.dart';
 
@@ -35,15 +32,15 @@ class UserBookmarkListPage extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (_) => UserBookmarkListCubit(
-            repository: getIt.get<PublicationRepository>(),
-            languageRepository: getIt.get<LanguageRepository>(),
+            repository: getIt(),
+            languageRepository: getIt(),
             user: alias,
             type: UserBookmarksType.fromString(type),
           ),
         ),
         BlocProvider(
           create: (_) => UserCommentListCubit(
-            repository: getIt.get<UserRepository>(),
+            repository: getIt(),
             user: alias,
           ),
         ),

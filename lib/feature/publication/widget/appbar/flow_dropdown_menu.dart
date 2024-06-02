@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
-import '../../../../component/theme/responsive.dart';
+import '../../../../component/theme/theme_part.dart';
 import '../../../auth/cubit/auth_cubit.dart';
 import '../../cubit/flow_publication_list_cubit.dart';
 import '../../model/flow_enum.dart';

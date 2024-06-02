@@ -1,10 +1,9 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../settings/repository/language_repository.dart';
+import '../../../data/repository/repository_part.dart';
 import '../model/user_model.dart';
 import '../model/user_whois_model.dart';
-import '../repository/user_repository.dart';
 
 part 'user_state.dart';
 

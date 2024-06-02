@@ -7,11 +7,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../common/utils/utils.dart';
 import '../../../common/widget/enhancement/progress_indicator.dart';
 import '../../../component/di/injector.dart';
-import '../../../config/constants.dart';
+import '../../../component/theme/theme_part.dart';
 import '../../enhancement/scroll/scroll.dart';
-import '../../settings/repository/language_repository.dart';
 import '../cubit/user_list_cubit.dart';
-import '../repository/user_repository.dart';
 import '../widget/user_card_widget.dart';
 
 @RoutePage(name: UserListPage.routeName)
@@ -28,8 +26,8 @@ class UserListPage extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (_) => UserListCubit(
-            repository: getIt.get<UserRepository>(),
-            languageRepository: getIt.get<LanguageRepository>(),
+            repository: getIt(),
+            languageRepository: getIt(),
           ),
         ),
         BlocProvider(
@@ -74,12 +72,10 @@ class UserListPageView extends StatelessWidget {
         child: BlocConsumer<UserListCubit, UserListState>(
           listenWhen: (p, c) =>
               p.page != 1 && c.status == UserListStatus.failure,
-          listener: (context, state) {
-            getIt.get<Utils>().showSnack(
-                  context: context,
-                  content: Text(state.error),
-                );
-          },
+          listener: (context, state) => getIt<Utils>().showSnack(
+            context: context,
+            content: Text(state.error),
+          ),
           builder: (context, state) {
             if (state.status == UserListStatus.initial) {
               usersCubit.fetchAll();

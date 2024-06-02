@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../repository/summary_token_repository.dart';
+import '../data/summary_token_repository.dart';
 
 part 'summary_auth_state.dart';
 

@@ -8,7 +8,7 @@ import '../../../common/utils/utils.dart';
 import '../../../common/widget/detail/section_container_widget.dart';
 import '../../../common/widget/enhancement/progress_indicator.dart';
 import '../../../component/di/injector.dart';
-import '../../../config/constants.dart';
+import '../../../component/theme/theme_part.dart';
 import '../cubit/user_cubit.dart';
 import '../widget/user_profile_card_widget.dart';
 import '../widget/user_whois_widget.dart';
@@ -99,10 +99,10 @@ class UserDetailPageView extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: model.workplace.map((e) {
                             return TextButton(
-                              onPressed: () => getIt.get<Utils>().showSnack(
-                                    context: context,
-                                    content: const Text('Здесь так тихо...'),
-                                  ),
+                              onPressed: () => getIt<Utils>().showSnack(
+                                context: context,
+                                content: const Text('Здесь так тихо...'),
+                              ),
                               child: Text(e.title),
                             );
                           }).toList(),

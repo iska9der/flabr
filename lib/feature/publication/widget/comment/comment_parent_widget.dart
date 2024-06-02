@@ -6,8 +6,7 @@ import 'package:html/parser.dart';
 
 import '../../../../common/model/comment.dart';
 import '../../../../common/widget/html_view_widget.dart';
-import '../../../../component/theme/responsive.dart';
-import '../../../../config/constants.dart';
+import '../../../../component/theme/theme_part.dart';
 
 class ParentComment extends StatelessWidget {
   const ParentComment({super.key, required this.parent});

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../common/widget/enhancement/progress_indicator.dart';
-import '../../../../config/constants.dart';
+import '../../../../component/theme/theme_part.dart';
 
 class StatIconButton extends StatelessWidget {
   const StatIconButton({

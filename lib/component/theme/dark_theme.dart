@@ -1,8 +1,6 @@
-import 'package:flutter/material.dart';
+part of 'theme_part.dart';
 
-import 'common.dart';
-
-const darkColorScheme = ColorScheme(
+const _darkColorScheme = ColorScheme(
   brightness: Brightness.dark,
   primary: Color(0xFF86CFFF),
   onPrimary: Color(0xFF00344C),
@@ -38,7 +36,7 @@ ThemeData darkTheme() {
   var themeData = ThemeData.dark();
 
   themeData = themeData.copyWith(
-    colorScheme: darkColorScheme,
+    colorScheme: _darkColorScheme,
     cardTheme: appCardTheme,
     appBarTheme: appAppBarTheme,
     drawerTheme: appDrawerThemeData,

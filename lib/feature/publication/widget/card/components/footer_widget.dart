@@ -9,14 +9,12 @@ import '../../../../../component/di/injector.dart';
 import '../../../../../component/router/app_router.dart';
 import '../../../../auth/cubit/auth_cubit.dart';
 import '../../../../auth/widget/dialog.dart';
-import '../../../../summary/cubit/summary_auth_cubit.dart';
-import '../../../../summary/widget/dialog.dart';
+import '../../../../summary/summary.dart';
 import '../../../cubit/publication_bookmark_cubit.dart';
 import '../../../model/publication/publication.dart';
 import '../../../model/publication_type.dart';
 import '../../../page/article/article_comment_page.dart';
 import '../../../page/post/post_comment_page.dart';
-import '../../../repository/publication_repository.dart';
 import '../../stats/icon_widget.dart';
 
 class ArticleFooterWidget extends StatelessWidget {
@@ -47,13 +45,12 @@ class ArticleFooterWidget extends StatelessWidget {
           icon: Icons.chat_bubble_rounded,
           value: publication.statistics.commentsCount.compact(),
           isHighlighted: publication.relatedData.unreadCommentsCount > 0,
-          onTap: () => getIt.get<AppRouter>().pushWidget(
-                switch (publication.type) {
-                  PublicationType.post =>
-                    PostCommentListPage(id: publication.id),
-                  _ => ArticleCommentListPage(id: publication.id),
-                },
-              ),
+          onTap: () => getIt<AppRouter>().pushWidget(
+            switch (publication.type) {
+              PublicationType.post => PostCommentListPage(id: publication.id),
+              _ => ArticleCommentListPage(id: publication.id),
+            },
+          ),
         ),
         _BookmarkIconButton(publication: publication),
         if (context.watch<SummaryAuthCubit>().state.isAuthorized)
@@ -76,7 +73,7 @@ class _BookmarkIconButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => PublicationBookmarkCubit(
-        repository: getIt.get<PublicationRepository>(),
+        repository: getIt(),
         articleId: publication.id,
         isBookmarked: publication.relatedData.bookmarked,
         count: publication.statistics.favoritesCount,
@@ -84,10 +81,10 @@ class _BookmarkIconButton extends StatelessWidget {
       child: BlocConsumer<PublicationBookmarkCubit, PublicationBookmarkState>(
         listenWhen: (p, c) => c.status.isFailure,
         listener: (context, state) {
-          getIt.get<Utils>().showSnack(
-                context: context,
-                content: Text(state.error),
-              );
+          getIt<Utils>().showSnack(
+            context: context,
+            content: Text(state.error),
+          );
         },
         buildWhen: (p, c) => p.status != c.status,
         builder: (context, state) {

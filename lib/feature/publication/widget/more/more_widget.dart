@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../config/constants.dart';
+import '../../../../component/theme/theme_part.dart';
 import '../../model/publication/publication.dart';
 import 'save_expansion_widget.dart';
 

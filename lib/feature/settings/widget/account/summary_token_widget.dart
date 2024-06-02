@@ -80,12 +80,12 @@ class _SummaryTokenWidgetState extends State<SummaryTokenWidget> {
                           Clipboard.setData(
                             ClipboardData(text: controller.text),
                           );
-                          getIt.get<Utils>().showSnack(
-                                context: context,
-                                content: const Text(
-                                  'Скопировано в буфер обмена',
-                                ),
-                              );
+                          getIt<Utils>().showSnack(
+                            context: context,
+                            content: const Text(
+                              'Скопировано в буфер обмена',
+                            ),
+                          );
                         },
                         child: const Text('Скопировать'),
                       ),

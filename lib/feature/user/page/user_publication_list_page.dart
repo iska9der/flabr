@@ -5,8 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../common/widget/publication_sliver_list.dart';
 import '../../../component/di/injector.dart';
 import '../../enhancement/scroll/scroll.dart';
-import '../../publication/repository/publication_repository.dart';
-import '../../settings/repository/language_repository.dart';
 import '../cubit/user_cubit.dart';
 import '../cubit/user_publication_list_cubit.dart';
 import '../model/user_publication_type.dart';
@@ -31,8 +29,8 @@ class UserPublicationListPage extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (_) => UserPublicationListCubit(
-            repository: getIt.get<PublicationRepository>(),
-            languageRepository: getIt.get<LanguageRepository>(),
+            repository: getIt(),
+            languageRepository: getIt(),
             user: cubit.state.login,
             type: UserPublicationType.fromString(type),
           ),

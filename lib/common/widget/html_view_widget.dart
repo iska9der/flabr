@@ -8,7 +8,7 @@ import 'package:path/path.dart' as p;
 
 import '../../../component/router/app_router.dart';
 import '../../component/di/injector.dart';
-import '../../config/constants.dart';
+import '../../component/theme/theme_part.dart';
 import '../../feature/common/image/widget/network_image_widget.dart';
 import '../../feature/settings/cubit/settings_cubit.dart';
 import 'enhancement/progress_indicator.dart';
@@ -60,7 +60,7 @@ class HtmlView extends StatelessWidget {
               return false;
             }
 
-            await getIt.get<AppRouter>().navigateOrLaunchUrl(uri);
+            await getIt<AppRouter>().navigateOrLaunchUrl(uri);
             return true;
           },
           onErrorBuilder: (context, element, error) =>

@@ -5,14 +5,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../common/widget/enhancement/progress_indicator.dart';
 import '../../../common/widget/publication_sliver_list.dart';
 import '../../../component/di/injector.dart';
-import '../../../config/constants.dart';
+import '../../../component/theme/theme_part.dart';
 import '../../enhancement/scroll/scroll.dart';
 import '../../publication/cubit/publication_list_cubit.dart';
 import '../../publication/model/sort/sort_enum.dart';
-import '../../publication/repository/publication_repository.dart';
 import '../../publication/widget/sort/publication_sort_widget.dart';
 import '../../settings/cubit/settings_cubit.dart';
-import '../../settings/repository/language_repository.dart';
 import '../cubit/hub_cubit.dart';
 import '../cubit/hub_publication_list_cubit.dart';
 import '../widget/hub_profile_card_widget.dart';
@@ -36,8 +34,8 @@ class HubDetailPage extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (_) => HubPublicationListCubit(
-            repository: getIt.get<PublicationRepository>(),
-            languageRepository: getIt.get<LanguageRepository>(),
+            repository: getIt(),
+            languageRepository: getIt(),
             hub: cubit.state.alias,
           ),
         ),

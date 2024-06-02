@@ -7,13 +7,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../common/widget/dashboard_drawer_link_widget.dart';
 import '../../../component/di/injector.dart';
 import '../../../component/router/app_router.dart';
-import '../../../component/theme/constants.dart';
+import '../../../component/theme/theme_part.dart';
 import '../../auth/widget/profile_icon_button.dart';
 import '../../search/cubit/search_cubit.dart';
 import '../../search/page/search.dart';
 import '../../search/page/search_anywhere.dart';
-import '../../search/repository/search_repository.dart';
-import '../../settings/repository/language_repository.dart';
 
 @RoutePage(name: PublicationDashboardPage.routeName)
 class PublicationDashboardPage extends StatefulWidget {
@@ -46,8 +44,8 @@ class _PublicationDashboardPageState extends State<PublicationDashboardPage> {
   @override
   void initState() {
     searchCubit = SearchCubit(
-      repository: getIt.get<SearchRepository>(),
-      langRepository: getIt.get<LanguageRepository>(),
+      repository: getIt(),
+      langRepository: getIt(),
     );
 
     isTabsVisible.addListener(() {

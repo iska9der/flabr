@@ -1,10 +1,9 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../data/repository/repository_part.dart';
 import '../model/auth_data_model.dart';
 import '../model/me_model.dart';
-import '../repository/auth_repository.dart';
-import '../repository/token_repository.dart';
 
 part 'auth_state.dart';
 

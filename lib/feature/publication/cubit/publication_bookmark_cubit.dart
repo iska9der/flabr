@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../common/exception/exception_helper.dart';
-import '../repository/publication_repository.dart';
+import '../../../data/repository/repository_part.dart';
 
 part 'publication_bookmark_state.dart';
 

@@ -7,12 +7,10 @@ import '../../../common/widget/enhancement/card.dart';
 import '../../../common/widget/feed/card_avatar_widget.dart';
 import '../../../common/widget/profile_stat_widget.dart';
 import '../../../component/di/injector.dart';
+import '../../../data/repository/repository_part.dart';
 import '../../auth/cubit/auth_cubit.dart';
-import '../../common/profile_subscribe/repository/subscription_repository.dart';
 import '../../common/profile_subscribe/widget/subscribe_button.dart';
 import '../cubit/user_cubit.dart';
-import '../repository/user_subscription_repository.dart';
-import '../service/user_service.dart';
 
 class UserProfileCardWidget extends StatefulWidget {
   const UserProfileCardWidget({super.key});
@@ -27,7 +25,7 @@ class _UserProfileCardWidgetState extends State<UserProfileCardWidget> {
     /// Регистрируем репозиторий подписки для [SubscribeButton]
     getIt.allowReassignment = true;
     getIt.registerFactory<SubscriptionRepository>(
-      () => UserSubscriptionRepository(getIt.get<UserService>()),
+      () => UserSubscriptionRepository(getIt()),
     );
 
     super.initState();

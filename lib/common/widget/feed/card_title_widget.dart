@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 
-import '../../../config/constants.dart';
+import '../../../component/theme/theme_part.dart';
 import '../../model/render_type.dart';
 
 class CardTitleWidget extends StatelessWidget {

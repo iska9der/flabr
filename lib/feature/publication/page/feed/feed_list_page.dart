@@ -4,9 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../component/di/injector.dart';
 import '../../../enhancement/scroll/cubit/scroll_cubit.dart';
-import '../../../settings/repository/language_repository.dart';
 import '../../cubit/feed_publication_list_cubit.dart';
-import '../../repository/publication_repository.dart';
 import '../../widget/appbar/feed_list_appbar.dart';
 import '../view/publication_list_view.dart';
 
@@ -25,8 +23,8 @@ class FeedListPage extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (_) => FeedPublicationListCubit(
-            repository: getIt.get<PublicationRepository>(),
-            languageRepository: getIt.get<LanguageRepository>(),
+            repository: getIt(),
+            languageRepository: getIt(),
           ),
         ),
         BlocProvider(

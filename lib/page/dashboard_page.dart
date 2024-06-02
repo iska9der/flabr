@@ -7,8 +7,7 @@ import 'package:responsive_framework/responsive_framework.dart';
 import '../common/utils/utils.dart';
 import '../component/di/injector.dart';
 import '../component/router/app_router.dart';
-import '../component/theme/responsive.dart';
-import '../config/constants.dart';
+import '../component/theme/theme_part.dart';
 import '../feature/auth/cubit/auth_cubit.dart';
 import '../feature/settings/cubit/settings_cubit.dart';
 
@@ -61,25 +60,25 @@ class _DashboardPageState extends State<DashboardPage> {
         BlocListener<AuthCubit, AuthState>(
           listenWhen: (p, c) => p.isAuthorized && c.isAnomaly,
           listener: (context, state) {
-            getIt.get<Utils>().showAlert(
-                  context: context,
-                  title: const Text('Ошибка авторизации'),
-                  content: const Text(
-                    'Возникли проблемы с полученым токеном\n\n'
-                    'Попробуйте выйти и войти в аккаунт, или игнорируйте '
-                    'это назойливое окно\n\n'
-                    'Может само пройдет? 🤔',
-                  ),
-                  actionsBuilder: (context) => [
-                    TextButton(
-                      child: const Text('Выйти из аккаунта'),
-                      onPressed: () {
-                        context.read<AuthCubit>().logOut();
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                  ],
-                );
+            getIt<Utils>().showAlert(
+              context: context,
+              title: const Text('Ошибка авторизации'),
+              content: const Text(
+                'Возникли проблемы с полученым токеном\n\n'
+                'Попробуйте выйти и войти в аккаунт, или игнорируйте '
+                'это назойливое окно\n\n'
+                'Может само пройдет? 🤔',
+              ),
+              actionsBuilder: (context) => [
+                TextButton(
+                  child: const Text('Выйти из аккаунта'),
+                  onPressed: () {
+                    context.read<AuthCubit>().logOut();
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
           },
         ),
       ],

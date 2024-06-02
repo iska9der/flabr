@@ -1,10 +1,6 @@
-import 'package:dio/dio.dart';
+part of 'http_part.dart';
 
-import '../../feature/auth/model/auth_data_model.dart';
-import '../../feature/auth/repository/token_repository.dart';
-import 'http_client.dart';
-
-class HabraClient extends HttpClient {
+class HabraClient extends DioClient {
   HabraClient(super.client, {required this.tokenRepository}) {
     client.options = client.options.copyWith(
       connectTimeout: const Duration(seconds: 10),

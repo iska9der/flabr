@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:app_links/app_links.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/foundation.dart';
@@ -17,16 +16,10 @@ import 'component/bloc/observer.dart';
 import 'component/di/injector.dart';
 import 'component/logger/console.dart';
 import 'component/router/app_router.dart';
-import 'component/storage/cache_storage.dart';
-import 'component/theme.dart';
-import 'component/theme/responsive.dart';
+import 'component/theme/theme_part.dart';
 import 'feature/auth/cubit/auth_cubit.dart';
-import 'feature/auth/repository/auth_repository.dart';
-import 'feature/auth/repository/token_repository.dart';
 import 'feature/settings/cubit/settings_cubit.dart';
-import 'feature/settings/repository/language_repository.dart';
 import 'feature/summary/cubit/summary_auth_cubit.dart';
-import 'feature/summary/repository/summary_token_repository.dart';
 
 void main() async {
   runZonedGuarded(
@@ -63,7 +56,7 @@ void main() async {
 class MyApp extends StatelessWidget {
   MyApp({super.key});
 
-  final AppRouter router = getIt.get<AppRouter>();
+  final AppRouter router = getIt();
 
   @override
   Widget build(BuildContext context) {
@@ -72,23 +65,23 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           lazy: false,
           create: (_) => SettingsCubit(
-            languageRepository: getIt.get<LanguageRepository>(),
-            storage: getIt.get<CacheStorage>(),
+            languageRepository: getIt(),
+            storage: getIt(),
             router: router,
-            appLinks: getIt.get<AppLinks>(),
+            appLinks: getIt(),
           )..init(),
         ),
         BlocProvider(
           lazy: false,
           create: (_) => AuthCubit(
-            repository: getIt.get<AuthRepository>(),
-            tokenRepository: getIt.get<TokenRepository>(),
+            repository: getIt(),
+            tokenRepository: getIt(),
           )..init(),
         ),
         BlocProvider(
           lazy: false,
           create: (_) => SummaryAuthCubit(
-            tokenRepository: getIt.get<SummaryTokenRepository>(),
+            tokenRepository: getIt(),
           )..init(),
         ),
       ],

@@ -6,7 +6,6 @@ import '../../../../common/model/extension/enum_status.dart';
 import '../../../../common/utils/utils.dart';
 import '../../../../component/di/injector.dart';
 import '../cubit/subscription_cubit.dart';
-import '../repository/subscription_repository.dart';
 
 class SubscribeButton extends StatelessWidget {
   const SubscribeButton(
@@ -19,17 +18,17 @@ class SubscribeButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => SubscriptionCubit(
-        repository: getIt.get<SubscriptionRepository>(),
+        repository: getIt(),
         alias: alias,
         isSubscribed: isSubscribed,
       ),
       child: BlocListener<SubscriptionCubit, SubscriptionState>(
         listenWhen: (p, c) => p.status.isFailure,
         listener: (context, state) {
-          getIt.get<Utils>().showSnack(
-                context: context,
-                content: Text(state.error),
-              );
+          getIt<Utils>().showSnack(
+            context: context,
+            content: Text(state.error),
+          );
         },
         child: BlocBuilder<SubscriptionCubit, SubscriptionState>(
           builder: (context, state) {

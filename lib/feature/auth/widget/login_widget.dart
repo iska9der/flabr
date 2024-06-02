@@ -14,7 +14,6 @@ import '../../../component/logger/console.dart';
 import '../../../config/constants.dart';
 import '../cubit/auth_cubit.dart';
 import '../cubit/login_cubit.dart';
-import '../repository/token_repository.dart';
 import 'profile_widget.dart';
 
 class LoginWidget extends StatelessWidget implements DialogUserWidget {
@@ -30,9 +29,7 @@ class LoginWidget extends StatelessWidget implements DialogUserWidget {
         child: authState.isAuthorized
             ? Center(child: Text('Вы уже вошли, ${authState.me.alias}'))
             : BlocProvider(
-                create: (_) => LoginCubit(
-                  tokenRepository: getIt.get<TokenRepository>(),
-                ),
+                create: (_) => LoginCubit(tokenRepository: getIt()),
                 child: BlocListener<LoginCubit, LoginState>(
                   listener: (context, state) {
                     if (state.status.isSuccess) {
@@ -131,11 +128,11 @@ class _WebViewLoginState extends State<_WebViewLogin> {
         listenWhen: (_, current) => current.status.isFailure,
         listener: (context, state) {
           _clearControllerData();
-          getIt.get<Utils>().showSnack(
-                context: context,
-                content: Text(state.error),
-                duration: const Duration(seconds: 5),
-              );
+          getIt<Utils>().showSnack(
+            context: context,
+            content: Text(state.error),
+            duration: const Duration(seconds: 5),
+          );
           wvController.loadRequest(_authUri);
         },
         child: WebViewWidget(controller: wvController),

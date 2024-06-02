@@ -5,11 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../common/widget/dashboard_drawer_link_widget.dart';
 import '../../../component/di/injector.dart';
 import '../../../component/router/app_router.dart';
-import '../../../component/theme.dart';
+import '../../../component/theme/theme_part.dart';
 import '../../enhancement/scaffold/cubit/scaffold_cubit.dart';
-import '../../settings/repository/language_repository.dart';
 import '../cubit/hub_cubit.dart';
-import '../repository/hub_repository.dart';
 import 'hub_detail_page.dart';
 
 @RoutePage(name: HubDashboardPage.routeName)
@@ -33,8 +31,8 @@ class HubDashboardPage extends StatelessWidget {
           lazy: false,
           create: (_) => HubCubit(
             alias,
-            repository: getIt.get<HubRepository>(),
-            languageRepository: getIt.get<LanguageRepository>(),
+            repository: getIt(),
+            languageRepository: getIt(),
           ),
         ),
         BlocProvider(

@@ -21,12 +21,10 @@ class PublicationSliverList<ListCubit extends PublicationListCubit<ListState>,
     return BlocConsumer<ListCubit, ListState>(
       listenWhen: (previous, current) =>
           previous.page != 1 && current.status == PublicationListStatus.failure,
-      listener: (_, state) {
-        getIt.get<Utils>().showSnack(
-              context: context,
-              content: Text(state.error),
-            );
-      },
+      listener: (_, state) => getIt<Utils>().showSnack(
+        context: context,
+        content: Text(state.error),
+      ),
       builder: (context, state) {
         /// Инициализация
         if (state.status == PublicationListStatus.initial) {

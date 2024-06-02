@@ -2,11 +2,10 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../common/exception/displayable_exception.dart';
-import '../../../component/localization/language_enum.dart';
-import '../../settings/repository/language_repository.dart';
+import '../../../data/model/language/language_part.dart';
+import '../../../data/repository/repository_part.dart';
 import '../model/card/company_card_model.dart';
 import '../model/company_model.dart';
-import '../repository/company_repository.dart';
 
 part 'company_state.dart';
 

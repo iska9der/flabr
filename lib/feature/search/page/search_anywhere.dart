@@ -8,7 +8,7 @@ import '../../../common/model/render_type.dart';
 import '../../../common/utils/utils.dart';
 import '../../../common/widget/enhancement/progress_indicator.dart';
 import '../../../component/di/injector.dart';
-import '../../../config/constants.dart';
+import '../../../component/theme/theme_part.dart';
 import '../../company/widget/company_card_widget.dart';
 import '../../enhancement/scroll/scroll.dart';
 import '../../hub/widget/hub_card_widget.dart';
@@ -87,10 +87,10 @@ class SearchAnywhereDelegate extends FlabrSearchDelegate {
             bloc: cubit,
             listenWhen: (p, c) => p.page != 1 && c.status.isFailure,
             listener: (c, state) {
-              getIt.get<Utils>().showSnack(
-                    context: context,
-                    content: Text(state.error),
-                  );
+              getIt<Utils>().showSnack(
+                context: context,
+                content: Text(state.error),
+              );
             },
           ),
           BlocListener<ScrollCubit, ScrollState>(

@@ -1,13 +1,12 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../../component/language.dart';
 import '../../../../common/exception/exception_helper.dart';
 import '../../../../common/model/extension/enum_status.dart';
-import '../../../settings/repository/language_repository.dart';
+import '../../../../data/model/language/language_part.dart';
+import '../../../../data/repository/repository_part.dart';
 import '../../model/comment/network/comment_list_response.dart';
 import '../../model/source/publication_source.dart';
-import '../../repository/publication_repository.dart';
 
 part 'comment_list_state.dart';
 

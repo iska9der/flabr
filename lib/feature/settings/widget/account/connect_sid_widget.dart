@@ -6,7 +6,6 @@ import '../../../../common/utils/utils.dart';
 import '../../../../component/di/injector.dart';
 import '../../../auth/cubit/auth_cubit.dart';
 import '../../../auth/cubit/login_cubit.dart';
-import '../../../auth/repository/token_repository.dart';
 import '../settings_card_widget.dart';
 
 class ConnectSidWidget extends StatefulWidget {
@@ -30,7 +29,7 @@ class _ConnectSidWidgetState extends State<ConnectSidWidget> {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => LoginCubit(
-        tokenRepository: getIt.get<TokenRepository>(),
+        tokenRepository: getIt(),
       ),
       child: BlocListener<LoginCubit, LoginState>(
         listenWhen: (_, current) => current.status == LoginStatus.success,
@@ -89,12 +88,12 @@ class _ConnectSidWidgetState extends State<ConnectSidWidget> {
                               Clipboard.setData(
                                 ClipboardData(text: controller.text),
                               );
-                              getIt.get<Utils>().showSnack(
-                                    context: context,
-                                    content: const Text(
-                                      'Скопировано в буфер обмена',
-                                    ),
-                                  );
+                              getIt<Utils>().showSnack(
+                                context: context,
+                                content: const Text(
+                                  'Скопировано в буфер обмена',
+                                ),
+                              );
                             },
                             child: const Text('Скопировать'),
                           ),

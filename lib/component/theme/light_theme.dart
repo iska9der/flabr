@@ -1,8 +1,6 @@
-import 'package:flutter/material.dart';
+part of 'theme_part.dart';
 
-import 'common.dart';
-
-const lightColorScheme = ColorScheme(
+const _lightColorScheme = ColorScheme(
   brightness: Brightness.light,
   primary: Color(0xFF00658F),
   onPrimary: Color(0xFFFFFFFF),
@@ -39,7 +37,7 @@ ThemeData lightTheme() {
   var bgColor = Colors.grey.shade200;
 
   themeData = themeData.copyWith(
-    colorScheme: lightColorScheme,
+    colorScheme: _lightColorScheme,
     scaffoldBackgroundColor: bgColor,
     cardTheme: appCardTheme,
     appBarTheme: appAppBarTheme.copyWith(

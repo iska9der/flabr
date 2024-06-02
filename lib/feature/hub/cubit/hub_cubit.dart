@@ -2,10 +2,9 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../common/exception/exception_helper.dart';
-import '../../settings/repository/language_repository.dart';
+import '../../../data/repository/repository_part.dart';
 import '../model/hub_model.dart';
 import '../model/hub_profile_model.dart';
-import '../repository/hub_repository.dart';
 
 part 'hub_state.dart';
 

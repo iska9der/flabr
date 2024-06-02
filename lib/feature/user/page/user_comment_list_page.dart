@@ -6,7 +6,6 @@ import '../../../component/di/injector.dart';
 import '../../enhancement/scroll/cubit/scroll_cubit.dart';
 import '../../enhancement/scroll/widget/floating_scroll_to_top_button.dart';
 import '../cubit/user_comment_list_cubit.dart';
-import '../repository/user_repository.dart';
 import '../widget/comment_sliver_list.dart';
 
 @RoutePage(name: UserCommentListPage.routeName)
@@ -29,7 +28,7 @@ class UserCommentListPage extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (_) => UserCommentListCubit(
-            repository: getIt.get<UserRepository>(),
+            repository: getIt(),
             user: alias,
           ),
         ),

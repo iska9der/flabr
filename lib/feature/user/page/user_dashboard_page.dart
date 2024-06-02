@@ -5,11 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../common/widget/dashboard_drawer_link_widget.dart';
 import '../../../component/di/injector.dart';
 import '../../../component/router/app_router.dart';
-import '../../../component/theme/constants.dart';
+import '../../../component/theme/theme_part.dart';
 import '../../enhancement/scaffold/cubit/scaffold_cubit.dart';
-import '../../settings/repository/language_repository.dart';
 import '../cubit/user_cubit.dart';
-import '../repository/user_repository.dart';
 import 'user_bookmark_list_page.dart';
 import 'user_comment_list_page.dart';
 import 'user_detail_page.dart';
@@ -36,8 +34,8 @@ class UserDashboardPage extends StatelessWidget {
           lazy: false,
           create: (_) => UserCubit(
             alias,
-            repository: getIt.get<UserRepository>(),
-            languageRepository: getIt.get<LanguageRepository>(),
+            repository: getIt(),
+            languageRepository: getIt(),
           ),
         ),
         BlocProvider(

@@ -4,10 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../common/exception/exception_helper.dart';
 import '../../../common/model/extension/enum_status.dart';
 import '../../../common/model/network/list_response.dart';
-import '../../settings/repository/language_repository.dart';
+import '../../../data/repository/repository_part.dart';
 import '../model/search_order.dart';
 import '../model/search_target.dart';
-import '../repository/search_repository.dart';
 
 part 'search_state.dart';
 

@@ -4,10 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../component/di/injector.dart';
 import '../../../enhancement/scroll/cubit/scroll_cubit.dart';
-import '../../../settings/repository/language_repository.dart';
 import '../../cubit/flow_publication_list_cubit.dart';
 import '../../model/flow_enum.dart';
-import '../../repository/publication_repository.dart';
 import '../../widget/appbar/flow_list_appbar.dart';
 import '../view/publication_list_view.dart';
 
@@ -28,8 +26,8 @@ class ArticleListPage extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (_) => FlowPublicationListCubit(
-            repository: getIt.get<PublicationRepository>(),
-            languageRepository: getIt.get<LanguageRepository>(),
+            repository: getIt(),
+            languageRepository: getIt(),
             flow: FlowEnum.fromString(flow),
           ),
         ),
