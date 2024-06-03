@@ -1,7 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:equatable/equatable.dart';
 
-import '../../../common/model/company.dart';
+import '../../../data/model/company.dart';
 import 'company_hub_model.dart';
 import 'company_related_data.dart';
 import 'company_statistics_model.dart';

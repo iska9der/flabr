@@ -1,9 +1,9 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../common/exception/displayable_exception.dart';
-import '../../../data/model/language/language_part.dart';
-import '../../../data/repository/repository_part.dart';
+import '../../../data/exception/part.dart';
+import '../../../data/model/language/part.dart';
+import '../../../data/repository/part.dart';
 import '../model/card/company_card_model.dart';
 import '../model/company_model.dart';
 

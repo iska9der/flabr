@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../data/repository/repository_part.dart';
+import '../../../data/repository/part.dart';
 import '../model/user_model.dart';
 import '../model/user_whois_model.dart';
 

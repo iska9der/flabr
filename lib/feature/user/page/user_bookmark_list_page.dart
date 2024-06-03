@@ -2,9 +2,9 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../common/widget/publication_sliver_list.dart';
-import '../../../component/di/injector.dart';
-import '../../enhancement/scroll/scroll.dart';
+import '../../../core/component/di/injector.dart';
+import '../../../presentation/enhancement/scroll/part.dart';
+import '../../../presentation/widget/publication_sliver_list.dart';
 import '../cubit/user_bookmark_list_cubit.dart';
 import '../cubit/user_comment_list_cubit.dart';
 import '../cubit/user_cubit.dart';

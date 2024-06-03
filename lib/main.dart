@@ -10,16 +10,16 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
-import 'common/model/extension/enum_status.dart';
-import 'common/widget/enhancement/progress_indicator.dart';
-import 'component/bloc/observer.dart';
-import 'component/di/injector.dart';
-import 'component/logger/console.dart';
-import 'component/router/app_router.dart';
-import 'component/theme/theme_part.dart';
+import 'core/component/bloc/observer.dart';
+import 'core/component/di/injector.dart';
+import 'core/component/logger/console.dart';
+import 'core/component/router/app_router.dart';
 import 'feature/auth/cubit/auth_cubit.dart';
 import 'feature/settings/cubit/settings_cubit.dart';
 import 'feature/summary/cubit/summary_auth_cubit.dart';
+import 'presentation/extension/part.dart';
+import 'presentation/theme/part.dart';
+import 'presentation/widget/enhancement/progress_indicator.dart';
 
 void main() async {
   runZonedGuarded(

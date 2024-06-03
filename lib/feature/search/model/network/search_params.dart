@@ -1,5 +1,5 @@
-import '../../../../common/exception/value_exception.dart';
-import '../../../../common/model/network/params.dart';
+import '../../../../data/exception/part.dart';
+import '../../../../data/model/network/params.dart';
 import '../search_target.dart';
 import 'search_article_params.dart';
 import 'search_company_params.dart';

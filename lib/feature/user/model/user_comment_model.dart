@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../common/model/comment.dart';
+import '../../../data/model/comment.dart';
 import '../../publication/model/publication_author_model.dart';
 import 'user_comment_publication_model.dart';
 

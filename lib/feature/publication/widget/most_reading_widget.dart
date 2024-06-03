@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../common/model/extension/enum_status.dart';
-import '../../../common/model/extension/num.dart';
-import '../../../common/widget/enhancement/app_expansion_panel.dart';
-import '../../../common/widget/enhancement/card.dart';
-import '../../../common/widget/enhancement/progress_indicator.dart';
-import '../../../component/di/injector.dart';
-import '../../../component/router/app_router.dart';
-import '../../../component/theme/theme_part.dart';
+import '../../../core/component/di/injector.dart';
+import '../../../core/component/router/app_router.dart';
+import '../../../presentation/extension/part.dart';
+import '../../../presentation/theme/part.dart';
+import '../../../presentation/widget/enhancement/app_expansion_panel.dart';
+import '../../../presentation/widget/enhancement/card.dart';
+import '../../../presentation/widget/enhancement/progress_indicator.dart';
 import '../cubit/most_reading_cubit.dart';
 import '../page/article/article_comment_page.dart';
 import '../page/article/article_detail_page.dart';

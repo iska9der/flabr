@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 
-import '../../../../common/model/render_type.dart';
-import '../../../../common/widget/enhancement/card.dart';
-import '../../../../component/di/injector.dart';
-import '../../../../component/router/app_router.dart';
+import '../../../../core/component/di/injector.dart';
+import '../../../../core/component/router/app_router.dart';
+import '../../../../data/model/render_type.dart';
+import '../../../../presentation/widget/enhancement/card.dart';
 import '../../model/publication/publication.dart';
 import '../../page/post/post_detail_page.dart';
 import '../stats/stats_widget.dart';

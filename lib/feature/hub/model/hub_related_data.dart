@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
 
-import '../../../common/model/related_data.dart';
+import '../../../data/model/related_data.dart';
 
 class HubRelatedData extends RelatedDataBase with EquatableMixin {
   const HubRelatedData({

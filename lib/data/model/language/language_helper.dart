@@ -1,4 +1,4 @@
-part of 'language_part.dart';
+part of 'part.dart';
 
 String encodeLangs(List<LanguageEnum> languages) {
   String result = '';

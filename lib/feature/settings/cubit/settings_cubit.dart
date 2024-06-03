@@ -4,10 +4,10 @@ import 'package:app_links/app_links.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../component/router/app_router.dart';
-import '../../../component/storage/storage_part.dart';
-import '../../../data/model/language/language_part.dart';
-import '../../../data/repository/repository_part.dart';
+import '../../../core/component/router/app_router.dart';
+import '../../../core/component/storage/part.dart';
+import '../../../data/model/language/part.dart';
+import '../../../data/repository/part.dart';
 import '../model/article_config_model.dart';
 import '../model/feed_config_model.dart';
 import '../model/misc_config_model.dart';

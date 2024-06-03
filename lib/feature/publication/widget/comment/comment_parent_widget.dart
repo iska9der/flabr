@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:html/parser.dart';
 
-import '../../../../common/model/comment.dart';
-import '../../../../common/widget/html_view_widget.dart';
-import '../../../../component/theme/theme_part.dart';
+import '../../../../data/model/comment.dart';
+import '../../../../presentation/theme/part.dart';
+import '../../../../presentation/widget/html_view_widget.dart';
 
 class ParentComment extends StatelessWidget {
   const ParentComment({super.key, required this.parent});

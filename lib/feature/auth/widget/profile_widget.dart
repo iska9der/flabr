@@ -2,11 +2,11 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../common/model/extension/enum_status.dart';
-import '../../../common/model/user.dart';
-import '../../../common/widget/enhancement/card.dart';
-import '../../../common/widget/enhancement/progress_indicator.dart';
-import '../../../common/widget/feed/card_avatar_widget.dart';
+import '../../../data/model/user.dart';
+import '../../../presentation/extension/part.dart';
+import '../../../presentation/widget/enhancement/card.dart';
+import '../../../presentation/widget/enhancement/progress_indicator.dart';
+import '../../../presentation/widget/feed/card_avatar_widget.dart';
 import '../../user/page/user_bookmark_list_page.dart';
 import '../../user/page/user_comment_list_page.dart';
 import '../../user/page/user_publication_list_page.dart';

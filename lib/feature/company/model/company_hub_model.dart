@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../common/model/hub_type.dart';
+import '../../../data/model/hub_type.dart';
 
 class CompanyHubModel extends Equatable {
   const CompanyHubModel({

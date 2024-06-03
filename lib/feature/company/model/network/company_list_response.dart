@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../../common/model/network/list_response.dart';
+import '../../../../data/model/network/list_response.dart';
 import '../company_model.dart';
 
 class CompanyListResponse extends ListResponse with EquatableMixin {

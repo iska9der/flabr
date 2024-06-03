@@ -1,4 +1,4 @@
-import '../../../../common/model/network/params.dart';
+import '../../../../data/model/network/params.dart';
 import 'search_params.dart';
 
 class SearchUserParams extends Params implements SearchParamsFactory {

@@ -3,7 +3,7 @@ import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
 
-import '../../../common/model/user.dart';
+import '../../../data/model/user.dart';
 
 class MeModel extends UserBase with EquatableMixin {
   const MeModel({

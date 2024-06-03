@@ -1,4 +1,4 @@
-import '../../../../common/model/network/list_response.dart';
+import '../../../../data/model/network/list_response.dart';
 import '../user_comment_model.dart';
 
 class UserCommentListResponse extends ListResponse {

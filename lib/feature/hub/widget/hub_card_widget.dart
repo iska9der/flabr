@@ -1,13 +1,13 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
-import '../../../common/model/render_type.dart';
-import '../../../common/model/stat_type.dart';
-import '../../../common/widget/enhancement/card.dart';
-import '../../../common/widget/feed/card_avatar_widget.dart';
-import '../../../common/widget/feed/card_title_widget.dart';
-import '../../../common/widget/profile_stat_card_widget.dart';
-import '../../../component/router/routes.dart';
+import '../../../core/component/router/routes.dart';
+import '../../../data/model/render_type.dart';
+import '../../../data/model/stat_type.dart';
+import '../../../presentation/widget/enhancement/card.dart';
+import '../../../presentation/widget/feed/card_avatar_widget.dart';
+import '../../../presentation/widget/feed/card_title_widget.dart';
+import '../../../presentation/widget/profile_stat_card_widget.dart';
 import '../model/hub_model.dart';
 import '../model/hub_statistics_model.dart';
 

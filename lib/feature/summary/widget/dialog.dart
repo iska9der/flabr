@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../component/di/injector.dart';
-import '../../../component/router/app_router.dart';
+import '../../../core/component/di/injector.dart';
+import '../../../core/component/router/app_router.dart';
 import '../cubit/summary_cubit.dart';
 import 'summary_widget.dart';
 

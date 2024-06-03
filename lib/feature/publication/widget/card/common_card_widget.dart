@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 
-import '../../../../common/model/render_type.dart';
-import '../../../../common/widget/enhancement/card.dart';
-import '../../../../component/di/injector.dart';
-import '../../../../component/router/app_router.dart';
-import '../../../../component/theme/theme_part.dart';
-import '../../../common/image/widget/network_image_widget.dart';
+import '../../../../core/component/di/injector.dart';
+import '../../../../core/component/router/app_router.dart';
+import '../../../../data/model/render_type.dart';
+import '../../../../presentation/theme/part.dart';
+import '../../../../presentation/widget/enhancement/card.dart';
+import '../../../../presentation/widget/image/part.dart';
 import '../../../settings/cubit/settings_cubit.dart';
 import '../../model/publication/publication.dart';
 import '../../page/article/article_detail_page.dart';

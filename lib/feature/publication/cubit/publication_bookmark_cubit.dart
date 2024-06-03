@@ -1,8 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../common/exception/exception_helper.dart';
-import '../../../data/repository/repository_part.dart';
+import '../../../data/exception/part.dart';
+import '../../../data/repository/part.dart';
 
 part 'publication_bookmark_state.dart';
 

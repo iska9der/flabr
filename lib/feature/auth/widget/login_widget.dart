@@ -6,12 +6,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:webview_cookie_manager/webview_cookie_manager.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-import '../../../common/model/extension/enum_status.dart';
-import '../../../common/utils/utils.dart';
-import '../../../common/widget/enhancement/card.dart';
-import '../../../component/di/injector.dart';
-import '../../../component/logger/console.dart';
-import '../../../config/constants.dart';
+import '../../../core/component/di/injector.dart';
+import '../../../core/component/logger/console.dart';
+import '../../../core/constants/part.dart';
+import '../../../presentation/extension/part.dart';
+import '../../../presentation/utils/utils.dart';
+import '../../../presentation/widget/enhancement/card.dart';
 import '../cubit/auth_cubit.dart';
 import '../cubit/login_cubit.dart';
 import 'profile_widget.dart';

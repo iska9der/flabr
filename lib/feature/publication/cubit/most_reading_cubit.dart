@@ -1,10 +1,10 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../common/exception/exception_helper.dart';
-import '../../../common/model/extension/enum_status.dart';
-import '../../../data/model/language/language_part.dart';
-import '../../../data/repository/repository_part.dart';
+import '../../../data/exception/part.dart';
+import '../../../data/model/language/part.dart';
+import '../../../data/repository/part.dart';
+import '../../../presentation/extension/part.dart';
 import '../model/publication/publication.dart';
 
 part 'most_reading_state.dart';

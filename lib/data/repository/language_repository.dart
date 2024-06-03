@@ -1,4 +1,4 @@
-part of 'repository_part.dart';
+part of 'part.dart';
 
 const langUICacheKey = 'langUI';
 const langArticlesCacheKey = 'langArticles';

@@ -4,10 +4,10 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:share_plus/share_plus.dart';
 
-import '../../../../common/widget/enhancement/progress_indicator.dart';
-import '../../../../common/widget/html_view_widget.dart';
-import '../../../../common/widget/publication_settings_widget.dart';
-import '../../../../config/constants.dart';
+import '../../../../core/constants/part.dart';
+import '../../../../presentation/widget/enhancement/progress_indicator.dart';
+import '../../../../presentation/widget/html_view_widget.dart';
+import '../../../../presentation/widget/publication_settings_widget.dart';
 import '../../cubit/publication_detail_cubit.dart';
 import '../../model/publication/publication.dart';
 import '../../widget/card/components/footer_widget.dart';

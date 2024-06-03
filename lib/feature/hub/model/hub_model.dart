@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../common/model/hub.dart';
+import '../../../data/model/hub.dart';
 import 'hub_related_data.dart';
 import 'hub_statistics_model.dart';
 

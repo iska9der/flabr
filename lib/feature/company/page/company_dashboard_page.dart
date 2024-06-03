@@ -2,11 +2,11 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../common/widget/dashboard_drawer_link_widget.dart';
-import '../../../component/di/injector.dart';
-import '../../../component/router/app_router.dart';
-import '../../../component/theme/theme_part.dart';
-import '../../enhancement/scaffold/cubit/scaffold_cubit.dart';
+import '../../../core/component/di/injector.dart';
+import '../../../core/component/router/app_router.dart';
+import '../../../presentation/enhancement/scaffold/part.dart';
+import '../../../presentation/theme/part.dart';
+import '../../../presentation/widget/dashboard_drawer_link_widget.dart';
 import '../cubit/company_cubit.dart';
 import 'company_detail_page.dart';
 

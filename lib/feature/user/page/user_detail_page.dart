@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
-import '../../../common/model/extension/enum_status.dart';
-import '../../../common/utils/utils.dart';
-import '../../../common/widget/detail/section_container_widget.dart';
-import '../../../common/widget/enhancement/progress_indicator.dart';
-import '../../../component/di/injector.dart';
-import '../../../component/theme/theme_part.dart';
+import '../../../core/component/di/injector.dart';
+import '../../../presentation/extension/part.dart';
+import '../../../presentation/theme/part.dart';
+import '../../../presentation/utils/utils.dart';
+import '../../../presentation/widget/detail/section_container_widget.dart';
+import '../../../presentation/widget/enhancement/progress_indicator.dart';
 import '../cubit/user_cubit.dart';
 import '../widget/user_profile_card_widget.dart';
 import '../widget/user_whois_widget.dart';

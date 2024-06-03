@@ -3,15 +3,15 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../common/utils/utils.dart';
-import '../../../common/widget/author_widget.dart';
-import '../../../common/widget/comment_widget.dart';
-import '../../../common/widget/enhancement/button.dart';
-import '../../../common/widget/enhancement/progress_indicator.dart';
-import '../../../component/di/injector.dart';
-import '../../../component/router/app_router.dart';
-import '../../../component/theme/theme_part.dart';
-import '../../enhancement/scroll/cubit/scroll_cubit.dart';
+import '../../../core/component/di/injector.dart';
+import '../../../core/component/router/app_router.dart';
+import '../../../presentation/enhancement/scroll/part.dart';
+import '../../../presentation/theme/part.dart';
+import '../../../presentation/utils/utils.dart';
+import '../../../presentation/widget/author_widget.dart';
+import '../../../presentation/widget/comment_widget.dart';
+import '../../../presentation/widget/enhancement/button.dart';
+import '../../../presentation/widget/enhancement/progress_indicator.dart';
 import '../../publication/page/article/article_detail_page.dart';
 import '../cubit/user_comment_list_cubit.dart';
 

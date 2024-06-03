@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../common/model/hub.dart';
-import '../../../common/model/hub_type.dart';
+import '../../../data/model/hub.dart';
+import '../../../data/model/hub_type.dart';
 import '../../hub/model/hub_related_data.dart';
 
 class PublicationHubModel extends HubBase with EquatableMixin {

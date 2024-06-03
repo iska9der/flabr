@@ -1,4 +1,4 @@
-part of 'service_part.dart';
+part of 'part.dart';
 
 abstract interface class HubService {
   Future<HubListResponse> fetchAll({

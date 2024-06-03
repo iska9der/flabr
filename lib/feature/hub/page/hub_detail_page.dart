@@ -2,11 +2,11 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../common/widget/enhancement/progress_indicator.dart';
-import '../../../common/widget/publication_sliver_list.dart';
-import '../../../component/di/injector.dart';
-import '../../../component/theme/theme_part.dart';
-import '../../enhancement/scroll/scroll.dart';
+import '../../../core/component/di/injector.dart';
+import '../../../presentation/enhancement/scroll/part.dart';
+import '../../../presentation/theme/part.dart';
+import '../../../presentation/widget/enhancement/progress_indicator.dart';
+import '../../../presentation/widget/publication_sliver_list.dart';
 import '../../publication/cubit/publication_list_cubit.dart';
 import '../../publication/model/sort/sort_enum.dart';
 import '../../publication/widget/sort/publication_sort_widget.dart';

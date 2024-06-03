@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../component/theme/theme_part.dart';
+import '../../../../presentation/theme/part.dart';
 import '../../cubit/feed_publication_list_cubit.dart';
 import '../../cubit/publication_list_cubit.dart';
 import '../sort/feed_sort_widget.dart';

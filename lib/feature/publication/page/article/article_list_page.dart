@@ -2,8 +2,8 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../component/di/injector.dart';
-import '../../../enhancement/scroll/cubit/scroll_cubit.dart';
+import '../../../../core/component/di/injector.dart';
+import '../../../../presentation/enhancement/scroll/part.dart';
 import '../../cubit/flow_publication_list_cubit.dart';
 import '../../model/flow_enum.dart';
 import '../../widget/appbar/flow_list_appbar.dart';

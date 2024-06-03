@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../common/model/stat_type.dart';
-import '../../../common/widget/enhancement/card.dart';
-import '../../../common/widget/feed/card_avatar_widget.dart';
-import '../../../common/widget/profile_stat_widget.dart';
-import '../../../component/di/injector.dart';
-import '../../../component/theme/theme_part.dart';
-import '../../../data/repository/repository_part.dart';
+import '../../../core/component/di/injector.dart';
+import '../../../data/model/stat_type.dart';
+import '../../../data/repository/part.dart';
+import '../../../presentation/theme/part.dart';
+import '../../../presentation/widget/enhancement/card.dart';
+import '../../../presentation/widget/feed/card_avatar_widget.dart';
+import '../../../presentation/widget/profile_stat_widget.dart';
+import '../../../presentation/widget/profile_subscribe/part.dart';
 import '../../auth/cubit/auth_cubit.dart';
-import '../../common/profile_subscribe/widget/subscribe_button.dart';
 import '../cubit/hub_cubit.dart';
 import '../model/hub_related_data.dart';
 

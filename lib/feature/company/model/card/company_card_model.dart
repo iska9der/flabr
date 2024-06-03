@@ -1,4 +1,4 @@
-import '../../../../common/model/company.dart';
+import '../../../../data/model/company.dart';
 import '../company_related_data.dart';
 import 'company_card_statistics_model.dart';
 import 'company_contact.dart';

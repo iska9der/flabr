@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../common/exception/exception_helper.dart';
-import '../../../common/model/network/list_response.dart';
+import '../../../data/exception/part.dart';
+import '../../../data/model/network/list_response.dart';
 import '../model/publication/publication.dart';
 import '../model/sort/feed_publication_type.dart';
 import '../model/sort/score_enum.dart';

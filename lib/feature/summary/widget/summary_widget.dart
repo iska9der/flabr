@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../common/widget/enhancement/progress_indicator.dart';
+import '../../../presentation/widget/enhancement/progress_indicator.dart';
 import '../cubit/summary_cubit.dart';
 
 class SummaryWidget extends StatelessWidget {

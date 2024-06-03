@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../common/model/related_data.dart';
+import '../../../data/model/related_data.dart';
 
 class CompanyRelatedData extends RelatedDataBase with EquatableMixin {
   const CompanyRelatedData({this.isSubscribed = false});

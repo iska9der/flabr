@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_fancy_tree_view/flutter_fancy_tree_view.dart';
 
-import '../../../../common/model/extension/enum_status.dart';
-import '../../../../common/utils/offset_history.dart';
-import '../../../../common/widget/author_widget.dart';
-import '../../../../common/widget/comment_widget.dart';
-import '../../../../common/widget/enhancement/progress_indicator.dart';
-import '../../../../component/theme/theme_part.dart';
+import '../../../../data/model/offset_history.dart';
+import '../../../../presentation/extension/part.dart';
+import '../../../../presentation/theme/part.dart';
+import '../../../../presentation/widget/author_widget.dart';
+import '../../../../presentation/widget/comment_widget.dart';
+import '../../../../presentation/widget/enhancement/progress_indicator.dart';
 import '../../cubit/comment/comment_list_cubit.dart';
 import '../../model/comment/comment_model.dart';
 import '../../widget/comment/comment_parent_widget.dart';

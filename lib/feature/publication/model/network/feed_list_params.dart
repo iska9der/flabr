@@ -1,4 +1,4 @@
-import '../../../../common/model/network/params.dart';
+import '../../../../data/model/network/params.dart';
 
 class FeedListParams extends Params {
   const FeedListParams({

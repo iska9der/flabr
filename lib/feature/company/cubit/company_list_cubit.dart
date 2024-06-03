@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../common/exception/displayable_exception.dart';
-import '../../../data/repository/repository_part.dart';
+import '../../../data/exception/part.dart';
+import '../../../data/repository/part.dart';
 import '../model/network/company_list_response.dart';
 
 part 'company_list_state.dart';

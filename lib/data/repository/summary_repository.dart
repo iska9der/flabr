@@ -1,4 +1,4 @@
-part of 'repository_part.dart';
+part of 'part.dart';
 
 abstract interface class SummaryRepository {
   Future<SummaryModel> fetchArticleSummary(String articleId);

@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../../common/model/network/list_response.dart';
+import '../../../../data/model/network/list_response.dart';
 import '../user_model.dart';
 
 class UserListResponse extends ListResponse with EquatableMixin {

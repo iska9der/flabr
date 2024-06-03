@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../common/model/user.dart';
+import '../../../data/model/user.dart';
 
 class PublicationAuthorModel extends UserBase with EquatableMixin {
   const PublicationAuthorModel({

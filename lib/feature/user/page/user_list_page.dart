@@ -4,11 +4,11 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../common/utils/utils.dart';
-import '../../../common/widget/enhancement/progress_indicator.dart';
-import '../../../component/di/injector.dart';
-import '../../../component/theme/theme_part.dart';
-import '../../enhancement/scroll/scroll.dart';
+import '../../../core/component/di/injector.dart';
+import '../../../presentation/enhancement/scroll/part.dart';
+import '../../../presentation/theme/part.dart';
+import '../../../presentation/utils/utils.dart';
+import '../../../presentation/widget/enhancement/progress_indicator.dart';
 import '../cubit/user_list_cubit.dart';
 import '../widget/user_card_widget.dart';
 

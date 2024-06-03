@@ -1,8 +1,8 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../../common/model/hub_type.dart';
-import '../../../../../component/theme/theme_part.dart';
+import '../../../../../data/model/hub_type.dart';
+import '../../../../../presentation/theme/part.dart';
 import '../../../../hub/model/hub_related_data.dart';
 import '../../../model/publication_hub_model.dart';
 

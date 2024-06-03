@@ -4,10 +4,10 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../common/widget/dashboard_drawer_link_widget.dart';
-import '../../../component/di/injector.dart';
-import '../../../component/router/app_router.dart';
-import '../../../component/theme/theme_part.dart';
+import '../../../core/component/di/injector.dart';
+import '../../../core/component/router/app_router.dart';
+import '../../../presentation/theme/part.dart';
+import '../../../presentation/widget/dashboard_drawer_link_widget.dart';
 import '../../auth/widget/profile_icon_button.dart';
 import '../../search/cubit/search_cubit.dart';
 import '../../search/page/search.dart';

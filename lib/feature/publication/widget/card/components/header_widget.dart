@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import '../../../../../common/widget/author_widget.dart';
+import '../../../../../presentation/widget/author_widget.dart';
 import '../../../model/publication/publication.dart';
 
 class PublicationHeaderWidget extends StatelessWidget {

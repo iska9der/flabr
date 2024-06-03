@@ -1,4 +1,4 @@
-part of 'service_part.dart';
+part of 'part.dart';
 
 abstract interface class PublicationService {
   Future<Map<String, dynamic>> fetchArticleById(

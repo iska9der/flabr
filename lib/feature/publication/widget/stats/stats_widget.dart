@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../common/model/extension/num.dart';
+import '../../../../presentation/extension/part.dart';
 import '../../model/publication/publication.dart';
 import '../../model/publication_complexity.dart';
 import '../../model/publication_type.dart';

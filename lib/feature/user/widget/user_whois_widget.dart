@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 
-import '../../../common/widget/detail/section_container_widget.dart';
-import '../../../common/widget/enhancement/card.dart';
-import '../../../common/widget/html_view_widget.dart';
+import '../../../presentation/widget/detail/section_container_widget.dart';
+import '../../../presentation/widget/enhancement/card.dart';
+import '../../../presentation/widget/html_view_widget.dart';
 import '../cubit/user_cubit.dart';
 import '../model/user_badget_model.dart';
 

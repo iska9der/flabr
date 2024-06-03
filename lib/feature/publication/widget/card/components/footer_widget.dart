@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../../common/model/extension/enum_status.dart';
-import '../../../../../common/model/extension/num.dart';
-import '../../../../../common/model/stat_type.dart';
-import '../../../../../common/utils/utils.dart';
-import '../../../../../component/di/injector.dart';
-import '../../../../../component/router/app_router.dart';
+import '../../../../../core/component/di/injector.dart';
+import '../../../../../core/component/router/app_router.dart';
+import '../../../../../data/model/stat_type.dart';
+import '../../../../../presentation/extension/part.dart';
+import '../../../../../presentation/utils/utils.dart';
 import '../../../../auth/cubit/auth_cubit.dart';
 import '../../../../auth/widget/dialog.dart';
-import '../../../../summary/summary.dart';
+import '../../../../summary/cubit/summary_auth_cubit.dart';
+import '../../../../summary/widget/dialog.dart';
 import '../../../cubit/publication_bookmark_cubit.dart';
 import '../../../model/publication/publication.dart';
 import '../../../model/publication_type.dart';
