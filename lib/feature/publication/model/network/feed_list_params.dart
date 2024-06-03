@@ -34,5 +34,6 @@ class FeedListParams extends Params {
         ...super.props,
         complexity,
         score,
+        types,
       ];
 }
