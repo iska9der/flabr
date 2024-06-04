@@ -4,19 +4,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
-import '../../core/component/di/injector.dart';
-import '../../core/component/router/app_router.dart';
-import '../extension/part.dart';
-import '../feature/auth/cubit/auth_cubit.dart';
-import '../feature/summary/cubit/summary_auth_cubit.dart';
-import '../page/settings/cubit/settings_cubit.dart';
-import '../theme/part.dart';
-import 'enhancement/progress_indicator.dart';
+import '../core/component/di/injector.dart';
+import '../core/component/router/app_router.dart';
+import 'extension/part.dart';
+import 'feature/auth/cubit/auth_cubit.dart';
+import 'feature/summary/cubit/summary_auth_cubit.dart';
+import 'page/settings/cubit/settings_cubit.dart';
+import 'theme/part.dart';
+import 'widget/enhancement/progress_indicator.dart';
 
 class MyApp extends StatelessWidget {
-  MyApp({super.key});
+  const MyApp({super.key, required this.router});
 
-  final AppRouter router = getIt();
+  final AppRouter router;
 
   @override
   Widget build(BuildContext context) {

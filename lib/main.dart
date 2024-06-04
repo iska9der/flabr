@@ -11,7 +11,7 @@ import 'package:intl/intl.dart';
 import 'core/component/bloc/observer.dart';
 import 'core/component/di/injector.dart';
 import 'core/component/logger/console.dart';
-import 'presentation/widget/app.dart';
+import 'presentation/app.dart';
 
 void main() async => runZonedGuarded(
       () async {
@@ -34,7 +34,7 @@ void main() async => runZonedGuarded(
           DevicePreview(
             // ignore: avoid_redundant_argument_values
             enabled: !kReleaseMode,
-            builder: (_) => MyApp(),
+            builder: (_) => MyApp(router: getIt()),
           ),
         );
       },
