@@ -2,8 +2,8 @@ import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../core/component/http/part.dart';
-import '../../presentation/feature/auth/model/auth_data_model.dart';
 import '../exception/part.dart';
+import '../model/auth_data_model.dart';
 import '../model/list_response/comment_list_response.dart';
 import '../model/list_response/company_list_response.dart';
 import '../model/list_response/feed_list_response.dart';

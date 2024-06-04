@@ -1,8 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../data/model/summary_model.dart';
 import '../../../../data/repository/part.dart';
-import '../model/summary_model.dart';
 
 part 'summary_state.dart';
 

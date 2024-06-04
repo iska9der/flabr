@@ -1,14 +1,15 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../data/model/auth_data_model.dart';
 import '../../../../data/repository/part.dart';
 import '../../../extension/part.dart';
-import '../model/auth_data_model.dart';
 
 part 'login_state.dart';
 
 final emailValidation = RegExp(
-    r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+  r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
+);
 
 class LoginCubit extends Cubit<LoginState> {
   LoginCubit({
