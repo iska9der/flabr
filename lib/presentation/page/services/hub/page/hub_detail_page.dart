@@ -4,11 +4,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/component/di/injector.dart';
 import '../../../../../data/model/sort/sort_enum.dart';
-import '../../../../cubit/publication_list_cubit.dart';
+import '../../../../feature/publication_list/part.dart';
 import '../../../../feature/scroll/part.dart';
 import '../../../../theme/part.dart';
 import '../../../../widget/enhancement/progress_indicator.dart';
-import '../../../../widget/publication_sliver_list.dart';
 import '../../../../widget/publication_sort_widget.dart';
 import '../../../settings/cubit/settings_cubit.dart';
 import '../cubit/hub_cubit.dart';

@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/component/di/injector.dart';
+import '../../../feature/publication_list/part.dart';
 import '../../../feature/scroll/part.dart';
-import '../widget/publication_list_view.dart';
 import 'cubit/feed_publication_list_cubit.dart';
 import 'widget/feed_list_appbar.dart';
 
@@ -31,7 +31,7 @@ class FeedListPage extends StatelessWidget {
           create: (c) => ScrollCubit(),
         ),
       ],
-      child: const PublicationListView<FeedPublicationListCubit,
+      child: const PublicationListScaffold<FeedPublicationListCubit,
           FeedPublicationListState>(
         appBar: FeedListAppBar(),
       ),

@@ -5,7 +5,7 @@ import '../../../../../data/model/comment/comment_model.dart';
 import '../../../../../data/model/list_response/list_response.dart';
 import '../../../../../data/model/publication/publication.dart';
 import '../../../../../data/model/user/user_bookmarks_type.dart';
-import '../../../../cubit/publication_list_cubit.dart';
+import '../../../../feature/publication_list/part.dart';
 
 part 'user_bookmark_list_state.dart';
 

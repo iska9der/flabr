@@ -6,7 +6,7 @@ import '../../../../../data/model/publication/publication.dart';
 import '../../../../../data/model/sort/sort_date_period_enum.dart';
 import '../../../../../data/model/sort/sort_enum.dart';
 import '../../../../../data/model/user/user_publication_type.dart';
-import '../../../../cubit/publication_list_cubit.dart';
+import '../../../../feature/publication_list/part.dart';
 
 part 'user_publication_list_state.dart';
 

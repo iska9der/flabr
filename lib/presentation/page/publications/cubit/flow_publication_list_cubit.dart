@@ -9,7 +9,7 @@ import '../../../../data/model/publication/publication_flow_enum.dart';
 import '../../../../data/model/publication/publication_type_enum.dart';
 import '../../../../data/model/sort/sort_date_period_enum.dart';
 import '../../../../data/model/sort/sort_enum.dart';
-import '../../../cubit/publication_list_cubit.dart';
+import '../../../feature/publication_list/part.dart';
 
 part 'flow_publication_list_state.dart';
 

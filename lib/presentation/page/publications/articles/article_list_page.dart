@@ -4,10 +4,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/component/di/injector.dart';
 import '../../../../data/model/publication/publication_flow_enum.dart';
+import '../../../feature/publication_list/part.dart';
 import '../../../feature/scroll/part.dart';
 import '../cubit/flow_publication_list_cubit.dart';
 import '../widget/flow_list_appbar.dart';
-import '../widget/publication_list_view.dart';
 
 @RoutePage(name: ArticleListPage.routeName)
 class ArticleListPage extends StatelessWidget {
@@ -35,7 +35,7 @@ class ArticleListPage extends StatelessWidget {
           create: (c) => ScrollCubit(),
         ),
       ],
-      child: const PublicationListView<FlowPublicationListCubit,
+      child: const PublicationListScaffold<FlowPublicationListCubit,
           FlowPublicationListState>(
         appBar: FlowListAppBar(),
       ),

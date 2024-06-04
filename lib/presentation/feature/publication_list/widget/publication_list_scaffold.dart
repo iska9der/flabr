@@ -1,22 +1,8 @@
-import 'package:collection/collection.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:responsive_framework/responsive_framework.dart';
+part of '../part.dart';
 
-import '../../../cubit/publication_list_cubit.dart';
-import '../../../extension/part.dart';
-import '../../../feature/auth/cubit/auth_cubit.dart';
-import '../../../feature/scroll/part.dart';
-import '../../../theme/part.dart';
-import '../../../widget/enhancement/card.dart';
-import '../../../widget/enhancement/responsive_visibility.dart';
-import '../../../widget/publication_sliver_list.dart';
-import '../../settings/cubit/settings_cubit.dart';
-import 'most_reading_widget.dart';
-
-class PublicationListView<C extends PublicationListCubit<S>,
-    S extends PublicationListState> extends StatelessWidget {
-  const PublicationListView({
+class PublicationListScaffold<ListCubit extends PublicationListCubit<ListState>,
+    ListState extends PublicationListState> extends StatelessWidget {
+  const PublicationListScaffold({
     super.key,
     this.appBar,
     this.showMostReading = true,
@@ -27,7 +13,7 @@ class PublicationListView<C extends PublicationListCubit<S>,
 
   @override
   Widget build(BuildContext context) {
-    final pubCubit = context.read<C>();
+    final pubCubit = context.read<ListCubit>();
     final scrollCubit = context.read<ScrollCubit>();
     final scrollController = scrollCubit.state.controller;
 
@@ -38,7 +24,8 @@ class PublicationListView<C extends PublicationListCubit<S>,
       listeners: [
         /// Если пользователь вошел, надо переполучить статьи
         BlocListener<AuthCubit, AuthState>(
-          listenWhen: (p, c) => p.status.isLoading && c.isAuthorized,
+          listenWhen: (previous, current) =>
+              previous.status.isLoading && current.isAuthorized,
           listener: (context, state) {
             pubCubit.refetch();
           },
@@ -46,7 +33,8 @@ class PublicationListView<C extends PublicationListCubit<S>,
 
         /// Если пользователь вышел, переполучаем статьи напрямую
         BlocListener<AuthCubit, AuthState>(
-          listenWhen: (p, c) => p.status.isLoading && c.isUnauthorized,
+          listenWhen: (previous, current) =>
+              previous.status.isLoading && current.isUnauthorized,
           listener: (context, state) {
             pubCubit.refetch();
           },
@@ -62,8 +50,8 @@ class PublicationListView<C extends PublicationListCubit<S>,
 
         /// Когда скролл достиг предела, получаем следующую страницу
         BlocListener<ScrollCubit, ScrollState>(
-          listenWhen: (p, c) => c.isBottomEdge,
-          listener: (c, state) => pubCubit.fetch(),
+          listenWhen: (_, current) => current.isBottomEdge,
+          listener: (_, state) => pubCubit.fetch(),
         ),
       ],
       child: Scaffold(
@@ -95,7 +83,7 @@ class PublicationListView<C extends PublicationListCubit<S>,
                   ),
                 SliverCrossAxisGroup(
                   slivers: [
-                    PublicationSliverList<C, S>(),
+                    PublicationSliverList<ListCubit, ListState>(),
                     ResponsiveVisibilitySliver(
                       visible: false,
                       visibleConditions: const [
