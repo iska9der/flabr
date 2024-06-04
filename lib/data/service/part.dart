@@ -3,7 +3,6 @@ import 'package:injectable/injectable.dart';
 
 import '../../core/component/http/part.dart';
 import '../../presentation/feature/auth/model/auth_data_model.dart';
-import '../exception/comment_list_exception.dart';
 import '../exception/part.dart';
 import '../model/list_response/comment_list_response.dart';
 import '../model/list_response/company_list_response.dart';

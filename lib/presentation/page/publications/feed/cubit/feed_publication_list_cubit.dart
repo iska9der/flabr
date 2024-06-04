@@ -3,10 +3,10 @@ import 'package:equatable/equatable.dart';
 import '../../../../../data/exception/part.dart';
 import '../../../../../data/model/list_response/list_response.dart';
 import '../../../../../data/model/publication/publication.dart';
+import '../../../../../data/model/sort/feed_publication_type.dart';
 import '../../../../../data/model/sort/sort_option_model.dart';
 import '../../../../../data/model/sort/sort_score_enum.dart';
 import '../../../../cubit/publication_list_cubit.dart';
-import '../model/feed_publication_type.dart';
 
 part 'feed_publication_list_state.dart';
 
