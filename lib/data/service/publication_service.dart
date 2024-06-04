@@ -25,10 +25,10 @@ abstract interface class PublicationService {
     required String langUI,
     required String langArticles,
     required PublicationType type,
-    required FlowEnum flow,
-    required SortEnum sort,
+    required PublicationFlow flow,
+    required Sort sort,
     required String page,
-    required DatePeriodEnum period,
+    required SortDatePeriod period,
     required String score,
   });
 
@@ -36,8 +36,8 @@ abstract interface class PublicationService {
     required String langUI,
     required String langArticles,
     required String hub,
-    required SortEnum sort,
-    required DatePeriodEnum period,
+    required Sort sort,
+    required SortDatePeriod period,
     required String score,
     required String page,
   });
@@ -159,14 +159,14 @@ class PublicationServiceImpl implements PublicationService {
     required String langUI,
     required String langArticles,
     required PublicationType type,
-    required FlowEnum flow,
-    required SortEnum sort,
+    required PublicationFlow flow,
+    required Sort sort,
     required String page,
-    required DatePeriodEnum period,
+    required SortDatePeriod period,
     required String score,
   }) async {
     try {
-      final flowStr = (flow == FlowEnum.all) ? null : flow.name;
+      final flowStr = (flow == PublicationFlow.all) ? null : flow.name;
 
       final params = switch (type) {
         PublicationType.post => PostListParams(
@@ -175,7 +175,7 @@ class PublicationServiceImpl implements PublicationService {
             page: page,
             flow: flowStr,
             sort: sort.postValue,
-            period: sort == SortEnum.byBest ? period.name : null,
+            period: sort == Sort.byBest ? period.name : null,
             score: score,
           ),
         _ => PublicationListParams(
@@ -187,8 +187,8 @@ class PublicationServiceImpl implements PublicationService {
 
             /// если мы находимся не во "Все потоки", в значение sort, по завету
             /// костыльного api хабра, нужно передавать значение 'all'
-            sort: flow == FlowEnum.all ? sort.value : 'all',
-            period: sort == SortEnum.byBest ? period.name : null,
+            sort: flow == PublicationFlow.all ? sort.value : 'all',
+            period: sort == Sort.byBest ? period.name : null,
             score: score,
           ),
       };
@@ -214,8 +214,8 @@ class PublicationServiceImpl implements PublicationService {
     required String langUI,
     required String langArticles,
     required String hub,
-    required SortEnum sort,
-    required DatePeriodEnum period,
+    required Sort sort,
+    required SortDatePeriod period,
     required String score,
     required String page,
   }) async {
@@ -225,7 +225,7 @@ class PublicationServiceImpl implements PublicationService {
         langUI: langUI,
         page: page,
         sort: 'all',
-        period: sort == SortEnum.byBest ? period.name : null,
+        period: sort == Sort.byBest ? period.name : null,
         score: score,
       );
 

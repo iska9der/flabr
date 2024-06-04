@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../feature/settings/cubit/settings_cubit.dart';
+import '../page/settings/cubit/settings_cubit.dart';
 
 class PublicationSettingsWidget extends StatelessWidget {
   const PublicationSettingsWidget({super.key});

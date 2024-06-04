@@ -1,16 +1,16 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
-import '../../feature/auth/widget/dialog.dart';
-import '../../feature/auth/widget/profile_widget.dart';
-import '../../feature/publication/model/publication_author_model.dart';
+import '../../data/model/publication/publication_author_model.dart';
+import '../feature/auth/widget/dialog.dart';
+import '../feature/auth/widget/profile_widget.dart';
 import '../theme/part.dart';
-import 'feed/card_avatar_widget.dart';
+import 'card_avatar_widget.dart';
 
 class AuthorWidget extends StatelessWidget {
   const AuthorWidget(this.author, {super.key});
 
-  final PublicationAuthorModel author;
+  final PublicationAuthor author;
 
   @override
   Widget build(BuildContext context) {

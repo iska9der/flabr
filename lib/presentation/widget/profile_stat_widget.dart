@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../data/model/stat_type.dart';
+import '../../data/model/stat_type_enum.dart';
 import 'stat_text_widget.dart';
 
 class ProfileStatWidget extends StatelessWidget {

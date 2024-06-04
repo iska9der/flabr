@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../data/model/stat_type.dart';
+import '../../data/model/stat_type_enum.dart';
 import '../extension/part.dart';
 
 class StatTextWidget extends StatelessWidget {

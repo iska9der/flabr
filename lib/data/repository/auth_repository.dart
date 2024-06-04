@@ -6,14 +6,14 @@ class AuthRepository {
 
   final AuthService _service;
 
-  Future<MeModel?> fetchMe() async {
+  Future<UserMeModel?> fetchMe() async {
     final raw = await _service.fetchMe();
 
     if (raw == null) {
       return null;
     }
 
-    return MeModel.fromMap(raw);
+    return UserMeModel.fromMap(raw);
   }
 
   fetchCsrf(AuthDataModel data) async {

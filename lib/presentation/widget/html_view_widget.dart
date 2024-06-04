@@ -8,11 +8,11 @@ import 'package:path/path.dart' as p;
 
 import '../../core/component/di/injector.dart';
 import '../../core/component/router/app_router.dart';
-import '../../feature/settings/cubit/settings_cubit.dart';
 import '../extension/part.dart';
+import '../feature/image_action/part.dart';
+import '../page/settings/cubit/settings_cubit.dart';
 import '../theme/part.dart';
 import 'enhancement/progress_indicator.dart';
-import 'image/part.dart';
 
 class HtmlView extends StatelessWidget {
   const HtmlView({

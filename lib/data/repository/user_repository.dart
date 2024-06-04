@@ -15,7 +15,7 @@ class UserRepository {
   }) async {
     final response = await _service.fetchAll(
       langUI: langUI.name,
-      langArticles: encodeLangs(langArticles),
+      langArticles: LanguageEncoder.encodeLangs(langArticles),
       page: page,
     );
 
@@ -32,7 +32,7 @@ class UserRepository {
     final raw = await _service.fetchCard(
       alias: login,
       langUI: langUI.name,
-      langArticles: encodeLangs(langArticles),
+      langArticles: LanguageEncoder.encodeLangs(langArticles),
     );
 
     UserModel model = UserModel.fromMap(raw);
@@ -52,7 +52,7 @@ class UserRepository {
     final raw = await _service.fetchWhois(
       alias: login,
       langUI: langUI.name,
-      langArticles: encodeLangs(langArticles),
+      langArticles: LanguageEncoder.encodeLangs(langArticles),
     );
 
     UserWhoisModel model = UserWhoisModel.fromMap(raw);

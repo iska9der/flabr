@@ -14,10 +14,10 @@ import 'core/component/bloc/observer.dart';
 import 'core/component/di/injector.dart';
 import 'core/component/logger/console.dart';
 import 'core/component/router/app_router.dart';
-import 'feature/auth/cubit/auth_cubit.dart';
-import 'feature/settings/cubit/settings_cubit.dart';
-import 'feature/summary/cubit/summary_auth_cubit.dart';
 import 'presentation/extension/part.dart';
+import 'presentation/feature/auth/cubit/auth_cubit.dart';
+import 'presentation/feature/summary/cubit/summary_auth_cubit.dart';
+import 'presentation/page/settings/cubit/settings_cubit.dart';
 import 'presentation/theme/part.dart';
 import 'presentation/widget/enhancement/progress_indicator.dart';
 

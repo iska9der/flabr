@@ -56,7 +56,7 @@ abstract class _$AppRouter extends RootStackRouter {
     ArticlesRouter.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: ArticlesRouterData(),
+        child: ArticlesFlow(),
       );
     },
     CompanyDashboardRoute.name: (routeData) {
@@ -160,7 +160,7 @@ abstract class _$AppRouter extends RootStackRouter {
     NewsRouter.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: NewsRouterData(),
+        child: NewsFlow(),
       );
     },
     PostCommentsRoute.name: (routeData) {
@@ -202,13 +202,13 @@ abstract class _$AppRouter extends RootStackRouter {
     PostsRouter.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: PostsRouterData(),
+        child: PostsFlow(),
       );
     },
     PublicationsDashboardRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const PublicationDashboardPage(),
+        child: const PublicationPage(),
       );
     },
     ServicesRoute.name: (routeData) {
@@ -220,7 +220,7 @@ abstract class _$AppRouter extends RootStackRouter {
     ServicesRouter.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: ServicesRouterData(),
+        child: ServicesFlow(),
       );
     },
     SettingsRouter.name: (routeData) {
@@ -419,7 +419,7 @@ class ArticleListRouteArgs {
 }
 
 /// generated route for
-/// [ArticlesRouterData]
+/// [ArticlesFlow]
 class ArticlesRouter extends PageRouteInfo<void> {
   const ArticlesRouter({List<PageRouteInfo>? children})
       : super(
@@ -712,7 +712,7 @@ class NewsListRouteArgs {
 }
 
 /// generated route for
-/// [NewsRouterData]
+/// [NewsFlow]
 class NewsRouter extends PageRouteInfo<void> {
   const NewsRouter({List<PageRouteInfo>? children})
       : super(
@@ -843,7 +843,7 @@ class PostListRouteArgs {
 }
 
 /// generated route for
-/// [PostsRouterData]
+/// [PostsFlow]
 class PostsRouter extends PageRouteInfo<void> {
   const PostsRouter({List<PageRouteInfo>? children})
       : super(
@@ -857,7 +857,7 @@ class PostsRouter extends PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [PublicationDashboardPage]
+/// [PublicationPage]
 class PublicationsDashboardRoute extends PageRouteInfo<void> {
   const PublicationsDashboardRoute({List<PageRouteInfo>? children})
       : super(
@@ -885,7 +885,7 @@ class ServicesRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [ServicesRouterData]
+/// [ServicesFlow]
 class ServicesRouter extends PageRouteInfo<void> {
   const ServicesRouter({List<PageRouteInfo>? children})
       : super(

@@ -3,32 +3,32 @@ import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
-import '../../../feature/company/page/company_dashboard_page.dart';
-import '../../../feature/company/page/company_detail_page.dart';
-import '../../../feature/company/page/company_list_page.dart';
-import '../../../feature/hub/page/hub_dashboard_page.dart';
-import '../../../feature/hub/page/hub_detail_page.dart';
-import '../../../feature/hub/page/hub_list_page.dart';
-import '../../../feature/publication/page/article/article_comment_page.dart';
-import '../../../feature/publication/page/article/article_detail_page.dart';
-import '../../../feature/publication/page/article/article_list_page.dart';
-import '../../../feature/publication/page/feed/feed_list_page.dart';
-import '../../../feature/publication/page/news/news_comment_page.dart';
-import '../../../feature/publication/page/news/news_detail_page.dart';
-import '../../../feature/publication/page/news/news_list_page.dart';
-import '../../../feature/publication/page/post/post_comment_page.dart';
-import '../../../feature/publication/page/post/post_detail_page.dart';
-import '../../../feature/publication/page/post/post_list_page.dart';
-import '../../../feature/publication/page/publication_dashboard_page.dart';
-import '../../../feature/user/page/user_bookmark_list_page.dart';
-import '../../../feature/user/page/user_comment_list_page.dart';
-import '../../../feature/user/page/user_dashboard_page.dart';
-import '../../../feature/user/page/user_detail_page.dart';
-import '../../../feature/user/page/user_list_page.dart';
-import '../../../feature/user/page/user_publication_list_page.dart';
 import '../../../presentation/page/dashboard_page.dart';
-import '../../../presentation/page/services_page.dart';
-import '../../../presentation/page/settings_page.dart';
+import '../../../presentation/page/publications/articles/article_comment_page.dart';
+import '../../../presentation/page/publications/articles/article_detail_page.dart';
+import '../../../presentation/page/publications/articles/article_list_page.dart';
+import '../../../presentation/page/publications/feed/feed_list_page.dart';
+import '../../../presentation/page/publications/news/news_comment_page.dart';
+import '../../../presentation/page/publications/news/news_detail_page.dart';
+import '../../../presentation/page/publications/news/news_list_page.dart';
+import '../../../presentation/page/publications/posts/post_comment_page.dart';
+import '../../../presentation/page/publications/posts/post_detail_page.dart';
+import '../../../presentation/page/publications/posts/post_list_page.dart';
+import '../../../presentation/page/publications/publication_page.dart';
+import '../../../presentation/page/services/company/page/company_dashboard_page.dart';
+import '../../../presentation/page/services/company/page/company_detail_page.dart';
+import '../../../presentation/page/services/company/page/company_list_page.dart';
+import '../../../presentation/page/services/hub/page/hub_dashboard_page.dart';
+import '../../../presentation/page/services/hub/page/hub_detail_page.dart';
+import '../../../presentation/page/services/hub/page/hub_list_page.dart';
+import '../../../presentation/page/services/services_page.dart';
+import '../../../presentation/page/services/user/page/user_bookmark_list_page.dart';
+import '../../../presentation/page/services/user/page/user_comment_list_page.dart';
+import '../../../presentation/page/services/user/page/user_dashboard_page.dart';
+import '../../../presentation/page/services/user/page/user_detail_page.dart';
+import '../../../presentation/page/services/user/page/user_list_page.dart';
+import '../../../presentation/page/services/user/page/user_publication_list_page.dart';
+import '../../../presentation/page/settings/settings_page.dart';
 import 'routes.dart';
 
 part 'app_router.gr.dart';
@@ -126,7 +126,7 @@ class AppRouter extends _$AppRouter {
         /// Таб "Публикации"
         AutoRoute(
           initial: true,
-          path: PublicationDashboardPage.routePath,
+          path: PublicationPage.routePath,
           page: PublicationsDashboardRoute.page,
           children: [
             /// Таб "Моя лента"
@@ -137,7 +137,7 @@ class AppRouter extends _$AppRouter {
 
             /// Таб "Статьи"
             AutoRoute(
-              path: ArticlesRouterData.routePath,
+              path: ArticlesFlow.routePath,
               page: ArticlesRouter.page,
               children: [
                 RedirectRoute(path: '', redirectTo: 'flows/all'),
@@ -158,7 +158,7 @@ class AppRouter extends _$AppRouter {
 
             /// Таб "Посты"
             AutoRoute(
-              path: PostsRouterData.routePath,
+              path: PostsFlow.routePath,
               page: PostsRouter.page,
               children: [
                 RedirectRoute(path: '', redirectTo: 'flows/all'),
@@ -179,7 +179,7 @@ class AppRouter extends _$AppRouter {
 
             /// Таб "Новости"
             AutoRoute(
-              path: NewsRouterData.routePath,
+              path: NewsFlow.routePath,
               page: NewsRouter.page,
               children: [
                 RedirectRoute(path: '', redirectTo: 'flows/all'),
@@ -202,7 +202,7 @@ class AppRouter extends _$AppRouter {
 
         /// Таб "Сервисы"
         AutoRoute(
-          path: ServicesRouterData.routePath,
+          path: ServicesFlow.routePath,
           page: ServicesRouter.page,
           children: [
             AutoRoute(

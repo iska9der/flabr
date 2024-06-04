@@ -63,7 +63,7 @@ class LanguageRepository {
       String? raw = await _storage.read(langArticlesCacheKey);
       if (raw == null) return null;
 
-      final langs = decodeLangs(raw);
+      final langs = LanguageEncoder.decodeLangs(raw);
       return langs;
     } on ValueException {
       await _storage.delete(langArticlesCacheKey);
@@ -74,7 +74,7 @@ class LanguageRepository {
   void updateArticleLang(List<LanguageEnum> langs) async {
     _articles = langs;
     _articlesController.add(langs);
-    String langsAsString = encodeLangs(langs);
+    String langsAsString = LanguageEncoder.encodeLangs(langs);
     _storage.write(langArticlesCacheKey, langsAsString);
   }
 }

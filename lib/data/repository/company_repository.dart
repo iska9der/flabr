@@ -14,7 +14,7 @@ class CompanyRepository {
     final response = await _service.fetchAll(
       page: page,
       langUI: langUI.name,
-      langArticles: encodeLangs(langArticles),
+      langArticles: LanguageEncoder.encodeLangs(langArticles),
     );
 
     return response;
@@ -28,7 +28,7 @@ class CompanyRepository {
     final raw = await _service.fetchCard(
       alias,
       langUI: langUI.name,
-      langArticles: encodeLangs(langArticles),
+      langArticles: LanguageEncoder.encodeLangs(langArticles),
     );
 
     final model = CompanyCardModel.fromMap(raw);

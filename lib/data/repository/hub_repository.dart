@@ -14,7 +14,7 @@ class HubRepository {
     final response = await _service.fetchAll(
       page: page,
       langUI: langUI.name,
-      langArticles: encodeLangs(langArticles),
+      langArticles: LanguageEncoder.encodeLangs(langArticles),
     );
 
     return response;
@@ -28,7 +28,7 @@ class HubRepository {
     final raw = await _service.fetchProfile(
       alias,
       langUI: langUI.name,
-      langArticles: encodeLangs(langArticles),
+      langArticles: LanguageEncoder.encodeLangs(langArticles),
     );
 
     return HubProfileModel.fromMap(raw);

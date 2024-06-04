@@ -16,7 +16,7 @@ class SearchRepository {
   }) async {
     var raw = await _service.fetch(
       langUI: langUI.name,
-      langArticles: encodeLangs(langArticles),
+      langArticles: LanguageEncoder.encodeLangs(langArticles),
       query: query,
       target: target,
       order: order.name,

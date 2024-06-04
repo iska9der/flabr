@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../core/component/di/injector.dart';
-import '../../feature/publication/cubit/publication_list_cubit.dart';
-import '../../feature/publication/widget/card/publication_card_widget.dart';
-import '../enhancement/scroll/part.dart';
+import '../feature/scroll/part.dart';
+import '../page/publications/cubit/publication_list_cubit.dart';
+import '../page/publications/widget/card/publication_card_widget.dart';
 import '../utils/utils.dart';
 import 'enhancement/progress_indicator.dart';
 

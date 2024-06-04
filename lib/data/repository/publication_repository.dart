@@ -34,7 +34,7 @@ class PublicationRepository {
     final rawData = await service.fetchArticleById(
       id,
       langUI: langUI.name,
-      langArticles: encodeLangs(langArticles),
+      langArticles: LanguageEncoder.encodeLangs(langArticles),
     );
 
     final article = PublicationCommon.fromMap(rawData);
@@ -50,7 +50,7 @@ class PublicationRepository {
     final rawData = await service.fetchPostById(
       id,
       langUI: langUI.name,
-      langArticles: encodeLangs(langArticles),
+      langArticles: LanguageEncoder.encodeLangs(langArticles),
     );
 
     final post = PublicationPost.fromMap(rawData);
@@ -59,8 +59,8 @@ class PublicationRepository {
   }
 
   /// Сортируем статьи в полученном списке
-  void _sortListResponse(SortEnum sort, ListResponse response) {
-    if (sort == SortEnum.byBest) {
+  void _sortListResponse(Sort sort, ListResponse response) {
+    if (sort == Sort.byBest) {
       response.refs.sort(
         (a, b) => b.statistics.score.compareTo(a.statistics.score),
       );
@@ -75,18 +75,18 @@ class PublicationRepository {
     required LanguageEnum langUI,
     required List<LanguageEnum> langArticles,
     required String page,
-    required ScoreEnum score,
+    required SortScore score,
     required List<FeedPublicationType> types,
   }) async {
     final response = await service.fetchFeed(
       langUI: langUI.name,
-      langArticles: encodeLangs(langArticles),
+      langArticles: LanguageEncoder.encodeLangs(langArticles),
       page: page,
-      score: score == ScoreEnum.all ? 'all' : score.value,
+      score: score == SortScore.all ? 'all' : score.value,
       types: types.map((t) => t.name).toList(),
     );
 
-    _sortListResponse(SortEnum.byNew, response);
+    _sortListResponse(Sort.byNew, response);
 
     return response;
   }
@@ -94,22 +94,22 @@ class PublicationRepository {
   /// Получение статей/новостей
   ///
   /// Сортировка полученных статей происходит как на сайте:
-  /// если сортировка по лучшим [SortEnum.byBest], то надо сортировать по рейтингу;
-  /// если по новым [SortEnum.byNew], сортируем по дате публикации
+  /// если сортировка по лучшим [Sort.byBest], то надо сортировать по рейтингу;
+  /// если по новым [Sort.byNew], сортируем по дате публикации
   ///
   Future<ListResponse> fetchFlowArticles({
     required LanguageEnum langUI,
     required List<LanguageEnum> langArticles,
     required PublicationType type,
-    required FlowEnum flow,
-    required SortEnum sort,
-    required DatePeriodEnum period,
+    required PublicationFlow flow,
+    required Sort sort,
+    required SortDatePeriod period,
     required String score,
     required String page,
   }) async {
     final response = await service.fetchFlowArticles(
       langUI: langUI.name,
-      langArticles: encodeLangs(langArticles),
+      langArticles: LanguageEncoder.encodeLangs(langArticles),
       type: type,
       flow: flow,
       sort: sort,
@@ -127,14 +127,14 @@ class PublicationRepository {
     required LanguageEnum langUI,
     required List<LanguageEnum> langArticles,
     required String hub,
-    required SortEnum sort,
-    required DatePeriodEnum period,
+    required Sort sort,
+    required SortDatePeriod period,
     required String score,
     required String page,
   }) async {
     final response = await service.fetchHubArticles(
       langUI: langUI.name,
-      langArticles: encodeLangs(langArticles),
+      langArticles: LanguageEncoder.encodeLangs(langArticles),
       hub: hub,
       sort: sort,
       period: period,
@@ -156,13 +156,13 @@ class PublicationRepository {
   }) async {
     final response = await service.fetchUserPublications(
       langUI: langUI.name,
-      langArticles: encodeLangs(langArticles),
+      langArticles: LanguageEncoder.encodeLangs(langArticles),
       user: user,
       page: page,
       type: type,
     );
 
-    _sortListResponse(SortEnum.byNew, response);
+    _sortListResponse(Sort.byNew, response);
 
     return response;
   }
@@ -176,7 +176,7 @@ class PublicationRepository {
   }) async {
     final response = await service.fetchUserBookmarks(
       langUI: langUI.name,
-      langArticles: encodeLangs(langArticles),
+      langArticles: LanguageEncoder.encodeLangs(langArticles),
       user: user,
       page: page,
       type: type,
@@ -201,7 +201,7 @@ class PublicationRepository {
       articleId: articleId,
       source: source,
       langUI: langUI.name,
-      langArticles: encodeLangs(langArticles),
+      langArticles: LanguageEncoder.encodeLangs(langArticles),
     );
 
     final structurizedComments = listResponse.structurize();
@@ -223,7 +223,7 @@ class PublicationRepository {
   }) async {
     final MostReadingResponse raw = await service.fetchMostReading(
       langUI: langUI.name,
-      langArticles: encodeLangs(langArticles),
+      langArticles: LanguageEncoder.encodeLangs(langArticles),
     );
 
     List<PublicationCommon> articles = [...raw.refs];
