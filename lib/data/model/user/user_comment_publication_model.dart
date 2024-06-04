@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../../../data/model/publication/publication_type_enum.dart';
+import '../publication/publication_type_enum.dart';
 
 class UserCommentPublication extends Equatable {
   const UserCommentPublication({

@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../../../data/model/publication/publication.dart';
-import '../../../../../data/model/related_data/user_related_data_model.dart';
+import '../publication/publication.dart';
+import '../related_data/user_related_data_model.dart';
 import 'user_location_model.dart';
 import 'user_workplace_model.dart';
 

@@ -2,9 +2,9 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../data/exception/part.dart';
+import '../../../../../data/model/hub/hub_model.dart';
+import '../../../../../data/model/hub/hub_profile_model.dart';
 import '../../../../../data/repository/part.dart';
-import '../model/hub_model.dart';
-import '../model/hub_profile_model.dart';
 
 part 'hub_state.dart';
 

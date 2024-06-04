@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '../../../../data/model/sort/sort_date_period_enum.dart';
-import '../../../../data/model/sort/sort_enum.dart';
-import '../../../../data/model/sort/sort_option_model.dart';
-import '../../../../data/model/sort/sort_score_enum.dart';
+import '../../data/model/sort/sort_date_period_enum.dart';
+import '../../data/model/sort/sort_enum.dart';
+import '../../data/model/sort/sort_option_model.dart';
+import '../../data/model/sort/sort_score_enum.dart';
 import 'publication_sort_options_widget.dart';
 
 class PublicationSort extends StatelessWidget {

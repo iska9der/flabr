@@ -1,8 +1,8 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../../../data/model/hub_base.dart';
-import '../../../../../data/model/publication/publication_flow_enum.dart';
-import '../../../../../data/model/related_data/hub_related_data_model.dart';
+import '../hub_base.dart';
+import '../publication/publication_flow_enum.dart';
+import '../related_data/hub_related_data_model.dart';
 import 'hub_statistics_model.dart';
 
 class HubProfileModel extends HubBase with EquatableMixin {

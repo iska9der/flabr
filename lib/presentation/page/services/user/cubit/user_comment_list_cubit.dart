@@ -1,8 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../data/model/user/user_comment_model.dart';
 import '../../../../../data/repository/part.dart';
-import '../model/user_comment_model.dart';
 
 part 'user_comment_list_state.dart';
 

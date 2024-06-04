@@ -2,7 +2,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 
-import '../../../../../core/component/router/routes.dart';
 import '../../../../../data/model/company/company_model.dart';
 import '../../../../../data/model/company/company_statistics_model.dart';
 import '../../../../../data/model/render_type_enum.dart';
@@ -12,6 +11,7 @@ import '../../../../widget/card_avatar_widget.dart';
 import '../../../../widget/card_title_widget.dart';
 import '../../../../widget/enhancement/card.dart';
 import '../../../../widget/profile_stat_card_widget.dart';
+import '../../services_flow.dart';
 import '../page/company_list_page.dart';
 
 class CompanyCardWidget extends StatelessWidget {

@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../../../data/model/comment_base.dart';
-import '../../../../../data/model/publication/publication_author_model.dart';
+import '../comment_base.dart';
+import '../publication/publication_author_model.dart';
 import 'user_comment_publication_model.dart';
 
 class UserCommentModel extends CommentBase with EquatableMixin {

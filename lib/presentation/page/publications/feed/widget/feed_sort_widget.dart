@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../../data/model/sort/sort_option_model.dart';
 import '../../../../../data/model/sort/sort_score_enum.dart';
-import '../../widget/publication_sort_options_widget.dart';
+import '../../../../widget/publication_sort_options_widget.dart';
 import '../model/feed_publication_type.dart';
 
 class FeedSortWidget extends StatelessWidget {

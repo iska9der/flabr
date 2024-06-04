@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../../../../data/model/list_response/list_response.dart';
-import '../hub_model.dart';
+import '../hub/hub_model.dart';
+import 'list_response.dart';
 
 class HubListResponse extends ListResponse with EquatableMixin {
   const HubListResponse({

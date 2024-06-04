@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 
 import '../../../../../core/component/router/app_router.dart';
 import '../../../../../data/model/stat_type_enum.dart';
+import '../../../../../data/model/user/user_model.dart';
 import '../../../../extension/part.dart';
 import '../../../../widget/card_avatar_widget.dart';
 import '../../../../widget/enhancement/card.dart';
 import '../../../../widget/profile_stat_card_widget.dart';
-import '../model/user_model.dart';
 
 class UserCardWidget extends StatelessWidget {
   const UserCardWidget({super.key, required this.model});

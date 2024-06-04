@@ -1,9 +1,9 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../data/model/user/user_model.dart';
+import '../../../../../data/model/user/user_whois_model.dart';
 import '../../../../../data/repository/part.dart';
-import '../model/user_model.dart';
-import '../model/user_whois_model.dart';
 
 part 'user_state.dart';
 

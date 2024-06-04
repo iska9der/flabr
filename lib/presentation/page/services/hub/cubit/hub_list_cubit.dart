@@ -4,8 +4,8 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../data/exception/part.dart';
+import '../../../../../data/model/list_response/hub_list_response.dart';
 import '../../../../../data/repository/part.dart';
-import '../model/network/hub_list_response.dart';
 
 part 'hub_list_state.dart';
 

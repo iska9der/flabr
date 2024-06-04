@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../data/model/sort/sort_option_model.dart';
+import '../../data/model/sort/sort_option_model.dart';
 
 class PublicationSortOptions extends StatelessWidget {
   const PublicationSortOptions({

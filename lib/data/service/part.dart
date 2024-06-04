@@ -3,14 +3,12 @@ import 'package:injectable/injectable.dart';
 
 import '../../core/component/http/part.dart';
 import '../../presentation/feature/auth/model/auth_data_model.dart';
-import '../../presentation/page/services/hub/model/network/hub_list_response.dart';
-import '../../presentation/page/services/user/model/user_bookmarks_type.dart';
-import '../../presentation/page/services/user/model/user_publication_type.dart';
 import '../exception/comment_list_exception.dart';
 import '../exception/part.dart';
 import '../model/list_response/comment_list_response.dart';
 import '../model/list_response/company_list_response.dart';
 import '../model/list_response/feed_list_response.dart';
+import '../model/list_response/hub_list_response.dart';
 import '../model/list_response/list_response.dart';
 import '../model/list_response/most_reading_response.dart';
 import '../model/list_response/post_list_response.dart';
@@ -30,6 +28,8 @@ import '../model/query_params/search_params.dart';
 import '../model/search/search_target.dart';
 import '../model/sort/sort_date_period_enum.dart';
 import '../model/sort/sort_enum.dart';
+import '../model/user/user_bookmarks_type.dart';
+import '../model/user/user_publication_type.dart';
 
 part 'auth_service.dart';
 part 'company_service.dart';

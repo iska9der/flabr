@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/component/di/injector.dart';
+import '../../../../../data/model/user/user_publication_type.dart';
 import '../../../../feature/scroll/part.dart';
 import '../../../../widget/publication_sliver_list.dart';
 import '../cubit/user_cubit.dart';
 import '../cubit/user_publication_list_cubit.dart';
-import '../model/user_publication_type.dart';
 import '../widget/type_dropdown_widget.dart';
 
 @RoutePage(name: UserPublicationListPage.routeName)

@@ -5,8 +5,8 @@ import '../../../../../data/model/list_response/list_response.dart';
 import '../../../../../data/model/publication/publication.dart';
 import '../../../../../data/model/sort/sort_date_period_enum.dart';
 import '../../../../../data/model/sort/sort_enum.dart';
-import '../../../publications/cubit/publication_list_cubit.dart';
-import '../model/user_publication_type.dart';
+import '../../../../../data/model/user/user_publication_type.dart';
+import '../../../../cubit/publication_list_cubit.dart';
 
 part 'user_publication_list_state.dart';
 

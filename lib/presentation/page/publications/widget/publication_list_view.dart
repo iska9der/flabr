@@ -3,15 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
-import '../../../feature/scroll/part.dart';
+import '../../../cubit/publication_list_cubit.dart';
 import '../../../extension/part.dart';
 import '../../../feature/auth/cubit/auth_cubit.dart';
+import '../../../feature/scroll/part.dart';
 import '../../../theme/part.dart';
 import '../../../widget/enhancement/card.dart';
 import '../../../widget/enhancement/responsive_visibility.dart';
 import '../../../widget/publication_sliver_list.dart';
 import '../../settings/cubit/settings_cubit.dart';
-import '../cubit/publication_list_cubit.dart';
 import 'most_reading_widget.dart';
 
 class PublicationListView<C extends PublicationListCubit<S>,

@@ -1,15 +1,15 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../../core/component/router/routes.dart';
+import '../../../../../data/model/hub/hub_model.dart';
+import '../../../../../data/model/hub/hub_statistics_model.dart';
 import '../../../../../data/model/render_type_enum.dart';
 import '../../../../../data/model/stat_type_enum.dart';
 import '../../../../widget/card_avatar_widget.dart';
 import '../../../../widget/card_title_widget.dart';
 import '../../../../widget/enhancement/card.dart';
 import '../../../../widget/profile_stat_card_widget.dart';
-import '../model/hub_model.dart';
-import '../model/hub_statistics_model.dart';
+import '../../services_flow.dart';
 
 class HubCardWidget extends StatelessWidget {
   const HubCardWidget({

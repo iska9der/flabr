@@ -1,4 +1,4 @@
-import '../../../presentation/page/services/user/model/user_comment_model.dart';
+import '../user/user_comment_model.dart';
 import 'list_response.dart';
 
 class UserCommentListResponse extends ListResponse {

@@ -145,6 +145,12 @@ abstract class _$AppRouter extends RootStackRouter {
         ),
       );
     },
+    NewsRouter.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: NewsFlow(),
+      );
+    },
     NewsListRoute.name: (routeData) {
       final pathParams = routeData.inheritedPathParams;
       final args = routeData.argsAs<NewsListRouteArgs>(
@@ -155,12 +161,6 @@ abstract class _$AppRouter extends RootStackRouter {
           key: args.key,
           flow: args.flow,
         ),
-      );
-    },
-    NewsRouter.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: NewsFlow(),
       );
     },
     PostCommentsRoute.name: (routeData) {
@@ -211,16 +211,16 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const PublicationPage(),
       );
     },
-    ServicesRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const ServicesPage(),
-      );
-    },
     ServicesRouter.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: ServicesFlow(),
+      );
+    },
+    ServicesRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const ServicesPage(),
       );
     },
     SettingsRouter.name: (routeData) {
@@ -673,6 +673,20 @@ class NewsDetailRouteArgs {
 }
 
 /// generated route for
+/// [NewsFlow]
+class NewsRouter extends PageRouteInfo<void> {
+  const NewsRouter({List<PageRouteInfo>? children})
+      : super(
+          NewsRouter.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'NewsRouter';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
 /// [NewsListPage]
 class NewsListRoute extends PageRouteInfo<NewsListRouteArgs> {
   NewsListRoute({
@@ -709,20 +723,6 @@ class NewsListRouteArgs {
   String toString() {
     return 'NewsListRouteArgs{key: $key, flow: $flow}';
   }
-}
-
-/// generated route for
-/// [NewsFlow]
-class NewsRouter extends PageRouteInfo<void> {
-  const NewsRouter({List<PageRouteInfo>? children})
-      : super(
-          NewsRouter.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'NewsRouter';
-
-  static const PageInfo<void> page = PageInfo<void>(name);
 }
 
 /// generated route for
@@ -871,20 +871,6 @@ class PublicationsDashboardRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [ServicesPage]
-class ServicesRoute extends PageRouteInfo<void> {
-  const ServicesRoute({List<PageRouteInfo>? children})
-      : super(
-          ServicesRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'ServicesRoute';
-
-  static const PageInfo<void> page = PageInfo<void>(name);
-}
-
-/// generated route for
 /// [ServicesFlow]
 class ServicesRouter extends PageRouteInfo<void> {
   const ServicesRouter({List<PageRouteInfo>? children})
@@ -894,6 +880,20 @@ class ServicesRouter extends PageRouteInfo<void> {
         );
 
   static const String name = 'ServicesRouter';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [ServicesPage]
+class ServicesRoute extends PageRouteInfo<void> {
+  const ServicesRoute({List<PageRouteInfo>? children})
+      : super(
+          ServicesRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'ServicesRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }
