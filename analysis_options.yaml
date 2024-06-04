@@ -16,6 +16,10 @@ linter:
     use_key_in_widget_constructors: true
     eol_at_end_of_file: true
 
+analyzer:
+  errors:
+    avoid_relative_lib_imports: error
+
 dart_code_metrics:
   metrics-exclude:
     - test/**
