@@ -1,8 +1,5 @@
 part of 'part.dart';
 
-const authDataCacheKey = 'aData';
-const authCsrfCacheKey = 'cData';
-
 @Singleton()
 class TokenRepository {
   TokenRepository(@Named('secureStorage') this._storage);
@@ -17,7 +14,7 @@ class TokenRepository {
   Future<AuthDataModel?> getData() async {
     if (!_authData.isEmpty) return _authData;
 
-    final raw = await _storage.read(authDataCacheKey);
+    final raw = await _storage.read(CacheKey.authData);
 
     if (raw == null) {
       return null;
@@ -29,7 +26,7 @@ class TokenRepository {
   }
 
   Future<void> setData(AuthDataModel data) async {
-    await _storage.write(authDataCacheKey, data.toJson());
+    await _storage.write(CacheKey.authData, data.toJson());
 
     _authData = data;
   }
@@ -37,7 +34,7 @@ class TokenRepository {
   Future<String?> getCsrf() async {
     if (_csrf.isNotEmpty) return _csrf;
 
-    final raw = await _storage.read(authCsrfCacheKey);
+    final raw = await _storage.read(CacheKey.authCsrf);
 
     if (raw == null) {
       return null;
@@ -49,7 +46,7 @@ class TokenRepository {
   }
 
   Future<void> setCsrf(String value) async {
-    await _storage.write(authCsrfCacheKey, value);
+    await _storage.write(CacheKey.authCsrf, value);
 
     _csrf = value;
   }
@@ -58,7 +55,7 @@ class TokenRepository {
     _authData = AuthDataModel.empty;
     _csrf = '';
 
-    await _storage.delete(authDataCacheKey);
-    await _storage.delete(authCsrfCacheKey);
+    await _storage.delete(CacheKey.authData);
+    await _storage.delete(CacheKey.authCsrf);
   }
 }

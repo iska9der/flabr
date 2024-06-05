@@ -6,16 +6,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/component/router/app_router.dart';
 import '../../../../core/component/storage/part.dart';
+import '../../../../core/constants/part.dart';
 import '../../../../data/model/language/part.dart';
 import '../../../../data/repository/part.dart';
 import '../model/config_model.dart';
 
 part 'settings_state.dart';
-
-const isDarkThemeCacheKey = 'isDarkTheme';
-const feedConfigCacheKey = 'feedConfig';
-const articleConfigCacheKey = 'articleConfig';
-const miscConfigCacheKey = 'miscConfig';
 
 class SettingsCubit extends Cubit<SettingsState> {
   SettingsCubit({
@@ -123,7 +119,7 @@ class SettingsCubit extends Cubit<SettingsState> {
 
   Future<bool> _initIsDarkTheme() async {
     /// Получаем кэшированные данные
-    String? raw = await _storage.read(isDarkThemeCacheKey);
+    String? raw = await _storage.read(CacheKey.isDarkTheme);
 
     /// Если в кэше есть заданное значение, присваиваем его,
     /// иначе указываем как false
@@ -132,12 +128,12 @@ class SettingsCubit extends Cubit<SettingsState> {
       return isDarkTheme;
     }
 
-    _storage.write(isDarkThemeCacheKey, 'false');
+    _storage.write(CacheKey.isDarkTheme, 'false');
     return false;
   }
 
   void changeTheme({required bool isDarkTheme}) {
-    _storage.write(isDarkThemeCacheKey, isDarkTheme.toString());
+    _storage.write(CacheKey.isDarkTheme, isDarkTheme.toString());
 
     emit(state.copyWith(isDarkTheme: isDarkTheme));
   }
@@ -150,19 +146,19 @@ class SettingsCubit extends Cubit<SettingsState> {
 
   /// Инициализация конфигурации
   Future<Config> _initConfig() async {
-    String? raw = await _storage.read(feedConfigCacheKey);
+    String? raw = await _storage.read(CacheKey.feedConfig);
     FeedConfigModel? feedConfig;
     if (raw != null) {
       feedConfig = FeedConfigModel.fromJson(raw);
     }
 
-    raw = await _storage.read(articleConfigCacheKey);
+    raw = await _storage.read(CacheKey.articleConfig);
     PublicationConfigModel? articleConfig;
     if (raw != null) {
       articleConfig = PublicationConfigModel.fromJson(raw);
     }
 
-    raw = await _storage.read(miscConfigCacheKey);
+    raw = await _storage.read(CacheKey.miscConfig);
     MiscConfigModel? miscConfig;
     if (raw != null) {
       miscConfig = MiscConfigModel.fromJson(raw);
@@ -182,7 +178,7 @@ class SettingsCubit extends Cubit<SettingsState> {
 
     emit(state.copyWith(feedConfig: newConfig));
 
-    _storage.write(feedConfigCacheKey, newConfig.toJson());
+    _storage.write(CacheKey.feedConfig, newConfig.toJson());
   }
 
   void changeFeedDescVisibility({bool? isVisible}) {
@@ -194,7 +190,7 @@ class SettingsCubit extends Cubit<SettingsState> {
 
     emit(state.copyWith(feedConfig: newConfig));
 
-    _storage.write(feedConfigCacheKey, newConfig.toJson());
+    _storage.write(CacheKey.feedConfig, newConfig.toJson());
   }
 
   void changeArticleFontScale(double newScale) {
@@ -203,7 +199,7 @@ class SettingsCubit extends Cubit<SettingsState> {
     var newConfig = state.publicationConfig.copyWith(fontScale: newScale);
     emit(state.copyWith(publicationConfig: newConfig));
 
-    _storage.write(articleConfigCacheKey, newConfig.toJson());
+    _storage.write(CacheKey.articleConfig, newConfig.toJson());
   }
 
   void changeArticleImageVisibility({bool? isVisible}) {
@@ -213,7 +209,7 @@ class SettingsCubit extends Cubit<SettingsState> {
         state.publicationConfig.copyWith(isImagesVisible: isVisible);
     emit(state.copyWith(publicationConfig: newConfig));
 
-    _storage.write(articleConfigCacheKey, newConfig.toJson());
+    _storage.write(CacheKey.articleConfig, newConfig.toJson());
   }
 
   void changeWebViewVisibility({bool? isVisible}) {
@@ -222,7 +218,7 @@ class SettingsCubit extends Cubit<SettingsState> {
     var newConfig = state.publicationConfig.copyWith(webViewEnabled: isVisible);
     emit(state.copyWith(publicationConfig: newConfig));
 
-    _storage.write(articleConfigCacheKey, newConfig.toJson());
+    _storage.write(CacheKey.articleConfig, newConfig.toJson());
   }
 
   void changeNavigationOnScrollVisibility({bool? isVisible}) {
@@ -233,6 +229,6 @@ class SettingsCubit extends Cubit<SettingsState> {
     );
     emit(state.copyWith(miscConfig: newConfig));
 
-    _storage.write(miscConfigCacheKey, newConfig.toJson());
+    _storage.write(CacheKey.miscConfig, newConfig.toJson());
   }
 }

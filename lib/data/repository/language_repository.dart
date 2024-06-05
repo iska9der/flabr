@@ -1,8 +1,5 @@
 part of 'part.dart';
 
-const langUICacheKey = 'langUI';
-const langArticlesCacheKey = 'langArticles';
-
 @Singleton()
 class LanguageRepository {
   LanguageRepository({
@@ -41,13 +38,13 @@ class LanguageRepository {
 
   Future<LanguageEnum?> _getCachedUILanguage() async {
     try {
-      String? raw = await _storage.read(langUICacheKey);
+      String? raw = await _storage.read(CacheKey.langUI);
       if (raw == null) return null;
 
       final lang = LanguageEnum.fromString(raw);
       return lang;
     } on ValueException {
-      await _storage.delete(langUICacheKey);
+      await _storage.delete(CacheKey.langUI);
       return null;
     }
   }
@@ -55,18 +52,18 @@ class LanguageRepository {
   void updateUILang(LanguageEnum lang) {
     _ui = lang;
     _uiController.add(lang);
-    _storage.write(langUICacheKey, lang.name);
+    _storage.write(CacheKey.langUI, lang.name);
   }
 
   Future<List<LanguageEnum>?> _getCachedArticlesLanguage() async {
     try {
-      String? raw = await _storage.read(langArticlesCacheKey);
+      String? raw = await _storage.read(CacheKey.langArticle);
       if (raw == null) return null;
 
       final langs = LanguageEncoder.decodeLangs(raw);
       return langs;
     } on ValueException {
-      await _storage.delete(langArticlesCacheKey);
+      await _storage.delete(CacheKey.langArticle);
       return null;
     }
   }
@@ -75,6 +72,6 @@ class LanguageRepository {
     _articles = langs;
     _articlesController.add(langs);
     String langsAsString = LanguageEncoder.encodeLangs(langs);
-    _storage.write(langArticlesCacheKey, langsAsString);
+    _storage.write(CacheKey.langArticle, langsAsString);
   }
 }
