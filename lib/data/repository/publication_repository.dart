@@ -75,14 +75,14 @@ class PublicationRepository {
     required LanguageEnum langUI,
     required List<LanguageEnum> langArticles,
     required String page,
-    required SortScore score,
-    required List<FeedPublicationType> types,
+    required FilterOption score,
+    required List<FilterFeedPublication> types,
   }) async {
     final response = await service.fetchFeed(
       langUI: langUI.name,
       langArticles: LanguageEncoder.encodeLangs(langArticles),
       page: page,
-      score: score == SortScore.all ? 'all' : score.value,
+      score: score.value.isEmpty ? 'all' : score.value,
       types: types.map((t) => t.name).toList(),
     );
 
@@ -103,8 +103,8 @@ class PublicationRepository {
     required PublicationType type,
     required PublicationFlow flow,
     required Sort sort,
-    required SortDatePeriod period,
-    required String score,
+    required FilterOption period,
+    required FilterOption score,
     required String page,
   }) async {
     final response = await service.fetchFlowArticles(
@@ -128,8 +128,8 @@ class PublicationRepository {
     required List<LanguageEnum> langArticles,
     required String hub,
     required Sort sort,
-    required SortDatePeriod period,
-    required String score,
+    required FilterOption period,
+    required FilterOption score,
     required String page,
   }) async {
     final response = await service.fetchHubArticles(

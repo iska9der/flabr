@@ -8,8 +8,8 @@ class FeedPublicationListState extends Equatable
     this.page = 1,
     this.pagesCount = 0,
     this.publications = const [],
-    this.score = SortScore.all,
-    this.types = FeedPublicationType.values,
+    this.score = FilterList.scoreDefault,
+    this.types = FilterFeedPublication.values,
   });
 
   @override
@@ -24,8 +24,8 @@ class FeedPublicationListState extends Equatable
   final List<Publication> publications;
 
   /// Filters
-  final SortScore score;
-  final List<FeedPublicationType> types;
+  final FilterOption score;
+  final List<FilterFeedPublication> types;
 
   FeedPublicationListState copyWith({
     PublicationListStatus? status,
@@ -33,8 +33,8 @@ class FeedPublicationListState extends Equatable
     int? page,
     int? pagesCount,
     List<Publication>? publications,
-    SortScore? score,
-    List<FeedPublicationType>? types,
+    FilterOption? score,
+    List<FilterFeedPublication>? types,
   }) {
     return FeedPublicationListState(
       status: status ?? this.status,

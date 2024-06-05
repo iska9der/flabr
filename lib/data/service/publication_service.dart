@@ -28,8 +28,8 @@ abstract interface class PublicationService {
     required PublicationFlow flow,
     required Sort sort,
     required String page,
-    required SortDatePeriod period,
-    required String score,
+    required FilterOption period,
+    required FilterOption score,
   });
 
   Future<PublicationListResponse> fetchHubArticles({
@@ -37,8 +37,8 @@ abstract interface class PublicationService {
     required String langArticles,
     required String hub,
     required Sort sort,
-    required SortDatePeriod period,
-    required String score,
+    required FilterOption period,
+    required FilterOption score,
     required String page,
   });
 
@@ -161,9 +161,9 @@ class PublicationServiceImpl implements PublicationService {
     required PublicationType type,
     required PublicationFlow flow,
     required Sort sort,
+    required FilterOption period,
+    required FilterOption score,
     required String page,
-    required SortDatePeriod period,
-    required String score,
   }) async {
     try {
       final flowStr = (flow == PublicationFlow.all) ? null : flow.name;
@@ -175,8 +175,8 @@ class PublicationServiceImpl implements PublicationService {
             page: page,
             flow: flowStr,
             sort: sort.postValue,
-            period: sort == Sort.byBest ? period.name : null,
-            score: score,
+            period: sort == Sort.byBest ? period.value : null,
+            score: score.value,
           ),
         _ => PublicationListParams(
             langArticles: langArticles,
@@ -188,8 +188,8 @@ class PublicationServiceImpl implements PublicationService {
             /// если мы находимся не во "Все потоки", в значение sort, по завету
             /// костыльного api хабра, нужно передавать значение 'all'
             sort: flow == PublicationFlow.all ? sort.value : 'all',
-            period: sort == Sort.byBest ? period.name : null,
-            score: score,
+            period: sort == Sort.byBest ? period.value : null,
+            score: score.value,
           ),
       };
 
@@ -215,8 +215,8 @@ class PublicationServiceImpl implements PublicationService {
     required String langArticles,
     required String hub,
     required Sort sort,
-    required SortDatePeriod period,
-    required String score,
+    required FilterOption period,
+    required FilterOption score,
     required String page,
   }) async {
     try {
@@ -225,8 +225,8 @@ class PublicationServiceImpl implements PublicationService {
         langUI: langUI,
         page: page,
         sort: 'all',
-        period: sort == Sort.byBest ? period.name : null,
-        score: score,
+        period: sort == Sort.byBest ? period.value : null,
+        score: score.value,
       );
 
       final response = await _mobileClient.get(

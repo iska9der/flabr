@@ -11,8 +11,8 @@ class HubPublicationListState extends Equatable
     this.hub = '',
     this.type = PublicationType.article,
     this.sort = Sort.byNew,
-    this.period = SortDatePeriod.daily,
-    this.score = '',
+    this.period = FilterList.dateDefault,
+    this.score = FilterList.scoreDefault,
   });
 
   @override
@@ -28,8 +28,8 @@ class HubPublicationListState extends Equatable
   final String hub;
   final PublicationType type;
   final Sort sort;
-  final SortDatePeriod period;
-  final String score;
+  final FilterOption period;
+  final FilterOption score;
 
   HubPublicationListState copyWith({
     PublicationListStatus? status,
@@ -37,8 +37,8 @@ class HubPublicationListState extends Equatable
     String? hub,
     PublicationType? type,
     Sort? sort,
-    SortDatePeriod? period,
-    String? score,
+    FilterOption? period,
+    FilterOption? score,
     int? page,
     int? pagesCount,
     List<Publication>? publications,

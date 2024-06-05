@@ -4,6 +4,8 @@ import 'package:injectable/injectable.dart';
 import '../../core/component/http/part.dart';
 import '../exception/part.dart';
 import '../model/auth_data_model.dart';
+import '../model/filter/filter_option_model.dart';
+import '../model/filter/sort_enum.dart';
 import '../model/list_response/comment_list_response.dart';
 import '../model/list_response/company_list_response.dart';
 import '../model/list_response/feed_list_response.dart';
@@ -25,8 +27,6 @@ import '../model/query_params/post_list_params.dart';
 import '../model/query_params/publication_list_params.dart';
 import '../model/query_params/search_params.dart';
 import '../model/search/search_target.dart';
-import '../model/sort/sort_date_period_enum.dart';
-import '../model/sort/sort_enum.dart';
 import '../model/user/user_bookmarks_type.dart';
 import '../model/user/user_publication_type.dart';
 

@@ -11,8 +11,8 @@ class FlowPublicationListState extends Equatable
     this.flow = PublicationFlow.all,
     this.type = PublicationType.article,
     this.sort = Sort.byNew,
-    this.period = SortDatePeriod.daily,
-    this.score = '',
+    this.period = FilterList.dateDefault,
+    this.score = FilterList.scoreDefault,
   });
 
   @override
@@ -29,8 +29,8 @@ class FlowPublicationListState extends Equatable
   final PublicationFlow flow;
   final PublicationType type;
   final Sort sort;
-  final SortDatePeriod period;
-  final String score;
+  final FilterOption period;
+  final FilterOption score;
 
   FlowPublicationListState copyWith({
     PublicationListStatus? status,
@@ -38,8 +38,8 @@ class FlowPublicationListState extends Equatable
     PublicationFlow? flow,
     PublicationType? type,
     Sort? sort,
-    SortDatePeriod? period,
-    String? score,
+    FilterOption? period,
+    FilterOption? score,
     int? page,
     int? pagesCount,
     List<Publication>? publications,

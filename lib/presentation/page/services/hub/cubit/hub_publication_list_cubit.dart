@@ -3,11 +3,12 @@ import 'dart:async';
 import 'package:equatable/equatable.dart';
 
 import '../../../../../data/exception/part.dart';
+import '../../../../../data/model/filter/filter_helper.dart';
+import '../../../../../data/model/filter/filter_option_model.dart';
+import '../../../../../data/model/filter/sort_enum.dart';
 import '../../../../../data/model/list_response/list_response.dart';
 import '../../../../../data/model/publication/publication.dart';
 import '../../../../../data/model/publication/publication_type_enum.dart';
-import '../../../../../data/model/sort/sort_date_period_enum.dart';
-import '../../../../../data/model/sort/sort_enum.dart';
 import '../../../../feature/publication_list/part.dart';
 
 part 'hub_publication_list_state.dart';
@@ -34,17 +35,15 @@ class HubPublicationListCubit
     ));
   }
 
-  void changeSortByOption(Sort sort, dynamic value) {
+  void changeSortByOption(Sort sort, FilterOption option) {
     HubPublicationListState newState;
     switch (sort) {
       case Sort.byBest:
-        if (state.period == value) return;
-        newState = HubPublicationListState(period: value);
+        if (state.period == option) return;
+        newState = HubPublicationListState(period: option);
       case Sort.byNew:
-        if (state.score == value) return;
-        newState = HubPublicationListState(score: value);
-      default:
-        throw ValueException('Неизвестный вариант сортировки статей');
+        if (state.score == option) return;
+        newState = HubPublicationListState(score: option);
     }
 
     emit(newState.copyWith(

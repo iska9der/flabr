@@ -5,7 +5,7 @@ import '../../../../feature/publication_list/part.dart';
 import '../../../../theme/part.dart';
 import '../../widget/list_appbar.dart';
 import '../cubit/feed_publication_list_cubit.dart';
-import 'feed_sort_widget.dart';
+import 'feed_filter_widget.dart';
 
 class FeedListAppBar extends StatefulWidget {
   const FeedListAppBar({super.key});
@@ -50,7 +50,7 @@ class _AppBarState extends State<FeedListAppBar> {
       filterHeight: feedSortToolbarHeight,
       filter: BlocBuilder<FeedPublicationListCubit, FeedPublicationListState>(
         builder: (context, state) {
-          return FeedSortWidget(
+          return FeedFilterWidget(
             isLoading: state.status == PublicationListStatus.loading,
             currentScore: state.score,
             onScoreChange: (option) => context

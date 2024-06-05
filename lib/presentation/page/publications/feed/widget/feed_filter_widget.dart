@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../data/model/sort/feed_publication_type.dart';
-import '../../../../../data/model/sort/sort_option_model.dart';
-import '../../../../../data/model/sort/sort_score_enum.dart';
-import '../../../../widget/publication_sort_options_widget.dart';
+import '../../../../../data/model/filter/filter_feed_publication_enum.dart';
+import '../../../../../data/model/filter/filter_helper.dart';
+import '../../../../../data/model/filter/filter_option_model.dart';
+import '../../../../widget/publication_filter_options_widget.dart';
 
-class FeedSortWidget extends StatelessWidget {
-  const FeedSortWidget({
+class FeedFilterWidget extends StatelessWidget {
+  const FeedFilterWidget({
     super.key,
     this.isLoading = false,
     required this.currentScore,
@@ -17,11 +17,11 @@ class FeedSortWidget extends StatelessWidget {
 
   final bool isLoading;
 
-  final SortScore currentScore;
-  final Function(SortOption score) onScoreChange;
+  final FilterOption currentScore;
+  final Function(FilterOption score) onScoreChange;
 
-  final List<FeedPublicationType> currentTypes;
-  final void Function(List<FeedPublicationType> newTypes) onTypesChange;
+  final List<FilterFeedPublication> currentTypes;
+  final void Function(List<FilterFeedPublication> newTypes) onTypesChange;
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +37,7 @@ class FeedSortWidget extends StatelessWidget {
         Wrap(
           runSpacing: 8,
           spacing: 8,
-          children: FeedPublicationType.values
+          children: FilterFeedPublication.values
               .map((type) => ChoiceChip(
                     label: Text(type.label),
                     selected: currentTypes.contains(type),
@@ -60,12 +60,10 @@ class FeedSortWidget extends StatelessWidget {
           'Порог рейтинга',
           style: Theme.of(context).textTheme.labelLarge,
         ),
-        PublicationSortOptions(
+        PublicationFilterOptionsWidget(
           isEnabled: !isLoading,
-          options: SortScore.values
-              .map((e) => SortOption(label: e.label, value: e.value))
-              .toList(),
-          currentValue: currentScore.value,
+          options: FilterList.scoreOptions,
+          currentValue: currentScore,
           onSelected: (value) => onScoreChange(value),
         ),
       ],

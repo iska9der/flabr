@@ -1,11 +1,11 @@
 import 'package:equatable/equatable.dart';
 
 import '../../../../../data/exception/part.dart';
+import '../../../../../data/model/filter/filter_feed_publication_enum.dart';
+import '../../../../../data/model/filter/filter_helper.dart';
+import '../../../../../data/model/filter/filter_option_model.dart';
 import '../../../../../data/model/list_response/list_response.dart';
 import '../../../../../data/model/publication/publication.dart';
-import '../../../../../data/model/sort/feed_publication_type.dart';
-import '../../../../../data/model/sort/sort_option_model.dart';
-import '../../../../../data/model/sort/sort_score_enum.dart';
 import '../../../../feature/publication_list/part.dart';
 
 part 'feed_publication_list_state.dart';
@@ -67,17 +67,15 @@ class FeedPublicationListCubit
     ));
   }
 
-  void changeFilterScore(SortOption option) {
-    final newScore = SortScore.fromString(option.value);
-
-    if (state.score == newScore) {
+  void changeFilterScore(FilterOption option) {
+    if (state.score == option) {
       return;
     }
 
-    emit(FeedPublicationListState(types: state.types, score: newScore));
+    emit(FeedPublicationListState(types: state.types, score: option));
   }
 
-  void changeFilterTypes(List<FeedPublicationType> types) {
+  void changeFilterTypes(List<FilterFeedPublication> types) {
     /// Выбран хотя бы один тип публикации
     if (types.isEmpty) {
       return;

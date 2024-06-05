@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../../data/model/sort/sort_option_model.dart';
+import '../../data/model/filter/filter_option_model.dart';
 
-class PublicationSortOptions extends StatelessWidget {
-  const PublicationSortOptions({
+/// TODO: сменить название
+class PublicationFilterOptionsWidget extends StatelessWidget {
+  const PublicationFilterOptionsWidget({
     super.key,
     required this.options,
     required this.currentValue,
@@ -11,9 +12,9 @@ class PublicationSortOptions extends StatelessWidget {
     this.isEnabled = true,
   });
 
-  final List<SortOption> options;
-  final dynamic currentValue;
-  final ValueChanged<SortOption> onSelected;
+  final List<FilterOption> options;
+  final FilterOption currentValue;
+  final ValueChanged<FilterOption> onSelected;
 
   final bool isEnabled;
 
@@ -36,8 +37,9 @@ class PublicationSortOptions extends StatelessWidget {
                       textAlign: TextAlign.center,
                       style: Theme.of(context).textTheme.labelMedium,
                     ),
-                    selected: option.value == currentValue,
-                    onSelected: (bool value) => onSelected(option),
+                    selected: option == currentValue,
+                    onSelected:
+                        isEnabled ? (bool value) => onSelected(option) : null,
                   ),
                 ))
             .toList(),

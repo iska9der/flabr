@@ -8,8 +8,8 @@ class UserPublicationListState extends Equatable
     this.user = '',
     this.type = UserPublicationType.articles,
     this.sort = Sort.byNew,
-    this.period = SortDatePeriod.daily,
-    this.score = '',
+    this.period = FilterList.dateDefault,
+    this.score = FilterList.scoreDefault,
     this.page = 1,
     this.pagesCount = 0,
     this.publications = const [],
@@ -22,8 +22,8 @@ class UserPublicationListState extends Equatable
   final String user;
   final UserPublicationType type;
   final Sort sort;
-  final SortDatePeriod period;
-  final String score;
+  final FilterOption period;
+  final FilterOption score;
   @override
   final int page;
   @override
@@ -37,8 +37,8 @@ class UserPublicationListState extends Equatable
     String? user,
     UserPublicationType? type,
     Sort? sort,
-    SortDatePeriod? period,
-    String? score,
+    FilterOption? period,
+    FilterOption? score,
     int? page,
     int? pagesCount,
     List<Publication>? publications,
