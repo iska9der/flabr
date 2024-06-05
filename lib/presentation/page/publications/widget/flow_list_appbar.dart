@@ -54,15 +54,15 @@ class _AppBarState extends State<FlowListAppBar> {
         builder: (context, state) {
           return PublicationFilterWidget(
             isLoading: state.status == PublicationListStatus.loading,
-            sort: state.sort,
+            sort: state.filter.sort,
             onSortChange: context.read<FlowPublicationListCubit>().changeSortBy,
-            filterOption: switch (state.sort) {
-              Sort.byBest => state.period,
-              Sort.byNew => state.score,
+            filterOption: switch (state.filter.sort) {
+              Sort.byBest => state.filter.period,
+              Sort.byNew => state.filter.score,
             },
             onOptionChange: (option) => context
                 .read<FlowPublicationListCubit>()
-                .changeSortByOption(state.sort, option),
+                .changeSortByOption(state.filter.sort, option),
           );
         },
       ),

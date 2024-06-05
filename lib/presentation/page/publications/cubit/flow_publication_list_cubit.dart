@@ -7,7 +7,6 @@ import '../../../../data/model/filter/part.dart';
 import '../../../../data/model/list_response/list_response.dart';
 import '../../../../data/model/publication/publication.dart';
 import '../../../../data/model/publication/publication_flow_enum.dart';
-import '../../../../data/model/publication/publication_type_enum.dart';
 import '../../../feature/publication_list/part.dart';
 
 part 'flow_publication_list_state.dart';
@@ -18,7 +17,7 @@ class FlowPublicationListCubit
     required super.repository,
     required super.languageRepository,
     PublicationFlow flow = PublicationFlow.all,
-    PublicationType type = PublicationType.article,
+    FlowFilterPublication type = FlowFilterPublication.article,
   }) : super(FlowPublicationListState(
           flow: flow,
           type: type,
@@ -34,32 +33,31 @@ class FlowPublicationListCubit
   }
 
   void changeSortBy(Sort sort) {
-    if (state.sort == sort) return;
+    if (state.filter.sort == sort) return;
 
     emit(FlowPublicationListState(
       flow: state.flow,
       type: state.type,
-      sort: sort,
+      filter: state.filter.copyWith(sort: sort),
     ));
   }
 
   void changeSortByOption(Sort sort, FilterOption option) {
-    FlowPublicationListState newState;
+    final FlowFilter newFilter;
+
     switch (sort) {
       case Sort.byBest:
-        if (state.period == option) return;
-        newState = FlowPublicationListState(period: option);
+        if (state.filter.period == option) return;
+        newFilter = state.filter.copyWith(period: option);
       case Sort.byNew:
-        if (state.score == option) return;
-        newState = FlowPublicationListState(score: option);
-      default:
-        throw ValueException('Неизвестный вариант сортировки статей');
+        if (state.filter.score == option) return;
+        newFilter = state.filter.copyWith(score: option);
     }
 
-    emit(newState.copyWith(
+    emit(FlowPublicationListState(
       flow: state.flow,
       type: state.type,
-      sort: sort,
+      filter: newFilter,
     ));
   }
 
@@ -78,9 +76,7 @@ class FlowPublicationListCubit
         langArticles: languageRepository.articles,
         type: state.type,
         flow: state.flow,
-        sort: state.sort,
-        period: state.period,
-        score: state.score,
+        filter: state.filter,
         page: state.page.toString(),
       );
 

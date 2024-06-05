@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/component/di/injector.dart';
+import '../../../../data/model/filter/part.dart';
 import '../../../../data/model/publication/publication_flow_enum.dart';
-import '../../../../data/model/publication/publication_type_enum.dart';
 import '../../../feature/publication_list/part.dart';
 import '../../../feature/scaffold/part.dart';
 import '../../../feature/scroll/part.dart';
@@ -33,7 +33,7 @@ class PostListPage extends StatelessWidget {
           create: (_) => FlowPublicationListCubit(
             repository: getIt(),
             languageRepository: getIt(),
-            type: PublicationType.post,
+            type: FlowFilterPublication.post,
             flow: PublicationFlow.fromString(flow),
           ),
         ),

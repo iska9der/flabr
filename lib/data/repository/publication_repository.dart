@@ -99,11 +99,9 @@ class PublicationRepository {
   Future<ListResponse> fetchFlowArticles({
     required LanguageEnum langUI,
     required List<LanguageEnum> langArticles,
-    required PublicationType type,
+    required FlowFilterPublication type,
     required PublicationFlow flow,
-    required Sort sort,
-    required FilterOption period,
-    required FilterOption score,
+    required FlowFilter filter,
     required String page,
   }) async {
     final response = await service.fetchFlowArticles(
@@ -111,13 +109,13 @@ class PublicationRepository {
       langArticles: LanguageEncoder.encodeLangs(langArticles),
       type: type,
       flow: flow,
-      sort: sort,
-      period: period,
-      score: score,
+      sort: filter.sort,
+      period: filter.period,
+      score: filter.score,
       page: page,
     );
 
-    _sortListResponse(sort, response);
+    _sortListResponse(filter.sort, response);
 
     return response;
   }

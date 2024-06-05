@@ -24,7 +24,7 @@ abstract interface class PublicationService {
   Future<ListResponse> fetchFlowArticles({
     required String langUI,
     required String langArticles,
-    required PublicationType type,
+    required FlowFilterPublication type,
     required PublicationFlow flow,
     required Sort sort,
     required String page,
@@ -158,7 +158,7 @@ class PublicationServiceImpl implements PublicationService {
   Future<ListResponse> fetchFlowArticles({
     required String langUI,
     required String langArticles,
-    required PublicationType type,
+    required FlowFilterPublication type,
     required PublicationFlow flow,
     required Sort sort,
     required FilterOption period,
@@ -169,7 +169,7 @@ class PublicationServiceImpl implements PublicationService {
       final flowStr = (flow == PublicationFlow.all) ? null : flow.name;
 
       final params = switch (type) {
-        PublicationType.post => PostListParams(
+        FlowFilterPublication.post => PostListParams(
             langArticles: langArticles,
             langUI: langUI,
             page: page,
@@ -183,7 +183,7 @@ class PublicationServiceImpl implements PublicationService {
             langUI: langUI,
             page: page,
             flow: flowStr,
-            news: type == PublicationType.news,
+            news: type == FlowFilterPublication.news,
 
             /// если мы находимся не во "Все потоки", в значение sort, по завету
             /// костыльного api хабра, нужно передавать значение 'all'
@@ -199,7 +199,7 @@ class PublicationServiceImpl implements PublicationService {
       );
 
       return switch (type) {
-        PublicationType.post => PostListResponse.fromMap(response.data),
+        FlowFilterPublication.post => PostListResponse.fromMap(response.data),
         _ => PublicationListResponse.fromMap(response.data),
       } as ListResponse;
     } on DisplayableException {

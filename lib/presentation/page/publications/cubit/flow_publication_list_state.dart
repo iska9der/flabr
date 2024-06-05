@@ -9,10 +9,8 @@ class FlowPublicationListState extends Equatable
     this.pagesCount = 0,
     this.publications = const [],
     this.flow = PublicationFlow.all,
-    this.type = PublicationType.article,
-    this.sort = Sort.byNew,
-    this.period = FilterList.dateDefault,
-    this.score = FilterList.scoreDefault,
+    this.type = FlowFilterPublication.article,
+    this.filter = const FlowFilter(),
   });
 
   @override
@@ -27,19 +25,15 @@ class FlowPublicationListState extends Equatable
   final List<Publication> publications;
 
   final PublicationFlow flow;
-  final PublicationType type;
-  final Sort sort;
-  final FilterOption period;
-  final FilterOption score;
+  final FlowFilterPublication type;
+  final FlowFilter filter;
 
   FlowPublicationListState copyWith({
     PublicationListStatus? status,
     String? error,
     PublicationFlow? flow,
-    PublicationType? type,
-    Sort? sort,
-    FilterOption? period,
-    FilterOption? score,
+    FlowFilterPublication? type,
+    FlowFilter? filter,
     int? page,
     int? pagesCount,
     List<Publication>? publications,
@@ -49,9 +43,7 @@ class FlowPublicationListState extends Equatable
       error: error ?? this.error,
       flow: flow ?? this.flow,
       type: type ?? this.type,
-      sort: sort ?? this.sort,
-      period: period ?? this.period,
-      score: score ?? this.score,
+      filter: filter ?? this.filter,
       page: page ?? this.page,
       pagesCount: pagesCount ?? this.pagesCount,
       publications: publications ?? this.publications,
@@ -67,9 +59,7 @@ class FlowPublicationListState extends Equatable
         error,
         flow,
         type,
-        sort,
-        period,
-        score,
+        filter,
         page,
         pagesCount,
         publications,
