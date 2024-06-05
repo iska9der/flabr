@@ -49,5 +49,9 @@ app.*.map.json
 # Custom
 /internal
 
+# Generated
+*.freezed.dart
+*.g.dart
+
 # FVM Version Cache
 .fvm/

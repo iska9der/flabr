@@ -1,5 +1,4 @@
-import 'filter_helper.dart';
-import 'filter_option_model.dart';
+part of 'part.dart';
 
 enum Sort {
   byNew('Новые', 'rating', 'all'),

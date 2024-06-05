@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/component/di/injector.dart';
-import '../../../../../data/model/filter/sort_enum.dart';
+import '../../../../../data/model/filter/part.dart';
 import '../../../../feature/publication_list/part.dart';
 import '../../../../feature/scroll/part.dart';
 import '../../../../theme/part.dart';

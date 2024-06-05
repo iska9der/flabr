@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../data/model/filter/sort_enum.dart';
+import '../../../../data/model/filter/part.dart';
 import '../../../feature/publication_list/part.dart';
 import '../../../theme/part.dart';
 import '../../../widget/publication_filter_widget.dart';

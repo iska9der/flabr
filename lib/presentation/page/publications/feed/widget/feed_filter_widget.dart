@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../data/model/filter/filter_feed_publication_enum.dart';
-import '../../../../../data/model/filter/filter_helper.dart';
-import '../../../../../data/model/filter/filter_option_model.dart';
+import '../../../../../data/model/filter/part.dart';
 import '../../../../widget/publication_filter_options_widget.dart';
 
 class FeedFilterWidget extends StatelessWidget {
@@ -20,8 +18,8 @@ class FeedFilterWidget extends StatelessWidget {
   final FilterOption currentScore;
   final Function(FilterOption score) onScoreChange;
 
-  final List<FilterFeedPublication> currentTypes;
-  final void Function(List<FilterFeedPublication> newTypes) onTypesChange;
+  final List<FeedFilterPublication> currentTypes;
+  final void Function(List<FeedFilterPublication> newTypes) onTypesChange;
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +35,7 @@ class FeedFilterWidget extends StatelessWidget {
         Wrap(
           runSpacing: 8,
           spacing: 8,
-          children: FilterFeedPublication.values
+          children: FeedFilterPublication.values
               .map((type) => ChoiceChip(
                     label: Text(type.label),
                     selected: currentTypes.contains(type),

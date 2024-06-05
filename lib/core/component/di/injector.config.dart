@@ -8,7 +8,7 @@
 // coverage:ignore-file
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:app_links/app_links.dart' as _i6;
+import 'package:app_links/app_links.dart' as _i5;
 import 'package:dio/dio.dart' as _i3;
 import 'package:get_it/get_it.dart' as _i1;
 import 'package:injectable/injectable.dart' as _i2;
@@ -16,9 +16,9 @@ import 'package:shared_preferences/shared_preferences.dart' as _i4;
 
 import '../../../data/repository/part.dart' as _i9;
 import '../../../data/service/part.dart' as _i11;
-import '../../../presentation/utils/utils.dart' as _i5;
+import '../../../presentation/utils/utils.dart' as _i7;
 import '../http/part.dart' as _i10;
-import '../router/app_router.dart' as _i7;
+import '../router/app_router.dart' as _i6;
 import '../storage/part.dart' as _i8;
 import 'module.dart' as _i12;
 
@@ -39,9 +39,9 @@ Future<_i1.GetIt> $initGetIt(
     () => registerModule.sharedInstance,
     preResolve: true,
   );
-  gh.singleton<_i5.Utils>(() => const _i5.Utils());
-  gh.singleton<_i6.AppLinks>(() => registerModule.appLinks);
-  gh.singleton<_i7.AppRouter>(() => _i7.AppRouter());
+  gh.singleton<_i5.AppLinks>(() => registerModule.appLinks);
+  gh.singleton<_i6.AppRouter>(() => _i6.AppRouter());
+  gh.singleton<_i7.Utils>(() => const _i7.Utils());
   gh.singleton<_i8.CacheStorage>(
     () => registerModule.sharedStorage(gh<_i4.SharedPreferences>()),
     instanceName: 'sharedStorage',

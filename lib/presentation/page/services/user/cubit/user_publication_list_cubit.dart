@@ -1,9 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 import '../../../../../data/exception/part.dart';
-import '../../../../../data/model/filter/filter_helper.dart';
-import '../../../../../data/model/filter/filter_option_model.dart';
-import '../../../../../data/model/filter/sort_enum.dart';
+import '../../../../../data/model/filter/part.dart';
 import '../../../../../data/model/list_response/list_response.dart';
 import '../../../../../data/model/publication/publication.dart';
 import '../../../../../data/model/user/user_publication_type.dart';

@@ -24,6 +24,7 @@ abstract class PublicationListCubit<State extends PublicationListState>
   late final StreamSubscription _uiLangSub;
   late final StreamSubscription _articleLangsSub;
 
+  /// Показывать тип поста в карточках
   bool get showType => false;
 
   @override

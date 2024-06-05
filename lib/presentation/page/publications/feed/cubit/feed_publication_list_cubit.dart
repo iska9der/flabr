@@ -1,9 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 import '../../../../../data/exception/part.dart';
-import '../../../../../data/model/filter/filter_feed_publication_enum.dart';
-import '../../../../../data/model/filter/filter_helper.dart';
-import '../../../../../data/model/filter/filter_option_model.dart';
+import '../../../../../data/model/filter/part.dart';
 import '../../../../../data/model/list_response/list_response.dart';
 import '../../../../../data/model/publication/publication.dart';
 import '../../../../feature/publication_list/part.dart';
@@ -34,8 +32,7 @@ class FeedPublicationListCubit
         langUI: languageRepository.ui,
         langArticles: languageRepository.articles,
         page: state.page.toString(),
-        score: state.score,
-        types: state.types,
+        filter: state.filter,
       );
 
       emit(state.copyWith(
@@ -68,19 +65,23 @@ class FeedPublicationListCubit
   }
 
   void changeFilterScore(FilterOption option) {
-    if (state.score == option) {
+    if (state.filter.score == option) {
       return;
     }
 
-    emit(FeedPublicationListState(types: state.types, score: option));
+    emit(FeedPublicationListState(
+      filter: state.filter.copyWith(score: option),
+    ));
   }
 
-  void changeFilterTypes(List<FilterFeedPublication> types) {
+  void changeFilterTypes(List<FeedFilterPublication> types) {
     /// Выбран хотя бы один тип публикации
     if (types.isEmpty) {
       return;
     }
 
-    emit(FeedPublicationListState(score: state.score, types: types));
+    emit(FeedPublicationListState(
+      filter: state.filter.copyWith(types: types),
+    ));
   }
 }

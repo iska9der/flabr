@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../data/model/filter/filter_option_model.dart';
-import '../../data/model/filter/sort_enum.dart';
+import '../../data/model/filter/part.dart';
 import 'publication_filter_options_widget.dart';
 
 class PublicationFilterWidget extends StatelessWidget {

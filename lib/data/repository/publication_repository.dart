@@ -75,15 +75,14 @@ class PublicationRepository {
     required LanguageEnum langUI,
     required List<LanguageEnum> langArticles,
     required String page,
-    required FilterOption score,
-    required List<FilterFeedPublication> types,
+    required FeedFilter filter,
   }) async {
     final response = await service.fetchFeed(
       langUI: langUI.name,
       langArticles: LanguageEncoder.encodeLangs(langArticles),
       page: page,
-      score: score.value.isEmpty ? 'all' : score.value,
-      types: types.map((t) => t.name).toList(),
+      score: filter.score.value.isEmpty ? 'all' : filter.score.value,
+      types: filter.types.map((t) => t.name).toList(),
     );
 
     _sortListResponse(Sort.byNew, response);
