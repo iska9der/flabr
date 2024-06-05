@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../data/model/filter/part.dart';
+import '../../../data/model/filter/part.dart';
 
 /// TODO: сменить название
 class PublicationFilterOptionsWidget extends StatelessWidget {

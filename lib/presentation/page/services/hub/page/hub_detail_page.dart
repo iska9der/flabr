@@ -8,7 +8,7 @@ import '../../../../feature/publication_list/part.dart';
 import '../../../../feature/scroll/part.dart';
 import '../../../../theme/part.dart';
 import '../../../../widget/enhancement/progress_indicator.dart';
-import '../../../../widget/publication_filter_widget.dart';
+import '../../../../widget/filter/publication_filter_widget.dart';
 import '../../../settings/cubit/settings_cubit.dart';
 import '../cubit/hub_cubit.dart';
 import '../cubit/hub_publication_list_cubit.dart';
@@ -84,17 +84,13 @@ class HubDetailPageView extends StatelessWidget {
                       return PublicationFilterWidget(
                         isLoading:
                             state.status == PublicationListStatus.loading,
-                        sort: state.sort,
-                        onSortChange: context
-                            .read<HubPublicationListCubit>()
-                            .changeSortBy,
-                        filterOption: switch (state.sort) {
-                          Sort.byBest => state.period,
-                          Sort.byNew => state.score,
+                        sort: state.filter.sort,
+                        filterOption: switch (state.filter.sort) {
+                          Sort.byBest => state.filter.period,
+                          Sort.byNew => state.filter.score,
                         },
-                        onOptionChange: (option) => context
-                            .read<HubPublicationListCubit>()
-                            .changeSortByOption(state.sort, option),
+                        onSubmit:
+                            context.read<HubPublicationListCubit>().applyFilter,
                       );
                     },
                   ),

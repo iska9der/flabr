@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../data/model/filter/part.dart';
 import '../../../feature/publication_list/part.dart';
 import '../../../theme/part.dart';
-import '../../../widget/publication_filter_widget.dart';
+import '../../../widget/filter/publication_filter_widget.dart';
 import '../cubit/flow_publication_list_cubit.dart';
 import 'flow_dropdown_menu.dart';
 import 'list_appbar.dart';
@@ -55,14 +55,11 @@ class _AppBarState extends State<FlowListAppBar> {
           return PublicationFilterWidget(
             isLoading: state.status == PublicationListStatus.loading,
             sort: state.filter.sort,
-            onSortChange: context.read<FlowPublicationListCubit>().changeSortBy,
             filterOption: switch (state.filter.sort) {
               Sort.byBest => state.filter.period,
               Sort.byNew => state.filter.score,
             },
-            onOptionChange: (option) => context
-                .read<FlowPublicationListCubit>()
-                .changeSortByOption(state.filter.sort, option),
+            onSubmit: context.read<FlowPublicationListCubit>().applyFilter,
           );
         },
       ),

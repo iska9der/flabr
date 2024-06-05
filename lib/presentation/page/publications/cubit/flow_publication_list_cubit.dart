@@ -24,44 +24,6 @@ class FlowPublicationListCubit
           section: section,
         ));
 
-  void changeFlow(PublicationFlow value) {
-    if (state.flow == value) return;
-
-    emit(FlowPublicationListState(
-      flow: value,
-      section: state.section,
-    ));
-  }
-
-  void changeSortBy(Sort sort) {
-    if (state.filter.sort == sort) return;
-
-    emit(FlowPublicationListState(
-      flow: state.flow,
-      section: state.section,
-      filter: state.filter.copyWith(sort: sort),
-    ));
-  }
-
-  void changeSortByOption(Sort sort, FilterOption option) {
-    final FlowFilter newFilter;
-
-    switch (sort) {
-      case Sort.byBest:
-        if (state.filter.period == option) return;
-        newFilter = state.filter.copyWith(period: option);
-      case Sort.byNew:
-        if (state.filter.score == option) return;
-        newFilter = state.filter.copyWith(score: option);
-    }
-
-    emit(FlowPublicationListState(
-      flow: state.flow,
-      section: state.section,
-      filter: newFilter,
-    ));
-  }
-
   @override
   Future<void> fetch() async {
     if (state.status == PublicationListStatus.loading ||
@@ -104,6 +66,27 @@ class FlowPublicationListCubit
       page: 1,
       publications: [],
       pagesCount: 0,
+    ));
+  }
+
+  void changeFlow(PublicationFlow value) {
+    if (state.flow == value) return;
+
+    emit(FlowPublicationListState(
+      flow: value,
+      section: state.section,
+    ));
+  }
+
+  void applyFilter(FlowFilter filter) {
+    if (state.filter == filter) {
+      return;
+    }
+
+    emit(FlowPublicationListState(
+      flow: state.flow,
+      section: state.section,
+      filter: filter,
     ));
   }
 }

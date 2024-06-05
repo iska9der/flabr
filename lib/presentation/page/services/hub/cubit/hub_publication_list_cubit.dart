@@ -23,34 +23,6 @@ class HubPublicationListCubit
           type: type,
         ));
 
-  void changeSortBy(Sort sort) {
-    if (state.sort == sort) return;
-
-    emit(HubPublicationListState(
-      hub: state.hub,
-      type: state.type,
-      sort: sort,
-    ));
-  }
-
-  void changeSortByOption(Sort sort, FilterOption option) {
-    HubPublicationListState newState;
-    switch (sort) {
-      case Sort.byBest:
-        if (state.period == option) return;
-        newState = HubPublicationListState(period: option);
-      case Sort.byNew:
-        if (state.score == option) return;
-        newState = HubPublicationListState(score: option);
-    }
-
-    emit(newState.copyWith(
-      hub: state.hub,
-      type: state.type,
-      sort: sort,
-    ));
-  }
-
   @override
   Future<void> fetch() async {
     if (state.status == PublicationListStatus.loading ||
@@ -65,9 +37,7 @@ class HubPublicationListCubit
         langUI: languageRepository.ui,
         langArticles: languageRepository.articles,
         hub: state.hub,
-        sort: state.sort,
-        period: state.period,
-        score: state.score,
+        filter: state.filter,
         page: state.page.toString(),
       );
 
@@ -94,6 +64,14 @@ class HubPublicationListCubit
       page: 1,
       publications: [],
       pagesCount: 0,
+    ));
+  }
+
+  void applyFilter(FlowFilter filter) {
+    emit(HubPublicationListState(
+      hub: state.hub,
+      type: state.type,
+      filter: filter,
     ));
   }
 }

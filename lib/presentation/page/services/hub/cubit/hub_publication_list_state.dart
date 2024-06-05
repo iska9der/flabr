@@ -10,9 +10,7 @@ class HubPublicationListState extends Equatable
     this.publications = const [],
     this.hub = '',
     this.type = PublicationType.article,
-    this.sort = Sort.byNew,
-    this.period = FilterList.dateDefault,
-    this.score = FilterList.scoreDefault,
+    this.filter = const FlowFilter(),
   });
 
   @override
@@ -27,18 +25,14 @@ class HubPublicationListState extends Equatable
   final List<Publication> publications;
   final String hub;
   final PublicationType type;
-  final Sort sort;
-  final FilterOption period;
-  final FilterOption score;
+  final FlowFilter filter;
 
   HubPublicationListState copyWith({
     PublicationListStatus? status,
     String? error,
     String? hub,
     PublicationType? type,
-    Sort? sort,
-    FilterOption? period,
-    FilterOption? score,
+    FlowFilter? filter,
     int? page,
     int? pagesCount,
     List<Publication>? publications,
@@ -48,9 +42,7 @@ class HubPublicationListState extends Equatable
       error: error ?? this.error,
       hub: hub ?? this.hub,
       type: type ?? this.type,
-      sort: sort ?? this.sort,
-      period: period ?? this.period,
-      score: score ?? this.score,
+      filter: filter ?? this.filter,
       page: page ?? this.page,
       pagesCount: pagesCount ?? this.pagesCount,
       publications: publications ?? this.publications,
@@ -66,9 +58,7 @@ class HubPublicationListState extends Equatable
         error,
         hub,
         type,
-        sort,
-        period,
-        score,
+        filter,
         page,
         pagesCount,
         publications,

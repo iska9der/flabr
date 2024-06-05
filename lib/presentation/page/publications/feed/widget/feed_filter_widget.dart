@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../../data/model/filter/part.dart';
-import '../../../../widget/publication_filter_options_widget.dart';
+import '../../../../widget/filter/publication_filter_options_widget.dart';
 
 class FeedFilterWidget extends StatelessWidget {
   const FeedFilterWidget({
