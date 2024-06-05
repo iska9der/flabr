@@ -12,7 +12,7 @@ abstract interface class SummaryTokenRepository {
 
 @Singleton(as: SummaryTokenRepository)
 class SummaryTokenRepositoryImpl implements SummaryTokenRepository {
-  SummaryTokenRepositoryImpl(this._storage);
+  SummaryTokenRepositoryImpl(@Named('secureStorage') this._storage);
 
   final CacheStorage _storage;
 

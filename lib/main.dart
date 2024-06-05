@@ -13,7 +13,7 @@ import 'core/component/di/injector.dart';
 import 'core/component/logger/console.dart';
 import 'presentation/app.dart';
 
-void main() async => runZonedGuarded(
+void main() => runZonedGuarded(
       () async {
         WidgetsFlutterBinding.ensureInitialized();
 
@@ -22,7 +22,7 @@ void main() async => runZonedGuarded(
           [DeviceOrientation.portraitUp],
         );
 
-        configureDependencies();
+        await configureDependencies();
 
         Intl.defaultLocale = 'ru_RU';
         await initializeDateFormatting('ru_RU');

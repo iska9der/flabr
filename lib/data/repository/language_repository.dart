@@ -6,7 +6,7 @@ const langArticlesCacheKey = 'langArticles';
 @Singleton()
 class LanguageRepository {
   LanguageRepository({
-    required CacheStorage storage,
+    @Named('sharedStorage') required CacheStorage storage,
   }) : _storage = storage {
     _init();
   }
@@ -21,10 +21,10 @@ class LanguageRepository {
 
   /// Последние значения из стрима
   LanguageEnum _ui = LanguageEnum.ru;
-  get ui => _ui;
+  LanguageEnum get ui => _ui;
 
   List<LanguageEnum> _articles = [LanguageEnum.ru];
-  get articles => _articles;
+  List<LanguageEnum> get articles => _articles;
 
   /// Получаем кэшированные значения из хранилища
   /// и сохраняем как последния значения, а так же

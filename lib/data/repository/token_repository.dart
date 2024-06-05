@@ -5,7 +5,7 @@ const authCsrfCacheKey = 'cData';
 
 @Singleton()
 class TokenRepository {
-  TokenRepository(this._storage);
+  TokenRepository(@Named('secureStorage') this._storage);
 
   final CacheStorage _storage;
 
