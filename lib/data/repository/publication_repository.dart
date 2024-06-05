@@ -99,7 +99,7 @@ class PublicationRepository {
   Future<ListResponse> fetchFlowArticles({
     required LanguageEnum langUI,
     required List<LanguageEnum> langArticles,
-    required FlowFilterPublication type,
+    required Section section,
     required PublicationFlow flow,
     required FlowFilter filter,
     required String page,
@@ -107,7 +107,7 @@ class PublicationRepository {
     final response = await service.fetchFlowArticles(
       langUI: langUI.name,
       langArticles: LanguageEncoder.encodeLangs(langArticles),
-      type: type,
+      section: section,
       flow: flow,
       sort: filter.sort,
       period: filter.period,

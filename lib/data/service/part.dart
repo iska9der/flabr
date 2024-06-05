@@ -25,6 +25,7 @@ import '../model/query_params/post_list_params.dart';
 import '../model/query_params/publication_list_params.dart';
 import '../model/query_params/search_params.dart';
 import '../model/search/search_target.dart';
+import '../model/section_enum.dart';
 import '../model/user/user_bookmarks_type.dart';
 import '../model/user/user_publication_type.dart';
 

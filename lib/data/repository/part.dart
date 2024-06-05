@@ -23,6 +23,7 @@ import '../model/publication/publication_flow_enum.dart';
 import '../model/publication/publication_source_enum.dart';
 import '../model/search/search_order.dart';
 import '../model/search/search_target.dart';
+import '../model/section_enum.dart';
 import '../model/summary_model.dart';
 import '../model/user/user_bookmarks_type.dart';
 import '../model/user/user_model.dart';

@@ -7,6 +7,7 @@ import '../../../../data/model/filter/part.dart';
 import '../../../../data/model/list_response/list_response.dart';
 import '../../../../data/model/publication/publication.dart';
 import '../../../../data/model/publication/publication_flow_enum.dart';
+import '../../../../data/model/section_enum.dart';
 import '../../../feature/publication_list/part.dart';
 
 part 'flow_publication_list_state.dart';
@@ -17,10 +18,10 @@ class FlowPublicationListCubit
     required super.repository,
     required super.languageRepository,
     PublicationFlow flow = PublicationFlow.all,
-    FlowFilterPublication type = FlowFilterPublication.article,
+    Section section = Section.article,
   }) : super(FlowPublicationListState(
           flow: flow,
-          type: type,
+          section: section,
         ));
 
   void changeFlow(PublicationFlow value) {
@@ -28,7 +29,7 @@ class FlowPublicationListCubit
 
     emit(FlowPublicationListState(
       flow: value,
-      type: state.type,
+      section: state.section,
     ));
   }
 
@@ -37,7 +38,7 @@ class FlowPublicationListCubit
 
     emit(FlowPublicationListState(
       flow: state.flow,
-      type: state.type,
+      section: state.section,
       filter: state.filter.copyWith(sort: sort),
     ));
   }
@@ -56,7 +57,7 @@ class FlowPublicationListCubit
 
     emit(FlowPublicationListState(
       flow: state.flow,
-      type: state.type,
+      section: state.section,
       filter: newFilter,
     ));
   }
@@ -74,7 +75,7 @@ class FlowPublicationListCubit
       ListResponse response = await repository.fetchFlowArticles(
         langUI: languageRepository.ui,
         langArticles: languageRepository.articles,
-        type: state.type,
+        section: state.section,
         flow: state.flow,
         filter: state.filter,
         page: state.page.toString(),

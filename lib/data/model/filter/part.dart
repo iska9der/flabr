@@ -5,7 +5,6 @@ part 'feed/feed_filter_publication_enum.dart';
 part 'filter_list.dart';
 part 'filter_option_model.dart';
 part 'flow/flow_filter_model.dart';
-part 'flow/flow_filter_publication_enum.dart';
 part 'part.freezed.dart';
 part 'part.g.dart';
 part 'sort_enum.dart';
