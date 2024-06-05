@@ -7,10 +7,10 @@ import 'publication_filter_submit_button.dart';
 class PublicationFilterWidget extends StatefulWidget {
   const PublicationFilterWidget({
     super.key,
+    this.isLoading = false,
     required this.sort,
     required this.filterOption,
     this.onSubmit,
-    this.isLoading = false,
   });
 
   final bool isLoading;
@@ -52,11 +52,8 @@ class _PublicationFilterWidgetState extends State<PublicationFilterWidget> {
           options: Sort.values
               .map((e) => FilterOption(label: e.label, value: e.name))
               .toList(),
-          currentValue: FilterOption(
-            label: sortValue.label,
-            value: sortValue.name,
-          ),
-          onSelected: (option) => setState(() {
+          isSelected: (option) => option.value == sortValue.name,
+          onSelected: (isSelected, option) => setState(() {
             sortValue = Sort.fromString(option.value);
             optionValue = sortValue.filters.first;
           }),
@@ -64,8 +61,8 @@ class _PublicationFilterWidgetState extends State<PublicationFilterWidget> {
         PublicationFilterOptionsWidget(
           isEnabled: !widget.isLoading,
           options: sortValue.filters,
-          currentValue: optionValue,
-          onSelected: (option) => setState(() {
+          isSelected: (option) => option == optionValue,
+          onSelected: (isSelected, option) => setState(() {
             optionValue = option;
           }),
         ),

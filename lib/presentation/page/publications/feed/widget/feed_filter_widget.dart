@@ -2,56 +2,68 @@ import 'package:flutter/material.dart';
 
 import '../../../../../data/model/filter/part.dart';
 import '../../../../widget/filter/publication_filter_options_widget.dart';
+import '../../../../widget/filter/publication_filter_submit_button.dart';
 
-class FeedFilterWidget extends StatelessWidget {
+class FeedFilterWidget extends StatefulWidget {
   const FeedFilterWidget({
     super.key,
     this.isLoading = false,
     required this.currentScore,
-    required this.onScoreChange,
     required this.currentTypes,
-    required this.onTypesChange,
+    required this.onSubmit,
   });
 
   final bool isLoading;
 
   final FilterOption currentScore;
-  final Function(FilterOption score) onScoreChange;
 
   final List<FeedFilterPublication> currentTypes;
-  final void Function(List<FeedFilterPublication> newTypes) onTypesChange;
+  final Function(FeedFilter filter) onSubmit;
+
+  @override
+  State<FeedFilterWidget> createState() => _FeedFilterWidgetState();
+}
+
+class _FeedFilterWidgetState extends State<FeedFilterWidget> {
+  late FilterOption scoreValue = widget.currentScore;
+  late List<FeedFilterPublication> typesValue = widget.currentTypes;
 
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
         Text(
           'Тип публикации',
           style: Theme.of(context).textTheme.labelLarge,
         ),
-        Wrap(
-          runSpacing: 8,
-          spacing: 8,
-          children: FeedFilterPublication.values
-              .map((type) => ChoiceChip(
-                    label: Text(type.label),
-                    selected: currentTypes.contains(type),
-                    onSelected: (isSelected) {
-                      if (isSelected) {
-                        final newTypes = [...currentTypes, type];
-                        return onTypesChange(newTypes);
-                      }
-
-                      onTypesChange(
-                        [...currentTypes]
-                          ..removeWhere((element) => element == type),
-                      );
-                    },
-                  ))
+        PublicationFilterOptionsWidget(
+          isEnabled: !widget.isLoading,
+          options: FeedFilterPublication.values
+              .map((e) => FilterOption(label: e.label, value: e.name))
               .toList(),
+          isSelected: (option) => typesValue
+              .contains(FeedFilterPublication.fromString(option.value)),
+          onSelected: (isSelected, newOption) {
+            final newType = FeedFilterPublication.fromString(newOption.value);
+
+            List<FeedFilterPublication> newTypes;
+            if (isSelected) {
+              newTypes = [...typesValue, newType];
+            } else {
+              newTypes = [...typesValue]
+                ..removeWhere((element) => element == newType);
+            }
+
+            if (newTypes.isEmpty) {
+              return;
+            }
+
+            setState(() {
+              typesValue = newTypes;
+            });
+          },
         ),
         const SizedBox(height: 12),
         Text(
@@ -59,10 +71,22 @@ class FeedFilterWidget extends StatelessWidget {
           style: Theme.of(context).textTheme.labelLarge,
         ),
         PublicationFilterOptionsWidget(
-          isEnabled: !isLoading,
+          isEnabled: !widget.isLoading,
           options: FilterList.scoreOptions,
-          currentValue: currentScore,
-          onSelected: (value) => onScoreChange(value),
+          isSelected: (option) => option == scoreValue,
+          onSelected: (isSelected, option) => setState(() {
+            scoreValue = option;
+          }),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 8.0),
+          child: PublicationFilterSubmitButton(
+            isEnabled: !widget.isLoading,
+            onSubmit: () => widget.onSubmit(FeedFilter(
+              score: scoreValue,
+              types: typesValue,
+            )),
+          ),
         ),
       ],
     );

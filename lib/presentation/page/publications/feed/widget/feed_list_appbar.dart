@@ -53,13 +53,8 @@ class _AppBarState extends State<FeedListAppBar> {
           return FeedFilterWidget(
             isLoading: state.status == PublicationListStatus.loading,
             currentScore: state.filter.score,
-            onScoreChange: (option) => context
-                .read<FeedPublicationListCubit>()
-                .changeFilterScore(option),
             currentTypes: state.filter.types,
-            onTypesChange: (newTypes) => context
-                .read<FeedPublicationListCubit>()
-                .changeFilterTypes(newTypes),
+            onSubmit: context.read<FeedPublicationListCubit>().applyFilter,
           );
         },
       ),

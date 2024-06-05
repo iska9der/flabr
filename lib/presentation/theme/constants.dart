@@ -17,4 +17,4 @@ const double kBorderRadiusDefault = 8.0;
 const double fCardPadding = 8.0;
 const double fCardMargin = 4.0;
 const double flowSortToolbarHeight = 140.0;
-const double feedSortToolbarHeight = 120.0;
+const double feedSortToolbarHeight = 160.0;

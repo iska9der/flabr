@@ -64,24 +64,11 @@ class FeedPublicationListCubit
     ));
   }
 
-  void changeFilterScore(FilterOption option) {
-    if (state.filter.score == option) {
+  void applyFilter(FeedFilter newFilter) {
+    if (state.filter == newFilter) {
       return;
     }
 
-    emit(FeedPublicationListState(
-      filter: state.filter.copyWith(score: option),
-    ));
-  }
-
-  void changeFilterTypes(List<FeedFilterPublication> types) {
-    /// Выбран хотя бы один тип публикации
-    if (types.isEmpty) {
-      return;
-    }
-
-    emit(FeedPublicationListState(
-      filter: state.filter.copyWith(types: types),
-    ));
+    emit(FeedPublicationListState(filter: newFilter));
   }
 }

@@ -6,17 +6,16 @@ import '../../../data/model/filter/part.dart';
 class PublicationFilterOptionsWidget extends StatelessWidget {
   const PublicationFilterOptionsWidget({
     super.key,
-    required this.options,
-    required this.currentValue,
-    required this.onSelected,
     this.isEnabled = true,
+    required this.options,
+    required this.onSelected,
+    required this.isSelected,
   });
 
-  final List<FilterOption> options;
-  final FilterOption currentValue;
-  final ValueChanged<FilterOption> onSelected;
-
   final bool isEnabled;
+  final List<FilterOption> options;
+  final bool Function(FilterOption option) isSelected;
+  final Function(bool isSelected, FilterOption option) onSelected;
 
   @override
   Widget build(BuildContext context) {
@@ -37,9 +36,10 @@ class PublicationFilterOptionsWidget extends StatelessWidget {
                       textAlign: TextAlign.center,
                       style: Theme.of(context).textTheme.labelMedium,
                     ),
-                    selected: option == currentValue,
-                    onSelected:
-                        isEnabled ? (bool value) => onSelected(option) : null,
+                    selected: isSelected(option),
+                    onSelected: isEnabled
+                        ? (bool value) => onSelected(value, option)
+                        : null,
                   ),
                 ))
             .toList(),
