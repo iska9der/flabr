@@ -6,18 +6,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/component/router/app_router.dart';
 import '../../../../core/component/storage/part.dart';
+import '../../../../core/constants/part.dart';
 import '../../../../data/model/language/part.dart';
 import '../../../../data/repository/part.dart';
-import '../model/article_config_model.dart';
-import '../model/feed_config_model.dart';
-import '../model/misc_config_model.dart';
+import '../model/config_model.dart';
 
 part 'settings_state.dart';
-
-const isDarkThemeCacheKey = 'isDarkTheme';
-const feedConfigCacheKey = 'feedConfig';
-const articleConfigCacheKey = 'articleConfig';
-const miscConfigCacheKey = 'miscConfig';
 
 class SettingsCubit extends Cubit<SettingsState> {
   SettingsCubit({
@@ -33,8 +27,15 @@ class SettingsCubit extends Cubit<SettingsState> {
     _langUiSub = _langRepository.uiStream.listen((lang) {
       emit(state.copyWith(langUI: lang));
     });
+
     _langArticleSub = _langRepository.articlesStream.listen((langs) {
       emit(state.copyWith(langArticles: langs));
+    });
+
+    _uriSub = _appLinks.uriLinkStream.listen((uri) {
+      String path = uri.path;
+
+      _router.navigateNamed(path);
     });
   }
 
@@ -45,25 +46,38 @@ class SettingsCubit extends Cubit<SettingsState> {
 
   late final StreamSubscription _langUiSub;
   late final StreamSubscription _langArticleSub;
+  late final StreamSubscription _uriSub;
 
   @override
   Future<void> close() {
     _langUiSub.cancel();
     _langArticleSub.cancel();
+    _uriSub.cancel();
     return super.close();
   }
 
   void init() async {
     emit(state.copyWith(status: SettingsStatus.loading));
 
-    /// TODO: эту штуку можно оптимизировать, на мой блестящий взгляд:
-    /// возвращать из функций значения и менять state одним поджопником
-    await initTheme();
-    await initConfig();
-    await initDeepLink();
+    final lastUrl = await _initDeepLink();
+    final (langUI, langArticles) = _initLanguages();
+    final isDark = await _initIsDarkTheme();
+    final config = await _initConfig();
 
-    emit(state.copyWith(status: SettingsStatus.success));
+    emit(state.copyWith(
+      status: SettingsStatus.success,
+      initialDeepLink: lastUrl,
+      langUI: langUI,
+      langArticles: langArticles,
+      isDarkTheme: isDark,
+      feedConfig: config.feed,
+      publicationConfig: config.publication,
+      miscConfig: config.misc,
+    ));
   }
+
+  (LanguageEnum, List<LanguageEnum>) _initLanguages() =>
+      (_langRepository.ui, _langRepository.articles);
 
   changeUILang(LanguageEnum? uiLang) {
     if (uiLang == null) return;
@@ -103,66 +117,58 @@ class SettingsCubit extends Cubit<SettingsState> {
     _langRepository.updateArticleLang(newLangs);
   }
 
-  Future<void> initTheme() async {
+  Future<bool> _initIsDarkTheme() async {
     /// Получаем кэшированные данные
-    String? raw = await _storage.read(isDarkThemeCacheKey);
+    String? raw = await _storage.read(CacheKey.isDarkTheme);
 
     /// Если в кэше есть заданное значение, присваиваем его,
     /// иначе указываем как false
     if (raw != null) {
       bool isDarkTheme = raw == 'true';
-      changeTheme(isDarkTheme: isDarkTheme);
-    } else {
-      _storage.write(isDarkThemeCacheKey, 'false');
-      changeTheme(isDarkTheme: false);
+      return isDarkTheme;
     }
+
+    _storage.write(CacheKey.isDarkTheme, 'false');
+    return false;
   }
 
   void changeTheme({required bool isDarkTheme}) {
-    _storage.write(isDarkThemeCacheKey, isDarkTheme.toString());
+    _storage.write(CacheKey.isDarkTheme, isDarkTheme.toString());
 
     emit(state.copyWith(isDarkTheme: isDarkTheme));
   }
 
-  Future<void> initDeepLink() async {
+  Future<String?> _initDeepLink() async {
     final lastUri = await _appLinks.getLatestLink();
 
-    if (lastUri != null) {
-      emit(state.copyWith(initialDeepLink: lastUri.path));
-    }
-
-    _appLinks.uriLinkStream.listen((uri) {
-      String path = uri.path;
-
-      _router.navigateNamed(path);
-    });
+    return lastUri?.path;
   }
 
   /// Инициализация конфигурации
-  initConfig() async {
-    String? raw = await _storage.read(feedConfigCacheKey);
+  Future<Config> _initConfig() async {
+    String? raw = await _storage.read(CacheKey.feedConfig);
     FeedConfigModel? feedConfig;
     if (raw != null) {
       feedConfig = FeedConfigModel.fromJson(raw);
     }
 
-    raw = await _storage.read(articleConfigCacheKey);
+    raw = await _storage.read(CacheKey.articleConfig);
     PublicationConfigModel? articleConfig;
     if (raw != null) {
       articleConfig = PublicationConfigModel.fromJson(raw);
     }
 
-    raw = await _storage.read(miscConfigCacheKey);
+    raw = await _storage.read(CacheKey.miscConfig);
     MiscConfigModel? miscConfig;
     if (raw != null) {
       miscConfig = MiscConfigModel.fromJson(raw);
     }
 
-    emit(state.copyWith(
-      feedConfig: feedConfig,
-      publicationConfig: articleConfig,
-      miscConfig: miscConfig,
-    ));
+    return const Config().copyWith(
+      feed: feedConfig,
+      publication: articleConfig,
+      misc: miscConfig,
+    );
   }
 
   void changeFeedImageVisibility({bool? isVisible}) {
@@ -172,7 +178,7 @@ class SettingsCubit extends Cubit<SettingsState> {
 
     emit(state.copyWith(feedConfig: newConfig));
 
-    _storage.write(feedConfigCacheKey, newConfig.toJson());
+    _storage.write(CacheKey.feedConfig, newConfig.toJson());
   }
 
   void changeFeedDescVisibility({bool? isVisible}) {
@@ -184,7 +190,7 @@ class SettingsCubit extends Cubit<SettingsState> {
 
     emit(state.copyWith(feedConfig: newConfig));
 
-    _storage.write(feedConfigCacheKey, newConfig.toJson());
+    _storage.write(CacheKey.feedConfig, newConfig.toJson());
   }
 
   void changeArticleFontScale(double newScale) {
@@ -193,7 +199,7 @@ class SettingsCubit extends Cubit<SettingsState> {
     var newConfig = state.publicationConfig.copyWith(fontScale: newScale);
     emit(state.copyWith(publicationConfig: newConfig));
 
-    _storage.write(articleConfigCacheKey, newConfig.toJson());
+    _storage.write(CacheKey.articleConfig, newConfig.toJson());
   }
 
   void changeArticleImageVisibility({bool? isVisible}) {
@@ -203,7 +209,7 @@ class SettingsCubit extends Cubit<SettingsState> {
         state.publicationConfig.copyWith(isImagesVisible: isVisible);
     emit(state.copyWith(publicationConfig: newConfig));
 
-    _storage.write(articleConfigCacheKey, newConfig.toJson());
+    _storage.write(CacheKey.articleConfig, newConfig.toJson());
   }
 
   void changeWebViewVisibility({bool? isVisible}) {
@@ -212,7 +218,7 @@ class SettingsCubit extends Cubit<SettingsState> {
     var newConfig = state.publicationConfig.copyWith(webViewEnabled: isVisible);
     emit(state.copyWith(publicationConfig: newConfig));
 
-    _storage.write(articleConfigCacheKey, newConfig.toJson());
+    _storage.write(CacheKey.articleConfig, newConfig.toJson());
   }
 
   void changeNavigationOnScrollVisibility({bool? isVisible}) {
@@ -223,6 +229,6 @@ class SettingsCubit extends Cubit<SettingsState> {
     );
     emit(state.copyWith(miscConfig: newConfig));
 
-    _storage.write(miscConfigCacheKey, newConfig.toJson());
+    _storage.write(CacheKey.miscConfig, newConfig.toJson());
   }
 }

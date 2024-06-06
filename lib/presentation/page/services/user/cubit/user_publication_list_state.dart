@@ -5,25 +5,20 @@ class UserPublicationListState extends Equatable
   const UserPublicationListState({
     this.status = PublicationListStatus.initial,
     this.error = '',
-    this.user = '',
-    this.type = UserPublicationType.articles,
-    this.sort = Sort.byNew,
-    this.period = SortDatePeriod.daily,
-    this.score = '',
     this.page = 1,
     this.pagesCount = 0,
     this.publications = const [],
+    this.user = '',
+    this.type = UserPublicationType.articles,
+    this.sort = Sort.byNew,
+    this.period = FilterList.dateDefault,
+    this.score = FilterList.scoreDefault,
   });
 
   @override
   final PublicationListStatus status;
   @override
   final String error;
-  final String user;
-  final UserPublicationType type;
-  final Sort sort;
-  final SortDatePeriod period;
-  final String score;
   @override
   final int page;
   @override
@@ -31,14 +26,19 @@ class UserPublicationListState extends Equatable
   @override
   final List<Publication> publications;
 
+  final String user;
+  final UserPublicationType type;
+  final Sort sort;
+  final FilterOption period;
+  final FilterOption score;
   UserPublicationListState copyWith({
     PublicationListStatus? status,
     String? error,
     String? user,
     UserPublicationType? type,
     Sort? sort,
-    SortDatePeriod? period,
-    String? score,
+    FilterOption? period,
+    FilterOption? score,
     int? page,
     int? pagesCount,
     List<Publication>? publications,

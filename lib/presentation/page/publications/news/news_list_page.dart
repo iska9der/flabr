@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/component/di/injector.dart';
 import '../../../../data/model/publication/publication_flow_enum.dart';
-import '../../../../data/model/publication/publication_type_enum.dart';
+import '../../../../data/model/section_enum.dart';
 import '../../../feature/publication_list/part.dart';
 import '../../../feature/scaffold/part.dart';
 import '../../../feature/scroll/part.dart';
@@ -33,7 +33,8 @@ class NewsListPage extends StatelessWidget {
           create: (_) => FlowPublicationListCubit(
             repository: getIt(),
             languageRepository: getIt(),
-            type: PublicationType.news,
+            storage: getIt(instanceName: 'sharedStorage'),
+            section: Section.news,
             flow: PublicationFlow.fromString(flow),
           ),
         ),

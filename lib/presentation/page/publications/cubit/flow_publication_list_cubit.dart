@@ -1,14 +1,16 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
 
+import '../../../../core/component/storage/part.dart';
+import '../../../../core/constants/part.dart';
 import '../../../../data/exception/part.dart';
+import '../../../../data/model/filter/part.dart';
 import '../../../../data/model/list_response/list_response.dart';
 import '../../../../data/model/publication/publication.dart';
 import '../../../../data/model/publication/publication_flow_enum.dart';
-import '../../../../data/model/publication/publication_type_enum.dart';
-import '../../../../data/model/sort/sort_date_period_enum.dart';
-import '../../../../data/model/sort/sort_enum.dart';
+import '../../../../data/model/section_enum.dart';
 import '../../../feature/publication_list/part.dart';
 
 part 'flow_publication_list_state.dart';
@@ -18,50 +20,37 @@ class FlowPublicationListCubit
   FlowPublicationListCubit({
     required super.repository,
     required super.languageRepository,
+    required this.storage,
     PublicationFlow flow = PublicationFlow.all,
-    PublicationType type = PublicationType.article,
+    Section section = Section.article,
   }) : super(FlowPublicationListState(
           flow: flow,
-          type: type,
-        ));
-
-  void changeFlow(PublicationFlow value) {
-    if (state.flow == value) return;
-
-    emit(FlowPublicationListState(
-      flow: value,
-      type: state.type,
-    ));
+          section: section,
+        )) {
+    _restoreFilter();
   }
 
-  void changeSortBy(Sort sort) {
-    if (state.sort == sort) return;
+  final CacheStorage storage;
 
-    emit(FlowPublicationListState(
-      flow: state.flow,
-      type: state.type,
-      sort: sort,
-    ));
-  }
+  Future<void> _restoreFilter() async {
+    emit(state.copyWith(status: PublicationListStatus.loading));
 
-  void changeSortByOption(Sort sort, dynamic value) {
-    FlowPublicationListState newState;
-    switch (sort) {
-      case Sort.byBest:
-        if (state.period == value) return;
-        newState = FlowPublicationListState(period: value);
-      case Sort.byNew:
-        if (state.score == value) return;
-        newState = FlowPublicationListState(score: value);
-      default:
-        throw ValueException('Неизвестный вариант сортировки статей');
+    final key = CacheKey.flowFilter(state.section.name);
+    FlowPublicationListState newState = state;
+    try {
+      /// вспоминаем последний примененный фильтр во флоу
+      final str = await storage.read(key);
+      if (str == null) {
+        throw NotFoundException();
+      }
+
+      final lastFilter = FlowFilter.fromJson(jsonDecode(str));
+      newState = FlowPublicationListState(filter: lastFilter);
+    } catch (_) {
+      storage.delete(key);
+    } finally {
+      emit(newState.copyWith(status: PublicationListStatus.initial));
     }
-
-    emit(newState.copyWith(
-      flow: state.flow,
-      type: state.type,
-      sort: sort,
-    ));
   }
 
   @override
@@ -77,11 +66,9 @@ class FlowPublicationListCubit
       ListResponse response = await repository.fetchFlowArticles(
         langUI: languageRepository.ui,
         langArticles: languageRepository.articles,
-        type: state.type,
+        section: state.section,
         flow: state.flow,
-        sort: state.sort,
-        period: state.period,
-        score: state.score,
+        filter: state.filter,
         page: state.page.toString(),
       );
 
@@ -108,6 +95,32 @@ class FlowPublicationListCubit
       page: 1,
       publications: [],
       pagesCount: 0,
+    ));
+  }
+
+  void changeFlow(PublicationFlow value) {
+    if (state.flow == value) return;
+
+    emit(FlowPublicationListState(
+      flow: value,
+      section: state.section,
+    ));
+  }
+
+  void applyFilter(FlowFilter newFilter) {
+    if (state.filter == newFilter) {
+      return;
+    }
+
+    storage.write(
+      CacheKey.flowFilter(state.section.name),
+      jsonEncode(newFilter),
+    );
+
+    emit(FlowPublicationListState(
+      flow: state.flow,
+      section: state.section,
+      filter: newFilter,
     ));
   }
 }

@@ -1,10 +1,9 @@
 import 'package:equatable/equatable.dart';
 
 import '../../../../../data/exception/part.dart';
+import '../../../../../data/model/filter/part.dart';
 import '../../../../../data/model/list_response/list_response.dart';
 import '../../../../../data/model/publication/publication.dart';
-import '../../../../../data/model/sort/sort_date_period_enum.dart';
-import '../../../../../data/model/sort/sort_enum.dart';
 import '../../../../../data/model/user/user_publication_type.dart';
 import '../../../../feature/publication_list/part.dart';
 

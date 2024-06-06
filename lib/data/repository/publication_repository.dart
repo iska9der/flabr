@@ -75,15 +75,14 @@ class PublicationRepository {
     required LanguageEnum langUI,
     required List<LanguageEnum> langArticles,
     required String page,
-    required SortScore score,
-    required List<FeedPublicationType> types,
+    required FeedFilter filter,
   }) async {
     final response = await service.fetchFeed(
       langUI: langUI.name,
       langArticles: LanguageEncoder.encodeLangs(langArticles),
       page: page,
-      score: score == SortScore.all ? 'all' : score.value,
-      types: types.map((t) => t.name).toList(),
+      score: filter.score.value.isEmpty ? 'all' : filter.score.value,
+      types: filter.types.map((t) => t.name).toList(),
     );
 
     _sortListResponse(Sort.byNew, response);
@@ -100,25 +99,23 @@ class PublicationRepository {
   Future<ListResponse> fetchFlowArticles({
     required LanguageEnum langUI,
     required List<LanguageEnum> langArticles,
-    required PublicationType type,
+    required Section section,
     required PublicationFlow flow,
-    required Sort sort,
-    required SortDatePeriod period,
-    required String score,
+    required FlowFilter filter,
     required String page,
   }) async {
     final response = await service.fetchFlowArticles(
       langUI: langUI.name,
       langArticles: LanguageEncoder.encodeLangs(langArticles),
-      type: type,
+      section: section,
       flow: flow,
-      sort: sort,
-      period: period,
-      score: score,
+      sort: filter.sort,
+      period: filter.period,
+      score: filter.score,
       page: page,
     );
 
-    _sortListResponse(sort, response);
+    _sortListResponse(filter.sort, response);
 
     return response;
   }
@@ -127,22 +124,20 @@ class PublicationRepository {
     required LanguageEnum langUI,
     required List<LanguageEnum> langArticles,
     required String hub,
-    required Sort sort,
-    required SortDatePeriod period,
-    required String score,
+    required FlowFilter filter,
     required String page,
   }) async {
     final response = await service.fetchHubArticles(
       langUI: langUI.name,
       langArticles: LanguageEncoder.encodeLangs(langArticles),
       hub: hub,
-      sort: sort,
-      period: period,
-      score: score,
+      sort: filter.sort,
+      period: filter.period,
+      score: filter.score,
       page: page,
     );
 
-    _sortListResponse(sort, response);
+    _sortListResponse(filter.sort, response);
 
     return response;
   }

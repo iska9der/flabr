@@ -1,11 +1,13 @@
+import 'dart:convert';
+
 import 'package:equatable/equatable.dart';
 
+import '../../../../../core/component/storage/part.dart';
+import '../../../../../core/constants/part.dart';
 import '../../../../../data/exception/part.dart';
+import '../../../../../data/model/filter/part.dart';
 import '../../../../../data/model/list_response/list_response.dart';
 import '../../../../../data/model/publication/publication.dart';
-import '../../../../../data/model/sort/feed_publication_type.dart';
-import '../../../../../data/model/sort/sort_option_model.dart';
-import '../../../../../data/model/sort/sort_score_enum.dart';
 import '../../../../feature/publication_list/part.dart';
 
 part 'feed_publication_list_state.dart';
@@ -15,10 +17,36 @@ class FeedPublicationListCubit
   FeedPublicationListCubit({
     required super.repository,
     required super.languageRepository,
-  }) : super(const FeedPublicationListState());
+    required this.storage,
+  }) : super(const FeedPublicationListState()) {
+    _restoreFilter();
+  }
+
+  final CacheStorage storage;
 
   @override
   bool get showType => true;
+
+  Future<void> _restoreFilter() async {
+    emit(state.copyWith(status: PublicationListStatus.loading));
+
+    const key = CacheKey.feedFilter;
+    FeedPublicationListState newState = state;
+    try {
+      /// вспоминаем последний примененный фильтр в моей ленте
+      final str = await storage.read(key);
+      if (str == null) {
+        throw NotFoundException();
+      }
+
+      final lastFilter = FeedFilter.fromJson(jsonDecode(str));
+      newState = FeedPublicationListState(filter: lastFilter);
+    } catch (_) {
+      storage.delete(key);
+    } finally {
+      emit(newState.copyWith(status: PublicationListStatus.initial));
+    }
+  }
 
   @override
   Future<void> fetch() async {
@@ -34,8 +62,7 @@ class FeedPublicationListCubit
         langUI: languageRepository.ui,
         langArticles: languageRepository.articles,
         page: state.page.toString(),
-        score: state.score,
-        types: state.types,
+        filter: state.filter,
       );
 
       emit(state.copyWith(
@@ -67,22 +94,13 @@ class FeedPublicationListCubit
     ));
   }
 
-  void changeFilterScore(SortOption option) {
-    final newScore = SortScore.fromString(option.value);
-
-    if (state.score == newScore) {
+  void applyFilter(FeedFilter newFilter) {
+    if (state.filter == newFilter) {
       return;
     }
 
-    emit(FeedPublicationListState(types: state.types, score: newScore));
-  }
+    storage.write(CacheKey.feedFilter, jsonEncode(newFilter));
 
-  void changeFilterTypes(List<FeedPublicationType> types) {
-    /// Выбран хотя бы один тип публикации
-    if (types.isEmpty) {
-      return;
-    }
-
-    emit(FeedPublicationListState(score: state.score, types: types));
+    emit(FeedPublicationListState(filter: newFilter));
   }
 }

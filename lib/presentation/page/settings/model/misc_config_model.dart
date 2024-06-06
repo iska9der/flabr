@@ -1,13 +1,9 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:convert';
-
-import 'package:equatable/equatable.dart';
+part of 'config_model.dart';
 
 class MiscConfigModel extends Equatable {
   const MiscConfigModel({this.navigationOnScrollVisible = true});
-  final bool navigationOnScrollVisible;
 
-  static const empty = MiscConfigModel();
+  final bool navigationOnScrollVisible;
 
   MiscConfigModel copyWith({
     bool? navigationOnScrollVisible,
@@ -30,6 +26,8 @@ class MiscConfigModel extends Equatable {
           (map['navigationOnScrollVisible'] ?? true) as bool,
     );
   }
+
+  static const empty = MiscConfigModel();
 
   String toJson() => json.encode(toMap());
 

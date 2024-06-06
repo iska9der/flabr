@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 
-import '../../data/model/sort/sort_option_model.dart';
+import '../../../data/model/filter/part.dart';
 
-class PublicationSortOptions extends StatelessWidget {
-  const PublicationSortOptions({
+/// TODO: сменить название
+class PublicationFilterOptionsWidget extends StatelessWidget {
+  const PublicationFilterOptionsWidget({
     super.key,
-    required this.options,
-    required this.currentValue,
-    required this.onSelected,
     this.isEnabled = true,
+    required this.options,
+    required this.onSelected,
+    required this.isSelected,
   });
 
-  final List<SortOption> options;
-  final dynamic currentValue;
-  final ValueChanged<SortOption> onSelected;
-
   final bool isEnabled;
+  final List<FilterOption> options;
+  final bool Function(FilterOption option) isSelected;
+  final Function(bool isSelected, FilterOption option) onSelected;
 
   @override
   Widget build(BuildContext context) {
@@ -36,8 +36,10 @@ class PublicationSortOptions extends StatelessWidget {
                       textAlign: TextAlign.center,
                       style: Theme.of(context).textTheme.labelMedium,
                     ),
-                    selected: option.value == currentValue,
-                    onSelected: (bool value) => onSelected(option),
+                    selected: isSelected(option),
+                    onSelected: isEnabled
+                        ? (bool value) => onSelected(value, option)
+                        : null,
                   ),
                 ))
             .toList(),

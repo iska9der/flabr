@@ -1,6 +1,4 @@
-import 'dart:convert';
-
-import 'package:equatable/equatable.dart';
+part of 'config_model.dart';
 
 class PublicationConfigModel extends Equatable {
   const PublicationConfigModel({

@@ -2,6 +2,7 @@ import 'package:app_links/app_links.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:injectable/injectable.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../data/repository/part.dart';
 import '../../constants/part.dart';
@@ -16,6 +17,17 @@ abstract class RegisterModule {
   @Singleton()
   AppLinks get appLinks => AppLinks();
 
+  // ignore: invalid_annotation_target
+  @preResolve
+  Future<SharedPreferences> get sharedInstance =>
+      SharedPreferences.getInstance();
+
+  @Named('sharedStorage')
+  @Singleton()
+  CacheStorage sharedStorage(SharedPreferences instance) =>
+      SharedStorage(instance);
+
+  @Named('secureStorage')
   @Singleton()
   CacheStorage get secureStorage => SecureStorage(const FlutterSecureStorage());
 
@@ -28,7 +40,7 @@ abstract class RegisterModule {
 
   @Named('siteClient')
   @Singleton()
-  HttpClient siteClient(TokenRepository repository) => HabraClient(
+  HttpClient siteClient(Dio dio, TokenRepository repository) => HabraClient(
         dio..options = BaseOptions(baseUrl: siteApiUrl),
         tokenRepository: repository,
       );

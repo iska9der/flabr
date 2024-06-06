@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/component/di/injector.dart';
-import '../../../../../data/model/sort/sort_enum.dart';
+import '../../../../../data/model/filter/part.dart';
 import '../../../../feature/publication_list/part.dart';
 import '../../../../feature/scroll/part.dart';
 import '../../../../theme/part.dart';
 import '../../../../widget/enhancement/progress_indicator.dart';
-import '../../../../widget/publication_sort_widget.dart';
+import '../../../../widget/filter/publication_filter_widget.dart';
 import '../../../settings/cubit/settings_cubit.dart';
 import '../cubit/hub_cubit.dart';
 import '../cubit/hub_publication_list_cubit.dart';
@@ -81,19 +81,16 @@ class HubDetailPageView extends StatelessWidget {
                   title: BlocBuilder<HubPublicationListCubit,
                       HubPublicationListState>(
                     builder: (context, state) {
-                      return PublicationSort(
+                      return PublicationFilterWidget(
                         isLoading:
                             state.status == PublicationListStatus.loading,
-                        sortBy: state.sort,
-                        sortByChange: (option) => context
-                            .read<HubPublicationListCubit>()
-                            .changeSortBy(option.value),
-                        sortByDetail: state.sort == Sort.byBest
-                            ? state.period
-                            : state.score,
-                        sortByDetailChange: (option) => context
-                            .read<HubPublicationListCubit>()
-                            .changeSortByOption(state.sort, option.value),
+                        sort: state.filter.sort,
+                        filterOption: switch (state.filter.sort) {
+                          Sort.byBest => state.filter.period,
+                          Sort.byNew => state.filter.score,
+                        },
+                        onSubmit:
+                            context.read<HubPublicationListCubit>().applyFilter,
                       );
                     },
                   ),

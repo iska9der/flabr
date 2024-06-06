@@ -3,11 +3,10 @@ import 'dart:async';
 import 'package:equatable/equatable.dart';
 
 import '../../../../../data/exception/part.dart';
+import '../../../../../data/model/filter/part.dart';
 import '../../../../../data/model/list_response/list_response.dart';
 import '../../../../../data/model/publication/publication.dart';
 import '../../../../../data/model/publication/publication_type_enum.dart';
-import '../../../../../data/model/sort/sort_date_period_enum.dart';
-import '../../../../../data/model/sort/sort_enum.dart';
 import '../../../../feature/publication_list/part.dart';
 
 part 'hub_publication_list_state.dart';
@@ -24,36 +23,6 @@ class HubPublicationListCubit
           type: type,
         ));
 
-  void changeSortBy(Sort sort) {
-    if (state.sort == sort) return;
-
-    emit(HubPublicationListState(
-      hub: state.hub,
-      type: state.type,
-      sort: sort,
-    ));
-  }
-
-  void changeSortByOption(Sort sort, dynamic value) {
-    HubPublicationListState newState;
-    switch (sort) {
-      case Sort.byBest:
-        if (state.period == value) return;
-        newState = HubPublicationListState(period: value);
-      case Sort.byNew:
-        if (state.score == value) return;
-        newState = HubPublicationListState(score: value);
-      default:
-        throw ValueException('Неизвестный вариант сортировки статей');
-    }
-
-    emit(newState.copyWith(
-      hub: state.hub,
-      type: state.type,
-      sort: sort,
-    ));
-  }
-
   @override
   Future<void> fetch() async {
     if (state.status == PublicationListStatus.loading ||
@@ -68,9 +37,7 @@ class HubPublicationListCubit
         langUI: languageRepository.ui,
         langArticles: languageRepository.articles,
         hub: state.hub,
-        sort: state.sort,
-        period: state.period,
-        score: state.score,
+        filter: state.filter,
         page: state.page.toString(),
       );
 
@@ -97,6 +64,14 @@ class HubPublicationListCubit
       page: 1,
       publications: [],
       pagesCount: 0,
+    ));
+  }
+
+  void applyFilter(FlowFilter filter) {
+    emit(HubPublicationListState(
+      hub: state.hub,
+      type: state.type,
+      filter: filter,
     ));
   }
 }

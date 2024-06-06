@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
           lazy: false,
           create: (_) => SettingsCubit(
             languageRepository: getIt(),
-            storage: getIt(),
+            storage: getIt(instanceName: 'sharedStorage'),
             router: router,
             appLinks: getIt(),
           )..init(),
