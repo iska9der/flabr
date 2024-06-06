@@ -1,9 +1,9 @@
 part of 'part.dart';
 
 abstract class CacheKey {
-  static const isDarkTheme = 'isDarkTheme';
+  static const themeConfig = 'theme_config';
   static const feedConfig = 'feed_config';
-  static const articleConfig = 'article_config';
+  static const publicationConfig = 'publication_config';
   static const miscConfig = 'misc_config';
 
   static const authData = 'aData';

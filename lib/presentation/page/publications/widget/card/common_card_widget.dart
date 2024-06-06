@@ -64,10 +64,9 @@ class CommonCardWidget extends StatelessWidget {
               if (publication.leadData.image.isNotEmpty)
                 BlocBuilder<SettingsCubit, SettingsState>(
                   buildWhen: (p, c) =>
-                      p.feedConfig.isImageVisible !=
-                      c.feedConfig.isImageVisible,
+                      p.feed.isImageVisible != c.feed.isImageVisible,
                   builder: (context, state) {
-                    if (!state.feedConfig.isImageVisible) {
+                    if (!state.feed.isImageVisible) {
                       return const SizedBox();
                     }
 
@@ -83,12 +82,11 @@ class CommonCardWidget extends StatelessWidget {
                 ),
               BlocBuilder<SettingsCubit, SettingsState>(
                 buildWhen: (previous, current) =>
-                    previous.feedConfig.isDescriptionVisible !=
-                        current.feedConfig.isDescriptionVisible ||
-                    previous.feedConfig.isImageVisible !=
-                        current.feedConfig.isImageVisible,
+                    previous.feed.isDescriptionVisible !=
+                        current.feed.isDescriptionVisible ||
+                    previous.feed.isImageVisible != current.feed.isImageVisible,
                 builder: (context, state) {
-                  if (!state.feedConfig.isDescriptionVisible) {
+                  if (!state.feed.isDescriptionVisible) {
                     return const SizedBox();
                   }
 
@@ -97,11 +95,11 @@ class CommonCardWidget extends StatelessWidget {
                     child: HtmlWidget(
                       publication.leadData.textHtml,
                       rebuildTriggers: [
-                        state.feedConfig,
+                        state.feed,
                       ],
                       customWidgetBuilder: (element) {
                         if (element.localName == 'img') {
-                          if (!state.feedConfig.isImageVisible) {
+                          if (!state.feed.isImageVisible) {
                             return const SizedBox();
                           }
 

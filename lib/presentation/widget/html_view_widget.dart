@@ -33,7 +33,7 @@ class HtmlView extends StatelessWidget {
     return BlocBuilder<SettingsCubit, SettingsState>(
       builder: (context, state) {
         final theme = Theme.of(context);
-        final publicationConfig = state.publicationConfig;
+        final publicationConfig = state.publication;
         final isImageVisible = publicationConfig.isImagesVisible;
         final fontSize =
             theme.textTheme.bodyLarge!.fontSize! * publicationConfig.fontScale;
@@ -192,7 +192,7 @@ class CustomFactory extends WidgetFactory with SvgFactory, WebViewFactory {
     final attributes = element.attributes;
 
     final isWebViewEnabled =
-        context.read<SettingsCubit>().state.publicationConfig.webViewEnabled;
+        context.read<SettingsCubit>().state.publication.webViewEnabled;
 
     switch (element.localName) {
       case 'div':

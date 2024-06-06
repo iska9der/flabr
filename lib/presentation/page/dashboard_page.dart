@@ -30,11 +30,8 @@ class _DashboardPageState extends State<DashboardPage> {
   void initState() {
     super.initState();
 
-    visibleOnScroll = context
-        .read<SettingsCubit>()
-        .state
-        .miscConfig
-        .navigationOnScrollVisible;
+    visibleOnScroll =
+        context.read<SettingsCubit>().state.misc.navigationOnScrollVisible;
   }
 
   @override
@@ -44,10 +41,10 @@ class _DashboardPageState extends State<DashboardPage> {
         /// Слушаем изменение настройки видимости нижней панели навигации
         BlocListener<SettingsCubit, SettingsState>(
             listenWhen: (previous, current) =>
-                previous.miscConfig.navigationOnScrollVisible !=
-                current.miscConfig.navigationOnScrollVisible,
+                previous.misc.navigationOnScrollVisible !=
+                current.misc.navigationOnScrollVisible,
             listener: (context, state) {
-              visibleOnScroll = state.miscConfig.navigationOnScrollVisible;
+              visibleOnScroll = state.misc.navigationOnScrollVisible;
               if (visibleOnScroll) {
                 barHeight.value = fNavBarHeight;
               }

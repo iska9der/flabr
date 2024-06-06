@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:app_links/app_links.dart';
 import 'package:equatable/equatable.dart';
@@ -61,7 +62,6 @@ class SettingsCubit extends Cubit<SettingsState> {
 
     final lastUrl = await _initDeepLink();
     final (langUI, langArticles) = _initLanguages();
-    final isDark = await _initIsDarkTheme();
     final config = await _initConfig();
 
     emit(state.copyWith(
@@ -69,15 +69,17 @@ class SettingsCubit extends Cubit<SettingsState> {
       initialDeepLink: lastUrl,
       langUI: langUI,
       langArticles: langArticles,
-      isDarkTheme: isDark,
-      feedConfig: config.feed,
-      publicationConfig: config.publication,
-      miscConfig: config.misc,
+      theme: config.theme,
+      feed: config.feed,
+      publication: config.publication,
+      misc: config.misc,
     ));
   }
 
-  (LanguageEnum, List<LanguageEnum>) _initLanguages() =>
-      (_langRepository.ui, _langRepository.articles);
+  (LanguageEnum, List<LanguageEnum>) _initLanguages() => (
+        _langRepository.ui,
+        _langRepository.articles,
+      );
 
   changeUILang(LanguageEnum? uiLang) {
     if (uiLang == null) return;
@@ -117,27 +119,6 @@ class SettingsCubit extends Cubit<SettingsState> {
     _langRepository.updateArticleLang(newLangs);
   }
 
-  Future<bool> _initIsDarkTheme() async {
-    /// Получаем кэшированные данные
-    String? raw = await _storage.read(CacheKey.isDarkTheme);
-
-    /// Если в кэше есть заданное значение, присваиваем его,
-    /// иначе указываем как false
-    if (raw != null) {
-      bool isDarkTheme = raw == 'true';
-      return isDarkTheme;
-    }
-
-    _storage.write(CacheKey.isDarkTheme, 'false');
-    return false;
-  }
-
-  void changeTheme({required bool isDarkTheme}) {
-    _storage.write(CacheKey.isDarkTheme, isDarkTheme.toString());
-
-    emit(state.copyWith(isDarkTheme: isDarkTheme));
-  }
-
   Future<String?> _initDeepLink() async {
     final lastUri = await _appLinks.getLatestLink();
 
@@ -146,89 +127,117 @@ class SettingsCubit extends Cubit<SettingsState> {
 
   /// Инициализация конфигурации
   Future<Config> _initConfig() async {
-    String? raw = await _storage.read(CacheKey.feedConfig);
-    FeedConfigModel? feedConfig;
+    Config config = const Config();
+
+    String? raw = await _storage.read(CacheKey.themeConfig);
     if (raw != null) {
-      feedConfig = FeedConfigModel.fromJson(raw);
+      config = config.copyWith(
+        theme: ThemeConfigModel.fromJson(jsonDecode(raw)),
+      );
     }
 
-    raw = await _storage.read(CacheKey.articleConfig);
-    PublicationConfigModel? articleConfig;
+    raw = await _storage.read(CacheKey.feedConfig);
     if (raw != null) {
-      articleConfig = PublicationConfigModel.fromJson(raw);
+      config = config.copyWith(
+        feed: FeedConfigModel.fromJson(jsonDecode(raw)),
+      );
+    }
+
+    raw = await _storage.read(CacheKey.publicationConfig);
+    if (raw != null) {
+      config = config.copyWith(
+        publication: PublicationConfigModel.fromJson(jsonDecode(raw)),
+      );
     }
 
     raw = await _storage.read(CacheKey.miscConfig);
-    MiscConfigModel? miscConfig;
     if (raw != null) {
-      miscConfig = MiscConfigModel.fromJson(raw);
+      config = config.copyWith(
+        misc: MiscConfigModel.fromJson(jsonDecode(raw)),
+      );
     }
 
-    return const Config().copyWith(
-      feed: feedConfig,
-      publication: articleConfig,
-      misc: miscConfig,
-    );
+    return config;
+  }
+
+  void changeTheme({required bool isDarkTheme}) {
+    if (state.theme.isDarkTheme == isDarkTheme) return;
+
+    final newConfig = state.theme.copyWith(isDarkTheme: isDarkTheme);
+
+    emit(state.copyWith(theme: newConfig));
+
+    _storage.write(CacheKey.themeConfig, jsonEncode(newConfig.toJson()));
   }
 
   void changeFeedImageVisibility({bool? isVisible}) {
-    if (state.feedConfig.isImageVisible == isVisible) return;
+    if (isVisible == null || state.feed.isImageVisible == isVisible) {
+      return;
+    }
 
-    final newConfig = state.feedConfig.copyWith(isImageVisible: isVisible);
+    final newConfig = state.feed.copyWith(isImageVisible: isVisible);
 
-    emit(state.copyWith(feedConfig: newConfig));
+    emit(state.copyWith(feed: newConfig));
 
-    _storage.write(CacheKey.feedConfig, newConfig.toJson());
+    _storage.write(CacheKey.feedConfig, jsonEncode(newConfig.toJson()));
   }
 
   void changeFeedDescVisibility({bool? isVisible}) {
-    if (state.feedConfig.isDescriptionVisible == isVisible) return;
+    if (isVisible == null || state.feed.isDescriptionVisible == isVisible) {
+      return;
+    }
 
-    final newConfig = state.feedConfig.copyWith(
-      isDescriptionVisible: isVisible,
-    );
+    final newConfig = state.feed.copyWith(isDescriptionVisible: isVisible);
 
-    emit(state.copyWith(feedConfig: newConfig));
+    emit(state.copyWith(feed: newConfig));
 
-    _storage.write(CacheKey.feedConfig, newConfig.toJson());
+    _storage.write(CacheKey.feedConfig, jsonEncode(newConfig.toJson()));
   }
 
   void changeArticleFontScale(double newScale) {
-    if (state.publicationConfig.fontScale == newScale) return;
+    if (state.publication.fontScale == newScale) return;
 
-    var newConfig = state.publicationConfig.copyWith(fontScale: newScale);
-    emit(state.copyWith(publicationConfig: newConfig));
+    var newConfig = state.publication.copyWith(fontScale: newScale);
 
-    _storage.write(CacheKey.articleConfig, newConfig.toJson());
+    emit(state.copyWith(publication: newConfig));
+
+    _storage.write(CacheKey.publicationConfig, jsonEncode(newConfig.toJson()));
   }
 
   void changeArticleImageVisibility({bool? isVisible}) {
-    if (state.publicationConfig.isImagesVisible == isVisible) return;
+    if (isVisible == null || state.publication.isImagesVisible == isVisible) {
+      return;
+    }
 
-    var newConfig =
-        state.publicationConfig.copyWith(isImagesVisible: isVisible);
-    emit(state.copyWith(publicationConfig: newConfig));
+    var newConfig = state.publication.copyWith(isImagesVisible: isVisible);
 
-    _storage.write(CacheKey.articleConfig, newConfig.toJson());
+    emit(state.copyWith(publication: newConfig));
+
+    _storage.write(CacheKey.publicationConfig, jsonEncode(newConfig.toJson()));
   }
 
   void changeWebViewVisibility({bool? isVisible}) {
-    if (state.publicationConfig.webViewEnabled == isVisible) return;
+    if (isVisible == null || state.publication.webViewEnabled == isVisible) {
+      return;
+    }
 
-    var newConfig = state.publicationConfig.copyWith(webViewEnabled: isVisible);
-    emit(state.copyWith(publicationConfig: newConfig));
+    var newConfig = state.publication.copyWith(webViewEnabled: isVisible);
 
-    _storage.write(CacheKey.articleConfig, newConfig.toJson());
+    emit(state.copyWith(publication: newConfig));
+
+    _storage.write(CacheKey.publicationConfig, jsonEncode(newConfig.toJson()));
   }
 
   void changeNavigationOnScrollVisibility({bool? isVisible}) {
-    if (state.miscConfig.navigationOnScrollVisible == isVisible) return;
+    if (isVisible == null ||
+        state.misc.navigationOnScrollVisible == isVisible) {
+      return;
+    }
 
-    var newConfig = state.miscConfig.copyWith(
-      navigationOnScrollVisible: isVisible,
-    );
-    emit(state.copyWith(miscConfig: newConfig));
+    var newConfig = state.misc.copyWith(navigationOnScrollVisible: isVisible);
 
-    _storage.write(CacheKey.miscConfig, newConfig.toJson());
+    emit(state.copyWith(misc: newConfig));
+
+    _storage.write(CacheKey.miscConfig, jsonEncode(newConfig.toJson()));
   }
 }

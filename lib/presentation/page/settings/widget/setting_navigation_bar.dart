@@ -13,13 +13,13 @@ class SettingNavigationOnScroll extends StatelessWidget {
       title: 'Нижняя навигация',
       child: BlocBuilder<SettingsCubit, SettingsState>(
         buildWhen: (previous, current) =>
-            previous.miscConfig.navigationOnScrollVisible !=
-            current.miscConfig.navigationOnScrollVisible,
+            previous.misc.navigationOnScrollVisible !=
+            current.misc.navigationOnScrollVisible,
         builder: (context, state) {
           return SwitchListTile.adaptive(
             title: const Text('Показывать при прокрутке'),
             contentPadding: EdgeInsets.zero,
-            value: state.miscConfig.navigationOnScrollVisible,
+            value: state.misc.navigationOnScrollVisible,
             onChanged: (val) {
               context
                   .read<SettingsCubit>()

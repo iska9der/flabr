@@ -89,7 +89,7 @@ class _UIThemeWidgetState extends State<UIThemeWidget> {
 
   @override
   void initState() {
-    isDarkTheme = context.read<SettingsCubit>().state.isDarkTheme;
+    isDarkTheme = context.read<SettingsCubit>().state.theme.isDarkTheme;
 
     super.initState();
   }
@@ -207,13 +207,13 @@ class SettingsFeedWidget extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           SettingsCheckboxWidget(
-            initialValue: settingsCubit.state.feedConfig.isImageVisible,
+            initialValue: settingsCubit.state.feed.isImageVisible,
             title: const Text('Изображения'),
             onChanged: (bool value) =>
                 settingsCubit.changeFeedImageVisibility(isVisible: value),
           ),
           SettingsCheckboxWidget(
-            initialValue: settingsCubit.state.feedConfig.isDescriptionVisible,
+            initialValue: settingsCubit.state.feed.isDescriptionVisible,
             title: const Text('Короткое описание'),
             subtitle: const Text('влияет на производительность'),
             onChanged: (bool value) =>

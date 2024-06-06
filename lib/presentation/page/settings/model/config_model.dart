@@ -1,39 +1,21 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:convert';
+import 'package:flutter/material.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-import 'package:equatable/equatable.dart';
-
-part 'article_config_model.dart';
+part 'config_model.freezed.dart';
+part 'config_model.g.dart';
 part 'feed_config_model.dart';
 part 'misc_config_model.dart';
+part 'publication_config_model.dart';
+part 'theme_config_model.dart';
 
-class Config extends Equatable {
-  const Config({
-    this.feed = FeedConfigModel.empty,
-    this.publication = PublicationConfigModel.empty,
-    this.misc = MiscConfigModel.empty,
-  });
+@freezed
+class Config with _$Config {
+  const factory Config({
+    @Default(ThemeConfigModel.empty) ThemeConfigModel theme,
+    @Default(FeedConfigModel.empty) FeedConfigModel feed,
+    @Default(PublicationConfigModel.empty) PublicationConfigModel publication,
+    @Default(MiscConfigModel.empty) MiscConfigModel misc,
+  }) = _Config;
 
-  final FeedConfigModel feed;
-  final PublicationConfigModel publication;
-  final MiscConfigModel misc;
-
-  Config copyWith({
-    FeedConfigModel? feed,
-    PublicationConfigModel? publication,
-    MiscConfigModel? misc,
-  }) {
-    return Config(
-      feed: feed ?? this.feed,
-      publication: publication ?? this.publication,
-      misc: misc ?? this.misc,
-    );
-  }
-
-  @override
-  List<Object?> get props => [
-        feed,
-        publication,
-        misc,
-      ];
+  factory Config.fromJson(Map<String, dynamic> json) => _$ConfigFromJson(json);
 }

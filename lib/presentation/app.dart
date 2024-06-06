@@ -95,7 +95,7 @@ class MyApp extends StatelessWidget {
                 // ignore: deprecated_member_use
                 useInheritedMediaQuery: true,
                 locale: DevicePreview.locale(context),
-                themeMode: state.isDarkTheme ? ThemeMode.dark : ThemeMode.light,
+                themeMode: state.theme.mode,
                 theme: lightTheme(),
                 darkTheme: darkTheme(),
                 scrollBehavior: const MaterialScrollBehavior(),
