@@ -1,5 +1,9 @@
+import 'dart:convert';
+
 import 'package:equatable/equatable.dart';
 
+import '../../../../../core/component/storage/part.dart';
+import '../../../../../core/constants/part.dart';
 import '../../../../../data/exception/part.dart';
 import '../../../../../data/model/filter/part.dart';
 import '../../../../../data/model/list_response/list_response.dart';
@@ -13,10 +17,36 @@ class FeedPublicationListCubit
   FeedPublicationListCubit({
     required super.repository,
     required super.languageRepository,
-  }) : super(const FeedPublicationListState());
+    required this.storage,
+  }) : super(const FeedPublicationListState()) {
+    _restoreFilter();
+  }
+
+  final CacheStorage storage;
 
   @override
   bool get showType => true;
+
+  Future<void> _restoreFilter() async {
+    emit(state.copyWith(status: PublicationListStatus.loading));
+
+    const key = CacheKey.feedFilter;
+    FeedPublicationListState newState = state;
+    try {
+      /// вспоминаем последний примененный фильтр в моей ленте
+      final str = await storage.read(key);
+      if (str == null) {
+        throw NotFoundException();
+      }
+
+      final lastFilter = FeedFilter.fromJson(jsonDecode(str));
+      newState = FeedPublicationListState(filter: lastFilter);
+    } catch (_) {
+      storage.delete(key);
+    } finally {
+      emit(newState.copyWith(status: PublicationListStatus.initial));
+    }
+  }
 
   @override
   Future<void> fetch() async {
@@ -68,6 +98,8 @@ class FeedPublicationListCubit
     if (state.filter == newFilter) {
       return;
     }
+
+    storage.write(CacheKey.feedFilter, jsonEncode(newFilter));
 
     emit(FeedPublicationListState(filter: newFilter));
   }

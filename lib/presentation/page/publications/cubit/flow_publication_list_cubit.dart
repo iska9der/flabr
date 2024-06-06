@@ -1,7 +1,10 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
 
+import '../../../../core/component/storage/part.dart';
+import '../../../../core/constants/part.dart';
 import '../../../../data/exception/part.dart';
 import '../../../../data/model/filter/part.dart';
 import '../../../../data/model/list_response/list_response.dart';
@@ -17,12 +20,38 @@ class FlowPublicationListCubit
   FlowPublicationListCubit({
     required super.repository,
     required super.languageRepository,
+    required this.storage,
     PublicationFlow flow = PublicationFlow.all,
     Section section = Section.article,
   }) : super(FlowPublicationListState(
           flow: flow,
           section: section,
-        ));
+        )) {
+    _restoreFilter();
+  }
+
+  final CacheStorage storage;
+
+  Future<void> _restoreFilter() async {
+    emit(state.copyWith(status: PublicationListStatus.loading));
+
+    final key = CacheKey.flowFilter(state.section.name);
+    FlowPublicationListState newState = state;
+    try {
+      /// вспоминаем последний примененный фильтр во флоу
+      final str = await storage.read(key);
+      if (str == null) {
+        throw NotFoundException();
+      }
+
+      final lastFilter = FlowFilter.fromJson(jsonDecode(str));
+      newState = FlowPublicationListState(filter: lastFilter);
+    } catch (_) {
+      storage.delete(key);
+    } finally {
+      emit(newState.copyWith(status: PublicationListStatus.initial));
+    }
+  }
 
   @override
   Future<void> fetch() async {
@@ -78,15 +107,20 @@ class FlowPublicationListCubit
     ));
   }
 
-  void applyFilter(FlowFilter filter) {
-    if (state.filter == filter) {
+  void applyFilter(FlowFilter newFilter) {
+    if (state.filter == newFilter) {
       return;
     }
+
+    storage.write(
+      CacheKey.flowFilter(state.section.name),
+      jsonEncode(newFilter),
+    );
 
     emit(FlowPublicationListState(
       flow: state.flow,
       section: state.section,
-      filter: filter,
+      filter: newFilter,
     ));
   }
 }
