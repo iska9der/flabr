@@ -11,7 +11,7 @@ import '../../../widget/enhancement/progress_indicator.dart';
 import '../articles/article_comment_page.dart';
 import '../articles/article_detail_page.dart';
 import '../cubit/most_reading_cubit.dart';
-import 'stats/publication_stat_icon_widget.dart';
+import 'stats/part.dart';
 
 class MostReadingWidget extends StatelessWidget {
   const MostReadingWidget({super.key}) : isButton = false;

@@ -1,7 +1,4 @@
-import 'package:flutter/material.dart';
-
-import '../../../../../../data/model/publication/publication_format_enum.dart';
-import '../../../../../theme/part.dart';
+part of '../part.dart';
 
 class PublicationFormatWidget extends StatelessWidget {
   const PublicationFormatWidget(

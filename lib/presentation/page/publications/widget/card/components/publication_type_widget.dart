@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
-
-import '../../../../../../data/model/publication/publication_type_enum.dart';
+part of '../part.dart';
 
 class PublicationTypeWidget extends StatelessWidget {
   PublicationTypeWidget({super.key, required this.type, Color? color})

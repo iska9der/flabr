@@ -1,9 +1,4 @@
-import 'package:flutter/material.dart';
-
-import '../../../../../data/model/publication/publication.dart';
-import '../../../../../data/model/publication/publication_type_enum.dart';
-import 'common_card_widget.dart';
-import 'post_card_widget.dart';
+part of 'part.dart';
 
 class PublicationCardWidget extends StatelessWidget {
   const PublicationCardWidget(

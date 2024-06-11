@@ -16,7 +16,7 @@ import '../../services/company/widget/company_card_widget.dart';
 import '../../services/hub/widget/hub_card_widget.dart';
 import '../../services/user/widget/user_card_widget.dart';
 import '../cubit/search_cubit.dart';
-import 'card/common_card_widget.dart';
+import 'card/part.dart';
 import 'search.dart';
 
 class SearchAnywhereDelegate extends FlabrSearchDelegate {

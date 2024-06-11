@@ -1,4 +1,4 @@
-part of 'publication_stats_widget.dart';
+part of 'part.dart';
 
 class PublicationStat extends StatelessWidget {
   const PublicationStat({

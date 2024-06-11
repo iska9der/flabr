@@ -1,9 +1,4 @@
-import 'package:auto_route/auto_route.dart';
-import 'package:flutter/material.dart';
-
-import '../../../../../../data/model/publication/publication_hub_model.dart';
-import '../../../../../../data/model/related_data/hub_related_data_model.dart';
-import '../../../../../theme/part.dart';
+part of '../part.dart';
 
 class PublicationHubsWidget extends StatelessWidget {
   const PublicationHubsWidget({super.key, required this.hubs});

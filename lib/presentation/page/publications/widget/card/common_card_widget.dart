@@ -1,22 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
-
-import '../../../../../core/component/di/injector.dart';
-import '../../../../../core/component/router/app_router.dart';
-import '../../../../../data/model/publication/publication.dart';
-import '../../../../../data/model/render_type_enum.dart';
-import '../../../../feature/image_action/part.dart';
-import '../../../../theme/part.dart';
-import '../../../../widget/enhancement/card.dart';
-import '../../../settings/cubit/settings_cubit.dart';
-import '../../articles/article_detail_page.dart';
-import '../stats/publication_stats_widget.dart';
-import 'components/footer_widget.dart';
-import 'components/format_widget.dart';
-import 'components/header_widget.dart';
-import 'components/hubs_widget.dart';
-import 'components/publication_type_widget.dart';
+part of 'part.dart';
 
 class CommonCardWidget extends StatelessWidget {
   const CommonCardWidget({

@@ -1,17 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
-
-import '../../../../../core/component/di/injector.dart';
-import '../../../../../core/component/router/app_router.dart';
-import '../../../../../data/model/publication/publication.dart';
-import '../../../../../data/model/render_type_enum.dart';
-import '../../../../widget/enhancement/card.dart';
-import '../../posts/post_detail_page.dart';
-import '../stats/publication_stats_widget.dart';
-import 'components/footer_widget.dart';
-import 'components/header_widget.dart';
-import 'components/hubs_widget.dart';
-import 'components/publication_type_widget.dart';
+part of 'part.dart';
 
 class PostCardWidget extends StatelessWidget {
   const PostCardWidget({

@@ -1,7 +1,4 @@
-import 'package:flutter/material.dart';
-
-import '../../../../theme/part.dart';
-import '../../../../widget/enhancement/progress_indicator.dart';
+part of 'part.dart';
 
 class PublicationStatIconButton extends StatelessWidget {
   const PublicationStatIconButton({

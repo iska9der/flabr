@@ -1,11 +1,4 @@
-import 'package:flutter/material.dart';
-
-import '../../../../../data/model/publication/publication.dart';
-import '../../../../../data/model/publication/publication_complexity_enum.dart';
-import '../../../../../data/model/publication/publication_type_enum.dart';
-import '../../../../extension/part.dart';
-
-part 'publication_stat_widget.dart';
+part of 'part.dart';
 
 class PublicationStatsWidget extends StatelessWidget {
   const PublicationStatsWidget(this.publication, {super.key});
@@ -15,9 +8,11 @@ class PublicationStatsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return switch (publication.type) {
-      PublicationType.article ||
-      PublicationType.news =>
-        ArticleStatsWidget(publication as PublicationCommon),
+      PublicationType.article || PublicationType.news => ArticleStatsWidget(
+          complexity: (publication as PublicationCommon).complexity,
+          readingTime: (publication as PublicationCommon).readingTime,
+          readingCount: publication.statistics.readingCount,
+        ),
       _ => PublicationStat(
           icon: Icons.remove_red_eye_rounded,
           text: publication.statistics.readingCount.compact(),
@@ -27,9 +22,16 @@ class PublicationStatsWidget extends StatelessWidget {
 }
 
 class ArticleStatsWidget extends StatelessWidget {
-  const ArticleStatsWidget(this.article, {super.key});
+  const ArticleStatsWidget({
+    super.key,
+    this.complexity,
+    this.readingCount = 0,
+    this.readingTime = 0,
+  });
 
-  final PublicationCommon article;
+  final PublicationComplexity? complexity;
+  final int readingTime;
+  final int readingCount;
 
   @override
   Widget build(BuildContext context) {
@@ -37,15 +39,15 @@ class ArticleStatsWidget extends StatelessWidget {
       spacing: 16,
       runSpacing: 8,
       children: [
-        if (article.complexity != null) _ComplexityStat(article.complexity!),
-        if (article.readingTime > 0)
+        if (complexity != null) _ComplexityStat(complexity!),
+        if (readingTime > 0)
           PublicationStat(
-            text: '${article.readingTime} мин',
+            text: '$readingTime мин',
             icon: Icons.access_time_filled_rounded,
           ),
         PublicationStat(
           icon: Icons.remove_red_eye_rounded,
-          text: article.statistics.readingCount.compact(),
+          text: readingCount.compact(),
         ),
       ],
     );

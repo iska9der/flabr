@@ -11,12 +11,9 @@ import '../../../widget/enhancement/progress_indicator.dart';
 import '../../../widget/html_view_widget.dart';
 import '../../../widget/publication_settings_widget.dart';
 import '../cubit/publication_detail_cubit.dart';
-import 'card/components/footer_widget.dart';
-import 'card/components/format_widget.dart';
-import 'card/components/header_widget.dart';
-import 'card/components/hubs_widget.dart';
+import 'card/part.dart';
 import 'publication_more_options_widget.dart';
-import 'stats/publication_stats_widget.dart';
+import 'stats/part.dart';
 
 part 'publication_detail_appbar.dart';
 part 'publication_detail_title.dart';

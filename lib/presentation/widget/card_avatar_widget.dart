@@ -30,7 +30,7 @@ class CardAvatarWidget extends StatelessWidget {
             child: NetworkImageWidget(
               imageUrl: 'https:$imageUrl',
               height: height,
-              placeholderWidget: onLoading,
+              loadingWidget: onLoading,
               errorWidget: onError,
             ),
           )

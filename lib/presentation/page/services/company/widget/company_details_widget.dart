@@ -54,11 +54,10 @@ class CompanyDetailsWidget extends StatelessWidget {
                               NetworkImageWidget(
                                 imageUrl: contact.favicon,
                                 height: 20,
+                                loadingWidget: (context, url) =>
+                                    const Icon(Icons.link_outlined, size: 20),
                                 errorWidget: (context, url, error) =>
-                                    const Icon(
-                                  Icons.link_outlined,
-                                  size: 20,
-                                ),
+                                    const Icon(Icons.link_outlined, size: 20),
                               ),
                               const SizedBox(width: 10),
                               Text(contact.title),

@@ -1,21 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../../../../../core/component/di/injector.dart';
-import '../../../../../../core/component/router/app_router.dart';
-import '../../../../../../data/model/publication/publication.dart';
-import '../../../../../../data/model/publication/publication_type_enum.dart';
-import '../../../../../../data/model/stat_type_enum.dart';
-import '../../../../../extension/part.dart';
-import '../../../../../feature/auth/cubit/auth_cubit.dart';
-import '../../../../../feature/auth/widget/dialog.dart';
-import '../../../../../feature/summary/cubit/summary_auth_cubit.dart';
-import '../../../../../feature/summary/widget/summary_dialog.dart';
-import '../../../../../utils/utils.dart';
-import '../../../articles/article_comment_page.dart';
-import '../../../cubit/publication_bookmark_cubit.dart';
-import '../../../posts/post_comment_page.dart';
-import '../../stats/publication_stat_icon_widget.dart';
+part of '../part.dart';
 
 class ArticleFooterWidget extends StatelessWidget {
   const ArticleFooterWidget({

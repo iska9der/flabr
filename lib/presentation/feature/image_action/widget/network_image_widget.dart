@@ -6,14 +6,14 @@ class NetworkImageWidget extends StatelessWidget {
     required this.imageUrl,
     this.isTapable = false,
     this.height,
-    this.placeholderWidget,
+    this.loadingWidget,
     this.errorWidget,
   });
 
   final String imageUrl;
   final bool isTapable;
   final double? height;
-  final PlaceholderWidgetBuilder? placeholderWidget;
+  final PlaceholderWidgetBuilder? loadingWidget;
   final LoadingErrorWidgetBuilder? errorWidget;
 
   @override
@@ -42,7 +42,7 @@ class NetworkImageWidget extends StatelessWidget {
               imageUrl: imageUrl,
               height: height,
               memCacheHeight: cacheHeight,
-              placeholder: placeholderWidget ?? getIt<Utils>().onImageLoading,
+              placeholder: loadingWidget ?? getIt<Utils>().onImageLoading,
               errorWidget: errorWidget ?? getIt<Utils>().onImageError,
             ),
     );

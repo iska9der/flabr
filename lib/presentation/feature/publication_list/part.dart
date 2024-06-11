@@ -1,15 +1,17 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_framework/responsive_framework.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 import '../../../core/component/di/injector.dart';
 import '../../../data/model/publication/publication.dart';
 import '../../../data/repository/part.dart';
 import '../../extension/part.dart';
-import '../../page/publications/widget/card/publication_card_widget.dart';
+import '../../page/publications/widget/card/part.dart';
 import '../../page/publications/widget/most_reading_widget.dart';
 import '../../page/settings/cubit/settings_cubit.dart';
 import '../../theme/part.dart';

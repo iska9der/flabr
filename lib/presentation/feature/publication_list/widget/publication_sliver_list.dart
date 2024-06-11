@@ -7,6 +7,7 @@ class PublicationSliverList<ListCubit extends PublicationListCubit<ListState>,
   @override
   Widget build(BuildContext context) {
     final scrollCubit = context.read<ScrollCubit?>();
+    const skeletonLoader = _SkeletonLoader();
 
     return BlocConsumer<ListCubit, ListState>(
       listenWhen: (previous, current) =>
@@ -19,17 +20,14 @@ class PublicationSliverList<ListCubit extends PublicationListCubit<ListState>,
         /// Инициализация
         if (state.status == PublicationListStatus.initial) {
           context.read<ListCubit>().fetch();
-          return const SliverFillRemaining(
-            child: CircleIndicator(),
-          );
+
+          return skeletonLoader;
         }
 
         /// Если происходит загрузка первой страницы
         if (context.read<ListCubit>().isFirstFetch) {
           if (state.status == PublicationListStatus.loading) {
-            return const SliverFillRemaining(
-              child: CircleIndicator(),
-            );
+            return skeletonLoader;
           }
 
           /// Ошибка при попытке получить статьи
@@ -76,6 +74,27 @@ class PublicationSliverList<ListCubit extends PublicationListCubit<ListState>,
           ),
         );
       },
+    );
+  }
+}
+
+class _SkeletonLoader extends StatelessWidget {
+  // ignore: unused_element
+  const _SkeletonLoader({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Skeletonizer.sliver(
+      child: SliverList.list(
+        children: List.generate(
+          2,
+          (i) => SkeletonCardWidget(
+            authorAlias: 'author alias' * (Random().nextInt(2) + 1),
+            title: 'card title' * (Random().nextInt(10) + 1),
+            description: 'random card description' * (Random().nextInt(7) + 5),
+          ),
+        ).toList(),
+      ),
     );
   }
 }

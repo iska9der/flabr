@@ -1,8 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-
-import '../../../../../../data/model/publication/publication.dart';
-import '../../../../../widget/author_widget.dart';
+part of '../part.dart';
 
 class PublicationHeaderWidget extends StatelessWidget {
   const PublicationHeaderWidget(this.publication, {super.key});

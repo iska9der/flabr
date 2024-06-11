@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 import '../theme/part.dart';
-import '../widget/enhancement/progress_indicator.dart';
 
 part 'image_utils_mixin.dart';
 

@@ -32,7 +32,7 @@ class PublicationHub extends HubBase with EquatableMixin {
     );
   }
 
-  static const empty = PublicationHub(id: '0');
+  static const empty = PublicationHub(id: '0', title: 'Empty Hub');
 
   @override
   List<Object?> get props => [
