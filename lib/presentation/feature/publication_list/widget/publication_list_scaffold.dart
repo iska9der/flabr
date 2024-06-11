@@ -69,7 +69,9 @@ class PublicationListScaffold<ListCubit extends PublicationListCubit<ListState>,
                   const ResponsiveVisibilitySliver(
                     hiddenConditions: [
                       Condition.largerThan(
-                          name: ScreenType.mobile, value: false)
+                        name: ScreenType.mobile,
+                        value: false,
+                      )
                     ],
                     sliver: SliverToBoxAdapter(
                       child: Padding(
