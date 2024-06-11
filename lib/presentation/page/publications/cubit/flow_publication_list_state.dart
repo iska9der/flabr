@@ -1,28 +1,17 @@
 part of 'flow_publication_list_cubit.dart';
 
-class FlowPublicationListState extends Equatable
-    implements PublicationListState {
+class FlowPublicationListState extends PublicationListState
+    with EquatableMixin {
   const FlowPublicationListState({
-    this.status = PublicationListStatus.initial,
-    this.error = '',
-    this.page = 1,
-    this.pagesCount = 0,
-    this.publications = const [],
+    super.status = PublicationListStatus.initial,
+    super.error = '',
+    super.page = 1,
+    super.pagesCount = 0,
+    super.publications = const [],
     this.flow = PublicationFlow.all,
     this.section = Section.article,
     this.filter = const FlowFilter(),
   });
-
-  @override
-  final PublicationListStatus status;
-  @override
-  final String error;
-  @override
-  final int page;
-  @override
-  final int pagesCount;
-  @override
-  final List<Publication> publications;
 
   final PublicationFlow flow;
   final Section section;

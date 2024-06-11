@@ -1,29 +1,19 @@
 part of 'user_bookmark_list_cubit.dart';
 
-class UserBookmarkListState extends Equatable implements PublicationListState {
+class UserBookmarkListState extends PublicationListState with EquatableMixin {
   const UserBookmarkListState({
-    this.status = PublicationListStatus.initial,
-    this.error = '',
+    super.status = PublicationListStatus.initial,
+    super.error = '',
+    super.page = 1,
+    super.pagesCount = 0,
+    super.publications = const [],
     this.user = '',
     this.type = UserBookmarksType.articles,
-    this.page = 1,
-    this.pagesCount = 0,
-    this.publications = const [],
     this.comments = const [],
   });
 
-  @override
-  final PublicationListStatus status;
-  @override
-  final String error;
   final String user;
   final UserBookmarksType type;
-  @override
-  final int page;
-  @override
-  final int pagesCount;
-  @override
-  final List<Publication> publications;
   final List<CommentModel> comments;
 
   UserBookmarkListState copyWith({

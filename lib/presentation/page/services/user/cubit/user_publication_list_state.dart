@@ -1,30 +1,19 @@
 part of 'user_publication_list_cubit.dart';
 
-class UserPublicationListState extends Equatable
-    implements PublicationListState {
+class UserPublicationListState extends PublicationListState
+    with EquatableMixin {
   const UserPublicationListState({
-    this.status = PublicationListStatus.initial,
-    this.error = '',
-    this.page = 1,
-    this.pagesCount = 0,
-    this.publications = const [],
+    super.status = PublicationListStatus.initial,
+    super.error = '',
+    super.page = 1,
+    super.pagesCount = 0,
+    super.publications = const [],
     this.user = '',
     this.type = UserPublicationType.articles,
     this.sort = Sort.byNew,
     this.period = FilterList.dateDefault,
     this.score = FilterList.scoreDefault,
   });
-
-  @override
-  final PublicationListStatus status;
-  @override
-  final String error;
-  @override
-  final int page;
-  @override
-  final int pagesCount;
-  @override
-  final List<Publication> publications;
 
   final String user;
   final UserPublicationType type;

@@ -1,28 +1,17 @@
 part of 'hub_publication_list_cubit.dart';
 
-class HubPublicationListState extends Equatable
-    implements PublicationListState {
+class HubPublicationListState extends PublicationListState with EquatableMixin {
   const HubPublicationListState({
-    this.status = PublicationListStatus.initial,
-    this.error = '',
-    this.page = 1,
-    this.pagesCount = 0,
-    this.publications = const [],
+    super.status = PublicationListStatus.initial,
+    super.error = '',
+    super.page = 1,
+    super.pagesCount = 0,
+    super.publications = const [],
     this.hub = '',
     this.type = PublicationType.article,
     this.filter = const FlowFilter(),
   });
 
-  @override
-  final PublicationListStatus status;
-  @override
-  final String error;
-  @override
-  final int page;
-  @override
-  final int pagesCount;
-  @override
-  final List<Publication> publications;
   final String hub;
   final PublicationType type;
   final FlowFilter filter;

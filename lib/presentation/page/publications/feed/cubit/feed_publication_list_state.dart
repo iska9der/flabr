@@ -1,26 +1,15 @@
 part of 'feed_publication_list_cubit.dart';
 
-class FeedPublicationListState extends Equatable
-    implements PublicationListState {
+class FeedPublicationListState extends PublicationListState
+    with EquatableMixin {
   const FeedPublicationListState({
-    this.status = PublicationListStatus.initial,
-    this.error = '',
-    this.page = 1,
-    this.pagesCount = 0,
-    this.publications = const [],
+    super.status = PublicationListStatus.initial,
+    super.error = '',
+    super.page = 1,
+    super.pagesCount = 0,
+    super.publications = const [],
     this.filter = const FeedFilter(),
   });
-
-  @override
-  final PublicationListStatus status;
-  @override
-  final String error;
-  @override
-  final int page;
-  @override
-  final int pagesCount;
-  @override
-  final List<Publication> publications;
 
   final FeedFilter filter;
 

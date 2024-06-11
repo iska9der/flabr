@@ -45,11 +45,22 @@ abstract class PublicationListCubit<State extends PublicationListState>
   FutureOr<void> refetch();
 }
 
-/// Интерфейс для стейта списка публикаций
-abstract interface class PublicationListState {
-  PublicationListStatus get status;
-  String get error;
-  int get page;
-  int get pagesCount;
-  List<Publication> get publications;
+/// Абстрактный класс для стейта списка публикаций
+abstract class PublicationListState {
+  const PublicationListState({
+    required this.status,
+    required this.error,
+    required this.page,
+    required this.pagesCount,
+    required this.publications,
+  });
+
+  final PublicationListStatus status;
+  final String error;
+  final int page;
+  final int pagesCount;
+  final List<Publication> publications;
+
+  bool get isFirstFetch => page == 1;
+  bool get isLastPage => page >= pagesCount;
 }

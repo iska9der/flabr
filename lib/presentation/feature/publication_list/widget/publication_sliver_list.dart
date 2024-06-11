@@ -17,25 +17,31 @@ class PublicationSliverList<ListCubit extends PublicationListCubit<ListState>,
         content: Text(state.error),
       ),
       builder: (context, state) {
-        /// Инициализация
+        /// При инициализации запрашиваем публикации
         if (state.status == PublicationListStatus.initial) {
           context.read<ListCubit>().fetch();
+        }
 
+        /// Нужно ли отобразить виджет загрузки
+        final isLoaderShown = switch (state.status) {
+          PublicationListStatus.initial => true,
+          PublicationListStatus.loading when state.isFirstFetch => true,
+          _ => false,
+        };
+
+        if (isLoaderShown) {
           return skeletonLoader;
         }
 
-        /// Если происходит загрузка первой страницы
-        if (context.read<ListCubit>().isFirstFetch) {
-          if (state.status == PublicationListStatus.loading) {
-            return skeletonLoader;
-          }
-
-          /// Ошибка при попытке получить статьи
-          if (state.status == PublicationListStatus.failure) {
-            return SliverFillRemaining(
-              child: Center(child: Text(state.error)),
-            );
-          }
+        /// Ошибка при попытке получить статьи.
+        /// Ошибку показываем вместо карточек только в случае, если
+        /// происходит загрузка первой страницы
+        final isErrorShown =
+            state.isFirstFetch && state.status == PublicationListStatus.failure;
+        if (isErrorShown) {
+          return SliverFillRemaining(
+            child: Center(child: Text(state.error)),
+          );
         }
 
         var publications = state.publications;
