@@ -6,6 +6,7 @@ import '../../../../../core/component/di/injector.dart';
 import '../../../../../data/model/user/user_publication_type.dart';
 import '../../../../feature/publication_list/part.dart';
 import '../../../../feature/scroll/part.dart';
+import '../../../../widget/enhancement/refresh_indicator.dart';
 import '../cubit/user_cubit.dart';
 import '../cubit/user_publication_list_cubit.dart';
 import '../widget/type_dropdown_widget.dart';
@@ -61,7 +62,12 @@ class UserPublicationListView extends StatelessWidget {
           child: CustomScrollView(
             controller: scrollCtrl,
             cacheExtent: 2000,
+            physics: const BouncingScrollPhysics(),
             slivers: [
+              FlabrRefreshIndicator(
+                onRefresh: () async =>
+                    context.read<UserPublicationListCubit>().refetch(),
+              ),
               BlocBuilder<UserPublicationListCubit, UserPublicationListState>(
                 builder: (context, state) {
                   return SliverToBoxAdapter(

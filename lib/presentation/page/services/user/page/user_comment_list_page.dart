@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/component/di/injector.dart';
 import '../../../../feature/scroll/part.dart';
+import '../../../../widget/enhancement/refresh_indicator.dart';
 import '../cubit/user_comment_list_cubit.dart';
 import '../widget/comment_sliver_list.dart';
 
@@ -58,7 +59,12 @@ class _UserCommentListView extends StatelessWidget {
           child: CustomScrollView(
             controller: scrollCtrl,
             cacheExtent: 2000,
+            physics: const BouncingScrollPhysics(),
             slivers: [
+              FlabrRefreshIndicator(
+                onRefresh: () async =>
+                    context.read<UserCommentListCubit>().refetch(),
+              ),
               CommentSliverList(
                 fetch: context.read<UserCommentListCubit>().fetch,
               )

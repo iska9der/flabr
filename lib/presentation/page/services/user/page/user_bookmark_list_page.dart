@@ -6,6 +6,7 @@ import '../../../../../core/component/di/injector.dart';
 import '../../../../../data/model/user/user_bookmarks_type.dart';
 import '../../../../feature/publication_list/part.dart';
 import '../../../../feature/scroll/part.dart';
+import '../../../../widget/enhancement/refresh_indicator.dart';
 import '../cubit/user_bookmark_list_cubit.dart';
 import '../cubit/user_comment_list_cubit.dart';
 import '../cubit/user_cubit.dart';
@@ -69,7 +70,22 @@ class UserBookmarkListView extends StatelessWidget {
         child: CustomScrollView(
           controller: scrollCtrl,
           cacheExtent: 1000,
+          physics: const BouncingScrollPhysics(),
           slivers: [
+            BlocBuilder<UserBookmarkListCubit, UserBookmarkListState>(
+              builder: (context, state) {
+                return switch (state.type) {
+                  UserBookmarksType.comments => FlabrRefreshIndicator(
+                      onRefresh: () async =>
+                          context.read<UserCommentListCubit>().refetch(),
+                    ),
+                  _ => FlabrRefreshIndicator(
+                      onRefresh: () async =>
+                          context.read<UserBookmarkListCubit>().refetch(),
+                    ),
+                };
+              },
+            ),
             BlocBuilder<UserBookmarkListCubit, UserBookmarkListState>(
               builder: (context, state) {
                 return SliverToBoxAdapter(

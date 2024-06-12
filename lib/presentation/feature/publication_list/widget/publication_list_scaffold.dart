@@ -63,8 +63,12 @@ class PublicationListScaffold<ListCubit extends PublicationListCubit<ListState>,
             child: CustomScrollView(
               cacheExtent: 1000,
               controller: scrollController,
+              physics: const BouncingScrollPhysics(),
               slivers: [
                 if (appBar != null) appBar!,
+                FlabrRefreshIndicator(
+                  onRefresh: () async => context.read<ListCubit>().refetch(),
+                ),
                 if (showMostReading)
                   const ResponsiveVisibilitySliver(
                     hiddenConditions: [

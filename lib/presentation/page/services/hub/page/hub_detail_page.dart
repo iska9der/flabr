@@ -8,6 +8,7 @@ import '../../../../feature/publication_list/part.dart';
 import '../../../../feature/scroll/part.dart';
 import '../../../../theme/part.dart';
 import '../../../../widget/enhancement/progress_indicator.dart';
+import '../../../../widget/enhancement/refresh_indicator.dart';
 import '../../../../widget/filter/publication_filter_widget.dart';
 import '../../../settings/cubit/settings_cubit.dart';
 import '../cubit/hub_cubit.dart';
@@ -70,7 +71,12 @@ class HubDetailPageView extends StatelessWidget {
             controller: scrollCtrl,
             child: CustomScrollView(
               controller: scrollCtrl,
+              physics: const BouncingScrollPhysics(),
               slivers: [
+                FlabrRefreshIndicator(
+                  onRefresh: () async =>
+                      context.read<HubPublicationListCubit>().refetch(),
+                ),
                 const SliverToBoxAdapter(child: HubProfileCardWidget()),
                 SliverAppBar(
                   automaticallyImplyLeading: false,

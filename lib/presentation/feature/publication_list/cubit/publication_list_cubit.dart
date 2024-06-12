@@ -35,8 +35,10 @@ abstract class PublicationListCubit<State extends PublicationListState>
     return super.close();
   }
 
-  bool get isFirstFetch => state.page == 1;
-  bool get isLastPage => state.page >= state.pagesCount;
+  bool get fetchDisabled =>
+      state.status == PublicationListStatus.loading ||
+      !state.isFirstFetch && state.isLastPage ||
+      state.isFirstFetch && state.status == PublicationListStatus.failure;
 
   /// Получение списка публикаций
   FutureOr<void> fetch();

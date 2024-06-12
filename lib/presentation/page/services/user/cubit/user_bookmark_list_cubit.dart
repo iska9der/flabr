@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:equatable/equatable.dart';
 
 import '../../../../../data/exception/part.dart';
@@ -23,8 +25,7 @@ class UserBookmarkListCubit
 
   @override
   Future<void> fetch() async {
-    if (state.status == PublicationListStatus.loading ||
-        !isFirstFetch && isLastPage) {
+    if (fetchDisabled) {
       return;
     }
 

@@ -18,6 +18,7 @@ import '../../theme/part.dart';
 import '../../utils/utils.dart';
 import '../../widget/enhancement/card.dart';
 import '../../widget/enhancement/progress_indicator.dart';
+import '../../widget/enhancement/refresh_indicator.dart';
 import '../../widget/enhancement/responsive_visibility.dart';
 import '../auth/cubit/auth_cubit.dart';
 import '../scroll/part.dart';

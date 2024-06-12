@@ -20,6 +20,9 @@ class UserCommentListState extends Equatable {
   final int pages;
   final List<UserCommentModel> comments;
 
+  bool get isFirstFetch => page == 1;
+  bool get isLastPage => page >= pages;
+
   UserCommentListState copyWith({
     CommentListStatus? status,
     String? error,

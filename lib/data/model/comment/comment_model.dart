@@ -20,7 +20,7 @@ class CommentModel extends CommentBase with EquatableMixin {
     super.status = '',
     super.timeChanged,
     super.timeEditAllowedTill,
-    super.timePublished = '',
+    super.timePublished,
     super.score = 0,
     super.votesCount = 0,
     super.level = 0,

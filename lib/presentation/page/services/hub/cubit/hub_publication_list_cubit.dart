@@ -25,8 +25,7 @@ class HubPublicationListCubit
 
   @override
   Future<void> fetch() async {
-    if (state.status == PublicationListStatus.loading ||
-        !isFirstFetch && isLastPage) {
+    if (fetchDisabled) {
       return;
     }
 

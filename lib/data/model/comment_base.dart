@@ -15,7 +15,7 @@ class CommentBase {
     this.status = '',
     this.timeChanged,
     this.timeEditAllowedTill,
-    this.timePublished = '',
+    this.timePublished = '2000-01-20 13:37:00',
     this.score = 0,
     this.votesCount = 0,
     this.level = 0,
