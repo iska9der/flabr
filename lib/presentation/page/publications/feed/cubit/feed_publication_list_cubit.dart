@@ -40,7 +40,7 @@ class FeedPublicationListCubit
       }
 
       final lastFilter = FeedFilter.fromJson(jsonDecode(str));
-      newState = FeedPublicationListState(filter: lastFilter);
+      newState = newState.copyWith(filter: lastFilter);
     } catch (_) {
       storage.delete(key);
     } finally {

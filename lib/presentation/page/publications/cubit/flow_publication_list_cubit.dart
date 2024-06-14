@@ -45,7 +45,7 @@ class FlowPublicationListCubit
       }
 
       final lastFilter = FlowFilter.fromJson(jsonDecode(str));
-      newState = FlowPublicationListState(filter: lastFilter);
+      newState = newState.copyWith(filter: lastFilter);
     } catch (_) {
       storage.delete(key);
     } finally {
