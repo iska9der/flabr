@@ -9,14 +9,18 @@ import '../../../../feature/scroll/part.dart';
 import '../../../../widget/enhancement/refresh_indicator.dart';
 import '../cubit/user_bookmark_list_cubit.dart';
 import '../cubit/user_comment_list_cubit.dart';
-import '../cubit/user_cubit.dart';
 import '../widget/comment_sliver_list.dart';
 import '../widget/type_dropdown_widget.dart';
 
 @RoutePage(name: UserBookmarkListPage.routeName)
 class UserBookmarkListPage extends StatelessWidget {
-  const UserBookmarkListPage({super.key, @PathParam() this.type = ''});
+  const UserBookmarkListPage({
+    super.key,
+    @PathParam.inherit('alias') required this.alias,
+    @PathParam() this.type = '',
+  });
 
+  final String alias;
   final String type;
 
   static const String title = 'Закладки';
@@ -25,9 +29,6 @@ class UserBookmarkListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cubit = context.read<UserCubit>();
-    final alias = cubit.state.login;
-
     return MultiBlocProvider(
       key: ValueKey('user-$alias-bookmarks-$type'),
       providers: [

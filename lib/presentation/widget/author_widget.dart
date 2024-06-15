@@ -1,6 +1,7 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
+import '../../core/component/di/injector.dart';
+import '../../core/component/router/app_router.dart';
 import '../../data/model/publication/publication_author_model.dart';
 import '../feature/auth/widget/dialog.dart';
 import '../feature/auth/widget/profile_widget.dart';
@@ -27,9 +28,9 @@ class AuthorWidget extends StatelessWidget {
         ),
       ),
       child: TextButton(
-        onPressed: () {
-          context.navigateNamedTo('services/users/${author.alias}');
-        },
+        onPressed: () => getIt<AppRouter>().navigate(
+          UserDashboardRoute(alias: author.alias),
+        ),
         onLongPress: () {
           showProfileDialog(
             context,

@@ -26,10 +26,8 @@ import '../../../../widget/author_widget.dart';
 import '../../../../widget/enhancement/card.dart';
 import '../../../settings/cubit/settings_cubit.dart';
 import '../../articles/article_comment_page.dart';
-import '../../articles/article_detail_page.dart';
 import '../../cubit/publication_bookmark_cubit.dart';
 import '../../posts/post_comment_page.dart';
-import '../../posts/post_detail_page.dart';
 import '../stats/part.dart';
 
 part 'common_card_widget.dart';

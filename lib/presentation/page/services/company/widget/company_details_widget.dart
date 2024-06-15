@@ -105,8 +105,15 @@ class CompanyDetailsWidget extends StatelessWidget {
                       subtitle: Text(
                         card.information.representativeUser.name,
                       ),
-                      onTap: () => context.router.navigateNamed(
-                        'services/users/${card.information.representativeUser.alias}',
+                      onTap: () => context.router.navigate(
+                        ServicesRouter(
+                          children: [
+                            UserDashboardRoute(
+                              alias: card.information.representativeUser.alias,
+                              children: [UserDetailRoute()],
+                            )
+                          ],
+                        ),
                       ),
                     ),
                 ],

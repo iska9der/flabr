@@ -11,7 +11,12 @@ import '../widget/company_profile_card_widget.dart';
 
 @RoutePage(name: CompanyDetailPage.routeName)
 class CompanyDetailPage extends StatelessWidget {
-  const CompanyDetailPage({super.key});
+  const CompanyDetailPage({
+    super.key,
+    @PathParam.inherit('alias') required this.alias,
+  });
+
+  final String alias;
 
   static const String title = 'Профиль';
   static const String routePath = 'profile';
@@ -19,9 +24,7 @@ class CompanyDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cubit = context.read<CompanyCubit>();
-
-    cubit.fetchCard();
+    context.read<CompanyCubit>().fetchCard();
 
     return BlocBuilder<CompanyCubit, CompanyState>(
       builder: (context, state) {

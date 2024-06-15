@@ -1,4 +1,3 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -7,17 +6,13 @@ import '../../../../data/model/publication/publication_source_enum.dart';
 import '../cubit/publication_detail_cubit.dart';
 import '../widget/publication_detail_view.dart';
 
-@RoutePage(name: ArticleDetailPage.routeName)
 class ArticleDetailPage extends StatelessWidget {
   const ArticleDetailPage({
     super.key,
-    @PathParam() required this.id,
+    required this.id,
   });
 
   final String id;
-
-  static const String routePath = 'details/:id';
-  static const String routeName = 'ArticleDetailRoute';
 
   @override
   Widget build(BuildContext context) {

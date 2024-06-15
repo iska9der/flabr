@@ -107,7 +107,7 @@ class _DashboardPageState extends State<DashboardPage> {
         child: AutoTabsRouter(
           lazyLoad: false,
           routes: const [
-            PublicationsDashboardRoute(),
+            PublicationDashboardRoute(),
             ServicesRouter(),
             SettingsRouter(),
           ],

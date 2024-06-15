@@ -19,6 +19,10 @@ import '../cubit/search_cubit.dart';
 import 'card/part.dart';
 import 'search.dart';
 
+/// TODO: разобраться с переходами по карточкам (кроме статей, там все окъ)
+/// навигация происходит, но наш searchDelegate* находится поверх
+/// DashboardRoute, и после нажатия он* не закрывается.
+/// От того кажется что навигация не сработала.
 class SearchAnywhereDelegate extends FlabrSearchDelegate {
   SearchAnywhereDelegate({required this.cubit});
 

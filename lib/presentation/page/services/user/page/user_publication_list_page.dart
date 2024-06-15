@@ -1,3 +1,4 @@
+import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,14 +8,18 @@ import '../../../../../data/model/user/user_publication_type.dart';
 import '../../../../feature/publication_list/part.dart';
 import '../../../../feature/scroll/part.dart';
 import '../../../../widget/enhancement/refresh_indicator.dart';
-import '../cubit/user_cubit.dart';
 import '../cubit/user_publication_list_cubit.dart';
 import '../widget/type_dropdown_widget.dart';
 
 @RoutePage(name: UserPublicationListPage.routeName)
 class UserPublicationListPage extends StatelessWidget {
-  const UserPublicationListPage({super.key, @PathParam() this.type = ''});
+  const UserPublicationListPage({
+    super.key,
+    @PathParam.inherit('alias') required this.alias,
+    @PathParam() this.type = '',
+  });
 
+  final String alias;
   final String type;
 
   static const String title = 'Публикации';
@@ -23,16 +28,14 @@ class UserPublicationListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cubit = context.read<UserCubit>();
-
     return MultiBlocProvider(
-      key: ValueKey('user-${cubit.state.login}-publications-$type'),
+      key: ValueKey('user-$alias-publications-$type'),
       providers: [
         BlocProvider(
           create: (_) => UserPublicationListCubit(
             repository: getIt(),
             languageRepository: getIt(),
-            user: cubit.state.login,
+            user: alias,
             type: UserPublicationType.fromString(type),
           ),
         ),

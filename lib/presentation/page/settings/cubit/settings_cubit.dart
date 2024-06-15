@@ -1,11 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:app_links/app_links.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../core/component/router/app_router.dart';
 import '../../../../core/component/storage/part.dart';
 import '../../../../core/constants/part.dart';
 import '../../../../data/model/language/part.dart';
@@ -18,12 +16,8 @@ class SettingsCubit extends Cubit<SettingsState> {
   SettingsCubit({
     required CacheStorage storage,
     required LanguageRepository languageRepository,
-    required AppRouter router,
-    required AppLinks appLinks,
   })  : _storage = storage,
         _langRepository = languageRepository,
-        _router = router,
-        _appLinks = appLinks,
         super(const SettingsState()) {
     _langUiSub = _langRepository.uiStream.listen((lang) {
       emit(state.copyWith(langUI: lang));
@@ -32,41 +26,29 @@ class SettingsCubit extends Cubit<SettingsState> {
     _langArticleSub = _langRepository.articlesStream.listen((langs) {
       emit(state.copyWith(langArticles: langs));
     });
-
-    _uriSub = _appLinks.uriLinkStream.listen((uri) {
-      String path = uri.path;
-
-      _router.navigateNamed(path);
-    });
   }
 
   final LanguageRepository _langRepository;
   final CacheStorage _storage;
-  final AppLinks _appLinks;
-  final AppRouter _router;
 
   late final StreamSubscription _langUiSub;
   late final StreamSubscription _langArticleSub;
-  late final StreamSubscription _uriSub;
 
   @override
   Future<void> close() {
     _langUiSub.cancel();
     _langArticleSub.cancel();
-    _uriSub.cancel();
     return super.close();
   }
 
   void init() async {
     emit(state.copyWith(status: SettingsStatus.loading));
 
-    final lastUrl = await _initDeepLink();
     final (langUI, langArticles) = _initLanguages();
     final config = await _initConfig();
 
     emit(state.copyWith(
       status: SettingsStatus.success,
-      initialDeepLink: lastUrl,
       langUI: langUI,
       langArticles: langArticles,
       theme: config.theme,
@@ -117,12 +99,6 @@ class SettingsCubit extends Cubit<SettingsState> {
     emit(state.copyWith(langArticles: newLangs));
 
     _langRepository.updateArticleLang(newLangs);
-  }
-
-  Future<String?> _initDeepLink() async {
-    final lastUri = await _appLinks.getLatestLink();
-
-    return lastUri?.path;
   }
 
   /// Инициализация конфигурации

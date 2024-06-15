@@ -13,7 +13,7 @@ class FeedListPage extends StatelessWidget {
   const FeedListPage({super.key});
 
   static const String name = 'Моя лента';
-  static const String routePath = 'feed';
+  static const String routePath = '';
   static const String routeName = 'FeedListRoute';
 
   @override

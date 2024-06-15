@@ -52,7 +52,7 @@ class CompanyDashboardPageView extends StatelessWidget {
     final companyCubit = context.read<CompanyCubit>();
 
     return AutoTabsRouter.tabBar(
-      routes: const [
+      routes: [
         CompanyDetailRoute(),
       ],
       builder: (context, child, controller) {

@@ -15,7 +15,12 @@ import '../widget/user_whois_widget.dart';
 
 @RoutePage(name: UserDetailPage.routeName)
 class UserDetailPage extends StatelessWidget {
-  const UserDetailPage({super.key});
+  const UserDetailPage({
+    super.key,
+    @PathParam.inherit('alias') required this.alias,
+  });
+
+  final String alias;
 
   static const String title = 'Профиль';
   static const String routePath = 'detail';
@@ -23,11 +28,10 @@ class UserDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cubit = context.read<UserCubit>();
-    cubit.fetchCard();
+    context.read<UserCubit>().fetchCard();
 
     return UserDetailPageView(
-      key: ValueKey('user-${cubit.state.login}-detail'),
+      key: ValueKey('user-$alias-detail'),
     );
   }
 }

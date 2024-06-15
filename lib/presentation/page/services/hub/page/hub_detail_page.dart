@@ -1,3 +1,4 @@
+import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,7 +18,12 @@ import '../widget/hub_profile_card_widget.dart';
 
 @RoutePage(name: HubDetailPage.routeName)
 class HubDetailPage extends StatelessWidget {
-  const HubDetailPage({super.key});
+  const HubDetailPage({
+    super.key,
+    @PathParam.inherit('alias') required this.alias,
+  });
+
+  final String alias;
 
   static const name = 'Профиль';
   static const routePath = 'profile';
@@ -25,18 +31,16 @@ class HubDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cubit = context.read<HubCubit>();
-
-    cubit.fetchProfile();
+    context.read<HubCubit>().fetchProfile();
 
     return MultiBlocProvider(
-      key: ValueKey('hub-${cubit.state.alias}-detail'),
+      key: ValueKey('hub-$alias-detail'),
       providers: [
         BlocProvider(
           create: (_) => HubPublicationListCubit(
             repository: getIt(),
             languageRepository: getIt(),
-            hub: cubit.state.alias,
+            hub: alias,
           ),
         ),
         BlocProvider(

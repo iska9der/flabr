@@ -16,6 +16,7 @@ class DashboardDrawerLinkWidget extends StatelessWidget {
     final tabRouter = AutoRouter.of(context);
 
     return GestureDetector(
+      /// TODO: Кабутабы ненужно. Без [GestureDetector] табы тоже переключаются
       onTap: () => tabRouter.navigateNamed(route),
       child: Padding(
         padding: const EdgeInsets.all(8),

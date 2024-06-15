@@ -7,7 +7,6 @@ class SettingsState extends Equatable {
     this.status = SettingsStatus.initial,
     this.langUI = LanguageEnum.ru,
     this.langArticles = const [LanguageEnum.ru],
-    this.initialDeepLink = '',
     this.theme = ThemeConfigModel.empty,
     this.publication = PublicationConfigModel.empty,
     this.feed = FeedConfigModel.empty,
@@ -22,8 +21,6 @@ class SettingsState extends Equatable {
   /// Язык статей
   final List<LanguageEnum> langArticles;
 
-  final String initialDeepLink;
-
   /// Конфиги
   final ThemeConfigModel theme;
   final PublicationConfigModel publication;
@@ -34,7 +31,6 @@ class SettingsState extends Equatable {
     SettingsStatus? status,
     LanguageEnum? langUI,
     List<LanguageEnum>? langArticles,
-    String? initialDeepLink,
     ThemeConfigModel? theme,
     PublicationConfigModel? publication,
     FeedConfigModel? feed,
@@ -45,7 +41,6 @@ class SettingsState extends Equatable {
       langUI: langUI ?? this.langUI,
       langArticles: langArticles ?? this.langArticles,
       theme: theme ?? this.theme,
-      initialDeepLink: initialDeepLink ?? this.initialDeepLink,
       publication: publication ?? this.publication,
       feed: feed ?? this.feed,
       misc: misc ?? this.misc,
@@ -60,7 +55,6 @@ class SettingsState extends Equatable {
         status,
         langUI,
         langArticles,
-        initialDeepLink,
         theme,
         publication,
         feed,

@@ -1,5 +1,5 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:device_preview/device_preview.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_framework/responsive_framework.dart';
@@ -27,8 +27,6 @@ class MyApp extends StatelessWidget {
           create: (_) => SettingsCubit(
             languageRepository: getIt(),
             storage: getIt(instanceName: 'sharedStorage'),
-            router: router,
-            appLinks: getIt(),
           )..init(),
         ),
         BlocProvider(
@@ -53,24 +51,6 @@ class MyApp extends StatelessWidget {
             listener: (context, _) {
               context.read<AuthCubit>().fetchMe();
               context.read<AuthCubit>().fetchCsrf();
-            },
-          ),
-          BlocListener<SettingsCubit, SettingsState>(
-            listenWhen: (previous, current) =>
-                previous.status == SettingsStatus.loading &&
-                current.status == SettingsStatus.success,
-            listener: (context, state) {
-              if (state.initialDeepLink.isNotEmpty) {
-                /// Auto route delegate? криво шлет нас по путям с холодного
-                /// старта, не подставляя корректный стэк в навигацию,
-                /// поэтому в AutoRouterDelegate указываем initialDeepLink
-                /// как "/", и в кубите через AppLinks получаем линк и с задержкой
-                /// шлем по пути вот прямо тут, под этим комментарием
-                Future.delayed(
-                  const Duration(milliseconds: 1500),
-                  () => router.navigateNamed(state.initialDeepLink),
-                );
-              }
             },
           ),
         ],
@@ -100,10 +80,12 @@ class MyApp extends StatelessWidget {
                 darkTheme: darkTheme(),
                 scrollBehavior: const MaterialScrollBehavior(),
                 routerConfig: router.config(
-                  deepLinkBuilder: (link) {
-                    return link.initial
-                        ? const DeepLink.path('/')
-                        : DeepLink.none;
+                  deepLinkTransformer: (uri) {
+                    if (uri.path.startsWith('/ru')) {
+                      final newPath = uri.path.replaceFirst('/ru', '');
+                      return SynchronousFuture(uri.replace(path: newPath));
+                    }
+                    return SynchronousFuture(uri);
                   },
                 ),
                 builder: (context, child) {

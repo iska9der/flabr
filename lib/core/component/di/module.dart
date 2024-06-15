@@ -1,4 +1,3 @@
-import 'package:app_links/app_links.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:injectable/injectable.dart';
@@ -13,9 +12,6 @@ import '../storage/part.dart';
 abstract class RegisterModule {
   @FactoryMethod()
   Dio get dio => Dio();
-
-  @Singleton()
-  AppLinks get appLinks => AppLinks();
 
   // ignore: invalid_annotation_target
   @preResolve

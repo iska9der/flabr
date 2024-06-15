@@ -15,8 +15,11 @@ class PostCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FlabrCard(
-      onTap: () => getIt<AppRouter>().pushWidget(
-        PostDetailPage(id: post.id),
+      onTap: () => getIt<AppRouter>().navigate(
+        PublicationDetailRoute(
+          type: PublicationType.post.name,
+          id: post.id,
+        ),
       ),
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
       child: Column(

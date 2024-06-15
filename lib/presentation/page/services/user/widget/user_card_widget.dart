@@ -1,6 +1,6 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../../core/component/di/injector.dart';
 import '../../../../../core/component/router/app_router.dart';
 import '../../../../../data/model/stat_type_enum.dart';
 import '../../../../../data/model/user/user_model.dart';
@@ -29,7 +29,16 @@ class _UserCard extends StatelessWidget {
   const _UserCard();
 
   void _pushDetails(BuildContext context, String alias) {
-    context.router.navigateNamed('services/users/$alias/detail');
+    getIt<AppRouter>().navigate(
+      ServicesRouter(
+        children: [
+          UserDashboardRoute(
+            alias: alias,
+            children: [UserDetailRoute()],
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -79,9 +88,12 @@ class _UserCard extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(top: 12.0),
                     child: TextButton(
-                      onPressed: () => context.navigateTo(ArticlesRouter(
-                        children: [ArticleDetailRoute(id: model.lastPost.id)],
-                      )),
+                      onPressed: () => getIt<AppRouter>().navigate(
+                        PublicationDetailRoute(
+                          type: model.lastPost.type.name,
+                          id: model.lastPost.id,
+                        ),
+                      ),
                       child: Text(model.lastPost.titleHtml),
                     ),
                   ),

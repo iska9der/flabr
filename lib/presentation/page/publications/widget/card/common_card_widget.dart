@@ -15,8 +15,11 @@ class CommonCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FlabrCard(
-      onTap: () => getIt<AppRouter>().pushWidget(
-        ArticleDetailPage(id: publication.id),
+      onTap: () => getIt<AppRouter>().push(
+        PublicationDetailRoute(
+          type: publication.type.name,
+          id: publication.id,
+        ),
       ),
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
       child: Column(

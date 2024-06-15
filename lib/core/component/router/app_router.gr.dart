@@ -28,18 +28,6 @@ abstract class _$AppRouter extends RootStackRouter {
         ),
       );
     },
-    ArticleDetailRoute.name: (routeData) {
-      final pathParams = routeData.inheritedPathParams;
-      final args = routeData.argsAs<ArticleDetailRouteArgs>(
-          orElse: () => ArticleDetailRouteArgs(id: pathParams.getString('id')));
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: ArticleDetailPage(
-          key: args.key,
-          id: args.id,
-        ),
-      );
-    },
     ArticleListRoute.name: (routeData) {
       final pathParams = routeData.inheritedPathParams;
       final args = routeData.argsAs<ArticleListRouteArgs>(
@@ -73,9 +61,15 @@ abstract class _$AppRouter extends RootStackRouter {
       );
     },
     CompanyDetailRoute.name: (routeData) {
+      final pathParams = routeData.inheritedPathParams;
+      final args = routeData.argsAs<CompanyDetailRouteArgs>(
+          orElse: () => CompanyDetailRouteArgs());
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const CompanyDetailPage(),
+        child: CompanyDetailPage(
+          key: args.key,
+          alias: pathParams.getString('alias'),
+        ),
       );
     },
     CompanyListRoute.name: (routeData) {
@@ -88,6 +82,12 @@ abstract class _$AppRouter extends RootStackRouter {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const DashboardPage(),
+      );
+    },
+    FeedRouter.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: FeedFlow(),
       );
     },
     FeedListRoute.name: (routeData) {
@@ -110,9 +110,15 @@ abstract class _$AppRouter extends RootStackRouter {
       );
     },
     HubDetailRoute.name: (routeData) {
+      final pathParams = routeData.inheritedPathParams;
+      final args = routeData.argsAs<HubDetailRouteArgs>(
+          orElse: () => HubDetailRouteArgs());
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const HubDetailPage(),
+        child: HubDetailPage(
+          key: args.key,
+          alias: pathParams.getString('alias'),
+        ),
       );
     },
     HubListRoute.name: (routeData) {
@@ -128,18 +134,6 @@ abstract class _$AppRouter extends RootStackRouter {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: NewsCommentListPage(
-          key: args.key,
-          id: args.id,
-        ),
-      );
-    },
-    NewsDetailRoute.name: (routeData) {
-      final pathParams = routeData.inheritedPathParams;
-      final args = routeData.argsAs<NewsDetailRouteArgs>(
-          orElse: () => NewsDetailRouteArgs(id: pathParams.getString('id')));
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: NewsDetailPage(
           key: args.key,
           id: args.id,
         ),
@@ -175,18 +169,6 @@ abstract class _$AppRouter extends RootStackRouter {
         ),
       );
     },
-    PostDetailRoute.name: (routeData) {
-      final pathParams = routeData.inheritedPathParams;
-      final args = routeData.argsAs<PostDetailRouteArgs>(
-          orElse: () => PostDetailRouteArgs(id: pathParams.getString('id')));
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: PostDetailPage(
-          key: args.key,
-          id: args.id,
-        ),
-      );
-    },
     PostListRoute.name: (routeData) {
       final pathParams = routeData.inheritedPathParams;
       final args = routeData.argsAs<PostListRouteArgs>(
@@ -205,10 +187,48 @@ abstract class _$AppRouter extends RootStackRouter {
         child: PostsFlow(),
       );
     },
-    PublicationsDashboardRoute.name: (routeData) {
+    PublicationCommentRoute.name: (routeData) {
+      final pathParams = routeData.inheritedPathParams;
+      final args = routeData.argsAs<PublicationCommentRouteArgs>(
+          orElse: () => PublicationCommentRouteArgs(
+                type: pathParams.getString('type'),
+                id: pathParams.getString('id'),
+              ));
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const PublicationPage(),
+        child: PublicationCommentPage(
+          key: args.key,
+          type: args.type,
+          id: args.id,
+        ),
+      );
+    },
+    PublicationDashboardRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const PublicationDashboardPage(),
+      );
+    },
+    PublicationDetailRoute.name: (routeData) {
+      final pathParams = routeData.inheritedPathParams;
+      final args = routeData.argsAs<PublicationDetailRouteArgs>(
+          orElse: () => PublicationDetailRouteArgs(
+                type: pathParams.getString('type'),
+                id: pathParams.getString('id'),
+              ));
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: PublicationDetailPage(
+          key: args.key,
+          type: args.type,
+          id: args.id,
+        ),
+      );
+    },
+    PublicationRouter.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: PublicationFlow(),
       );
     },
     ServicesRouter.name: (routeData) {
@@ -241,6 +261,7 @@ abstract class _$AppRouter extends RootStackRouter {
         routeData: routeData,
         child: UserBookmarkListPage(
           key: args.key,
+          alias: pathParams.getString('alias'),
           type: args.type,
         ),
       );
@@ -271,9 +292,15 @@ abstract class _$AppRouter extends RootStackRouter {
       );
     },
     UserDetailRoute.name: (routeData) {
+      final pathParams = routeData.inheritedPathParams;
+      final args = routeData.argsAs<UserDetailRouteArgs>(
+          orElse: () => UserDetailRouteArgs());
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const UserDetailPage(),
+        child: UserDetailPage(
+          key: args.key,
+          alias: pathParams.getString('alias'),
+        ),
       );
     },
     UserListRoute.name: (routeData) {
@@ -294,6 +321,7 @@ abstract class _$AppRouter extends RootStackRouter {
         routeData: routeData,
         child: UserPublicationListPage(
           key: args.key,
+          alias: pathParams.getString('alias'),
           type: args.type,
         ),
       );
@@ -337,45 +365,6 @@ class ArticleCommentsRouteArgs {
   @override
   String toString() {
     return 'ArticleCommentsRouteArgs{key: $key, id: $id}';
-  }
-}
-
-/// generated route for
-/// [ArticleDetailPage]
-class ArticleDetailRoute extends PageRouteInfo<ArticleDetailRouteArgs> {
-  ArticleDetailRoute({
-    Key? key,
-    required String id,
-    List<PageRouteInfo>? children,
-  }) : super(
-          ArticleDetailRoute.name,
-          args: ArticleDetailRouteArgs(
-            key: key,
-            id: id,
-          ),
-          rawPathParams: {'id': id},
-          initialChildren: children,
-        );
-
-  static const String name = 'ArticleDetailRoute';
-
-  static const PageInfo<ArticleDetailRouteArgs> page =
-      PageInfo<ArticleDetailRouteArgs>(name);
-}
-
-class ArticleDetailRouteArgs {
-  const ArticleDetailRouteArgs({
-    this.key,
-    required this.id,
-  });
-
-  final Key? key;
-
-  final String id;
-
-  @override
-  String toString() {
-    return 'ArticleDetailRouteArgs{key: $key, id: $id}';
   }
 }
 
@@ -473,16 +462,31 @@ class CompanyDashboardRouteArgs {
 
 /// generated route for
 /// [CompanyDetailPage]
-class CompanyDetailRoute extends PageRouteInfo<void> {
-  const CompanyDetailRoute({List<PageRouteInfo>? children})
-      : super(
+class CompanyDetailRoute extends PageRouteInfo<CompanyDetailRouteArgs> {
+  CompanyDetailRoute({
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
           CompanyDetailRoute.name,
+          args: CompanyDetailRouteArgs(key: key),
           initialChildren: children,
         );
 
   static const String name = 'CompanyDetailRoute';
 
-  static const PageInfo<void> page = PageInfo<void>(name);
+  static const PageInfo<CompanyDetailRouteArgs> page =
+      PageInfo<CompanyDetailRouteArgs>(name);
+}
+
+class CompanyDetailRouteArgs {
+  const CompanyDetailRouteArgs({this.key});
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'CompanyDetailRouteArgs{key: $key}';
+  }
 }
 
 /// generated route for
@@ -509,6 +513,20 @@ class DashboardRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'DashboardRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [FeedFlow]
+class FeedRouter extends PageRouteInfo<void> {
+  const FeedRouter({List<PageRouteInfo>? children})
+      : super(
+          FeedRouter.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'FeedRouter';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }
@@ -568,16 +586,31 @@ class HubDashboardRouteArgs {
 
 /// generated route for
 /// [HubDetailPage]
-class HubDetailRoute extends PageRouteInfo<void> {
-  const HubDetailRoute({List<PageRouteInfo>? children})
-      : super(
+class HubDetailRoute extends PageRouteInfo<HubDetailRouteArgs> {
+  HubDetailRoute({
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
           HubDetailRoute.name,
+          args: HubDetailRouteArgs(key: key),
           initialChildren: children,
         );
 
   static const String name = 'HubDetailRoute';
 
-  static const PageInfo<void> page = PageInfo<void>(name);
+  static const PageInfo<HubDetailRouteArgs> page =
+      PageInfo<HubDetailRouteArgs>(name);
+}
+
+class HubDetailRouteArgs {
+  const HubDetailRouteArgs({this.key});
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'HubDetailRouteArgs{key: $key}';
+  }
 }
 
 /// generated route for
@@ -630,45 +663,6 @@ class NewsCommentsRouteArgs {
   @override
   String toString() {
     return 'NewsCommentsRouteArgs{key: $key, id: $id}';
-  }
-}
-
-/// generated route for
-/// [NewsDetailPage]
-class NewsDetailRoute extends PageRouteInfo<NewsDetailRouteArgs> {
-  NewsDetailRoute({
-    Key? key,
-    required String id,
-    List<PageRouteInfo>? children,
-  }) : super(
-          NewsDetailRoute.name,
-          args: NewsDetailRouteArgs(
-            key: key,
-            id: id,
-          ),
-          rawPathParams: {'id': id},
-          initialChildren: children,
-        );
-
-  static const String name = 'NewsDetailRoute';
-
-  static const PageInfo<NewsDetailRouteArgs> page =
-      PageInfo<NewsDetailRouteArgs>(name);
-}
-
-class NewsDetailRouteArgs {
-  const NewsDetailRouteArgs({
-    this.key,
-    required this.id,
-  });
-
-  final Key? key;
-
-  final String id;
-
-  @override
-  String toString() {
-    return 'NewsDetailRouteArgs{key: $key, id: $id}';
   }
 }
 
@@ -765,45 +759,6 @@ class PostCommentsRouteArgs {
 }
 
 /// generated route for
-/// [PostDetailPage]
-class PostDetailRoute extends PageRouteInfo<PostDetailRouteArgs> {
-  PostDetailRoute({
-    Key? key,
-    required String id,
-    List<PageRouteInfo>? children,
-  }) : super(
-          PostDetailRoute.name,
-          args: PostDetailRouteArgs(
-            key: key,
-            id: id,
-          ),
-          rawPathParams: {'id': id},
-          initialChildren: children,
-        );
-
-  static const String name = 'PostDetailRoute';
-
-  static const PageInfo<PostDetailRouteArgs> page =
-      PageInfo<PostDetailRouteArgs>(name);
-}
-
-class PostDetailRouteArgs {
-  const PostDetailRouteArgs({
-    this.key,
-    required this.id,
-  });
-
-  final Key? key;
-
-  final String id;
-
-  @override
-  String toString() {
-    return 'PostDetailRouteArgs{key: $key, id: $id}';
-  }
-}
-
-/// generated route for
 /// [PostListPage]
 class PostListRoute extends PageRouteInfo<PostListRouteArgs> {
   PostListRoute({
@@ -857,15 +812,124 @@ class PostsRouter extends PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [PublicationPage]
-class PublicationsDashboardRoute extends PageRouteInfo<void> {
-  const PublicationsDashboardRoute({List<PageRouteInfo>? children})
-      : super(
-          PublicationsDashboardRoute.name,
+/// [PublicationCommentPage]
+class PublicationCommentRoute
+    extends PageRouteInfo<PublicationCommentRouteArgs> {
+  PublicationCommentRoute({
+    Key? key,
+    required String type,
+    required String id,
+    List<PageRouteInfo>? children,
+  }) : super(
+          PublicationCommentRoute.name,
+          args: PublicationCommentRouteArgs(
+            key: key,
+            type: type,
+            id: id,
+          ),
+          rawPathParams: {
+            'type': type,
+            'id': id,
+          },
           initialChildren: children,
         );
 
-  static const String name = 'PublicationsDashboardRoute';
+  static const String name = 'PublicationCommentRoute';
+
+  static const PageInfo<PublicationCommentRouteArgs> page =
+      PageInfo<PublicationCommentRouteArgs>(name);
+}
+
+class PublicationCommentRouteArgs {
+  const PublicationCommentRouteArgs({
+    this.key,
+    required this.type,
+    required this.id,
+  });
+
+  final Key? key;
+
+  final String type;
+
+  final String id;
+
+  @override
+  String toString() {
+    return 'PublicationCommentRouteArgs{key: $key, type: $type, id: $id}';
+  }
+}
+
+/// generated route for
+/// [PublicationDashboardPage]
+class PublicationDashboardRoute extends PageRouteInfo<void> {
+  const PublicationDashboardRoute({List<PageRouteInfo>? children})
+      : super(
+          PublicationDashboardRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'PublicationDashboardRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [PublicationDetailPage]
+class PublicationDetailRoute extends PageRouteInfo<PublicationDetailRouteArgs> {
+  PublicationDetailRoute({
+    Key? key,
+    required String type,
+    required String id,
+    List<PageRouteInfo>? children,
+  }) : super(
+          PublicationDetailRoute.name,
+          args: PublicationDetailRouteArgs(
+            key: key,
+            type: type,
+            id: id,
+          ),
+          rawPathParams: {
+            'type': type,
+            'id': id,
+          },
+          initialChildren: children,
+        );
+
+  static const String name = 'PublicationDetailRoute';
+
+  static const PageInfo<PublicationDetailRouteArgs> page =
+      PageInfo<PublicationDetailRouteArgs>(name);
+}
+
+class PublicationDetailRouteArgs {
+  const PublicationDetailRouteArgs({
+    this.key,
+    required this.type,
+    required this.id,
+  });
+
+  final Key? key;
+
+  final String type;
+
+  final String id;
+
+  @override
+  String toString() {
+    return 'PublicationDetailRouteArgs{key: $key, type: $type, id: $id}';
+  }
+}
+
+/// generated route for
+/// [PublicationFlow]
+class PublicationRouter extends PageRouteInfo<void> {
+  const PublicationRouter({List<PageRouteInfo>? children})
+      : super(
+          PublicationRouter.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'PublicationRouter';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }
@@ -1021,16 +1085,31 @@ class UserDashboardRouteArgs {
 
 /// generated route for
 /// [UserDetailPage]
-class UserDetailRoute extends PageRouteInfo<void> {
-  const UserDetailRoute({List<PageRouteInfo>? children})
-      : super(
+class UserDetailRoute extends PageRouteInfo<UserDetailRouteArgs> {
+  UserDetailRoute({
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
           UserDetailRoute.name,
+          args: UserDetailRouteArgs(key: key),
           initialChildren: children,
         );
 
   static const String name = 'UserDetailRoute';
 
-  static const PageInfo<void> page = PageInfo<void>(name);
+  static const PageInfo<UserDetailRouteArgs> page =
+      PageInfo<UserDetailRouteArgs>(name);
+}
+
+class UserDetailRouteArgs {
+  const UserDetailRouteArgs({this.key});
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'UserDetailRouteArgs{key: $key}';
+  }
 }
 
 /// generated route for

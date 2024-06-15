@@ -1,12 +1,10 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/component/di/injector.dart';
+import '../../../../core/component/router/app_router.dart';
 import '../../../../data/model/user_base.dart';
 import '../../../extension/part.dart';
-import '../../../page/services/user/page/user_bookmark_list_page.dart';
-import '../../../page/services/user/page/user_comment_list_page.dart';
-import '../../../page/services/user/page/user_publication_list_page.dart';
 import '../../../widget/card_avatar_widget.dart';
 import '../../../widget/enhancement/card.dart';
 import '../../../widget/enhancement/progress_indicator.dart';
@@ -36,8 +34,8 @@ class DialogUserProfileWidget extends StatelessWidget
               subtitle: user.fullname.isNotEmpty ? Text(user.fullname) : null,
               title: Text('@${user.alias}'),
               onTap: () {
-                context.navigateNamedTo(
-                  'services/users/${user.alias}',
+                getIt<AppRouter>().navigate(
+                  UserDashboardRoute(alias: user.alias),
                 );
 
                 Navigator.of(context).pop();
@@ -46,8 +44,15 @@ class DialogUserProfileWidget extends StatelessWidget
             ListTile(
               title: const Text('Публикации'),
               onTap: () {
-                context.navigateNamedTo(
-                  'services/users/${user.alias}/${UserPublicationListPage.routePath}',
+                getIt<AppRouter>().navigate(
+                  ServicesRouter(
+                    children: [
+                      UserDashboardRoute(
+                        alias: user.alias,
+                        children: [UserPublicationListRoute()],
+                      )
+                    ],
+                  ),
                 );
 
                 Navigator.of(context).pop();
@@ -56,8 +61,15 @@ class DialogUserProfileWidget extends StatelessWidget
             ListTile(
               title: const Text('Закладки'),
               onTap: () {
-                context.navigateNamedTo(
-                  'services/users/${user.alias}/${UserBookmarkListPage.routePath}',
+                getIt<AppRouter>().navigate(
+                  ServicesRouter(
+                    children: [
+                      UserDashboardRoute(
+                        alias: user.alias,
+                        children: [UserBookmarkListRoute()],
+                      )
+                    ],
+                  ),
                 );
 
                 Navigator.of(context).pop();
@@ -66,8 +78,15 @@ class DialogUserProfileWidget extends StatelessWidget
             ListTile(
               title: const Text('Комментарии'),
               onTap: () {
-                context.navigateNamedTo(
-                  'services/users/${user.alias}/${UserCommentListPage.routePath}',
+                getIt<AppRouter>().navigate(
+                  ServicesRouter(
+                    children: [
+                      UserDashboardRoute(
+                        alias: user.alias,
+                        children: [UserCommentListRoute()],
+                      )
+                    ],
+                  ),
                 );
 
                 Navigator.of(context).pop();

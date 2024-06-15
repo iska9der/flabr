@@ -50,7 +50,7 @@ class HubDashboardPageView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AutoTabsRouter.tabBar(
-      routes: const [
+      routes: [
         HubDetailRoute(),
       ],
       builder: (context, child, controller) {

@@ -13,18 +13,19 @@ import 'cubit/search_cubit.dart';
 import 'widget/search.dart';
 import 'widget/search_anywhere.dart';
 
-@RoutePage(name: PublicationPage.routeName)
-class PublicationPage extends StatefulWidget {
-  const PublicationPage({super.key});
+@RoutePage(name: PublicationDashboardPage.routeName)
+class PublicationDashboardPage extends StatefulWidget {
+  const PublicationDashboardPage({super.key});
 
   static const String routePath = '';
-  static const String routeName = 'PublicationsDashboardRoute';
+  static const String routeName = 'PublicationDashboardRoute';
 
   @override
-  State<PublicationPage> createState() => _PublicationPageState();
+  State<PublicationDashboardPage> createState() =>
+      _PublicationDashboardPageState();
 }
 
-class _PublicationPageState extends State<PublicationPage> {
+class _PublicationDashboardPageState extends State<PublicationDashboardPage> {
   late final SearchCubit searchCubit;
 
   final _listRouteNames = const [
@@ -86,7 +87,7 @@ class _PublicationPageState extends State<PublicationPage> {
       child: AutoTabsRouter.tabBar(
         physics: tabBarPhysics,
         routes: const [
-          FeedListRoute(),
+          FeedRouter(),
           ArticlesRouter(),
           PostsRouter(),
           NewsRouter(),
@@ -127,19 +128,19 @@ class _PublicationPageState extends State<PublicationPage> {
                             tabs: const [
                               DashboardDrawerLinkWidget(
                                 title: 'Моя лента',
-                                route: 'feed',
+                                route: '/feed',
                               ),
                               DashboardDrawerLinkWidget(
                                 title: 'Статьи',
-                                route: 'articles',
+                                route: '/articles',
                               ),
                               DashboardDrawerLinkWidget(
                                 title: 'Посты',
-                                route: 'posts',
+                                route: '/posts',
                               ),
                               DashboardDrawerLinkWidget(
                                 title: 'Новости',
-                                route: 'news',
+                                route: '/news',
                               ),
                             ],
                           ),
@@ -165,7 +166,7 @@ class _PublicationPageState extends State<PublicationPage> {
                           ),
                           const MyProfileIconButton(),
                         ],
-                      )
+                      ),
                     ],
                   ),
                 ),

@@ -35,10 +35,13 @@ class _PublicationHub extends StatelessWidget {
       title += '*';
     }
 
-    var path = hub.type.isCorporative ? 'companies' : 'hubs';
+    final route = switch (hub.type.isCorporative) {
+      true => CompanyDashboardRoute(alias: hub.alias),
+      false => HubDashboardRoute(alias: hub.alias),
+    } as PageRouteInfo;
 
     return InkWell(
-      onTap: () => context.navigateNamedTo('services/$path/${hub.alias}'),
+      onTap: () => getIt<AppRouter>().navigate(route),
       borderRadius: BorderRadius.circular(kBorderRadiusDefault),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8.0),

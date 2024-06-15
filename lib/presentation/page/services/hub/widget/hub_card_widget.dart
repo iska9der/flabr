@@ -1,6 +1,7 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../../core/component/di/injector.dart';
+import '../../../../../core/component/router/app_router.dart';
 import '../../../../../data/model/hub/hub_model.dart';
 import '../../../../../data/model/hub/hub_statistics_model.dart';
 import '../../../../../data/model/render_type_enum.dart';
@@ -9,7 +10,6 @@ import '../../../../widget/card_avatar_widget.dart';
 import '../../../../widget/card_title_widget.dart';
 import '../../../../widget/enhancement/card.dart';
 import '../../../../widget/profile_stat_card_widget.dart';
-import '../../services_flow.dart';
 
 class HubCardWidget extends StatelessWidget {
   const HubCardWidget({
@@ -24,11 +24,19 @@ class HubCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var stats = model.statistics as HubStatisticsModel;
+    final tagStyle = Theme.of(context).textTheme.bodySmall;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         FlabrCard(
+          onTap: () => getIt<AppRouter>().navigate(
+            ServicesRouter(
+              children: [
+                HubDashboardRoute(alias: model.alias),
+              ],
+            ),
+          ),
           child: Row(
             children: [
               CardAvatarWidget(imageUrl: model.imageUrl),
@@ -40,9 +48,6 @@ class HubCardWidget extends StatelessWidget {
                     CardTitleWidget(
                       title: model.titleHtml,
                       renderType: renderType,
-                      onPressed: () => context.router.navigateNamed(
-                        '${ServicesFlow.routePath}/hubs/${model.alias}/profile',
-                      ),
                     ),
                     Text(
                       model.descriptionHtml,
@@ -50,14 +55,12 @@ class HubCardWidget extends StatelessWidget {
                     ),
                     const SizedBox(height: 20),
                     Wrap(
-                      children: model.commonTags.map((tag) {
-                        final style = Theme.of(context).textTheme.bodySmall;
-
-                        return Padding(
-                          padding: const EdgeInsets.fromLTRB(8, 4, 8, 4),
-                          child: Text(tag, style: style),
-                        );
-                      }).toList(),
+                      children: model.commonTags
+                          .map((tag) => Padding(
+                                padding: const EdgeInsets.fromLTRB(0, 4, 16, 4),
+                                child: Text(tag, style: tagStyle),
+                              ))
+                          .toList(),
                     ),
                   ],
                 ),

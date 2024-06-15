@@ -11,8 +11,7 @@ dependencies:
   collection: any
   meta: any
 
-  app_links: ^6.1.1
-  auto_route: ^7.8.4
+  auto_route: ^8.2.0
   cached_network_image: ^3.3.1
   cupertino_icons: ^1.0.8
   dio: ^5.4.3+1
@@ -48,9 +47,9 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   analyzer: ^6.4.1
-  auto_route_generator: ^7.3.2
-  build_runner: ^2.4.10
-  dart_code_metrics_presets: ^2.12.0
+  auto_route_generator: ^8.0.0
+  build_runner: ^2.4.11
+  dart_code_metrics_presets: ^2.13.0
   flutter_launcher_icons: ^0.13.1
   flutter_lints: ^4.0.0
   injectable_generator: ^2.6.1
