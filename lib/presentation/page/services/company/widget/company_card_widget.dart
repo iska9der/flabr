@@ -26,9 +26,7 @@ class CompanyCardWidget extends StatelessWidget {
 
   moveToDetails(BuildContext context) {
     getIt<AppRouter>().navigate(
-      ServicesRouter(
-        children: [CompanyDashboardRoute(alias: model.alias)],
-      ),
+      CompanyDashboardRoute(alias: model.alias),
     );
   }
 
@@ -88,9 +86,7 @@ class CompanyCardWidget extends StatelessWidget {
                   } as PageRouteInfo;
 
                   return InkWell(
-                    onTap: () => getIt<AppRouter>().navigate(
-                      ServicesRouter(children: [route]),
-                    ),
+                    onTap: () => getIt<AppRouter>().navigate(route),
                     borderRadius: BorderRadius.circular(kBorderRadiusDefault),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 8),

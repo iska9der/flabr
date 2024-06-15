@@ -198,6 +198,12 @@ abstract class _$AppRouter extends RootStackRouter {
         ),
       );
     },
+    SearchAnywhereRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const SearchAnywherePage(),
+      );
+    },
     ServicesRouter.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -779,6 +785,20 @@ class PublicationRouterArgs {
   String toString() {
     return 'PublicationRouterArgs{key: $key, type: $type, id: $id}';
   }
+}
+
+/// generated route for
+/// [SearchAnywherePage]
+class SearchAnywhereRoute extends PageRouteInfo<void> {
+  const SearchAnywhereRoute({List<PageRouteInfo>? children})
+      : super(
+          SearchAnywhereRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'SearchAnywhereRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
 }
 
 /// generated route for

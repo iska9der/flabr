@@ -17,6 +17,7 @@ import '../../../presentation/page/publications/publication_comment_page.dart';
 import '../../../presentation/page/publications/publication_dashboard_page.dart';
 import '../../../presentation/page/publications/publication_detail_page.dart';
 import '../../../presentation/page/publications/publication_flow.dart';
+import '../../../presentation/page/publications/search/search_anywhere_page.dart';
 import '../../../presentation/page/services/company/page/company_dashboard_page.dart';
 import '../../../presentation/page/services/company/page/company_detail_page.dart';
 import '../../../presentation/page/services/company/page/company_list_page.dart';
@@ -230,6 +231,12 @@ class AppRouter extends _$AppRouter {
       ],
     ),
 
+    /// Поиск
+    AutoRoute(
+      path: SearchAnywherePage.routePath,
+      page: SearchAnywhereRoute.page,
+    ),
+
     /// Просмотр публикации
     AutoRoute(
       path: PublicationFlow.routePath,
@@ -270,6 +277,7 @@ final _userDashboard = AutoRoute(
   page: UserDashboardRoute.page,
   children: [
     AutoRoute(
+      initial: true,
       path: UserDetailPage.routePath,
       page: UserDetailRoute.page,
     ),
@@ -293,6 +301,7 @@ final _hubDashboard = AutoRoute(
   page: HubDashboardRoute.page,
   children: [
     AutoRoute(
+      initial: true,
       path: HubDetailPage.routePath,
       page: HubDetailRoute.page,
     ),
@@ -304,6 +313,7 @@ final _companyDashboard = AutoRoute(
   page: CompanyDashboardRoute.page,
   children: [
     AutoRoute(
+      initial: true,
       path: CompanyDetailPage.routePath,
       page: CompanyDetailRoute.page,
     ),

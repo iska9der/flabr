@@ -2,16 +2,12 @@ import 'dart:async';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/component/di/injector.dart';
 import '../../../core/component/router/app_router.dart';
 import '../../feature/auth/widget/profile_icon_button.dart';
 import '../../theme/part.dart';
 import '../../widget/dashboard_drawer_link_widget.dart';
-import 'cubit/search_cubit.dart';
-import 'widget/search.dart';
-import 'widget/search_anywhere.dart';
 
 @RoutePage(name: PublicationDashboardPage.routeName)
 class PublicationDashboardPage extends StatefulWidget {
@@ -26,8 +22,6 @@ class PublicationDashboardPage extends StatefulWidget {
 }
 
 class _PublicationDashboardPageState extends State<PublicationDashboardPage> {
-  late final SearchCubit searchCubit;
-
   final _listRouteNames = const [
     FeedListRoute.name,
     ArticleListRoute.name,
@@ -43,11 +37,6 @@ class _PublicationDashboardPageState extends State<PublicationDashboardPage> {
 
   @override
   void initState() {
-    searchCubit = SearchCubit(
-      repository: getIt(),
-      langRepository: getIt(),
-    );
-
     isTabsVisible.addListener(() {
       /// Если мы прячем табы, значит мы находимся не в корне раздела публикации,
       /// и нужно отключать горизонтальные жесты для переключения между табами,
@@ -82,100 +71,87 @@ class _PublicationDashboardPageState extends State<PublicationDashboardPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider.value(
-      value: searchCubit,
-      child: AutoTabsRouter.tabBar(
-        physics: tabBarPhysics,
-        routes: const [
-          FeedRouter(),
-          ArticlesRouter(),
-          PostsRouter(),
-          NewsRouter(),
-        ],
-        builder: (context, child, controller) {
-          final currentName = AutoRouter.of(context).topMatch.name;
+    return AutoTabsRouter.tabBar(
+      physics: tabBarPhysics,
+      routes: const [
+        FeedRouter(),
+        ArticlesRouter(),
+        PostsRouter(),
+        NewsRouter(),
+      ],
+      builder: (context, child, controller) {
+        final currentName = AutoRouter.of(context).topMatch.name;
 
-          final isHidden = _listRouteNames.any((name) => name == currentName);
-          isTabsVisible.value = isHidden;
+        final isHidden = _listRouteNames.any((name) => name == currentName);
+        isTabsVisible.value = isHidden;
 
-          return Column(
-            children: [
-              AnimatedBuilder(
-                animation: isTabsVisible,
-                builder: (context, child) {
-                  return AnimatedContainer(
-                    height: isTabsVisible.value ? fDashboardTabHeight : 0,
-                    duration: const Duration(milliseconds: 200),
-                    child: child,
-                  );
-                },
-                child: ColoredBox(
-                  color: Theme.of(context).colorScheme.surface,
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Expanded(
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: TabBar(
-                            controller: controller,
-                            isScrollable: true,
-                            padding: EdgeInsets.zero,
-                            labelPadding: const EdgeInsets.symmetric(
-                              horizontal: 12,
-                            ),
-                            dividerColor: Colors.transparent,
-                            tabs: const [
-                              DashboardDrawerLinkWidget(
-                                title: 'Моя лента',
-                                route: '/feed',
-                              ),
-                              DashboardDrawerLinkWidget(
-                                title: 'Статьи',
-                                route: '/articles',
-                              ),
-                              DashboardDrawerLinkWidget(
-                                title: 'Посты',
-                                route: '/posts',
-                              ),
-                              DashboardDrawerLinkWidget(
-                                title: 'Новости',
-                                route: '/news',
-                              ),
-                            ],
+        return Column(
+          children: [
+            AnimatedBuilder(
+              animation: isTabsVisible,
+              builder: (context, child) {
+                return AnimatedContainer(
+                  height: isTabsVisible.value ? fDashboardTabHeight : 0,
+                  duration: const Duration(milliseconds: 200),
+                  child: child,
+                );
+              },
+              child: ColoredBox(
+                color: Theme.of(context).colorScheme.surface,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Expanded(
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: TabBar(
+                          controller: controller,
+                          isScrollable: true,
+                          padding: EdgeInsets.zero,
+                          labelPadding: const EdgeInsets.symmetric(
+                            horizontal: 12,
                           ),
+                          dividerColor: Colors.transparent,
+                          tabs: const [
+                            DashboardDrawerLinkWidget(
+                              title: 'Моя лента',
+                              route: '/feed',
+                            ),
+                            DashboardDrawerLinkWidget(
+                              title: 'Статьи',
+                              route: '/articles',
+                            ),
+                            DashboardDrawerLinkWidget(
+                              title: 'Посты',
+                              route: '/posts',
+                            ),
+                            DashboardDrawerLinkWidget(
+                              title: 'Новости',
+                              route: '/news',
+                            ),
+                          ],
                         ),
                       ),
-                      Row(
-                        children: [
-                          IconButton(
-                            icon: const Icon(Icons.search_rounded),
-                            onPressed: () async {
-                              final cubit =
-                                  BlocProvider.of<SearchCubit>(context);
-
-                              await showFlabrSearch(
-                                context: context,
-                                delegate: SearchAnywhereDelegate(
-                                  cubit: cubit,
-                                ),
-                              );
-
-                              cubit.reset();
-                            },
+                    ),
+                    Row(
+                      children: [
+                        IconButton(
+                          icon: const Icon(Icons.search_rounded),
+                          onPressed: () => getIt<AppRouter>().push(
+                            const SearchAnywhereRoute(),
                           ),
-                          const MyProfileIconButton(),
-                        ],
-                      ),
-                    ],
-                  ),
+                        ),
+                        const MyProfileIconButton(),
+                      ],
+                    ),
+                  ],
                 ),
               ),
-              Expanded(child: child),
-            ],
-          );
-        },
-      ),
+            ),
+            Expanded(child: child),
+          ],
+        );
+      },
     );
   }
 }

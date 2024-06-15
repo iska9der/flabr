@@ -1,12 +1,12 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../data/exception/part.dart';
-import '../../../../data/model/list_response/list_response.dart';
-import '../../../../data/model/search/search_order.dart';
-import '../../../../data/model/search/search_target.dart';
-import '../../../../data/repository/part.dart';
-import '../../../extension/part.dart';
+import '../../../../../data/exception/part.dart';
+import '../../../../../data/model/list_response/list_response.dart';
+import '../../../../../data/model/search/search_order.dart';
+import '../../../../../data/model/search/search_target.dart';
+import '../../../../../data/repository/part.dart';
+import '../../../../extension/part.dart';
 
 part 'search_state.dart';
 

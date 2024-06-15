@@ -31,11 +31,7 @@ class HubCardWidget extends StatelessWidget {
       children: [
         FlabrCard(
           onTap: () => getIt<AppRouter>().navigate(
-            ServicesRouter(
-              children: [
-                HubDashboardRoute(alias: model.alias),
-              ],
-            ),
+            HubDashboardRoute(alias: model.alias),
           ),
           child: Row(
             children: [

@@ -33,7 +33,7 @@ class ArticleListPage extends StatelessWidget {
           ),
         ),
         BlocProvider(
-          create: (c) => ScrollCubit(),
+          create: (_) => ScrollCubit(),
         ),
       ],
       child: const PublicationListScaffold<FlowPublicationListCubit,

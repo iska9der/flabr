@@ -28,15 +28,11 @@ class UserCardWidget extends StatelessWidget {
 class _UserCard extends StatelessWidget {
   const _UserCard();
 
-  void _pushDetails(BuildContext context, String alias) {
+  void moveToDetails(BuildContext context, String alias) {
     getIt<AppRouter>().navigate(
-      ServicesRouter(
-        children: [
-          UserDashboardRoute(
-            alias: alias,
-            children: [UserDetailRoute()],
-          ),
-        ],
+      UserDashboardRoute(
+        alias: alias,
+        children: [UserDetailRoute()],
       ),
     );
   }
@@ -48,7 +44,7 @@ class _UserCard extends StatelessWidget {
             UserModel.empty;
 
     return FlabrCard(
-      onTap: () => _pushDetails(context, model.alias),
+      onTap: () => moveToDetails(context, model.alias),
       child: Row(
         children: [
           /// Аватар

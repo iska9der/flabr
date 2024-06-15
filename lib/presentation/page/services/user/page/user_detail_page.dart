@@ -113,16 +113,20 @@ class UserDetailPageView extends StatelessWidget {
                         ),
                       ),
                     ],
-                    SectionContainerWidget(
-                      title: 'Зарегистрирован',
-                      child: Text(
-                          DateFormat.yMMMMEEEEd().format(model.registeredAt)),
-                    ),
-                    SectionContainerWidget(
-                      title: 'Активность',
-                      child: Text(
-                          DateFormat.yMMMMEEEEd().format(model.lastActivityAt)),
-                    ),
+                    if (model.registeredAt != null)
+                      SectionContainerWidget(
+                        title: 'Зарегистрирован',
+                        child: Text(
+                          DateFormat.yMMMMEEEEd().format(model.registeredAt!),
+                        ),
+                      ),
+                    if (model.lastActivityAt != null)
+                      SectionContainerWidget(
+                        title: 'Активность',
+                        child: Text(
+                          DateFormat.yMMMMEEEEd().format(model.lastActivityAt!),
+                        ),
+                      ),
                     const UserWhoisWidget(),
                   ],
                 ),
