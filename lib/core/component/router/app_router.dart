@@ -4,16 +4,13 @@ import 'package:injectable/injectable.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 import '../../../presentation/page/dashboard_page.dart';
-import '../../../presentation/page/publications/articles/article_comment_page.dart';
 import '../../../presentation/page/publications/articles/article_detail_page.dart';
 import '../../../presentation/page/publications/articles/article_flow.dart';
 import '../../../presentation/page/publications/articles/article_list_page.dart';
 import '../../../presentation/page/publications/feed/feed_flow.dart';
 import '../../../presentation/page/publications/feed/feed_list_page.dart';
-import '../../../presentation/page/publications/news/news_comment_page.dart';
 import '../../../presentation/page/publications/news/news_flow.dart';
 import '../../../presentation/page/publications/news/news_list_page.dart';
-import '../../../presentation/page/publications/posts/post_comment_page.dart';
 import '../../../presentation/page/publications/posts/post_list_page.dart';
 import '../../../presentation/page/publications/posts/posts_flow.dart';
 import '../../../presentation/page/publications/publication_comment_page.dart';

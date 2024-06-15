@@ -149,6 +149,8 @@ class _MostReadingListState extends State<_MostReadingList> {
                             value: model.statistics.commentsCount.compact(),
                             isHighlighted:
                                 model.relatedData.unreadCommentsCount > 0,
+
+                            /// TODO: navigate to [PublicationCommentRoute]
                             onTap: () => appRouter.pushWidget(
                               ArticleCommentListPage(id: model.id),
                             ),

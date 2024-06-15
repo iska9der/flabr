@@ -28,6 +28,8 @@ class ArticleFooterWidget extends StatelessWidget {
           icon: Icons.chat_bubble_rounded,
           value: publication.statistics.commentsCount.compact(),
           isHighlighted: publication.relatedData.unreadCommentsCount > 0,
+
+          /// TODO: navigate to [PublicationCommentRoute]
           onTap: () => getIt<AppRouter>().pushWidget(
             switch (publication.type) {
               PublicationType.post => PostCommentListPage(id: publication.id),

@@ -1,4 +1,3 @@
-import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -7,16 +6,10 @@ import '../../../../data/model/publication/publication_source_enum.dart';
 import '../cubit/comment_list_cubit.dart';
 import '../widget/comment_list_view.dart';
 
-@RoutePage(name: 'ArticleCommentsRoute')
 class ArticleCommentListPage extends StatelessWidget {
-  const ArticleCommentListPage({
-    super.key,
-    @PathParam() required this.id,
-  });
+  const ArticleCommentListPage({super.key, required this.id});
 
   final String id;
-
-  static const routePath = 'comments/:id';
 
   @override
   Widget build(BuildContext context) {

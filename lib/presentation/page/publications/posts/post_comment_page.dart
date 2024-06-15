@@ -1,4 +1,3 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -7,12 +6,8 @@ import '../../../../data/model/publication/publication_source_enum.dart';
 import '../cubit/comment_list_cubit.dart';
 import '../widget/comment_list_view.dart';
 
-@RoutePage(name: 'PostCommentsRoute')
 class PostCommentListPage extends StatelessWidget {
-  const PostCommentListPage({
-    super.key,
-    @PathParam() required this.id,
-  });
+  const PostCommentListPage({super.key, required this.id});
 
   final String id;
 

@@ -89,9 +89,10 @@ class _UserCard extends StatelessWidget {
                     padding: const EdgeInsets.only(top: 12.0),
                     child: TextButton(
                       onPressed: () => getIt<AppRouter>().navigate(
-                        PublicationDetailRoute(
+                        PublicationRouter(
                           type: model.lastPost.type.name,
                           id: model.lastPost.id,
+                          children: [PublicationDetailRoute()],
                         ),
                       ),
                       child: Text(model.lastPost.titleHtml),
