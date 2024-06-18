@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
@@ -37,16 +38,35 @@ Widget _buildRefreshIndicator(
   );
 }
 
-class FlabrRefreshIndicator extends StatelessWidget {
-  const FlabrRefreshIndicator({super.key, this.onRefresh});
+class FlabrSliverRefreshIndicator extends StatelessWidget {
+  const FlabrSliverRefreshIndicator({super.key, this.onRefresh});
 
-  final Future<void> Function()? onRefresh;
+  final FutureOr<void> Function()? onRefresh;
 
   @override
   Widget build(BuildContext context) {
     return CupertinoSliverRefreshControl(
-      onRefresh: onRefresh,
+      onRefresh: onRefresh != null ? () async => onRefresh?.call() : null,
       builder: _buildRefreshIndicator,
+    );
+  }
+}
+
+class FlabrRefreshIndicator extends StatelessWidget {
+  const FlabrRefreshIndicator({
+    super.key,
+    required this.onRefresh,
+    required this.child,
+  });
+
+  final FutureOr<void> Function() onRefresh;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return RefreshIndicator(
+      onRefresh: () async => onRefresh.call(),
+      child: child,
     );
   }
 }

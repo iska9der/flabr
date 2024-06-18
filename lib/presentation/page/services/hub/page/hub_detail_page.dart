@@ -57,7 +57,8 @@ class HubDetailPageView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var scrollCtrl = context.read<ScrollCubit>().state.controller;
+    final scrollCubit = context.read<ScrollCubit>();
+    final scrollCtrl = scrollCubit.state.controller;
 
     return Scaffold(
       floatingActionButton: const FloatingScrollToTopButton(),
@@ -75,11 +76,10 @@ class HubDetailPageView extends StatelessWidget {
             controller: scrollCtrl,
             child: CustomScrollView(
               controller: scrollCtrl,
-              physics: const BouncingScrollPhysics(),
+              physics: scrollCubit.physics,
               slivers: [
-                FlabrRefreshIndicator(
-                  onRefresh: () async =>
-                      context.read<HubPublicationListCubit>().refetch(),
+                FlabrSliverRefreshIndicator(
+                  onRefresh: context.read<HubPublicationListCubit>().refetch,
                 ),
                 const SliverToBoxAdapter(child: HubProfileCardWidget()),
                 SliverAppBar(

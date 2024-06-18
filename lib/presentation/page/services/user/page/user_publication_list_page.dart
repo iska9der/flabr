@@ -53,7 +53,8 @@ class UserPublicationListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final scrollCtrl = context.read<ScrollCubit>().state.controller;
+    final scrollCubit = context.read<ScrollCubit>();
+    final scrollCtrl = scrollCubit.state.controller;
 
     return BlocListener<ScrollCubit, ScrollState>(
       listenWhen: (p, c) => c.isBottomEdge,
@@ -65,11 +66,10 @@ class UserPublicationListView extends StatelessWidget {
           child: CustomScrollView(
             controller: scrollCtrl,
             cacheExtent: 2000,
-            physics: const BouncingScrollPhysics(),
+            physics: scrollCubit.physics,
             slivers: [
-              FlabrRefreshIndicator(
-                onRefresh: () async =>
-                    context.read<UserPublicationListCubit>().refetch(),
+              FlabrSliverRefreshIndicator(
+                onRefresh: context.read<UserPublicationListCubit>().refetch,
               ),
               BlocBuilder<UserPublicationListCubit, UserPublicationListState>(
                 builder: (context, state) {

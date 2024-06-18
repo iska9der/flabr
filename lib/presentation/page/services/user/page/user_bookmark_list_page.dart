@@ -56,13 +56,12 @@ class UserBookmarkListPage extends StatelessWidget {
 }
 
 class UserBookmarkListView extends StatelessWidget {
-  const UserBookmarkListView({
-    super.key,
-  });
+  const UserBookmarkListView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final scrollCtrl = context.read<ScrollCubit>().state.controller;
+    final scrollCubit = context.read<ScrollCubit>();
+    final scrollCtrl = scrollCubit.state.controller;
 
     return Scaffold(
       floatingActionButton: const FloatingScrollToTopButton(),
@@ -71,20 +70,17 @@ class UserBookmarkListView extends StatelessWidget {
         child: CustomScrollView(
           controller: scrollCtrl,
           cacheExtent: 1000,
-          physics: const BouncingScrollPhysics(),
+          physics: scrollCubit.physics,
           slivers: [
             BlocBuilder<UserBookmarkListCubit, UserBookmarkListState>(
               builder: (context, state) {
-                return switch (state.type) {
-                  UserBookmarksType.comments => FlabrRefreshIndicator(
-                      onRefresh: () async =>
-                          context.read<UserCommentListCubit>().refetch(),
-                    ),
-                  _ => FlabrRefreshIndicator(
-                      onRefresh: () async =>
-                          context.read<UserBookmarkListCubit>().refetch(),
-                    ),
-                };
+                return FlabrSliverRefreshIndicator(
+                  onRefresh: switch (state.type) {
+                    UserBookmarksType.comments =>
+                      context.read<UserCommentListCubit>().refetch,
+                    _ => context.read<UserBookmarkListCubit>().refetch,
+                  },
+                );
               },
             ),
             BlocBuilder<UserBookmarkListCubit, UserBookmarkListState>(
