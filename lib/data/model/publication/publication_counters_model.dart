@@ -1,7 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'publication_counters.freezed.dart';
-part 'publication_counters.g.dart';
+part 'publication_counters_model.freezed.dart';
+part 'publication_counters_model.g.dart';
 
 @freezed
 class PublicationCounters with _$PublicationCounters {
