@@ -76,7 +76,6 @@ class HubDashboardPageView extends StatelessWidget {
                     tabs: const [
                       DashboardDrawerLinkWidget(
                         title: HubDetailPage.name,
-                        route: HubDetailPage.routePath,
                       )
                     ],
                   ),

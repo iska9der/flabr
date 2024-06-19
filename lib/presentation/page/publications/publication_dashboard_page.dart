@@ -2,12 +2,15 @@ import 'dart:async';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/component/di/injector.dart';
 import '../../../core/component/router/app_router.dart';
+import '../../feature/auth/cubit/auth_cubit.dart';
 import '../../feature/auth/widget/profile_icon_button.dart';
 import '../../theme/part.dart';
 import '../../widget/dashboard_drawer_link_widget.dart';
+import 'bloc/publication_counters_bloc.dart';
 
 @RoutePage(name: PublicationDashboardPage.routeName)
 class PublicationDashboardPage extends StatefulWidget {
@@ -22,50 +25,30 @@ class PublicationDashboardPage extends StatefulWidget {
 }
 
 class _PublicationDashboardPageState extends State<PublicationDashboardPage> {
-  final _listRouteNames = const [
-    FeedListRoute.name,
-    ArticleListRoute.name,
-    NewsListRoute.name,
-    PostListRoute.name,
-  ];
+  late final PublicationCountersBloc countersBloc;
+  late final StreamSubscription authSub;
 
   /// Прячем табы когда мы не находимся в корне раздела "Публикации".
   /// Если не прятать, то когда мы переходим на какой-нибудь экран с помощью роутера
   /// это выглядит ущербно и занимает лишнее место сверху экрана
-  final ValueNotifier<bool> isTabsVisible = ValueNotifier(false);
   ScrollPhysics? tabBarPhysics;
 
   @override
   void initState() {
-    isTabsVisible.addListener(() {
-      /// Если мы прячем табы, значит мы находимся не в корне раздела публикации,
-      /// и нужно отключать горизонтальные жесты для переключения между табами,
-      /// так как на запушенных экранах могут быть другие горизонтальные
-      /// обработчики жестов, и табовый обработчик будет перехватывать их и
-      /// переключать между табами вместо желаемого действия.
-      /// Например:
-      /// > открываем статью
-      /// > открываем изображение
-      /// > увеличиваем
-      /// > пытаемся сместить центр к влево или вправо, чтобы увидеть
-      /// необходимую часть изображения, то вместо смещения центра
-      /// происходит переключение с таба "Статьи" на "Посты".
-      ///
-      /// Меняем стейт с помощью таймера, так как нельзя вызывать setState
-      /// во время билда
-      Timer(const Duration(milliseconds: 100), () {
-        setState(() {
-          tabBarPhysics =
-              isTabsVisible.value ? null : const NeverScrollableScrollPhysics();
-        });
-      });
+    countersBloc = PublicationCountersBloc(repository: getIt());
+    authSub = context.read<AuthCubit>().stream.listen((state) {
+      if (state.isAuthorized || state.isUnauthorized) {
+        countersBloc.add(const PublicationCountersEvent.load());
+      }
     });
+
     super.initState();
   }
 
   @override
   void dispose() {
-    isTabsVisible.dispose();
+    authSub.cancel();
+    countersBloc.close();
     super.dispose();
   }
 
@@ -80,57 +63,50 @@ class _PublicationDashboardPageState extends State<PublicationDashboardPage> {
         NewsRouter(),
       ],
       builder: (context, child, controller) {
-        final currentName = AutoRouter.of(context).topMatch.name;
-
-        final isHidden = _listRouteNames.any((name) => name == currentName);
-        isTabsVisible.value = isHidden;
-
         return Column(
           children: [
-            AnimatedBuilder(
-              animation: isTabsVisible,
-              builder: (context, child) {
-                return AnimatedContainer(
-                  height: isTabsVisible.value ? fDashboardTabHeight : 0,
-                  duration: const Duration(milliseconds: 200),
-                  child: child,
-                );
-              },
+            SizedBox(
+              height: fDashboardTabHeight,
               child: ColoredBox(
                 color: Theme.of(context).colorScheme.surface,
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Expanded(
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: TabBar(
-                          controller: controller,
-                          isScrollable: true,
-                          padding: EdgeInsets.zero,
-                          labelPadding: const EdgeInsets.symmetric(
-                            horizontal: 12,
-                          ),
-                          dividerColor: Colors.transparent,
-                          tabs: const [
-                            DashboardDrawerLinkWidget(
-                              title: 'Моя лента',
-                              route: '/feed',
+                      child: BlocBuilder<PublicationCountersBloc,
+                          PublicationCountersState>(
+                        bloc: countersBloc,
+                        builder: (context, state) {
+                          return Align(
+                            alignment: Alignment.centerLeft,
+                            child: TabBar(
+                              controller: controller,
+                              isScrollable: true,
+                              padding: EdgeInsets.zero,
+                              labelPadding: const EdgeInsets.symmetric(
+                                horizontal: 12,
+                              ),
+                              dividerColor: Colors.transparent,
+                              tabs: [
+                                const DashboardDrawerLinkWidget(
+                                  title: 'Моя лента',
+                                ),
+                                DashboardDrawerLinkWidget(
+                                  title: 'Статьи',
+                                  count: state.counters.articles,
+                                ),
+                                DashboardDrawerLinkWidget(
+                                  title: 'Посты',
+                                  count: state.counters.posts,
+                                ),
+                                DashboardDrawerLinkWidget(
+                                  title: 'Новости',
+                                  count: state.counters.news,
+                                ),
+                              ],
                             ),
-                            DashboardDrawerLinkWidget(
-                              title: 'Статьи',
-                              route: '/articles',
-                            ),
-                            DashboardDrawerLinkWidget(
-                              title: 'Посты',
-                              route: '/posts',
-                            ),
-                            DashboardDrawerLinkWidget(
-                              title: 'Новости',
-                              route: '/news',
-                            ),
-                          ],
-                        ),
+                          );
+                        },
                       ),
                     ),
                     Row(

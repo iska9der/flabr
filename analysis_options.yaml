@@ -17,8 +17,12 @@ linter:
     eol_at_end_of_file: true
 
 analyzer:
+  exclude:
+    - "**/*.g.dart"
+    - "**/*.freezed.dart"
   errors:
     avoid_relative_lib_imports: error
+    invalid_annotation_target: ignore
 
 dart_code_metrics:
   metrics-exclude:

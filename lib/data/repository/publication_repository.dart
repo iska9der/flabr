@@ -6,6 +6,14 @@ class PublicationRepository {
 
   final PublicationService service;
 
+  Future<PublicationCounters> fetchCounters() async {
+    final rawData = await service.fetchCounters();
+
+    final counters = PublicationCounters.fromJson(rawData);
+
+    return counters;
+  }
+
   Future<Publication> fetchPublicationById(
     String id, {
     required PublicationSource source,

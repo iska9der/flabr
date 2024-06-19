@@ -74,7 +74,6 @@ class CompanyDashboardPageView extends StatelessWidget {
                     tabs: const [
                       DashboardDrawerLinkWidget(
                         title: CompanyDetailPage.title,
-                        route: CompanyDetailPage.routePath,
                       )
                     ],
                   ),

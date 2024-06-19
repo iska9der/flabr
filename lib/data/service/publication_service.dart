@@ -1,6 +1,8 @@
 part of 'part.dart';
 
 abstract interface class PublicationService {
+  Future<Map<String, dynamic>> fetchCounters();
+
   Future<Map<String, dynamic>> fetchArticleById(
     String id, {
     required String langUI,
@@ -85,6 +87,17 @@ class PublicationServiceImpl implements PublicationService {
 
   final HttpClient _mobileClient;
   final HttpClient _siteClient;
+
+  @override
+  Future<Map<String, dynamic>> fetchCounters() async {
+    try {
+      final response = await _mobileClient.get('/feed/counters');
+
+      return response.data;
+    } catch (e, trace) {
+      Error.throwWithStackTrace(FetchException(), trace);
+    }
+  }
 
   @override
   Future<Map<String, dynamic>> fetchArticleById(

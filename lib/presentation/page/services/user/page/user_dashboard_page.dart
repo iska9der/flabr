@@ -80,19 +80,15 @@ class UserDashboardView extends StatelessWidget {
                     tabs: const [
                       DashboardDrawerLinkWidget(
                         title: UserDetailPage.title,
-                        route: UserDetailPage.routePath,
                       ),
                       DashboardDrawerLinkWidget(
                         title: UserPublicationListPage.title,
-                        route: UserPublicationListPage.routePath,
                       ),
                       DashboardDrawerLinkWidget(
                         title: UserCommentListPage.title,
-                        route: UserCommentListPage.routePath,
                       ),
                       DashboardDrawerLinkWidget(
                         title: UserBookmarkListPage.title,
-                        route: UserBookmarkListPage.routePath,
                       ),
                     ],
                   ),
