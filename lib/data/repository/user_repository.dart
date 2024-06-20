@@ -9,8 +9,8 @@ class UserRepository {
   UserListResponse cached = UserListResponse.empty;
 
   Future<UserListResponse> fetchAll({
-    required LanguageEnum langUI,
-    required List<LanguageEnum> langArticles,
+    required Language langUI,
+    required List<Language> langArticles,
     required String page,
   }) async {
     final response = await _service.fetchAll(
@@ -24,10 +24,10 @@ class UserRepository {
     return response;
   }
 
-  Future<UserModel> fetchCard({
+  Future<User> fetchCard({
     required String login,
-    required LanguageEnum langUI,
-    required List<LanguageEnum> langArticles,
+    required Language langUI,
+    required List<Language> langArticles,
   }) async {
     final raw = await _service.fetchCard(
       alias: login,
@@ -35,19 +35,19 @@ class UserRepository {
       langArticles: LanguageEncoder.encodeLangs(langArticles),
     );
 
-    UserModel model = UserModel.fromMap(raw);
+    User model = User.fromMap(raw);
 
     return model;
   }
 
-  UserModel getByLogin(String login) {
+  User getByLogin(String login) {
     return cached.refs.firstWhere((element) => element.alias == login);
   }
 
-  Future<UserWhoisModel> fetchWhois({
+  Future<UserWhois> fetchWhois({
     required String login,
-    required LanguageEnum langUI,
-    required List<LanguageEnum> langArticles,
+    required Language langUI,
+    required List<Language> langArticles,
   }) async {
     final raw = await _service.fetchWhois(
       alias: login,
@@ -55,7 +55,7 @@ class UserRepository {
       langArticles: LanguageEncoder.encodeLangs(langArticles),
     );
 
-    UserWhoisModel model = UserWhoisModel.fromMap(raw);
+    UserWhois model = UserWhois.fromMap(raw);
 
     return model;
   }

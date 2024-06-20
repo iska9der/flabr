@@ -1,36 +1,36 @@
 import 'package:equatable/equatable.dart';
 
-class UserLocationModel extends Equatable {
+class UserLocation extends Equatable {
   final String country;
   final String region;
   final String city;
-  const UserLocationModel({
+  const UserLocation({
     required this.country,
     required this.region,
     required this.city,
   });
 
-  UserLocationModel copyWith({
+  UserLocation copyWith({
     String? country,
     String? region,
     String? city,
   }) {
-    return UserLocationModel(
+    return UserLocation(
       country: country ?? this.country,
       region: region ?? this.region,
       city: city ?? this.city,
     );
   }
 
-  factory UserLocationModel.fromMap(Map<String, dynamic> map) {
-    return UserLocationModel(
+  factory UserLocation.fromMap(Map<String, dynamic> map) {
+    return UserLocation(
       country: map['country'] != null ? map['country']['title'] : '',
       region: map['region'] != null ? map['region']['title'] : '',
       city: map['city'] != null ? map['city']['title'] : '',
     );
   }
 
-  static const empty = UserLocationModel(country: '', region: '', city: '');
+  static const empty = UserLocation(country: '', region: '', city: '');
   bool get isEmpty => this == empty;
 
   String get fullLocation {

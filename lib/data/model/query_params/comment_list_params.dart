@@ -1,4 +1,4 @@
-import 'params.dart';
+import 'params_model.dart';
 
 class CommentListParams extends Params {
   const CommentListParams({

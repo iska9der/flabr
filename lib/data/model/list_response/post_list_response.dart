@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 import '../publication/publication.dart';
-import 'list_response.dart';
+import 'list_response_model.dart';
 
 class PostListResponse extends ListResponse with EquatableMixin {
   const PostListResponse({

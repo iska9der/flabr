@@ -22,7 +22,7 @@ class CompanyCubit extends Cubit<CompanyState> {
   final LanguageRepository _languageRepository;
 
   void fetchCard() async {
-    CompanyCardModel card = state.card;
+    CompanyCard card = state.card;
 
     try {
       if (card.isEmpty) {

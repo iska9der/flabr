@@ -6,29 +6,29 @@ class TokenRepository {
 
   final CacheStorage _storage;
 
-  AuthDataModel _authData = AuthDataModel.empty;
-  AuthDataModel get authData => _authData;
+  Tokens _tokens = Tokens.empty;
+  Tokens get tokens => _tokens;
 
   String _csrf = '';
 
-  Future<AuthDataModel?> getData() async {
-    if (!_authData.isEmpty) return _authData;
+  Future<Tokens?> getTokens() async {
+    if (!_tokens.isEmpty) return _tokens;
 
-    final raw = await _storage.read(CacheKey.authData);
+    final raw = await _storage.read(CacheKey.authTokens);
 
     if (raw == null) {
       return null;
     }
 
-    _authData = AuthDataModel.fromJson(raw);
+    _tokens = Tokens.fromJson(raw);
 
-    return _authData;
+    return _tokens;
   }
 
-  Future<void> setData(AuthDataModel data) async {
-    await _storage.write(CacheKey.authData, data.toJson());
+  Future<void> setTokens(Tokens data) async {
+    await _storage.write(CacheKey.authTokens, data.toJson());
 
-    _authData = data;
+    _tokens = data;
   }
 
   Future<String?> getCsrf() async {
@@ -52,10 +52,10 @@ class TokenRepository {
   }
 
   Future<void> clearAll() async {
-    _authData = AuthDataModel.empty;
+    _tokens = Tokens.empty;
     _csrf = '';
 
-    await _storage.delete(CacheKey.authData);
+    await _storage.delete(CacheKey.authTokens);
     await _storage.delete(CacheKey.authCsrf);
   }
 }

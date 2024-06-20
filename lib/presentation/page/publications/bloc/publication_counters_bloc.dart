@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../../../data/exception/part.dart';
-import '../../../../data/model/loading_status.dart';
+import '../../../../data/model/loading_status_enum.dart';
 import '../../../../data/model/publication/publication_counters_model.dart';
 import '../../../../data/repository/part.dart';
 

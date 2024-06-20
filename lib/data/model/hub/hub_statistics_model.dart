@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
-class HubStatisticsModel extends Equatable {
-  const HubStatisticsModel({
+class HubStatistics extends Equatable {
+  const HubStatistics({
     this.subscribersCount = 0,
     this.rating = 0.0,
     this.authorsCount = 0,
@@ -13,8 +13,8 @@ class HubStatisticsModel extends Equatable {
   final int authorsCount;
   final int postsCount;
 
-  factory HubStatisticsModel.fromMap(Map<String, dynamic> map) {
-    return HubStatisticsModel(
+  factory HubStatistics.fromMap(Map<String, dynamic> map) {
+    return HubStatistics(
       subscribersCount: map['subscribersCount'] as int,
       rating: double.parse(map['rating'].toString()),
       authorsCount: map['authorsCount'] as int,
@@ -22,7 +22,7 @@ class HubStatisticsModel extends Equatable {
     );
   }
 
-  static const HubStatisticsModel empty = HubStatisticsModel();
+  static const HubStatistics empty = HubStatistics();
   bool get isEmpty => this == empty;
 
   @override

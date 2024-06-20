@@ -4,7 +4,7 @@ import 'package:equatable/equatable.dart';
 
 import '../../../../../data/exception/part.dart';
 import '../../../../../data/model/comment/comment_model.dart';
-import '../../../../../data/model/list_response/list_response.dart';
+import '../../../../../data/model/list_response/list_response_model.dart';
 import '../../../../../data/model/publication/publication.dart';
 import '../../../../../data/model/user/user_bookmarks_type.dart';
 import '../../../../feature/publication_list/part.dart';

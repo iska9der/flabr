@@ -58,12 +58,12 @@ class SettingsCubit extends Cubit<SettingsState> {
     ));
   }
 
-  (LanguageEnum, List<LanguageEnum>) _initLanguages() => (
+  (Language, List<Language>) _initLanguages() => (
         _langRepository.ui,
         _langRepository.articles,
       );
 
-  changeUILang(LanguageEnum? uiLang) {
+  changeUILang(Language? uiLang) {
     if (uiLang == null) return;
 
     emit(state.copyWith(langUI: uiLang));
@@ -71,8 +71,8 @@ class SettingsCubit extends Cubit<SettingsState> {
     _langRepository.updateUILang(uiLang);
   }
 
-  (bool, List<LanguageEnum>) validateChangeArticlesLang(
-    LanguageEnum lang, {
+  (bool, List<Language>) validateChangeArticlesLang(
+    Language lang, {
     required bool isEnabled,
   }) {
     var newLangs = [...state.langArticles];
@@ -88,7 +88,7 @@ class SettingsCubit extends Cubit<SettingsState> {
     return (true, newLangs);
   }
 
-  changeArticleLang(LanguageEnum lang, {bool? isEnabled}) async {
+  changeArticleLang(Language lang, {bool? isEnabled}) async {
     if (isEnabled == null) return;
     var (isValid, newLangs) = validateChangeArticlesLang(
       lang,

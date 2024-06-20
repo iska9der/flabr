@@ -5,8 +5,8 @@ import '../related_data/user_related_data_model.dart';
 import 'user_location_model.dart';
 import 'user_workplace_model.dart';
 
-class UserModel extends Equatable {
-  const UserModel({
+class User extends Equatable {
+  const User({
     required this.id,
     this.alias = '',
     this.registerDateTime = '',
@@ -19,7 +19,7 @@ class UserModel extends Equatable {
     this.rating = 0,
     this.ratingPosition = 0,
     this.relatedData = UserRelatedData.empty,
-    this.location = UserLocationModel.empty,
+    this.location = UserLocation.empty,
     this.workplace = const [],
     this.lastPost = PublicationCommon.empty,
   });
@@ -51,11 +51,11 @@ class UserModel extends Equatable {
   final int ratingPosition;
 
   final UserRelatedData relatedData;
-  final UserLocationModel location;
-  final List<UserWorkplaceModel> workplace;
+  final UserLocation location;
+  final List<UserWorkplace> workplace;
   final PublicationCommon lastPost;
 
-  UserModel copyWith({
+  User copyWith({
     String? id,
     String? alias,
     String? registerDateTime,
@@ -68,11 +68,11 @@ class UserModel extends Equatable {
     double? rating,
     int? ratingPosition,
     UserRelatedData? relatedData,
-    UserLocationModel? location,
-    List<UserWorkplaceModel>? workplace,
+    UserLocation? location,
+    List<UserWorkplace>? workplace,
     PublicationCommon? lastPost,
   }) {
-    return UserModel(
+    return User(
       id: id ?? this.id,
       alias: alias ?? this.alias,
       registerDateTime: registerDateTime ?? this.registerDateTime,
@@ -91,8 +91,8 @@ class UserModel extends Equatable {
     );
   }
 
-  factory UserModel.fromMap(Map<String, dynamic> map) {
-    return UserModel(
+  factory User.fromMap(Map<String, dynamic> map) {
+    return User(
       id: map['id'] ?? '',
       alias: map['alias'],
       registerDateTime: map['registerDateTime'] ?? '',
@@ -110,11 +110,11 @@ class UserModel extends Equatable {
           ? UserRelatedData.fromMap(map['relatedData'])
           : UserRelatedData.empty,
       location: map['location'] != null
-          ? UserLocationModel.fromMap(map['location'])
-          : UserLocationModel.empty,
+          ? UserLocation.fromMap(map['location'])
+          : UserLocation.empty,
       workplace: map['workplace'] != null
-          ? List<UserWorkplaceModel>.from(
-              map['workplace'].map((e) => UserWorkplaceModel.fromMap(e)),
+          ? List<UserWorkplace>.from(
+              map['workplace'].map((e) => UserWorkplace.fromMap(e)),
             )
           : const [],
       lastPost: map['lastPost'] != null
@@ -123,7 +123,7 @@ class UserModel extends Equatable {
     );
   }
 
-  static const UserModel empty = UserModel(id: '0');
+  static const User empty = User(id: '0');
   bool get isEmpty => this == empty;
 
   @override

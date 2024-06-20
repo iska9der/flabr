@@ -8,14 +8,14 @@ part 'company_card_statistics_model.dart';
 part 'company_contact_model.dart';
 part 'company_user_representative_model.dart';
 
-class CompanyCardModel extends CompanyBase {
-  const CompanyCardModel({
+class CompanyCard extends CompanyBase {
+  const CompanyCard({
     required super.alias,
     super.imageUrl = '',
     super.titleHtml = '',
     super.descriptionHtml = '',
     super.relatedData = CompanyRelatedData.empty,
-    super.statistics = CompanyCardStatisticsModel.empty,
+    super.statistics = CompanyCardStatistics.empty,
     this.information = CompanyCardInformation.empty,
     this.contacts = const [],
   });
@@ -24,17 +24,17 @@ class CompanyCardModel extends CompanyBase {
   final List<CompanyContact> contacts;
 
   @override
-  CompanyCardModel copyWith({
+  CompanyCard copyWith({
     String? alias,
     String? imageUrl,
     String? titleHtml,
     String? descriptionHtml,
     CompanyRelatedData? relatedData,
-    CompanyCardStatisticsModel? statistics,
+    CompanyCardStatistics? statistics,
     CompanyCardInformation? information,
     List<CompanyContact>? contacts,
   }) {
-    return CompanyCardModel(
+    return CompanyCard(
       alias: alias ?? this.alias,
       imageUrl: imageUrl ?? this.imageUrl,
       titleHtml: titleHtml ?? this.titleHtml,
@@ -46,10 +46,10 @@ class CompanyCardModel extends CompanyBase {
     );
   }
 
-  factory CompanyCardModel.fromMap(Map<String, dynamic> map) {
+  factory CompanyCard.fromMap(Map<String, dynamic> map) {
     final information = CompanyCardInformation.fromMap(map);
 
-    return CompanyCardModel(
+    return CompanyCard(
       alias: (map['alias'] ?? '') as String,
       imageUrl: (map['imageUrl'] ?? '') as String,
       titleHtml: (map['titleHtml'] ?? '') as String,
@@ -60,10 +60,10 @@ class CompanyCardModel extends CompanyBase {
             )
           : CompanyRelatedData.empty,
       statistics: map['statistics'] != null
-          ? CompanyCardStatisticsModel.fromMap(
+          ? CompanyCardStatistics.fromMap(
               map['statistics'] as Map<String, dynamic>,
             )
-          : CompanyCardStatisticsModel.empty,
+          : CompanyCardStatistics.empty,
       information: information,
       contacts: map['contacts'] != null
           ? List<CompanyContact>.from(
@@ -73,7 +73,7 @@ class CompanyCardModel extends CompanyBase {
     );
   }
 
-  static const empty = CompanyCardModel(alias: '-');
+  static const empty = CompanyCard(alias: '-');
   bool get isEmpty => this == empty;
 
   List<Object> get props => [

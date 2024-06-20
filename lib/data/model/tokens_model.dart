@@ -2,8 +2,8 @@ import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
 
-class AuthDataModel extends Equatable {
-  const AuthDataModel({
+class Tokens extends Equatable {
+  const Tokens({
     this.connectSID = '',
     this.habrSID = '',
     this.accCSID = '',
@@ -26,7 +26,7 @@ class AuthDataModel extends Equatable {
         hSecID,
       ];
 
-  static const empty = AuthDataModel();
+  static const empty = Tokens();
   bool get isEmpty => this == empty;
 
   Map<String, dynamic> toMap() {
@@ -39,8 +39,8 @@ class AuthDataModel extends Equatable {
     };
   }
 
-  factory AuthDataModel.fromMap(Map<String, dynamic> map) {
-    return AuthDataModel(
+  factory Tokens.fromMap(Map<String, dynamic> map) {
+    return Tokens(
       connectSID: map['connectSID'] as String,
       habrSID: map['habrSessionID'] as String,
       accCSID: map['acc_csid'] as String,
@@ -51,7 +51,7 @@ class AuthDataModel extends Equatable {
 
   String toJson() => json.encode(toMap());
 
-  factory AuthDataModel.fromJson(String source) => AuthDataModel.fromMap(
+  factory Tokens.fromJson(String source) => Tokens.fromMap(
         json.decode(source) as Map<String, dynamic>,
       );
 

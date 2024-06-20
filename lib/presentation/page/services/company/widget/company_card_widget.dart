@@ -21,7 +21,7 @@ class CompanyCardWidget extends StatelessWidget {
     this.renderType = RenderType.plain,
   });
 
-  final CompanyModel model;
+  final Company model;
   final RenderType renderType;
 
   moveToDetails(BuildContext context) {
@@ -32,7 +32,7 @@ class CompanyCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final stats = model.statistics as CompanyStatisticsModel;
+    final stats = model.statistics as CompanyStatistics;
     final hubLinkStyle = Theme.of(context).textTheme.bodySmall?.copyWith(
           color: Theme.of(context).colorScheme.primary,
         );

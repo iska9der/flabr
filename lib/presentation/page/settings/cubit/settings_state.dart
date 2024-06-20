@@ -5,8 +5,8 @@ enum SettingsStatus { initial, loading, success, failure }
 class SettingsState extends Equatable {
   const SettingsState({
     this.status = SettingsStatus.initial,
-    this.langUI = LanguageEnum.ru,
-    this.langArticles = const [LanguageEnum.ru],
+    this.langUI = Language.ru,
+    this.langArticles = const [Language.ru],
     this.theme = ThemeConfigModel.empty,
     this.publication = PublicationConfigModel.empty,
     this.feed = FeedConfigModel.empty,
@@ -16,10 +16,10 @@ class SettingsState extends Equatable {
   final SettingsStatus status;
 
   /// Язык интерфейса
-  final LanguageEnum langUI;
+  final Language langUI;
 
   /// Язык статей
-  final List<LanguageEnum> langArticles;
+  final List<Language> langArticles;
 
   /// Конфиги
   final ThemeConfigModel theme;
@@ -29,8 +29,8 @@ class SettingsState extends Equatable {
 
   SettingsState copyWith({
     SettingsStatus? status,
-    LanguageEnum? langUI,
-    List<LanguageEnum>? langArticles,
+    Language? langUI,
+    List<Language>? langArticles,
     ThemeConfigModel? theme,
     PublicationConfigModel? publication,
     FeedConfigModel? feed,

@@ -58,7 +58,7 @@ class CommentListView extends StatelessWidget {
 class CommentTreeWidget extends StatefulWidget {
   const CommentTreeWidget(this.comments, {super.key});
 
-  final List<CommentModel> comments;
+  final List<Comment> comments;
 
   @override
   State<CommentTreeWidget> createState() => _CommentTreeWidgetState();
@@ -66,8 +66,8 @@ class CommentTreeWidget extends StatefulWidget {
 
 class _CommentTreeWidgetState extends State<CommentTreeWidget> {
   late final ScrollController scrollController;
-  late final CommentModel root;
-  late final TreeController<CommentModel> treeController;
+  late final Comment root;
+  late final TreeController<Comment> treeController;
 
   final _parentKeys = <String, GlobalKey>{};
   final _history = OffsetHistory();
@@ -80,10 +80,10 @@ class _CommentTreeWidgetState extends State<CommentTreeWidget> {
     super.initState();
 
     scrollController = ScrollController();
-    root = CommentModel(id: '0', children: widget.comments);
-    treeController = TreeController<CommentModel>(
+    root = Comment(id: '0', children: widget.comments);
+    treeController = TreeController<Comment>(
       roots: root.children,
-      childrenProvider: (CommentModel comment) => comment.children,
+      childrenProvider: (Comment comment) => comment.children,
     )..expandAll();
   }
 
@@ -137,11 +137,11 @@ class _CommentTreeWidgetState extends State<CommentTreeWidget> {
       },
       child: Stack(
         children: [
-          TreeView<CommentModel>(
+          TreeView<Comment>(
             treeController: treeController,
             controller: scrollController,
             padding: const EdgeInsets.fromLTRB(4, 4, 4, 16),
-            nodeBuilder: (BuildContext context, TreeEntry<CommentModel> entry) {
+            nodeBuilder: (BuildContext context, TreeEntry<Comment> entry) {
               final key =
                   entry.node.childrenRaw.isNotEmpty ? GlobalKey() : null;
               if (key != null) {

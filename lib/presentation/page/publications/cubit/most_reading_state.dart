@@ -7,22 +7,22 @@ class MostReadingState extends Equatable {
   const MostReadingState({
     this.status = ArticleMostReadingStatus.initial,
     this.error = '',
-    this.langUI = LanguageEnum.ru,
-    this.langArticles = const [LanguageEnum.ru],
+    this.langUI = Language.ru,
+    this.langArticles = const [Language.ru],
     this.articles = const [],
   });
 
   final ArticleMostReadingStatus status;
   final String error;
-  final LanguageEnum langUI;
-  final List<LanguageEnum> langArticles;
+  final Language langUI;
+  final List<Language> langArticles;
   final List<PublicationCommon> articles;
 
   MostReadingState copyWith({
     ArticleMostReadingStatus? status,
     String? error,
-    LanguageEnum? langUI,
-    List<LanguageEnum>? langArticles,
+    Language? langUI,
+    List<Language>? langArticles,
     List<PublicationCommon>? articles,
   }) {
     return MostReadingState(

@@ -6,12 +6,12 @@ class SummaryClient extends DioClient {
     client.options = client.options.copyWith(baseUrl: 'https://300.ya.ru/api');
 
     client.interceptors.clear();
-    client.interceptors.add(_interceptor());
+    client.interceptors.add(_authInterceptor());
   }
 
   final SummaryTokenRepository _tokenRepository;
 
-  Interceptor _interceptor() {
+  Interceptor _authInterceptor() {
     return InterceptorsWrapper(
       onRequest: (request, handler) async {
         String? token = await _tokenRepository.getToken();

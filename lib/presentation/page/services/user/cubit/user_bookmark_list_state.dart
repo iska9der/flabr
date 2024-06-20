@@ -14,7 +14,7 @@ class UserBookmarkListState extends PublicationListState with EquatableMixin {
 
   final String user;
   final UserBookmarksType type;
-  final List<CommentModel> comments;
+  final List<Comment> comments;
 
   UserBookmarkListState copyWith({
     PublicationListStatus? status,
@@ -24,7 +24,7 @@ class UserBookmarkListState extends PublicationListState with EquatableMixin {
     int? page,
     int? pagesCount,
     List<Publication>? publications,
-    List<CommentModel>? comments,
+    List<Comment>? comments,
   }) {
     return UserBookmarkListState(
       status: status ?? this.status,

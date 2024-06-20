@@ -6,26 +6,26 @@ import 'package:intl/intl.dart';
 
 import 'user_badget_model.dart';
 
-class UserWhoisModel extends Equatable {
-  const UserWhoisModel({
+class UserWhois extends Equatable {
+  const UserWhois({
     this.badgets = const [],
     this.aboutHtml = '',
     this.contacts = const [],
     this.invitedBy = UserInvitedByModel.empty,
   });
 
-  final List<UserBadgetModel> badgets;
+  final List<UserBadget> badgets;
   final String aboutHtml;
   final List contacts;
   final UserInvitedByModel invitedBy;
 
-  UserWhoisModel copyWith({
-    List<UserBadgetModel>? badgets,
+  UserWhois copyWith({
+    List<UserBadget>? badgets,
     String? aboutHtml,
     List? contacts,
     UserInvitedByModel? invitedBy,
   }) {
-    return UserWhoisModel(
+    return UserWhois(
       badgets: badgets ?? this.badgets,
       aboutHtml: aboutHtml ?? this.aboutHtml,
       contacts: contacts ?? this.contacts,
@@ -33,10 +33,10 @@ class UserWhoisModel extends Equatable {
     );
   }
 
-  factory UserWhoisModel.fromMap(Map<String, dynamic> map) {
-    return UserWhoisModel(
-      badgets: List<UserBadgetModel>.from(map['badgets'].map(
-        (x) => UserBadgetModel.fromMap(x),
+  factory UserWhois.fromMap(Map<String, dynamic> map) {
+    return UserWhois(
+      badgets: List<UserBadget>.from(map['badgets'].map(
+        (x) => UserBadget.fromMap(x),
       )),
       aboutHtml: map['aboutHtml'] ?? '',
       contacts: map['contacts'] != null ? List.from(map['contacts']) : const [],
@@ -46,10 +46,10 @@ class UserWhoisModel extends Equatable {
     );
   }
 
-  factory UserWhoisModel.fromJson(String source) =>
-      UserWhoisModel.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory UserWhois.fromJson(String source) =>
+      UserWhois.fromMap(json.decode(source) as Map<String, dynamic>);
 
-  static const UserWhoisModel empty = UserWhoisModel();
+  static const UserWhois empty = UserWhois();
   bool get isEmpty => this == empty;
 
   @override

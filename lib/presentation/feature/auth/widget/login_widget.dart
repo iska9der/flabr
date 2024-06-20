@@ -33,7 +33,7 @@ class LoginWidget extends StatelessWidget implements DialogUserWidget {
                 child: BlocListener<LoginCubit, LoginState>(
                   listener: (context, state) {
                     if (state.status.isSuccess) {
-                      context.read<AuthCubit>().handleAuthData();
+                      context.read<AuthCubit>().handleTokens();
 
                       Navigator.of(context).pop();
                     }

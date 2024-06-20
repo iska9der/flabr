@@ -10,18 +10,18 @@ class LanguageRepository {
 
   final CacheStorage _storage;
 
-  final _uiController = StreamController<LanguageEnum>.broadcast();
-  Stream<LanguageEnum> get uiStream => _uiController.stream;
+  final _uiController = StreamController<Language>.broadcast();
+  Stream<Language> get uiStream => _uiController.stream;
 
-  final _articlesController = StreamController<List<LanguageEnum>>.broadcast();
-  Stream<List<LanguageEnum>> get articlesStream => _articlesController.stream;
+  final _articlesController = StreamController<List<Language>>.broadcast();
+  Stream<List<Language>> get articlesStream => _articlesController.stream;
 
   /// Последние значения из стрима
-  LanguageEnum _ui = LanguageEnum.ru;
-  LanguageEnum get ui => _ui;
+  Language _ui = Language.ru;
+  Language get ui => _ui;
 
-  List<LanguageEnum> _articles = [LanguageEnum.ru];
-  List<LanguageEnum> get articles => _articles;
+  List<Language> _articles = [Language.ru];
+  List<Language> get articles => _articles;
 
   /// Получаем кэшированные значения из хранилища
   /// и сохраняем как последния значения, а так же
@@ -36,12 +36,12 @@ class LanguageRepository {
     _articlesController.add(_articles);
   }
 
-  Future<LanguageEnum?> _getCachedUILanguage() async {
+  Future<Language?> _getCachedUILanguage() async {
     try {
       String? raw = await _storage.read(CacheKey.langUI);
       if (raw == null) return null;
 
-      final lang = LanguageEnum.fromString(raw);
+      final lang = Language.fromString(raw);
       return lang;
     } on ValueException {
       await _storage.delete(CacheKey.langUI);
@@ -49,13 +49,13 @@ class LanguageRepository {
     }
   }
 
-  void updateUILang(LanguageEnum lang) {
+  void updateUILang(Language lang) {
     _ui = lang;
     _uiController.add(lang);
     _storage.write(CacheKey.langUI, lang.name);
   }
 
-  Future<List<LanguageEnum>?> _getCachedArticlesLanguage() async {
+  Future<List<Language>?> _getCachedArticlesLanguage() async {
     try {
       String? raw = await _storage.read(CacheKey.langArticle);
       if (raw == null) return null;
@@ -68,7 +68,7 @@ class LanguageRepository {
     }
   }
 
-  void updateArticleLang(List<LanguageEnum> langs) async {
+  void updateArticleLang(List<Language> langs) async {
     _articles = langs;
     _articlesController.add(langs);
     String langsAsString = LanguageEncoder.encodeLangs(langs);

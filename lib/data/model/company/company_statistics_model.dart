@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
-class CompanyStatisticsModel extends Equatable {
-  const CompanyStatisticsModel({
+class CompanyStatistics extends Equatable {
+  const CompanyStatistics({
     this.subscribersCount = 0,
     this.rating = 0.0,
     this.invest = 0,
@@ -13,15 +13,15 @@ class CompanyStatisticsModel extends Equatable {
   /// Инвестировано (куда? в хабы?)
   final int? invest;
 
-  factory CompanyStatisticsModel.fromMap(Map<String, dynamic> map) {
-    return CompanyStatisticsModel(
+  factory CompanyStatistics.fromMap(Map<String, dynamic> map) {
+    return CompanyStatistics(
       subscribersCount: map['subscribersCount'] as int,
       rating: double.parse(map['rating'].toString()),
       invest: map['invest'] as int?,
     );
   }
 
-  static const CompanyStatisticsModel empty = CompanyStatisticsModel();
+  static const CompanyStatistics empty = CompanyStatistics();
   bool get isEmpty => this == empty;
 
   @override

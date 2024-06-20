@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../data/model/auth_data_model.dart';
+import '../../../../data/model/tokens_model.dart';
 import '../../../../data/repository/part.dart';
 import '../../../extension/part.dart';
 
@@ -31,9 +31,8 @@ class LoginCubit extends Cubit<LoginState> {
 
     emit(state.copyWith(status: LoginStatus.loading));
 
-    final authData = AuthDataModel(connectSID: value);
-
-    await _tokenRepository.setData(authData);
+    final tokens = Tokens(connectSID: value);
+    await _tokenRepository.setTokens(tokens);
 
     emit(state.copyWith(status: LoginStatus.success));
   }

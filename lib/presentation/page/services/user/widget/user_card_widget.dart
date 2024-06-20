@@ -12,7 +12,7 @@ import '../../../../widget/profile_stat_card_widget.dart';
 class UserCardWidget extends StatelessWidget {
   const UserCardWidget({super.key, required this.model});
 
-  final UserModel model;
+  final User model;
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +41,7 @@ class _UserCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final model =
         context.findAncestorWidgetOfExactType<UserCardWidget>()?.model ??
-            UserModel.empty;
+            User.empty;
 
     return FlabrCard(
       onTap: () => moveToDetails(context, model.alias),
@@ -110,7 +110,7 @@ class _UserScore extends StatelessWidget {
   Widget build(BuildContext context) {
     final model =
         context.findAncestorWidgetOfExactType<UserCardWidget>()?.model ??
-            UserModel.empty;
+            User.empty;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8),

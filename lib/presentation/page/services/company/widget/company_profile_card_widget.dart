@@ -51,7 +51,7 @@ class _CompanyProfileCardWidgetState extends State<CompanyProfileCardWidget> {
     return BlocBuilder<CompanyCubit, CompanyState>(
       builder: (context, state) {
         var card = state.card;
-        var stats = card.statistics as CompanyCardStatisticsModel;
+        var stats = card.statistics as CompanyCardStatistics;
 
         return FlabrCard(
           padding: const EdgeInsets.symmetric(

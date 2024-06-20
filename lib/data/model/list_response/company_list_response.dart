@@ -1,17 +1,17 @@
 import 'package:equatable/equatable.dart';
 
 import '../company/company_model.dart';
-import 'list_response.dart';
+import 'list_response_model.dart';
 
 class CompanyListResponse extends ListResponse with EquatableMixin {
   const CompanyListResponse({
     super.pagesCount = 1,
     super.ids = const [],
-    List<CompanyModel> super.refs = const [],
+    List<Company> super.refs = const [],
   });
 
   @override
-  List<CompanyModel> get refs => super.refs as List<CompanyModel>;
+  List<Company> get refs => super.refs as List<Company>;
 
   @override
   CompanyListResponse copyWith({
@@ -22,7 +22,7 @@ class CompanyListResponse extends ListResponse with EquatableMixin {
     return CompanyListResponse(
       pagesCount: pagesCount ?? this.pagesCount,
       ids: ids ?? this.ids,
-      refs: List<CompanyModel>.from((refs ?? this.refs)),
+      refs: List<Company>.from((refs ?? this.refs)),
     );
   }
 
@@ -35,7 +35,7 @@ class CompanyListResponse extends ListResponse with EquatableMixin {
       ids: List<String>.from(idsMap),
       refs: Map.from(refsMap)
           .entries
-          .map((e) => CompanyModel.fromMap(e.value))
+          .map((e) => Company.fromMap(e.value))
           .toList(),
     );
   }

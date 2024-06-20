@@ -5,8 +5,8 @@ import '../publication/publication_flow_enum.dart';
 import '../related_data/hub_related_data_model.dart';
 import 'hub_statistics_model.dart';
 
-class HubProfileModel extends HubBase with EquatableMixin {
-  const HubProfileModel({
+class HubProfile extends HubBase with EquatableMixin {
+  const HubProfile({
     required super.alias,
     required this.flow,
     super.titleHtml = '',
@@ -14,7 +14,7 @@ class HubProfileModel extends HubBase with EquatableMixin {
     this.fullDescriptionHtml = '',
     super.imageUrl = '',
     HubRelatedData super.relatedData = HubRelatedData.empty,
-    super.statistics = HubStatisticsModel.empty,
+    super.statistics = HubStatistics.empty,
     this.keywords = const [],
     super.isProfiled = false,
   });
@@ -24,10 +24,10 @@ class HubProfileModel extends HubBase with EquatableMixin {
   final PublicationFlow flow;
 
   @override
-  HubStatisticsModel get statistics => super.statistics as HubStatisticsModel;
+  HubStatistics get statistics => super.statistics as HubStatistics;
 
   @override
-  HubProfileModel copyWith({
+  HubProfile copyWith({
     String? alias,
     PublicationFlow? flow,
     String? titleHtml,
@@ -35,11 +35,11 @@ class HubProfileModel extends HubBase with EquatableMixin {
     String? fullDescriptionHtml,
     String? imageUrl,
     HubRelatedData? relatedData,
-    HubStatisticsModel? statistics,
+    HubStatistics? statistics,
     List<String>? keywords,
     bool? isProfiled,
   }) {
-    return HubProfileModel(
+    return HubProfile(
       alias: alias ?? this.alias,
       flow: flow ?? this.flow,
       titleHtml: titleHtml ?? this.titleHtml,
@@ -53,8 +53,8 @@ class HubProfileModel extends HubBase with EquatableMixin {
     );
   }
 
-  factory HubProfileModel.fromMap(Map<String, dynamic> map) {
-    return HubProfileModel(
+  factory HubProfile.fromMap(Map<String, dynamic> map) {
+    return HubProfile(
       alias: map['alias'] as String,
       flow: PublicationFlow.fromString(map['flow']['alias']),
       titleHtml: map['titleHtml'] as String,
@@ -65,8 +65,8 @@ class HubProfileModel extends HubBase with EquatableMixin {
           ? HubRelatedData.fromMap(map['relatedData'])
           : HubRelatedData.empty,
       statistics: map['statistics'] != null
-          ? HubStatisticsModel.fromMap(map['statistics'])
-          : HubStatisticsModel.empty,
+          ? HubStatistics.fromMap(map['statistics'])
+          : HubStatistics.empty,
       keywords: map['keywords'] != null
           ? List<String>.from(map['keywords'])
           : const [],
@@ -74,7 +74,7 @@ class HubProfileModel extends HubBase with EquatableMixin {
     );
   }
 
-  static const empty = HubProfileModel(alias: '-', flow: PublicationFlow.all);
+  static const empty = HubProfile(alias: '-', flow: PublicationFlow.all);
   bool get isEmpty => this == empty;
 
   @override

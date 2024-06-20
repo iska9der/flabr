@@ -8,8 +8,8 @@ class HubRepository {
 
   Future<HubListResponse> fetchAll({
     required int page,
-    required LanguageEnum langUI,
-    required List<LanguageEnum> langArticles,
+    required Language langUI,
+    required List<Language> langArticles,
   }) async {
     final response = await _service.fetchAll(
       page: page,
@@ -20,10 +20,10 @@ class HubRepository {
     return response;
   }
 
-  Future<HubProfileModel> fetchProfile(
+  Future<HubProfile> fetchProfile(
     String alias, {
-    required LanguageEnum langUI,
-    required List<LanguageEnum> langArticles,
+    required Language langUI,
+    required List<Language> langArticles,
   }) async {
     final raw = await _service.fetchProfile(
       alias,
@@ -31,6 +31,6 @@ class HubRepository {
       langArticles: LanguageEncoder.encodeLangs(langArticles),
     );
 
-    return HubProfileModel.fromMap(raw);
+    return HubProfile.fromMap(raw);
   }
 }

@@ -17,8 +17,8 @@ class PublicationRepository {
   Future<Publication> fetchPublicationById(
     String id, {
     required PublicationSource source,
-    required LanguageEnum langUI,
-    required List<LanguageEnum> langArticles,
+    required Language langUI,
+    required List<Language> langArticles,
   }) async {
     return switch (source) {
       PublicationSource.post => await _fetchPostById(
@@ -36,8 +36,8 @@ class PublicationRepository {
 
   Future<PublicationCommon> _fetchCommonById(
     String id, {
-    required LanguageEnum langUI,
-    required List<LanguageEnum> langArticles,
+    required Language langUI,
+    required List<Language> langArticles,
   }) async {
     final rawData = await service.fetchArticleById(
       id,
@@ -52,8 +52,8 @@ class PublicationRepository {
 
   Future<PublicationPost> _fetchPostById(
     String id, {
-    required LanguageEnum langUI,
-    required List<LanguageEnum> langArticles,
+    required Language langUI,
+    required List<Language> langArticles,
   }) async {
     final rawData = await service.fetchPostById(
       id,
@@ -80,8 +80,8 @@ class PublicationRepository {
   }
 
   Future<ListResponse> fetchFeed({
-    required LanguageEnum langUI,
-    required List<LanguageEnum> langArticles,
+    required Language langUI,
+    required List<Language> langArticles,
     required String page,
     required FeedFilter filter,
   }) async {
@@ -105,8 +105,8 @@ class PublicationRepository {
   /// если по новым [Sort.byNew], сортируем по дате публикации
   ///
   Future<ListResponse> fetchFlowArticles({
-    required LanguageEnum langUI,
-    required List<LanguageEnum> langArticles,
+    required Language langUI,
+    required List<Language> langArticles,
     required Section section,
     required PublicationFlow flow,
     required FlowFilter filter,
@@ -129,8 +129,8 @@ class PublicationRepository {
   }
 
   Future<PublicationListResponse> fetchHubArticles({
-    required LanguageEnum langUI,
-    required List<LanguageEnum> langArticles,
+    required Language langUI,
+    required List<Language> langArticles,
     required String hub,
     required FlowFilter filter,
     required String page,
@@ -151,8 +151,8 @@ class PublicationRepository {
   }
 
   Future<ListResponse> fetchUserPublications({
-    required LanguageEnum langUI,
-    required List<LanguageEnum> langArticles,
+    required Language langUI,
+    required List<Language> langArticles,
     required String user,
     required String page,
     required UserPublicationType type,
@@ -171,8 +171,8 @@ class PublicationRepository {
   }
 
   Future<ListResponse> fetchUserBookmarks({
-    required LanguageEnum langUI,
-    required List<LanguageEnum> langArticles,
+    required Language langUI,
+    required List<Language> langArticles,
     required String user,
     required String page,
     required UserBookmarksType type,
@@ -197,8 +197,8 @@ class PublicationRepository {
   Future<CommentListResponse> fetchComments({
     required String articleId,
     required PublicationSource source,
-    required LanguageEnum langUI,
-    required List<LanguageEnum> langArticles,
+    required Language langUI,
+    required List<Language> langArticles,
   }) async {
     final listResponse = await service.fetchComments(
       articleId: articleId,
@@ -221,8 +221,8 @@ class PublicationRepository {
   }
 
   Future<List<PublicationCommon>> fetchMostReading({
-    required LanguageEnum langUI,
-    required List<LanguageEnum> langArticles,
+    required Language langUI,
+    required List<Language> langArticles,
   }) async {
     final MostReadingResponse raw = await service.fetchMostReading(
       langUI: langUI.name,

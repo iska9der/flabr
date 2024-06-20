@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 
-import '../../../data/model/auth_data_model.dart';
+import '../../../data/model/tokens_model.dart';
 import '../../../data/repository/part.dart';
 
 part 'dio_client.dart';

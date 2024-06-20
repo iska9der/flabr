@@ -6,30 +6,30 @@ import '../related_data/company_related_data_model.dart';
 import 'company_hub_model.dart';
 import 'company_statistics_model.dart';
 
-class CompanyModel extends CompanyBase with EquatableMixin {
-  const CompanyModel({
+class Company extends CompanyBase with EquatableMixin {
+  const Company({
     required super.alias,
     super.imageUrl = '',
     super.titleHtml = '',
     super.descriptionHtml = '',
     super.relatedData = CompanyRelatedData.empty,
-    super.statistics = CompanyStatisticsModel.empty,
+    super.statistics = CompanyStatistics.empty,
     this.commonHubs = const [],
   });
 
-  final List<CompanyHubModel> commonHubs;
+  final List<CompanyHub> commonHubs;
 
   @override
-  CompanyModel copyWith({
+  Company copyWith({
     String? alias,
     String? imageUrl,
     String? titleHtml,
     String? descriptionHtml,
     CompanyRelatedData? relatedData,
-    CompanyStatisticsModel? statistics,
-    List<CompanyHubModel>? commonHubs,
+    CompanyStatistics? statistics,
+    List<CompanyHub>? commonHubs,
   }) {
-    return CompanyModel(
+    return Company(
       alias: alias ?? this.alias,
       imageUrl: imageUrl ?? this.imageUrl,
       titleHtml: titleHtml ?? this.titleHtml,
@@ -40,8 +40,8 @@ class CompanyModel extends CompanyBase with EquatableMixin {
     );
   }
 
-  factory CompanyModel.fromMap(Map<String, dynamic> map) {
-    return CompanyModel(
+  factory Company.fromMap(Map<String, dynamic> map) {
+    return Company(
       alias: (map['alias'] ?? '') as String,
       imageUrl: (map['imageUrl'] ?? '') as String,
       titleHtml: (map['titleHtml'] ?? '') as String,
@@ -52,19 +52,19 @@ class CompanyModel extends CompanyBase with EquatableMixin {
             )
           : CompanyRelatedData.empty,
       statistics: map['statistics'] != null
-          ? CompanyStatisticsModel.fromMap(
+          ? CompanyStatistics.fromMap(
               map['statistics'] as Map<String, dynamic>,
             )
-          : CompanyStatisticsModel.empty,
+          : CompanyStatistics.empty,
       commonHubs: map['commonHubs'] != null
-          ? List<CompanyHubModel>.from(
-              map['commonHubs'].map((el) => CompanyHubModel.fromMap(el)),
+          ? List<CompanyHub>.from(
+              map['commonHubs'].map((el) => CompanyHub.fromMap(el)),
             ).toList()
           : const [],
     );
   }
 
-  static const empty = CompanyModel(alias: '-');
+  static const empty = Company(alias: '-');
   bool get isEmpty => this == empty;
 
   @override

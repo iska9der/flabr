@@ -4,8 +4,8 @@ import '../comment_base.dart';
 import '../publication/publication_author_model.dart';
 import 'user_comment_publication_model.dart';
 
-class UserCommentModel extends CommentBase with EquatableMixin {
-  const UserCommentModel({
+class UserComment extends CommentBase with EquatableMixin {
+  const UserComment({
     required super.id,
     super.author = PublicationAuthor.empty,
     super.isPostAuthor = false,
@@ -34,7 +34,7 @@ class UserCommentModel extends CommentBase with EquatableMixin {
   final UserCommentPublication publication;
 
   @override
-  UserCommentModel copyWith({
+  UserComment copyWith({
     String? id,
     PublicationAuthor? author,
     bool? isPostAuthor,
@@ -56,7 +56,7 @@ class UserCommentModel extends CommentBase with EquatableMixin {
     List<String>? childrenRaw,
     UserCommentPublication? publication,
   }) {
-    return UserCommentModel(
+    return UserComment(
       id: id ?? this.id,
       author: author ?? this.author,
       isPostAuthor: isPostAuthor ?? this.isPostAuthor,
@@ -80,8 +80,8 @@ class UserCommentModel extends CommentBase with EquatableMixin {
     );
   }
 
-  factory UserCommentModel.fromMap(Map<String, dynamic> map) {
-    return UserCommentModel(
+  factory UserComment.fromMap(Map<String, dynamic> map) {
+    return UserComment(
       id: map['id'],
       parentId: map['parentId'] ?? '',
       author: map['author'] != null && map['author'].isNotEmpty

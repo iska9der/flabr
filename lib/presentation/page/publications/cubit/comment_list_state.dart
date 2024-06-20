@@ -21,8 +21,8 @@ class CommentListState extends Equatable {
   CommentListState copyWith({
     CommentListStatus? status,
     String? error,
-    LanguageEnum? langUI,
-    List<LanguageEnum>? langArticles,
+    Language? langUI,
+    List<Language>? langArticles,
     CommentListResponse? list,
   }) {
     return CommentListState(

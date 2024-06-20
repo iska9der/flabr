@@ -7,24 +7,24 @@ class CompanyState extends Equatable {
     this.status = CompanyStatus.initial,
     this.error = '',
     required this.alias,
-    this.model = CompanyModel.empty,
-    this.card = CompanyCardModel.empty,
+    this.model = Company.empty,
+    this.card = CompanyCard.empty,
   });
 
   final CompanyStatus status;
   final String error;
 
   final String alias;
-  final CompanyModel model;
-  final CompanyCardModel card;
+  final Company model;
+  final CompanyCard card;
 
   CompanyState copyWith({
     CompanyStatus? status,
     String? error,
-    LanguageEnum? langUI,
-    List<LanguageEnum>? langArticles,
-    CompanyModel? model,
-    CompanyCardModel? card,
+    Language? langUI,
+    List<Language>? langArticles,
+    Company? model,
+    CompanyCard? card,
   }) {
     return CompanyState(
       alias: alias,

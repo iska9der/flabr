@@ -4,8 +4,8 @@ import 'package:equatable/equatable.dart';
 
 import 'user_base.dart';
 
-class UserMeModel extends UserBase with EquatableMixin {
-  const UserMeModel({
+class UserMe extends UserBase with EquatableMixin {
+  const UserMe({
     required super.id,
     super.alias,
     super.fullname,
@@ -25,8 +25,8 @@ class UserMeModel extends UserBase with EquatableMixin {
     };
   }
 
-  factory UserMeModel.fromMap(Map<String, dynamic> map) {
-    return UserMeModel(
+  factory UserMe.fromMap(Map<String, dynamic> map) {
+    return UserMe(
       id: (map['id'] ?? '') as String,
       alias: (map['alias'] ?? '') as String,
       fullname: (map['fullname'] ?? '') as String,
@@ -37,10 +37,10 @@ class UserMeModel extends UserBase with EquatableMixin {
 
   String toJson() => json.encode(toMap());
 
-  factory UserMeModel.fromJson(String source) =>
-      UserMeModel.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory UserMe.fromJson(String source) =>
+      UserMe.fromMap(json.decode(source) as Map<String, dynamic>);
 
-  static const empty = UserMeModel(id: '0');
+  static const empty = UserMe(id: '0');
   bool get isEmpty => this == empty;
 
   @override

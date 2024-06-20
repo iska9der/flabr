@@ -6,26 +6,26 @@ class AuthState extends Equatable {
   const AuthState({
     this.error = '',
     this.status = AuthStatus.initial,
-    this.data = AuthDataModel.empty,
-    this.me = UserMeModel.empty,
+    this.tokens = Tokens.empty,
+    this.me = UserMe.empty,
   });
 
   final String error;
   final AuthStatus status;
-  final AuthDataModel data;
-  final UserMeModel me;
+  final Tokens tokens;
+  final UserMe me;
 
   AuthState copyWith({
     String? error,
     AuthStatus? status,
-    AuthDataModel? data,
+    Tokens? tokens,
     String? csrfToken,
-    UserMeModel? me,
+    UserMe? me,
   }) {
     return AuthState(
       error: error ?? this.error,
       status: status ?? this.status,
-      data: data ?? this.data,
+      tokens: tokens ?? this.tokens,
       me: me ?? this.me,
     );
   }
@@ -38,7 +38,7 @@ class AuthState extends Equatable {
   List<Object> get props => [
         error,
         status,
-        data,
+        tokens,
         me,
       ];
 }

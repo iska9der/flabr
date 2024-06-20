@@ -139,15 +139,15 @@ class UILangWidget extends StatelessWidget {
             value: state.langUI,
             items: const [
               DropdownMenuItem(
-                value: LanguageEnum.ru,
+                value: Language.ru,
                 child: Text('Русский'),
               ),
               DropdownMenuItem(
-                value: LanguageEnum.en,
+                value: Language.en,
                 child: Text('Английский'),
               ),
             ],
-            onChanged: (LanguageEnum? value) {
+            onChanged: (Language? value) {
               context.read<SettingsCubit>().changeUILang(value);
             },
           );
@@ -170,7 +170,7 @@ class ArticlesLangWidget extends StatelessWidget {
         builder: (context, state) {
           return Column(
             mainAxisSize: MainAxisSize.min,
-            children: LanguageEnum.values
+            children: Language.values
                 .map(
                   (lang) => SettingsCheckboxWidget(
                     type: SettingsCheckboxType.checkboxTile,

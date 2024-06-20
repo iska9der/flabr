@@ -6,18 +6,18 @@ class AuthRepository {
 
   final AuthService _service;
 
-  Future<UserMeModel?> fetchMe() async {
+  Future<UserMe?> fetchMe() async {
     final raw = await _service.fetchMe();
 
     if (raw == null) {
       return null;
     }
 
-    return UserMeModel.fromMap(raw);
+    return UserMe.fromMap(raw);
   }
 
-  fetchCsrf(AuthDataModel data) async {
-    String rawHtml = await _service.fetchRawMainPage(data);
+  fetchCsrf(Tokens tokens) async {
+    String rawHtml = await _service.fetchRawMainPage(tokens.toCookieString());
 
     String csrf = '';
     int indexOfCsrfStart = rawHtml.indexOf('csrf-token') + 11;

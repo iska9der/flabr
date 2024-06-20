@@ -14,7 +14,7 @@ class UserCubit extends Cubit<UserState> {
     required LanguageRepository languageRepository,
   })  : _repository = repository,
         _languageRepository = languageRepository,
-        super(UserState(login: login, model: UserModel.empty));
+        super(UserState(login: login, model: User.empty));
 
   final UserRepository _repository;
   final LanguageRepository _languageRepository;
@@ -23,7 +23,7 @@ class UserCubit extends Cubit<UserState> {
     emit(state.copyWith(status: UserStatus.loading));
 
     try {
-      UserModel model = state.model;
+      User model = state.model;
 
       if (model.isEmpty) {
         model = await _repository.fetchCard(
@@ -40,7 +40,7 @@ class UserCubit extends Cubit<UserState> {
   }
 
   void fetchWhois() async {
-    UserWhoisModel model;
+    UserWhois model;
 
     if (state.whoisModel.isEmpty) {
       model = await _repository.fetchWhois(

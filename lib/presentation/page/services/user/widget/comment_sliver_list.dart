@@ -140,7 +140,7 @@ class _SkeletonLoader extends StatelessWidget {
                   ),
                 ),
                 const CommentWidget(
-                  CommentModel(
+                  Comment(
                     id: '0',
                     message: 'Some random message with some random text...',
                   ),

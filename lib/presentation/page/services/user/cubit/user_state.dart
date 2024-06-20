@@ -7,18 +7,18 @@ class UserState extends Equatable {
     required this.login,
     this.status = UserStatus.initial,
     required this.model,
-    this.whoisModel = UserWhoisModel.empty,
+    this.whoisModel = UserWhois.empty,
   });
 
   final String login;
   final UserStatus status;
-  final UserModel model;
-  final UserWhoisModel whoisModel;
+  final User model;
+  final UserWhois whoisModel;
 
   UserState copyWith({
     UserStatus? status,
-    UserModel? model,
-    UserWhoisModel? whoisModel,
+    User? model,
+    UserWhois? whoisModel,
   }) {
     return UserState(
       login: login,

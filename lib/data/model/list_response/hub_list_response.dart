@@ -1,17 +1,17 @@
 import 'package:equatable/equatable.dart';
 
 import '../hub/hub_model.dart';
-import 'list_response.dart';
+import 'list_response_model.dart';
 
 class HubListResponse extends ListResponse with EquatableMixin {
   const HubListResponse({
     super.pagesCount = 1,
     super.ids = const [],
-    List<HubModel> super.refs = const [],
+    List<Hub> super.refs = const [],
   });
 
   @override
-  List<HubModel> get refs => super.refs as List<HubModel>;
+  List<Hub> get refs => super.refs as List<Hub>;
 
   @override
   HubListResponse copyWith({
@@ -22,7 +22,7 @@ class HubListResponse extends ListResponse with EquatableMixin {
     return HubListResponse(
       pagesCount: pagesCount ?? this.pagesCount,
       ids: ids ?? this.ids,
-      refs: List<HubModel>.from((refs ?? this.refs)),
+      refs: List<Hub>.from((refs ?? this.refs)),
     );
   }
 
@@ -33,10 +33,7 @@ class HubListResponse extends ListResponse with EquatableMixin {
     return HubListResponse(
       pagesCount: map['pagesCount'] ?? 1,
       ids: List<String>.from(idsMap),
-      refs: Map.from(refsMap)
-          .entries
-          .map((e) => HubModel.fromMap(e.value))
-          .toList(),
+      refs: Map.from(refsMap).entries.map((e) => Hub.fromMap(e.value)).toList(),
     );
   }
 

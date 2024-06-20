@@ -1,6 +1,6 @@
 import '../../exception/part.dart';
-import '../search/search_target.dart';
-import 'params.dart';
+import '../search/search_target_enum.dart';
+import 'params_model.dart';
 import 'search_article_params.dart';
 import 'search_company_params.dart';
 import 'search_hub_params.dart';

@@ -18,7 +18,7 @@ class UserCommentListState extends Equatable {
   final String user;
   final int page;
   final int pages;
-  final List<UserCommentModel> comments;
+  final List<UserComment> comments;
 
   bool get isFirstFetch => page == 1;
   bool get isLastPage => page >= pages;
@@ -29,7 +29,7 @@ class UserCommentListState extends Equatable {
     String? user,
     int? page,
     int? pages,
-    List<UserCommentModel>? comments,
+    List<UserComment>? comments,
   }) {
     return UserCommentListState(
       status: status ?? this.status,

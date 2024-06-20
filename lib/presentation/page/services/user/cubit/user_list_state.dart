@@ -15,14 +15,14 @@ class UserListState extends Equatable {
   final String error;
   final int page;
   final int pagesCount;
-  final List<UserModel> users;
+  final List<User> users;
 
   UserListState copyWith({
     UserListStatus? status,
     String? error,
     int? page,
     int? pagesCount,
-    List<UserModel>? users,
+    List<User>? users,
   }) {
     return UserListState(
       status: status ?? this.status,

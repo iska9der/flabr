@@ -1,7 +1,7 @@
 part of 'part.dart';
 
 abstract class LanguageEncoder {
-  static String encodeLangs(List<LanguageEnum> languages) {
+  static String encodeLangs(List<Language> languages) {
     String result = '';
 
     for (var i = 0; i < languages.length; i++) {
@@ -15,12 +15,12 @@ abstract class LanguageEncoder {
     return result;
   }
 
-  static List<LanguageEnum> decodeLangs(String langs) {
-    List<LanguageEnum> enums = [];
+  static List<Language> decodeLangs(String langs) {
+    List<Language> enums = [];
 
     List<String> spl = langs.split(',');
 
-    enums.addAll(spl.map((e) => LanguageEnum.fromString(e)));
+    enums.addAll(spl.map((e) => Language.fromString(e)));
 
     return enums;
   }

@@ -7,22 +7,22 @@ class HubState extends Equatable {
     this.status = HubStatus.initial,
     this.error = '',
     required this.alias,
-    this.model = HubModel.empty,
-    this.profile = HubProfileModel.empty,
+    this.model = Hub.empty,
+    this.profile = HubProfile.empty,
   });
 
   final HubStatus status;
   final String error;
 
   final String alias;
-  final HubModel model;
-  final HubProfileModel profile;
+  final Hub model;
+  final HubProfile profile;
 
   HubState copyWith({
     HubStatus? status,
     String? error,
-    HubModel? model,
-    HubProfileModel? profile,
+    Hub? model,
+    HubProfile? profile,
   }) {
     return HubState(
       alias: alias,

@@ -2,8 +2,8 @@ import 'package:equatable/equatable.dart';
 
 import '../hub_type_enum.dart';
 
-class CompanyHubModel extends Equatable {
-  const CompanyHubModel({
+class CompanyHub extends Equatable {
+  const CompanyHub({
     required this.alias,
     this.title = '',
     this.type = HubType.collective,
@@ -15,8 +15,8 @@ class CompanyHubModel extends Equatable {
   final HubType type;
   final bool isProfiled;
 
-  factory CompanyHubModel.fromMap(Map<String, dynamic> map) {
-    return CompanyHubModel(
+  factory CompanyHub.fromMap(Map<String, dynamic> map) {
+    return CompanyHub(
       alias: (map['alias'] ?? '') as String,
       title: (map['title'] ?? '') as String,
       type: HubType.fromString((map['type'] ?? 'collective')),

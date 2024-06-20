@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
-class CommentAccessModel extends Equatable {
-  const CommentAccessModel({
+class CommentAccess extends Equatable {
+  const CommentAccess({
     this.isCanComment = false,
     this.cantCommentReason = '',
     this.cantCommentReasonKey = '',
@@ -11,27 +11,27 @@ class CommentAccessModel extends Equatable {
   final String cantCommentReason;
   final String cantCommentReasonKey;
 
-  CommentAccessModel copyWith({
+  CommentAccess copyWith({
     bool? isCanComment,
     String? cantCommentReason,
     String? cantCommentReasonKey,
   }) {
-    return CommentAccessModel(
+    return CommentAccess(
       isCanComment: isCanComment ?? this.isCanComment,
       cantCommentReason: cantCommentReason ?? this.cantCommentReason,
       cantCommentReasonKey: cantCommentReasonKey ?? this.cantCommentReasonKey,
     );
   }
 
-  factory CommentAccessModel.fromMap(Map<String, dynamic> map) {
-    return CommentAccessModel(
+  factory CommentAccess.fromMap(Map<String, dynamic> map) {
+    return CommentAccess(
       isCanComment: map['isCanComment'] ?? false,
       cantCommentReason: map['cantCommentReason'] ?? '',
       cantCommentReasonKey: map['cantCommentReasonKey'] ?? '',
     );
   }
 
-  static const empty = CommentAccessModel();
+  static const empty = CommentAccess();
   bool get isEmpty => this == empty;
 
   @override

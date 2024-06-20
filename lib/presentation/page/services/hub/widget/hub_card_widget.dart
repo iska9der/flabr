@@ -18,12 +18,12 @@ class HubCardWidget extends StatelessWidget {
     this.renderType = RenderType.plain,
   });
 
-  final HubModel model;
+  final Hub model;
   final RenderType renderType;
 
   @override
   Widget build(BuildContext context) {
-    var stats = model.statistics as HubStatisticsModel;
+    var stats = model.statistics as HubStatistics;
     final tagStyle = Theme.of(context).textTheme.bodySmall;
 
     return Column(

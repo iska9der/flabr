@@ -8,19 +8,19 @@ class HabraClient extends DioClient {
     );
 
     client.interceptors.clear();
-    client.interceptors.add(_interceptor());
+    client.interceptors.add(_authInterceptor());
   }
 
   final TokenRepository tokenRepository;
 
-  Interceptor _interceptor() {
+  Interceptor _authInterceptor() {
     return InterceptorsWrapper(
       onRequest: (request, handler) async {
-        AuthDataModel? authData = await tokenRepository.getData();
+        Tokens? tokens = await tokenRepository.getTokens();
         String? csrfToken = await tokenRepository.getCsrf();
 
-        if (authData != null && !request.headers.containsKey('Cookie')) {
-          request.headers['Cookie'] = 'connect_sid=${authData.connectSID};';
+        if (tokens != null && !request.headers.containsKey('Cookie')) {
+          request.headers['Cookie'] = 'connect_sid=${tokens.connectSID};';
           request.headers['csrf-token'] = csrfToken;
           return handler.next(request);
         }

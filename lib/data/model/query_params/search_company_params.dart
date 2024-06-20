@@ -1,4 +1,4 @@
-import 'params.dart';
+import 'params_model.dart';
 import 'search_params.dart';
 
 class SearchCompanyParams extends Params implements SearchParamsFactory {

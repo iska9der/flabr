@@ -1,7 +1,7 @@
 part of 'company_card_model.dart';
 
-class CompanyCardStatisticsModel extends Equatable {
-  const CompanyCardStatisticsModel({
+class CompanyCardStatistics extends Equatable {
+  const CompanyCardStatistics({
     this.subscribersCount = 0,
     this.rating = 0.0,
     this.invest = 0,
@@ -21,8 +21,8 @@ class CompanyCardStatisticsModel extends Equatable {
   final int employeesCount;
   final double careerRating;
 
-  factory CompanyCardStatisticsModel.fromMap(Map<String, dynamic> map) {
-    return CompanyCardStatisticsModel(
+  factory CompanyCardStatistics.fromMap(Map<String, dynamic> map) {
+    return CompanyCardStatistics(
       subscribersCount: map['subscribersCount'] as int,
       rating: double.parse(map['rating'].toString()),
       invest: map['invest'] as int? ?? 0,
@@ -34,7 +34,7 @@ class CompanyCardStatisticsModel extends Equatable {
     );
   }
 
-  static const CompanyCardStatisticsModel empty = CompanyCardStatisticsModel();
+  static const CompanyCardStatistics empty = CompanyCardStatistics();
   bool get isEmpty => this == empty;
 
   @override

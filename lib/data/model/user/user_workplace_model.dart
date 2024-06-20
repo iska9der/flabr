@@ -3,8 +3,8 @@ import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
 
-class UserWorkplaceModel extends Equatable {
-  const UserWorkplaceModel({
+class UserWorkplace extends Equatable {
+  const UserWorkplace({
     required this.title,
     required this.alias,
   });
@@ -12,28 +12,27 @@ class UserWorkplaceModel extends Equatable {
   final String title;
   final String alias;
 
-  UserWorkplaceModel copyWith({
+  UserWorkplace copyWith({
     String? title,
     String? alias,
   }) {
-    return UserWorkplaceModel(
+    return UserWorkplace(
       title: title ?? this.title,
       alias: alias ?? this.alias,
     );
   }
 
-  factory UserWorkplaceModel.fromMap(Map<String, dynamic> map) {
-    return UserWorkplaceModel(
+  factory UserWorkplace.fromMap(Map<String, dynamic> map) {
+    return UserWorkplace(
       title: map['title'] as String,
       alias: map['alias'] as String,
     );
   }
 
-  factory UserWorkplaceModel.fromJson(String source) =>
-      UserWorkplaceModel.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory UserWorkplace.fromJson(String source) =>
+      UserWorkplace.fromMap(json.decode(source) as Map<String, dynamic>);
 
-  static const UserWorkplaceModel empty =
-      UserWorkplaceModel(title: '', alias: '');
+  static const UserWorkplace empty = UserWorkplace(title: '', alias: '');
   bool get isEmpty => this == empty;
 
   @override

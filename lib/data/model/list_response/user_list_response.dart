@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 import '../user/user_model.dart';
-import 'list_response.dart';
+import 'list_response_model.dart';
 
 class UserListResponse extends ListResponse with EquatableMixin {
   const UserListResponse({
@@ -19,7 +19,7 @@ class UserListResponse extends ListResponse with EquatableMixin {
     return UserListResponse(
       pagesCount: pagesCount ?? this.pagesCount,
       ids: ids ?? this.ids,
-      refs: List<UserModel>.from((refs ?? this.refs)),
+      refs: List<User>.from((refs ?? this.refs)),
     );
   }
 
@@ -33,7 +33,7 @@ class UserListResponse extends ListResponse with EquatableMixin {
       // ),
       refs: Map.from((map['authorRefs'] ?? map['userRefs'] as Map))
           .entries
-          .map((e) => UserModel.fromMap({'alias': e.key, ...e.value}))
+          .map((e) => User.fromMap({'alias': e.key, ...e.value}))
           .toList(),
     );
   }

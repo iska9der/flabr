@@ -33,13 +33,13 @@ class _ConnectSidWidgetState extends State<ConnectSidWidget> {
       ),
       child: BlocListener<LoginCubit, LoginState>(
         listenWhen: (_, current) => current.status == LoginStatus.success,
-        listener: (_, state) => context.read<AuthCubit>().handleAuthData(),
+        listener: (_, state) => context.read<AuthCubit>().handleTokens(),
         child: BlocBuilder<AuthCubit, AuthState>(
           builder: (context, state) {
             final loginCubit = context.read<LoginCubit>();
 
             if (state.isAuthorized) {
-              controller.text = state.data.connectSID;
+              controller.text = state.tokens.connectSID;
             } else {
               controller.text = '';
             }

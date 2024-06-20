@@ -4,8 +4,8 @@ import '../hub_base.dart';
 import '../related_data/hub_related_data_model.dart';
 import 'hub_statistics_model.dart';
 
-class HubModel extends HubBase with EquatableMixin {
-  const HubModel({
+class Hub extends HubBase with EquatableMixin {
+  const Hub({
     required super.alias,
     super.titleHtml = '',
     super.imageUrl = '',
@@ -13,12 +13,12 @@ class HubModel extends HubBase with EquatableMixin {
     super.isProfiled = false,
     super.isOfftop = false,
     super.relatedData = HubRelatedData.empty,
-    super.statistics = HubStatisticsModel.empty,
+    super.statistics = HubStatistics.empty,
     super.commonTags = const [],
   });
 
   @override
-  HubModel copyWith({
+  Hub copyWith({
     String? alias,
     String? titleHtml,
     String? imageUrl,
@@ -26,10 +26,10 @@ class HubModel extends HubBase with EquatableMixin {
     bool? isProfiled,
     bool? isOfftop,
     HubRelatedData? relatedData,
-    HubStatisticsModel? statistics,
+    HubStatistics? statistics,
     List<String>? commonTags,
   }) {
-    return HubModel(
+    return Hub(
       alias: alias ?? this.alias,
       titleHtml: titleHtml ?? this.titleHtml,
       imageUrl: imageUrl ?? this.imageUrl,
@@ -42,8 +42,8 @@ class HubModel extends HubBase with EquatableMixin {
     );
   }
 
-  factory HubModel.fromMap(Map<String, dynamic> map) {
-    return HubModel(
+  factory Hub.fromMap(Map<String, dynamic> map) {
+    return Hub(
       alias: map['alias'] as String,
       titleHtml: map['titleHtml'] as String,
       imageUrl: map['imageUrl'] as String,
@@ -54,15 +54,15 @@ class HubModel extends HubBase with EquatableMixin {
           ? HubRelatedData.fromMap(map['relatedData'])
           : HubRelatedData.empty,
       statistics: map['statistics'] != null
-          ? HubStatisticsModel.fromMap(map['statistics'])
-          : HubStatisticsModel.empty,
+          ? HubStatistics.fromMap(map['statistics'])
+          : HubStatistics.empty,
       commonTags: map['commonTags'] != null
           ? List<String>.from(map['commonTags'])
           : const [],
     );
   }
 
-  static const empty = HubModel(alias: '-');
+  static const empty = Hub(alias: '-');
   bool get isEmpty => this == empty;
 
   @override

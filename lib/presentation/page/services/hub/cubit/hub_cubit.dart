@@ -21,7 +21,7 @@ class HubCubit extends Cubit<HubState> {
   final LanguageRepository _languageRepository;
 
   void fetchProfile() async {
-    HubProfileModel profile = state.profile;
+    HubProfile profile = state.profile;
 
     try {
       if (profile.isEmpty) {

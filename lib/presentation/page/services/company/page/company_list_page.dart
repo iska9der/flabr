@@ -108,7 +108,7 @@ class CompanyListPageView extends StatelessWidget {
                       (state.status == CompanyListStatus.loading ? 1 : 0),
                   itemBuilder: (context, index) {
                     if (index < state.list.refs.length) {
-                      CompanyModel item = state.list.refs[index];
+                      Company item = state.list.refs[index];
 
                       return CompanyCardWidget(model: item);
                     }

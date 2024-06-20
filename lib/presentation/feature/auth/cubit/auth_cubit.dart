@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../data/model/auth_data_model.dart';
+import '../../../../data/model/tokens_model.dart';
 import '../../../../data/model/user_me_model.dart';
 import '../../../../data/repository/part.dart';
 
@@ -21,20 +21,20 @@ class AuthCubit extends Cubit<AuthState> {
   void init() async {
     emit(state.copyWith(status: AuthStatus.loading));
 
-    AuthDataModel? authData = await _tokenRepository.getData();
+    Tokens? tokens = await _tokenRepository.getTokens();
 
-    if (authData == null) {
+    if (tokens == null) {
       return emit(state.copyWith(status: AuthStatus.unauthorized));
     }
 
     emit(state.copyWith(
       status: AuthStatus.authorized,
-      data: authData,
+      tokens: tokens,
     ));
   }
 
   void fetchCsrf() async {
-    final csrf = await _repository.fetchCsrf(state.data);
+    final csrf = await _repository.fetchCsrf(state.tokens);
 
     _tokenRepository.setCsrf(csrf);
   }
@@ -49,18 +49,18 @@ class AuthCubit extends Cubit<AuthState> {
 
       emit(state.copyWith(me: me));
     } catch (e) {
-      emit(state.copyWith(me: UserMeModel.empty));
+      emit(state.copyWith(me: UserMe.empty));
     }
   }
 
-  void handleAuthData() {
+  void handleTokens() {
     emit(state.copyWith(status: AuthStatus.loading));
 
-    final authData = _tokenRepository.authData;
+    final tokens = _tokenRepository.tokens;
 
-    if (authData.isEmpty) return;
+    if (tokens.isEmpty) return;
 
-    emit(state.copyWith(status: AuthStatus.authorized, data: authData));
+    emit(state.copyWith(status: AuthStatus.authorized, tokens: tokens));
   }
 
   Future<void> logOut() async {

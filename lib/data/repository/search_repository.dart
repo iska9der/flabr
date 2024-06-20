@@ -7,8 +7,8 @@ class SearchRepository {
   final SearchService _service;
 
   Future<ListResponse> fetch({
-    required LanguageEnum langUI,
-    required List<LanguageEnum> langArticles,
+    required Language langUI,
+    required List<Language> langArticles,
     required String query,
     required SearchTarget target,
     required SearchOrder order,

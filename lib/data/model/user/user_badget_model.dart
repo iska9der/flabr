@@ -3,8 +3,8 @@ import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
 
-class UserBadgetModel extends Equatable {
-  const UserBadgetModel({
+class UserBadget extends Equatable {
+  const UserBadget({
     this.title = '',
     this.description = '',
     this.url = '',
@@ -15,13 +15,13 @@ class UserBadgetModel extends Equatable {
   final String url;
   final bool isRemovable;
 
-  UserBadgetModel copyWith({
+  UserBadget copyWith({
     String? title,
     String? description,
     String? url,
     bool? isRemovable,
   }) {
-    return UserBadgetModel(
+    return UserBadget(
       title: title ?? this.title,
       description: description ?? this.description,
       url: url ?? this.url,
@@ -29,8 +29,8 @@ class UserBadgetModel extends Equatable {
     );
   }
 
-  factory UserBadgetModel.fromMap(Map<String, dynamic> map) {
-    return UserBadgetModel(
+  factory UserBadget.fromMap(Map<String, dynamic> map) {
+    return UserBadget(
       title: map['title'],
       description: map['description'],
       url: map['url'] ?? '',
@@ -38,10 +38,10 @@ class UserBadgetModel extends Equatable {
     );
   }
 
-  factory UserBadgetModel.fromJson(String source) =>
-      UserBadgetModel.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory UserBadget.fromJson(String source) =>
+      UserBadget.fromMap(json.decode(source) as Map<String, dynamic>);
 
-  static const UserBadgetModel empty = UserBadgetModel();
+  static const UserBadget empty = UserBadget();
   bool get isEmpty => this == empty;
 
   @override

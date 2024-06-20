@@ -8,8 +8,8 @@ class CompanyRepository {
 
   Future<CompanyListResponse> fetchAll({
     required int page,
-    required LanguageEnum langUI,
-    required List<LanguageEnum> langArticles,
+    required Language langUI,
+    required List<Language> langArticles,
   }) async {
     final response = await _service.fetchAll(
       page: page,
@@ -20,10 +20,10 @@ class CompanyRepository {
     return response;
   }
 
-  Future<CompanyCardModel> fetchCard(
+  Future<CompanyCard> fetchCard(
     String alias, {
-    required LanguageEnum langUI,
-    required List<LanguageEnum> langArticles,
+    required Language langUI,
+    required List<Language> langArticles,
   }) async {
     final raw = await _service.fetchCard(
       alias,
@@ -31,7 +31,7 @@ class CompanyRepository {
       langArticles: LanguageEncoder.encodeLangs(langArticles),
     );
 
-    final model = CompanyCardModel.fromMap(raw);
+    final model = CompanyCard.fromMap(raw);
 
     return model;
   }

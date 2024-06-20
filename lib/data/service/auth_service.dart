@@ -5,7 +5,7 @@ abstract interface class AuthService {
 
   /// Отправляем запрос на страницу с данными пользователя в заголовке запроса,
   /// чтобы в дальнейшем вытащить из мета тега csrf-token
-  Future<String> fetchRawMainPage(AuthDataModel data);
+  Future<String> fetchRawMainPage(String cookie);
 }
 
 @Singleton(as: AuthService)
@@ -28,9 +28,9 @@ class AuthServiceImpl implements AuthService {
   }
 
   @override
-  Future<String> fetchRawMainPage(AuthDataModel data) async {
+  Future<String> fetchRawMainPage(String cookie) async {
     try {
-      final options = Options(headers: {'Cookie': data.toCookieString()});
+      final options = Options(headers: {'Cookie': cookie});
       final response = await _mobileClient.get(
         'https://habr.com/ru/conversations',
         options: options,

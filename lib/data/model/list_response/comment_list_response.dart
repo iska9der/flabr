@@ -5,13 +5,13 @@ import '../comment/comment_model.dart';
 
 class CommentListResponse extends Equatable {
   const CommentListResponse({
-    this.commentAccess = CommentAccessModel.empty,
+    this.commentAccess = CommentAccess.empty,
     this.comments = const [],
     this.lastCommentTimestamp = 0,
   });
 
-  final CommentAccessModel commentAccess;
-  final List<CommentModel> comments;
+  final CommentAccess commentAccess;
+  final List<Comment> comments;
   final int lastCommentTimestamp;
 
   DateTime get lastCommentAt => DateTime.fromMillisecondsSinceEpoch(
@@ -19,8 +19,8 @@ class CommentListResponse extends Equatable {
       );
 
   CommentListResponse copyWith({
-    CommentAccessModel? commentAccess,
-    List<CommentModel>? comments,
+    CommentAccess? commentAccess,
+    List<Comment>? comments,
     int? lastCommentTimestamp,
   }) {
     return CommentListResponse(
@@ -33,11 +33,11 @@ class CommentListResponse extends Equatable {
   factory CommentListResponse.fromMap(Map<String, dynamic> map) {
     return CommentListResponse(
       commentAccess: map['commentAccess'] != null
-          ? CommentAccessModel.fromMap(map['commentAccess'])
-          : CommentAccessModel.empty,
+          ? CommentAccess.fromMap(map['commentAccess'])
+          : CommentAccess.empty,
       comments: map['comments'] != null
-          ? List<CommentModel>.from(Map.from(map['comments']).entries.map(
-                (x) => CommentModel.fromMap(x.value),
+          ? List<Comment>.from(Map.from(map['comments']).entries.map(
+                (x) => Comment.fromMap(x.value),
               ))
           : const [],
       lastCommentTimestamp: map['lastCommentTimestamp'] ?? 0,
@@ -56,10 +56,10 @@ class CommentListResponse extends Equatable {
   ///
   /// А значит мы пересобираем комменты с уже вложенными детками
   /// с помощью рекурсивной функции [_recursive]
-  List<CommentModel> structurize() {
+  List<Comment> structurize() {
     if (comments.isEmpty) return [];
 
-    List<CommentModel> newComments = [];
+    List<Comment> newComments = [];
 
     /// выбираем корневые комментарии, и запускаем
     /// для каждого папаши рекурсивную функцию сбора потомков
@@ -76,9 +76,9 @@ class CommentListResponse extends Equatable {
   }
 }
 
-CommentModel _recursive(
-  List<CommentModel> comments,
-  CommentModel parent,
+Comment _recursive(
+  List<Comment> comments,
+  Comment parent,
 ) {
   /// если деток нет, возвращаем одинокого пахана домой
   if (!parent.childrenRaw.isNotEmpty) {
@@ -90,11 +90,11 @@ CommentModel _recursive(
       .map((id) => comments.firstWhere((element) => element.id == id))
       .toList();
 
-  List<CommentModel> newChilds = [];
+  List<Comment> newChilds = [];
 
   for (var child in childs) {
     /// ищем внуков... вдруг и дети уже паханы?
-    CommentModel newChild = _recursive(comments, child);
+    Comment newChild = _recursive(comments, child);
     newChild = newChild.copyWith(parent: parent);
 
     newChilds.add(newChild);

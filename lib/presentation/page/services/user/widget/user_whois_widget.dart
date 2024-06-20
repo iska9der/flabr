@@ -50,7 +50,7 @@ class UserWhoisWidget extends StatelessWidget {
 class _BadgetsWidget extends StatelessWidget {
   const _BadgetsWidget({required this.badgets});
 
-  final List<UserBadgetModel> badgets;
+  final List<UserBadget> badgets;
 
   @override
   Widget build(BuildContext context) {

@@ -6,7 +6,7 @@ abstract class CacheKey {
   static const publicationConfig = 'publication_config';
   static const miscConfig = 'misc_config';
 
-  static const authData = 'aData';
+  static const authTokens = 'aData';
   static const authCsrf = 'cData';
 
   static const langUI = 'lang_ui';

@@ -101,7 +101,7 @@ class HubListPageView extends StatelessWidget {
                       (state.status == HubListStatus.loading ? 1 : 0),
                   itemBuilder: (context, index) {
                     if (index < state.list.refs.length) {
-                      HubModel item = state.list.refs[index];
+                      Hub item = state.list.refs[index];
 
                       return HubCardWidget(model: item);
                     }
