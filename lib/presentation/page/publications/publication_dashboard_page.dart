@@ -113,9 +113,28 @@ class _PublicationDashboardPageState extends State<PublicationDashboardPage> {
                       children: [
                         IconButton(
                           icon: const Icon(Icons.search_rounded),
+                          tooltip: 'Поиск',
                           onPressed: () => getIt<AppRouter>().push(
                             const SearchAnywhereRoute(),
                           ),
+                        ),
+                        BlocBuilder<AuthCubit, AuthState>(
+                          buildWhen: (previous, current) =>
+                              previous.updates != current.updates,
+                          builder: (context, state) {
+                            return Badge.count(
+                              count: state.updates.trackerUnreadCount,
+                              isLabelVisible:
+                                  state.updates.trackerUnreadCount > 0,
+                              offset: const Offset(-8, 5),
+                              child: IconButton(
+                                icon: const Icon(Icons.notifications_outlined),
+                                tooltip: 'Трекер',
+                                onPressed: () =>
+                                    print('TODO: notification route'),
+                              ),
+                            );
+                          },
                         ),
                         const MyProfileIconButton(),
                       ],

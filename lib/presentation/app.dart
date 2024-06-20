@@ -50,6 +50,7 @@ class MyApp extends StatelessWidget {
                 previous.status.isLoading && current.isAuthorized,
             listener: (context, _) {
               context.read<AuthCubit>().fetchMe();
+              context.read<AuthCubit>().fetchUpdates();
               context.read<AuthCubit>().fetchCsrf();
             },
           ),

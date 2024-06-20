@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../data/model/tokens_model.dart';
+import '../../../../data/model/user/user_updates_model.dart';
 import '../../../../data/model/user_me_model.dart';
 import '../../../../data/repository/part.dart';
 
@@ -50,6 +51,16 @@ class AuthCubit extends Cubit<AuthState> {
       emit(state.copyWith(me: me));
     } catch (e) {
       emit(state.copyWith(me: UserMe.empty));
+    }
+  }
+
+  void fetchUpdates() async {
+    try {
+      final updates = await _repository.fetchUpdates();
+
+      emit(state.copyWith(updates: updates));
+    } catch (e, stack) {
+      Error.throwWithStackTrace(e, stack);
     }
   }
 
