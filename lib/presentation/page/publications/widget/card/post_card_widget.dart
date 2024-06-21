@@ -19,7 +19,6 @@ class PostCardWidget extends StatelessWidget {
         PublicationRouter(
           type: PublicationType.post.name,
           id: post.id,
-          children: [PublicationDetailRoute()],
         ),
       ),
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),

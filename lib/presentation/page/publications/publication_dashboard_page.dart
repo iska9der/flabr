@@ -28,11 +28,6 @@ class _PublicationDashboardPageState extends State<PublicationDashboardPage> {
   late final PublicationCountersBloc countersBloc;
   late final StreamSubscription authSub;
 
-  /// Прячем табы когда мы не находимся в корне раздела "Публикации".
-  /// Если не прятать, то когда мы переходим на какой-нибудь экран с помощью роутера
-  /// это выглядит ущербно и занимает лишнее место сверху экрана
-  ScrollPhysics? tabBarPhysics;
-
   @override
   void initState() {
     countersBloc = PublicationCountersBloc(repository: getIt());
@@ -55,7 +50,6 @@ class _PublicationDashboardPageState extends State<PublicationDashboardPage> {
   @override
   Widget build(BuildContext context) {
     return AutoTabsRouter.tabBar(
-      physics: tabBarPhysics,
       routes: const [
         FeedRouter(),
         ArticlesRouter(),
@@ -130,8 +124,9 @@ class _PublicationDashboardPageState extends State<PublicationDashboardPage> {
                               child: IconButton(
                                 icon: const Icon(Icons.notifications_outlined),
                                 tooltip: 'Трекер',
-                                onPressed: () =>
-                                    print('TODO: notification route'),
+                                onPressed: () => getIt<AppRouter>().push(
+                                  const TrackerDashboardRoute(),
+                                ),
                               ),
                             );
                           },

@@ -19,7 +19,6 @@ class CommonCardWidget extends StatelessWidget {
         PublicationRouter(
           type: publication.type.name,
           id: publication.id,
-          children: [PublicationDetailRoute()],
         ),
       ),
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),

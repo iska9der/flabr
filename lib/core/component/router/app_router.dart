@@ -18,6 +18,9 @@ import '../../../presentation/page/publications/publication_dashboard_page.dart'
 import '../../../presentation/page/publications/publication_detail_page.dart';
 import '../../../presentation/page/publications/publication_flow.dart';
 import '../../../presentation/page/publications/search/search_anywhere_page.dart';
+import '../../../presentation/page/publications/tracker/tracker_dashboard_page.dart';
+import '../../../presentation/page/publications/tracker/tracker_notifications_page.dart';
+import '../../../presentation/page/publications/tracker/tracker_publications_page.dart';
 import '../../../presentation/page/services/company/page/company_dashboard_page.dart';
 import '../../../presentation/page/services/company/page/company_detail_page.dart';
 import '../../../presentation/page/services/company/page/company_list_page.dart';
@@ -237,12 +240,30 @@ class AppRouter extends _$AppRouter {
       page: SearchAnywhereRoute.page,
     ),
 
+    /// Трекер
+    AutoRoute(
+      path: TrackerDashboardPage.routePath,
+      page: TrackerDashboardRoute.page,
+      children: [
+        AutoRoute(
+          initial: true,
+          page: TrackerPublicationsRoute.page,
+          path: TrackerPublicationsPage.routePath,
+        ),
+        AutoRoute(
+          page: TrackerNotificationsRoute.page,
+          path: TrackerNotificationsPage.routePath,
+        ),
+      ],
+    ),
+
     /// Просмотр публикации
     AutoRoute(
       path: PublicationFlow.routePath,
       page: PublicationRouter.page,
       children: [
         AutoRoute(
+          initial: true,
           path: PublicationDetailPage.routePath,
           page: PublicationDetailRoute.page,
         ),

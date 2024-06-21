@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:equatable/equatable.dart';
 
 import '../user_base.dart';
@@ -22,6 +24,18 @@ class PublicationAuthor extends UserBase with EquatableMixin {
       speciality: map['speciality'] ?? '',
     );
   }
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'id': id,
+      'speciality': speciality,
+      'alias': alias,
+      'fullname': fullname,
+      'avatarUrl': avatarUrl,
+    };
+  }
+
+  String toJson() => json.encode(toMap());
 
   static const empty = PublicationAuthor(id: '0');
   bool get isEmpty => this == empty;

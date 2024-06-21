@@ -88,7 +88,6 @@ class _UserCard extends StatelessWidget {
                         PublicationRouter(
                           type: model.lastPost.type.name,
                           id: model.lastPost.id,
-                          children: [PublicationDetailRoute()],
                         ),
                       ),
                       child: Text(model.lastPost.titleHtml),
