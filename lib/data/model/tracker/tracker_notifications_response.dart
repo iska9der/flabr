@@ -1,5 +1,14 @@
 part of 'part.dart';
 
+@freezed
+class TrackerNotificationsResponse with _$TrackerNotificationsResponse {
+  const factory TrackerNotificationsResponse({
+    @Default(TrackerNotificationListResponse.empty)
+    TrackerNotificationListResponse list,
+    @Default(TrackerUnreadCounters()) TrackerUnreadCounters unreadCounters,
+  }) = _TrackerNotificationsResponse;
+}
+
 class TrackerNotificationListResponse extends ListResponse with EquatableMixin {
   const TrackerNotificationListResponse({
     super.pagesCount = 1,
@@ -23,7 +32,7 @@ class TrackerNotificationListResponse extends ListResponse with EquatableMixin {
     );
   }
 
-  factory TrackerNotificationListResponse.fromMap(Map<String, dynamic> map) {
+  factory TrackerNotificationListResponse.fromJson(Map<String, dynamic> map) {
     var idsMap = map['itemIds'];
     Map refsMap = map['itemRefs'];
 

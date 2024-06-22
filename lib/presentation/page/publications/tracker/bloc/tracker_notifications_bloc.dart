@@ -28,6 +28,7 @@ class TrackerNotificationsBloc
   ) async {
     try {
       final result = await repository.fetchNotifications(
+        page: state.page.toString(),
         category: state.category,
       );
 

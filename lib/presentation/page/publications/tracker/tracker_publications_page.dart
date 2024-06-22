@@ -13,6 +13,7 @@ import '../../../widget/enhancement/progress_indicator.dart';
 import '../widget/stats/part.dart';
 import 'bloc/tracker_publications_bloc.dart';
 import 'bloc/tracker_publications_remover_bloc.dart';
+import 'widget/tracker_skeleton_widget.dart';
 
 @RoutePage(name: TrackerPublicationsPage.routeName)
 class TrackerPublicationsPage extends StatelessWidget {
@@ -89,14 +90,19 @@ class TrackerPublicationsView extends StatelessWidget {
           return switch (state.status) {
             LoadingStatus.failure => Center(child: Text(state.error)),
             LoadingStatus.success => ListView.builder(
-                itemCount: state.response.listResponse.refs.length,
+                itemCount: state.response.list.refs.length,
                 itemBuilder: (context, index) {
-                  final model = state.response.listResponse.refs[index];
+                  final model = state.response.list.refs[index];
 
                   return TrackerPublicationWidget(model: model);
                 },
               ),
-            _ => const CircleIndicator.medium(),
+            _ => ListView.builder(
+                itemCount: 6,
+                itemBuilder: (context, index) {
+                  return const TrackerSkeletonWidget();
+                },
+              ),
           };
         },
       ),
@@ -115,7 +121,11 @@ class TrackerPublicationWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+
     return FlabrCard(
+      color: model.isHighlighted
+          ? theme.colorScheme.surfaceContainerHighest
+          : null,
       onTap: () => context.router.push(
         PublicationRouter(
           type: model.publicationType,
@@ -159,7 +169,7 @@ class TrackerPublicationWidget extends StatelessWidget {
                     PublicationStatIconButton(
                       icon: Icons.chat_bubble_rounded,
                       value: model.commentsCount.compact(),
-                      isHighlighted: model.unreadCommentsCount > 0,
+                      isHighlighted: model.isHighlighted,
                       onTap: () => getIt<AppRouter>().push(
                         PublicationRouter(
                           type: model.publicationType,
@@ -168,7 +178,7 @@ class TrackerPublicationWidget extends StatelessWidget {
                         ),
                       ),
                     ),
-                    if (model.unreadCommentsCount > 0)
+                    if (model.isHighlighted)
                       PublicationStatIconButton(
                         icon: Icons.add,
                         value: model.unreadCommentsCount.compact(),

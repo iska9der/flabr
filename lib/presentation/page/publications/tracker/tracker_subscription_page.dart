@@ -8,8 +8,8 @@ import '../../../../data/model/loading_status_enum.dart';
 import '../../../../data/model/tracker/part.dart';
 import '../../../widget/card_avatar_widget.dart';
 import '../../../widget/enhancement/card.dart';
-import '../../../widget/enhancement/progress_indicator.dart';
 import 'bloc/tracker_notifications_bloc.dart';
+import 'widget/tracker_skeleton_widget.dart';
 
 @RoutePage(name: TrackerSubscriptionPage.routeName)
 class TrackerSubscriptionPage extends StatelessWidget {
@@ -47,14 +47,19 @@ class TrackerSubscriptionView extends StatelessWidget {
           return switch (state.status) {
             LoadingStatus.failure => Center(child: Text(state.error)),
             LoadingStatus.success => ListView.builder(
-                itemCount: state.response.refs.length,
+                itemCount: state.response.list.refs.length,
                 itemBuilder: (context, index) {
-                  final model = state.response.refs[index];
+                  final model = state.response.list.refs[index];
 
                   return _NotificationWidget(model: model);
                 },
               ),
-            _ => const CircleIndicator.medium(),
+            _ => ListView.builder(
+                itemCount: 6,
+                itemBuilder: (context, index) {
+                  return const TrackerSkeletonWidget();
+                },
+              ),
           };
         },
       ),
@@ -73,6 +78,7 @@ class _NotificationWidget extends StatelessWidget {
     final theme = Theme.of(context);
 
     return FlabrCard(
+      color: model.unread ? theme.colorScheme.surfaceContainerHighest : null,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

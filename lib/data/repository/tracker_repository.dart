@@ -8,7 +8,7 @@ abstract interface class TrackerRepository {
 
   Future<void> deletePublications(List<String> ids);
 
-  Future<TrackerNotificationListResponse> fetchNotifications({
+  Future<TrackerNotificationsResponse> fetchNotifications({
     String page,
     required TrackerNotificationCategory category,
   });
@@ -37,7 +37,7 @@ class TrackerRepositoryImpl implements TrackerRepository {
 
     final unread = TrackerUnreadCounters.fromJson(map['unreadCounters']);
     final response = TrackerPublicationsResponse(
-      listResponse: list,
+      list: list,
       unreadCounters: unread,
     );
 
@@ -50,7 +50,7 @@ class TrackerRepositoryImpl implements TrackerRepository {
   }
 
   @override
-  Future<TrackerNotificationListResponse> fetchNotifications({
+  Future<TrackerNotificationsResponse> fetchNotifications({
     String page = '1',
     required TrackerNotificationCategory category,
   }) async {
@@ -59,7 +59,12 @@ class TrackerRepositoryImpl implements TrackerRepository {
       category: category.name,
     );
 
-    final response = TrackerNotificationListResponse.fromMap(raw);
+    final list = TrackerNotificationListResponse.fromJson(raw);
+    final unread = TrackerUnreadCounters.fromJson(raw['unreadCounters']);
+    final response = TrackerNotificationsResponse(
+      list: list,
+      unreadCounters: unread,
+    );
 
     return response;
   }

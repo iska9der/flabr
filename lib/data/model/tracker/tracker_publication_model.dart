@@ -2,6 +2,8 @@ part of 'part.dart';
 
 @freezed
 class TrackerPublication with _$TrackerPublication {
+  const TrackerPublication._();
+
   const factory TrackerPublication({
     required String id,
     required String publicationType,
@@ -15,4 +17,6 @@ class TrackerPublication with _$TrackerPublication {
 
   factory TrackerPublication.fromJson(Map<String, dynamic> json) =>
       _$TrackerPublicationFromJson(json);
+
+  bool get isHighlighted => unreadCommentsCount > 0;
 }

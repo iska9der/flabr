@@ -31,7 +31,9 @@ class TrackerPublicationsBloc
     emit(state.copyWith(status: LoadingStatus.loading));
 
     try {
-      final result = await repository.fetchPublications();
+      final result = await repository.fetchPublications(
+        page: state.page.toString(),
+      );
 
       emit(state.copyWith(status: LoadingStatus.success, response: result));
     } catch (e, trace) {
