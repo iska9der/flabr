@@ -6,6 +6,8 @@ import '../publication/publication_author_model.dart';
 
 part 'part.freezed.dart';
 part 'part.g.dart';
+part 'tracker_notification_list_response.dart';
+part 'tracker_notification_model.dart';
 part 'tracker_publication_list_response.dart';
 part 'tracker_publication_model.dart';
 part 'tracker_publications_response.dart';

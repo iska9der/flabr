@@ -7,6 +7,7 @@ import '../../../../core/component/router/app_router.dart';
 import '../../../../data/model/loading_status_enum.dart';
 import '../../../../data/model/tracker/part.dart';
 import '../../../extension/part.dart';
+import '../../../widget/card_avatar_widget.dart';
 import '../../../widget/enhancement/card.dart';
 import '../../../widget/enhancement/progress_indicator.dart';
 import '../widget/stats/part.dart';
@@ -127,21 +128,30 @@ class TrackerPublicationWidget extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                RichText(
-                  text: TextSpan(
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 12.0),
+                  child: Row(
                     children: [
-                      TextSpan(
-                        text: '@${model.author.alias}',
+                      Padding(
+                        padding: const EdgeInsets.only(right: 8.0),
+                        child: CardAvatarWidget(
+                          imageUrl: model.author.avatarUrl,
+                        ),
+                      ),
+                      Text(
+                        model.author.alias,
                         style: theme.textTheme.titleMedium?.copyWith(
                           color: theme.colorScheme.primary,
                         ),
                       ),
-                      const TextSpan(text: ': '),
-                      TextSpan(
-                        text: model.title.trim(),
-                        style: theme.textTheme.bodyMedium,
-                      ),
                     ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 8.0),
+                  child: Text(
+                    model.title.trim(),
+                    style: theme.textTheme.titleMedium,
                   ),
                 ),
                 Row(

@@ -8,8 +8,10 @@ abstract interface class TrackerRepository {
 
   Future<void> deletePublications(List<String> ids);
 
-  /// TODO тип для нотификаций
-  Future fetchNotifications();
+  Future<TrackerNotificationListResponse> fetchNotifications({
+    String page,
+    required TrackerNotificationCategory category,
+  });
 }
 
 @Singleton(as: TrackerRepository)
@@ -29,12 +31,17 @@ class TrackerRepositoryImpl implements TrackerRepository {
     );
 
     final list = TrackerPublicationListResponse.fromMap(map);
-    final unread = TrackerUnreadCounters.fromJson(map['unreadCounters']);
+    list.refs.sort(
+      (a, b) => b.unreadCommentsCount.compareTo(a.unreadCommentsCount),
+    );
 
-    return TrackerPublicationsResponse(
+    final unread = TrackerUnreadCounters.fromJson(map['unreadCounters']);
+    final response = TrackerPublicationsResponse(
       listResponse: list,
       unreadCounters: unread,
     );
+
+    return response;
   }
 
   @override
@@ -43,8 +50,17 @@ class TrackerRepositoryImpl implements TrackerRepository {
   }
 
   @override
-  Future fetchNotifications() {
-    // TODO: implement fetchNotifications
-    throw UnimplementedError();
+  Future<TrackerNotificationListResponse> fetchNotifications({
+    String page = '1',
+    required TrackerNotificationCategory category,
+  }) async {
+    final raw = await _service.fetchNotifications(
+      page: page,
+      category: category.name,
+    );
+
+    final response = TrackerNotificationListResponse.fromMap(raw);
+
+    return response;
   }
 }

@@ -228,16 +228,22 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const TrackerDashboardPage(),
       );
     },
-    TrackerNotificationsRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const TrackerNotificationsPage(),
-      );
-    },
     TrackerPublicationsRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const TrackerPublicationsPage(),
+      );
+    },
+    TrackerSubscriptionRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const TrackerSubscriptionPage(),
+      );
+    },
+    TrackerSystemRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const TrackerSystemPage(),
       );
     },
     UserBookmarkListRoute.name: (routeData) {
@@ -876,20 +882,6 @@ class TrackerDashboardRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [TrackerNotificationsPage]
-class TrackerNotificationsRoute extends PageRouteInfo<void> {
-  const TrackerNotificationsRoute({List<PageRouteInfo>? children})
-      : super(
-          TrackerNotificationsRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'TrackerNotificationsRoute';
-
-  static const PageInfo<void> page = PageInfo<void>(name);
-}
-
-/// generated route for
 /// [TrackerPublicationsPage]
 class TrackerPublicationsRoute extends PageRouteInfo<void> {
   const TrackerPublicationsRoute({List<PageRouteInfo>? children})
@@ -899,6 +891,34 @@ class TrackerPublicationsRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'TrackerPublicationsRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [TrackerSubscriptionPage]
+class TrackerSubscriptionRoute extends PageRouteInfo<void> {
+  const TrackerSubscriptionRoute({List<PageRouteInfo>? children})
+      : super(
+          TrackerSubscriptionRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'TrackerSubscriptionRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [TrackerSystemPage]
+class TrackerSystemRoute extends PageRouteInfo<void> {
+  const TrackerSystemRoute({List<PageRouteInfo>? children})
+      : super(
+          TrackerSystemRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'TrackerSystemRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }

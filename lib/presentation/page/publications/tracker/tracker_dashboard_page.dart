@@ -17,7 +17,8 @@ class TrackerDashboardPage extends StatelessWidget {
     return AutoTabsRouter.tabBar(
         routes: const [
           TrackerPublicationsRoute(),
-          TrackerNotificationsRoute(),
+          TrackerSubscriptionRoute(),
+          // TrackerSystemRoute(),
         ],
         builder: (context, child, controller) {
           return Scaffold(
@@ -31,16 +32,16 @@ class TrackerDashboardPage extends StatelessWidget {
                       pinned: true,
                       title: const Text('Трекер'),
                       toolbarHeight: fToolBarHeight,
-                      actions: [
-                        IconButton(
-                          icon: const Icon(Icons.check_outlined),
-                          tooltip: 'Отметить раздел прочитанным',
-                          onPressed: () {
-                            /// TODO блок для отметки раздела как прочитанный
-                            /// Нужно отмечать прочитанным тот раздел, в котором
-                            /// находится пользователь
-                          },
-                        ),
+                      actions: const [
+                        /// TODO блок для отметки раздела как прочитанный
+                        /// Нужно отмечать прочитанным тот раздел, в котором
+                        /// находится пользователь
+                        // IconButton(
+                        //   icon: const Icon(Icons.check_outlined),
+                        //   tooltip: 'Отметить раздел прочитанным',
+                        //   onPressed: () {
+                        //   },
+                        // ),
                       ],
                       bottom: AppBar(
                         automaticallyImplyLeading: false,
@@ -56,7 +57,8 @@ class TrackerDashboardPage extends StatelessWidget {
                           dividerColor: Colors.transparent,
                           tabs: const [
                             DashboardDrawerLinkWidget(title: 'Публикации'),
-                            DashboardDrawerLinkWidget(title: 'Уведомления'),
+                            DashboardDrawerLinkWidget(title: 'Подписки'),
+                            // DashboardDrawerLinkWidget(title: 'Уведомления'),
                           ],
                         ),
                       ),

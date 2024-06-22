@@ -23,6 +23,7 @@ import '../model/query_params/params_model.dart';
 import '../model/query_params/post_list_params.dart';
 import '../model/query_params/publication_list_params.dart';
 import '../model/query_params/search_params.dart';
+import '../model/query_params/tracker_notification_params.dart';
 import '../model/query_params/tracker_publication_params.dart';
 import '../model/search/search_target_enum.dart';
 import '../model/section_enum.dart';
