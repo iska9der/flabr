@@ -6,8 +6,8 @@ import 'package:intl/intl.dart';
 import '../../../../core/component/di/injector.dart';
 import '../../../../data/model/loading_status_enum.dart';
 import '../../../../data/model/tracker/part.dart';
-import '../../../widget/card_avatar_widget.dart';
 import '../../../widget/enhancement/card.dart';
+import '../../../widget/user_text_button.dart';
 import 'bloc/tracker_notifications_bloc.dart';
 import 'widget/tracker_skeleton_widget.dart';
 
@@ -54,11 +54,8 @@ class TrackerSubscriptionView extends StatelessWidget {
                   return _NotificationWidget(model: model);
                 },
               ),
-            _ => ListView.builder(
-                itemCount: 6,
-                itemBuilder: (context, index) {
-                  return const TrackerSkeletonWidget();
-                },
+            _ => ListView(
+                children: List.filled(6, const TrackerSkeletonWidget()),
               ),
           };
         },
@@ -82,25 +79,7 @@ class _NotificationWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (model.data.user != null)
-            Padding(
-              padding: const EdgeInsets.only(bottom: 12.0),
-              child: Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(right: 8.0),
-                    child:
-                        CardAvatarWidget(imageUrl: model.data.user!.avatarUrl),
-                  ),
-                  Text(
-                    model.data.user!.login,
-                    style: theme.textTheme.titleMedium?.copyWith(
-                      color: theme.colorScheme.primary,
-                    ),
-                  ),
-                ],
-              ),
-            ),
+          if (model.data.user != null) UserTextButton(model.data.user!),
           Padding(
             padding: const EdgeInsets.only(bottom: 8.0),
             child: RichText(

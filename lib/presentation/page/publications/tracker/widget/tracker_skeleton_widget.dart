@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
-import '../../../../theme/part.dart';
+import '../../../../../data/model/tracker/part.dart';
 import '../../../../widget/enhancement/card.dart';
+import '../../../../widget/user_text_button.dart';
 
 class TrackerSkeletonWidget extends StatelessWidget {
   const TrackerSkeletonWidget({super.key});
@@ -16,34 +17,7 @@ class TrackerSkeletonWidget extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding: const EdgeInsets.only(bottom: 12.0),
-              child: Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(right: 8.0),
-                    child: SizedBox(
-                      width: kAvatarHeight,
-                      height: kAvatarHeight,
-                      child: DecoratedBox(
-                        decoration: BoxDecoration(
-                          color: Colors.black,
-                          borderRadius: BorderRadius.circular(
-                            kBorderRadiusDefault,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Text(
-                    'Author Placeholder',
-                    style: theme.textTheme.titleMedium?.copyWith(
-                      color: theme.colorScheme.primary,
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            const UserTextButton(TrackerNotificationUser(alias: 'Placeholder')),
             Padding(
               padding: const EdgeInsets.only(bottom: 8.0),
               child: Text(

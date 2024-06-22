@@ -9,7 +9,7 @@ class PublicationHeaderWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        AuthorWidget(publication.author),
+        UserTextButton(publication.author),
         const SizedBox(width: 4),
         Expanded(
           child: Text(

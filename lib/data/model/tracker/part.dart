@@ -3,6 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../list_response/list_response_model.dart';
 import '../publication/publication_author_model.dart';
+import '../user_base.dart';
 
 part 'part.freezed.dart';
 part 'part.g.dart';

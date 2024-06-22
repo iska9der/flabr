@@ -9,7 +9,7 @@ import '../../../widget/dashboard_drawer_link_widget.dart';
 class TrackerDashboardPage extends StatelessWidget {
   const TrackerDashboardPage({super.key});
 
-  static const String routePath = '/tracker';
+  static const String routePath = '';
   static const String routeName = 'TrackerDashboardRoute';
 
   @override

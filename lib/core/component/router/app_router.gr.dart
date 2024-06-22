@@ -228,6 +228,12 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const TrackerDashboardPage(),
       );
     },
+    TrackerRouter.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: TrackerFlow(),
+      );
+    },
     TrackerPublicationsRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -877,6 +883,20 @@ class TrackerDashboardRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'TrackerDashboardRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [TrackerFlow]
+class TrackerRouter extends PageRouteInfo<void> {
+  const TrackerRouter({List<PageRouteInfo>? children})
+      : super(
+          TrackerRouter.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'TrackerRouter';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }

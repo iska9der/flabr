@@ -70,9 +70,12 @@ class TrackerNotificationData with _$TrackerNotificationData {
 }
 
 @freezed
-class TrackerNotificationUser with _$TrackerNotificationUser {
+class TrackerNotificationUser
+    with _$TrackerNotificationUser
+    implements UserBase {
   const factory TrackerNotificationUser({
-    @Default('') String login,
+    @Default('') String id,
+    @JsonKey(name: 'login') @Default('') String alias,
     @Default('') String fullname,
     @Default('') String avatarUrl,
   }) = _TrackerNotificationUser;

@@ -20,7 +20,7 @@ class SkeletonCardWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          AuthorWidget(PublicationAuthor(id: '0', alias: authorAlias)),
+          UserTextButton(PublicationAuthor(id: '0', alias: authorAlias)),
           Text(
             title,
             style: Theme.of(context).textTheme.titleLarge,

@@ -45,13 +45,9 @@ class DialogUserProfileWidget extends StatelessWidget
               title: const Text('Публикации'),
               onTap: () {
                 getIt<AppRouter>().navigate(
-                  ServicesRouter(
-                    children: [
-                      UserDashboardRoute(
-                        alias: user.alias,
-                        children: [UserPublicationListRoute()],
-                      )
-                    ],
+                  UserDashboardRoute(
+                    alias: user.alias,
+                    children: [UserPublicationListRoute()],
                   ),
                 );
 
@@ -62,13 +58,9 @@ class DialogUserProfileWidget extends StatelessWidget
               title: const Text('Закладки'),
               onTap: () {
                 getIt<AppRouter>().navigate(
-                  ServicesRouter(
-                    children: [
-                      UserDashboardRoute(
-                        alias: user.alias,
-                        children: [UserBookmarkListRoute()],
-                      )
-                    ],
+                  UserDashboardRoute(
+                    alias: user.alias,
+                    children: [UserBookmarkListRoute()],
                   ),
                 );
 
@@ -79,13 +71,9 @@ class DialogUserProfileWidget extends StatelessWidget
               title: const Text('Комментарии'),
               onTap: () {
                 getIt<AppRouter>().navigate(
-                  ServicesRouter(
-                    children: [
-                      UserDashboardRoute(
-                        alias: user.alias,
-                        children: [UserCommentListRoute()],
-                      )
-                    ],
+                  UserDashboardRoute(
+                    alias: user.alias,
+                    children: [UserCommentListRoute()],
                   ),
                 );
 

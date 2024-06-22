@@ -7,9 +7,9 @@ import '../../../../core/component/router/app_router.dart';
 import '../../../../data/model/loading_status_enum.dart';
 import '../../../../data/model/tracker/part.dart';
 import '../../../extension/part.dart';
-import '../../../widget/card_avatar_widget.dart';
 import '../../../widget/enhancement/card.dart';
 import '../../../widget/enhancement/progress_indicator.dart';
+import '../../../widget/user_text_button.dart';
 import '../widget/stats/part.dart';
 import 'bloc/tracker_publications_bloc.dart';
 import 'bloc/tracker_publications_remover_bloc.dart';
@@ -79,7 +79,6 @@ class TrackerPublicationsView extends StatelessWidget {
         },
       ),
       body: BlocBuilder<TrackerPublicationsBloc, TrackerPublicationsState>(
-        buildWhen: (previous, current) => previous.status != current.status,
         builder: (context, state) {
           if (state.status == LoadingStatus.initial) {
             context
@@ -97,11 +96,8 @@ class TrackerPublicationsView extends StatelessWidget {
                   return TrackerPublicationWidget(model: model);
                 },
               ),
-            _ => ListView.builder(
-                itemCount: 6,
-                itemBuilder: (context, index) {
-                  return const TrackerSkeletonWidget();
-                },
+            _ => ListView(
+                children: List.filled(6, const TrackerSkeletonWidget()),
               ),
           };
         },
@@ -110,7 +106,7 @@ class TrackerPublicationsView extends StatelessWidget {
   }
 }
 
-class TrackerPublicationWidget extends StatelessWidget {
+class TrackerPublicationWidget extends StatefulWidget {
   const TrackerPublicationWidget({
     super.key,
     required this.model,
@@ -119,17 +115,28 @@ class TrackerPublicationWidget extends StatelessWidget {
   final TrackerPublication model;
 
   @override
+  State<TrackerPublicationWidget> createState() =>
+      _TrackerPublicationWidgetState();
+}
+
+class _TrackerPublicationWidgetState extends State<TrackerPublicationWidget> {
+  late bool isHighlighted = widget.model.isHighlighted;
+
+  void markAsHighlighted() {
+    isHighlighted = false;
+    setState(() {});
+  }
+
+  @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
     return FlabrCard(
-      color: model.isHighlighted
-          ? theme.colorScheme.surfaceContainerHighest
-          : null,
+      color: isHighlighted ? theme.colorScheme.surfaceContainerHighest : null,
       onTap: () => context.router.push(
         PublicationRouter(
-          type: model.publicationType,
-          id: model.id,
+          type: widget.model.publicationType,
+          id: widget.model.id,
         ),
       ),
       child: Row(
@@ -138,29 +145,11 @@ class TrackerPublicationWidget extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 12.0),
-                  child: Row(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(right: 8.0),
-                        child: CardAvatarWidget(
-                          imageUrl: model.author.avatarUrl,
-                        ),
-                      ),
-                      Text(
-                        model.author.alias,
-                        style: theme.textTheme.titleMedium?.copyWith(
-                          color: theme.colorScheme.primary,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                UserTextButton(widget.model.author),
                 Padding(
                   padding: const EdgeInsets.only(bottom: 8.0),
                   child: Text(
-                    model.title.trim(),
+                    widget.model.title.trim(),
                     style: theme.textTheme.titleMedium,
                   ),
                 ),
@@ -168,20 +157,24 @@ class TrackerPublicationWidget extends StatelessWidget {
                   children: [
                     PublicationStatIconButton(
                       icon: Icons.chat_bubble_rounded,
-                      value: model.commentsCount.compact(),
-                      isHighlighted: model.isHighlighted,
-                      onTap: () => getIt<AppRouter>().push(
-                        PublicationRouter(
-                          type: model.publicationType,
-                          id: model.id,
-                          children: [PublicationCommentRoute()],
-                        ),
-                      ),
+                      value: widget.model.commentsCount.compact(),
+                      isHighlighted: widget.model.isHighlighted,
+                      onTap: () {
+                        context.router.push(
+                          PublicationRouter(
+                            type: widget.model.publicationType,
+                            id: widget.model.id,
+                            children: [PublicationCommentRoute()],
+                          ),
+                        );
+
+                        markAsHighlighted();
+                      },
                     ),
-                    if (model.isHighlighted)
+                    if (widget.model.isHighlighted)
                       PublicationStatIconButton(
                         icon: Icons.add,
-                        value: model.unreadCommentsCount.compact(),
+                        value: widget.model.unreadCommentsCount.compact(),
                         isHighlighted: true,
                         color: Colors.green,
 
@@ -196,11 +189,11 @@ class TrackerPublicationWidget extends StatelessWidget {
               TrackerPublicationsRemoverState>(
             builder: (context, state) {
               return Checkbox(
-                value: state.markedIds.contains(model.id),
+                value: state.markedIds.contains(widget.model.id),
                 onChanged: (isChecked) {
                   context.read<TrackerPublicationsRemoverBloc>().add(
                         TrackerPublicationsRemoverEvent.mark(
-                          id: model.id,
+                          id: widget.model.id,
                           isMarked: isChecked ?? false,
                         ),
                       );

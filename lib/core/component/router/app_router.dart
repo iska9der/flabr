@@ -19,6 +19,7 @@ import '../../../presentation/page/publications/publication_detail_page.dart';
 import '../../../presentation/page/publications/publication_flow.dart';
 import '../../../presentation/page/publications/search/search_anywhere_page.dart';
 import '../../../presentation/page/publications/tracker/tracker_dashboard_page.dart';
+import '../../../presentation/page/publications/tracker/tracker_flow.dart';
 import '../../../presentation/page/publications/tracker/tracker_publications_page.dart';
 import '../../../presentation/page/publications/tracker/tracker_subscription_page.dart';
 import '../../../presentation/page/publications/tracker/tracker_system_page.dart';
@@ -243,22 +244,30 @@ class AppRouter extends _$AppRouter {
 
     /// Трекер
     AutoRoute(
-      page: TrackerDashboardRoute.page,
-      path: TrackerDashboardPage.routePath,
+      page: TrackerRouter.page,
+      path: TrackerFlow.routePath,
       children: [
         AutoRoute(
           initial: true,
-          page: TrackerPublicationsRoute.page,
-          path: TrackerPublicationsPage.routePath,
+          page: TrackerDashboardRoute.page,
+          path: TrackerDashboardPage.routePath,
+          children: [
+            AutoRoute(
+              initial: true,
+              page: TrackerPublicationsRoute.page,
+              path: TrackerPublicationsPage.routePath,
+            ),
+            AutoRoute(
+              page: TrackerSystemRoute.page,
+              path: TrackerSystemPage.routePath,
+            ),
+            AutoRoute(
+              page: TrackerSubscriptionRoute.page,
+              path: TrackerSubscriptionPage.routePath,
+            ),
+          ],
         ),
-        AutoRoute(
-          page: TrackerSystemRoute.page,
-          path: TrackerSystemPage.routePath,
-        ),
-        AutoRoute(
-          page: TrackerSubscriptionRoute.page,
-          path: TrackerSubscriptionPage.routePath,
-        ),
+        _userDashboard,
       ],
     ),
 

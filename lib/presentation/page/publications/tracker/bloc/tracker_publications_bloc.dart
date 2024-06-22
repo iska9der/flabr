@@ -15,12 +15,12 @@ class TrackerPublicationsBloc
     extends Bloc<TrackerPublicationsEvent, TrackerPublicationsState> {
   TrackerPublicationsBloc({required this.repository})
       : super(const TrackerPublicationsState()) {
-    on<LoadEvent>(fetch);
+    on<LoadEvent>(_fetch);
   }
 
   final TrackerRepository repository;
 
-  FutureOr<void> fetch(
+  FutureOr<void> _fetch(
     LoadEvent event,
     Emitter<TrackerPublicationsState> emit,
   ) async {

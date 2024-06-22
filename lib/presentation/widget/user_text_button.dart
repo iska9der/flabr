@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 
 import '../../core/component/di/injector.dart';
 import '../../core/component/router/app_router.dart';
-import '../../data/model/publication/publication_author_model.dart';
+import '../../data/model/user_base.dart';
 import '../feature/auth/widget/dialog.dart';
 import '../feature/auth/widget/profile_widget.dart';
 import '../theme/part.dart';
 import 'card_avatar_widget.dart';
 
-class AuthorWidget extends StatelessWidget {
-  const AuthorWidget(this.author, {super.key});
+class UserTextButton extends StatelessWidget {
+  const UserTextButton(this.user, {super.key});
 
-  final PublicationAuthor author;
+  final UserBase user;
 
   @override
   Widget build(BuildContext context) {
@@ -29,20 +29,20 @@ class AuthorWidget extends StatelessWidget {
       ),
       child: TextButton(
         onPressed: () => getIt<AppRouter>().navigate(
-          UserDashboardRoute(alias: author.alias),
+          UserDashboardRoute(alias: user.alias),
         ),
         onLongPress: () {
           showProfileDialog(
             context,
-            child: DialogUserProfileWidget(user: author),
+            child: DialogUserProfileWidget(user: user),
           );
         },
         child: Wrap(
           crossAxisAlignment: WrapCrossAlignment.center,
           children: [
-            CardAvatarWidget(imageUrl: author.avatarUrl),
+            CardAvatarWidget(imageUrl: user.avatarUrl),
             const SizedBox(width: 8),
-            Text(author.alias),
+            Text(user.alias),
           ],
         ),
       ),
