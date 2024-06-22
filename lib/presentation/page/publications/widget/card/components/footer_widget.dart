@@ -28,13 +28,12 @@ class ArticleFooterWidget extends StatelessWidget {
           icon: Icons.chat_bubble_rounded,
           value: publication.statistics.commentsCount.compact(),
           isHighlighted: publication.relatedData.unreadCommentsCount > 0,
-
-          /// TODO: navigate to [PublicationCommentRoute]
-          onTap: () => getIt<AppRouter>().pushWidget(
-            switch (publication.type) {
-              PublicationType.post => PostCommentListPage(id: publication.id),
-              _ => ArticleCommentListPage(id: publication.id),
-            },
+          onTap: () => context.router.push(
+            PublicationRouter(
+              type: publication.type.name,
+              id: publication.id,
+              children: [PublicationCommentRoute()],
+            ),
           ),
         ),
         _BookmarkIconButton(publication: publication),

@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -8,7 +9,6 @@ import '../../../theme/part.dart';
 import '../../../widget/enhancement/app_expansion_panel.dart';
 import '../../../widget/enhancement/card.dart';
 import '../../../widget/enhancement/progress_indicator.dart';
-import '../articles/article_comment_page.dart';
 import '../articles/article_detail_page.dart';
 import '../cubit/most_reading_cubit.dart';
 import 'stats/part.dart';
@@ -149,10 +149,12 @@ class _MostReadingListState extends State<_MostReadingList> {
                             value: model.statistics.commentsCount.compact(),
                             isHighlighted:
                                 model.relatedData.unreadCommentsCount > 0,
-
-                            /// TODO: navigate to [PublicationCommentRoute]
-                            onTap: () => appRouter.pushWidget(
-                              ArticleCommentListPage(id: model.id),
+                            onTap: () => context.router.push(
+                              PublicationRouter(
+                                type: model.type.name,
+                                id: model.id,
+                                children: [PublicationCommentRoute()],
+                              ),
                             ),
                           ),
                         ],
