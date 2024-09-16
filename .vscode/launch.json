@@ -7,25 +7,44 @@
         {
             "name": "debug",
             "request": "launch",
-            "type": "dart"
+            "type": "dart",
+            "args": [
+                "--dart-define-from-file",
+                "env/variables.json"
+            ]
         },
         {
             "name": "profile",
             "request": "launch",
             "type": "dart",
-            "flutterMode": "profile"
+            "flutterMode": "profile",
+            "args": [
+                "--dart-define-from-file",
+                "env/variables.json"
+            ]
         },
         {
             "name": "release",
             "request": "launch",
             "type": "dart",
-            "flutterMode": "release"
+            "flutterMode": "release",
+            "args": [
+                "--dart-define-from-file",
+                "env/variables.json"
+            ]
         },
         {
             "name": "web: debug",
             "request": "launch",
             "type": "dart",
-            "args": ["-d", "chrome", "--web-browser-flag", "--disable-web-security"]
+            "args": [
+                "-d",
+                "chrome",
+                "--web-browser-flag",
+                "--disable-web-security",
+                "--dart-define-from-file",
+                "env/variables.json"
+            ]
         }
     ]
 }
