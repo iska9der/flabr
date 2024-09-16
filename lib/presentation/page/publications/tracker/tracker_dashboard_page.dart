@@ -30,6 +30,7 @@ class TrackerDashboardPage extends StatelessWidget {
                       snap: true,
                       floating: true,
                       pinned: true,
+                      leading: const AutoLeadingButton(),
                       title: const Text('Трекер'),
                       toolbarHeight: fToolBarHeight,
                       actions: const [
