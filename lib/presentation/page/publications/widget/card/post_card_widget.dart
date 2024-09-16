@@ -16,7 +16,7 @@ class PostCardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return FlabrCard(
       onTap: () => getIt<AppRouter>().navigate(
-        PublicationRouter(
+        PublicationFlowRoute(
           type: PublicationType.post.name,
           id: post.id,
         ),

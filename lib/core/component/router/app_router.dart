@@ -273,8 +273,8 @@ class AppRouter extends _$AppRouter {
 
     /// Просмотр публикации
     AutoRoute(
-      path: PublicationFlow.routePath,
-      page: PublicationRouter.page,
+      path: PublicationFlowPage.routePath,
+      page: PublicationFlowRoute.page,
       children: [
         AutoRoute(
           initial: true,

@@ -7,7 +7,12 @@ import '../user_base.dart';
 
 part 'part.freezed.dart';
 part 'part.g.dart';
+part 'tracker_notification_category.dart';
+part 'tracker_notification_data.dart';
 part 'tracker_notification_model.dart';
+part 'tracker_notification_publication.dart';
+part 'tracker_notification_type.dart';
+part 'tracker_notification_user.dart';
 part 'tracker_notifications_response.dart';
 part 'tracker_publication_model.dart';
 part 'tracker_publications_response.dart';

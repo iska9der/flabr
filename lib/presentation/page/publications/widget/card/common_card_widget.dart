@@ -16,7 +16,7 @@ class CommonCardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return FlabrCard(
       onTap: () => getIt<AppRouter>().push(
-        PublicationRouter(
+        PublicationFlowRoute(
           type: publication.type.name,
           id: publication.id,
         ),

@@ -29,7 +29,7 @@ class ArticleFooterWidget extends StatelessWidget {
           value: publication.statistics.commentsCount.compact(),
           isHighlighted: publication.relatedData.unreadCommentsCount > 0,
           onTap: () => context.router.push(
-            PublicationRouter(
+            PublicationFlowRoute(
               type: publication.type.name,
               id: publication.id,
               children: [PublicationCommentRoute()],

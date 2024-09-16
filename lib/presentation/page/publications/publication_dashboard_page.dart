@@ -82,8 +82,15 @@ class _PublicationDashboardPageState extends State<PublicationDashboardPage> {
                               ),
                               dividerColor: Colors.transparent,
                               tabs: [
-                                const DashboardDrawerLinkWidget(
-                                  title: 'Моя лента',
+                                BlocBuilder<AuthCubit, AuthState>(
+                                  buildWhen: (previous, current) =>
+                                      previous.updates != current.updates,
+                                  builder: (context, state) {
+                                    return DashboardDrawerLinkWidget(
+                                      title: 'Моя лента',
+                                      count: state.updates.feeds.newCount,
+                                    );
+                                  },
                                 ),
                                 DashboardDrawerLinkWidget(
                                   title: 'Статьи',

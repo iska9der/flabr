@@ -150,7 +150,7 @@ class _MostReadingListState extends State<_MostReadingList> {
                             isHighlighted:
                                 model.relatedData.unreadCommentsCount > 0,
                             onTap: () => context.router.push(
-                              PublicationRouter(
+                              PublicationFlowRoute(
                                 type: model.type.name,
                                 id: model.id,
                                 children: [PublicationCommentRoute()],

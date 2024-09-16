@@ -30,7 +30,9 @@ class PublicationCommon extends Publication {
       id: map['id'],
       type: map.containsKey('publicationType')
           ? PublicationType.fromString(map['publicationType'])
-          : PublicationType.unknown,
+          : map.containsKey('postType')
+              ? PublicationType.fromString(map['postType'])
+              : PublicationType.unknown,
       timePublished: map['timePublished'],
       textHtml: map['textHtml'] ?? '',
       author: map['author'] != null

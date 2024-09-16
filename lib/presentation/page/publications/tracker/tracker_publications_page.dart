@@ -134,7 +134,7 @@ class _TrackerPublicationWidgetState extends State<TrackerPublicationWidget> {
     return FlabrCard(
       color: isHighlighted ? theme.colorScheme.surfaceContainerHighest : null,
       onTap: () => context.router.push(
-        PublicationRouter(
+        PublicationFlowRoute(
           type: widget.model.publicationType,
           id: widget.model.id,
         ),
@@ -161,7 +161,7 @@ class _TrackerPublicationWidgetState extends State<TrackerPublicationWidget> {
                       isHighlighted: widget.model.isHighlighted,
                       onTap: () {
                         context.router.push(
-                          PublicationRouter(
+                          PublicationFlowRoute(
                             type: widget.model.publicationType,
                             id: widget.model.id,
                             children: [PublicationCommentRoute()],
@@ -178,7 +178,7 @@ class _TrackerPublicationWidgetState extends State<TrackerPublicationWidget> {
                         isHighlighted: true,
                         color: Colors.green,
 
-                        /// TODO: onTap на первый непрочитанный комментарий
+                        /// TODO: onTap с навигацией до первого непрочитанного комментария
                       ),
                   ],
                 )

@@ -182,16 +182,16 @@ abstract class _$AppRouter extends RootStackRouter {
         ),
       );
     },
-    PublicationRouter.name: (routeData) {
+    PublicationFlowRoute.name: (routeData) {
       final pathParams = routeData.inheritedPathParams;
-      final args = routeData.argsAs<PublicationRouterArgs>(
-          orElse: () => PublicationRouterArgs(
+      final args = routeData.argsAs<PublicationFlowRouteArgs>(
+          orElse: () => PublicationFlowRouteArgs(
                 type: pathParams.getString('type'),
                 id: pathParams.getString('id'),
               ));
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: PublicationFlow(
+        child: PublicationFlowPage(
           key: args.key,
           type: args.type,
           id: args.id,
@@ -771,16 +771,16 @@ class PublicationDetailRouteArgs {
 }
 
 /// generated route for
-/// [PublicationFlow]
-class PublicationRouter extends PageRouteInfo<PublicationRouterArgs> {
-  PublicationRouter({
+/// [PublicationFlowPage]
+class PublicationFlowRoute extends PageRouteInfo<PublicationFlowRouteArgs> {
+  PublicationFlowRoute({
     Key? key,
     required String type,
     required String id,
     List<PageRouteInfo>? children,
   }) : super(
-          PublicationRouter.name,
-          args: PublicationRouterArgs(
+          PublicationFlowRoute.name,
+          args: PublicationFlowRouteArgs(
             key: key,
             type: type,
             id: id,
@@ -792,14 +792,14 @@ class PublicationRouter extends PageRouteInfo<PublicationRouterArgs> {
           initialChildren: children,
         );
 
-  static const String name = 'PublicationRouter';
+  static const String name = 'PublicationFlowRoute';
 
-  static const PageInfo<PublicationRouterArgs> page =
-      PageInfo<PublicationRouterArgs>(name);
+  static const PageInfo<PublicationFlowRouteArgs> page =
+      PageInfo<PublicationFlowRouteArgs>(name);
 }
 
-class PublicationRouterArgs {
-  const PublicationRouterArgs({
+class PublicationFlowRouteArgs {
+  const PublicationFlowRouteArgs({
     this.key,
     required this.type,
     required this.id,
@@ -813,7 +813,7 @@ class PublicationRouterArgs {
 
   @override
   String toString() {
-    return 'PublicationRouterArgs{key: $key, type: $type, id: $id}';
+    return 'PublicationFlowRouteArgs{key: $key, type: $type, id: $id}';
   }
 }
 
