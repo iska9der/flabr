@@ -9,329 +9,6 @@
 
 part of 'app_router.dart';
 
-abstract class _$AppRouter extends RootStackRouter {
-  // ignore: unused_element
-  _$AppRouter({super.navigatorKey});
-
-  @override
-  final Map<String, PageFactory> pagesMap = {
-    ArticleListRoute.name: (routeData) {
-      final pathParams = routeData.inheritedPathParams;
-      final args = routeData.argsAs<ArticleListRouteArgs>(
-          orElse: () =>
-              ArticleListRouteArgs(flow: pathParams.getString('flow')));
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: ArticleListPage(
-          key: args.key,
-          flow: args.flow,
-        ),
-      );
-    },
-    ArticlesFlowRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const ArticlesFlowPage(),
-      );
-    },
-    CompanyDashboardRoute.name: (routeData) {
-      final pathParams = routeData.inheritedPathParams;
-      final args = routeData.argsAs<CompanyDashboardRouteArgs>(
-          orElse: () =>
-              CompanyDashboardRouteArgs(alias: pathParams.getString('alias')));
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: CompanyDashboardPage(
-          key: args.key,
-          alias: args.alias,
-        ),
-      );
-    },
-    CompanyDetailRoute.name: (routeData) {
-      final pathParams = routeData.inheritedPathParams;
-      final args = routeData.argsAs<CompanyDetailRouteArgs>(
-          orElse: () => CompanyDetailRouteArgs());
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: CompanyDetailPage(
-          key: args.key,
-          alias: pathParams.getString('alias'),
-        ),
-      );
-    },
-    CompanyListRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const CompanyListPage(),
-      );
-    },
-    DashboardRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const DashboardPage(),
-      );
-    },
-    FeedFlowRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const FeedFlowPage(),
-      );
-    },
-    FeedListRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const FeedListPage(),
-      );
-    },
-    HubDashboardRoute.name: (routeData) {
-      final pathParams = routeData.inheritedPathParams;
-      final args = routeData.argsAs<HubDashboardRouteArgs>(
-          orElse: () =>
-              HubDashboardRouteArgs(alias: pathParams.getString('alias')));
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: HubDashboardPage(
-          key: args.key,
-          alias: args.alias,
-        ),
-      );
-    },
-    HubDetailRoute.name: (routeData) {
-      final pathParams = routeData.inheritedPathParams;
-      final args = routeData.argsAs<HubDetailRouteArgs>(
-          orElse: () => HubDetailRouteArgs());
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: HubDetailPage(
-          key: args.key,
-          alias: pathParams.getString('alias'),
-        ),
-      );
-    },
-    HubListRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const HubListPage(),
-      );
-    },
-    NewsFlowRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const NewsFlowPage(),
-      );
-    },
-    NewsListRoute.name: (routeData) {
-      final pathParams = routeData.inheritedPathParams;
-      final args = routeData.argsAs<NewsListRouteArgs>(
-          orElse: () => NewsListRouteArgs(flow: pathParams.getString('flow')));
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: NewsListPage(
-          key: args.key,
-          flow: args.flow,
-        ),
-      );
-    },
-    PostListRoute.name: (routeData) {
-      final pathParams = routeData.inheritedPathParams;
-      final args = routeData.argsAs<PostListRouteArgs>(
-          orElse: () => PostListRouteArgs(flow: pathParams.getString('flow')));
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: PostListPage(
-          key: args.key,
-          flow: args.flow,
-        ),
-      );
-    },
-    PostsFlowRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const PostsFlowPage(),
-      );
-    },
-    PublicationCommentRoute.name: (routeData) {
-      final pathParams = routeData.inheritedPathParams;
-      final args = routeData.argsAs<PublicationCommentRouteArgs>(
-          orElse: () => PublicationCommentRouteArgs());
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: PublicationCommentPage(
-          key: args.key,
-          type: pathParams.getString('type'),
-          id: pathParams.getString('id'),
-        ),
-      );
-    },
-    PublicationDashboardRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const PublicationDashboardPage(),
-      );
-    },
-    PublicationDetailRoute.name: (routeData) {
-      final pathParams = routeData.inheritedPathParams;
-      final args = routeData.argsAs<PublicationDetailRouteArgs>(
-          orElse: () => PublicationDetailRouteArgs());
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: PublicationDetailPage(
-          key: args.key,
-          type: pathParams.getString('type'),
-          id: pathParams.getString('id'),
-        ),
-      );
-    },
-    PublicationFlowRoute.name: (routeData) {
-      final pathParams = routeData.inheritedPathParams;
-      final args = routeData.argsAs<PublicationFlowRouteArgs>(
-          orElse: () => PublicationFlowRouteArgs(
-                type: pathParams.getString('type'),
-                id: pathParams.getString('id'),
-              ));
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: PublicationFlowPage(
-          key: args.key,
-          type: args.type,
-          id: args.id,
-        ),
-      );
-    },
-    SearchAnywhereRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const SearchAnywherePage(),
-      );
-    },
-    ServicesFlowRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const ServicesFlowPage(),
-      );
-    },
-    ServicesRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const ServicesPage(),
-      );
-    },
-    SettingsRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const SettingsPage(),
-      );
-    },
-    TrackerDashboardRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const TrackerDashboardPage(),
-      );
-    },
-    TrackerFlowRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const TrackerFlowPage(),
-      );
-    },
-    TrackerPublicationsRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const TrackerPublicationsPage(),
-      );
-    },
-    TrackerSubscriptionRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const TrackerSubscriptionPage(),
-      );
-    },
-    TrackerSystemRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const TrackerSystemPage(),
-      );
-    },
-    UserBookmarkListRoute.name: (routeData) {
-      final pathParams = routeData.inheritedPathParams;
-      final args = routeData.argsAs<UserBookmarkListRouteArgs>(
-          orElse: () => UserBookmarkListRouteArgs(
-                  type: pathParams.getString(
-                'type',
-                '',
-              )));
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: UserBookmarkListPage(
-          key: args.key,
-          alias: pathParams.getString('alias'),
-          type: args.type,
-        ),
-      );
-    },
-    UserCommentListRoute.name: (routeData) {
-      final pathParams = routeData.inheritedPathParams;
-      final args = routeData.argsAs<UserCommentListRouteArgs>(
-          orElse: () => UserCommentListRouteArgs());
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: UserCommentListPage(
-          key: args.key,
-          alias: pathParams.getString('alias'),
-        ),
-      );
-    },
-    UserDashboardRoute.name: (routeData) {
-      final pathParams = routeData.inheritedPathParams;
-      final args = routeData.argsAs<UserDashboardRouteArgs>(
-          orElse: () =>
-              UserDashboardRouteArgs(alias: pathParams.getString('alias')));
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: UserDashboardPage(
-          key: args.key,
-          alias: args.alias,
-        ),
-      );
-    },
-    UserDetailRoute.name: (routeData) {
-      final pathParams = routeData.inheritedPathParams;
-      final args = routeData.argsAs<UserDetailRouteArgs>(
-          orElse: () => UserDetailRouteArgs());
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: UserDetailPage(
-          key: args.key,
-          alias: pathParams.getString('alias'),
-        ),
-      );
-    },
-    UserListRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const UserListPage(),
-      );
-    },
-    UserPublicationListRoute.name: (routeData) {
-      final pathParams = routeData.inheritedPathParams;
-      final args = routeData.argsAs<UserPublicationListRouteArgs>(
-          orElse: () => UserPublicationListRouteArgs(
-                  type: pathParams.getString(
-                'type',
-                '',
-              )));
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: UserPublicationListPage(
-          key: args.key,
-          alias: pathParams.getString('alias'),
-          type: args.type,
-        ),
-      );
-    },
-  };
-}
-
 /// generated route for
 /// [ArticleListPage]
 class ArticleListRoute extends PageRouteInfo<ArticleListRouteArgs> {
@@ -351,8 +28,19 @@ class ArticleListRoute extends PageRouteInfo<ArticleListRouteArgs> {
 
   static const String name = 'ArticleListRoute';
 
-  static const PageInfo<ArticleListRouteArgs> page =
-      PageInfo<ArticleListRouteArgs>(name);
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      final pathParams = data.inheritedPathParams;
+      final args = data.argsAs<ArticleListRouteArgs>(
+          orElse: () =>
+              ArticleListRouteArgs(flow: pathParams.getString('flow')));
+      return ArticleListPage(
+        key: args.key,
+        flow: args.flow,
+      );
+    },
+  );
 }
 
 class ArticleListRouteArgs {
@@ -382,7 +70,12 @@ class ArticlesFlowRoute extends PageRouteInfo<void> {
 
   static const String name = 'ArticlesFlowRoute';
 
-  static const PageInfo<void> page = PageInfo<void>(name);
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const ArticlesFlowPage();
+    },
+  );
 }
 
 /// generated route for
@@ -404,8 +97,19 @@ class CompanyDashboardRoute extends PageRouteInfo<CompanyDashboardRouteArgs> {
 
   static const String name = 'CompanyDashboardRoute';
 
-  static const PageInfo<CompanyDashboardRouteArgs> page =
-      PageInfo<CompanyDashboardRouteArgs>(name);
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      final pathParams = data.inheritedPathParams;
+      final args = data.argsAs<CompanyDashboardRouteArgs>(
+          orElse: () =>
+              CompanyDashboardRouteArgs(alias: pathParams.getString('alias')));
+      return CompanyDashboardPage(
+        key: args.key,
+        alias: args.alias,
+      );
+    },
+  );
 }
 
 class CompanyDashboardRouteArgs {
@@ -438,8 +142,18 @@ class CompanyDetailRoute extends PageRouteInfo<CompanyDetailRouteArgs> {
 
   static const String name = 'CompanyDetailRoute';
 
-  static const PageInfo<CompanyDetailRouteArgs> page =
-      PageInfo<CompanyDetailRouteArgs>(name);
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      final pathParams = data.inheritedPathParams;
+      final args = data.argsAs<CompanyDetailRouteArgs>(
+          orElse: () => CompanyDetailRouteArgs());
+      return CompanyDetailPage(
+        key: args.key,
+        alias: pathParams.getString('alias'),
+      );
+    },
+  );
 }
 
 class CompanyDetailRouteArgs {
@@ -464,7 +178,12 @@ class CompanyListRoute extends PageRouteInfo<void> {
 
   static const String name = 'CompanyListRoute';
 
-  static const PageInfo<void> page = PageInfo<void>(name);
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const CompanyListPage();
+    },
+  );
 }
 
 /// generated route for
@@ -478,7 +197,12 @@ class DashboardRoute extends PageRouteInfo<void> {
 
   static const String name = 'DashboardRoute';
 
-  static const PageInfo<void> page = PageInfo<void>(name);
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const DashboardPage();
+    },
+  );
 }
 
 /// generated route for
@@ -492,7 +216,12 @@ class FeedFlowRoute extends PageRouteInfo<void> {
 
   static const String name = 'FeedFlowRoute';
 
-  static const PageInfo<void> page = PageInfo<void>(name);
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const FeedFlowPage();
+    },
+  );
 }
 
 /// generated route for
@@ -506,7 +235,12 @@ class FeedListRoute extends PageRouteInfo<void> {
 
   static const String name = 'FeedListRoute';
 
-  static const PageInfo<void> page = PageInfo<void>(name);
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const FeedListPage();
+    },
+  );
 }
 
 /// generated route for
@@ -528,8 +262,19 @@ class HubDashboardRoute extends PageRouteInfo<HubDashboardRouteArgs> {
 
   static const String name = 'HubDashboardRoute';
 
-  static const PageInfo<HubDashboardRouteArgs> page =
-      PageInfo<HubDashboardRouteArgs>(name);
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      final pathParams = data.inheritedPathParams;
+      final args = data.argsAs<HubDashboardRouteArgs>(
+          orElse: () =>
+              HubDashboardRouteArgs(alias: pathParams.getString('alias')));
+      return HubDashboardPage(
+        key: args.key,
+        alias: args.alias,
+      );
+    },
+  );
 }
 
 class HubDashboardRouteArgs {
@@ -562,8 +307,18 @@ class HubDetailRoute extends PageRouteInfo<HubDetailRouteArgs> {
 
   static const String name = 'HubDetailRoute';
 
-  static const PageInfo<HubDetailRouteArgs> page =
-      PageInfo<HubDetailRouteArgs>(name);
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      final pathParams = data.inheritedPathParams;
+      final args =
+          data.argsAs<HubDetailRouteArgs>(orElse: () => HubDetailRouteArgs());
+      return HubDetailPage(
+        key: args.key,
+        alias: pathParams.getString('alias'),
+      );
+    },
+  );
 }
 
 class HubDetailRouteArgs {
@@ -588,7 +343,12 @@ class HubListRoute extends PageRouteInfo<void> {
 
   static const String name = 'HubListRoute';
 
-  static const PageInfo<void> page = PageInfo<void>(name);
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const HubListPage();
+    },
+  );
 }
 
 /// generated route for
@@ -602,7 +362,12 @@ class NewsFlowRoute extends PageRouteInfo<void> {
 
   static const String name = 'NewsFlowRoute';
 
-  static const PageInfo<void> page = PageInfo<void>(name);
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const NewsFlowPage();
+    },
+  );
 }
 
 /// generated route for
@@ -624,8 +389,18 @@ class NewsListRoute extends PageRouteInfo<NewsListRouteArgs> {
 
   static const String name = 'NewsListRoute';
 
-  static const PageInfo<NewsListRouteArgs> page =
-      PageInfo<NewsListRouteArgs>(name);
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      final pathParams = data.inheritedPathParams;
+      final args = data.argsAs<NewsListRouteArgs>(
+          orElse: () => NewsListRouteArgs(flow: pathParams.getString('flow')));
+      return NewsListPage(
+        key: args.key,
+        flow: args.flow,
+      );
+    },
+  );
 }
 
 class NewsListRouteArgs {
@@ -663,8 +438,18 @@ class PostListRoute extends PageRouteInfo<PostListRouteArgs> {
 
   static const String name = 'PostListRoute';
 
-  static const PageInfo<PostListRouteArgs> page =
-      PageInfo<PostListRouteArgs>(name);
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      final pathParams = data.inheritedPathParams;
+      final args = data.argsAs<PostListRouteArgs>(
+          orElse: () => PostListRouteArgs(flow: pathParams.getString('flow')));
+      return PostListPage(
+        key: args.key,
+        flow: args.flow,
+      );
+    },
+  );
 }
 
 class PostListRouteArgs {
@@ -694,7 +479,12 @@ class PostsFlowRoute extends PageRouteInfo<void> {
 
   static const String name = 'PostsFlowRoute';
 
-  static const PageInfo<void> page = PageInfo<void>(name);
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const PostsFlowPage();
+    },
+  );
 }
 
 /// generated route for
@@ -712,8 +502,19 @@ class PublicationCommentRoute
 
   static const String name = 'PublicationCommentRoute';
 
-  static const PageInfo<PublicationCommentRouteArgs> page =
-      PageInfo<PublicationCommentRouteArgs>(name);
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      final pathParams = data.inheritedPathParams;
+      final args = data.argsAs<PublicationCommentRouteArgs>(
+          orElse: () => PublicationCommentRouteArgs());
+      return PublicationCommentPage(
+        key: args.key,
+        type: pathParams.getString('type'),
+        id: pathParams.getString('id'),
+      );
+    },
+  );
 }
 
 class PublicationCommentRouteArgs {
@@ -738,7 +539,12 @@ class PublicationDashboardRoute extends PageRouteInfo<void> {
 
   static const String name = 'PublicationDashboardRoute';
 
-  static const PageInfo<void> page = PageInfo<void>(name);
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const PublicationDashboardPage();
+    },
+  );
 }
 
 /// generated route for
@@ -755,8 +561,19 @@ class PublicationDetailRoute extends PageRouteInfo<PublicationDetailRouteArgs> {
 
   static const String name = 'PublicationDetailRoute';
 
-  static const PageInfo<PublicationDetailRouteArgs> page =
-      PageInfo<PublicationDetailRouteArgs>(name);
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      final pathParams = data.inheritedPathParams;
+      final args = data.argsAs<PublicationDetailRouteArgs>(
+          orElse: () => PublicationDetailRouteArgs());
+      return PublicationDetailPage(
+        key: args.key,
+        type: pathParams.getString('type'),
+        id: pathParams.getString('id'),
+      );
+    },
+  );
 }
 
 class PublicationDetailRouteArgs {
@@ -794,8 +611,22 @@ class PublicationFlowRoute extends PageRouteInfo<PublicationFlowRouteArgs> {
 
   static const String name = 'PublicationFlowRoute';
 
-  static const PageInfo<PublicationFlowRouteArgs> page =
-      PageInfo<PublicationFlowRouteArgs>(name);
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      final pathParams = data.inheritedPathParams;
+      final args = data.argsAs<PublicationFlowRouteArgs>(
+          orElse: () => PublicationFlowRouteArgs(
+                type: pathParams.getString('type'),
+                id: pathParams.getString('id'),
+              ));
+      return PublicationFlowPage(
+        key: args.key,
+        type: args.type,
+        id: args.id,
+      );
+    },
+  );
 }
 
 class PublicationFlowRouteArgs {
@@ -828,7 +659,12 @@ class SearchAnywhereRoute extends PageRouteInfo<void> {
 
   static const String name = 'SearchAnywhereRoute';
 
-  static const PageInfo<void> page = PageInfo<void>(name);
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const SearchAnywherePage();
+    },
+  );
 }
 
 /// generated route for
@@ -842,7 +678,12 @@ class ServicesFlowRoute extends PageRouteInfo<void> {
 
   static const String name = 'ServicesFlowRoute';
 
-  static const PageInfo<void> page = PageInfo<void>(name);
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const ServicesFlowPage();
+    },
+  );
 }
 
 /// generated route for
@@ -856,7 +697,12 @@ class ServicesRoute extends PageRouteInfo<void> {
 
   static const String name = 'ServicesRoute';
 
-  static const PageInfo<void> page = PageInfo<void>(name);
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const ServicesPage();
+    },
+  );
 }
 
 /// generated route for
@@ -870,7 +716,12 @@ class SettingsRoute extends PageRouteInfo<void> {
 
   static const String name = 'SettingsRoute';
 
-  static const PageInfo<void> page = PageInfo<void>(name);
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const SettingsPage();
+    },
+  );
 }
 
 /// generated route for
@@ -884,7 +735,12 @@ class TrackerDashboardRoute extends PageRouteInfo<void> {
 
   static const String name = 'TrackerDashboardRoute';
 
-  static const PageInfo<void> page = PageInfo<void>(name);
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const TrackerDashboardPage();
+    },
+  );
 }
 
 /// generated route for
@@ -898,7 +754,12 @@ class TrackerFlowRoute extends PageRouteInfo<void> {
 
   static const String name = 'TrackerFlowRoute';
 
-  static const PageInfo<void> page = PageInfo<void>(name);
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const TrackerFlowPage();
+    },
+  );
 }
 
 /// generated route for
@@ -912,7 +773,12 @@ class TrackerPublicationsRoute extends PageRouteInfo<void> {
 
   static const String name = 'TrackerPublicationsRoute';
 
-  static const PageInfo<void> page = PageInfo<void>(name);
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const TrackerPublicationsPage();
+    },
+  );
 }
 
 /// generated route for
@@ -926,7 +792,12 @@ class TrackerSubscriptionRoute extends PageRouteInfo<void> {
 
   static const String name = 'TrackerSubscriptionRoute';
 
-  static const PageInfo<void> page = PageInfo<void>(name);
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const TrackerSubscriptionPage();
+    },
+  );
 }
 
 /// generated route for
@@ -940,7 +811,12 @@ class TrackerSystemRoute extends PageRouteInfo<void> {
 
   static const String name = 'TrackerSystemRoute';
 
-  static const PageInfo<void> page = PageInfo<void>(name);
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const TrackerSystemPage();
+    },
+  );
 }
 
 /// generated route for
@@ -962,8 +838,23 @@ class UserBookmarkListRoute extends PageRouteInfo<UserBookmarkListRouteArgs> {
 
   static const String name = 'UserBookmarkListRoute';
 
-  static const PageInfo<UserBookmarkListRouteArgs> page =
-      PageInfo<UserBookmarkListRouteArgs>(name);
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      final pathParams = data.inheritedPathParams;
+      final args = data.argsAs<UserBookmarkListRouteArgs>(
+          orElse: () => UserBookmarkListRouteArgs(
+                  type: pathParams.getString(
+                'type',
+                '',
+              )));
+      return UserBookmarkListPage(
+        key: args.key,
+        alias: pathParams.getString('alias'),
+        type: args.type,
+      );
+    },
+  );
 }
 
 class UserBookmarkListRouteArgs {
@@ -996,8 +887,18 @@ class UserCommentListRoute extends PageRouteInfo<UserCommentListRouteArgs> {
 
   static const String name = 'UserCommentListRoute';
 
-  static const PageInfo<UserCommentListRouteArgs> page =
-      PageInfo<UserCommentListRouteArgs>(name);
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      final pathParams = data.inheritedPathParams;
+      final args = data.argsAs<UserCommentListRouteArgs>(
+          orElse: () => UserCommentListRouteArgs());
+      return UserCommentListPage(
+        key: args.key,
+        alias: pathParams.getString('alias'),
+      );
+    },
+  );
 }
 
 class UserCommentListRouteArgs {
@@ -1030,8 +931,19 @@ class UserDashboardRoute extends PageRouteInfo<UserDashboardRouteArgs> {
 
   static const String name = 'UserDashboardRoute';
 
-  static const PageInfo<UserDashboardRouteArgs> page =
-      PageInfo<UserDashboardRouteArgs>(name);
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      final pathParams = data.inheritedPathParams;
+      final args = data.argsAs<UserDashboardRouteArgs>(
+          orElse: () =>
+              UserDashboardRouteArgs(alias: pathParams.getString('alias')));
+      return UserDashboardPage(
+        key: args.key,
+        alias: args.alias,
+      );
+    },
+  );
 }
 
 class UserDashboardRouteArgs {
@@ -1064,8 +976,18 @@ class UserDetailRoute extends PageRouteInfo<UserDetailRouteArgs> {
 
   static const String name = 'UserDetailRoute';
 
-  static const PageInfo<UserDetailRouteArgs> page =
-      PageInfo<UserDetailRouteArgs>(name);
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      final pathParams = data.inheritedPathParams;
+      final args =
+          data.argsAs<UserDetailRouteArgs>(orElse: () => UserDetailRouteArgs());
+      return UserDetailPage(
+        key: args.key,
+        alias: pathParams.getString('alias'),
+      );
+    },
+  );
 }
 
 class UserDetailRouteArgs {
@@ -1090,7 +1012,12 @@ class UserListRoute extends PageRouteInfo<void> {
 
   static const String name = 'UserListRoute';
 
-  static const PageInfo<void> page = PageInfo<void>(name);
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const UserListPage();
+    },
+  );
 }
 
 /// generated route for
@@ -1113,8 +1040,23 @@ class UserPublicationListRoute
 
   static const String name = 'UserPublicationListRoute';
 
-  static const PageInfo<UserPublicationListRouteArgs> page =
-      PageInfo<UserPublicationListRouteArgs>(name);
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      final pathParams = data.inheritedPathParams;
+      final args = data.argsAs<UserPublicationListRouteArgs>(
+          orElse: () => UserPublicationListRouteArgs(
+                  type: pathParams.getString(
+                'type',
+                '',
+              )));
+      return UserPublicationListPage(
+        key: args.key,
+        alias: pathParams.getString('alias'),
+        type: args.type,
+      );
+    },
+  );
 }
 
 class UserPublicationListRouteArgs {

@@ -17,11 +17,9 @@ const AppBarTheme appAppBarTheme = AppBarTheme(
   titleTextStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
 );
 
-/// issue: https://pub.dev/packages/auto_route#remove-shadow-from-nested-routers
 const PageTransitionsTheme appPageTransitionsTheme =
     PageTransitionsTheme(builders: {
-  // replace default CupertinoPageTransitionsBuilder with this
-  TargetPlatform.iOS: NoShadowCupertinoPageTransitionsBuilder(),
+  TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
   TargetPlatform.android: FadeUpwardsPageTransitionsBuilder(),
 });
 

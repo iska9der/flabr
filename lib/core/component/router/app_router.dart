@@ -46,7 +46,7 @@ part 'app_router.gr.dart';
   replaceInRouteName: 'Page,Route',
 )
 // extend the generated private router
-class AppRouter extends _$AppRouter {
+class AppRouter extends RootStackRouter {
   /// Открыть внешнюю ссылку
   Future launchUrl(String url) => launchUrlString(
         url,
