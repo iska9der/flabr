@@ -8,12 +8,14 @@ class AuthState extends Equatable {
     this.status = AuthStatus.initial,
     this.tokens = Tokens.empty,
     this.me = UserMe.empty,
+    this.updates = const UserUpdates(),
   });
 
   final String error;
   final AuthStatus status;
   final Tokens tokens;
   final UserMe me;
+  final UserUpdates updates;
 
   AuthState copyWith({
     String? error,
@@ -21,12 +23,14 @@ class AuthState extends Equatable {
     Tokens? tokens,
     String? csrfToken,
     UserMe? me,
+    UserUpdates? updates,
   }) {
     return AuthState(
       error: error ?? this.error,
       status: status ?? this.status,
       tokens: tokens ?? this.tokens,
       me: me ?? this.me,
+      updates: updates ?? this.updates,
     );
   }
 
@@ -40,5 +44,6 @@ class AuthState extends Equatable {
         status,
         tokens,
         me,
+        updates,
       ];
 }

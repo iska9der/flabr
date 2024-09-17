@@ -13,7 +13,7 @@ import 'user_comment_list_page.dart';
 import 'user_detail_page.dart';
 import 'user_publication_list_page.dart';
 
-@RoutePage(name: UserDashboardPage.routeName)
+@RoutePage()
 class UserDashboardPage extends StatelessWidget {
   const UserDashboardPage({
     super.key,
@@ -23,7 +23,6 @@ class UserDashboardPage extends StatelessWidget {
   final String alias;
 
   static const String routePath = 'users/:alias';
-  static const String routeName = 'UserDashboardRoute';
 
   @override
   Widget build(BuildContext context) {

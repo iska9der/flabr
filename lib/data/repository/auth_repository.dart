@@ -16,6 +16,14 @@ class AuthRepository {
     return UserMe.fromMap(raw);
   }
 
+  Future<UserUpdates> fetchUpdates() async {
+    final map = await _service.fetchUpdates();
+
+    final model = UserUpdates.fromJson(map);
+
+    return model;
+  }
+
   fetchCsrf(Tokens tokens) async {
     String rawHtml = await _service.fetchRawMainPage(tokens.toCookieString());
 

@@ -10,11 +10,11 @@ import '../../../../../data/model/comment/comment_model.dart';
 import '../../../../../data/model/publication/publication_author_model.dart';
 import '../../../../feature/scroll/part.dart';
 import '../../../../utils/utils.dart';
-import '../../../../widget/author_widget.dart';
 import '../../../../widget/comment/comment_widget.dart';
 import '../../../../widget/enhancement/button.dart';
 import '../../../../widget/enhancement/card.dart';
 import '../../../../widget/enhancement/progress_indicator.dart';
+import '../../../../widget/user_text_button.dart';
 import '../../../publications/articles/article_detail_page.dart';
 import '../cubit/user_comment_list_cubit.dart';
 
@@ -88,7 +88,7 @@ class CommentSliverList extends StatelessWidget {
                         ),
                       ),
                       const Divider(thickness: 1),
-                      AuthorWidget(model.author),
+                      UserTextButton(model.author),
                       CommentWidget(model),
                     ],
                   ),
@@ -133,7 +133,7 @@ class _SkeletonLoader extends StatelessWidget {
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
                 const Divider(thickness: 1),
-                const AuthorWidget(
+                const UserTextButton(
                   PublicationAuthor(
                     id: '0',
                     alias: 'random alias',

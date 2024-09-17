@@ -85,8 +85,6 @@ Future<_i1.GetIt> $initGetIt(
         mobileClient: gh<_i9.HttpClient>(instanceName: 'mobileClient'),
         siteClient: gh<_i9.HttpClient>(instanceName: 'siteClient'),
       ));
-  gh.singleton<_i10.AuthService>(() => _i10.AuthServiceImpl(
-      mobileClient: gh<_i9.HttpClient>(instanceName: 'mobileClient')));
   gh.lazySingleton<_i10.PublicationService>(() => _i10.PublicationServiceImpl(
         mobileClient: gh<_i9.HttpClient>(instanceName: 'mobileClient'),
         siteClient: gh<_i9.HttpClient>(instanceName: 'siteClient'),
@@ -95,6 +93,14 @@ Future<_i1.GetIt> $initGetIt(
       () => _i8.PublicationRepository(gh<_i10.PublicationService>()));
   gh.lazySingleton<_i8.SearchRepository>(
       () => _i8.SearchRepository(gh<_i10.SearchService>()));
+  gh.lazySingleton<_i10.TrackerService>(() => _i10.TrackerServiceImpl(
+      siteClient: gh<_i9.HttpClient>(instanceName: 'siteClient')));
+  gh.singleton<_i10.AuthService>(() => _i10.AuthServiceImpl(
+        siteClient: gh<_i9.HttpClient>(instanceName: 'siteClient'),
+        mobileClient: gh<_i9.HttpClient>(instanceName: 'mobileClient'),
+      ));
+  gh.singleton<_i8.TrackerRepository>(
+      () => _i8.TrackerRepositoryImpl(gh<_i10.TrackerService>()));
   gh.lazySingleton<_i10.CompanyService>(() => _i10.CompanyServiceImpl(
         mobileClient: gh<_i9.HttpClient>(instanceName: 'mobileClient'),
         siteClient: gh<_i9.HttpClient>(instanceName: 'siteClient'),

@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_fancy_tree_view/flutter_fancy_tree_view.dart';
@@ -6,9 +7,9 @@ import '../../../../data/model/comment/comment_model.dart';
 import '../../../../data/model/offset_history.dart';
 import '../../../extension/part.dart';
 import '../../../theme/part.dart';
-import '../../../widget/author_widget.dart';
 import '../../../widget/comment/comment_widget.dart';
 import '../../../widget/enhancement/progress_indicator.dart';
+import '../../../widget/user_text_button.dart';
 import '../cubit/comment_list_cubit.dart';
 import 'comment_parent_widget.dart';
 
@@ -19,6 +20,7 @@ class CommentListView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: const AutoLeadingButton(),
         title: const Text('Комментарии'),
       ),
       body: SafeArea(
@@ -173,7 +175,7 @@ class _CommentTreeWidgetState extends State<CommentTreeWidget> {
                         children: [
                           Row(
                             children: [
-                              AuthorWidget(entry.node.author),
+                              UserTextButton(entry.node.author),
                               const Spacer(),
                               ExpandIcon(
                                 key: GlobalObjectKey(entry.node),

@@ -28,11 +28,6 @@ class _PublicationDashboardPageState extends State<PublicationDashboardPage> {
   late final PublicationCountersBloc countersBloc;
   late final StreamSubscription authSub;
 
-  /// Прячем табы когда мы не находимся в корне раздела "Публикации".
-  /// Если не прятать, то когда мы переходим на какой-нибудь экран с помощью роутера
-  /// это выглядит ущербно и занимает лишнее место сверху экрана
-  ScrollPhysics? tabBarPhysics;
-
   @override
   void initState() {
     countersBloc = PublicationCountersBloc(repository: getIt());
@@ -55,12 +50,11 @@ class _PublicationDashboardPageState extends State<PublicationDashboardPage> {
   @override
   Widget build(BuildContext context) {
     return AutoTabsRouter.tabBar(
-      physics: tabBarPhysics,
       routes: const [
-        FeedRouter(),
-        ArticlesRouter(),
-        PostsRouter(),
-        NewsRouter(),
+        FeedFlowRoute(),
+        ArticlesFlowRoute(),
+        PostsFlowRoute(),
+        NewsFlowRoute(),
       ],
       builder: (context, child, controller) {
         return Column(
@@ -88,8 +82,15 @@ class _PublicationDashboardPageState extends State<PublicationDashboardPage> {
                               ),
                               dividerColor: Colors.transparent,
                               tabs: [
-                                const DashboardDrawerLinkWidget(
-                                  title: 'Моя лента',
+                                BlocBuilder<AuthCubit, AuthState>(
+                                  buildWhen: (previous, current) =>
+                                      previous.updates != current.updates,
+                                  builder: (context, state) {
+                                    return DashboardDrawerLinkWidget(
+                                      title: 'Моя лента',
+                                      count: state.updates.feeds.newCount,
+                                    );
+                                  },
                                 ),
                                 DashboardDrawerLinkWidget(
                                   title: 'Статьи',
@@ -113,9 +114,29 @@ class _PublicationDashboardPageState extends State<PublicationDashboardPage> {
                       children: [
                         IconButton(
                           icon: const Icon(Icons.search_rounded),
+                          tooltip: 'Поиск',
                           onPressed: () => getIt<AppRouter>().push(
                             const SearchAnywhereRoute(),
                           ),
+                        ),
+                        BlocBuilder<AuthCubit, AuthState>(
+                          buildWhen: (previous, current) =>
+                              previous.updates != current.updates,
+                          builder: (context, state) {
+                            return Badge.count(
+                              count: state.updates.trackerUnreadCount,
+                              isLabelVisible:
+                                  state.updates.trackerUnreadCount > 0,
+                              offset: const Offset(-8, 5),
+                              child: IconButton(
+                                icon: const Icon(Icons.notifications_outlined),
+                                tooltip: 'Трекер',
+                                onPressed: () => getIt<AppRouter>().push(
+                                  const TrackerDashboardRoute(),
+                                ),
+                              ),
+                            );
+                          },
                         ),
                         const MyProfileIconButton(),
                       ],

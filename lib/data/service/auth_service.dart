@@ -3,6 +3,8 @@ part of 'part.dart';
 abstract interface class AuthService {
   Future<Map<String, dynamic>?> fetchMe();
 
+  Future<Map<String, dynamic>> fetchUpdates();
+
   /// Отправляем запрос на страницу с данными пользователя в заголовке запроса,
   /// чтобы в дальнейшем вытащить из мета тега csrf-token
   Future<String> fetchRawMainPage(String cookie);
@@ -11,9 +13,12 @@ abstract interface class AuthService {
 @Singleton(as: AuthService)
 class AuthServiceImpl implements AuthService {
   const AuthServiceImpl({
+    @Named('siteClient') required HttpClient siteClient,
     @Named('mobileClient') required HttpClient mobileClient,
-  }) : _mobileClient = mobileClient;
+  })  : _siteClient = siteClient,
+        _mobileClient = mobileClient;
 
+  final HttpClient _siteClient;
   final HttpClient _mobileClient;
 
   @override
@@ -24,6 +29,17 @@ class AuthServiceImpl implements AuthService {
       return response.data;
     } catch (e) {
       throw FetchException();
+    }
+  }
+
+  @override
+  Future<Map<String, dynamic>> fetchUpdates() async {
+    try {
+      final response = await _siteClient.get('/v2/me/updates');
+
+      return response.data;
+    } catch (e, trace) {
+      Error.throwWithStackTrace(FetchException(), trace);
     }
   }
 

@@ -56,5 +56,6 @@ class DioClient implements HttpClient {
       );
 
   @override
-  Future<Response> delete(String url, {dynamic body}) => client.delete(url);
+  Future<Response> delete(String url, {dynamic body}) =>
+      client.delete(url, data: body);
 }
