@@ -104,21 +104,24 @@ class _UIThemeWidgetState extends State<UIThemeWidget> {
         title: const Text('Темная тема'),
         contentPadding: EdgeInsets.zero,
         value: isDarkTheme,
-        onChanged: isLoading
-            ? null
-            : (val) {
-                setState(() {
-                  isDarkTheme = val;
-                  isLoading = true;
-                });
+        onChanged: (val) {
+          if (isLoading) {
+            return;
+          }
+          final settingsCubit = context.read<SettingsCubit>();
 
-                Future.delayed(const Duration(milliseconds: 300), () {
-                  context.read<SettingsCubit>().changeTheme(isDarkTheme: val);
-                  setState(() {
-                    isLoading = false;
-                  });
-                });
-              },
+          setState(() {
+            isDarkTheme = val;
+            isLoading = true;
+          });
+
+          Future.delayed(const Duration(milliseconds: 600), () {
+            settingsCubit.changeTheme(isDarkTheme: val);
+            setState(() {
+              isLoading = false;
+            });
+          });
+        },
       ),
     );
   }
