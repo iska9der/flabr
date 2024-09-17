@@ -1,6 +1,6 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
-import '../../core/component/di/injector.dart';
 import '../../core/component/router/app_router.dart';
 import '../../data/model/user_base.dart';
 import '../feature/auth/widget/dialog.dart';
@@ -28,7 +28,7 @@ class UserTextButton extends StatelessWidget {
         ),
       ),
       child: TextButton(
-        onPressed: () => getIt<AppRouter>().navigate(
+        onPressed: () => context.router.push(
           UserDashboardRoute(alias: user.alias),
         ),
         onLongPress: () {
