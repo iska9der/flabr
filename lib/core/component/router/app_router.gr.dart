@@ -28,10 +28,10 @@ abstract class _$AppRouter extends RootStackRouter {
         ),
       );
     },
-    ArticlesRouter.name: (routeData) {
+    ArticlesFlowRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: ArticlesFlow(),
+        child: const ArticlesFlowPage(),
       );
     },
     CompanyDashboardRoute.name: (routeData) {
@@ -71,10 +71,10 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const DashboardPage(),
       );
     },
-    FeedRouter.name: (routeData) {
+    FeedFlowRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: FeedFlow(),
+        child: const FeedFlowPage(),
       );
     },
     FeedListRoute.name: (routeData) {
@@ -114,10 +114,10 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const HubListPage(),
       );
     },
-    NewsRouter.name: (routeData) {
+    NewsFlowRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: NewsFlow(),
+        child: const NewsFlowPage(),
       );
     },
     NewsListRoute.name: (routeData) {
@@ -144,10 +144,10 @@ abstract class _$AppRouter extends RootStackRouter {
         ),
       );
     },
-    PostsRouter.name: (routeData) {
+    PostsFlowRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: PostsFlow(),
+        child: const PostsFlowPage(),
       );
     },
     PublicationCommentRoute.name: (routeData) {
@@ -204,10 +204,10 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const SearchAnywherePage(),
       );
     },
-    ServicesRouter.name: (routeData) {
+    ServicesFlowRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: ServicesFlow(),
+        child: const ServicesFlowPage(),
       );
     },
     ServicesRoute.name: (routeData) {
@@ -216,7 +216,7 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const ServicesPage(),
       );
     },
-    SettingsRouter.name: (routeData) {
+    SettingsRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const SettingsPage(),
@@ -228,10 +228,10 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const TrackerDashboardPage(),
       );
     },
-    TrackerRouter.name: (routeData) {
+    TrackerFlowRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: TrackerFlow(),
+        child: const TrackerFlowPage(),
       );
     },
     TrackerPublicationsRoute.name: (routeData) {
@@ -372,15 +372,15 @@ class ArticleListRouteArgs {
 }
 
 /// generated route for
-/// [ArticlesFlow]
-class ArticlesRouter extends PageRouteInfo<void> {
-  const ArticlesRouter({List<PageRouteInfo>? children})
+/// [ArticlesFlowPage]
+class ArticlesFlowRoute extends PageRouteInfo<void> {
+  const ArticlesFlowRoute({List<PageRouteInfo>? children})
       : super(
-          ArticlesRouter.name,
+          ArticlesFlowRoute.name,
           initialChildren: children,
         );
 
-  static const String name = 'ArticlesRouter';
+  static const String name = 'ArticlesFlowRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }
@@ -482,15 +482,15 @@ class DashboardRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [FeedFlow]
-class FeedRouter extends PageRouteInfo<void> {
-  const FeedRouter({List<PageRouteInfo>? children})
+/// [FeedFlowPage]
+class FeedFlowRoute extends PageRouteInfo<void> {
+  const FeedFlowRoute({List<PageRouteInfo>? children})
       : super(
-          FeedRouter.name,
+          FeedFlowRoute.name,
           initialChildren: children,
         );
 
-  static const String name = 'FeedRouter';
+  static const String name = 'FeedFlowRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }
@@ -592,15 +592,15 @@ class HubListRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [NewsFlow]
-class NewsRouter extends PageRouteInfo<void> {
-  const NewsRouter({List<PageRouteInfo>? children})
+/// [NewsFlowPage]
+class NewsFlowRoute extends PageRouteInfo<void> {
+  const NewsFlowRoute({List<PageRouteInfo>? children})
       : super(
-          NewsRouter.name,
+          NewsFlowRoute.name,
           initialChildren: children,
         );
 
-  static const String name = 'NewsRouter';
+  static const String name = 'NewsFlowRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }
@@ -684,15 +684,15 @@ class PostListRouteArgs {
 }
 
 /// generated route for
-/// [PostsFlow]
-class PostsRouter extends PageRouteInfo<void> {
-  const PostsRouter({List<PageRouteInfo>? children})
+/// [PostsFlowPage]
+class PostsFlowRoute extends PageRouteInfo<void> {
+  const PostsFlowRoute({List<PageRouteInfo>? children})
       : super(
-          PostsRouter.name,
+          PostsFlowRoute.name,
           initialChildren: children,
         );
 
-  static const String name = 'PostsRouter';
+  static const String name = 'PostsFlowRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }
@@ -832,15 +832,15 @@ class SearchAnywhereRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [ServicesFlow]
-class ServicesRouter extends PageRouteInfo<void> {
-  const ServicesRouter({List<PageRouteInfo>? children})
+/// [ServicesFlowPage]
+class ServicesFlowRoute extends PageRouteInfo<void> {
+  const ServicesFlowRoute({List<PageRouteInfo>? children})
       : super(
-          ServicesRouter.name,
+          ServicesFlowRoute.name,
           initialChildren: children,
         );
 
-  static const String name = 'ServicesRouter';
+  static const String name = 'ServicesFlowRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }
@@ -861,14 +861,14 @@ class ServicesRoute extends PageRouteInfo<void> {
 
 /// generated route for
 /// [SettingsPage]
-class SettingsRouter extends PageRouteInfo<void> {
-  const SettingsRouter({List<PageRouteInfo>? children})
+class SettingsRoute extends PageRouteInfo<void> {
+  const SettingsRoute({List<PageRouteInfo>? children})
       : super(
-          SettingsRouter.name,
+          SettingsRoute.name,
           initialChildren: children,
         );
 
-  static const String name = 'SettingsRouter';
+  static const String name = 'SettingsRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }
@@ -888,15 +888,15 @@ class TrackerDashboardRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [TrackerFlow]
-class TrackerRouter extends PageRouteInfo<void> {
-  const TrackerRouter({List<PageRouteInfo>? children})
+/// [TrackerFlowPage]
+class TrackerFlowRoute extends PageRouteInfo<void> {
+  const TrackerFlowRoute({List<PageRouteInfo>? children})
       : super(
-          TrackerRouter.name,
+          TrackerFlowRoute.name,
           initialChildren: children,
         );
 
-  static const String name = 'TrackerRouter';
+  static const String name = 'TrackerFlowRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }

@@ -51,10 +51,10 @@ class _PublicationDashboardPageState extends State<PublicationDashboardPage> {
   Widget build(BuildContext context) {
     return AutoTabsRouter.tabBar(
       routes: const [
-        FeedRouter(),
-        ArticlesRouter(),
-        PostsRouter(),
-        NewsRouter(),
+        FeedFlowRoute(),
+        ArticlesFlowRoute(),
+        PostsFlowRoute(),
+        NewsFlowRoute(),
       ],
       builder: (context, child, controller) {
         return Column(

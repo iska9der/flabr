@@ -106,7 +106,7 @@ class CompanyDetailsWidget extends StatelessWidget {
                         card.information.representativeUser.name,
                       ),
                       onTap: () => context.router.navigate(
-                        ServicesRouter(
+                        ServicesFlowRoute(
                           children: [
                             UserDashboardRoute(
                               alias: card.information.representativeUser.alias,

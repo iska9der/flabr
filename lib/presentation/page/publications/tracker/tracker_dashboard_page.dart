@@ -5,12 +5,11 @@ import '../../../../core/component/router/app_router.dart';
 import '../../../theme/part.dart';
 import '../../../widget/dashboard_drawer_link_widget.dart';
 
-@RoutePage(name: TrackerDashboardPage.routeName)
+@RoutePage()
 class TrackerDashboardPage extends StatelessWidget {
   const TrackerDashboardPage({super.key});
 
   static const String routePath = '';
-  static const String routeName = 'TrackerDashboardRoute';
 
   @override
   Widget build(BuildContext context) {

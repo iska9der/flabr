@@ -1,7 +1,7 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../core/component/di/injector.dart';
 import '../../../../core/component/router/app_router.dart';
 import '../../../../data/model/user_base.dart';
 import '../../../extension/part.dart';
@@ -34,7 +34,7 @@ class DialogUserProfileWidget extends StatelessWidget
               subtitle: user.fullname.isNotEmpty ? Text(user.fullname) : null,
               title: Text('@${user.alias}'),
               onTap: () {
-                getIt<AppRouter>().navigate(
+                context.router.push(
                   UserDashboardRoute(alias: user.alias),
                 );
 
@@ -44,7 +44,7 @@ class DialogUserProfileWidget extends StatelessWidget
             ListTile(
               title: const Text('Публикации'),
               onTap: () {
-                getIt<AppRouter>().navigate(
+                context.router.push(
                   UserDashboardRoute(
                     alias: user.alias,
                     children: [UserPublicationListRoute()],
@@ -57,7 +57,7 @@ class DialogUserProfileWidget extends StatelessWidget
             ListTile(
               title: const Text('Закладки'),
               onTap: () {
-                getIt<AppRouter>().navigate(
+                context.router.push(
                   UserDashboardRoute(
                     alias: user.alias,
                     children: [UserBookmarkListRoute()],
@@ -70,7 +70,7 @@ class DialogUserProfileWidget extends StatelessWidget
             ListTile(
               title: const Text('Комментарии'),
               onTap: () {
-                getIt<AppRouter>().navigate(
+                context.router.push(
                   UserDashboardRoute(
                     alias: user.alias,
                     children: [UserCommentListRoute()],

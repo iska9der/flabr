@@ -13,9 +13,11 @@ import 'widget/settings_card_widget.dart';
 import 'widget/settings_checkbox_widget.dart';
 import 'widget/settings_section_widget.dart';
 
-@RoutePage(name: 'SettingsRouter')
+@RoutePage()
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
+
+  static const String routePath = 'settings';
 
   @override
   Widget build(BuildContext context) {

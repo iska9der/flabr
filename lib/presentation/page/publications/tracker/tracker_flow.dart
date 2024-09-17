@@ -2,8 +2,9 @@
 
 import 'package:auto_route/auto_route.dart';
 
-@RoutePage(name: TrackerFlow.routeName)
-class TrackerFlow extends AutoRouter {
+@RoutePage()
+class TrackerFlowPage extends AutoRouter {
+  const TrackerFlowPage({super.key});
+
   static const String routePath = '/tracker';
-  static const String routeName = 'TrackerRouter';
 }

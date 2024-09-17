@@ -2,8 +2,9 @@
 
 import 'package:auto_route/auto_route.dart';
 
-@RoutePage(name: FeedFlow.routeName)
-class FeedFlow extends AutoRouter {
+@RoutePage()
+class FeedFlowPage extends AutoRouter {
+  const FeedFlowPage({super.key});
+
   static const String routePath = 'feed';
-  static const String routeName = 'FeedRouter';
 }

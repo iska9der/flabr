@@ -2,8 +2,9 @@
 
 import 'package:auto_route/auto_route.dart';
 
-@RoutePage(name: PostsFlow.routeName)
-class PostsFlow extends AutoRouter {
+@RoutePage()
+class PostsFlowPage extends AutoRouter {
+  const PostsFlowPage({super.key});
+
   static const String routePath = 'posts';
-  static const String routeName = 'PostsRouter';
 }

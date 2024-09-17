@@ -11,11 +11,9 @@ import '../theme/part.dart';
 import '../utils/utils.dart';
 import 'settings/cubit/settings_cubit.dart';
 
-@RoutePage(name: DashboardPage.routeName)
+@RoutePage()
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
-
-  static const String routeName = 'DashboardRoute';
 
   @override
   State<DashboardPage> createState() => _DashboardPageState();
@@ -108,8 +106,8 @@ class _DashboardPageState extends State<DashboardPage> {
           lazyLoad: false,
           routes: const [
             PublicationDashboardRoute(),
-            ServicesRouter(),
-            SettingsRouter(),
+            ServicesFlowRoute(),
+            SettingsRoute(),
           ],
           builder: (context, child) {
             final tabsRouter = context.tabsRouter;

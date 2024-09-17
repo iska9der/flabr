@@ -64,7 +64,7 @@ class AppRouter extends _$AppRouter {
 
       if (isUserUrl(uri)) {
         return await navigate(
-          ServicesRouter(
+          ServicesFlowRoute(
             children: [
               UserDashboardRoute(
                 alias: id,
@@ -142,8 +142,8 @@ class AppRouter extends _$AppRouter {
             /// Таб "Моя лента"
             AutoRoute(
               initial: true,
-              path: FeedFlow.routePath,
-              page: FeedRouter.page,
+              page: FeedFlowRoute.page,
+              path: FeedFlowPage.routePath,
               children: [
                 AutoRoute(
                   path: FeedListPage.routePath,
@@ -154,8 +154,8 @@ class AppRouter extends _$AppRouter {
 
             /// Таб "Статьи"
             AutoRoute(
-              path: ArticlesFlow.routePath,
-              page: ArticlesRouter.page,
+              page: ArticlesFlowRoute.page,
+              path: ArticlesFlowPage.routePath,
               children: [
                 RedirectRoute(path: '', redirectTo: 'flows/all'),
                 AutoRoute(
@@ -167,8 +167,8 @@ class AppRouter extends _$AppRouter {
 
             /// Таб "Посты"
             AutoRoute(
-              path: PostsFlow.routePath,
-              page: PostsRouter.page,
+              page: PostsFlowRoute.page,
+              path: PostsFlowPage.routePath,
               children: [
                 RedirectRoute(path: '', redirectTo: 'flows/all'),
                 AutoRoute(
@@ -180,13 +180,13 @@ class AppRouter extends _$AppRouter {
 
             /// Таб "Новости"
             AutoRoute(
-              path: NewsFlow.routePath,
-              page: NewsRouter.page,
+              page: NewsFlowRoute.page,
+              path: NewsFlowPage.routePath,
               children: [
                 RedirectRoute(path: '', redirectTo: 'flows/all'),
                 AutoRoute(
-                  path: NewsListPage.routePath,
                   page: NewsListRoute.page,
+                  path: NewsListPage.routePath,
                 ),
               ],
             ),
@@ -196,56 +196,56 @@ class AppRouter extends _$AppRouter {
         /////////////////////////
         /// Таб "Сервисы"
         AutoRoute(
-          path: ServicesFlow.routePath,
-          page: ServicesRouter.page,
+          page: ServicesFlowRoute.page,
+          path: ServicesFlowPage.routePath,
           children: [
             AutoRoute(
               initial: true,
-              path: ServicesPage.routePath,
               page: ServicesRoute.page,
+              path: ServicesPage.routePath,
             ),
 
             /// Хабы
             AutoRoute(
-              path: HubListPage.routePath,
               page: HubListRoute.page,
+              path: HubListPage.routePath,
             ),
-            _hubDashboard,
+            _hubDashboard(),
 
             /// Пользователи/Авторы
             AutoRoute(
-              path: UserListPage.routePath,
               page: UserListRoute.page,
+              path: UserListPage.routePath,
             ),
-            _userDashboard,
+            _userDashboard(),
 
             /// Компании
             AutoRoute(
-              path: CompanyListPage.routePath,
               page: CompanyListRoute.page,
+              path: CompanyListPage.routePath,
             ),
-            _companyDashboard,
+            _companyDashboard(),
           ],
         ),
 
         /// Таб "Настройки"
         AutoRoute(
-          path: 'settings',
-          page: SettingsRouter.page,
+          page: SettingsRoute.page,
+          path: SettingsPage.routePath,
         ),
       ],
     ),
 
     /// Поиск
     AutoRoute(
-      path: SearchAnywherePage.routePath,
       page: SearchAnywhereRoute.page,
+      path: SearchAnywherePage.routePath,
     ),
 
     /// Трекер
     AutoRoute(
-      page: TrackerRouter.page,
-      path: TrackerFlow.routePath,
+      page: TrackerFlowRoute.page,
+      path: TrackerFlowPage.routePath,
       children: [
         AutoRoute(
           initial: true,
@@ -267,33 +267,29 @@ class AppRouter extends _$AppRouter {
             ),
           ],
         ),
-        _userDashboard,
       ],
     ),
 
     /// Просмотр публикации
     AutoRoute(
-      path: PublicationFlowPage.routePath,
       page: PublicationFlowRoute.page,
+      path: PublicationFlowPage.routePath,
       children: [
         AutoRoute(
           initial: true,
-          path: PublicationDetailPage.routePath,
           page: PublicationDetailRoute.page,
+          path: PublicationDetailPage.routePath,
         ),
         AutoRoute(
-          path: PublicationCommentPage.routePath,
           page: PublicationCommentRoute.page,
+          path: PublicationCommentPage.routePath,
         ),
-
-        /// Чтобы навигация из статьи происходила с помощью пушей экранов
-        /// поверх открытой публикации. Без этого нас перемещает
-        /// через [DashboardRoute] и сама публикация закрывается
-        _userDashboard,
-        _companyDashboard,
-        _hubDashboard,
       ],
     ),
+
+    _userDashboard(isRoot: true),
+    _companyDashboard(isRoot: true),
+    _hubDashboard(isRoot: true),
 
     /// /////////////////////
     /// Редиректы с хабропутей
@@ -307,53 +303,53 @@ class AppRouter extends _$AppRouter {
   ];
 }
 
-final _userDashboard = AutoRoute(
-  path: UserDashboardPage.routePath,
-  page: UserDashboardRoute.page,
-  children: [
-    AutoRoute(
-      initial: true,
-      path: UserDetailPage.routePath,
-      page: UserDetailRoute.page,
-    ),
-    AutoRoute(
-      path: UserPublicationListPage.routePath,
-      page: UserPublicationListRoute.page,
-    ),
-    AutoRoute(
-      path: UserCommentListPage.routePath,
-      page: UserCommentListRoute.page,
-    ),
-    AutoRoute(
-      path: UserBookmarkListPage.routePath,
-      page: UserBookmarkListRoute.page,
-    ),
-  ],
-);
+AutoRoute _userDashboard({bool isRoot = false}) => AutoRoute(
+      page: UserDashboardRoute.page,
+      path: "${isRoot == true ? '/' : ''}${UserDashboardPage.routePath}",
+      children: [
+        AutoRoute(
+          initial: true,
+          page: UserDetailRoute.page,
+          path: UserDetailPage.routePath,
+        ),
+        AutoRoute(
+          page: UserPublicationListRoute.page,
+          path: UserPublicationListPage.routePath,
+        ),
+        AutoRoute(
+          page: UserCommentListRoute.page,
+          path: UserCommentListPage.routePath,
+        ),
+        AutoRoute(
+          page: UserBookmarkListRoute.page,
+          path: UserBookmarkListPage.routePath,
+        ),
+      ],
+    );
 
-final _hubDashboard = AutoRoute(
-  path: HubDashboardPage.routePath,
-  page: HubDashboardRoute.page,
-  children: [
-    AutoRoute(
-      initial: true,
-      path: HubDetailPage.routePath,
-      page: HubDetailRoute.page,
-    ),
-  ],
-);
+AutoRoute _hubDashboard({bool isRoot = false}) => AutoRoute(
+      page: HubDashboardRoute.page,
+      path: "${isRoot == true ? '/' : ''}${HubDashboardPage.routePath}",
+      children: [
+        AutoRoute(
+          initial: true,
+          page: HubDetailRoute.page,
+          path: HubDetailPage.routePath,
+        ),
+      ],
+    );
 
-final _companyDashboard = AutoRoute(
-  path: CompanyDashboardPage.routePath,
-  page: CompanyDashboardRoute.page,
-  children: [
-    AutoRoute(
-      initial: true,
-      path: CompanyDetailPage.routePath,
-      page: CompanyDetailRoute.page,
-    ),
-  ],
-);
+AutoRoute _companyDashboard({bool isRoot = false}) => AutoRoute(
+      page: CompanyDashboardRoute.page,
+      path: "${isRoot == true ? '/' : ''}${CompanyDashboardPage.routePath}",
+      children: [
+        AutoRoute(
+          initial: true,
+          page: CompanyDetailRoute.page,
+          path: CompanyDetailPage.routePath,
+        ),
+      ],
+    );
 
 List<RedirectRoute> _newsRedirects() {
   return [
