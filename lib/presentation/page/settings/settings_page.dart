@@ -8,7 +8,6 @@ import '../../widget/publication_settings_widget.dart';
 import 'cubit/settings_cubit.dart';
 import 'widget/account/connect_sid_widget.dart';
 import 'widget/account/summary_token_widget.dart';
-import 'widget/setting_navigation_bar.dart';
 import 'widget/settings_card_widget.dart';
 import 'widget/settings_checkbox_widget.dart';
 import 'widget/settings_section_widget.dart';
@@ -54,6 +53,7 @@ class SettingsView extends StatelessWidget {
               title: 'Лента',
               children: [
                 SettingsFeedWidget(),
+                SettingNavVisibilityWidget(),
               ],
             ),
             SettingsSectionWidget(
@@ -63,12 +63,6 @@ class SettingsView extends StatelessWidget {
                   padding: EdgeInsets.symmetric(vertical: 20),
                   child: PublicationSettingsWidget(),
                 ),
-              ],
-            ),
-            SettingsSectionWidget(
-              title: 'Разное',
-              children: [
-                SettingNavigationOnScroll(),
               ],
             ),
           ],
@@ -225,6 +219,31 @@ class SettingsFeedWidget extends StatelessWidget {
                 settingsCubit.changeFeedDescVisibility(isVisible: value),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class SettingNavVisibilityWidget extends StatelessWidget {
+  const SettingNavVisibilityWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return SettingsCardWidget(
+      title: 'Навигация',
+      child: BlocBuilder<SettingsCubit, SettingsState>(
+        buildWhen: (previous, current) =>
+            previous.misc.navigationOnScrollVisible !=
+            current.misc.navigationOnScrollVisible,
+        builder: (context, state) {
+          return SettingsCheckboxWidget(
+            initialValue: state.misc.navigationOnScrollVisible,
+            title: const Text('Показывать при скролле'),
+            onChanged: (bool value) => context
+                .read<SettingsCubit>()
+                .changeNavigationOnScrollVisibility(isVisible: value),
+          );
+        },
       ),
     );
   }
