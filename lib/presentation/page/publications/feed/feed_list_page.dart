@@ -6,7 +6,7 @@ import '../../../../core/component/di/injector.dart';
 import '../../../feature/publication_list/part.dart';
 import '../../../feature/scroll/part.dart';
 import 'cubit/feed_publication_list_cubit.dart';
-import 'widget/feed_list_appbar.dart';
+import 'widget/feed_filters_widget.dart';
 
 @RoutePage(name: FeedListPage.routeName)
 class FeedListPage extends StatelessWidget {
@@ -34,7 +34,7 @@ class FeedListPage extends StatelessWidget {
       ],
       child: const PublicationListScaffold<FeedPublicationListCubit,
           FeedPublicationListState>(
-        appBar: FeedListAppBar(),
+        filter: FeedFiltersWidget(),
       ),
     );
   }

@@ -97,28 +97,15 @@ class FlowPublicationListCubit
     ));
   }
 
-  void changeFlow(PublicationFlow value) {
-    if (state.flow == value) return;
-
-    emit(FlowPublicationListState(
-      flow: value,
-      section: state.section,
-    ));
-  }
-
-  void applyFilter(FlowFilter newFilter) {
-    if (state.filter == newFilter) {
-      return;
-    }
-
+  void applyFilter(PublicationFlow newFlow, FlowFilter newFilter) {
     storage.write(
       CacheKey.flowFilter(state.section.name),
       jsonEncode(newFilter),
     );
 
     emit(FlowPublicationListState(
-      flow: state.flow,
       section: state.section,
+      flow: newFlow,
       filter: newFilter,
     ));
   }

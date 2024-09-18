@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../../../data/model/filter/part.dart';
 
-/// TODO: сменить название
-class PublicationFilterOptionsWidget extends StatelessWidget {
-  const PublicationFilterOptionsWidget({
+class FilterChipList extends StatelessWidget {
+  const FilterChipList({
     super.key,
     this.isEnabled = true,
     required this.options,

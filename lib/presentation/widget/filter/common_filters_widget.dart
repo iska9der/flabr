@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
 import '../../../data/model/filter/part.dart';
-import 'publication_filter_options_widget.dart';
+import 'filter_chip_list.dart';
 import 'publication_filter_submit_button.dart';
 
-class PublicationFilterWidget extends StatefulWidget {
-  const PublicationFilterWidget({
+class CommonFiltersWidget extends StatefulWidget {
+  const CommonFiltersWidget({
     super.key,
     this.isLoading = false,
     required this.sort,
@@ -14,24 +14,20 @@ class PublicationFilterWidget extends StatefulWidget {
   });
 
   final bool isLoading;
-
   final Sort sort;
-
   final FilterOption filterOption;
-
   final Function(FlowFilter filter)? onSubmit;
 
   @override
-  State<PublicationFilterWidget> createState() =>
-      _PublicationFilterWidgetState();
+  State<CommonFiltersWidget> createState() => _CommonFiltersWidgetState();
 }
 
-class _PublicationFilterWidgetState extends State<PublicationFilterWidget> {
+class _CommonFiltersWidgetState extends State<CommonFiltersWidget> {
   late Sort sortValue = widget.sort;
   late FilterOption optionValue = widget.filterOption;
 
   @override
-  void didUpdateWidget(covariant PublicationFilterWidget oldWidget) {
+  void didUpdateWidget(covariant CommonFiltersWidget oldWidget) {
     if (oldWidget.sort != widget.sort ||
         oldWidget.filterOption != widget.filterOption) {
       sortValue = widget.sort;
@@ -47,7 +43,7 @@ class _PublicationFilterWidgetState extends State<PublicationFilterWidget> {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        PublicationFilterOptionsWidget(
+        FilterChipList(
           isEnabled: !widget.isLoading,
           options: Sort.values
               .map((e) => FilterOption(label: e.label, value: e.name))
@@ -58,7 +54,7 @@ class _PublicationFilterWidgetState extends State<PublicationFilterWidget> {
             optionValue = sortValue.filters.first;
           }),
         ),
-        PublicationFilterOptionsWidget(
+        FilterChipList(
           isEnabled: !widget.isLoading,
           options: sortValue.filters,
           isSelected: (option) => option == optionValue,

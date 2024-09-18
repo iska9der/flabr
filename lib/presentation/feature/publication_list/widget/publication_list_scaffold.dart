@@ -4,11 +4,11 @@ class PublicationListScaffold<ListCubit extends PublicationListCubit<ListState>,
     ListState extends PublicationListState> extends StatelessWidget {
   const PublicationListScaffold({
     super.key,
-    this.appBar,
+    this.filter,
     this.showMostReading = true,
   });
 
-  final Widget? appBar;
+  final Widget? filter;
   final bool showMostReading;
 
   @override
@@ -55,7 +55,14 @@ class PublicationListScaffold<ListCubit extends PublicationListCubit<ListState>,
         ),
       ],
       child: Scaffold(
-        floatingActionButton: const FloatingScrollToTopButton(),
+        floatingActionButton: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            const FloatingScrollToTopButton(),
+            if (filter != null)
+              FloatingFilterButton<ListCubit, ListState>(filter: filter!),
+          ],
+        ),
         floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
         body: SafeArea(
           child: Scrollbar(
@@ -65,7 +72,6 @@ class PublicationListScaffold<ListCubit extends PublicationListCubit<ListState>,
               controller: scrollController,
               physics: scrollCubit.physics,
               slivers: [
-                if (appBar != null) appBar!,
                 FlabrSliverRefreshIndicator(
                   onRefresh: context.read<ListCubit>().refetch,
                 ),

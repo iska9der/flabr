@@ -9,7 +9,7 @@ import '../../../feature/publication_list/part.dart';
 import '../../../feature/scaffold/part.dart';
 import '../../../feature/scroll/part.dart';
 import '../cubit/flow_publication_list_cubit.dart';
-import '../widget/flow_list_appbar.dart';
+import '../widget/publication_filters_widget.dart';
 
 @RoutePage(name: NewsListPage.routeName)
 class NewsListPage extends StatelessWidget {
@@ -47,7 +47,7 @@ class NewsListPage extends StatelessWidget {
       ],
       child: const PublicationListScaffold<FlowPublicationListCubit,
           FlowPublicationListState>(
-        appBar: FlowListAppBar(),
+        filter: PublicationFiltersWidget(),
       ),
     );
   }

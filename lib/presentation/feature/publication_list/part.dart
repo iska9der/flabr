@@ -24,5 +24,6 @@ import '../auth/cubit/auth_cubit.dart';
 import '../scroll/part.dart';
 
 part 'cubit/publication_list_cubit.dart';
+part 'widget/floating_filter_button.dart';
 part 'widget/publication_list_scaffold.dart';
 part 'widget/publication_sliver_list.dart';

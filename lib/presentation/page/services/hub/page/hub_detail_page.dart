@@ -7,10 +7,9 @@ import '../../../../../core/component/di/injector.dart';
 import '../../../../../data/model/filter/part.dart';
 import '../../../../feature/publication_list/part.dart';
 import '../../../../feature/scroll/part.dart';
-import '../../../../theme/part.dart';
 import '../../../../widget/enhancement/progress_indicator.dart';
 import '../../../../widget/enhancement/refresh_indicator.dart';
-import '../../../../widget/filter/publication_filter_widget.dart';
+import '../../../../widget/filter/common_filters_widget.dart';
 import '../../../settings/cubit/settings_cubit.dart';
 import '../cubit/hub_cubit.dart';
 import '../cubit/hub_publication_list_cubit.dart';
@@ -61,7 +60,29 @@ class HubDetailPageView extends StatelessWidget {
     final scrollCtrl = scrollCubit.state.controller;
 
     return Scaffold(
-      floatingActionButton: const FloatingScrollToTopButton(),
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          const FloatingScrollToTopButton(),
+          FloatingFilterButton<HubPublicationListCubit,
+              HubPublicationListState>(
+            filter:
+                BlocBuilder<HubPublicationListCubit, HubPublicationListState>(
+              builder: (context, state) {
+                return CommonFiltersWidget(
+                  isLoading: state.status == PublicationListStatus.loading,
+                  sort: state.filter.sort,
+                  filterOption: switch (state.filter.sort) {
+                    Sort.byBest => state.filter.period,
+                    Sort.byNew => state.filter.score,
+                  },
+                  onSubmit: context.read<HubPublicationListCubit>().applyFilter,
+                );
+              },
+            ),
+          ),
+        ],
+      ),
       body: BlocBuilder<HubCubit, HubState>(
         builder: (context, state) {
           if (state.status == HubStatus.loading) {
@@ -82,29 +103,6 @@ class HubDetailPageView extends StatelessWidget {
                   onRefresh: context.read<HubPublicationListCubit>().refetch,
                 ),
                 const SliverToBoxAdapter(child: HubProfileCardWidget()),
-                SliverAppBar(
-                  automaticallyImplyLeading: false,
-                  elevation: 0,
-                  scrolledUnderElevation: 0,
-                  floating: true,
-                  toolbarHeight: flowSortToolbarHeight,
-                  title: BlocBuilder<HubPublicationListCubit,
-                      HubPublicationListState>(
-                    builder: (context, state) {
-                      return PublicationFilterWidget(
-                        isLoading:
-                            state.status == PublicationListStatus.loading,
-                        sort: state.filter.sort,
-                        filterOption: switch (state.filter.sort) {
-                          Sort.byBest => state.filter.period,
-                          Sort.byNew => state.filter.score,
-                        },
-                        onSubmit:
-                            context.read<HubPublicationListCubit>().applyFilter,
-                      );
-                    },
-                  ),
-                ),
                 const _HubArticleListView(),
               ],
             ),
