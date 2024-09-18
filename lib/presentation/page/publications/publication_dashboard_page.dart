@@ -30,7 +30,7 @@ class _PublicationDashboardPageState extends State<PublicationDashboardPage> {
   late final PublicationCountersBloc countersBloc;
   late final StreamSubscription authSub;
 
-  double themeHeight = fDashboardTabHeight;
+  final double themeHeight = fDashboardTabHeight;
   ValueNotifier<double> barHeight = ValueNotifier(fDashboardTabHeight);
   late bool visibleOnScroll;
 
@@ -57,140 +57,155 @@ class _PublicationDashboardPageState extends State<PublicationDashboardPage> {
 
   @override
   Widget build(BuildContext context) {
-    return NotificationListener<UserScrollNotification>(
-      onNotification: (notification) {
+    /// Слушаем изменение настройки видимости панели навигации
+    return BlocListener<SettingsCubit, SettingsState>(
+      listenWhen: (previous, current) =>
+          previous.misc.navigationOnScrollVisible !=
+          current.misc.navigationOnScrollVisible,
+      listener: (context, state) {
+        visibleOnScroll = state.misc.navigationOnScrollVisible;
         if (visibleOnScroll) {
-          return false;
+          /// сброс высоты навигации
+          barHeight.value = themeHeight;
         }
-
-        /// Слушаем уведомления о скролле, чтобы скрыть нижнюю навигацию,
-        /// когда пользователь скроллит вниз
-        final direction = notification.direction;
-        final axis = notification.metrics.axisDirection;
-
-        if (axis == AxisDirection.right || axis == AxisDirection.left) {
-          return false;
-        }
-
-        double? newHeight = barHeight.value;
-        if (direction == ScrollDirection.forward) {
-          newHeight = themeHeight;
-        } else if (direction == ScrollDirection.reverse) {
-          newHeight = 0;
-        }
-        barHeight.value = newHeight;
-
-        return false;
       },
-      child: AutoTabsRouter.tabBar(
-        routes: const [
-          FeedFlowRoute(),
-          ArticlesFlowRoute(),
-          PostsFlowRoute(),
-          NewsFlowRoute(),
-        ],
-        builder: (context, child, controller) {
-          return Column(
-            children: [
-              AnimatedBuilder(
-                  animation: barHeight,
-                  builder: (context, child) {
-                    return AnimatedContainer(
-                      duration: const Duration(milliseconds: 200),
-                      height: barHeight.value,
-                      child: ColoredBox(
-                        color: Theme.of(context).colorScheme.surface,
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            Expanded(
-                              child: BlocBuilder<PublicationCountersBloc,
-                                  PublicationCountersState>(
-                                bloc: countersBloc,
-                                builder: (context, state) {
-                                  return Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: TabBar(
-                                      controller: controller,
-                                      isScrollable: true,
-                                      padding: EdgeInsets.zero,
-                                      labelPadding: const EdgeInsets.symmetric(
-                                        horizontal: 12,
-                                      ),
-                                      dividerColor: Colors.transparent,
-                                      tabs: [
-                                        BlocBuilder<AuthCubit, AuthState>(
-                                          buildWhen: (previous, current) =>
-                                              previous.updates !=
-                                              current.updates,
-                                          builder: (context, state) {
-                                            return DashboardDrawerLinkWidget(
-                                              title: 'Моя лента',
-                                              count:
-                                                  state.updates.feeds.newCount,
-                                            );
-                                          },
-                                        ),
-                                        DashboardDrawerLinkWidget(
-                                          title: 'Статьи',
-                                          count: state.counters.articles,
-                                        ),
-                                        DashboardDrawerLinkWidget(
-                                          title: 'Посты',
-                                          count: state.counters.posts,
-                                        ),
-                                        DashboardDrawerLinkWidget(
-                                          title: 'Новости',
-                                          count: state.counters.news,
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                },
-                              ),
-                            ),
-                            Row(
-                              children: [
-                                IconButton(
-                                  icon: const Icon(Icons.search_rounded),
-                                  tooltip: 'Поиск',
-                                  onPressed: () => getIt<AppRouter>().push(
-                                    const SearchAnywhereRoute(),
-                                  ),
-                                ),
-                                BlocBuilder<AuthCubit, AuthState>(
-                                  buildWhen: (previous, current) =>
-                                      previous.updates != current.updates,
+      child: NotificationListener<UserScrollNotification>(
+        onNotification: (notification) {
+          if (visibleOnScroll) {
+            return false;
+          }
+
+          /// Слушаем уведомления о скролле, чтобы скрыть нижнюю навигацию,
+          /// когда пользователь скроллит вниз
+          final direction = notification.direction;
+          final axis = notification.metrics.axisDirection;
+
+          if (axis == AxisDirection.right || axis == AxisDirection.left) {
+            return false;
+          }
+
+          double? newHeight = barHeight.value;
+          if (direction == ScrollDirection.forward) {
+            newHeight = themeHeight;
+          } else if (direction == ScrollDirection.reverse) {
+            newHeight = 0;
+          }
+          barHeight.value = newHeight;
+
+          return false;
+        },
+        child: AutoTabsRouter.tabBar(
+          routes: const [
+            FeedFlowRoute(),
+            ArticlesFlowRoute(),
+            PostsFlowRoute(),
+            NewsFlowRoute(),
+          ],
+          builder: (context, child, controller) {
+            return Column(
+              children: [
+                AnimatedBuilder(
+                    animation: barHeight,
+                    builder: (context, child) {
+                      return AnimatedContainer(
+                        duration: const Duration(milliseconds: 200),
+                        height: barHeight.value,
+                        child: ColoredBox(
+                          color: Theme.of(context).colorScheme.surface,
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              Expanded(
+                                child: BlocBuilder<PublicationCountersBloc,
+                                    PublicationCountersState>(
+                                  bloc: countersBloc,
                                   builder: (context, state) {
-                                    return Badge.count(
-                                      count: state.updates.trackerUnreadCount,
-                                      isLabelVisible:
-                                          state.updates.trackerUnreadCount > 0,
-                                      offset: const Offset(-8, 5),
-                                      child: IconButton(
-                                        icon: const Icon(
-                                            Icons.notifications_outlined),
-                                        tooltip: 'Трекер',
-                                        onPressed: () =>
-                                            getIt<AppRouter>().push(
-                                          const TrackerDashboardRoute(),
+                                    return Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: TabBar(
+                                        controller: controller,
+                                        isScrollable: true,
+                                        padding: EdgeInsets.zero,
+                                        labelPadding:
+                                            const EdgeInsets.symmetric(
+                                          horizontal: 12,
                                         ),
+                                        dividerColor: Colors.transparent,
+                                        tabs: [
+                                          BlocBuilder<AuthCubit, AuthState>(
+                                            buildWhen: (previous, current) =>
+                                                previous.updates !=
+                                                current.updates,
+                                            builder: (context, state) {
+                                              return DashboardDrawerLinkWidget(
+                                                title: 'Моя лента',
+                                                count: state
+                                                    .updates.feeds.newCount,
+                                              );
+                                            },
+                                          ),
+                                          DashboardDrawerLinkWidget(
+                                            title: 'Статьи',
+                                            count: state.counters.articles,
+                                          ),
+                                          DashboardDrawerLinkWidget(
+                                            title: 'Посты',
+                                            count: state.counters.posts,
+                                          ),
+                                          DashboardDrawerLinkWidget(
+                                            title: 'Новости',
+                                            count: state.counters.news,
+                                          ),
+                                        ],
                                       ),
                                     );
                                   },
                                 ),
-                                const MyProfileIconButton(),
-                              ],
-                            ),
-                          ],
+                              ),
+                              Row(
+                                children: [
+                                  IconButton(
+                                    icon: const Icon(Icons.search_rounded),
+                                    tooltip: 'Поиск',
+                                    onPressed: () => getIt<AppRouter>().push(
+                                      const SearchAnywhereRoute(),
+                                    ),
+                                  ),
+                                  BlocBuilder<AuthCubit, AuthState>(
+                                    buildWhen: (previous, current) =>
+                                        previous.updates != current.updates,
+                                    builder: (context, state) {
+                                      return Badge.count(
+                                        count: state.updates.trackerUnreadCount,
+                                        isLabelVisible:
+                                            state.updates.trackerUnreadCount >
+                                                0,
+                                        offset: const Offset(-8, 5),
+                                        child: IconButton(
+                                          icon: const Icon(
+                                              Icons.notifications_outlined),
+                                          tooltip: 'Трекер',
+                                          onPressed: () =>
+                                              getIt<AppRouter>().push(
+                                            const TrackerDashboardRoute(),
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                  const MyProfileIconButton(),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                    );
-                  }),
-              Expanded(child: child),
-            ],
-          );
-        },
+                      );
+                    }),
+                Expanded(child: child),
+              ],
+            );
+          },
+        ),
       ),
     );
   }

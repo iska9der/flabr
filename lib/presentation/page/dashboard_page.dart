@@ -20,7 +20,7 @@ class DashboardPage extends StatefulWidget {
 }
 
 class _DashboardPageState extends State<DashboardPage> {
-  double themeHeight = fNavBarHeight;
+  final double themeHeight = fNavBarHeight;
   ValueNotifier<double> barHeight = ValueNotifier(fNavBarHeight);
   late bool visibleOnScroll;
 
@@ -36,7 +36,7 @@ class _DashboardPageState extends State<DashboardPage> {
   Widget build(BuildContext context) {
     return MultiBlocListener(
       listeners: [
-        /// Слушаем изменение настройки видимости нижней панели навигации
+        /// Слушаем изменение настройки видимости панели навигации
         BlocListener<SettingsCubit, SettingsState>(
             listenWhen: (previous, current) =>
                 previous.misc.navigationOnScrollVisible !=
@@ -44,7 +44,8 @@ class _DashboardPageState extends State<DashboardPage> {
             listener: (context, state) {
               visibleOnScroll = state.misc.navigationOnScrollVisible;
               if (visibleOnScroll) {
-                barHeight.value = fNavBarHeight;
+                /// сброс высоты навигации
+                barHeight.value = themeHeight;
               }
             }),
 
