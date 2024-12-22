@@ -68,6 +68,8 @@ class ServiceCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Card(
       elevation: onTap != null ? 6 : 0,
       clipBehavior: Clip.hardEdge,
@@ -83,8 +85,8 @@ class ServiceCard extends StatelessWidget {
               icon,
               size: 60,
               color: onTap != null
-                  ? Colors.yellow.shade800.withOpacity(.8)
-                  : Theme.of(context).iconTheme.color?.withOpacity(0.2),
+                  ? Colors.yellow.shade800.withValues(alpha: .8)
+                  : theme.iconTheme.color?.withValues(alpha: 0.2),
             ),
             Align(
               alignment: Alignment.bottomCenter,
@@ -94,11 +96,9 @@ class ServiceCard extends StatelessWidget {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(kBorderRadiusDefault),
                   color: onTap != null
-                      ? Theme.of(context).colorScheme.onSurface.withOpacity(.7)
-                      : Theme.of(context)
-                          .colorScheme
-                          .onInverseSurface
-                          .withOpacity(.4),
+                      ? theme.colorScheme.onSurface.withValues(alpha: .7)
+                      : theme.colorScheme.onInverseSurface
+                          .withValues(alpha: .4),
                 ),
                 child: Text(
                   title,
@@ -106,11 +106,9 @@ class ServiceCard extends StatelessWidget {
                   maxLines: 1,
                   style: TextStyle(
                     color: onTap != null
-                        ? Theme.of(context).colorScheme.onInverseSurface
-                        : Theme.of(context)
-                            .colorScheme
-                            .inverseSurface
-                            .withOpacity(.4),
+                        ? theme.colorScheme.onInverseSurface
+                        : theme.colorScheme.inverseSurface
+                            .withValues(alpha: .4),
                   ),
                 ),
               ),

@@ -13,7 +13,7 @@ Future showSummaryDialog(
   return await showDialog(
     context: context,
     useRootNavigator: false,
-    barrierColor: Theme.of(context).colorScheme.surface.withOpacity(.9),
+    barrierColor: Theme.of(context).colorScheme.surface.withValues(alpha: .9),
     builder: (context) => BlocProvider(
       create: (_) => SummaryCubit(
         publicationId: publicationId,

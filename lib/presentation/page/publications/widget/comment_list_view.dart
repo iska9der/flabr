@@ -151,7 +151,7 @@ class _CommentTreeWidgetState extends State<CommentTreeWidget> {
               }
 
               final authorColor = entry.node.isPostAuthor
-                  ? Colors.yellowAccent.withOpacity(.12)
+                  ? Colors.yellowAccent.withValues(alpha: .12)
                   : Theme.of(context).colorScheme.surface;
 
               double topPadding = entry.index == 0

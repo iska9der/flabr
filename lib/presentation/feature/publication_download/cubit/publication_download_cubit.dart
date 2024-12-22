@@ -28,7 +28,9 @@ class PublicationDownloadCubit extends Cubit<PublicationDownloadState> {
 
   pickAndSave() async {
     if (state.status == PublicationDownloadStatus.loading ||
-        state.status == PublicationDownloadStatus.notSupported) return;
+        state.status == PublicationDownloadStatus.notSupported) {
+      return;
+    }
 
     try {
       emit(state.copyWith(status: PublicationDownloadStatus.loading));

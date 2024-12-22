@@ -42,11 +42,11 @@ class PublicationStatIconButton extends StatelessWidget {
                   : Icon(
                       icon,
                       size: iconSize,
-                      color: color?.withOpacity(isHighlighted ? 1 : .3) ??
+                      color: color?.withValues(alpha: isHighlighted ? 1 : .3) ??
                           Theme.of(context)
                               .iconTheme
                               .color
-                              ?.withOpacity(isHighlighted ? 1 : .3),
+                              ?.withValues(alpha: isHighlighted ? 1 : .3),
                     ),
               if (value.isNotEmpty)
                 Padding(
