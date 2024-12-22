@@ -19,7 +19,9 @@ linter:
 analyzer:
   exclude:
     - "**/*.g.dart"
+    - "**/*.gr.dart"
     - "**/*.freezed.dart"
+    - "**/*.config.dart"
   errors:
     avoid_relative_lib_imports: error
     invalid_annotation_target: ignore
