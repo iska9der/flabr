@@ -162,7 +162,7 @@ class _PublicationDetailViewState extends State<PublicationDetailView> {
                                   builder: (context, value, child) {
                                     return LinearProgressIndicator(
                                       backgroundColor: Colors.transparent,
-                                      color: Colors.blue.withOpacity(.2),
+                                      color: Colors.blue.withValues(alpha: .2),
                                       value: value,
                                     );
                                   },
@@ -260,7 +260,7 @@ class _ArticleBottomBar extends StatelessWidget {
             height: 36,
             padding: EdgeInsets.zero,
             elevation: 0,
-            color: Theme.of(context).colorScheme.surface.withOpacity(.94),
+            color: Theme.of(context).colorScheme.surface.withValues(alpha: .94),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [

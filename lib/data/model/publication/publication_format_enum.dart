@@ -50,7 +50,7 @@ enum PublicationFormat {
   Color get color => switch (this) {
         example || digest || opinion || review => const Color(0xff2385e7),
         faq || roadmap || tutorial => const Color(0xffd5700b),
-        interview || reportage => const Color(0xff1da53d).withOpacity(.7),
+        interview || reportage => const Color(0xff1da53d).withValues(alpha: .7),
         analytics || retrospective => const Color(0xffc23d96),
       };
 }

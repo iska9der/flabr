@@ -21,7 +21,8 @@ class NetworkImageWidget extends StatelessWidget {
     int? cacheHeight = height != null
         ? (height! * MediaQuery.of(context).devicePixelRatio).round()
         : null;
-    final barrierColor = Theme.of(context).colorScheme.surface.withOpacity(.9);
+    final barrierColor =
+        Theme.of(context).colorScheme.surface.withValues(alpha: .9);
 
     return GestureDetector(
       onTap: isTapable
