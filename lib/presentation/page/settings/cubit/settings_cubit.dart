@@ -105,28 +105,28 @@ class SettingsCubit extends Cubit<SettingsState> {
   Future<Config> _initConfig() async {
     Config config = const Config();
 
-    String? raw = await _storage.read(CacheKey.themeConfig);
+    String? raw = await _storage.read(CacheKeys.themeConfig);
     if (raw != null) {
       config = config.copyWith(
         theme: ThemeConfigModel.fromJson(jsonDecode(raw)),
       );
     }
 
-    raw = await _storage.read(CacheKey.feedConfig);
+    raw = await _storage.read(CacheKeys.feedConfig);
     if (raw != null) {
       config = config.copyWith(
         feed: FeedConfigModel.fromJson(jsonDecode(raw)),
       );
     }
 
-    raw = await _storage.read(CacheKey.publicationConfig);
+    raw = await _storage.read(CacheKeys.publicationConfig);
     if (raw != null) {
       config = config.copyWith(
         publication: PublicationConfigModel.fromJson(jsonDecode(raw)),
       );
     }
 
-    raw = await _storage.read(CacheKey.miscConfig);
+    raw = await _storage.read(CacheKeys.miscConfig);
     if (raw != null) {
       config = config.copyWith(
         misc: MiscConfigModel.fromJson(jsonDecode(raw)),
@@ -143,7 +143,7 @@ class SettingsCubit extends Cubit<SettingsState> {
 
     emit(state.copyWith(theme: newConfig));
 
-    _storage.write(CacheKey.themeConfig, jsonEncode(newConfig.toJson()));
+    _storage.write(CacheKeys.themeConfig, jsonEncode(newConfig.toJson()));
   }
 
   void changeFeedImageVisibility({bool? isVisible}) {
@@ -155,7 +155,7 @@ class SettingsCubit extends Cubit<SettingsState> {
 
     emit(state.copyWith(feed: newConfig));
 
-    _storage.write(CacheKey.feedConfig, jsonEncode(newConfig.toJson()));
+    _storage.write(CacheKeys.feedConfig, jsonEncode(newConfig.toJson()));
   }
 
   void changeFeedDescVisibility({bool? isVisible}) {
@@ -167,7 +167,7 @@ class SettingsCubit extends Cubit<SettingsState> {
 
     emit(state.copyWith(feed: newConfig));
 
-    _storage.write(CacheKey.feedConfig, jsonEncode(newConfig.toJson()));
+    _storage.write(CacheKeys.feedConfig, jsonEncode(newConfig.toJson()));
   }
 
   void changeArticleFontScale(double newScale) {
@@ -177,7 +177,7 @@ class SettingsCubit extends Cubit<SettingsState> {
 
     emit(state.copyWith(publication: newConfig));
 
-    _storage.write(CacheKey.publicationConfig, jsonEncode(newConfig.toJson()));
+    _storage.write(CacheKeys.publicationConfig, jsonEncode(newConfig.toJson()));
   }
 
   void changeArticleImageVisibility({bool? isVisible}) {
@@ -189,7 +189,7 @@ class SettingsCubit extends Cubit<SettingsState> {
 
     emit(state.copyWith(publication: newConfig));
 
-    _storage.write(CacheKey.publicationConfig, jsonEncode(newConfig.toJson()));
+    _storage.write(CacheKeys.publicationConfig, jsonEncode(newConfig.toJson()));
   }
 
   void changeWebViewVisibility({bool? isVisible}) {
@@ -201,7 +201,7 @@ class SettingsCubit extends Cubit<SettingsState> {
 
     emit(state.copyWith(publication: newConfig));
 
-    _storage.write(CacheKey.publicationConfig, jsonEncode(newConfig.toJson()));
+    _storage.write(CacheKeys.publicationConfig, jsonEncode(newConfig.toJson()));
   }
 
   void changeNavigationOnScrollVisibility({bool? isVisible}) {
@@ -214,6 +214,6 @@ class SettingsCubit extends Cubit<SettingsState> {
 
     emit(state.copyWith(misc: newConfig));
 
-    _storage.write(CacheKey.miscConfig, jsonEncode(newConfig.toJson()));
+    _storage.write(CacheKeys.miscConfig, jsonEncode(newConfig.toJson()));
   }
 }

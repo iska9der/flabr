@@ -35,7 +35,7 @@ class FlowPublicationListCubit
   Future<void> _restoreFilter() async {
     emit(state.copyWith(status: PublicationListStatus.loading));
 
-    final key = CacheKey.flowFilter(state.section.name);
+    final key = CacheKeys.flowFilter(state.section.name);
     FlowPublicationListState newState = state;
     try {
       /// вспоминаем последний примененный фильтр во флоу
@@ -99,7 +99,7 @@ class FlowPublicationListCubit
 
   void applyFilter(PublicationFlow newFlow, FlowFilter newFilter) {
     storage.write(
-      CacheKey.flowFilter(state.section.name),
+      CacheKeys.flowFilter(state.section.name),
       jsonEncode(newFilter),
     );
 

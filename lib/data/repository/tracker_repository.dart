@@ -12,6 +12,8 @@ abstract interface class TrackerRepository {
     String page,
     required TrackerNotificationCategory category,
   });
+
+  Future<TrackerUnreadCounters> readNotifications(List<String> ids);
 }
 
 @Singleton(as: TrackerRepository)
@@ -67,5 +69,14 @@ class TrackerRepositoryImpl implements TrackerRepository {
     );
 
     return response;
+  }
+
+  @override
+  Future<TrackerUnreadCounters> readNotifications(List<String> ids) async {
+    final raw = await _service.readNotifications(ids: ids);
+
+    final unread = TrackerUnreadCounters.fromJson(raw['unreadCounters']);
+
+    return unread;
   }
 }

@@ -30,7 +30,7 @@ class FeedPublicationListCubit
   Future<void> _restoreFilter() async {
     emit(state.copyWith(status: PublicationListStatus.loading));
 
-    const key = CacheKey.feedFilter;
+    const key = CacheKeys.feedFilter;
     FeedPublicationListState newState = state;
     try {
       /// вспоминаем последний примененный фильтр в моей ленте
@@ -98,7 +98,7 @@ class FeedPublicationListCubit
       return;
     }
 
-    storage.write(CacheKey.feedFilter, jsonEncode(newFilter));
+    storage.write(CacheKeys.feedFilter, jsonEncode(newFilter));
 
     emit(FeedPublicationListState(filter: newFilter));
   }

@@ -34,12 +34,6 @@ class AuthCubit extends Cubit<AuthState> {
     ));
   }
 
-  void fetchCsrf() async {
-    final csrf = await _repository.fetchCsrf(state.tokens);
-
-    _tokenRepository.setCsrf(csrf);
-  }
-
   void fetchMe() async {
     try {
       final me = await _repository.fetchMe();
@@ -49,8 +43,9 @@ class AuthCubit extends Cubit<AuthState> {
       }
 
       emit(state.copyWith(me: me));
-    } catch (e) {
+    } catch (e, stack) {
       emit(state.copyWith(me: UserMe.empty));
+      Error.throwWithStackTrace(e, stack);
     }
   }
 

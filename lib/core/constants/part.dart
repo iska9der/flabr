@@ -1,2 +1,2 @@
-part 'cache_key.dart';
+part 'keys.dart';
 part 'url.dart';

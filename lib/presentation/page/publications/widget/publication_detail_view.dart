@@ -48,6 +48,10 @@ class _PublicationDetailViewState extends State<PublicationDetailView> {
     super.dispose();
   }
 
+  fetchPublication() {
+    context.read<PublicationDetailCubit>().fetch();
+  }
+
   /// Вычисление прогресса скролла
   _progressListener() {
     final max = controller.position.maxScrollExtent;
@@ -69,7 +73,7 @@ class _PublicationDetailViewState extends State<PublicationDetailView> {
         child: BlocBuilder<PublicationDetailCubit, PublicationDetailState>(
           builder: (context, state) {
             if (state.status == PublicationStatus.initial) {
-              context.read<PublicationDetailCubit>().fetch();
+              fetchPublication();
 
               return const CircleIndicator();
             }
@@ -77,7 +81,19 @@ class _PublicationDetailViewState extends State<PublicationDetailView> {
               return const CircleIndicator();
             }
             if (state.status == PublicationStatus.failure) {
-              return Center(child: Text(state.error));
+              return Center(
+                child: Column(
+                  spacing: 12,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(state.error),
+                    FilledButton(
+                      onPressed: () => fetchPublication(),
+                      child: Text('Попробовать снова'),
+                    ),
+                  ],
+                ),
+              );
             }
 
             final publication = state.publication;
@@ -148,9 +164,13 @@ class _PublicationDetailViewState extends State<PublicationDetailView> {
                                   icon: const Icon(Icons.share),
                                   iconSize: 18,
                                   tooltip: 'Поделиться',
-                                  onPressed: () => Share.shareUri(Uri.parse(
-                                    '$baseUrl/articles/${publication.id}',
-                                  )),
+                                  onPressed: () {
+                                    final uri = Uri.parse(
+                                      '${Urls.baseUrl}/articles/${publication.id}',
+                                    );
+
+                                    Share.shareUri(uri);
+                                  },
                                 ),
                               ],
                             ),

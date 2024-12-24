@@ -1,5 +1,7 @@
 part of 'part.dart';
 
-const baseUrl = 'https://habr.com';
-const mobileApiUrl = 'https://m.habr.com/kek/v2';
-const siteApiUrl = '$baseUrl/kek';
+abstract class Urls {
+  static const String baseUrl = 'https://habr.com';
+  static const String mobileApiUrl = 'https://m.habr.com/kek/v2';
+  static const String siteApiUrl = '$baseUrl/kek';
+}

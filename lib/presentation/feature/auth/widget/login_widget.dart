@@ -58,7 +58,7 @@ class _WebViewLoginState extends State<_WebViewLogin> {
   late final WebviewCookieManager cookieManager;
 
   final Uri _authUri = Uri.parse(
-    '$siteApiUrl/v1/auth/habrahabr/?back=/ru/all',
+    '${Urls.siteApiUrl}/v1/auth/habrahabr/?back=/ru/all',
   );
 
   Future<String> getConnectSid(String url) async {
@@ -98,7 +98,7 @@ class _WebViewLoginState extends State<_WebViewLogin> {
           onNavigationRequest: (NavigationRequest request) async {
             logger.info(request.url, title: 'URL');
 
-            if (request.url.startsWith('$baseUrl/ru/all')) {
+            if (request.url.startsWith('${Urls.baseUrl}/ru/all')) {
               final loginCubit = context.read<LoginCubit>();
               await getConnectSid(request.url).then(
                 (value) => Timer(
@@ -109,7 +109,7 @@ class _WebViewLoginState extends State<_WebViewLogin> {
               return NavigationDecision.prevent;
             }
 
-            if (!request.url.startsWith(baseUrl) &&
+            if (!request.url.startsWith(Urls.baseUrl) &&
                 !request.url.startsWith('https://account.habr.com')) {
               return NavigationDecision.prevent;
             }

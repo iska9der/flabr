@@ -38,13 +38,13 @@ class LanguageRepository {
 
   Future<Language?> _getCachedUILanguage() async {
     try {
-      String? raw = await _storage.read(CacheKey.langUI);
+      String? raw = await _storage.read(CacheKeys.langUI);
       if (raw == null) return null;
 
       final lang = Language.fromString(raw);
       return lang;
     } on ValueException {
-      await _storage.delete(CacheKey.langUI);
+      await _storage.delete(CacheKeys.langUI);
       return null;
     }
   }
@@ -52,18 +52,18 @@ class LanguageRepository {
   void updateUILang(Language lang) {
     _ui = lang;
     _uiController.add(lang);
-    _storage.write(CacheKey.langUI, lang.name);
+    _storage.write(CacheKeys.langUI, lang.name);
   }
 
   Future<List<Language>?> _getCachedArticlesLanguage() async {
     try {
-      String? raw = await _storage.read(CacheKey.langArticle);
+      String? raw = await _storage.read(CacheKeys.langArticle);
       if (raw == null) return null;
 
       final langs = LanguageEncoder.decodeLangs(raw);
       return langs;
     } on ValueException {
-      await _storage.delete(CacheKey.langArticle);
+      await _storage.delete(CacheKeys.langArticle);
       return null;
     }
   }
@@ -72,6 +72,6 @@ class LanguageRepository {
     _articles = langs;
     _articlesController.add(langs);
     String langsAsString = LanguageEncoder.encodeLangs(langs);
-    _storage.write(CacheKey.langArticle, langsAsString);
+    _storage.write(CacheKeys.langArticle, langsAsString);
   }
 }

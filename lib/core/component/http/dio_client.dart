@@ -1,9 +1,9 @@
 part of 'part.dart';
 
 class DioClient implements HttpClient {
-  DioClient(this.client);
+  DioClient(this.dio);
 
-  final Dio client;
+  final Dio dio;
 
   @override
   Future<Response> get(
@@ -11,7 +11,7 @@ class DioClient implements HttpClient {
     Map<String, dynamic>? queryParams,
     Options? options,
   }) =>
-      client.get(
+      dio.get(
         url,
         queryParameters: queryParams,
         options: options,
@@ -24,7 +24,7 @@ class DioClient implements HttpClient {
     Map<String, dynamic>? queryParams,
     Options? options,
   }) =>
-      client.post(
+      dio.post(
         url,
         data: body,
         queryParameters: queryParams,
@@ -37,7 +37,7 @@ class DioClient implements HttpClient {
     dynamic body,
     Map<String, dynamic>? queryParams,
   }) =>
-      client.put(
+      dio.put(
         url,
         data: body,
         queryParameters: queryParams,
@@ -49,7 +49,7 @@ class DioClient implements HttpClient {
     dynamic body,
     Map<String, dynamic>? queryParams,
   }) =>
-      client.patch(
+      dio.patch(
         url,
         data: body,
         queryParameters: queryParams,
@@ -57,5 +57,5 @@ class DioClient implements HttpClient {
 
   @override
   Future<Response> delete(String url, {dynamic body}) =>
-      client.delete(url, data: body);
+      dio.delete(url, data: body);
 }

@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -70,21 +71,45 @@ class TrackerSubscriptionView extends StatelessWidget {
   }
 }
 
-class _NotificationWidget extends StatelessWidget {
+class _NotificationWidget extends StatefulWidget {
   // ignore: unused_element
   const _NotificationWidget({super.key, required this.model});
 
   final TrackerNotification model;
 
   @override
+  State<_NotificationWidget> createState() => _NotificationWidgetState();
+}
+
+class _NotificationWidgetState extends State<_NotificationWidget> {
+  late bool isUnread;
+
+  @override
+  initState() {
+    isUnread = widget.model.unread;
+
+    super.initState();
+  }
+
+  markAsRead(BuildContext context, String id) {
+    context.read<TrackerNotificationsBloc>().add(
+          TrackerNotificationsEvent.read(ids: [id]),
+        );
+
+    setState(() {
+      isUnread = false;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    final user = model.dataModel.user;
-    final publication = model.dataModel.publication;
+    final user = widget.model.dataModel.user;
+    final publication = widget.model.dataModel.publication;
 
     return FlabrCard(
-      color: model.unread ? theme.colorScheme.surfaceContainerHighest : null,
+      color: isUnread ? theme.colorScheme.surfaceContainerHighest : null,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -95,12 +120,23 @@ class _NotificationWidget extends StatelessWidget {
               text: TextSpan(
                 style: theme.textTheme.bodyMedium,
                 children: [
-                  TextSpan(text: model.typeEnum.text),
+                  TextSpan(text: widget.model.typeEnum.text),
                   if (publication != null) ...[
                     const TextSpan(text: ' "'),
                     TextSpan(
                       text: publication.text.trim(),
                       style: TextStyle(color: theme.colorScheme.primary),
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          markAsRead(context, widget.model.id);
+
+                          context.router.push(
+                            PublicationFlowRoute(
+                              id: publication.id,
+                              type: publication.type,
+                            ),
+                          );
+                        },
                     ),
                     const TextSpan(text: '"'),
                   ],
@@ -108,9 +144,23 @@ class _NotificationWidget extends StatelessWidget {
               ),
             ),
           ),
-          if (model.timeHappened != null)
-            Text(
-              DateFormat.MMMMd().format(model.timeHappened!),
+          if (widget.model.timeHappened != null)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  DateFormat.MMMMd().format(widget.model.timeHappened!),
+                ),
+                if (isUnread)
+                  IconButton(
+                    tooltip: 'Отметить как прочитанное',
+                    icon: Icon(
+                      Icons.circle,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                    onPressed: () => markAsRead(context, widget.model.id),
+                  ),
+              ],
             ),
         ],
       ),

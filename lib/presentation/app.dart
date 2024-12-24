@@ -51,7 +51,6 @@ class MyApp extends StatelessWidget {
             listener: (context, _) {
               context.read<AuthCubit>().fetchMe();
               context.read<AuthCubit>().fetchUpdates();
-              context.read<AuthCubit>().fetchCsrf();
             },
           ),
         ],

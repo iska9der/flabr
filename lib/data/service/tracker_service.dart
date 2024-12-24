@@ -15,6 +15,11 @@ abstract interface class TrackerService {
     required String page,
     required String category,
   });
+
+  /// Отметить уведомления прочитанными
+  Future<Map<String, dynamic>> readNotifications({
+    List<String> ids = const [],
+  });
 }
 
 @LazySingleton(as: TrackerService)
@@ -75,6 +80,22 @@ class TrackerServiceImpl implements TrackerService {
       final response = await _siteClient.get(
         '/v2/me/notifications',
         queryParams: params.toMap(),
+      );
+
+      return response.data;
+    } catch (e, trace) {
+      Error.throwWithStackTrace(FetchException(), trace);
+    }
+  }
+
+  @override
+  Future<Map<String, dynamic>> readNotifications({
+    List<String> ids = const [],
+  }) async {
+    try {
+      final response = await _siteClient.post(
+        '/v2/me/notifications/read',
+        body: {'ids': ids},
       );
 
       return response.data;

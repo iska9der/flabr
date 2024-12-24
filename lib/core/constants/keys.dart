@@ -1,6 +1,6 @@
 part of 'part.dart';
 
-abstract class CacheKey {
+abstract class CacheKeys {
   static const themeConfig = 'theme_config';
   static const feedConfig = 'feed_config';
   static const publicationConfig = 'publication_config';
@@ -14,4 +14,8 @@ abstract class CacheKey {
 
   static const feedFilter = 'feed_filter';
   static flowFilter(String section) => 'flow_filter_$section';
+}
+
+abstract class Keys {
+  static const renewCsrf = 'renew-csrf';
 }

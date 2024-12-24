@@ -18,7 +18,7 @@ class SummaryRepositoryImpl implements SummaryRepository {
       return cachedArticles[articleId]!;
     }
 
-    final articleUrl = '$baseUrl/ru/articles/$articleId';
+    final articleUrl = '${Urls.baseUrl}/ru/articles/$articleId';
     final sharingUrl = await _service.fetchSharingUrl(articleUrl);
     final token = sharingUrl.split('/').last;
     final map = await _service.fetchSharedData(token);

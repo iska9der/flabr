@@ -1,12 +1,14 @@
 part of 'part.dart';
 
 class SummaryClient extends DioClient {
-  SummaryClient(super.client, {required SummaryTokenRepository tokenRepository})
-      : _tokenRepository = tokenRepository {
-    client.options = client.options.copyWith(baseUrl: 'https://300.ya.ru/api');
+  SummaryClient(
+    super.dio, {
+    required SummaryTokenRepository tokenRepository,
+  }) : _tokenRepository = tokenRepository {
+    dio.options = dio.options.copyWith(baseUrl: 'https://300.ya.ru/api');
 
-    client.interceptors.clear();
-    client.interceptors.add(_authInterceptor());
+    dio.interceptors.clear();
+    dio.interceptors.add(_authInterceptor());
   }
 
   final SummaryTokenRepository _tokenRepository;

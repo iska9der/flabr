@@ -4,10 +4,6 @@ abstract interface class AuthService {
   Future<Map<String, dynamic>?> fetchMe();
 
   Future<Map<String, dynamic>> fetchUpdates();
-
-  /// Отправляем запрос на страницу с данными пользователя в заголовке запроса,
-  /// чтобы в дальнейшем вытащить из мета тега csrf-token
-  Future<String> fetchRawMainPage(String cookie);
 }
 
 @Singleton(as: AuthService)
@@ -40,21 +36,6 @@ class AuthServiceImpl implements AuthService {
       return response.data;
     } catch (e, trace) {
       Error.throwWithStackTrace(FetchException(), trace);
-    }
-  }
-
-  @override
-  Future<String> fetchRawMainPage(String cookie) async {
-    try {
-      final options = Options(headers: {'Cookie': cookie});
-      final response = await _mobileClient.get(
-        'https://habr.com/ru/conversations',
-        options: options,
-      );
-
-      return response.data;
-    } catch (e) {
-      throw FetchException();
     }
   }
 }

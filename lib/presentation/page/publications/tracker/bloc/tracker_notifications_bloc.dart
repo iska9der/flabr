@@ -17,12 +17,13 @@ class TrackerNotificationsBloc
     required this.repository,
     required TrackerNotificationCategory category,
   }) : super(TrackerNotificationsState(category: category)) {
-    on<LoadEvent>(fetch);
+    on<LoadEvent>(_fetch);
+    on<MarkAsReadEvent>(_read);
   }
 
   final TrackerRepository repository;
 
-  FutureOr<void> fetch(
+  FutureOr<void> _fetch(
     LoadEvent event,
     Emitter<TrackerNotificationsState> emit,
   ) async {
@@ -37,6 +38,26 @@ class TrackerNotificationsBloc
       emit(state.copyWith(
         status: LoadingStatus.failure,
         error: 'Не удалось получить уведомления',
+      ));
+
+      Error.throwWithStackTrace(e, trace);
+    }
+  }
+
+  FutureOr<void> _read(
+    MarkAsReadEvent event,
+    Emitter<TrackerNotificationsState> emit,
+  ) async {
+    try {
+      final result = await repository.readNotifications(event.ids);
+
+      emit(state.copyWith(
+        response: state.response.copyWith(unreadCounters: result),
+      ));
+    } catch (e, trace) {
+      emit(state.copyWith(
+        status: LoadingStatus.failure,
+        error: 'Не удалось отметить уведомления как прочитанные',
       ));
 
       Error.throwWithStackTrace(e, trace);
