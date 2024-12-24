@@ -173,8 +173,13 @@ class _PublicationDashboardPageState extends State<PublicationDashboardPage> {
                                   ),
                                   BlocBuilder<AuthCubit, AuthState>(
                                     buildWhen: (previous, current) =>
-                                        previous.updates != current.updates,
+                                        previous.updates != current.updates ||
+                                        previous.status != current.status,
                                     builder: (context, state) {
+                                      if (state.isUnauthorized) {
+                                        return const SizedBox();
+                                      }
+
                                       return Badge.count(
                                         count: state.updates.trackerUnreadCount,
                                         isLabelVisible:
