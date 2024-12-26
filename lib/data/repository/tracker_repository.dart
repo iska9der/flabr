@@ -6,6 +6,8 @@ abstract interface class TrackerRepository {
     bool byAuthor,
   });
 
+  Future<TrackerUnreadCounters> readPublications(List<String> ids);
+
   Future<void> deletePublications(List<String> ids);
 
   Future<TrackerNotificationsResponse> fetchNotifications({
@@ -47,6 +49,15 @@ class TrackerRepositoryImpl implements TrackerRepository {
   }
 
   @override
+  Future<TrackerUnreadCounters> readPublications(List<String> ids) async {
+    final raw = await _service.readPublications(ids);
+
+    final unread = TrackerUnreadCounters.fromJson(raw['unreadCounters']);
+
+    return unread;
+  }
+
+  @override
   Future<void> deletePublications(List<String> ids) async {
     await _service.deletePublications(ids);
   }
@@ -73,7 +84,7 @@ class TrackerRepositoryImpl implements TrackerRepository {
 
   @override
   Future<TrackerUnreadCounters> readNotifications(List<String> ids) async {
-    final raw = await _service.readNotifications(ids: ids);
+    final raw = await _service.readNotifications(ids);
 
     final unread = TrackerUnreadCounters.fromJson(raw['unreadCounters']);
 

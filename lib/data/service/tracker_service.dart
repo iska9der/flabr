@@ -7,6 +7,9 @@ abstract interface class TrackerService {
     required bool byAuthor,
   });
 
+  /// Отметить публикации прочитанными
+  Future<Map<String, dynamic>> readPublications(List<String> ids);
+
   /// Удалить публикации из отслеживаемых
   Future<void> deletePublications(List<String> ids);
 
@@ -17,9 +20,7 @@ abstract interface class TrackerService {
   });
 
   /// Отметить уведомления прочитанными
-  Future<Map<String, dynamic>> readNotifications({
-    List<String> ids = const [],
-  });
+  Future<Map<String, dynamic>> readNotifications(List<String> ids);
 }
 
 @LazySingleton(as: TrackerService)
@@ -44,6 +45,20 @@ class TrackerServiceImpl implements TrackerService {
       final response = await _siteClient.get(
         '/v2/tracker/publications',
         queryParams: params.toMap(),
+      );
+
+      return response.data;
+    } catch (e, trace) {
+      Error.throwWithStackTrace(FetchException(), trace);
+    }
+  }
+
+  @override
+  Future<Map<String, dynamic>> readPublications(List<String> ids) async {
+    try {
+      final response = await _siteClient.post(
+        '/v2/tracker/publications/read',
+        body: {'ids': ids},
       );
 
       return response.data;
@@ -89,9 +104,7 @@ class TrackerServiceImpl implements TrackerService {
   }
 
   @override
-  Future<Map<String, dynamic>> readNotifications({
-    List<String> ids = const [],
-  }) async {
+  Future<Map<String, dynamic>> readNotifications(List<String> ids) async {
     try {
       final response = await _siteClient.post(
         '/v2/me/notifications/read',

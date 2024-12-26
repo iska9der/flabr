@@ -12,7 +12,7 @@ import '../../../widget/enhancement/progress_indicator.dart';
 import '../../../widget/user_text_button.dart';
 import '../widget/stats/part.dart';
 import 'bloc/tracker_publications_bloc.dart';
-import 'bloc/tracker_publications_remover_bloc.dart';
+import 'bloc/tracker_publications_marker_bloc.dart';
 import 'widget/tracker_skeleton_widget.dart';
 
 @RoutePage(name: TrackerPublicationsPage.routeName)
@@ -30,15 +30,15 @@ class TrackerPublicationsPage extends StatelessWidget {
           create: (_) => TrackerPublicationsBloc(repository: getIt()),
         ),
         BlocProvider(
-          create: (_) => TrackerPublicationsRemoverBloc(repository: getIt()),
+          create: (_) => TrackerPublicationsMarkerBloc(repository: getIt()),
         ),
       ],
-      child: BlocListener<TrackerPublicationsRemoverBloc,
-          TrackerPublicationsRemoverState>(
+      child: BlocListener<TrackerPublicationsMarkerBloc,
+          TrackerPublicationsMarkerState>(
         listenWhen: (previous, current) => previous.status != current.status,
         listener: (context, state) {
           return switch (state.status) {
-            /// при успешном удалении публикаций из трекера перезагружаем
+            /// при успешном удалении или прочтении публикаций перезагружаем
             /// список публикаций
             LoadingStatus.success => context
                 .read<TrackerPublicationsBloc>()
@@ -58,23 +58,44 @@ class TrackerPublicationsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: BlocBuilder<TrackerPublicationsRemoverBloc,
-          TrackerPublicationsRemoverState>(
+      floatingActionButton: BlocBuilder<TrackerPublicationsMarkerBloc,
+          TrackerPublicationsMarkerState>(
         builder: (context, state) {
           if (state.markedIds.isEmpty) {
             return const SizedBox.shrink();
           }
 
-          return FloatingActionButton.extended(
-            label: const Text('Удалить из трекера'),
-            icon: state.status == LoadingStatus.loading
-                ? const CircleIndicator.medium()
-                : const Icon(Icons.delete),
-            onPressed: () {
-              context
-                  .read<TrackerPublicationsRemoverBloc>()
-                  .add(const TrackerPublicationsRemoverEvent.remove());
-            },
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            mainAxisSize: MainAxisSize.min,
+            spacing: 8.0,
+            children: [
+              if (state.isAnyUnreaded)
+                FloatingActionButton.extended(
+                  heroTag: null,
+                  label: const Text('Пометить как прочитанное'),
+                  icon: state.status == LoadingStatus.loading
+                      ? const CircleIndicator.medium()
+                      : const Icon(Icons.mark_chat_read),
+                  onPressed: () {
+                    context
+                        .read<TrackerPublicationsMarkerBloc>()
+                        .add(const TrackerPublicationsMarkerEvent.read());
+                  },
+                ),
+              FloatingActionButton.extended(
+                heroTag: null,
+                label: const Text('Удалить из трекера'),
+                icon: state.status == LoadingStatus.loading
+                    ? const CircleIndicator.medium()
+                    : const Icon(Icons.delete),
+                onPressed: () {
+                  context
+                      .read<TrackerPublicationsMarkerBloc>()
+                      .add(const TrackerPublicationsMarkerEvent.remove());
+                },
+              ),
+            ],
           );
         },
       ),
@@ -185,16 +206,17 @@ class _TrackerPublicationWidgetState extends State<TrackerPublicationWidget> {
               ],
             ),
           ),
-          BlocBuilder<TrackerPublicationsRemoverBloc,
-              TrackerPublicationsRemoverState>(
+          BlocBuilder<TrackerPublicationsMarkerBloc,
+              TrackerPublicationsMarkerState>(
             builder: (context, state) {
               return Checkbox(
-                value: state.markedIds.contains(widget.model.id),
+                value: state.markedIds.keys.contains(widget.model.id),
                 onChanged: (isChecked) {
-                  context.read<TrackerPublicationsRemoverBloc>().add(
-                        TrackerPublicationsRemoverEvent.mark(
+                  context.read<TrackerPublicationsMarkerBloc>().add(
+                        TrackerPublicationsMarkerEvent.mark(
                           id: widget.model.id,
                           isMarked: isChecked ?? false,
+                          isUnreaded: widget.model.unreadCommentsCount > 0,
                         ),
                       );
                 },
