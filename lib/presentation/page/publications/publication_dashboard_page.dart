@@ -190,10 +190,16 @@ class _PublicationDashboardPageState extends State<PublicationDashboardPage> {
                                           icon: const Icon(
                                               Icons.notifications_outlined),
                                           tooltip: 'Трекер',
-                                          onPressed: () =>
-                                              getIt<AppRouter>().push(
-                                            const TrackerDashboardRoute(),
-                                          ),
+                                          onPressed: () async {
+                                            final authCubit =
+                                                context.read<AuthCubit>();
+
+                                            await getIt<AppRouter>().push(
+                                              const TrackerDashboardRoute(),
+                                            );
+
+                                            authCubit.fetchUpdates();
+                                          },
                                         ),
                                       );
                                     },
