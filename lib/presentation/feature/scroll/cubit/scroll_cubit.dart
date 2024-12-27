@@ -4,16 +4,12 @@ class ScrollCubit extends Cubit<ScrollState> {
   ScrollCubit({
     this.duration = const Duration(milliseconds: 200),
     this.curve = Curves.linear,
-    this.physics = const BouncingScrollPhysics(
-      decelerationRate: ScrollDecelerationRate.fast,
-    ),
   }) : super(ScrollState(controller: ScrollController())) {
     _setUpEdgeListeners();
   }
 
   final Duration duration;
   final Curve curve;
-  final ScrollPhysics physics;
 
   @override
   Future<void> close() {

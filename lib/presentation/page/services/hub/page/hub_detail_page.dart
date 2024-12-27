@@ -58,6 +58,9 @@ class HubDetailPageView extends StatelessWidget {
   Widget build(BuildContext context) {
     final scrollCubit = context.read<ScrollCubit>();
     final scrollCtrl = scrollCubit.state.controller;
+    final scrollPhysics = context.select<SettingsCubit, ScrollPhysics>(
+      (cubit) => cubit.state.misc.scrollVariant.physics(context),
+    );
 
     return Scaffold(
       floatingActionButton: Column(
@@ -97,7 +100,7 @@ class HubDetailPageView extends StatelessWidget {
             controller: scrollCtrl,
             child: CustomScrollView(
               controller: scrollCtrl,
-              physics: scrollCubit.physics,
+              physics: scrollPhysics,
               slivers: [
                 FlabrSliverRefreshIndicator(
                   onRefresh: context.read<HubPublicationListCubit>().refetch,

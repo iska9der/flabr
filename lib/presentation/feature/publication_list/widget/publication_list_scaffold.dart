@@ -16,6 +16,9 @@ class PublicationListScaffold<ListCubit extends PublicationListCubit<ListState>,
     final pubCubit = context.read<ListCubit>();
     final scrollCubit = context.read<ScrollCubit>();
     final scrollController = scrollCubit.state.controller;
+    final scrollPhysics = context.select<SettingsCubit, ScrollPhysics>(
+      (cubit) => cubit.state.misc.scrollVariant.physics(context),
+    );
 
     final sidebarHeight =
         Device.getHeight(context) - flowSortToolbarHeight - fToolBarHeight;
@@ -70,7 +73,7 @@ class PublicationListScaffold<ListCubit extends PublicationListCubit<ListState>,
             child: CustomScrollView(
               cacheExtent: 1000,
               controller: scrollController,
-              physics: scrollCubit.physics,
+              physics: scrollPhysics,
               slivers: [
                 FlabrSliverRefreshIndicator(
                   onRefresh: context.read<ListCubit>().refetch,

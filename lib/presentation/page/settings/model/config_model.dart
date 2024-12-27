@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -6,6 +7,7 @@ part 'config_model.g.dart';
 part 'feed_config_model.dart';
 part 'misc_config_model.dart';
 part 'publication_config_model.dart';
+part 'scroll_variant.dart';
 part 'theme_config_model.dart';
 
 @freezed

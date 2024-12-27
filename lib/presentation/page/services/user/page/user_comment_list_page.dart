@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../core/component/di/injector.dart';
 import '../../../../feature/scroll/part.dart';
 import '../../../../widget/enhancement/refresh_indicator.dart';
+import '../../../settings/cubit/settings_cubit.dart';
 import '../cubit/user_comment_list_cubit.dart';
 import '../widget/comment_sliver_list.dart';
 
@@ -49,6 +50,9 @@ class _UserCommentListView extends StatelessWidget {
   Widget build(BuildContext context) {
     final scrollCubit = context.read<ScrollCubit>();
     final scrollCtrl = scrollCubit.state.controller;
+    final scrollPhysics = context.select<SettingsCubit, ScrollPhysics>(
+      (value) => value.state.misc.scrollVariant.physics(context),
+    );
 
     return BlocListener<ScrollCubit, ScrollState>(
       listenWhen: (p, c) => c.isBottomEdge,
@@ -60,7 +64,7 @@ class _UserCommentListView extends StatelessWidget {
           child: CustomScrollView(
             controller: scrollCtrl,
             cacheExtent: 2000,
-            physics: scrollCubit.physics,
+            physics: scrollPhysics,
             slivers: [
               FlabrSliverRefreshIndicator(
                 onRefresh: context.read<UserCommentListCubit>().refetch,

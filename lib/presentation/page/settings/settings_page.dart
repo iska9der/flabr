@@ -2,10 +2,13 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../data/model/filter/part.dart';
 import '../../../data/model/language/part.dart';
 import '../../theme/part.dart';
+import '../../widget/filter/filter_chip_list.dart';
 import '../../widget/publication_settings_widget.dart';
 import 'cubit/settings_cubit.dart';
+import 'model/config_model.dart';
 import 'widget/account/connect_sid_widget.dart';
 import 'widget/account/summary_token_widget.dart';
 import 'widget/settings_card_widget.dart';
@@ -54,6 +57,7 @@ class SettingsView extends StatelessWidget {
               children: [
                 SettingsFeedWidget(),
                 SettingNavVisibilityWidget(),
+                SettingScrollVariantWidget(),
               ],
             ),
             SettingsSectionWidget(
@@ -242,6 +246,38 @@ class SettingNavVisibilityWidget extends StatelessWidget {
             onChanged: (bool value) => context
                 .read<SettingsCubit>()
                 .changeNavigationOnScrollVisibility(isVisible: value),
+          );
+        },
+      ),
+    );
+  }
+}
+
+class SettingScrollVariantWidget extends StatelessWidget {
+  const SettingScrollVariantWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return SettingsCardWidget(
+      title: 'Скролл',
+      child: BlocBuilder<SettingsCubit, SettingsState>(
+        buildWhen: (previous, current) =>
+            previous.misc.scrollVariant != current.misc.scrollVariant,
+        builder: (context, state) {
+          return Padding(
+            padding: const EdgeInsets.only(top: 8.0),
+            child: FilterChipList(
+                options: ScrollVariant.values
+                    .map((e) => FilterOption(label: e.label, value: e.label))
+                    .toList(),
+                isSelected: (option) =>
+                    state.misc.scrollVariant.label == option.label,
+                onSelected: (isSelected, option) {
+                  final newVariant = ScrollVariant.values
+                      .firstWhere((element) => element.label == option.value);
+
+                  context.read<SettingsCubit>().changeScrollVariant(newVariant);
+                }),
           );
         },
       ),

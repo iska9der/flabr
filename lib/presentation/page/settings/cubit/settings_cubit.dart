@@ -211,7 +211,17 @@ class SettingsCubit extends Cubit<SettingsState> {
     }
 
     var newConfig = state.misc.copyWith(navigationOnScrollVisible: isVisible);
+    emit(state.copyWith(misc: newConfig));
 
+    _storage.write(CacheKeys.miscConfig, jsonEncode(newConfig.toJson()));
+  }
+
+  void changeScrollVariant(ScrollVariant variant) {
+    if (state.misc.scrollVariant == variant) {
+      return;
+    }
+
+    var newConfig = state.misc.copyWith(scrollVariant: variant);
     emit(state.copyWith(misc: newConfig));
 
     _storage.write(CacheKeys.miscConfig, jsonEncode(newConfig.toJson()));

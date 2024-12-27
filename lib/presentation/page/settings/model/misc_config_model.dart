@@ -6,6 +6,7 @@ class MiscConfigModel with _$MiscConfigModel {
 
   const factory MiscConfigModel({
     @Default(true) bool navigationOnScrollVisible,
+    @Default(ScrollVariant.material) ScrollVariant scrollVariant,
   }) = _MiscConfigModel;
 
   static const empty = MiscConfigModel();

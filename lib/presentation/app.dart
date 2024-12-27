@@ -78,7 +78,7 @@ class MyApp extends StatelessWidget {
                 themeMode: state.theme.mode,
                 theme: lightTheme(),
                 darkTheme: darkTheme(),
-                scrollBehavior: const MaterialScrollBehavior(),
+                scrollBehavior: state.misc.scrollVariant.behavior,
                 routerConfig: router.config(
                   deepLinkTransformer: (uri) {
                     if (uri.path.startsWith('/ru')) {
