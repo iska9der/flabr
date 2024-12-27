@@ -21,6 +21,7 @@ class NetworkImageWidget extends StatelessWidget {
     int? cacheHeight = height != null
         ? (height! * MediaQuery.of(context).devicePixelRatio).round()
         : null;
+
     final barrierColor =
         Theme.of(context).colorScheme.surface.withValues(alpha: .9);
 
@@ -28,7 +29,6 @@ class NetworkImageWidget extends StatelessWidget {
       onTap: isTapable
           ? () => showDialog(
                 context: context,
-                useRootNavigator: false,
                 barrierColor: barrierColor,
                 builder: (_) => FullImageNetworkModal(imageUrl: imageUrl),
               )

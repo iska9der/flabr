@@ -50,6 +50,7 @@ class CompanyDetailsWidget extends StatelessWidget {
                               : null,
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
+                            spacing: 10,
                             children: [
                               NetworkImageWidget(
                                 imageUrl: contact.favicon,
@@ -59,7 +60,6 @@ class CompanyDetailsWidget extends StatelessWidget {
                                 errorWidget: (context, url, error) =>
                                     const Icon(Icons.link_outlined, size: 20),
                               ),
-                              const SizedBox(width: 10),
                               Text(contact.title),
                             ],
                           ),
