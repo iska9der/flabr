@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/component/storage/part.dart';
@@ -107,8 +108,20 @@ class SettingsCubit extends Cubit<SettingsState> {
 
     String? raw = await _storage.read(CacheKeys.themeConfig);
     if (raw != null) {
+      var cachedTheme = ThemeConfigModel.fromJson(jsonDecode(raw));
+
+      /// Костыль для плавного перехода на новую структуру конфигурации.
+      /// Удалить блок вместе с isDarkTheme
+      if (cachedTheme.modeByBool != null) {
+        cachedTheme = cachedTheme.copyWith(
+          mode: cachedTheme.modeByBool!,
+          isDarkTheme: null,
+        );
+        _storage.write(CacheKeys.themeConfig, jsonEncode(cachedTheme.toJson()));
+      }
+
       config = config.copyWith(
-        theme: ThemeConfigModel.fromJson(jsonDecode(raw)),
+        theme: cachedTheme,
       );
     }
 
@@ -136,10 +149,10 @@ class SettingsCubit extends Cubit<SettingsState> {
     return config;
   }
 
-  void changeTheme({required bool isDarkTheme}) {
-    if (state.theme.isDarkTheme == isDarkTheme) return;
+  void changeTheme(ThemeMode mode) {
+    if (state.theme.mode == mode) return;
 
-    final newConfig = state.theme.copyWith(isDarkTheme: isDarkTheme);
+    final newConfig = state.theme.copyWith(mode: mode, isDarkTheme: null);
 
     emit(state.copyWith(theme: newConfig));
 

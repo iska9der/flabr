@@ -84,12 +84,12 @@ class UIThemeWidget extends StatefulWidget {
 }
 
 class _UIThemeWidgetState extends State<UIThemeWidget> {
-  late bool isDarkTheme;
+  late ThemeMode themeMode;
   bool isLoading = false;
 
   @override
   void initState() {
-    isDarkTheme = context.read<SettingsCubit>().state.theme.isDarkTheme;
+    themeMode = context.read<SettingsCubit>().state.theme.mode;
 
     super.initState();
   }
@@ -97,29 +97,42 @@ class _UIThemeWidgetState extends State<UIThemeWidget> {
   @override
   Widget build(BuildContext context) {
     return SettingsCardWidget(
-      title: 'Цветовая схема',
-      child: SwitchListTile.adaptive(
-        title: const Text('Темная тема'),
-        contentPadding: EdgeInsets.zero,
-        value: isDarkTheme,
-        onChanged: (val) {
-          if (isLoading) {
-            return;
-          }
-          final settingsCubit = context.read<SettingsCubit>();
+      title: 'Цветовая тема',
+      child: Padding(
+        padding: const EdgeInsets.only(top: 8.0),
+        child: FilterChipList(
+          options: ThemeMode.values
+              .map((e) => FilterOption(
+                    label: switch (e) {
+                      ThemeMode.system => 'Системная',
+                      ThemeMode.light => 'Светлая',
+                      ThemeMode.dark => 'Темная',
+                    },
+                    value: e.name,
+                  ))
+              .toList(),
+          isSelected: (option) => option.value == themeMode.name,
+          onSelected: (isSelected, option) {
+            if (isLoading) {
+              return;
+            }
+            final settingsCubit = context.read<SettingsCubit>();
 
-          setState(() {
-            isDarkTheme = val;
-            isLoading = true;
-          });
-
-          Future.delayed(const Duration(milliseconds: 600), () {
-            settingsCubit.changeTheme(isDarkTheme: val);
             setState(() {
-              isLoading = false;
+              themeMode = ThemeMode.values.firstWhere(
+                (e) => e.name == option.value,
+              );
+              isLoading = true;
             });
-          });
-        },
+
+            Future.delayed(const Duration(milliseconds: 600), () {
+              settingsCubit.changeTheme(themeMode);
+              setState(() {
+                isLoading = false;
+              });
+            });
+          },
+        ),
       ),
     );
   }
