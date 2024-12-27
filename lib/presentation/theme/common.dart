@@ -17,11 +17,12 @@ const AppBarTheme appAppBarTheme = AppBarTheme(
   titleTextStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
 );
 
-const PageTransitionsTheme appPageTransitionsTheme =
-    PageTransitionsTheme(builders: {
-  TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
-  TargetPlatform.android: FadeUpwardsPageTransitionsBuilder(),
-});
+const PageTransitionsTheme appPageTransitionsTheme = PageTransitionsTheme(
+  builders: {
+    TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+    TargetPlatform.android: PredictiveBackPageTransitionsBuilder(),
+  },
+);
 
 ScrollbarThemeData appScrollBarThemeData = ScrollbarThemeData(
   thumbVisibility: WidgetStateProperty.all(false),
