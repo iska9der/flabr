@@ -8,6 +8,7 @@ import '../../../../extension/part.dart';
 import '../../../../widget/card_avatar_widget.dart';
 import '../../../../widget/enhancement/card.dart';
 import '../../../../widget/profile_stat_card_widget.dart';
+import '../../../publications/publication_detail_page.dart';
 
 class UserCardWidget extends StatelessWidget {
   const UserCardWidget({super.key, required this.model});
@@ -84,10 +85,10 @@ class _UserCard extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(top: 12.0),
                     child: TextButton(
-                      onPressed: () => getIt<AppRouter>().navigate(
-                        PublicationFlowRoute(
-                          type: model.lastPost.type.name,
+                      onPressed: () => getIt<AppRouter>().pushWidget(
+                        PublicationDetailPage(
                           id: model.lastPost.id,
+                          type: model.lastPost.type.name,
                         ),
                       ),
                       child: Text(model.lastPost.titleHtml),
