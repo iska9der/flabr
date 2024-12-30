@@ -58,12 +58,10 @@ class AppRouter extends RootStackRouter {
     final id = parseId(uri);
 
     if (id != null) {
-      if (isArticleUrl(uri)) {
+      final type = publicationTypeHandler(uri);
+      if (type != null) {
         return await pushWidget(
-          PublicationDetailPage(
-            id: id,
-            type: PublicationType.unknown.name,
-          ),
+          PublicationDetailPage(id: id, type: type.name),
         );
       }
 
@@ -99,20 +97,26 @@ class AppRouter extends RootStackRouter {
   bool _isHostCompatible(Uri uri) =>
       uri.host.contains('habr.com') || uri.host.contains('habrahabr.ru');
 
-  bool isArticleUrl(Uri uri) {
+  PublicationType? publicationTypeHandler(Uri uri) {
     if (!_isHostCompatible(uri)) {
-      return false;
+      return null;
     }
 
-    if (uri.path.contains('post/') ||
-        uri.path.contains('articles/') ||
-        uri.path.contains('blog/') ||
-        uri.path.contains('blogs/') ||
-        uri.path.contains('news/')) {
-      return true;
+    final Map<PublicationType, List<String>> compareMap = {
+      PublicationType.article: ['article/' 'articles/', 'blog/', 'blogs/'],
+      PublicationType.post: ['posts/'],
+      PublicationType.news: ['news/'],
+    };
+
+    for (final source in compareMap.keys) {
+      for (final path in compareMap[source]!) {
+        if (uri.path.contains(path)) {
+          return source;
+        }
+      }
     }
 
-    return false;
+    return null;
   }
 
   bool isUserUrl(Uri uri) {
