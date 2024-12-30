@@ -5,7 +5,6 @@ import '../../core/component/router/app_router.dart';
 import '../../data/model/user_base.dart';
 import '../feature/auth/widget/dialog.dart';
 import '../feature/auth/widget/profile_widget.dart';
-import '../theme/part.dart';
 import 'card_avatar_widget.dart';
 
 class UserTextButton extends StatelessWidget {
@@ -15,36 +14,28 @@ class UserTextButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextButtonTheme(
-      data: TextButtonThemeData(
-        style: ButtonStyle(
-          alignment: Alignment.centerLeft,
-          padding: const WidgetStatePropertyAll(EdgeInsets.zero),
-          shape: WidgetStatePropertyAll(
-            RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(kBorderRadiusDefault),
-            ),
+    return TextButton(
+      style: Theme.of(context).textButtonTheme.style!.copyWith(
+            alignment: Alignment.centerLeft,
+            padding: const WidgetStatePropertyAll(EdgeInsets.zero),
+            visualDensity: VisualDensity(vertical: -4, horizontal: -4),
           ),
-        ),
+      onPressed: () => context.router.push(
+        UserDashboardRoute(alias: user.alias),
       ),
-      child: TextButton(
-        onPressed: () => context.router.push(
-          UserDashboardRoute(alias: user.alias),
-        ),
-        onLongPress: () {
-          showProfileDialog(
-            context,
-            child: DialogUserProfileWidget(user: user),
-          );
-        },
-        child: Wrap(
-          crossAxisAlignment: WrapCrossAlignment.center,
-          children: [
-            CardAvatarWidget(imageUrl: user.avatarUrl),
-            const SizedBox(width: 8),
-            Text(user.alias),
-          ],
-        ),
+      onLongPress: () {
+        showProfileDialog(
+          context,
+          child: DialogUserProfileWidget(user: user),
+        );
+      },
+      child: Wrap(
+        crossAxisAlignment: WrapCrossAlignment.center,
+        children: [
+          CardAvatarWidget(imageUrl: user.avatarUrl),
+          const SizedBox(width: 8),
+          Text(user.alias),
+        ],
       ),
     );
   }

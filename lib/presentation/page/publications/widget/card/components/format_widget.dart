@@ -14,24 +14,19 @@ class PublicationFormatWidget extends StatelessWidget {
 
     return Align(
       alignment: Alignment.centerLeft,
-      child: OutlinedButton(
-        onPressed: null,
-        style: OutlinedButton.styleFrom(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-          minimumSize: Size.zero,
-          side: BorderSide(color: actualColor),
-          foregroundColor: actualColor,
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(
-              Radius.circular(kBorderRadiusDefault),
-            ),
-          ),
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          border: Border.all(color: actualColor),
+          borderRadius: BorderRadius.circular(kBorderRadiusDefault),
         ),
-        child: Text(
-          format.label,
-          style: TextStyle(
-            fontWeight: FontWeight.w400,
-            color: actualColor,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+          child: Text(
+            format.label,
+            style: TextStyle(
+              fontWeight: FontWeight.w500,
+              color: actualColor,
+            ),
           ),
         ),
       ),

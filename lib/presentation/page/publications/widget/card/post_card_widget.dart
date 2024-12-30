@@ -21,49 +21,37 @@ class PostCardWidget extends StatelessWidget {
           id: post.id,
         ),
       ),
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.min,
+        spacing: 6,
         children: [
           if (showType) PublicationTypeWidget(type: post.type),
           PublicationHeaderWidget(post),
+          PublicationStatsWidget(post),
+          PublicationHubsWidget(hubs: post.hubs),
           Padding(
-            padding: const EdgeInsets.only(top: 18),
-            child: PublicationStatsWidget(post),
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: HtmlWidget(post.textHtml),
           ),
-          Padding(
-            padding: const EdgeInsets.only(top: 12),
-            child: PublicationHubsWidget(hubs: post.hubs),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 24),
-            child: HtmlWidget(
-              post.textHtml,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 12),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Text(
-                  'Теги',
-                  style: Theme.of(context).textTheme.labelLarge,
-                ),
-                Wrap(
-                  spacing: 8,
-                  runSpacing: 8,
-                  children: post.tags.map((tag) {
-                    final style = Theme.of(context).textTheme.bodySmall;
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(
+                'Теги',
+                style: Theme.of(context).textTheme.labelLarge,
+              ),
+              Wrap(
+                spacing: 8,
+                runSpacing: 8,
+                children: post.tags.map((tag) {
+                  final style = Theme.of(context).textTheme.bodySmall;
 
-                    return Text(tag, style: style);
-                  }).toList(),
-                ),
-              ],
-            ),
+                  return Text(tag, style: style);
+                }).toList(),
+              ),
+            ],
           ),
-          const SizedBox(height: 24),
           ArticleFooterWidget(publication: post),
         ],
       ),

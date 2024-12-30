@@ -11,7 +11,6 @@ import '../../../../../data/model/publication/publication_author_model.dart';
 import '../../../../feature/scroll/part.dart';
 import '../../../../utils/utils.dart';
 import '../../../../widget/comment/comment_widget.dart';
-import '../../../../widget/enhancement/button.dart';
 import '../../../../widget/enhancement/card.dart';
 import '../../../../widget/enhancement/progress_indicator.dart';
 import '../../../../widget/user_text_button.dart';
@@ -78,7 +77,7 @@ class CommentSliverList extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      FlabrTextButton.rectangle(
+                      TextButton(
                         onPressed: () => getIt<AppRouter>().pushWidget(
                           PublicationDetailPage(
                             type: model.publication.type.name,

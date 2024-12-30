@@ -166,50 +166,55 @@ class _CommentTreeWidgetState extends State<CommentTreeWidget> {
                 child: TreeIndentation(
                   entry: entry,
                   guide: const IndentGuide(indent: 0),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(kBorderRadiusDefault),
-                    child: ColoredBox(
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(kBorderRadiusDefault),
                       color: authorColor,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Row(
-                            children: [
-                              UserTextButton(entry.node.author),
-                              const Spacer(),
-                              ExpandIcon(
-                                key: GlobalObjectKey(entry.node),
-                                isExpanded: entry.isExpanded,
-                                onPressed: (_) =>
-                                    treeController.toggleExpansion(entry.node),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                left: fCardPadding,
                               ),
+                              child: UserTextButton(entry.node.author),
+                            ),
+                            const Spacer(),
+                            ExpandIcon(
+                              key: GlobalObjectKey(entry.node),
+                              isExpanded: entry.isExpanded,
+                              onPressed: (_) =>
+                                  treeController.toggleExpansion(entry.node),
+                            ),
+                          ],
+                        ),
+                        if (entry.isExpanded)
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              if (entry.node.parent != null)
+                                GestureDetector(
+                                  onTap: () {
+                                    /// добавляем в историю текущий оффсет скролла
+                                    _history.push(
+                                      entry.node.id,
+                                      scrollController.offset,
+                                    );
+
+                                    /// перемещаемся к родительскому комментарию
+                                    _moveToParent(entry.node.parentId);
+                                  },
+                                  child: ParentComment(
+                                    parent: entry.node.parent!,
+                                  ),
+                                ),
+                              CommentWidget(entry.node),
                             ],
                           ),
-                          if (entry.isExpanded)
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: [
-                                if (entry.node.parent != null)
-                                  GestureDetector(
-                                    onTap: () {
-                                      /// добавляем в историю текущий оффсет скролла
-                                      _history.push(
-                                        entry.node.id,
-                                        scrollController.offset,
-                                      );
-
-                                      /// перемещаемся к родительскому комментарию
-                                      _moveToParent(entry.node.parentId);
-                                    },
-                                    child: ParentComment(
-                                      parent: entry.node.parent!,
-                                    ),
-                                  ),
-                                CommentWidget(entry.node),
-                              ],
-                            ),
-                        ],
-                      ),
+                      ],
                     ),
                   ),
                 ),

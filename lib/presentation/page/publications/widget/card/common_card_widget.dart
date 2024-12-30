@@ -21,27 +21,29 @@ class CommonCardWidget extends StatelessWidget {
           id: publication.id,
         ),
       ),
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          if (showType) PublicationTypeWidget(type: publication.type),
-          PublicationHeaderWidget(publication),
-          _ArticleTitleWidget(
-            title: publication.titleHtml,
-            renderType: renderType,
-          ),
           Padding(
-            padding: const EdgeInsets.only(top: 18),
-            child: PublicationStatsWidget(publication),
+            padding: const EdgeInsets.only(bottom: 8),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              spacing: 6,
+              children: [
+                if (showType) PublicationTypeWidget(type: publication.type),
+                PublicationHeaderWidget(publication),
+                _ArticleTitleWidget(
+                  title: publication.titleHtml,
+                  renderType: renderType,
+                ),
+                PublicationStatsWidget(publication),
+                PublicationHubsWidget(hubs: publication.hubs),
+                if (publication.format != null)
+                  PublicationFormatWidget(publication.format!),
+              ],
+            ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(top: 12),
-            child: PublicationHubsWidget(hubs: publication.hubs),
-          ),
-          if (publication.format != null)
-            PublicationFormatWidget(publication.format!),
           Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisSize: MainAxisSize.min,
@@ -56,7 +58,7 @@ class CommonCardWidget extends StatelessWidget {
                     }
 
                     return Padding(
-                      padding: const EdgeInsets.only(top: 24),
+                      padding: const EdgeInsets.only(bottom: 8),
                       child: NetworkImageWidget(
                         imageUrl: publication.leadData.image.url,
                         isTapable: true,
@@ -76,13 +78,17 @@ class CommonCardWidget extends StatelessWidget {
                   }
 
                   return Padding(
-                    padding: const EdgeInsets.fromLTRB(8, 24, 8, 0),
+                    padding: const EdgeInsets.all(8),
                     child: HtmlWidget(
                       publication.leadData.textHtml,
                       rebuildTriggers: [
                         state.feed,
                       ],
                       customWidgetBuilder: (element) {
+                        if (element.localName == 'br') {
+                          return SizedBox();
+                        }
+
                         if (element.localName == 'img') {
                           if (!state.feed.isImageVisible) {
                             return const SizedBox();
@@ -96,11 +102,14 @@ class CommonCardWidget extends StatelessWidget {
                             return null;
                           }
 
-                          return Align(
-                            child: NetworkImageWidget(
-                              imageUrl: imgSrc,
-                              height: kImageHeightDefault,
-                              isTapable: true,
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 8),
+                            child: Align(
+                              child: NetworkImageWidget(
+                                imageUrl: imgSrc,
+                                height: kImageHeightDefault,
+                                isTapable: true,
+                              ),
                             ),
                           );
                         }
@@ -113,7 +122,6 @@ class CommonCardWidget extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 24),
           ArticleFooterWidget(publication: publication),
         ],
       ),

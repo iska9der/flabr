@@ -31,7 +31,13 @@ ScrollbarThemeData appScrollBarThemeData = ScrollbarThemeData(
   minThumbLength: fToolBarHeightOnScroll,
 );
 
-TextButtonThemeData appTextButtonThemeData = const TextButtonThemeData();
+TextButtonThemeData appTextButtonThemeData = TextButtonThemeData(
+  style: TextButton.styleFrom(
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(kBorderRadiusDefault),
+    ),
+  ),
+);
 
 const DrawerThemeData appDrawerThemeData = DrawerThemeData(width: 200);
 
