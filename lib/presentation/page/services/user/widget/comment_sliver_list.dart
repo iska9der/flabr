@@ -15,7 +15,7 @@ import '../../../../widget/enhancement/button.dart';
 import '../../../../widget/enhancement/card.dart';
 import '../../../../widget/enhancement/progress_indicator.dart';
 import '../../../../widget/user_text_button.dart';
-import '../../../publications/articles/article_detail_page.dart';
+import '../../../publications/publication_detail_page.dart';
 import '../cubit/user_comment_list_cubit.dart';
 
 class CommentSliverList extends StatelessWidget {
@@ -80,7 +80,10 @@ class CommentSliverList extends StatelessWidget {
                     children: [
                       FlabrTextButton.rectangle(
                         onPressed: () => getIt<AppRouter>().pushWidget(
-                          ArticleDetailPage(id: model.publication.id),
+                          PublicationDetailPage(
+                            type: model.publication.type.name,
+                            id: model.publication.id,
+                          ),
                         ),
                         child: Text(
                           model.publication.title,

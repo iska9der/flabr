@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
+import '../../../data/model/publication/publication_type_enum.dart';
 import '../../../presentation/page/dashboard_page.dart';
-import '../../../presentation/page/publications/articles/article_detail_page.dart';
 import '../../../presentation/page/publications/articles/article_flow.dart';
 import '../../../presentation/page/publications/articles/article_list_page.dart';
 import '../../../presentation/page/publications/feed/feed_flow.dart';
@@ -59,7 +59,12 @@ class AppRouter extends RootStackRouter {
 
     if (id != null) {
       if (isArticleUrl(uri)) {
-        return await pushWidget(ArticleDetailPage(id: id));
+        return await pushWidget(
+          PublicationDetailPage(
+            id: id,
+            type: PublicationType.unknown.name,
+          ),
+        );
       }
 
       if (isUserUrl(uri)) {

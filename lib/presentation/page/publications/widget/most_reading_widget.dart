@@ -9,8 +9,8 @@ import '../../../theme/part.dart';
 import '../../../widget/enhancement/app_expansion_panel.dart';
 import '../../../widget/enhancement/card.dart';
 import '../../../widget/enhancement/progress_indicator.dart';
-import '../articles/article_detail_page.dart';
 import '../cubit/most_reading_cubit.dart';
+import '../publication_detail_page.dart';
 import 'stats/part.dart';
 
 class MostReadingWidget extends StatelessWidget {
@@ -125,7 +125,10 @@ class _MostReadingListState extends State<_MostReadingList> {
                   color: Colors.transparent,
                   elevation: 0,
                   onTap: () => appRouter.pushWidget(
-                    ArticleDetailPage(id: model.id),
+                    PublicationDetailPage(
+                      type: model.type.name,
+                      id: model.id,
+                    ),
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
