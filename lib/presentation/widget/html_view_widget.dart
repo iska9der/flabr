@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
@@ -12,6 +13,7 @@ import '../extension/part.dart';
 import '../feature/image_action/part.dart';
 import '../page/settings/cubit/settings_cubit.dart';
 import '../theme/part.dart';
+import '../utils/utils.dart';
 import 'enhancement/progress_indicator.dart';
 
 class HtmlView extends StatelessWidget {
@@ -49,20 +51,6 @@ class HtmlView extends StatelessWidget {
             isImageVisible,
             isWebViewEnabled,
           ],
-          onTapUrl: (String url) async {
-            final uri = Uri.tryParse(url);
-            if (uri == null) {
-              return false;
-            }
-
-            /// anchor links обрабатываются самой библиотекой
-            if (url.startsWith('#')) {
-              return false;
-            }
-
-            await getIt<AppRouter>().navigateOrLaunchUrl(uri);
-            return true;
-          },
           onErrorBuilder: (context, element, error) =>
               Text('$element error: $error'),
           onLoadingBuilder: (ctx, el, prgrs) => const CircleIndicator.medium(),
@@ -176,6 +164,8 @@ class CustomFactory extends WidgetFactory with SvgFactory, WebViewFactory {
       return widget;
     }
 
+    /// переопределяем цвета svg изображений в публикации -
+    /// обычно это математические символы/формулы
     widget = widget.copyWith(
       colorFilter: ColorFilter.mode(
         Theme.of(context).textTheme.bodyMedium!.color!,
@@ -195,6 +185,70 @@ class CustomFactory extends WidgetFactory with SvgFactory, WebViewFactory {
         context.read<SettingsCubit>().state.publication.webViewEnabled;
 
     switch (element.localName) {
+      case 'a':
+        final op = BuildOp(
+          onRenderBlock: (meta, widgets) {
+            final href = attributes['href'];
+            if (href == null) {
+              return widgets;
+            }
+
+            /// anchor links обрабатываются самой библиотекой
+            if (href.startsWith('#')) {
+              return widgets;
+            }
+
+            final isNeed = meta.element.text != href;
+
+            go() => getIt<AppRouter>().navigateOrLaunchUrl(Uri.parse(href));
+
+            return GestureDetector(
+              onTap: () async {
+                if (!isNeed) {
+                  return go();
+                }
+
+                getIt<Utils>().showAlert(
+                  context: context,
+                  compact: true,
+                  title: Text(
+                    meta.element.text,
+                    style: Theme.of(context).textTheme.titleSmall,
+                  ),
+                  content: Text(href),
+                  actionsBuilder: (context) => [
+                    TextButton(
+                      onPressed: () {
+                        Clipboard.setData(
+                          ClipboardData(text: href),
+                        );
+
+                        getIt<Utils>().showSnack(
+                          context: context,
+                          content: const Text(
+                            'Скопировано в буфер обмена',
+                          ),
+                        );
+                      },
+                      child: Text('Копировать в буфер'),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        go();
+                        Navigator.of(context).pop();
+                      },
+                      child: Text('Перейти'),
+                    ),
+                  ],
+                );
+              },
+              child: widgets,
+            );
+          },
+        );
+
+        meta.register(op);
+        break;
       case 'div':
         if (element.className.contains('tm-iframe_temp')) {
           final op = BuildOp(
@@ -235,6 +289,7 @@ class CustomFactory extends WidgetFactory with SvgFactory, WebViewFactory {
             return buildBlockCodeWidget(element.text);
           },
         );
+
         meta.register(op);
         break;
     }
