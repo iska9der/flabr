@@ -24,32 +24,30 @@ class CommentListView extends StatelessWidget {
         title: const Text('Комментарии'),
       ),
       body: SafeArea(
-        child: SelectionArea(
-          child: BlocBuilder<CommentListCubit, CommentListState>(
-            builder: (context, state) {
-              if (state.status.isInitial) {
-                context.read<CommentListCubit>().fetch();
-                return const CircleIndicator();
-              }
+        child: BlocBuilder<CommentListCubit, CommentListState>(
+          builder: (context, state) {
+            if (state.status.isInitial) {
+              context.read<CommentListCubit>().fetch();
+              return const CircleIndicator();
+            }
 
-              if (state.status.isLoading) {
-                return const CircleIndicator();
-              }
+            if (state.status.isLoading) {
+              return const CircleIndicator();
+            }
 
-              if (state.status.isFailure) {
-                return Center(child: Text(state.error));
-              }
+            if (state.status.isFailure) {
+              return Center(child: Text(state.error));
+            }
 
-              final comments = state.list.comments;
-              if (comments.isEmpty) {
-                return const Center(
-                  child: Text('Нет комментариев'),
-                );
-              }
+            final comments = state.list.comments;
+            if (comments.isEmpty) {
+              return const Center(
+                child: Text('Нет комментариев'),
+              );
+            }
 
-              return CommentTreeWidget(comments);
-            },
-          ),
+            return SelectionArea(child: CommentTreeWidget(comments));
+          },
         ),
       ),
     );

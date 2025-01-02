@@ -64,10 +64,6 @@ class _PublicationDetailViewState extends State<PublicationDetailView> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
-      bottomNavigationBar: ValueListenableBuilder(
-        valueListenable: isStatsVisible,
-        builder: (_, value, __) => _ArticleBottomBar(isVisible: value),
-      ),
       body: SafeArea(
         bottom: false,
         child: BlocBuilder<PublicationDetailCubit, PublicationDetailState>(
@@ -98,158 +94,120 @@ class _PublicationDetailViewState extends State<PublicationDetailView> {
 
             final publication = state.publication;
 
-            return Scrollbar(
-              controller: controller,
-              child: NotificationListener<UserScrollNotification>(
-                onNotification: (notification) {
-                  final direction = notification.direction;
-                  final axis = notification.metrics.axisDirection;
+            return NotificationListener<UserScrollNotification>(
+              onNotification: (notification) {
+                final direction = notification.direction;
+                final axis = notification.metrics.axisDirection;
 
-                  if (axis == AxisDirection.right ||
-                      axis == AxisDirection.left) {
-                    return false;
-                  }
-
-                  /// Если скроллим вверх, или скролл достиг какого-либо края,
-                  /// то показываем статистику
-                  if (direction == ScrollDirection.forward ||
-                      notification.metrics.atEdge &&
-                          notification.metrics.pixels != 0) {
-                    isStatsVisible.value = true;
-                  } else if (direction == ScrollDirection.reverse) {
-                    isStatsVisible.value = false;
-                  }
-
+                if (axis == AxisDirection.right || axis == AxisDirection.left) {
                   return false;
-                },
-                child: SelectionArea(
-                  child: CustomScrollView(
-                    controller: controller,
-                    slivers: [
-                      SliverAppBar(
-                        automaticallyImplyLeading: false,
-                        forceElevated: true,
-                        pinned: true,
-                        toolbarHeight: 40,
-                        titleSpacing: 0,
-                        title: Stack(
-                          children: [
-                            Row(
-                              children: [
-                                const SizedBox(
-                                  width: 60,
-                                  child: AutoLeadingButton(),
-                                ),
-                                Expanded(
-                                  child: PublicationDetailAppBarTitle(
-                                    publication: publication,
-                                  ),
-                                ),
-                                IconButton(
-                                  icon: const Icon(Icons.tune_rounded),
-                                  iconSize: 18,
-                                  tooltip: 'Настроить',
-                                  onPressed: () => showModalBottomSheet(
-                                    context: context,
-                                    showDragHandle: true,
-                                    builder: (context) {
-                                      return const SizedBox(
-                                        height: 240,
-                                        child: PublicationSettingsWidget(),
-                                      );
-                                    },
-                                  ),
-                                ),
-                                IconButton(
-                                  icon: const Icon(Icons.share),
-                                  iconSize: 18,
-                                  tooltip: 'Поделиться',
-                                  onPressed: () {
-                                    final uri = Uri.parse(
-                                      '${Urls.baseUrl}/articles/${publication.id}',
-                                    );
+                }
 
-                                    Share.shareUri(uri);
-                                  },
+                /// Если скроллим вверх, или скролл достиг какого-либо края,
+                /// то показываем статистику
+                if (direction == ScrollDirection.forward ||
+                    notification.metrics.atEdge &&
+                        notification.metrics.pixels != 0) {
+                  isStatsVisible.value = true;
+                } else if (direction == ScrollDirection.reverse) {
+                  isStatsVisible.value = false;
+                }
+
+                return false;
+              },
+              child: Stack(
+                children: [
+                  SelectionArea(
+                    child: CustomScrollView(
+                      controller: controller,
+                      slivers: [
+                        SliverToBoxAdapter(
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                              top: _vPadding,
+                              left: _hPadding,
+                              right: _hPadding,
+                            ),
+                            child: PublicationHeaderWidget(publication),
+                          ),
+                        ),
+                        SliverToBoxAdapter(
+                          child: PublicationDetailTitle(
+                            publication: publication,
+                            padding: const EdgeInsets.only(
+                              top: _vPadding,
+                              left: _hPadding,
+                              right: _hPadding,
+                              bottom: _vPadding,
+                            ),
+                          ),
+                        ),
+                        SliverToBoxAdapter(
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                              top: _vPadding,
+                              left: _hPadding,
+                              right: _hPadding,
+                              bottom: _vPadding,
+                            ),
+                            child: PublicationStatsWidget(publication),
+                          ),
+                        ),
+                        SliverToBoxAdapter(
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                              top: _vPadding - 6,
+                              left: _hPadding,
+                              right: _hPadding,
+                            ),
+                            child:
+                                PublicationHubsWidget(hubs: publication.hubs),
+                          ),
+                        ),
+                        SliverToBoxAdapter(
+                          child: switch (publication) {
+                            (PublicationCommon a) when a.format != null =>
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: _hPadding,
                                 ),
-                              ],
-                            ),
-                            IgnorePointer(
-                              child: SizedBox(
-                                height: 45,
-                                child: ValueListenableBuilder<double>(
-                                  valueListenable: progressValue,
-                                  builder: (context, value, child) {
-                                    return LinearProgressIndicator(
-                                      backgroundColor: Colors.transparent,
-                                      color: Colors.blue.withValues(alpha: .2),
-                                      value: value,
-                                    );
-                                  },
-                                ),
+                                child: PublicationFormatWidget(a.format!),
                               ),
-                            ),
-                          ],
+                            _ => const SizedBox(),
+                          },
                         ),
-                      ),
-                      SliverToBoxAdapter(
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                            top: _vPadding,
-                            left: _hPadding,
-                            right: _hPadding,
-                          ),
-                          child: PublicationHeaderWidget(publication),
-                        ),
-                      ),
-                      SliverToBoxAdapter(
-                        child: PublicationDetailTitle(
-                          publication: publication,
-                          padding: const EdgeInsets.only(
-                            top: _vPadding,
-                            left: _hPadding,
-                            right: _hPadding,
-                            bottom: _vPadding,
-                          ),
-                        ),
-                      ),
-                      SliverToBoxAdapter(
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                            top: _vPadding,
-                            left: _hPadding,
-                            right: _hPadding,
-                            bottom: _vPadding,
-                          ),
-                          child: PublicationStatsWidget(publication),
-                        ),
-                      ),
-                      SliverToBoxAdapter(
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                            top: _vPadding - 6,
-                            left: _hPadding,
-                            right: _hPadding,
-                          ),
-                          child: PublicationHubsWidget(hubs: publication.hubs),
-                        ),
-                      ),
-                      SliverToBoxAdapter(
-                        child: switch (publication) {
-                          (PublicationCommon a) when a.format != null =>
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: _hPadding,
-                              ),
-                              child: PublicationFormatWidget(a.format!),
-                            ),
-                          _ => const SizedBox(),
-                        },
-                      ),
-                      HtmlView(textHtml: publication.textHtml),
-                    ],
+                        HtmlView(textHtml: publication.textHtml),
+                      ],
+                    ),
                   ),
-                ),
+                  Positioned(
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    child: ValueListenableBuilder(
+                      valueListenable: isStatsVisible,
+                      builder: (_, isVisible, __) {
+                        return _AppBar(
+                          publication: publication,
+                          isVisible: isVisible,
+                          scrollProgress: progressValue,
+                        );
+                      },
+                    ),
+                  ),
+                  Positioned(
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    child: ValueListenableBuilder(
+                      valueListenable: isStatsVisible,
+                      builder: (_, value, __) => _BottomBar(
+                        publication: publication,
+                        isVisible: value,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             );
           },
@@ -259,59 +217,138 @@ class _PublicationDetailViewState extends State<PublicationDetailView> {
   }
 }
 
-class _ArticleBottomBar extends StatelessWidget {
-  const _ArticleBottomBar({this.isVisible = true});
+class _AppBar extends StatelessWidget {
+  const _AppBar({
+    required this.publication,
+    required this.scrollProgress,
+    this.isVisible = true,
+  });
 
+  final Publication publication;
+  final bool isVisible;
+  final ValueNotifier<double> scrollProgress;
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 200),
+      curve: Curves.decelerate,
+      height: isVisible ? 40 : 10,
+      color: Theme.of(context).colorScheme.surface,
+      child: Stack(
+        children: [
+          if (isVisible)
+            Row(
+              children: [
+                const SizedBox(
+                  width: 60,
+                  child: AutoLeadingButton(),
+                ),
+                Expanded(
+                  child: PublicationDetailAppBarTitle(
+                    publication: publication,
+                  ),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.tune_rounded),
+                  iconSize: 18,
+                  tooltip: 'Настроить',
+                  onPressed: () => showModalBottomSheet(
+                    context: context,
+                    showDragHandle: true,
+                    builder: (context) {
+                      return const SizedBox(
+                        height: 240,
+                        child: PublicationSettingsWidget(),
+                      );
+                    },
+                  ),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.share),
+                  iconSize: 18,
+                  tooltip: 'Поделиться',
+                  onPressed: () {
+                    final uri = Uri.parse(
+                      '${Urls.baseUrl}/articles/${publication.id}',
+                    );
+
+                    Share.shareUri(uri);
+                  },
+                ),
+              ],
+            ),
+          IgnorePointer(
+            ignoring: isVisible,
+            child: SizedBox(
+              height: 45,
+              child: ValueListenableBuilder<double>(
+                valueListenable: scrollProgress,
+                builder: (context, value, child) {
+                  return LinearProgressIndicator(
+                    backgroundColor: Colors.transparent,
+                    color: Colors.blue.withValues(alpha: .2),
+                    value: value,
+                  );
+                },
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _BottomBar extends StatelessWidget {
+  const _BottomBar({
+    required this.publication,
+    this.isVisible = true,
+  });
+
+  final Publication publication;
   final bool isVisible;
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<PublicationDetailCubit, PublicationDetailState>(
-      builder: (context, state) {
-        if (state.publication.isEmpty) return const SizedBox();
-
-        final publication = state.publication;
-
-        return AnimatedSlide(
-          duration: const Duration(milliseconds: 300),
-          curve: Curves.easeInOutCubicEmphasized,
-          offset: isVisible ? const Offset(0, 0) : const Offset(0, 10),
-          child: BottomAppBar(
-            height: 36,
-            padding: EdgeInsets.zero,
-            elevation: 0,
-            color: Theme.of(context).colorScheme.surface.withValues(alpha: .94),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Expanded(
-                  flex: 7,
-                  child: ArticleFooterWidget(
-                    publication: publication,
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  ),
+    return AnimatedSlide(
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.decelerate,
+      offset: isVisible ? const Offset(0, 0) : const Offset(0, 10),
+      child: ColoredBox(
+        color: Theme.of(context).colorScheme.surface.withValues(alpha: .94),
+        child: SizedBox(
+          height: 36,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Expanded(
+                flex: 7,
+                child: ArticleFooterWidget(
+                  publication: publication,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 ),
-                Expanded(
-                  flex: 3,
-                  child: IconButton(
-                    icon: const Icon(Icons.more_horiz_rounded),
-                    tooltip: 'Дополнительно',
-                    onPressed: () => showModalBottomSheet(
-                      context: context,
-                      showDragHandle: true,
-                      builder: (_) => SizedBox(
-                        width: double.infinity,
-                        height: 120,
-                        child: PublicationMoreOptions(publication: publication),
-                      ),
+              ),
+              Expanded(
+                flex: 3,
+                child: IconButton(
+                  icon: const Icon(Icons.more_horiz_rounded),
+                  tooltip: 'Дополнительно',
+                  onPressed: () => showModalBottomSheet(
+                    context: context,
+                    showDragHandle: true,
+                    builder: (_) => SizedBox(
+                      width: double.infinity,
+                      height: 120,
+                      child: PublicationMoreOptions(publication: publication),
                     ),
                   ),
-                )
-              ],
-            ),
+                ),
+              )
+            ],
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 }
