@@ -20,6 +20,7 @@ part 'publication_detail_title.dart';
 
 const double _hPadding = 12.0;
 const double _vPadding = 10.0;
+const double _appbarPadding = 40.0;
 
 class PublicationDetailView extends StatefulWidget {
   const PublicationDetailView({super.key});
@@ -124,7 +125,7 @@ class _PublicationDetailViewState extends State<PublicationDetailView> {
                         SliverToBoxAdapter(
                           child: Padding(
                             padding: const EdgeInsets.only(
-                              top: _vPadding,
+                              top: _vPadding + _appbarPadding,
                               left: _hPadding,
                               right: _hPadding,
                             ),
@@ -233,7 +234,7 @@ class _AppBar extends StatelessWidget {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 200),
       curve: Curves.decelerate,
-      height: isVisible ? 40 : 10,
+      height: isVisible ? _appbarPadding : 10,
       color: Theme.of(context).colorScheme.surface,
       child: Stack(
         children: [
