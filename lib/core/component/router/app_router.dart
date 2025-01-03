@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 import 'package:url_launcher/url_launcher_string.dart';
@@ -361,6 +362,26 @@ AutoRoute _companyDashboard({bool isRoot = false}) => AutoRoute(
     );
 
 List<RedirectRoute> _newsRedirects() {
+  List<String> externalPathList = [
+    '/news/:id',
+    '/news/t/:id',
+    '/companies/:companyName/news/:id',
+  ];
+
+  List<RedirectRoute> internalRedirectList = externalPathList
+      .map((path) => [
+            RedirectRoute(
+              path: path,
+              redirectTo: '/publication/news/:id',
+            ),
+            RedirectRoute(
+              path: '$path/comments',
+              redirectTo: '/publication/news/:id/comments',
+            ),
+          ])
+      .flattened
+      .toList();
+
   return [
     /// Флоу в новостях
     RedirectRoute(
@@ -374,23 +395,8 @@ List<RedirectRoute> _newsRedirects() {
       redirectTo: '/news',
     ),
 
-    /// Полная версия и комментарии
-    RedirectRoute(
-      path: '/news/:id',
-      redirectTo: '/publication/news/:id',
-    ),
-    RedirectRoute(
-      path: '/news/:id/comments',
-      redirectTo: '/publication/news/:id/comments',
-    ),
-    RedirectRoute(
-      path: '/news/t/:id',
-      redirectTo: '/publication/news/:id',
-    ),
-    RedirectRoute(
-      path: '/news/t/:id/comments',
-      redirectTo: '/publication/news/:id/comments',
-    ),
+    /// Полная новость и комментарии
+    ...internalRedirectList,
   ];
 }
 
@@ -404,25 +410,23 @@ List<RedirectRoute> _articlesRedirects() {
     '/company/:companyName/blog/:id',
     '/companies/:companyName/articles/:id',
 
-    /// Статьи с AMP ссылками
-    '/*/amp/publications/:id',
+    /// AMP ссылки
+    '/amp/publications/:id',
   ];
 
-  List<RedirectRoute> internalRedirectList = [];
-  for (final path in externalPathList) {
-    final list = [
-      RedirectRoute(
-        path: path,
-        redirectTo: '/publication/article/:id',
-      ),
-      RedirectRoute(
-        path: '$path/comments',
-        redirectTo: '/publication/article/:id/comments',
-      ),
-    ];
-
-    internalRedirectList.addAll(list);
-  }
+  List<RedirectRoute> internalRedirectList = externalPathList
+      .map((path) => [
+            RedirectRoute(
+              path: path,
+              redirectTo: '/publication/article/:id',
+            ),
+            RedirectRoute(
+              path: '$path/comments',
+              redirectTo: '/publication/article/:id/comments',
+            ),
+          ])
+      .flattened
+      .toList();
 
   return [
     /// Флоу в статьях
@@ -441,7 +445,7 @@ List<RedirectRoute> _articlesRedirects() {
       redirectTo: '/articles',
     ),
 
-    /// Полная версия и комментарии
+    /// Полная статья и комментарии
     ...internalRedirectList,
   ];
 }
@@ -449,23 +453,22 @@ List<RedirectRoute> _articlesRedirects() {
 List<RedirectRoute> _postsRedirects() {
   List<String> externalPathList = [
     '/posts/:id',
+    '/companies/:companyName/posts/:id',
   ];
 
-  List<RedirectRoute> internalRedirectList = [];
-  for (final path in externalPathList) {
-    final list = [
-      RedirectRoute(
-        path: path,
-        redirectTo: '/publication/post/:id',
-      ),
-      RedirectRoute(
-        path: '$path/comments',
-        redirectTo: '/publication/post/:id/comments',
-      ),
-    ];
-
-    internalRedirectList.addAll(list);
-  }
+  List<RedirectRoute> internalRedirectList = externalPathList
+      .map((path) => [
+            RedirectRoute(
+              path: path,
+              redirectTo: '/publication/post/:id',
+            ),
+            RedirectRoute(
+              path: '$path/comments',
+              redirectTo: '/publication/post/:id/comments',
+            ),
+          ])
+      .flattened
+      .toList();
 
   return [
     /// Флоу в постах
@@ -556,22 +559,22 @@ List<RedirectRoute> _usersRedirects() {
 
 /// Редиректы для хабов
 List<RedirectRoute> _hubsRedirects() {
-  const hubList = HubListPage.routePath;
-  const basePath = '/services/$hubList';
-  const profile = HubDetailPage.routePath;
+  const hubListPath = HubListPage.routePath;
+  const fullPath = '/services/$hubListPath';
+  const profilePath = HubDetailPage.routePath;
 
   return [
     RedirectRoute(
       path: '/hubs',
-      redirectTo: basePath,
+      redirectTo: fullPath,
     ),
     RedirectRoute(
       path: '/hub/:alias',
-      redirectTo: '$basePath/:alias/$profile',
+      redirectTo: '$fullPath/:alias/$profilePath',
     ),
     RedirectRoute(
       path: '/hubs/:alias',
-      redirectTo: '$basePath/:alias/$profile',
+      redirectTo: '$fullPath/:alias/$profilePath',
     ),
 
     /// TODO: временный редирект в профиль хаба со статьями,
@@ -579,11 +582,11 @@ List<RedirectRoute> _hubsRedirects() {
     /// (авторы, компании)
     RedirectRoute(
       path: '/hub/:alias/*',
-      redirectTo: '$basePath/:alias',
+      redirectTo: '$fullPath/:alias',
     ),
     RedirectRoute(
       path: '/hubs/:alias/*',
-      redirectTo: '$basePath/:alias/$profile',
+      redirectTo: '$fullPath/:alias/$profilePath',
     ),
   ];
 }
