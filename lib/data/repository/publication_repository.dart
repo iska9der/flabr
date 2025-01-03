@@ -45,9 +45,9 @@ class PublicationRepository {
       langArticles: LanguageEncoder.encodeLangs(langArticles),
     );
 
-    final article = PublicationCommon.fromMap(rawData);
+    final publication = PublicationCommon.fromMap(rawData);
 
-    return article;
+    return publication;
   }
 
   Future<PublicationPost> _fetchPostById(
@@ -237,5 +237,13 @@ class PublicationRepository {
     articles = articles.take(8).toList();
 
     return articles;
+  }
+
+  Future<PublicationVoteResponse> voteUp(String publicationId) async {
+    return await service.voteUp(publicationId);
+  }
+
+  Future<PublicationVoteResponse> voteDown(String publicationId) async {
+    return await service.voteDown(publicationId);
   }
 }

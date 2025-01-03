@@ -21,6 +21,7 @@ import '../model/publication/publication.dart';
 import '../model/publication/publication_counters_model.dart';
 import '../model/publication/publication_flow_enum.dart';
 import '../model/publication/publication_source_enum.dart';
+import '../model/publication/publication_vote_response.dart';
 import '../model/search/search_order_enum.dart';
 import '../model/search/search_target_enum.dart';
 import '../model/section_enum.dart';
