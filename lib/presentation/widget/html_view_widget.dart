@@ -186,23 +186,24 @@ class CustomFactory extends WidgetFactory with SvgFactory, WebViewFactory {
 
     switch (element.localName) {
       case 'a':
-        final op = BuildOp(
-          onRenderBlock: (meta, widgets) {
+        final op = BuildOp.v2(
+          onParsed: (tree) {
             final href = attributes['href'];
             if (href == null) {
-              return widgets;
+              return tree;
             }
 
             /// anchor links обрабатываются самой библиотекой
             if (href.startsWith('#')) {
-              return widgets;
+              return tree;
             }
 
-            final isNeed = meta.element.text != href;
+            final isNeed = tree.element.text != href;
 
             go() => getIt<AppRouter>().navigateOrLaunchUrl(Uri.parse(href));
 
-            return GestureDetector(
+            final widget = GestureDetector(
+              child: tree.build(),
               onTap: () async {
                 if (!isNeed) {
                   return go();
@@ -212,7 +213,7 @@ class CustomFactory extends WidgetFactory with SvgFactory, WebViewFactory {
                   context: context,
                   compact: true,
                   title: Text(
-                    meta.element.text,
+                    tree.element.text,
                     style: Theme.of(context).textTheme.titleSmall,
                   ),
                   content: Text(href),
@@ -242,8 +243,9 @@ class CustomFactory extends WidgetFactory with SvgFactory, WebViewFactory {
                   ],
                 );
               },
-              child: widgets,
             );
+
+            return tree.parent.sub()..prepend(WidgetBit.inline(tree, widget));
           },
         );
 
@@ -298,21 +300,42 @@ class CustomFactory extends WidgetFactory with SvgFactory, WebViewFactory {
   }
 
   Widget buildBlockCodeWidget(String text) {
-    return ColoredBox(
-      color: Theme.of(context).colorScheme.surface,
-      child: ConstrainedBox(
-        constraints: BoxConstraints(
-          minWidth: MediaQuery.of(context).size.width,
-        ),
-        child: SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          padding: const EdgeInsets.all(12),
-          child: Text(
-            text,
-            style: textStyle,
+    return Stack(
+      children: [
+        ColoredBox(
+          color: Theme.of(context).colorScheme.surface,
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              minWidth: MediaQuery.of(context).size.width,
+            ),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              padding: const EdgeInsets.all(12),
+              child: Text(
+                text,
+                style: textStyle,
+              ),
+            ),
           ),
         ),
-      ),
+
+        /// TODO: копирование в буфер обмена
+        // Positioned(
+        //   top: 0,
+        //   right: 0,
+        //   child: IconButton(
+        //     onPressed: () {
+        //       Clipboard.setData(ClipboardData(text: text));
+
+        //       getIt<Utils>().showSnack(
+        //         context: context,
+        //         content: const Text('Скопировано в буфер обмена'),
+        //       );
+        //     },
+        //     icon: Icon(Icons.copy),
+        //   ),
+        // ),
+      ],
     );
   }
 }
