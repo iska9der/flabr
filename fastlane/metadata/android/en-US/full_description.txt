@@ -1,0 +1,6 @@
+  flabr is a reader for habr.com with next features:
+
+  * authorization and related things, like: my feed, bookmarks, subscription, etc.
+  * feed customization
+  * publication view customization
+  * dark/light themes
