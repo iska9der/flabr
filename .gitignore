@@ -57,3 +57,6 @@ app.*.map.json
 
 # FVM Version Cache
 .fvm/
+
+# Flutter build
+release
