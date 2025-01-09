@@ -61,7 +61,7 @@ jobs:
       env:
         ENV_B64: ${{ secrets.ENV_B64 }}
 
-    - name: Configure Keystore
+    - name: Configure keystore
       run: |
         echo "$KEYSTORE" | base64 --decode > app/keystore.jks
         echo "storeFile=keystore.jks" >> key.properties
@@ -75,7 +75,7 @@ jobs:
         KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
       working-directory: android
 
-    - name: Get & Generate
+    - name: Dependencies
       run: |
         flutter pub get
         flutter pub run build_runner build
