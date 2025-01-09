@@ -57,3 +57,10 @@ app.*.map.json
 
 # FVM Version Cache
 .fvm/
+
+# Flutter build
+release
+
+# Env files
+.env*.local
+.env

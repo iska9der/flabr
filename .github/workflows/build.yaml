@@ -1,0 +1,80 @@
+name: Build
+on: 
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - dev
+
+jobs:
+  android:
+    name: Android build
+    environment: build
+    runs-on: ubuntu-latest
+    steps:
+    - name: Clone repository
+      uses: actions/checkout@v4
+
+    - name: Setup Java
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+
+    - name: Gradle cache
+      uses: actions/cache@v4
+      with:
+        path: |
+          ~/.gradle/caches
+          ~/.gradle/wrapper
+        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
+        restore-keys: |
+          ${{ runner.os }}-gradle-
+
+    - name: Setup flutter
+      uses: subosito/flutter-action@v2
+      with:
+        channel: stable
+        flutter-version-file: pubspec.yaml
+
+    - name: Configure .env
+      run: echo "$ENV_B64" | base64 --decode > .env
+      env:
+        ENV_B64: ${{ secrets.ENV_B64 }}
+
+    - name: Configure keystore
+      run: |
+        echo "$KEYSTORE" | base64 --decode > app/keystore.jks
+        echo "storeFile=keystore.jks" >> key.properties
+        echo "keyAlias=$KEY_ALIAS" >> key.properties
+        echo "storePassword=$KEYSTORE_PASSWORD" >> key.properties
+        echo "keyPassword=$KEY_PASSWORD" >> key.properties
+      env:
+        KEYSTORE: ${{ secrets.KEYSTORE_B64 }}
+        KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+        KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+        KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+      working-directory: android
+
+    - name: Dependencies
+      run: |
+        flutter pub get
+        flutter pub run build_runner build
+
+    - name: Build APKs
+      run: flutter build apk --release --dart-define-from-file .env
+
+    - name: Build APK per ABIs
+      run: flutter build apk --release --split-per-abi --dart-define-from-file .env
+
+    - name: Archive APK
+      uses: actions/upload-artifact@v4
+      with:
+        name: apks_archive
+        path: build/app/outputs/flutter-apk/*.apk
+
+    - name: Clean up
+      if: ${{ always() }}
+      run: |
+        rm -f android/app/keystore.jks
+        rm -f android/key.properties
+        rm -f .env

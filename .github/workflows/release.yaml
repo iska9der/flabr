@@ -1,0 +1,130 @@
+name: Release
+on: workflow_dispatch
+
+permissions:
+  contents: write
+
+jobs:
+  get_version:
+    name: Get app version
+    environment: release
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.echo_version.outputs.version }}
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v4
+
+      - name: Get version
+        id: get_version
+        uses: mikefarah/yq@master
+        with:
+          cmd: yq -r '.version' 'pubspec.yaml' | cut -d '+' -f 1
+
+      - name: Echo version
+        id: echo_version
+        run: echo "version=${{ steps.get_version.outputs.result }}" >> "$GITHUB_OUTPUT"
+
+  release_github_android:
+    name: Release android build on Github
+    environment: release
+    needs: [ get_version ]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Clone repository
+      uses: actions/checkout@v4
+
+    - name: Setup Java
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+
+    - name: Gradle cache
+      uses: actions/cache@v4
+      with:
+        path: |
+          ~/.gradle/caches
+          ~/.gradle/wrapper
+        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
+        restore-keys: |
+          ${{ runner.os }}-gradle-
+
+    - name: Setup flutter
+      uses: subosito/flutter-action@v2
+      with:
+        channel: stable
+        flutter-version-file: pubspec.yaml
+
+    - name: Configure .env
+      run: echo "$ENV_B64" | base64 --decode > .env
+      env:
+        ENV_B64: ${{ secrets.ENV_B64 }}
+
+    - name: Configure keystore
+      run: |
+        echo "$KEYSTORE" | base64 --decode > app/keystore.jks
+        echo "storeFile=keystore.jks" >> key.properties
+        echo "keyAlias=$KEY_ALIAS" >> key.properties
+        echo "storePassword=$KEYSTORE_PASSWORD" >> key.properties
+        echo "keyPassword=$KEY_PASSWORD" >> key.properties
+      env:
+        KEYSTORE: ${{ secrets.KEYSTORE_B64 }}
+        KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+        KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+        KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+      working-directory: android
+
+    - name: Dependencies
+      run: |
+        flutter pub get
+        flutter pub run build_runner build
+
+    - name: Build APK
+      run: flutter build apk --release --dart-define-from-file .env
+
+    - name: Build APK per ABIs
+      run: flutter build apk --release --split-per-abi --dart-define-from-file .env
+
+    - name: Move and rename APKs
+      run: |
+        mkdir release
+        mv build/app/outputs/flutter-apk/app-release.apk release/flabr_v${{ needs.get_version.outputs.version }}.apk
+        mv build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk release/flabr_v${{ needs.get_version.outputs.version }}_armeabi-v7a.apk
+        mv build/app/outputs/flutter-apk/app-arm64-v8a-release.apk release/flabr_v${{ needs.get_version.outputs.version }}_arm64-v8a.apk
+        mv build/app/outputs/flutter-apk/app-x86_64-release.apk release/flabr_v${{ needs.get_version.outputs.version }}_x86_64.apk
+
+    - name: Archive APK
+      uses: actions/upload-artifact@v4
+      with:
+        name: apks_archive
+        path: release/*.apk
+
+    - name: Create release tag
+      uses: actions/github-script@v7.0.1
+      with:
+        github-token: ${{ secrets.PAT_TOKEN }}
+        script: |
+          github.rest.git.createRef({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            ref: 'refs/tags/v${{ needs.get_version.outputs.version }}',
+            sha: context.sha
+          })
+
+    - name: Publish to GitHub releases
+      uses: softprops/action-gh-release@v2
+      with:
+        make_latest: true
+        prerelease: true
+        generate_release_notes: true
+        name: v${{ needs.get_version.outputs.version }}
+        tag_name: v${{ needs.get_version.outputs.version }}
+        files: release/*
+
+    - name: Clean up
+      if: ${{ always() }}
+      run: |
+        rm -f android/app/keystore.jks
+        rm -f android/key.properties
+        rm -f .env
