@@ -43,12 +43,14 @@ ThemeData darkTheme() {
     pageTransitionsTheme: appPageTransitionsTheme,
     scrollbarTheme: appScrollBarThemeData,
     textButtonTheme: appTextButtonThemeData,
+    iconButtonTheme: appIconButtonThemeData,
     sliderTheme: appSliderThemeData,
     chipTheme: appChipThemeData,
     checkboxTheme: appCheckboxThemeData,
     switchTheme: appSwitchThemeData,
     dialogTheme: dialogTheme,
     navigationBarTheme: navigationBarThemeData,
+    bottomSheetTheme: bottomSheetThemeData,
   );
 
   return themeData;

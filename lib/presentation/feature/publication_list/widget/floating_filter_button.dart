@@ -16,11 +16,8 @@ class FloatingFilterButton<ListCubit extends PublicationListCubit<ListState>,
       onPressed: () {
         showModalBottomSheet(
           context: context,
-          showDragHandle: true,
           isScrollControlled: true,
-          constraints: const BoxConstraints(
-            minWidth: 600,
-          ),
+          constraints: const BoxConstraints(minWidth: 600),
           builder: (_) => Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6),
             child: BlocProvider.value(

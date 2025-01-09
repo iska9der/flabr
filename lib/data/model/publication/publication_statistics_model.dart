@@ -1,38 +1,30 @@
-import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-class PublicationStatistics extends Equatable {
-  const PublicationStatistics({
-    this.commentsCount = 0,
-    this.favoritesCount = 0,
-    this.readingCount = 0,
-    this.score = 0,
-    this.votesCount = 0,
-  });
+part 'publication_statistics_model.freezed.dart';
+part 'publication_statistics_model.g.dart';
 
-  final int commentsCount;
-  final int favoritesCount;
-  final int readingCount;
-  final int score;
-  final int votesCount;
+@freezed
+class PublicationStatistics with _$PublicationStatistics {
+  const PublicationStatistics._();
 
-  factory PublicationStatistics.fromMap(Map<String, dynamic> map) {
-    return PublicationStatistics(
-      commentsCount: map['commentsCount'],
-      favoritesCount: map['favoritesCount'],
-      readingCount: map['readingCount'],
-      score: map['score'],
-      votesCount: map['votesCount'],
-    );
-  }
+  const factory PublicationStatistics({
+    @Default(0) int commentsCount,
+    @Default(0) int favoritesCount,
+    @Default(0) int readingCount,
+    @Default(0) int score,
+
+    /// Количество голосов за публикацию
+    @Default(0) int votesCount,
+
+    /// Количество голосов за публикацию с плюсом
+    @Default(0) int votesCountPlus,
+
+    /// Количество голосов за публикацию с минусом
+    @Default(0) int votesCountMinus,
+  }) = _PublicationStatistics;
+
+  factory PublicationStatistics.fromJson(Map<String, dynamic> json) =>
+      _$PublicationStatisticsFromJson(json);
 
   static const empty = PublicationStatistics();
-
-  @override
-  List<Object> get props => [
-        commentsCount,
-        favoritesCount,
-        readingCount,
-        score,
-        votesCount,
-      ];
 }

@@ -38,6 +38,14 @@ TextButtonThemeData appTextButtonThemeData = TextButtonThemeData(
   ),
 );
 
+IconButtonThemeData appIconButtonThemeData = IconButtonThemeData(
+  style: IconButton.styleFrom(
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(kBorderRadiusDefault),
+    ),
+  ),
+);
+
 const DrawerThemeData appDrawerThemeData = DrawerThemeData(width: 200);
 
 const CheckboxThemeData appCheckboxThemeData = CheckboxThemeData();
@@ -59,3 +67,7 @@ const DialogTheme dialogTheme = DialogTheme(
 
 const NavigationBarThemeData navigationBarThemeData =
     NavigationBarThemeData(height: fNavBarHeight);
+
+const BottomSheetThemeData bottomSheetThemeData = BottomSheetThemeData(
+  showDragHandle: true,
+);

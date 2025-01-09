@@ -25,6 +25,7 @@ import '../../../../utils/utils.dart';
 import '../../../../widget/enhancement/card.dart';
 import '../../../../widget/user_text_button.dart';
 import '../../../settings/cubit/settings_cubit.dart';
+import '../../bloc/publication_vote_bloc.dart';
 import '../../cubit/publication_bookmark_cubit.dart';
 import '../stats/part.dart';
 

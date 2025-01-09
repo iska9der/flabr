@@ -24,10 +24,10 @@ class PublicationPost extends Publication {
           ? PublicationAuthor.fromMap(map['author'])
           : PublicationAuthor.empty,
       statistics: map['statistics'] != null
-          ? PublicationStatistics.fromMap(map['statistics'])
+          ? PublicationStatistics.fromJson(map['statistics'])
           : PublicationStatistics.empty,
       relatedData: map['relatedData'] != null
-          ? PublicationRelatedData.fromMap(map['relatedData'])
+          ? PublicationRelatedData.fromJson(map['relatedData'])
           : PublicationRelatedData.empty,
       hubs: map['hubs'] != null
           ? List<PublicationHub>.from(
