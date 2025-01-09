@@ -60,3 +60,7 @@ app.*.map.json
 
 # Flutter build
 release
+
+# Env files
+.env*.local
+.env
