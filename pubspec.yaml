@@ -65,6 +65,17 @@ flutter:
 
   assets:
     - assets/
+    - assets/fonts/
+  
+  fonts:
+    - family:  Geologica
+      fonts:
+        - asset: assets/fonts/Geologica/Geologica-VF.ttf
+          weight: 700
+    - family:  Onest
+      fonts:
+        - asset: assets/fonts/Onest/Onest-VF.ttf
+          weight: 700
 
 flutter_launcher_icons:
   image_path: assets/logo.png

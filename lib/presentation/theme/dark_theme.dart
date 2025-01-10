@@ -33,9 +33,26 @@ const _darkColorScheme = ColorScheme(
 );
 
 ThemeData darkTheme() {
-  var themeData = ThemeData.dark();
+  var themeData = ThemeData(brightness: Brightness.dark);
+
+  var textTheme = Typography.englishLike2021.apply(fontFamily: 'Onest');
 
   themeData = themeData.copyWith(
+    textTheme: TextTheme(
+      bodyMedium: textTheme.bodyMedium?.copyWith(
+        fontVariations: [FontVariation('wght', 400)],
+      ),
+      titleSmall: textTheme.titleSmall?.copyWith(
+        fontFamily: 'Geologica',
+      ),
+      titleMedium: textTheme.titleMedium?.copyWith(
+        fontFamily: 'Geologica',
+      ),
+      titleLarge: textTheme.titleLarge?.copyWith(
+        fontFamily: 'Geologica',
+        fontVariations: [FontVariation('wght', 600)],
+      ),
+    ),
     colorScheme: _darkColorScheme,
     cardTheme: appCardTheme,
     appBarTheme: appAppBarTheme,
