@@ -65,9 +65,7 @@ class _PublicationDetailViewState extends State<PublicationDetailView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBody: true,
       body: SafeArea(
-        bottom: false,
         child: BlocBuilder<PublicationDetailCubit, PublicationDetailState>(
           builder: (context, state) {
             if (state.status == PublicationStatus.initial) {
