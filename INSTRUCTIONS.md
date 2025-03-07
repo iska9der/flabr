@@ -18,7 +18,7 @@ flutter pub run build_runner build --delete-conflicting-outputs
 
 apk
 ```
-flutter build apk --release --split-per-abi 
+flutter build apk --release --dart-define-from-file .env --split-per-abi
 ```
 
 ## Dev
