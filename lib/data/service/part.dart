@@ -16,6 +16,7 @@ import '../model/list_response/user_comment_list_response.dart';
 import '../model/list_response/user_list_response.dart';
 import '../model/publication/publication_flow_enum.dart';
 import '../model/publication/publication_source_enum.dart';
+import '../model/publication/publication_vote_response.dart';
 import '../model/query_params/comment_list_params.dart';
 import '../model/query_params/company_list_params.dart';
 import '../model/query_params/feed_list_params.dart';

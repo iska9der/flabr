@@ -4,6 +4,7 @@ const double fToolBarHeight = 60.0;
 const double fDashboardTabHeight = 40.0;
 const double fScrolledUnderElevation = 20.0;
 const double fToolBarHeightOnScroll = fToolBarHeight - fScrolledUnderElevation;
+const double fPublicationFooterHeight = 36.0;
 
 /// Images
 const double kAvatarHeight = 30.0;

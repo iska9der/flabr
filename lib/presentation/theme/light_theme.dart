@@ -48,12 +48,14 @@ ThemeData lightTheme() {
     drawerTheme: appDrawerThemeData,
     pageTransitionsTheme: appPageTransitionsTheme,
     textButtonTheme: appTextButtonThemeData,
+    iconButtonTheme: appIconButtonThemeData,
     checkboxTheme: appCheckboxThemeData,
     switchTheme: appSwitchThemeData,
     sliderTheme: appSliderThemeData,
     chipTheme: appChipThemeData,
     dialogTheme: dialogTheme,
     navigationBarTheme: navigationBarThemeData,
+    bottomSheetTheme: bottomSheetThemeData,
   );
 
   return themeData;

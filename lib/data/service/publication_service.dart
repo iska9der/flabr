@@ -75,6 +75,10 @@ abstract interface class PublicationService {
     required String langUI,
     required String langArticles,
   });
+
+  Future<PublicationVoteResponse> voteUp(String articleId);
+
+  Future<PublicationVoteResponse> voteDown(String articleId);
 }
 
 @LazySingleton(as: PublicationService)
@@ -425,6 +429,34 @@ class PublicationServiceImpl implements PublicationService {
       return MostReadingResponse.fromMap(response.data);
     } on DisplayableException {
       rethrow;
+    } catch (e, trace) {
+      Error.throwWithStackTrace(FetchException(), trace);
+    }
+  }
+
+  @override
+  Future<PublicationVoteResponse> voteUp(String publicationId) async {
+    try {
+      final response = await _mobileClient.post(
+        '/articles/$publicationId/votes/up',
+        body: {},
+      );
+
+      return PublicationVoteResponse.fromJson(response.data);
+    } catch (e, trace) {
+      Error.throwWithStackTrace(FetchException(), trace);
+    }
+  }
+
+  @override
+  Future<PublicationVoteResponse> voteDown(String publicationId) async {
+    try {
+      final response = await _mobileClient.post(
+        '/articles/$publicationId/votes/down',
+        body: {},
+      );
+
+      return PublicationVoteResponse.fromJson(response.data);
     } catch (e, trace) {
       Error.throwWithStackTrace(FetchException(), trace);
     }
