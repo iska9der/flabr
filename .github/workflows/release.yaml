@@ -80,11 +80,11 @@ jobs:
         flutter pub get
         flutter pub run build_runner build
 
-    - name: Build APK
-      run: flutter build apk --release --dart-define-from-file .env
-
     - name: Build APK per ABIs
       run: flutter build apk --release --split-per-abi --dart-define-from-file .env
+
+    - name: Build APK
+      run: flutter build apk --release --dart-define-from-file .env
 
     - name: Move and rename APKs
       run: |
