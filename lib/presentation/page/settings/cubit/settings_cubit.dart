@@ -5,8 +5,8 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../core/component/storage/part.dart';
-import '../../../../core/constants/part.dart';
+import '../../../../core/component/storage/storage.dart';
+import '../../../../core/constants/constants.dart';
 import '../../../../data/model/language/part.dart';
 import '../../../../data/repository/part.dart';
 import '../model/config_model.dart';

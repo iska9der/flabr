@@ -2,8 +2,8 @@ import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
 
-import '../../../../../core/component/storage/part.dart';
-import '../../../../../core/constants/part.dart';
+import '../../../../../core/component/storage/storage.dart';
+import '../../../../../core/constants/constants.dart';
 import '../../../../../data/exception/part.dart';
 import '../../../../../data/model/filter/part.dart';
 import '../../../../../data/model/list_response/list_response_model.dart';

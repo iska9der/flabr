@@ -8,7 +8,7 @@ import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../../../core/component/di/injector.dart';
 import '../../../../core/component/logger/console.dart';
-import '../../../../core/constants/part.dart';
+import '../../../../core/constants/constants.dart';
 import '../../../extension/part.dart';
 import '../../../utils/utils.dart';
 import '../../../widget/enhancement/card.dart';

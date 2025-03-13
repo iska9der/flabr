@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:injectable/injectable.dart';
 
-import '../../core/component/storage/part.dart';
-import '../../core/constants/part.dart';
+import '../../core/component/storage/storage.dart';
+import '../../core/constants/constants.dart';
 import '../exception/part.dart';
 import '../model/company/card/company_card_model.dart';
 import '../model/filter/part.dart';

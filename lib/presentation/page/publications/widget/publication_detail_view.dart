@@ -4,7 +4,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:share_plus/share_plus.dart';
 
-import '../../../../core/constants/part.dart';
+import '../../../../core/constants/constants.dart';
 import '../../../../data/model/publication/publication.dart';
 import '../../../../data/model/publication/publication_type_enum.dart';
 import '../../../theme/part.dart';

@@ -4,9 +4,9 @@ import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../data/repository/part.dart';
-import '../../constants/part.dart';
-import '../http/part.dart';
-import '../storage/part.dart';
+import '../../constants/constants.dart';
+import '../http/http.dart';
+import '../storage/storage.dart';
 
 @module
 abstract class RegisterModule {

@@ -72,14 +72,16 @@ class HtmlView extends StatelessWidget {
               };
             }
 
-            final isHeader = switch (element.localName) {
-              'h1' || 'h2' || 'h3' || 'h4' || 'h5' || 'h6' => true,
-              _ => false,
+            final headerWeight = switch (element.localName) {
+              'h1' || 'h2' => '600',
+              'h3' || 'h4' => '500',
+              'h5' || 'h6' => '400',
+              _ => '',
             };
-            if (isHeader) {
+            if (headerWeight.isNotEmpty) {
               return {
                 'font-family': 'Geologica',
-                'font-weight': '700',
+                'font-weight': headerWeight,
               };
             }
 

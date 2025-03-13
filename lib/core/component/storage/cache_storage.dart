@@ -1,4 +1,4 @@
-part of 'part.dart';
+part of 'storage.dart';
 
 abstract interface class CacheStorage {
   Future<void> write(String key, String value);

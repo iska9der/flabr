@@ -57,7 +57,7 @@ const SliderThemeData appSliderThemeData = SliderThemeData(
   overlayShape: RoundSliderOverlayShape(overlayRadius: 20.0),
 );
 
-const ChipThemeData appChipThemeData = ChipThemeData(side: BorderSide.none);
+const ChipThemeData appChipThemeData = ChipThemeData();
 
 const DialogTheme dialogTheme = DialogTheme(
   shape: RoundedRectangleBorder(

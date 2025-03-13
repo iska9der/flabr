@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../core/component/http/part.dart';
+import '../../core/component/http/http.dart';
 import '../exception/part.dart';
 import '../model/filter/part.dart';
 import '../model/list_response/comment_list_response.dart';
