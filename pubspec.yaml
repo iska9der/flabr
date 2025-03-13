@@ -3,7 +3,7 @@ description: mobile client for habr.com
 repository: https://github.com/iska9der/flabr
 
 publish_to: "none"
-version: 1.2.3+17
+version: 1.2.3+10700
 
 environment:
   flutter: 3.27.1
