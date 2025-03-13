@@ -1,4 +1,4 @@
-part of 'part.dart';
+part of 'http.dart';
 
 abstract interface class HttpClient {
   Future<Response> get(

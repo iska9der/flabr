@@ -4,7 +4,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:share_plus/share_plus.dart';
 
-import '../../../../core/constants/part.dart';
+import '../../../../core/constants/constants.dart';
 import '../../../../data/model/publication/publication.dart';
 import '../../../../data/model/publication/publication_type_enum.dart';
 import '../../../theme/part.dart';
@@ -65,9 +65,7 @@ class _PublicationDetailViewState extends State<PublicationDetailView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBody: true,
       body: SafeArea(
-        bottom: false,
         child: BlocBuilder<PublicationDetailCubit, PublicationDetailState>(
           builder: (context, state) {
             if (state.status == PublicationStatus.initial) {

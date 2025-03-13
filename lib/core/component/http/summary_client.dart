@@ -1,4 +1,4 @@
-part of 'part.dart';
+part of 'http.dart';
 
 class SummaryClient extends DioClient {
   SummaryClient(

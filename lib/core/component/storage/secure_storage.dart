@@ -1,4 +1,4 @@
-part of 'part.dart';
+part of 'storage.dart';
 
 class SecureStorage implements CacheStorage {
   SecureStorage(this._storage);
