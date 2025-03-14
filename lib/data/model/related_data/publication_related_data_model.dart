@@ -19,8 +19,9 @@ class PublicationRelatedData extends RelatedDataBase
     @Default(false) bool canViewVotes,
     @Default(false) bool trackerSubscribed,
     @Default(false) bool emailSubscribed,
-    @Default(PublicationVoteModel.empty) PublicationVoteModel votePlus,
-    @Default(PublicationVoteModel.empty) PublicationVoteModel voteMinus,
+    @Default(PublicationVote.empty) PublicationVote vote,
+    @Default(PublicationVoteAction.empty) PublicationVoteAction votePlus,
+    @Default(PublicationVoteAction.empty) PublicationVoteAction voteMinus,
   }) = _PublicationRelatedData;
 
   factory PublicationRelatedData.fromJson(Map<String, dynamic> map) =>

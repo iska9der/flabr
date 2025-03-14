@@ -122,10 +122,7 @@ class CommonCardWidget extends StatelessWidget {
               ),
             ],
           ),
-          ArticleFooterWidget(
-            publication: publication,
-            isCard: true,
-          ),
+          ArticleFooterWidget(publication: publication),
         ],
       ),
     );

@@ -4,12 +4,12 @@ class ArticleFooterWidget extends StatelessWidget {
   const ArticleFooterWidget({
     super.key,
     required this.publication,
-    this.isCard = false,
+    this.isVoteBlocked = true,
     this.mainAxisAlignment = MainAxisAlignment.spaceAround,
   });
 
   final Publication publication;
-  final bool isCard;
+  final bool isVoteBlocked;
 
   final MainAxisAlignment mainAxisAlignment;
 
@@ -18,16 +18,7 @@ class ArticleFooterWidget extends StatelessWidget {
     return Row(
       mainAxisAlignment: mainAxisAlignment,
       children: [
-        isCard || publication.relatedData.votePlus.isVotingOver
-            ? PublicationStatIconButton(
-                icon: Icons.insert_chart_rounded,
-                value: publication.statistics.score.compact(),
-                isHighlighted: true,
-                color: publication.statistics.score >= 0
-                    ? StatType.score.color
-                    : StatType.score.negativeColor,
-              )
-            : _VoteButtonsRow(publication: publication),
+        _VoteButtonsRow(isBlocked: isVoteBlocked, publication: publication),
         PublicationStatIconButton(
           icon: Icons.chat_bubble_rounded,
           value: publication.statistics.commentsCount.compact(),
@@ -96,12 +87,33 @@ class _BookmarkIconButton extends StatelessWidget {
 }
 
 class _VoteButtonsRow extends StatelessWidget {
-  const _VoteButtonsRow({required this.publication});
+  const _VoteButtonsRow({
+    required this.publication,
+    this.isBlocked = true,
+  });
 
   final Publication publication;
+  final bool isBlocked;
 
   @override
   Widget build(BuildContext context) {
+    if (isBlocked || publication.relatedData.votePlus.isVotingOver) {
+      final icon = switch (publication.relatedData.vote.value) {
+        != null && > 0 => Icons.arrow_upward,
+        != null && < 0 => Icons.arrow_downward,
+        _ => Icons.insert_chart_rounded,
+      };
+
+      return PublicationStatIconButton(
+        icon: icon,
+        value: publication.statistics.score.compact(),
+        isHighlighted: true,
+        color: publication.statistics.score >= 0
+            ? StatType.score.color
+            : StatType.score.negativeColor,
+      );
+    }
+
     final density = VisualDensity(horizontal: -4, vertical: -4);
     final color = publication.statistics.score >= 0
         ? StatType.score.color

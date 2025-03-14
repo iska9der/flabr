@@ -3,11 +3,11 @@ part of 'publication_vote_bloc.dart';
 sealed class PublicationVoteEvent extends Equatable {
   const PublicationVoteEvent({
     required this.id,
-    this.vote = PublicationVoteModel.empty,
+    this.vote = PublicationVoteAction.empty,
   });
 
   final String id;
-  final PublicationVoteModel vote;
+  final PublicationVoteAction vote;
 
   @override
   List<Object> get props => [id, vote];

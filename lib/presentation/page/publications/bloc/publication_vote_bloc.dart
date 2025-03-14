@@ -72,7 +72,8 @@ class PublicationVoteBloc
 
     return emit(state.copyWith(
       status: LoadingStatus.failure,
-      error: 'Разработчику пока неизвестно, как работает понижение голосов :(',
+      error: 'Разработчик пока никому не ставил минусов, '
+          'поэтому пока неизвестно, как работает понижение голосов',
     ));
 
     // final validationError = _commonValidation(event);

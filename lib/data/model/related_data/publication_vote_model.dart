@@ -4,10 +4,25 @@ part 'publication_vote_model.freezed.dart';
 part 'publication_vote_model.g.dart';
 
 @freezed
-class PublicationVoteModel with _$PublicationVoteModel {
-  const PublicationVoteModel._();
+class PublicationVote with _$PublicationVote {
+  const PublicationVote._();
 
-  const factory PublicationVoteModel({
+  const factory PublicationVote({
+    int? value,
+    String? voteTimeExpired,
+  }) = _PublicationVote;
+
+  factory PublicationVote.fromJson(Map<String, dynamic> json) =>
+      _$PublicationVoteFromJson(json);
+
+  static const empty = PublicationVote();
+}
+
+@freezed
+class PublicationVoteAction with _$PublicationVoteAction {
+  const PublicationVoteAction._();
+
+  const factory PublicationVoteAction({
     @Default(false) bool canVote,
 
     /// Исчерпан ли лимит выделенных на день голосов
@@ -18,10 +33,10 @@ class PublicationVoteModel with _$PublicationVoteModel {
 
     /// Окончено ли голосование для этого публикации
     @Default(false) bool isVotingOver,
-  }) = _PublicationVoteModel;
+  }) = _PublicationVoteAction;
 
-  factory PublicationVoteModel.fromJson(Map<String, dynamic> json) =>
-      _$PublicationVoteModelFromJson(json);
+  factory PublicationVoteAction.fromJson(Map<String, dynamic> json) =>
+      _$PublicationVoteActionFromJson(json);
 
-  static const empty = PublicationVoteModel();
+  static const empty = PublicationVoteAction();
 }
