@@ -1,8 +1,10 @@
 part of 'part.dart';
 
+const Color _lightPrimary = Color(0xFF00658F);
+
 const _lightColorScheme = ColorScheme(
   brightness: Brightness.light,
-  primary: Color(0xFF00658F),
+  primary: _lightPrimary,
   onPrimary: Color(0xFFFFFFFF),
   primaryContainer: Color(0xFFC7E7FF),
   onPrimaryContainer: Color(0xFF001E2E),
@@ -18,17 +20,20 @@ const _lightColorScheme = ColorScheme(
   errorContainer: Color(0xFFFFDAD6),
   onError: Color(0xFFFFFFFF),
   onErrorContainer: Color(0xFF410002),
-  surface: Color.fromARGB(255, 255, 255, 255),
-  onSurface: Color(0xFF001F25),
+  surface: Color.fromARGB(255, 251, 251, 251),
+  surfaceContainerHigh: Color.fromARGB(255, 249, 249, 249),
+  surfaceContainerHighest: Color.fromARGB(255, 247, 247, 247),
+  surfaceContainerLow: Color.fromARGB(255, 253, 253, 253),
+  surfaceContainerLowest: Color.fromARGB(255, 255, 255, 255),
+  onSurface: Color.fromARGB(255, 20, 20, 20),
   surfaceTint: Color(0xFFF8FDFF),
-  surfaceContainerHighest: Color(0xFFDDE3EA),
   onSurfaceVariant: Color.fromARGB(255, 32, 34, 36),
   outline: Color(0xFF71787E),
+  outlineVariant: Color(0xFFC1C7CE),
   onInverseSurface: Color(0xFFD6F6FF),
   inverseSurface: Color(0xFF00363F),
   inversePrimary: Color(0xFF86CFFF),
   shadow: Color(0xFF000000),
-  outlineVariant: Color(0xFFC1C7CE),
   scrim: Color(0xFF000000),
 );
 
