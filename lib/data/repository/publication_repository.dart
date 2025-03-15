@@ -238,12 +238,4 @@ class PublicationRepository {
 
     return articles;
   }
-
-  Future<PublicationVoteResponse> voteUp(String publicationId) async {
-    return await service.voteUp(publicationId);
-  }
-
-  Future<PublicationVoteResponse> voteDown(String publicationId) async {
-    return await service.voteDown(publicationId);
-  }
 }

@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 
 import '../../../../../core/component/di/injector.dart';
 import '../../../../../core/component/router/app_router.dart';
+import '../../../../../data/model/loading_status_enum.dart';
 import '../../../../../data/model/publication/publication.dart';
 import '../../../../../data/model/publication/publication_author_model.dart';
 import '../../../../../data/model/publication/publication_format_enum.dart';
@@ -35,6 +36,7 @@ part 'components/format_widget.dart';
 part 'components/header_widget.dart';
 part 'components/hubs_widget.dart';
 part 'components/publication_type_widget.dart';
+part 'components/score_widget.dart';
 part 'post_card_widget.dart';
 part 'publication_card_widget.dart';
 part 'skeleton_card_widget.dart';
