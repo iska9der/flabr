@@ -109,25 +109,6 @@ class _VoteButtonsRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (isBlocked || publication.relatedData.votePlus.isVotingOver) {
-      final icon = switch (publication.relatedData.vote.value) {
-        != null && > 0 => Icons.arrow_upward,
-        != null && < 0 => Icons.arrow_downward,
-        _ => Icons.insert_chart_rounded,
-      };
-
-      return buildTooltip(
-        child: PublicationStatIconButton(
-          icon: icon,
-          value: publication.statistics.score.compact(),
-          isHighlighted: true,
-          color: publication.statistics.score >= 0
-              ? StatType.score.color
-              : StatType.score.negativeColor,
-        ),
-      );
-    }
-
     final density = VisualDensity(horizontal: -4, vertical: -4);
     final color = publication.statistics.score >= 0
         ? StatType.score.color
@@ -137,49 +118,75 @@ class _VoteButtonsRow extends StatelessWidget {
       minimumSize: const Size(36, double.infinity),
     );
 
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        IconButton(
-          style: iconStyle,
-          tooltip: 'Повысить рейтинг',
-          icon: Icon(Icons.arrow_upward, size: 18),
-          onPressed: () => context.read<PublicationVoteBloc>().add(
-                PublicationVoteUpEvent(
-                  id: publication.id,
-                  vote: publication.relatedData.votePlus,
-                ),
-              ),
-        ),
-        buildTooltip(
-          child: SizedBox(
-            width: 40,
-            child: Text(
-              publication.statistics.score.compact(),
-              textAlign: TextAlign.center,
-              style: Theme.of(context)
-                  .textTheme
-                  .bodySmall
-                  ?.copyWith(color: color, fontWeight: FontWeight.w600),
+    return BlocSelector<AuthCubit, AuthState, bool>(
+      selector: (state) => !state.isAuthorized,
+      builder: (context, isUnathorized) {
+        if (isBlocked ||
+            isUnathorized ||
+            publication.relatedData.votePlus.isVotingOver) {
+          final icon = switch (publication.relatedData.vote.value) {
+            != null && > 0 => Icons.arrow_upward,
+            != null && < 0 => Icons.arrow_downward,
+            _ => Icons.insert_chart_rounded,
+          };
+
+          return buildTooltip(
+            child: PublicationStatIconButton(
+              icon: icon,
+              value: publication.statistics.score.compact(),
+              isHighlighted: true,
+              color: publication.statistics.score >= 0
+                  ? StatType.score.color
+                  : StatType.score.negativeColor,
             ),
-          ),
-        ),
-        IconButton(
-          style: iconStyle,
-          tooltip: 'Понизить рейтинг',
-          icon: Icon(
-            Icons.arrow_downward,
-            size: 18,
-            color: Theme.of(context).disabledColor,
-          ),
-          onPressed: () => context.read<PublicationVoteBloc>().add(
-                PublicationVoteDownEvent(
-                  id: publication.id,
-                  vote: publication.relatedData.voteMinus,
+          );
+        }
+
+        return Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            IconButton(
+              style: iconStyle,
+              tooltip: 'Повысить рейтинг',
+              icon: Icon(Icons.arrow_upward, size: 18),
+              onPressed: () => context.read<PublicationVoteBloc>().add(
+                    PublicationVoteUpEvent(
+                      id: publication.id,
+                      vote: publication.relatedData.votePlus,
+                    ),
+                  ),
+            ),
+            buildTooltip(
+              child: SizedBox(
+                width: 40,
+                child: Text(
+                  publication.statistics.score.compact(),
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodySmall
+                      ?.copyWith(color: color, fontWeight: FontWeight.w600),
                 ),
               ),
-        ),
-      ],
+            ),
+            IconButton(
+              style: iconStyle,
+              tooltip: 'Понизить рейтинг',
+              icon: Icon(
+                Icons.arrow_downward,
+                size: 18,
+                color: Theme.of(context).disabledColor,
+              ),
+              onPressed: () => context.read<PublicationVoteBloc>().add(
+                    PublicationVoteDownEvent(
+                      id: publication.id,
+                      vote: publication.relatedData.voteMinus,
+                    ),
+                  ),
+            ),
+          ],
+        );
+      },
     );
   }
 }
