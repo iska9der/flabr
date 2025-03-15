@@ -4,9 +4,10 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:share_plus/share_plus.dart';
 
-import '../../../../core/constants/part.dart';
+import '../../../../core/constants/constants.dart';
 import '../../../../data/model/publication/publication.dart';
 import '../../../../data/model/publication/publication_type_enum.dart';
+import '../../../theme/part.dart';
 import '../../../widget/enhancement/progress_indicator.dart';
 import '../../../widget/html_view_widget.dart';
 import '../../../widget/publication_settings_widget.dart';
@@ -64,9 +65,7 @@ class _PublicationDetailViewState extends State<PublicationDetailView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBody: true,
       body: SafeArea(
-        bottom: false,
         child: BlocBuilder<PublicationDetailCubit, PublicationDetailState>(
           builder: (context, state) {
             if (state.status == PublicationStatus.initial) {
@@ -256,7 +255,6 @@ class _AppBar extends StatelessWidget {
                   tooltip: 'Настроить',
                   onPressed: () => showModalBottomSheet(
                     context: context,
-                    showDragHandle: true,
                     builder: (context) {
                       return const SizedBox(
                         height: 240,
@@ -318,8 +316,8 @@ class _BottomBar extends StatelessWidget {
       offset: isVisible ? const Offset(0, 0) : const Offset(0, 10),
       child: ColoredBox(
         color: Theme.of(context).colorScheme.surface.withValues(alpha: .94),
-        child: SizedBox(
-          height: 36,
+        child: ConstrainedBox(
+          constraints: BoxConstraints(maxHeight: fPublicationFooterHeight),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
@@ -328,6 +326,7 @@ class _BottomBar extends StatelessWidget {
                 child: ArticleFooterWidget(
                   publication: publication,
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  isVoteBlocked: false,
                 ),
               ),
               Expanded(
@@ -337,7 +336,6 @@ class _BottomBar extends StatelessWidget {
                   tooltip: 'Дополнительно',
                   onPressed: () => showModalBottomSheet(
                     context: context,
-                    showDragHandle: true,
                     builder: (_) => SizedBox(
                       width: double.infinity,
                       height: 120,

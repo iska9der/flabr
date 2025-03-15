@@ -51,8 +51,7 @@ class HtmlView extends StatelessWidget {
             isImageVisible,
             isWebViewEnabled,
           ],
-          onErrorBuilder: (context, element, error) =>
-              Text('$element error: $error'),
+          onErrorBuilder: (_, element, error) => Text('$element error: $error'),
           onLoadingBuilder: (ctx, el, prgrs) => const CircleIndicator.medium(),
           factoryBuilder: () => CustomFactory(context, textStyle: textStyle),
           customStylesBuilder: (element) {
@@ -70,6 +69,25 @@ class HtmlView extends StatelessWidget {
               return {
                 'background-color': theme.colorScheme.surface.toHex(),
                 'font-weight': '500',
+              };
+            }
+
+            final headerWeight = switch (element.localName) {
+              'h1' || 'h2' => '600',
+              'h3' || 'h4' => '500',
+              'h5' || 'h6' => '400',
+              _ => '',
+            };
+            if (headerWeight.isNotEmpty) {
+              return {
+                'font-family': 'Geologica',
+                'font-weight': headerWeight,
+              };
+            }
+
+            if (element.localName == 'li') {
+              return {
+                'margin-bottom': '6px',
               };
             }
 
@@ -198,14 +216,17 @@ class CustomFactory extends WidgetFactory with SvgFactory, WebViewFactory {
               return tree;
             }
 
-            final isNeed = tree.element.text != href;
-
+            /// проверяем необходимость открытия модалки
+            /// для того чтобы показать полную ссылку на ресурс
+            ///
+            /// если текст не совпадает со ссылкой - показываем
+            final isNeedPopup = tree.element.text != href;
             go() => getIt<AppRouter>().navigateOrLaunchUrl(Uri.parse(href));
 
             final widget = GestureDetector(
               child: tree.build(),
               onTap: () async {
-                if (!isNeed) {
+                if (!isNeedPopup) {
                   return go();
                 }
 
@@ -245,7 +266,14 @@ class CustomFactory extends WidgetFactory with SvgFactory, WebViewFactory {
               },
             );
 
-            return tree.parent.sub()..prepend(WidgetBit.inline(tree, widget));
+            final parent = tree.parent;
+            return parent.sub()
+              ..prepend(
+                WidgetBit.inline(
+                  parent,
+                  WidgetPlaceholder(child: widget),
+                ),
+              );
           },
         );
 
@@ -313,7 +341,9 @@ class CustomFactory extends WidgetFactory with SvgFactory, WebViewFactory {
               padding: const EdgeInsets.all(12),
               child: Text(
                 text,
-                style: textStyle,
+                style: textStyle?.copyWith(
+                  fontVariations: [FontVariation('wght', 500)],
+                ),
               ),
             ),
           ),

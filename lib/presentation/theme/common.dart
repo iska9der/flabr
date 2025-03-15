@@ -38,6 +38,14 @@ TextButtonThemeData appTextButtonThemeData = TextButtonThemeData(
   ),
 );
 
+IconButtonThemeData appIconButtonThemeData = IconButtonThemeData(
+  style: IconButton.styleFrom(
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(kBorderRadiusDefault),
+    ),
+  ),
+);
+
 const DrawerThemeData appDrawerThemeData = DrawerThemeData(width: 200);
 
 const CheckboxThemeData appCheckboxThemeData = CheckboxThemeData();
@@ -49,7 +57,7 @@ const SliderThemeData appSliderThemeData = SliderThemeData(
   overlayShape: RoundSliderOverlayShape(overlayRadius: 20.0),
 );
 
-const ChipThemeData appChipThemeData = ChipThemeData(side: BorderSide.none);
+const ChipThemeData appChipThemeData = ChipThemeData();
 
 const DialogTheme dialogTheme = DialogTheme(
   shape: RoundedRectangleBorder(
@@ -59,3 +67,7 @@ const DialogTheme dialogTheme = DialogTheme(
 
 const NavigationBarThemeData navigationBarThemeData =
     NavigationBarThemeData(height: fNavBarHeight);
+
+const BottomSheetThemeData bottomSheetThemeData = BottomSheetThemeData(
+  showDragHandle: true,
+);

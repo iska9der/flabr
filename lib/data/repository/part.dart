@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:injectable/injectable.dart';
 
-import '../../core/component/storage/part.dart';
-import '../../core/constants/part.dart';
+import '../../core/component/storage/storage.dart';
+import '../../core/constants/constants.dart';
 import '../exception/part.dart';
 import '../model/company/card/company_card_model.dart';
 import '../model/filter/part.dart';
@@ -21,6 +21,7 @@ import '../model/publication/publication.dart';
 import '../model/publication/publication_counters_model.dart';
 import '../model/publication/publication_flow_enum.dart';
 import '../model/publication/publication_source_enum.dart';
+import '../model/publication/publication_vote_response.dart';
 import '../model/search/search_order_enum.dart';
 import '../model/search/search_target_enum.dart';
 import '../model/section_enum.dart';

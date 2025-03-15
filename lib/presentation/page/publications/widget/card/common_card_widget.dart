@@ -140,16 +140,19 @@ class _ArticleTitleWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+
     return switch (renderType) {
-      RenderType.plain => Text(
-          title,
-          style: Theme.of(context).textTheme.titleLarge,
-        ),
+      RenderType.plain => Text(title, style: textTheme.titleLarge),
       RenderType.html => HtmlWidget(
           title,
+
+          /// Не знаю почему сделал применение стилей таким образом,
+          /// а не как выше. Как-нибудь проверить
           textStyle: TextStyle(
-            color: Theme.of(context).textTheme.titleLarge?.color,
-            fontSize: Theme.of(context).textTheme.titleLarge?.fontSize,
+            fontFamily: textTheme.titleLarge?.fontFamily,
+            color: textTheme.titleLarge?.color,
+            fontSize: textTheme.titleLarge?.fontSize,
           ),
         )
     };

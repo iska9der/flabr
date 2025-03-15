@@ -1,4 +1,4 @@
-part of 'part.dart';
+part of 'constants.dart';
 
 abstract class CacheKeys {
   static const themeConfig = 'theme_config';

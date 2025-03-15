@@ -1,4 +1,4 @@
-part of 'part.dart';
+part of 'storage.dart';
 
 class SharedStorage implements CacheStorage {
   SharedStorage(this._storage);

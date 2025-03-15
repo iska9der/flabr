@@ -12,7 +12,7 @@ import 'package:photo_view/photo_view.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../../core/component/di/injector.dart';
-import '../../../core/component/http/part.dart';
+import '../../../core/component/http/http.dart';
 import '../../../data/exception/part.dart';
 import '../../utils/utils.dart';
 

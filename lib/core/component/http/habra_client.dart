@@ -1,4 +1,4 @@
-part of 'part.dart';
+part of 'http.dart';
 
 class HabraClient extends DioClient {
   HabraClient(super.dio, {required this.tokenRepository}) {

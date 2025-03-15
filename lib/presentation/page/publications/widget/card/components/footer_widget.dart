@@ -4,10 +4,12 @@ class ArticleFooterWidget extends StatelessWidget {
   const ArticleFooterWidget({
     super.key,
     required this.publication,
+    this.isVoteBlocked = true,
     this.mainAxisAlignment = MainAxisAlignment.spaceAround,
   });
 
   final Publication publication;
+  final bool isVoteBlocked;
 
   final MainAxisAlignment mainAxisAlignment;
 
@@ -16,14 +18,7 @@ class ArticleFooterWidget extends StatelessWidget {
     return Row(
       mainAxisAlignment: mainAxisAlignment,
       children: [
-        PublicationStatIconButton(
-          icon: Icons.insert_chart_rounded,
-          value: publication.statistics.score.compact(),
-          isHighlighted: true,
-          color: publication.statistics.score >= 0
-              ? StatType.score.color
-              : StatType.score.negativeColor,
-        ),
+        _VoteButtonsRow(isBlocked: isVoteBlocked, publication: publication),
         PublicationStatIconButton(
           icon: Icons.chat_bubble_rounded,
           value: publication.statistics.commentsCount.compact(),
@@ -60,7 +55,7 @@ class _BookmarkIconButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => PublicationBookmarkCubit(
+      create: (_) => PublicationBookmarkCubit(
         repository: getIt(),
         articleId: publication.id,
         isBookmarked: publication.relatedData.bookmarked,
@@ -87,6 +82,111 @@ class _BookmarkIconButton extends StatelessWidget {
           );
         },
       ),
+    );
+  }
+}
+
+class _VoteButtonsRow extends StatelessWidget {
+  const _VoteButtonsRow({
+    required this.publication,
+    this.isBlocked = true,
+  });
+
+  final Publication publication;
+  final bool isBlocked;
+
+  buildTooltip({required Widget child}) {
+    final stats = publication.statistics;
+
+    return Tooltip(
+      triggerMode: TooltipTriggerMode.tap,
+      showDuration: Duration(seconds: 5),
+      message: 'Всего голосов ${stats.score}: '
+          '↑${stats.votesCountPlus} и ↓${stats.votesCountMinus}',
+      child: child,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final density = VisualDensity(horizontal: -4, vertical: -4);
+    final color = publication.statistics.score >= 0
+        ? StatType.score.color
+        : StatType.score.negativeColor;
+    final iconStyle = IconButton.styleFrom(
+      visualDensity: density,
+      minimumSize: const Size(36, double.infinity),
+    );
+
+    return BlocSelector<AuthCubit, AuthState, bool>(
+      selector: (state) => !state.isAuthorized,
+      builder: (context, isUnathorized) {
+        if (isBlocked ||
+            isUnathorized ||
+            publication.relatedData.votePlus.isVotingOver) {
+          final icon = switch (publication.relatedData.vote.value) {
+            != null && > 0 => Icons.arrow_upward,
+            != null && < 0 => Icons.arrow_downward,
+            _ => Icons.insert_chart_rounded,
+          };
+
+          return buildTooltip(
+            child: PublicationStatIconButton(
+              icon: icon,
+              value: publication.statistics.score.compact(),
+              isHighlighted: true,
+              color: publication.statistics.score >= 0
+                  ? StatType.score.color
+                  : StatType.score.negativeColor,
+            ),
+          );
+        }
+
+        return Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            IconButton(
+              style: iconStyle,
+              tooltip: 'Повысить рейтинг',
+              icon: Icon(Icons.arrow_upward, size: 18),
+              onPressed: () => context.read<PublicationVoteBloc>().add(
+                    PublicationVoteUpEvent(
+                      id: publication.id,
+                      vote: publication.relatedData.votePlus,
+                    ),
+                  ),
+            ),
+            buildTooltip(
+              child: SizedBox(
+                width: 40,
+                child: Text(
+                  publication.statistics.score.compact(),
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodySmall
+                      ?.copyWith(color: color, fontWeight: FontWeight.w600),
+                ),
+              ),
+            ),
+            IconButton(
+              style: iconStyle,
+              tooltip: 'Понизить рейтинг',
+              icon: Icon(
+                Icons.arrow_downward,
+                size: 18,
+                color: Theme.of(context).disabledColor,
+              ),
+              onPressed: () => context.read<PublicationVoteBloc>().add(
+                    PublicationVoteDownEvent(
+                      id: publication.id,
+                      vote: publication.relatedData.voteMinus,
+                    ),
+                  ),
+            ),
+          ],
+        );
+      },
     );
   }
 }
