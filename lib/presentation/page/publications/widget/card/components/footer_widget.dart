@@ -95,6 +95,18 @@ class _VoteButtonsRow extends StatelessWidget {
   final Publication publication;
   final bool isBlocked;
 
+  buildTooltip({required Widget child}) {
+    final stats = publication.statistics;
+
+    return Tooltip(
+      triggerMode: TooltipTriggerMode.tap,
+      showDuration: Duration(seconds: 5),
+      message: 'Всего голосов ${stats.score}: '
+          '↑${stats.votesCountPlus} и ↓${stats.votesCountMinus}',
+      child: child,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     if (isBlocked || publication.relatedData.votePlus.isVotingOver) {
@@ -104,13 +116,15 @@ class _VoteButtonsRow extends StatelessWidget {
         _ => Icons.insert_chart_rounded,
       };
 
-      return PublicationStatIconButton(
-        icon: icon,
-        value: publication.statistics.score.compact(),
-        isHighlighted: true,
-        color: publication.statistics.score >= 0
-            ? StatType.score.color
-            : StatType.score.negativeColor,
+      return buildTooltip(
+        child: PublicationStatIconButton(
+          icon: icon,
+          value: publication.statistics.score.compact(),
+          isHighlighted: true,
+          color: publication.statistics.score >= 0
+              ? StatType.score.color
+              : StatType.score.negativeColor,
+        ),
       );
     }
 
@@ -128,6 +142,7 @@ class _VoteButtonsRow extends StatelessWidget {
       children: [
         IconButton(
           style: iconStyle,
+          tooltip: 'Повысить рейтинг',
           icon: Icon(Icons.arrow_upward, size: 18),
           onPressed: () => context.read<PublicationVoteBloc>().add(
                 PublicationVoteUpEvent(
@@ -136,32 +151,22 @@ class _VoteButtonsRow extends StatelessWidget {
                 ),
               ),
         ),
-        TextButton(
-          onPressed: () {
-            getIt<Utils>().showSnack(
-              context: context,
-              content: Text(
-                'Всего: ${publication.statistics.votesCount}\n'
-                'за: ${publication.statistics.votesCountPlus}\n'
-                'против: ${publication.statistics.votesCountMinus}',
-              ),
-            );
-          },
-          style: TextButton.styleFrom(
-            visualDensity: density,
-            padding: EdgeInsets.zero,
-            minimumSize: const Size(48, double.infinity),
-          ),
-          child: Text(
-            publication.statistics.score.compact(),
-            style: Theme.of(context)
-                .textTheme
-                .bodySmall
-                ?.copyWith(color: color, fontWeight: FontWeight.w600),
+        buildTooltip(
+          child: SizedBox(
+            width: 40,
+            child: Text(
+              publication.statistics.score.compact(),
+              textAlign: TextAlign.center,
+              style: Theme.of(context)
+                  .textTheme
+                  .bodySmall
+                  ?.copyWith(color: color, fontWeight: FontWeight.w600),
+            ),
           ),
         ),
         IconButton(
           style: iconStyle,
+          tooltip: 'Понизить рейтинг',
           icon: Icon(
             Icons.arrow_downward,
             size: 18,
