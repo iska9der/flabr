@@ -63,7 +63,6 @@ class PublicationVoteBloc
   }
 
   /// TODO: неизвестно как работает понижение голосов
-  /// (не хватает "кармы")
   FutureOr<void> _onVoteDown(
     PublicationVoteDownEvent event,
     Emitter<PublicationVoteState> emit,

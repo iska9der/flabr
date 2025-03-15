@@ -437,8 +437,8 @@ class PublicationServiceImpl implements PublicationService {
   @override
   Future<PublicationVoteResponse> voteUp(String publicationId) async {
     try {
-      final response = await _mobileClient.post(
-        '/articles/$publicationId/votes/up',
+      final response = await _siteClient.post(
+        '/v2/articles/$publicationId/votes/up',
         body: {},
       );
 
@@ -451,8 +451,8 @@ class PublicationServiceImpl implements PublicationService {
   @override
   Future<PublicationVoteResponse> voteDown(String publicationId) async {
     try {
-      final response = await _mobileClient.post(
-        '/articles/$publicationId/votes/down',
+      final response = await _siteClient.post(
+        '/v2/articles/$publicationId/votes/down',
         body: {},
       );
 
