@@ -213,7 +213,7 @@ class _UnknownWidget extends StatelessWidget {
                 onPressed: () {
                   final uri = Uri(
                       scheme: 'mailto',
-                      path: Environment.contactEmail,
+                      path: AppEnvironment.contactEmail,
                       queryParameters: {
                         'subject': '[Flabr]: Structure of [${model.type}]',
                         'body': model.toString(),
@@ -229,7 +229,7 @@ class _UnknownWidget extends StatelessWidget {
                     scheme: 'tg',
                     path: 'resolve',
                     queryParameters: {
-                      'domain': Environment.contactTelegram,
+                      'domain': AppEnvironment.contactTelegram,
                       'text': model.toString(),
                     },
                   );

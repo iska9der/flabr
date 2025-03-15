@@ -2,7 +2,7 @@ part of 'helper.dart';
 
 abstract class AppInitializer {
   static Future<void> init() async {
-    await configureDependencies();
+    await configureDependencies(env: AppEnvironment.env);
     await AppInitializer.loadIntl();
     AppInitializer.loadLicense();
 

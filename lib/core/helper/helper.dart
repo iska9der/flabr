@@ -7,5 +7,6 @@ import 'package:intl/intl.dart';
 import '../component/bloc/observer.dart';
 import '../component/di/injector.dart';
 import '../constants/constants.dart';
+import '../constants/environment.dart';
 
 part 'app_initializer.dart';
