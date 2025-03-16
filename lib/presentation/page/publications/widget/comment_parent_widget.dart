@@ -5,7 +5,7 @@ import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart
 import 'package:html/parser.dart';
 
 import '../../../../data/model/comment_base.dart';
-import '../../../theme/part.dart';
+import '../../../theme/theme.dart';
 import '../../../widget/html_view_widget.dart';
 
 class ParentComment extends StatelessWidget {

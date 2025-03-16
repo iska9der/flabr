@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../theme/part.dart';
+import '../../theme/theme.dart';
 
 class FlabrCard extends StatelessWidget {
   const FlabrCard({

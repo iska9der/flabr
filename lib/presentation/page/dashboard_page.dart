@@ -7,7 +7,7 @@ import 'package:responsive_framework/responsive_framework.dart';
 import '../../core/component/di/injector.dart';
 import '../../core/component/router/app_router.dart';
 import '../feature/auth/cubit/auth_cubit.dart';
-import '../theme/part.dart';
+import '../theme/theme.dart';
 import '../utils/utils.dart';
 import 'settings/cubit/settings_cubit.dart';
 

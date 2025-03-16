@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../core/component/di/injector.dart';
 import '../../../../../core/component/router/app_router.dart';
 import '../../../../feature/scaffold/part.dart';
-import '../../../../theme/part.dart';
+import '../../../../theme/theme.dart';
 import '../../../../widget/dashboard_drawer_link_widget.dart';
 import '../cubit/user_cubit.dart';
 import 'user_bookmark_list_page.dart';

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../data/model/publication/publication.dart';
 import '../../../feature/publication_download/part.dart';
-import '../../../theme/part.dart';
+import '../../../theme/theme.dart';
 
 class PublicationMoreOptions extends StatelessWidget {
   const PublicationMoreOptions({super.key, required this.publication});

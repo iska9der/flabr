@@ -9,7 +9,7 @@ import '../../../../../data/model/stat_type_enum.dart';
 import '../../../../../data/repository/part.dart';
 import '../../../../feature/auth/cubit/auth_cubit.dart';
 import '../../../../feature/profile_subscribe/part.dart';
-import '../../../../theme/part.dart';
+import '../../../../theme/theme.dart';
 import '../../../../widget/card_avatar_widget.dart';
 import '../../../../widget/enhancement/card.dart';
 import '../../../../widget/profile_stat_widget.dart';

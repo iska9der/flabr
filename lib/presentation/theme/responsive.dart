@@ -1,4 +1,4 @@
-part of 'part.dart';
+part of 'theme.dart';
 
 class ScreenType {
   static const String mobile = 'MOBILE';

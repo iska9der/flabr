@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../data/model/filter/part.dart';
 import '../../../data/model/language/part.dart';
-import '../../theme/part.dart';
+import '../../theme/theme.dart';
 import '../../widget/filter/filter_chip_list.dart';
 import '../../widget/publication_settings_widget.dart';
 import 'cubit/settings_cubit.dart';

@@ -21,7 +21,7 @@ import '../../../../feature/auth/widget/dialog.dart';
 import '../../../../feature/image_action/part.dart';
 import '../../../../feature/summary/cubit/summary_auth_cubit.dart';
 import '../../../../feature/summary/widget/summary_dialog.dart';
-import '../../../../theme/part.dart';
+import '../../../../theme/theme.dart';
 import '../../../../utils/utils.dart';
 import '../../../../widget/enhancement/card.dart';
 import '../../../../widget/user_text_button.dart';

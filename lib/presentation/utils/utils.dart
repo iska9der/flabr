@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
-import '../theme/part.dart';
+import '../theme/theme.dart';
 
 part 'image_utils_mixin.dart';
 

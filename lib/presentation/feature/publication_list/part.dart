@@ -14,7 +14,7 @@ import '../../extension/part.dart';
 import '../../page/publications/widget/card/part.dart';
 import '../../page/publications/widget/most_reading_widget.dart';
 import '../../page/settings/cubit/settings_cubit.dart';
-import '../../theme/part.dart';
+import '../../theme/theme.dart';
 import '../../utils/utils.dart';
 import '../../widget/enhancement/card.dart';
 import '../../widget/enhancement/progress_indicator.dart';

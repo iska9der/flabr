@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/component/di/injector.dart';
 import '../../../../core/component/router/app_router.dart';
 import '../../../extension/part.dart';
-import '../../../theme/part.dart';
+import '../../../theme/theme.dart';
 import '../../../widget/enhancement/app_expansion_panel.dart';
 import '../../../widget/enhancement/card.dart';
 import '../../../widget/enhancement/progress_indicator.dart';

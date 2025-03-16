@@ -12,7 +12,7 @@ import '../../core/component/router/app_router.dart';
 import '../extension/part.dart';
 import '../feature/image_action/part.dart';
 import '../page/settings/cubit/settings_cubit.dart';
-import '../theme/part.dart';
+import '../theme/theme.dart';
 import '../utils/utils.dart';
 import 'enhancement/progress_indicator.dart';
 

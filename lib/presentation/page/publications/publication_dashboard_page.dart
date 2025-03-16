@@ -9,7 +9,7 @@ import '../../../core/component/di/injector.dart';
 import '../../../core/component/router/app_router.dart';
 import '../../feature/auth/cubit/auth_cubit.dart';
 import '../../feature/auth/widget/profile_icon_button.dart';
-import '../../theme/part.dart';
+import '../../theme/theme.dart';
 import '../../widget/dashboard_drawer_link_widget.dart';
 import '../settings/cubit/settings_cubit.dart';
 import 'bloc/publication_counters_bloc.dart';

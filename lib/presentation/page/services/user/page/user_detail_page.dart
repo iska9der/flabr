@@ -5,7 +5,7 @@ import 'package:intl/intl.dart';
 
 import '../../../../../core/component/di/injector.dart';
 import '../../../../extension/part.dart';
-import '../../../../theme/part.dart';
+import '../../../../theme/theme.dart';
 import '../../../../utils/utils.dart';
 import '../../../../widget/detail/section_container_widget.dart';
 import '../../../../widget/enhancement/progress_indicator.dart';

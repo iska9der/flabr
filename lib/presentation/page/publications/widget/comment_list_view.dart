@@ -6,7 +6,7 @@ import 'package:flutter_fancy_tree_view/flutter_fancy_tree_view.dart';
 import '../../../../data/model/comment/comment_model.dart';
 import '../../../../data/model/offset_history.dart';
 import '../../../extension/part.dart';
-import '../../../theme/part.dart';
+import '../../../theme/theme.dart';
 import '../../../widget/comment/comment_widget.dart';
 import '../../../widget/enhancement/progress_indicator.dart';
 import '../../../widget/user_text_button.dart';

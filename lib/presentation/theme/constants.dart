@@ -1,4 +1,4 @@
-part of 'part.dart';
+part of 'theme.dart';
 
 const double fToolBarHeight = 60.0;
 const double fDashboardTabHeight = 40.0;
