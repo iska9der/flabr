@@ -16,7 +16,10 @@ abstract class DialogUserWidget extends StatelessWidget {
 
 class DialogUserProfileWidget extends StatelessWidget
     implements DialogUserWidget {
-  const DialogUserProfileWidget({super.key, required this.user});
+  const DialogUserProfileWidget({
+    super.key,
+    required this.user,
+  });
 
   final UserBase user;
 
@@ -29,17 +32,19 @@ class DialogUserProfileWidget extends StatelessWidget
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ListTile(
-              leading: CardAvatarWidget(imageUrl: user.avatarUrl),
-              subtitle: user.fullname.isNotEmpty ? Text(user.fullname) : null,
-              title: Text('@${user.alias}'),
-              onTap: () {
-                context.router.push(
-                  UserDashboardRoute(alias: user.alias),
-                );
+            Expanded(
+              child: ListTile(
+                leading: CardAvatarWidget(imageUrl: user.avatarUrl),
+                title: Text('@${user.alias}'),
+                subtitle: user.fullname.isNotEmpty ? Text(user.fullname) : null,
+                onTap: () {
+                  context.router.push(
+                    UserDashboardRoute(alias: user.alias),
+                  );
 
-                Navigator.of(context).pop();
-              },
+                  Navigator.of(context).pop();
+                },
+              ),
             ),
             ListTile(
               title: const Text('Публикации'),

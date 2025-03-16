@@ -166,7 +166,7 @@ class _CommentTreeWidgetState extends State<CommentTreeWidget> {
                   guide: const IndentGuide(indent: 0),
                   child: DecoratedBox(
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(kBorderRadiusDefault),
+                      borderRadius: AppStyles.borderRadius,
                       color: authorColor,
                     ),
                     child: Column(
@@ -176,7 +176,7 @@ class _CommentTreeWidgetState extends State<CommentTreeWidget> {
                           children: [
                             Padding(
                               padding: const EdgeInsets.only(
-                                left: fCardPadding,
+                                left: AppDimensions.cardPadding,
                               ),
                               child: UserTextButton(entry.node.author),
                             ),

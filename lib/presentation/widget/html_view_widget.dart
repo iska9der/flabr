@@ -125,7 +125,7 @@ class HtmlView extends StatelessWidget {
 
               Widget widget = NetworkImageWidget(
                 imageUrl: imgSrc,
-                height: kImageHeightDefault,
+                height: AppDimensions.imageHeight,
                 isTapable: true,
               );
 

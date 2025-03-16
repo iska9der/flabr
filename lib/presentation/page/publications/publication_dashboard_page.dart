@@ -30,8 +30,8 @@ class _PublicationDashboardPageState extends State<PublicationDashboardPage> {
   late final PublicationCountersBloc countersBloc;
   late final StreamSubscription authSub;
 
-  final double themeHeight = fDashboardTabHeight;
-  ValueNotifier<double> barHeight = ValueNotifier(fDashboardTabHeight);
+  final double themeHeight = AppDimensions.dashTabHeight;
+  ValueNotifier<double> barHeight = ValueNotifier(AppDimensions.dashTabHeight);
   late bool visibleOnScroll;
 
   @override

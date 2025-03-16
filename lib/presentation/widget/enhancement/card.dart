@@ -10,7 +10,7 @@ class FlabrCard extends StatelessWidget {
     this.color,
     this.elevation,
     this.margin,
-    this.padding = const EdgeInsets.all(fCardPadding),
+    this.padding = AppInsets.cardPadding,
   });
 
   final Color? color;

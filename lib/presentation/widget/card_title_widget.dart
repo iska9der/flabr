@@ -19,7 +19,7 @@ class CardTitleWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      borderRadius: BorderRadius.circular(kBorderRadiusDefault),
+      borderRadius: AppStyles.borderRadius,
       onTap: onPressed,
       child: renderType == RenderType.plain
           ? Text(

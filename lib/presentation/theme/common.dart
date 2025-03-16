@@ -2,17 +2,15 @@ part of 'theme.dart';
 
 const appCardTheme = CardTheme(
   elevation: 1,
-  margin: EdgeInsets.all(fCardMargin),
-  shape: RoundedRectangleBorder(
-    borderRadius: BorderRadius.all(Radius.circular(kBorderRadiusDefault)),
-  ),
+  margin: AppInsets.cardMargin,
+  shape: RoundedRectangleBorder(borderRadius: AppStyles.borderRadius),
 );
 
 const AppBarTheme appAppBarTheme = AppBarTheme(
   surfaceTintColor: Colors.transparent,
   elevation: 0,
-  scrolledUnderElevation: fScrolledUnderElevation,
-  toolbarHeight: fToolBarHeight,
+  scrolledUnderElevation: AppDimensions.underElevation,
+  toolbarHeight: AppDimensions.toolBarHeight,
   titleTextStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
 );
 
@@ -26,22 +24,18 @@ ScrollbarThemeData appScrollBarThemeData = ScrollbarThemeData(
   thumbVisibility: WidgetStateProperty.all(false),
   interactive: true,
   thickness: WidgetStateProperty.all(6),
-  minThumbLength: fToolBarHeightOnScroll,
+  minThumbLength: AppDimensions.toolBarHeightOnScroll,
 );
 
 TextButtonThemeData appTextButtonThemeData = TextButtonThemeData(
   style: TextButton.styleFrom(
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(kBorderRadiusDefault),
-    ),
+    shape: RoundedRectangleBorder(borderRadius: AppStyles.borderRadius),
   ),
 );
 
 IconButtonThemeData appIconButtonThemeData = IconButtonThemeData(
   style: IconButton.styleFrom(
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(kBorderRadiusDefault),
-    ),
+    shape: RoundedRectangleBorder(borderRadius: AppStyles.borderRadius),
   ),
 );
 
@@ -59,13 +53,11 @@ const SliderThemeData appSliderThemeData = SliderThemeData(
 const ChipThemeData appChipThemeData = ChipThemeData();
 
 const DialogTheme dialogTheme = DialogTheme(
-  shape: RoundedRectangleBorder(
-    borderRadius: BorderRadius.all(Radius.circular(kBorderRadiusDefault)),
-  ),
+  shape: RoundedRectangleBorder(borderRadius: AppStyles.borderRadius),
 );
 
 const NavigationBarThemeData navigationBarThemeData =
-    NavigationBarThemeData(height: fNavBarHeight);
+    NavigationBarThemeData(height: AppDimensions.navBarHeight);
 
 const BottomSheetThemeData bottomSheetThemeData = BottomSheetThemeData(
   showDragHandle: true,

@@ -61,7 +61,7 @@ class UserDetailPageView extends StatelessWidget {
               const UserProfileCardWidget(),
               Padding(
                 padding: const EdgeInsets.symmetric(
-                  horizontal: kScreenHPadding,
+                  horizontal: AppDimensions.screenPadding,
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,

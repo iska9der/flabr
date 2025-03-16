@@ -62,7 +62,7 @@ class CommonCardWidget extends StatelessWidget {
                       child: NetworkImageWidget(
                         imageUrl: publication.leadData.image.url,
                         isTapable: true,
-                        height: kImageHeightDefault,
+                        height: AppDimensions.imageHeight,
                       ),
                     );
                   },
@@ -107,7 +107,7 @@ class CommonCardWidget extends StatelessWidget {
                             child: Align(
                               child: NetworkImageWidget(
                                 imageUrl: imgSrc,
-                                height: kImageHeightDefault,
+                                height: AppDimensions.imageHeight,
                                 isTapable: true,
                               ),
                             ),

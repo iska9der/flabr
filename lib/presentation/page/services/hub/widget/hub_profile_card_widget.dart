@@ -51,10 +51,7 @@ class _HubProfileCardWidgetState extends State<HubProfileCardWidget> {
         var stats = profile.statistics;
 
         return FlabrCard(
-          padding: const EdgeInsets.symmetric(
-            horizontal: kScreenHPadding,
-            vertical: kScreenHPadding * 2,
-          ),
+          padding: AppInsets.profileCardPadding,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [

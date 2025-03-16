@@ -99,7 +99,7 @@ class UserListPageView extends StatelessWidget {
               child: ListView.separated(
                 controller: scrollCtrl,
                 separatorBuilder: (context, index) => const SizedBox(
-                  height: kCardBetweenPadding,
+                  height: AppDimensions.cardBetweenHeight,
                 ),
                 itemCount: users.length +
                     (state.status == UserListStatus.loading ? 1 : 0),

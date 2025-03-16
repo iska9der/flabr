@@ -87,7 +87,7 @@ class CompanyCardWidget extends StatelessWidget {
 
                   return InkWell(
                     onTap: () => getIt<AppRouter>().navigate(route),
-                    borderRadius: BorderRadius.circular(kBorderRadiusDefault),
+                    borderRadius: AppStyles.borderRadius,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 8),
                       child: Text(title, style: hubLinkStyle),

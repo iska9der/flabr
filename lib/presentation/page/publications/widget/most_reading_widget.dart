@@ -43,10 +43,10 @@ class _MostReadingButtonState extends State<_MostReadingButton> {
     return DecoratedBox(
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
-        borderRadius: BorderRadius.circular(kBorderRadiusDefault),
+        borderRadius: AppStyles.borderRadius,
       ),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(kBorderRadiusDefault),
+        borderRadius: AppStyles.borderRadius,
         child: AppExpansionPanelList(
           elevation: 0,
           expansionCallback: (panelIndex, isExpanded) {
@@ -104,7 +104,7 @@ class _MostReadingListState extends State<_MostReadingList> {
           );
         }
         return Padding(
-          padding: const EdgeInsets.all(kScreenHPadding),
+          padding: AppInsets.screenPadding,
           child: Scrollbar(
             controller: controller,
             thumbVisibility: true,
@@ -120,7 +120,7 @@ class _MostReadingListState extends State<_MostReadingList> {
                 return FlabrCard(
                   margin: EdgeInsets.zero,
                   padding: const EdgeInsets.symmetric(
-                    horizontal: kScreenHPadding,
+                    horizontal: AppDimensions.screenPadding,
                   ),
                   color: Colors.transparent,
                   elevation: 0,

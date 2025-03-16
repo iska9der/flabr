@@ -28,9 +28,9 @@ class PublicationStatIconButton extends StatelessWidget {
       color: Colors.transparent,
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(kBorderRadiusDefault),
+        borderRadius: AppStyles.borderRadius,
         child: Padding(
-          padding: padding ?? const EdgeInsets.all(kScreenHPadding),
+          padding: padding ?? AppInsets.screenPadding,
           child: Row(
             children: [
               isLoading

@@ -2,7 +2,7 @@ part of 'utils.dart';
 
 mixin ImageUtilsMixin {
   Widget onImageLoading(BuildContext context, String url) => const SizedBox(
-        height: kImageHeightDefault,
+        height: AppDimensions.imageHeight,
         child: Skeletonizer(
           child: ColoredBox(color: Colors.white),
         ),
@@ -10,7 +10,7 @@ mixin ImageUtilsMixin {
 
   Widget onImageError(BuildContext context, String url, error) =>
       const SizedBox(
-        height: kImageHeightDefault,
+        height: AppDimensions.imageHeight,
         child: Icon(
           Icons.image_not_supported_outlined,
           color: Colors.red,

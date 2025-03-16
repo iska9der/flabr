@@ -63,9 +63,9 @@ class HubDashboardPageView extends StatelessWidget {
               },
             ),
             bottom: PreferredSize(
-              preferredSize: const Size.fromHeight(fDashboardTabHeight),
+              preferredSize: const Size.fromHeight(AppDimensions.dashTabHeight),
               child: SizedBox(
-                height: fDashboardTabHeight,
+                height: AppDimensions.dashTabHeight,
                 child: Align(
                   alignment: Alignment.centerLeft,
                   child: TabBar(

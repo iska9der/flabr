@@ -30,7 +30,7 @@ class ParentComment extends StatelessWidget {
         tag: tag,
         child: DecoratedBox(
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(kBorderRadiusDefault),
+            borderRadius: AppStyles.borderRadius,
             color: Theme.of(context).colorScheme.onInverseSurface,
           ),
           child: Padding(
@@ -69,9 +69,7 @@ class ParentComment extends StatelessWidget {
                               tag: tag,
                               child: DecoratedBox(
                                 decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(
-                                    kBorderRadiusDefault,
-                                  ),
+                                  borderRadius: AppStyles.borderRadius,
                                   color: Theme.of(context)
                                       .colorScheme
                                       .onInverseSurface,

@@ -102,7 +102,7 @@ class CompanyListPageView extends StatelessWidget {
                 child: ListView.separated(
                   controller: scrollCtrl,
                   separatorBuilder: (context, index) => const SizedBox(
-                    height: kCardBetweenPadding,
+                    height: AppDimensions.cardBetweenHeight,
                   ),
                   itemCount: state.list.refs.length +
                       (state.status == CompanyListStatus.loading ? 1 : 0),

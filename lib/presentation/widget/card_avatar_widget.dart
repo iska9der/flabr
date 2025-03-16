@@ -7,7 +7,7 @@ class CardAvatarWidget extends StatelessWidget {
   const CardAvatarWidget({
     super.key,
     required this.imageUrl,
-    this.height = kAvatarHeight,
+    this.height = AppDimensions.avatarHeight,
   });
 
   final String imageUrl;
@@ -24,9 +24,7 @@ class CardAvatarWidget extends StatelessWidget {
     return imageUrl.isNotEmpty
         ? ClipRRect(
             clipBehavior: Clip.hardEdge,
-            borderRadius: const BorderRadius.all(
-              Radius.circular(kBorderRadiusDefault),
-            ),
+            borderRadius: AppStyles.borderRadius,
             child: NetworkImageWidget(
               imageUrl: 'https:$imageUrl',
               height: height,
@@ -47,7 +45,7 @@ class _PlaceholderAvatar extends StatelessWidget {
       child: Icon(
         Icons.account_box_rounded,
         color: Theme.of(context).colorScheme.onSurface,
-        size: kAvatarHeight,
+        size: AppDimensions.avatarHeight,
       ),
     );
   }

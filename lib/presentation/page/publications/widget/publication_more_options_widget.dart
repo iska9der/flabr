@@ -16,7 +16,9 @@ class PublicationMoreOptions extends StatelessWidget {
         style: ButtonStyle(alignment: Alignment.centerLeft),
       ),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: kScreenHPadding),
+        padding: const EdgeInsets.symmetric(
+          horizontal: AppDimensions.screenPadding,
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [

@@ -17,7 +17,7 @@ class PublicationFormatWidget extends StatelessWidget {
       child: DecoratedBox(
         decoration: BoxDecoration(
           border: Border.all(color: actualColor),
-          borderRadius: BorderRadius.circular(kBorderRadiusDefault),
+          borderRadius: AppStyles.borderRadius,
         ),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),

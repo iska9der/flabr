@@ -35,7 +35,7 @@ class SettingsView extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: ListView(
-          padding: const EdgeInsets.symmetric(horizontal: kScreenHPadding),
+          padding: AppInsets.screenPadding.copyWith(top: 0),
           children: const [
             SettingsSectionWidget(
               title: 'Аккаунт',

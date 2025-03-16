@@ -20,8 +20,8 @@ class DashboardPage extends StatefulWidget {
 }
 
 class _DashboardPageState extends State<DashboardPage> {
-  final double themeHeight = fNavBarHeight;
-  ValueNotifier<double> barHeight = ValueNotifier(fNavBarHeight);
+  final double themeHeight = AppDimensions.navBarHeight;
+  ValueNotifier<double> barHeight = ValueNotifier(AppDimensions.navBarHeight);
   late bool visibleOnScroll;
 
   @override
