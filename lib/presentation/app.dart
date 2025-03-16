@@ -76,8 +76,8 @@ class MyApp extends StatelessWidget {
                 useInheritedMediaQuery: true,
                 locale: DevicePreview.locale(context),
                 themeMode: state.theme.modeByBool ?? state.theme.mode,
-                theme: MaterialTheme.light(),
-                darkTheme: MaterialTheme.dark(),
+                theme: AppTheme.light,
+                darkTheme: AppTheme.dark,
                 scrollBehavior: state.misc.scrollVariant.behavior,
                 routerConfig: router.config(
                   deepLinkTransformer: (uri) {
