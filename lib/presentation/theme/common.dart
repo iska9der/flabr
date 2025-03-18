@@ -1,6 +1,6 @@
 part of 'theme.dart';
 
-const appCardTheme = CardTheme(
+const appCardTheme = CardThemeData(
   elevation: 1,
   margin: AppInsets.cardMargin,
   shape: RoundedRectangleBorder(borderRadius: AppStyles.borderRadius),

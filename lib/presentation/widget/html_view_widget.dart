@@ -67,8 +67,7 @@ class HtmlView extends StatelessWidget {
             if (element.localName == 'code' &&
                 element.parent?.localName != 'pre') {
               return {
-                'background-color':
-                    theme.colorScheme.surfaceContainerHighest.toHex(),
+                'background-color': theme.colors.cardHighlight.toHex(),
                 'font-weight': '500',
               };
             }
@@ -332,7 +331,7 @@ class CustomFactory extends WidgetFactory with SvgFactory, WebViewFactory {
     return Stack(
       children: [
         ColoredBox(
-          color: Theme.of(context).colorScheme.surfaceContainerHighest,
+          color: context.theme.colors.cardHighlight,
           child: ConstrainedBox(
             constraints: BoxConstraints(
               minWidth: MediaQuery.of(context).size.width,

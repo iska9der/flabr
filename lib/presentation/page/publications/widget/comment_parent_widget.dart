@@ -5,6 +5,7 @@ import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart
 import 'package:html/parser.dart';
 
 import '../../../../data/model/comment_base.dart';
+import '../../../extension/extension.dart';
 import '../../../theme/theme.dart';
 import '../../../widget/html_view_widget.dart';
 
@@ -23,7 +24,7 @@ class ParentComment extends StatelessWidget {
 
     final tag = UniqueKey();
     final textStyle = DefaultTextStyle.of(context).style;
-    final bgColor = Theme.of(context).colorScheme.surfaceContainerHighest;
+    final bgColor = context.theme.colors.cardHighlight;
 
     return Padding(
       padding: const EdgeInsets.all(10),

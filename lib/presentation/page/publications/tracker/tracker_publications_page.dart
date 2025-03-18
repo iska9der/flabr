@@ -150,10 +150,10 @@ class _TrackerPublicationWidgetState extends State<TrackerPublicationWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final theme = context.theme;
 
     return FlabrCard(
-      color: isHighlighted ? theme.colorScheme.surfaceContainerHighest : null,
+      color: isHighlighted ? theme.colors.cardHighlight : null,
       onTap: () => context.router.push(
         PublicationFlowRoute(
           type: widget.model.publicationType,

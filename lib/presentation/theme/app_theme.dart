@@ -1,8 +1,13 @@
 part of 'theme.dart';
 
 abstract class AppTheme {
-  static ThemeData get light => theme(LightScheme.scheme);
-  static ThemeData get dark => theme(DarkScheme.scheme);
+  static ThemeData get light => theme(AppSchemeLight.scheme).copyWith(
+        extensions: [AppSchemeLight.colors],
+      );
+
+  static ThemeData get dark => theme(AppSchemeDark.scheme).copyWith(
+        extensions: [AppSchemeDark.colors],
+      );
 
   static ThemeData theme(ColorScheme colorScheme) {
     var typography = Typography.material2021(colorScheme: colorScheme);
@@ -39,13 +44,16 @@ abstract class AppTheme {
       ),
     );
 
-    return ThemeData(
+    var data = ThemeData(
       useMaterial3: true,
       colorScheme: colorScheme,
       brightness: colorScheme.brightness,
       scaffoldBackgroundColor: colorScheme.surface,
       canvasColor: colorScheme.surface,
       textTheme: textTheme,
+    );
+
+    data = data.copyWith(
       cardTheme: appCardTheme,
       appBarTheme: appAppBarTheme.copyWith(
         titleTextStyle: appAppBarTheme.titleTextStyle?.apply(
@@ -65,5 +73,7 @@ abstract class AppTheme {
       navigationBarTheme: navigationBarThemeData,
       bottomSheetTheme: bottomSheetThemeData,
     );
+
+    return data;
   }
 }
