@@ -6,7 +6,7 @@ import '../../../../core/component/di/injector.dart';
 import '../../../../core/component/router/app_router.dart';
 import '../../../../data/model/loading_status_enum.dart';
 import '../../../../data/model/tracker/part.dart';
-import '../../../extension/part.dart';
+import '../../../extension/extension.dart';
 import '../../../widget/enhancement/card.dart';
 import '../../../widget/enhancement/progress_indicator.dart';
 import '../../../widget/user_text_button.dart';

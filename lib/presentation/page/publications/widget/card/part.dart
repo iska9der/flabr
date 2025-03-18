@@ -15,7 +15,7 @@ import '../../../../../data/model/publication/publication_type_enum.dart';
 import '../../../../../data/model/related_data/hub_related_data_model.dart';
 import '../../../../../data/model/render_type_enum.dart';
 import '../../../../../data/model/stat_type_enum.dart';
-import '../../../../extension/part.dart';
+import '../../../../extension/extension.dart';
 import '../../../../feature/auth/cubit/auth_cubit.dart';
 import '../../../../feature/auth/widget/dialog.dart';
 import '../../../../feature/image_action/part.dart';

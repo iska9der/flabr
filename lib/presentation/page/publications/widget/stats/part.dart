@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../../../data/model/publication/publication.dart';
 import '../../../../../data/model/publication/publication_complexity_enum.dart';
 import '../../../../../data/model/publication/publication_type_enum.dart';
-import '../../../../extension/part.dart';
+import '../../../../extension/extension.dart';
 import '../../../../theme/theme.dart';
 import '../../../../widget/enhancement/progress_indicator.dart';
 

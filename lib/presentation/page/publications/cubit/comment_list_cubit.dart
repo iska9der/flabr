@@ -6,7 +6,7 @@ import '../../../../data/model/language/part.dart';
 import '../../../../data/model/list_response/comment_list_response.dart';
 import '../../../../data/model/publication/publication_source_enum.dart';
 import '../../../../data/repository/part.dart';
-import '../../../extension/part.dart';
+import '../../../extension/extension.dart';
 
 part 'comment_list_state.dart';
 

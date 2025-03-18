@@ -3,83 +3,74 @@
 part of 'theme.dart';
 
 abstract class LightScheme {
-  static const Color primary = Color(0xFF00658F);
-  static const Color background = Color.fromARGB(255, 240, 240, 240);
+  static const Color surface = Color.fromARGB(255, 240, 240, 240);
+  static const Color primary = Color.fromARGB(255, 84, 142, 170);
+  static const Color secondary = Color.fromARGB(255, 79, 97, 110);
+  static const Color tertiary = Color.fromARGB(255, 44, 136, 255);
+  static const Color error = Color(0xFFBA1A1A);
 
-  static ColorScheme get scheme => const ColorScheme(
-        brightness: Brightness.light,
-        background: background,
+  static ColorScheme get scheme => ColorScheme.fromSeed(
+        dynamicSchemeVariant: DynamicSchemeVariant.fidelity,
+        contrastLevel: .2,
+        seedColor: primary,
         primary: primary,
+        secondary: secondary,
+        secondaryContainer: primary,
+        tertiary: tertiary,
+        error: error,
+
+        /// цвет фона
+        surface: surface,
+
+        /// цвет выделенной карточки
+        surfaceContainerHighest: Color.fromARGB(255, 231, 243, 255),
+
+        /// цвет нижней навигации
+        surfaceContainer: Color.fromARGB(255, 234, 236, 239),
+
+        /// цвет карточки [Card]
+        surfaceContainerLow: Color.fromARGB(255, 255, 255, 255),
         onPrimary: Color(0xFFFFFFFF),
-        primaryContainer: Color(0xFFC7E7FF),
-        onPrimaryContainer: Color(0xFF001E2E),
-        secondary: Color(0xFF4F616E),
+
+        /// цвет иконки в FAB
+        onPrimaryContainer: Color(0xFFFFFFFF),
         onSecondary: Color(0xFFFFFFFF),
-        secondaryContainer: Color(0xFFD2E5F5),
-        onSecondaryContainer: Color(0xFF0B1D29),
-        tertiary: Color(0xFF006494),
+
+        /// цвет иконки выбранного таба в навигации, текста в выбранном чипе
+        onSecondaryContainer: Color(0xFFFFFFFF),
         onTertiary: Color(0xFFFFFFFF),
-        tertiaryContainer: Color(0xFFCAE6FF),
-        onTertiaryContainer: Color(0xFF001E30),
-        error: Color(0xFFBA1A1A),
-        errorContainer: Color(0xFFFFDAD6),
         onError: Color(0xFFFFFFFF),
-        onErrorContainer: Color(0xFF410002),
-        surface: Color.fromARGB(255, 251, 251, 251),
-        surfaceContainerHigh: Color.fromARGB(255, 249, 249, 249),
-        surfaceContainerHighest: Color.fromARGB(255, 247, 247, 247),
-        surfaceContainerLow: Color.fromARGB(255, 253, 253, 253),
-        surfaceContainerLowest: Color.fromARGB(255, 255, 255, 255),
-        onSurface: Color.fromARGB(255, 20, 20, 20),
-        surfaceTint: Color(0xFFF8FDFF),
-        onSurfaceVariant: Color.fromARGB(255, 32, 34, 36),
         outline: Color(0xFF71787E),
-        outlineVariant: Color(0xFFC1C7CE),
-        onInverseSurface: Color(0xFFD6F6FF),
-        inverseSurface: Color(0xFF00363F),
-        inversePrimary: Color(0xFF86CFFF),
-        shadow: Color(0xFF000000),
-        scrim: Color(0xFF000000),
       );
 }
 
 class DarkScheme {
-  static const Color primary = Color(0xFF86CFFF);
-  static const Color background = Color.fromARGB(255, 20, 20, 20);
+  static const Color surface = Color.fromARGB(255, 8, 8, 8);
+  static const Color primary = Color(0xFF4cb7eb);
+  static const Color secondary = Color(0xFFB6C9D8);
+  static const Color tertiary = Color(0xFF8ECDFF);
+  static const Color error = Color(0xFFFFB4AB);
 
-  static ColorScheme get scheme => const ColorScheme(
+  static ColorScheme get scheme => ColorScheme.fromSeed(
         brightness: Brightness.dark,
-        background: background,
+        dynamicSchemeVariant: DynamicSchemeVariant.fidelity,
+        contrastLevel: .2,
+        seedColor: primary,
         primary: primary,
-        onPrimary: Color(0xFF00344C),
-        primaryContainer: Color(0xFF004C6D),
-        onPrimaryContainer: Color(0xFFC7E7FF),
-        secondary: Color(0xFFB6C9D8),
+        secondary: secondary,
+        secondaryContainer: primary,
+        tertiary: tertiary,
+        error: error,
+        surface: surface,
+        surfaceContainerHighest: Color.fromARGB(255, 26, 51, 77),
+        surfaceContainerLow: Color.fromARGB(255, 23, 23, 23),
+        onPrimary: Color(0xFF21323E),
+        onPrimaryContainer: Color.fromARGB(255, 67, 74, 78),
         onSecondary: Color(0xFF21323E),
-        secondaryContainer: Color(0xFF384956),
-        onSecondaryContainer: Color(0xFFD2E5F5),
-        tertiary: Color(0xFF8ECDFF),
-        onTertiary: Color(0xFF00344F),
-        tertiaryContainer: Color(0xFF004B70),
-        onTertiaryContainer: Color(0xFFCAE6FF),
-        error: Color(0xFFFFB4AB),
-        errorContainer: Color(0xFF93000A),
+        onSecondaryContainer: Color.fromARGB(255, 67, 74, 78),
+        onTertiary: Color(0xFFFFFFFF),
+        onTertiaryContainer: Color(0xFFFFFFFF),
         onError: Color(0xFF690005),
-        onErrorContainer: Color(0xFFFFDAD6),
-        surface: Color.fromARGB(255, 35, 35, 35),
-        surfaceContainerHigh: Color.fromARGB(255, 33, 33, 33),
-        surfaceContainerHighest: Color.fromARGB(255, 31, 31, 31),
-        surfaceContainerLow: Color.fromARGB(255, 37, 37, 37),
-        surfaceContainerLowest: Color.fromARGB(255, 39, 39, 39),
-        onSurface: Color.fromARGB(255, 255, 255, 255),
-        surfaceTint: primary,
-        onSurfaceVariant: Color(0xFFC1C7CE),
         outline: Color(0xFF8B9198),
-        outlineVariant: Color(0xFF41484D),
-        onInverseSurface: Color(0xFF001F25),
-        inverseSurface: Color(0xFFA6EEFF),
-        inversePrimary: Color(0xFF00658F),
-        shadow: Color.fromARGB(255, 20, 20, 20),
-        scrim: Color.fromARGB(255, 20, 20, 20),
       );
 }

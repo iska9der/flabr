@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../core/component/di/injector.dart';
 import '../../../data/exception/part.dart';
 import '../../../data/repository/part.dart';
-import '../../extension/part.dart';
+import '../../extension/extension.dart';
 import '../../utils/utils.dart';
 
 part 'cubit/subscription_cubit.dart';

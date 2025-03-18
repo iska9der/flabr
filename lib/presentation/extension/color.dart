@@ -1,4 +1,4 @@
-part of 'part.dart';
+part of 'extension.dart';
 
 extension ColorX on Color {
   String toHex() =>

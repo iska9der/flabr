@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/component/di/injector.dart';
 import '../../../core/component/router/app_router.dart';
+import '../../extension/extension.dart';
 import '../../feature/auth/cubit/auth_cubit.dart';
 import '../../feature/auth/widget/profile_icon_button.dart';
 import '../../theme/theme.dart';
@@ -111,7 +112,7 @@ class _PublicationDashboardPageState extends State<PublicationDashboardPage> {
                         duration: const Duration(milliseconds: 200),
                         height: barHeight.value,
                         child: ColoredBox(
-                          color: Theme.of(context).colorScheme.surface,
+                          color: context.theme.colorScheme.surfaceContainerLow,
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [

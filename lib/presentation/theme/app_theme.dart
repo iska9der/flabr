@@ -1,5 +1,3 @@
-// ignore_for_file: deprecated_member_use
-
 part of 'theme.dart';
 
 abstract class AppTheme {
@@ -27,15 +25,27 @@ abstract class AppTheme {
         fontFamily: 'Geologica',
         fontVariations: [FontVariation('wght', 600)],
       ),
+      headlineSmall: textTheme.headlineSmall?.copyWith(
+        fontFamily: 'Geologica',
+        fontVariations: [FontVariation('wght', 400)],
+      ),
+      headlineMedium: textTheme.headlineMedium?.copyWith(
+        fontFamily: 'Geologica',
+        fontVariations: [FontVariation('wght', 500)],
+      ),
+      headlineLarge: textTheme.headlineLarge?.copyWith(
+        fontFamily: 'Geologica',
+        fontVariations: [FontVariation('wght', 600)],
+      ),
     );
 
     return ThemeData(
       useMaterial3: true,
-      brightness: colorScheme.brightness,
       colorScheme: colorScheme,
-      textTheme: textTheme,
-      scaffoldBackgroundColor: colorScheme.background,
+      brightness: colorScheme.brightness,
+      scaffoldBackgroundColor: colorScheme.surface,
       canvasColor: colorScheme.surface,
+      textTheme: textTheme,
       cardTheme: appCardTheme,
       appBarTheme: appAppBarTheme.copyWith(
         titleTextStyle: appAppBarTheme.titleTextStyle?.apply(

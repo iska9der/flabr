@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/component/router/app_router.dart';
 import '../../../../data/model/user_base.dart';
-import '../../../extension/part.dart';
+import '../../../extension/extension.dart';
 import '../../../widget/card_avatar_widget.dart';
 import '../../../widget/enhancement/card.dart';
 import '../../../widget/enhancement/progress_indicator.dart';

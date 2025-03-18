@@ -6,7 +6,7 @@ import 'package:responsive_framework/responsive_framework.dart';
 
 import '../core/component/di/injector.dart';
 import '../core/component/router/app_router.dart';
-import 'extension/part.dart';
+import 'extension/extension.dart';
 import 'feature/auth/cubit/auth_cubit.dart';
 import 'feature/summary/cubit/summary_auth_cubit.dart';
 import 'page/settings/cubit/settings_cubit.dart';

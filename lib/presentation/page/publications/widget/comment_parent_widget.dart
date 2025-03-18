@@ -23,6 +23,7 @@ class ParentComment extends StatelessWidget {
 
     final tag = UniqueKey();
     final textStyle = DefaultTextStyle.of(context).style;
+    final bgColor = Theme.of(context).colorScheme.surfaceContainerHighest;
 
     return Padding(
       padding: const EdgeInsets.all(10),
@@ -31,7 +32,7 @@ class ParentComment extends StatelessWidget {
         child: DecoratedBox(
           decoration: BoxDecoration(
             borderRadius: AppStyles.borderRadius,
-            color: Theme.of(context).colorScheme.onInverseSurface,
+            color: bgColor,
           ),
           child: Padding(
             padding: const EdgeInsets.all(8),
@@ -70,9 +71,7 @@ class ParentComment extends StatelessWidget {
                               child: DecoratedBox(
                                 decoration: BoxDecoration(
                                   borderRadius: AppStyles.borderRadius,
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .onInverseSurface,
+                                  color: bgColor,
                                 ),
                                 child: SingleChildScrollView(
                                   padding: const EdgeInsets.all(16),

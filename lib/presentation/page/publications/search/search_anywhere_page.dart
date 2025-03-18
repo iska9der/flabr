@@ -9,7 +9,7 @@ import '../../../../core/component/di/injector.dart';
 import '../../../../data/model/render_type_enum.dart';
 import '../../../../data/model/search/search_order_enum.dart';
 import '../../../../data/model/search/search_target_enum.dart';
-import '../../../extension/part.dart';
+import '../../../extension/extension.dart';
 import '../../../feature/scroll/part.dart';
 import '../../../utils/utils.dart';
 import '../../../widget/enhancement/progress_indicator.dart';
