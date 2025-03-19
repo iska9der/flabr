@@ -8,6 +8,10 @@ version: 1.2.3+10700
 environment:
   flutter: 3.27.1
   sdk: ">=3.5.0 <4.0.0"
+
+workspace:
+  - packages/ya_summary
+
 dependencies:
   flutter:
     sdk: flutter
@@ -48,6 +52,7 @@ dependencies:
   freezed_annotation: ^2.4.4
   json_annotation: ^4.9.0
   skeletonizer: ^1.4.2
+  ya_summary: any
 
 dev_dependencies:
   analyzer: ^6.7.0

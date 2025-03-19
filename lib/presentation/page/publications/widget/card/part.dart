@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:intl/intl.dart';
+import 'package:ya_summary/ya_summary.dart';
 
 import '../../../../../core/component/di/injector.dart';
 import '../../../../../core/component/router/app_router.dart';
@@ -16,8 +17,6 @@ import '../../../../../data/model/publication/publication_type_enum.dart';
 import '../../../../../data/model/related_data/hub_related_data_model.dart';
 import '../../../../../data/model/render_type_enum.dart';
 import '../../../../../data/model/stat_type_enum.dart';
-import '../../../../../feature/summary/cubit/summary_auth_cubit.dart';
-import '../../../../../feature/summary/widget/summary_dialog.dart';
 import '../../../../extension/extension.dart';
 import '../../../../feature/auth/cubit/auth_cubit.dart';
 import '../../../../feature/auth/widget/dialog.dart';

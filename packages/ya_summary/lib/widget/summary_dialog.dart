@@ -1,11 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../cubit/summary_auth_cubit.dart';
-import '../cubit/summary_cubit.dart';
-import '../data/summary_repository.dart';
-import 'summary_token_widget.dart';
-import 'summary_widget.dart';
+import 'package:ya_summary/ya_summary.dart';
 
 Future showSummaryDialog(
   BuildContext context, {
@@ -18,7 +13,10 @@ Future showSummaryDialog(
 }) async {
   final theme = Theme.of(context);
   final barrierColor = theme.colorScheme.surface.withValues(alpha: .8);
-  final loader = loaderWidget ?? CircularProgressIndicator();
+  final loader = loaderWidget ??
+      const Center(
+        child: CircularProgressIndicator(),
+      );
 
   return await showDialog(
     context: context,
@@ -87,13 +85,13 @@ Future showSummaryDialog(
               ),
               content: switch (authState.status) {
                 SummaryAuthStatus.loading => loader,
-                SummaryAuthStatus.unauthorized => Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                SummaryAuthStatus.unauthorized => const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 12),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const SummaryTokenWidget(),
+                        SummaryTokenWidget(),
                       ],
                     ),
                   ),

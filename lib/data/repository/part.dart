@@ -1,11 +1,10 @@
 import 'dart:async';
 
 import 'package:injectable/injectable.dart';
+import 'package:ya_summary/ya_summary.dart';
 
 import '../../core/component/storage/storage.dart';
 import '../../core/constants/constants.dart';
-import '../../feature/summary/data/summary_model.dart';
-import '../../feature/summary/data/summary_repository.dart';
 import '../exception/part.dart';
 import '../model/company/card/company_card_model.dart';
 import '../model/filter/part.dart';

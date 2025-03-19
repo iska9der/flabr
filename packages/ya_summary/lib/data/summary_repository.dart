@@ -1,5 +1,4 @@
-import 'summary_model.dart';
-import 'summary_service.dart';
+import 'package:ya_summary/ya_summary.dart';
 
 abstract interface class SummaryRepository {
   Future<SummaryModel> fetchSummary(String url);

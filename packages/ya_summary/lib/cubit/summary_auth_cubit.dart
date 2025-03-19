@@ -1,7 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../data/summary_repository.dart';
+import 'package:ya_summary/ya_summary.dart';
 
 part 'summary_auth_state.dart';
 

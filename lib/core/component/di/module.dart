@@ -2,10 +2,9 @@ import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:ya_summary/ya_summary.dart';
 
 import '../../../data/repository/part.dart';
-import '../../../feature/summary/data/summary_client.dart';
-import '../../../feature/summary/data/summary_repository.dart';
 import '../../constants/constants.dart';
 import '../http/http.dart';
 import '../storage/storage.dart';
