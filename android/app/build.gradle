@@ -59,9 +59,14 @@ android {
 
     splits {
         abi {
+            // Resets the list of ABIs for Gradle to create APKs for to none.
+            // By default all ABIs are included, so use 'reset()' and 'include' to specify that
+            // you only want to create APKs for a subset of ABIs, for example 'armeabi-v7a' and 'arm64-v8a'.
             reset()
-            universalApk true // If true, also generate a universal APK
+            // Specifies a list of ABIs for Gradle to create APKs for.
             include "armeabi-v7a", "arm64-v8a", "x86_64" // "x86"
+            // Specifies that you want to also generate a universal APK that includes all ABIs.
+            universalApk true
         }
     }
 
@@ -101,10 +106,12 @@ flutter {
 ext.abiCodes = ["x86_64": 1, "armeabi-v7a": 2, "arm64-v8a": 3]
 import com.android.build.OutputFile
 android.applicationVariants.all { variant ->
-  variant.outputs.each { output ->
-    def abiVersionCode = project.ext.abiCodes.get(output.getFilter(OutputFile.ABI))
-    if (abiVersionCode != null) {
-      output.versionCodeOverride = variant.versionCode * 10 + abiVersionCode
+    variant.outputs.each { output ->
+        def abiVersionCode = project.ext.abiCodes.get(output.getFilter(OutputFile.ABI))
+            if (abiVersionCode != null) {
+                output.versionCodeOverride = 10 * variant.versionCode + abiVersionCode
+            } else {
+                output.versionCodeOverride = 10 * variant.versionCode
+            }
     }
-  }
 }
