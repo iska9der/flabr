@@ -28,12 +28,11 @@ class FilterChipList extends StatelessWidget {
             .map((option) => Padding(
                   padding: const EdgeInsets.only(right: 8.0),
                   child: ChoiceChip(
-                    visualDensity: VisualDensity.adaptivePlatformDensity,
+                    visualDensity: VisualDensity.compact,
                     label: Text(
                       option.label,
                       overflow: TextOverflow.ellipsis,
                       textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.labelMedium,
                     ),
                     selected: isSelected(option),
                     onSelected: isEnabled

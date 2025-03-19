@@ -2,7 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/component/router/app_router.dart';
-import '../../../theme/part.dart';
+import '../../../theme/theme.dart';
 import '../../../widget/dashboard_drawer_link_widget.dart';
 
 @RoutePage()
@@ -31,7 +31,7 @@ class TrackerDashboardPage extends StatelessWidget {
                       pinned: true,
                       leading: const AutoLeadingButton(),
                       title: const Text('Трекер'),
-                      toolbarHeight: fToolBarHeight,
+                      toolbarHeight: AppDimensions.toolBarHeight,
                       actions: const [
                         /// TODO блок для отметки раздела как прочитанный
                         /// Нужно отмечать прочитанным тот раздел, в котором
@@ -46,7 +46,7 @@ class TrackerDashboardPage extends StatelessWidget {
                       bottom: AppBar(
                         automaticallyImplyLeading: false,
                         titleSpacing: 0,
-                        toolbarHeight: fDashboardTabHeight,
+                        toolbarHeight: AppDimensions.dashTabHeight,
                         title: TabBar(
                           controller: controller,
                           isScrollable: true,

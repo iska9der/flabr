@@ -7,7 +7,7 @@ import 'package:share_plus/share_plus.dart';
 import '../../../../core/constants/constants.dart';
 import '../../../../data/model/publication/publication.dart';
 import '../../../../data/model/publication/publication_type_enum.dart';
-import '../../../theme/part.dart';
+import '../../../theme/theme.dart';
 import '../../../widget/enhancement/progress_indicator.dart';
 import '../../../widget/html_view_widget.dart';
 import '../../../widget/publication_settings_widget.dart';
@@ -317,7 +317,9 @@ class _BottomBar extends StatelessWidget {
       child: ColoredBox(
         color: Theme.of(context).colorScheme.surface.withValues(alpha: .94),
         child: ConstrainedBox(
-          constraints: BoxConstraints(maxHeight: fPublicationFooterHeight),
+          constraints: BoxConstraints(
+            maxHeight: AppDimensions.publicationBottomBarHeight,
+          ),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [

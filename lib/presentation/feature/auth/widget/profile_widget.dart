@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/component/router/app_router.dart';
 import '../../../../data/model/user_base.dart';
-import '../../../extension/part.dart';
+import '../../../extension/extension.dart';
 import '../../../widget/card_avatar_widget.dart';
 import '../../../widget/enhancement/card.dart';
 import '../../../widget/enhancement/progress_indicator.dart';
@@ -16,7 +16,10 @@ abstract class DialogUserWidget extends StatelessWidget {
 
 class DialogUserProfileWidget extends StatelessWidget
     implements DialogUserWidget {
-  const DialogUserProfileWidget({super.key, required this.user});
+  const DialogUserProfileWidget({
+    super.key,
+    required this.user,
+  });
 
   final UserBase user;
 
@@ -29,17 +32,19 @@ class DialogUserProfileWidget extends StatelessWidget
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ListTile(
-              leading: CardAvatarWidget(imageUrl: user.avatarUrl),
-              subtitle: user.fullname.isNotEmpty ? Text(user.fullname) : null,
-              title: Text('@${user.alias}'),
-              onTap: () {
-                context.router.push(
-                  UserDashboardRoute(alias: user.alias),
-                );
+            Expanded(
+              child: ListTile(
+                leading: CardAvatarWidget(imageUrl: user.avatarUrl),
+                title: Text('@${user.alias}'),
+                subtitle: user.fullname.isNotEmpty ? Text(user.fullname) : null,
+                onTap: () {
+                  context.router.push(
+                    UserDashboardRoute(alias: user.alias),
+                  );
 
-                Navigator.of(context).pop();
-              },
+                  Navigator.of(context).pop();
+                },
+              ),
             ),
             ListTile(
               title: const Text('Публикации'),

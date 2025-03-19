@@ -7,9 +7,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/component/di/injector.dart';
 import '../../../core/component/router/app_router.dart';
+import '../../extension/extension.dart';
 import '../../feature/auth/cubit/auth_cubit.dart';
 import '../../feature/auth/widget/profile_icon_button.dart';
-import '../../theme/part.dart';
+import '../../theme/theme.dart';
 import '../../widget/dashboard_drawer_link_widget.dart';
 import '../settings/cubit/settings_cubit.dart';
 import 'bloc/publication_counters_bloc.dart';
@@ -30,8 +31,8 @@ class _PublicationDashboardPageState extends State<PublicationDashboardPage> {
   late final PublicationCountersBloc countersBloc;
   late final StreamSubscription authSub;
 
-  final double themeHeight = fDashboardTabHeight;
-  ValueNotifier<double> barHeight = ValueNotifier(fDashboardTabHeight);
+  final double themeHeight = AppDimensions.dashTabHeight;
+  ValueNotifier<double> barHeight = ValueNotifier(AppDimensions.dashTabHeight);
   late bool visibleOnScroll;
 
   @override
@@ -111,7 +112,7 @@ class _PublicationDashboardPageState extends State<PublicationDashboardPage> {
                         duration: const Duration(milliseconds: 200),
                         height: barHeight.value,
                         child: ColoredBox(
-                          color: Theme.of(context).colorScheme.surface,
+                          color: context.theme.colorScheme.surfaceContainerLow,
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [

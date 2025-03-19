@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../data/model/tokens_model.dart';
 import '../../../../data/repository/part.dart';
-import '../../../extension/part.dart';
+import '../../../extension/extension.dart';
 
 part 'login_state.dart';
 

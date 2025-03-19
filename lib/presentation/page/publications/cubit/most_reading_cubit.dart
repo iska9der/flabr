@@ -5,7 +5,7 @@ import '../../../../data/exception/part.dart';
 import '../../../../data/model/language/part.dart';
 import '../../../../data/model/publication/publication.dart';
 import '../../../../data/repository/part.dart';
-import '../../../extension/part.dart';
+import '../../../extension/extension.dart';
 
 part 'most_reading_state.dart';
 

@@ -5,9 +5,10 @@ import 'package:flutter_fancy_tree_view/flutter_fancy_tree_view.dart';
 
 import '../../../../data/model/comment/comment_model.dart';
 import '../../../../data/model/offset_history.dart';
-import '../../../extension/part.dart';
-import '../../../theme/part.dart';
+import '../../../extension/extension.dart';
+import '../../../theme/theme.dart';
 import '../../../widget/comment/comment_widget.dart';
+import '../../../widget/enhancement/card.dart';
 import '../../../widget/enhancement/progress_indicator.dart';
 import '../../../widget/user_text_button.dart';
 import '../cubit/comment_list_cubit.dart';
@@ -150,7 +151,7 @@ class _CommentTreeWidgetState extends State<CommentTreeWidget> {
 
               final authorColor = entry.node.isPostAuthor
                   ? Colors.yellowAccent.withValues(alpha: .12)
-                  : Theme.of(context).colorScheme.surface;
+                  : null;
 
               double topPadding = entry.index == 0
                   ? 0
@@ -164,11 +165,10 @@ class _CommentTreeWidgetState extends State<CommentTreeWidget> {
                 child: TreeIndentation(
                   entry: entry,
                   guide: const IndentGuide(indent: 0),
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(kBorderRadiusDefault),
-                      color: authorColor,
-                    ),
+                  child: FlabrCard(
+                    margin: EdgeInsets.zero,
+                    padding: EdgeInsets.zero,
+                    color: authorColor,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
@@ -176,7 +176,7 @@ class _CommentTreeWidgetState extends State<CommentTreeWidget> {
                           children: [
                             Padding(
                               padding: const EdgeInsets.only(
-                                left: fCardPadding,
+                                left: AppDimensions.cardPadding,
                               ),
                               child: UserTextButton(entry.node.author),
                             ),

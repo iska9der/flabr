@@ -4,8 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../../core/component/di/injector.dart';
-import '../../../../extension/part.dart';
-import '../../../../theme/part.dart';
+import '../../../../extension/extension.dart';
+import '../../../../theme/theme.dart';
 import '../../../../utils/utils.dart';
 import '../../../../widget/detail/section_container_widget.dart';
 import '../../../../widget/enhancement/progress_indicator.dart';
@@ -61,7 +61,7 @@ class UserDetailPageView extends StatelessWidget {
               const UserProfileCardWidget(),
               Padding(
                 padding: const EdgeInsets.symmetric(
-                  horizontal: kScreenHPadding,
+                  horizontal: AppDimensions.screenPadding,
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,

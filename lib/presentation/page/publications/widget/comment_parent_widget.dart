@@ -5,7 +5,8 @@ import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart
 import 'package:html/parser.dart';
 
 import '../../../../data/model/comment_base.dart';
-import '../../../theme/part.dart';
+import '../../../extension/extension.dart';
+import '../../../theme/theme.dart';
 import '../../../widget/html_view_widget.dart';
 
 class ParentComment extends StatelessWidget {
@@ -23,6 +24,7 @@ class ParentComment extends StatelessWidget {
 
     final tag = UniqueKey();
     final textStyle = DefaultTextStyle.of(context).style;
+    final bgColor = context.theme.colors.cardHighlight;
 
     return Padding(
       padding: const EdgeInsets.all(10),
@@ -30,8 +32,8 @@ class ParentComment extends StatelessWidget {
         tag: tag,
         child: DecoratedBox(
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(kBorderRadiusDefault),
-            color: Theme.of(context).colorScheme.onInverseSurface,
+            borderRadius: AppStyles.borderRadius,
+            color: bgColor,
           ),
           child: Padding(
             padding: const EdgeInsets.all(8),
@@ -69,12 +71,8 @@ class ParentComment extends StatelessWidget {
                               tag: tag,
                               child: DecoratedBox(
                                 decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(
-                                    kBorderRadiusDefault,
-                                  ),
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .onInverseSurface,
+                                  borderRadius: AppStyles.borderRadius,
+                                  color: bgColor,
                                 ),
                                 child: SingleChildScrollView(
                                   padding: const EdgeInsets.all(16),

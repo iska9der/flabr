@@ -21,7 +21,7 @@ dependencies:
   equatable: ^2.0.7
   flutter_bloc: ^8.1.6
   flutter_file_dialog: ^3.0.2
-  flutter_secure_storage: ^9.2.2
+  flutter_secure_storage: 9.2.4
   flutter_svg: ^2.0.10+1
   flutter_widget_from_html_core: ^0.15.2
   fwfh_svg: ^0.8.3

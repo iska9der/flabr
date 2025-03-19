@@ -32,16 +32,21 @@ class ArticleFooterWidget extends StatelessWidget {
           ),
         ),
         _BookmarkIconButton(publication: publication),
-        if (context.watch<SummaryAuthCubit>().state.isAuthorized)
-          PublicationStatIconButton(
-            icon: Icons.auto_awesome,
-            isHighlighted: true,
-            onTap: () => showSummaryDialog(
-              context,
-              publicationId: publication.id,
-              onLinkPressed: (link) => getIt<AppRouter>().launchUrl(link),
-            ),
-          ),
+        BlocBuilder<SummaryAuthCubit, SummaryAuthState>(
+          builder: (context, state) {
+            return PublicationStatIconButton(
+              icon: Icons.auto_awesome,
+              isHighlighted: state.isAuthorized,
+              onTap: () => showSummaryDialog(
+                context,
+                publicationId: publication.id,
+                repository: getIt(),
+                loaderWidget: CircleIndicator.medium(),
+                onLinkPressed: (link) => getIt<AppRouter>().launchUrl(link),
+              ),
+            );
+          },
+        ),
       ],
     );
   }

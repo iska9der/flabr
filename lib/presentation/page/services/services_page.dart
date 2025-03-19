@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
-import '../../theme/part.dart';
+import '../../theme/theme.dart';
 import 'company/page/company_list_page.dart';
 import 'hub/page/hub_list_page.dart';
 import 'user/page/user_list_page.dart';
@@ -94,7 +94,7 @@ class ServiceCard extends StatelessWidget {
                 padding: const EdgeInsets.all(4),
                 margin: const EdgeInsets.only(bottom: 10),
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(kBorderRadiusDefault),
+                  borderRadius: AppStyles.borderRadius,
                   color: onTap != null
                       ? theme.colorScheme.onSurface.withValues(alpha: .7)
                       : theme.colorScheme.onInverseSurface

@@ -6,7 +6,7 @@ import '../../../../../data/model/list_response/list_response_model.dart';
 import '../../../../../data/model/search/search_order_enum.dart';
 import '../../../../../data/model/search/search_target_enum.dart';
 import '../../../../../data/repository/part.dart';
-import '../../../../extension/part.dart';
+import '../../../../extension/extension.dart';
 
 part 'search_state.dart';
 

@@ -1,4 +1,4 @@
-part of 'part.dart';
+part of 'extension.dart';
 
 extension StateStatusX on Enum {
   bool get isInitial => name == 'initial';

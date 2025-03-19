@@ -1,5 +1,4 @@
-
-part of 'part.dart';
+part of 'extension.dart';
 
 extension NumX on num {
   String compact() {

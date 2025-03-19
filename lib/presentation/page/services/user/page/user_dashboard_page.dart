@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../core/component/di/injector.dart';
 import '../../../../../core/component/router/app_router.dart';
 import '../../../../feature/scaffold/part.dart';
-import '../../../../theme/part.dart';
+import '../../../../theme/theme.dart';
 import '../../../../widget/dashboard_drawer_link_widget.dart';
 import '../cubit/user_cubit.dart';
 import 'user_bookmark_list_page.dart';
@@ -66,9 +66,9 @@ class UserDashboardView extends StatelessWidget {
           appBar: AppBar(
             title: Text(userCubit.state.login),
             bottom: PreferredSize(
-              preferredSize: const Size.fromHeight(fDashboardTabHeight),
+              preferredSize: const Size.fromHeight(AppDimensions.dashTabHeight),
               child: SizedBox(
-                height: fDashboardTabHeight,
+                height: AppDimensions.dashTabHeight,
                 child: Align(
                   alignment: Alignment.centerLeft,
                   child: TabBar(

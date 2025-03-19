@@ -4,8 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/component/di/injector.dart';
 import '../../../../core/component/router/app_router.dart';
-import '../../../extension/part.dart';
-import '../../../theme/part.dart';
+import '../../../extension/extension.dart';
+import '../../../theme/theme.dart';
 import '../../../widget/enhancement/app_expansion_panel.dart';
 import '../../../widget/enhancement/card.dart';
 import '../../../widget/enhancement/progress_indicator.dart';
@@ -40,41 +40,36 @@ class _MostReadingButtonState extends State<_MostReadingButton> {
 
   @override
   Widget build(BuildContext context) {
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surface,
-        borderRadius: BorderRadius.circular(kBorderRadiusDefault),
-      ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(kBorderRadiusDefault),
-        child: AppExpansionPanelList(
-          elevation: 0,
-          expansionCallback: (panelIndex, isExpanded) {
-            setState(() {
-              isShow = !isExpanded;
-            });
-          },
-          children: [
-            AppExpansionPanel(
-              isExpanded: isShow,
-              canTapOnHeader: true,
-              backgroundColor: Colors.transparent,
-              headerBuilder: (context, isExpanded) {
-                return Align(
-                  alignment: Alignment.centerLeft,
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 12),
-                    child: Text(
-                      'Читают сейчас',
-                      style: Theme.of(context).textTheme.titleSmall,
-                    ),
+    return FlabrCard(
+      margin: EdgeInsets.zero,
+      padding: EdgeInsets.zero,
+      child: AppExpansionPanelList(
+        elevation: 0,
+        expansionCallback: (panelIndex, isExpanded) {
+          setState(() {
+            isShow = !isExpanded;
+          });
+        },
+        children: [
+          AppExpansionPanel(
+            isExpanded: isShow,
+            canTapOnHeader: true,
+            backgroundColor: Colors.transparent,
+            headerBuilder: (context, isExpanded) {
+              return Align(
+                alignment: Alignment.centerLeft,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 12),
+                  child: Text(
+                    'Читают сейчас',
+                    style: Theme.of(context).textTheme.titleSmall,
                   ),
-                );
-              },
-              body: const _MostReadingList(),
-            ),
-          ],
-        ),
+                ),
+              );
+            },
+            body: const _MostReadingList(),
+          ),
+        ],
       ),
     );
   }
@@ -104,7 +99,7 @@ class _MostReadingListState extends State<_MostReadingList> {
           );
         }
         return Padding(
-          padding: const EdgeInsets.all(kScreenHPadding),
+          padding: AppInsets.screenPadding,
           child: Scrollbar(
             controller: controller,
             thumbVisibility: true,
@@ -120,7 +115,7 @@ class _MostReadingListState extends State<_MostReadingList> {
                 return FlabrCard(
                   margin: EdgeInsets.zero,
                   padding: const EdgeInsets.symmetric(
-                    horizontal: kScreenHPadding,
+                    horizontal: AppDimensions.screenPadding,
                   ),
                   color: Colors.transparent,
                   elevation: 0,

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 
 import '../../data/model/render_type_enum.dart';
-import '../theme/part.dart';
+import '../theme/theme.dart';
 
 class CardTitleWidget extends StatelessWidget {
   const CardTitleWidget({
@@ -19,7 +19,7 @@ class CardTitleWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      borderRadius: BorderRadius.circular(kBorderRadiusDefault),
+      borderRadius: AppStyles.borderRadius,
       onTap: onPressed,
       child: renderType == RenderType.plain
           ? Text(

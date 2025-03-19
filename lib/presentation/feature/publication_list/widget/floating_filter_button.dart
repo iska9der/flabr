@@ -19,7 +19,7 @@ class FloatingFilterButton<ListCubit extends PublicationListCubit<ListState>,
           isScrollControlled: true,
           constraints: const BoxConstraints(minWidth: 600),
           builder: (_) => Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6),
+            padding: AppInsets.filterSheetPadding,
             child: BlocProvider.value(
               value: context.read<ListCubit>(),
               child: filter,

@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../core/component/di/injector.dart';
 import '../../../../../data/model/stat_type_enum.dart';
 import '../../../../../data/repository/part.dart';
-import '../../../../extension/part.dart';
+import '../../../../extension/extension.dart';
 import '../../../../feature/auth/cubit/auth_cubit.dart';
 import '../../../../feature/profile_subscribe/part.dart';
 import '../../../../widget/card_avatar_widget.dart';

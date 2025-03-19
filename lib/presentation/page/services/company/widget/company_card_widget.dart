@@ -8,7 +8,7 @@ import '../../../../../data/model/company/company_model.dart';
 import '../../../../../data/model/company/company_statistics_model.dart';
 import '../../../../../data/model/render_type_enum.dart';
 import '../../../../../data/model/stat_type_enum.dart';
-import '../../../../theme/part.dart';
+import '../../../../theme/theme.dart';
 import '../../../../widget/card_avatar_widget.dart';
 import '../../../../widget/card_title_widget.dart';
 import '../../../../widget/enhancement/card.dart';
@@ -87,7 +87,7 @@ class CompanyCardWidget extends StatelessWidget {
 
                   return InkWell(
                     onTap: () => getIt<AppRouter>().navigate(route),
-                    borderRadius: BorderRadius.circular(kBorderRadiusDefault),
+                    borderRadius: AppStyles.borderRadius,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 8),
                       child: Text(title, style: hubLinkStyle),

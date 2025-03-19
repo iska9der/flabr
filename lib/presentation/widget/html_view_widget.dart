@@ -9,10 +9,10 @@ import 'package:path/path.dart' as p;
 
 import '../../core/component/di/injector.dart';
 import '../../core/component/router/app_router.dart';
-import '../extension/part.dart';
+import '../extension/extension.dart';
 import '../feature/image_action/part.dart';
 import '../page/settings/cubit/settings_cubit.dart';
-import '../theme/part.dart';
+import '../theme/theme.dart';
 import '../utils/utils.dart';
 import 'enhancement/progress_indicator.dart';
 
@@ -67,7 +67,7 @@ class HtmlView extends StatelessWidget {
             if (element.localName == 'code' &&
                 element.parent?.localName != 'pre') {
               return {
-                'background-color': theme.colorScheme.surface.toHex(),
+                'background-color': theme.colors.cardHighlight.toHex(),
                 'font-weight': '500',
               };
             }
@@ -125,7 +125,7 @@ class HtmlView extends StatelessWidget {
 
               Widget widget = NetworkImageWidget(
                 imageUrl: imgSrc,
-                height: kImageHeightDefault,
+                height: AppDimensions.imageHeight,
                 isTapable: true,
               );
 
@@ -331,7 +331,7 @@ class CustomFactory extends WidgetFactory with SvgFactory, WebViewFactory {
     return Stack(
       children: [
         ColoredBox(
-          color: Theme.of(context).colorScheme.surface,
+          color: context.theme.colors.cardHighlight,
           child: ConstrainedBox(
             constraints: BoxConstraints(
               minWidth: MediaQuery.of(context).size.width,

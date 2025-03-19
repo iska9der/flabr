@@ -21,7 +21,7 @@ class PublicationListScaffold<ListCubit extends PublicationListCubit<ListState>,
     );
 
     final sidebarHeight =
-        Device.getHeight(context) - flowSortToolbarHeight - fToolBarHeight;
+        Device.getHeight(context) - AppDimensions.toolBarHeight;
 
     return MultiBlocListener(
       listeners: [
@@ -88,10 +88,7 @@ class PublicationListScaffold<ListCubit extends PublicationListCubit<ListState>,
                     ],
                     sliver: SliverToBoxAdapter(
                       child: Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: fCardMargin,
-                          vertical: kCardBetweenPadding / 2,
-                        ),
+                        padding: AppInsets.mostReadingMobile,
                         child: MostReadingWidget.button(),
                       ),
                     ),
@@ -130,10 +127,7 @@ class PublicationListScaffold<ListCubit extends PublicationListCubit<ListState>,
                           floating: true,
                           pinned: true,
                           flexibleSpace: const Padding(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: kScreenHPadding,
-                              vertical: kScreenHPadding,
-                            ),
+                            padding: AppInsets.mostReadingDesktop,
                             child: _SideWidgetList(
                               widgets: [
                                 _SideWidget(
@@ -187,8 +181,9 @@ class _SideWidgetListState extends State<_SideWidgetList> {
             children: [
               ListTile(
                 enabled: isEnabled,
-                contentPadding: const EdgeInsets.symmetric(
-                  horizontal: fCardPadding,
+                contentPadding: AppInsets.cardPadding.copyWith(
+                  top: 0,
+                  bottom: 0,
                 ),
                 title: Text(
                   sideWidget.title,

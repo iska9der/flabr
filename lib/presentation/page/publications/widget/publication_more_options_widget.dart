@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../data/model/publication/publication.dart';
 import '../../../feature/publication_download/part.dart';
-import '../../../theme/part.dart';
+import '../../../theme/theme.dart';
 
 class PublicationMoreOptions extends StatelessWidget {
   const PublicationMoreOptions({super.key, required this.publication});
@@ -16,7 +16,9 @@ class PublicationMoreOptions extends StatelessWidget {
         style: ButtonStyle(alignment: Alignment.centerLeft),
       ),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: kScreenHPadding),
+        padding: const EdgeInsets.symmetric(
+          horizontal: AppDimensions.screenPadding,
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [

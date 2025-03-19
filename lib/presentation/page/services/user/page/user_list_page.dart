@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/component/di/injector.dart';
 import '../../../../feature/scroll/part.dart';
-import '../../../../theme/part.dart';
+import '../../../../theme/theme.dart';
 import '../../../../utils/utils.dart';
 import '../../../../widget/enhancement/progress_indicator.dart';
 import '../cubit/user_list_cubit.dart';
@@ -99,7 +99,7 @@ class UserListPageView extends StatelessWidget {
               child: ListView.separated(
                 controller: scrollCtrl,
                 separatorBuilder: (context, index) => const SizedBox(
-                  height: kCardBetweenPadding,
+                  height: AppDimensions.cardBetweenHeight,
                 ),
                 itemCount: users.length +
                     (state.status == UserListStatus.loading ? 1 : 0),

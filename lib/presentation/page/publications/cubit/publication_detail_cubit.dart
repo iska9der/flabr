@@ -7,7 +7,7 @@ import '../../../../data/exception/part.dart';
 import '../../../../data/model/publication/publication.dart';
 import '../../../../data/model/publication/publication_source_enum.dart';
 import '../../../../data/repository/part.dart';
-import '../../../extension/part.dart';
+import '../../../extension/extension.dart';
 
 part 'publication_detail_state.dart';
 

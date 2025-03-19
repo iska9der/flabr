@@ -6,11 +6,11 @@ import 'package:responsive_framework/responsive_framework.dart';
 
 import '../core/component/di/injector.dart';
 import '../core/component/router/app_router.dart';
-import 'extension/part.dart';
+import 'extension/extension.dart';
 import 'feature/auth/cubit/auth_cubit.dart';
 import 'feature/summary/cubit/summary_auth_cubit.dart';
 import 'page/settings/cubit/settings_cubit.dart';
-import 'theme/part.dart';
+import 'theme/theme.dart';
 import 'widget/enhancement/progress_indicator.dart';
 
 class MyApp extends StatelessWidget {
@@ -76,8 +76,8 @@ class MyApp extends StatelessWidget {
                 useInheritedMediaQuery: true,
                 locale: DevicePreview.locale(context),
                 themeMode: state.theme.modeByBool ?? state.theme.mode,
-                theme: lightTheme(),
-                darkTheme: darkTheme(),
+                theme: AppTheme.light,
+                darkTheme: AppTheme.dark,
                 scrollBehavior: state.misc.scrollVariant.behavior,
                 routerConfig: router.config(
                   deepLinkTransformer: (uri) {

@@ -45,7 +45,7 @@ class _ConnectSidWidgetState extends State<ConnectSidWidget> {
             }
 
             return SettingsCardWidget(
-              title: 'connect_sid token',
+              title: 'connect_sid',
               subtitle: 'Если не удается войти через форму логина',
               child: Padding(
                 padding: const EdgeInsets.only(top: 12.0),
@@ -61,6 +61,7 @@ class _ConnectSidWidgetState extends State<ConnectSidWidget> {
                       keyboardType: TextInputType.text,
                       decoration: const InputDecoration(
                         floatingLabelBehavior: FloatingLabelBehavior.always,
+                        labelText: 'Токен',
                         hintText: 'Можно найти в cookies',
                         border: OutlineInputBorder(),
                       ),

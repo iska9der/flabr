@@ -46,7 +46,7 @@ class SkeletonCardWidget extends StatelessWidget {
                   return const Padding(
                     padding: EdgeInsets.only(top: 24),
                     child: SizedBox(
-                      height: kImageHeightDefault,
+                      height: AppDimensions.imageHeight,
                       child: ColoredBox(color: Colors.white),
                     ),
                   );

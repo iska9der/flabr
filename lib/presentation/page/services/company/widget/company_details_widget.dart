@@ -5,7 +5,7 @@ import 'package:intl/intl.dart';
 
 import '../../../../../core/component/di/injector.dart';
 import '../../../../../core/component/router/app_router.dart';
-import '../../../../extension/part.dart';
+import '../../../../extension/extension.dart';
 import '../../../../feature/image_action/part.dart';
 import '../../../../widget/detail/section_container_widget.dart';
 import '../../../../widget/enhancement/card.dart';

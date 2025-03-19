@@ -9,6 +9,7 @@ import '../../../../core/component/router/app_router.dart';
 import '../../../../core/constants/environment.dart';
 import '../../../../data/model/loading_status_enum.dart';
 import '../../../../data/model/tracker/part.dart';
+import '../../../extension/extension.dart';
 import '../../../widget/enhancement/card.dart';
 import '../../../widget/user_text_button.dart';
 import 'bloc/tracker_notifications_bloc.dart';
@@ -103,13 +104,12 @@ class _NotificationWidgetState extends State<_NotificationWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
+    final theme = context.theme;
     final user = widget.model.dataModel.user;
     final publication = widget.model.dataModel.publication;
 
     return FlabrCard(
-      color: isUnread ? theme.colorScheme.surfaceContainerHighest : null,
+      color: isUnread ? theme.colors.cardHighlight : null,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
