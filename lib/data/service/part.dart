@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
+import 'package:ya_summary/ya_summary.dart';
 
 import '../../core/component/http/http.dart';
 import '../exception/part.dart';

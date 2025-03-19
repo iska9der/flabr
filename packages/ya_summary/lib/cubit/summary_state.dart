@@ -7,13 +7,13 @@ class SummaryState extends Equatable {
   const SummaryState({
     this.status = SummaryStatus.initial,
     this.error = '',
-    required this.publicationId,
+    required this.url,
     this.model = SummaryModel.empty,
   });
 
   final SummaryStatus status;
   final String error;
-  final String publicationId;
+  final String url;
   final SummaryModel model;
 
   SummaryState copyWith({
@@ -22,7 +22,7 @@ class SummaryState extends Equatable {
     SummaryModel? model,
   }) {
     return SummaryState(
-      publicationId: publicationId,
+      url: url,
       status: status ?? this.status,
       error: error ?? this.error,
       model: model ?? this.model,
@@ -30,5 +30,5 @@ class SummaryState extends Equatable {
   }
 
   @override
-  List<Object> get props => [status, error, publicationId, model];
+  List<Object> get props => [status, error, url, model];
 }

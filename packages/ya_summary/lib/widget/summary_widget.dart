@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../../widget/enhancement/progress_indicator.dart';
-import '../cubit/summary_cubit.dart';
+import 'package:ya_summary/ya_summary.dart';
 
 class SummaryWidget extends StatelessWidget {
-  const SummaryWidget({super.key});
+  const SummaryWidget({super.key, this.loaderWidget});
+
+  final Widget? loaderWidget;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,7 @@ class SummaryWidget extends StatelessWidget {
           return switch (state.status) {
             SummaryStatus.initial ||
             SummaryStatus.loading =>
-              const CircleIndicator(),
+              loaderWidget ?? const Center(child: CircularProgressIndicator()),
             SummaryStatus.failure => Center(child: Text(state.error)),
             SummaryStatus.success => Scrollbar(
                 thumbVisibility: true,

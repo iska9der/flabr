@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:ya_summary/ya_summary.dart';
 
 import '../../../data/repository/part.dart';
 import '../../constants/constants.dart';
@@ -41,8 +42,7 @@ abstract class RegisterModule {
         tokenRepository: repository,
       );
 
-  @Named('ya300client')
   @Singleton()
-  HttpClient summaryClient(Dio dio, SummaryTokenRepository repository) =>
+  SummaryClient summaryClient(Dio dio, SummaryTokenRepository repository) =>
       SummaryClient(dio, tokenRepository: repository);
 }

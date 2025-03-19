@@ -1,17 +1,15 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../../../data/model/summary_model.dart';
-import '../../../../data/repository/part.dart';
+import 'package:ya_summary/ya_summary.dart';
 
 part 'summary_state.dart';
 
 class SummaryCubit extends Cubit<SummaryState> {
   SummaryCubit({
-    required String publicationId,
+    required String url,
     required SummaryRepository repository,
   })  : _repository = repository,
-        super(SummaryState(publicationId: publicationId));
+        super(SummaryState(url: url));
 
   final SummaryRepository _repository;
 
@@ -19,16 +17,21 @@ class SummaryCubit extends Cubit<SummaryState> {
     try {
       emit(state.copyWith(status: SummaryStatus.loading));
 
-      final model = await _repository.fetchArticleSummary(state.publicationId);
+      final model = await _repository.fetchSummary(state.url);
 
       emit(state.copyWith(status: SummaryStatus.success, model: model));
-    } catch (e) {
+    } on SummaryException catch (e) {
+      emit(state.copyWith(
+        status: SummaryStatus.failure,
+        error: e.toString(),
+      ));
+    } catch (error, stackTrace) {
       emit(state.copyWith(
         status: SummaryStatus.failure,
         error: 'Не удалось получить краткий пересказ',
       ));
 
-      rethrow;
+      super.onError(error, stackTrace);
     }
   }
 }
