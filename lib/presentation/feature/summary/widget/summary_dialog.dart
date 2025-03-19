@@ -17,11 +17,10 @@ Future showSummaryDialog(
   Function(String)? onLinkPressed,
 }) async {
   final theme = Theme.of(context);
-  final barrierColor = theme.colorScheme.surface.withValues(alpha: .9);
+  final barrierColor = theme.colorScheme.surface.withValues(alpha: .8);
 
   return await showDialog(
     context: context,
-    useRootNavigator: false,
     barrierColor: barrierColor,
     builder: (context) => BlocProvider.value(
       value: BlocProvider.of<SummaryAuthCubit>(context),
@@ -38,6 +37,8 @@ Future showSummaryDialog(
               titlePadding: const EdgeInsets.all(18),
               actionsPadding: const EdgeInsets.all(12),
               contentPadding: EdgeInsets.zero,
+              backgroundColor: theme.colorScheme.surfaceContainerLow,
+              shadowColor: theme.colorScheme.shadow,
               alignment: Alignment.center,
               actions: switch (authState.status) {
                 SummaryAuthStatus.authorized => [
