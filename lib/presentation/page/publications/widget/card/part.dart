@@ -24,6 +24,7 @@ import '../../../../feature/summary/widget/summary_dialog.dart';
 import '../../../../theme/theme.dart';
 import '../../../../utils/utils.dart';
 import '../../../../widget/enhancement/card.dart';
+import '../../../../widget/enhancement/progress_indicator.dart';
 import '../../../../widget/user_text_button.dart';
 import '../../../settings/cubit/settings_cubit.dart';
 import '../../bloc/publication_vote_bloc.dart';

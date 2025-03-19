@@ -2,15 +2,17 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../core/component/di/injector.dart';
 import '../../../data/model/filter/part.dart';
 import '../../../data/model/language/part.dart';
+import '../../feature/summary/widget/summary_token_widget.dart';
 import '../../theme/theme.dart';
+import '../../utils/utils.dart';
 import '../../widget/filter/filter_chip_list.dart';
 import '../../widget/publication_settings_widget.dart';
 import 'cubit/settings_cubit.dart';
 import 'model/config_model.dart';
 import 'widget/account/connect_sid_widget.dart';
-import 'widget/account/summary_token_widget.dart';
 import 'widget/settings_card_widget.dart';
 import 'widget/settings_checkbox_widget.dart';
 import 'widget/settings_section_widget.dart';
@@ -36,12 +38,26 @@ class SettingsView extends StatelessWidget {
       body: SafeArea(
         child: ListView(
           padding: AppInsets.screenPadding.copyWith(top: 0),
-          children: const [
+          children: [
             SettingsSectionWidget(
               title: 'Аккаунт',
               children: [
                 ConnectSidWidget(),
-                SummaryTokenWidget(),
+                SettingsCardWidget(
+                  title: 'YandexGPT',
+                  subtitle: 'Для генерации пересказов статей',
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 12.0),
+                    child: SummaryTokenWidget(
+                      onShowSnack: (text) {
+                        getIt<Utils>().showSnack(
+                          context: context,
+                          content: Text(text),
+                        );
+                      },
+                    ),
+                  ),
+                ),
               ],
             ),
             SettingsSectionWidget(

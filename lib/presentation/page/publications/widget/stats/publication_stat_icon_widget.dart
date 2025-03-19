@@ -22,7 +22,15 @@ class PublicationStatIconButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = context.theme;
     const iconSize = 18.0;
+
+    var iconColor = switch (color) {
+      == null => theme.iconTheme.color,
+      _ => color,
+    };
+
+    iconColor = iconColor?.withValues(alpha: isHighlighted ? .7 : .3);
 
     return Material(
       color: Colors.transparent,
@@ -42,21 +50,17 @@ class PublicationStatIconButton extends StatelessWidget {
                   : Icon(
                       icon,
                       size: iconSize,
-                      color: color?.withValues(alpha: isHighlighted ? 1 : .3) ??
-                          Theme.of(context)
-                              .iconTheme
-                              .color
-                              ?.withValues(alpha: isHighlighted ? 1 : .3),
+                      color: iconColor,
                     ),
               if (value.isNotEmpty)
                 Padding(
                   padding: const EdgeInsets.only(left: 6),
                   child: Text(
                     value,
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: color,
-                          fontWeight: FontWeight.w600,
-                        ),
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: color,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ),
             ],
