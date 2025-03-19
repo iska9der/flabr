@@ -5,7 +5,6 @@ flutter pub run build_runner build --delete-conflicting-outputs
 FLABRVER=$(yq -r '.version' 'pubspec.yaml' | cut -d '+' -f 1)
 echo "Make release builds for v$FLABRVER"
 
-flutter build apk --release --dart-define-from-file .env
 flutter build apk --release --split-per-abi --dart-define-from-file .env
 
 rm -rf release
