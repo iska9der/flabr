@@ -4,6 +4,8 @@ import 'package:injectable/injectable.dart';
 
 import '../../core/component/storage/storage.dart';
 import '../../core/constants/constants.dart';
+import '../../feature/summary/data/summary_model.dart';
+import '../../feature/summary/data/summary_repository.dart';
 import '../exception/part.dart';
 import '../model/company/card/company_card_model.dart';
 import '../model/filter/part.dart';
@@ -26,7 +28,6 @@ import '../model/related_data/publication_vote_model.dart';
 import '../model/search/search_order_enum.dart';
 import '../model/search/search_target_enum.dart';
 import '../model/section_enum.dart';
-import '../model/summary_model.dart';
 import '../model/tokens_model.dart';
 import '../model/tracker/part.dart';
 import '../model/user/user_bookmarks_type.dart';

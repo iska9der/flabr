@@ -1,8 +1,10 @@
-part of 'http.dart';
+import 'package:dio/dio.dart';
 
-class SummaryClient extends DioClient {
+import 'summary_repository.dart';
+
+class SummaryClient {
   SummaryClient(
-    super.dio, {
+    this.dio, {
     required SummaryTokenRepository tokenRepository,
   }) : _tokenRepository = tokenRepository {
     dio.options = dio.options.copyWith(baseUrl: 'https://300.ya.ru/api');
@@ -11,6 +13,7 @@ class SummaryClient extends DioClient {
     dio.interceptors.add(_authInterceptor());
   }
 
+  final Dio dio;
   final SummaryTokenRepository _tokenRepository;
 
   Interceptor _authInterceptor() {
@@ -27,4 +30,17 @@ class SummaryClient extends DioClient {
       },
     );
   }
+
+  Future<Response> post(
+    String url, {
+    dynamic body,
+    Map<String, dynamic>? queryParams,
+    Options? options,
+  }) =>
+      dio.post(
+        url,
+        data: body,
+        queryParameters: queryParams,
+        options: options,
+      );
 }

@@ -4,6 +4,8 @@ import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../data/repository/part.dart';
+import '../../../feature/summary/data/summary_client.dart';
+import '../../../feature/summary/data/summary_repository.dart';
 import '../../constants/constants.dart';
 import '../http/http.dart';
 import '../storage/storage.dart';
@@ -41,8 +43,7 @@ abstract class RegisterModule {
         tokenRepository: repository,
       );
 
-  @Named('ya300client')
   @Singleton()
-  HttpClient summaryClient(Dio dio, SummaryTokenRepository repository) =>
+  SummaryClient summaryClient(Dio dio, SummaryTokenRepository repository) =>
       SummaryClient(dio, tokenRepository: repository);
 }

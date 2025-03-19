@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../data/repository/part.dart';
 import '../cubit/summary_auth_cubit.dart';
 import '../cubit/summary_cubit.dart';
+import '../data/summary_repository.dart';
 import 'summary_token_widget.dart';
 import 'summary_widget.dart';
 
 Future showSummaryDialog(
   BuildContext context, {
-  required String publicationId,
+  required String url,
   required SummaryRepository repository,
   Widget? loaderWidget,
 
@@ -18,6 +18,7 @@ Future showSummaryDialog(
 }) async {
   final theme = Theme.of(context);
   final barrierColor = theme.colorScheme.surface.withValues(alpha: .8);
+  final loader = loaderWidget ?? CircularProgressIndicator();
 
   return await showDialog(
     context: context,
@@ -26,7 +27,7 @@ Future showSummaryDialog(
       value: BlocProvider.of<SummaryAuthCubit>(context),
       child: BlocProvider(
         create: (_) => SummaryCubit(
-          publicationId: publicationId,
+          url: url,
           repository: repository,
         ),
         child: BlocBuilder<SummaryAuthCubit, SummaryAuthState>(
@@ -57,7 +58,7 @@ Future showSummaryDialog(
                       },
                     ),
                   ],
-                _ => [],
+                _ => null,
               },
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -85,8 +86,7 @@ Future showSummaryDialog(
                 ],
               ),
               content: switch (authState.status) {
-                SummaryAuthStatus.loading when loaderWidget != null =>
-                  loaderWidget,
+                SummaryAuthStatus.loading => loader,
                 SummaryAuthStatus.unauthorized => Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 12),
                     child: Column(
@@ -99,7 +99,7 @@ Future showSummaryDialog(
                   ),
                 SummaryAuthStatus.authorized => SizedBox(
                     width: MediaQuery.of(context).size.width,
-                    child: const SummaryWidget(),
+                    child: SummaryWidget(loaderWidget: loader),
                   ),
                 _ => const SizedBox(),
               },

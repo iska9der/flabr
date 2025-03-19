@@ -37,13 +37,17 @@ class ArticleFooterWidget extends StatelessWidget {
             return PublicationStatIconButton(
               icon: Icons.auto_awesome,
               isHighlighted: state.isAuthorized,
-              onTap: () => showSummaryDialog(
-                context,
-                publicationId: publication.id,
-                repository: getIt(),
-                loaderWidget: CircleIndicator.medium(),
-                onLinkPressed: (link) => getIt<AppRouter>().launchUrl(link),
-              ),
+              onTap: () {
+                final url = '${Urls.baseUrl}/ru/articles/${publication.id}';
+
+                showSummaryDialog(
+                  context,
+                  url: url,
+                  repository: getIt(),
+                  loaderWidget: CircleIndicator.medium(),
+                  onLinkPressed: (link) => getIt<AppRouter>().launchUrl(link),
+                );
+              },
             );
           },
         ),

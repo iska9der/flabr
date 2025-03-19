@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../core/component/di/injector.dart';
 import '../../../data/model/filter/part.dart';
 import '../../../data/model/language/part.dart';
-import '../../feature/summary/widget/summary_token_widget.dart';
+import '../../../feature/summary/widget/summary_token_widget.dart';
 import '../../theme/theme.dart';
 import '../../utils/utils.dart';
 import '../../widget/filter/filter_chip_list.dart';
