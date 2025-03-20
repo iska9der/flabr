@@ -6,7 +6,7 @@ publish_to: "none"
 version: 1.2.3+10700
 
 environment:
-  flutter: 3.27.4
+  flutter: 3.29.2
   sdk: ">=3.5.0 <4.0.0"
 
 workspace:
@@ -42,7 +42,7 @@ dependencies:
   webview_cookie_manager:
     git:
       url: https://github.com/fryette/webview_cookie_manager.git
-      ref: "923e514"
+      ref: "e039544"
   webview_flutter: ^4.10.0
   device_preview: ^1.2.0
   flutter_fancy_tree_view: ^1.6.0
