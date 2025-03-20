@@ -1,13 +1,12 @@
 part of 'theme.dart';
 
 abstract class AppTheme {
-  static ThemeData get light => theme(AppSchemeLight.scheme).copyWith(
-        extensions: [AppSchemeLight.colors],
-      );
+  static ThemeData get light => theme(
+    AppSchemeLight.scheme,
+  ).copyWith(extensions: [AppSchemeLight.colors]);
 
-  static ThemeData get dark => theme(AppSchemeDark.scheme).copyWith(
-        extensions: [AppSchemeDark.colors],
-      );
+  static ThemeData get dark =>
+      theme(AppSchemeDark.scheme).copyWith(extensions: [AppSchemeDark.colors]);
 
   static ThemeData theme(ColorScheme colorScheme) {
     var typography = Typography.material2021(colorScheme: colorScheme);
@@ -63,6 +62,7 @@ abstract class AppTheme {
       drawerTheme: appDrawerThemeData,
       pageTransitionsTheme: appPageTransitionsTheme,
       scrollbarTheme: appScrollBarThemeData,
+      progressIndicatorTheme: proggressIndicatorThemeData,
       textButtonTheme: appTextButtonThemeData,
       iconButtonTheme: appIconButtonThemeData,
       checkboxTheme: appCheckboxThemeData,

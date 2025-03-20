@@ -7,6 +7,7 @@ import 'package:share_plus/share_plus.dart';
 import '../../../../core/constants/constants.dart';
 import '../../../../data/model/publication/publication.dart';
 import '../../../../data/model/publication/publication_type_enum.dart';
+import '../../../extension/extension.dart';
 import '../../../theme/theme.dart';
 import '../../../widget/enhancement/progress_indicator.dart';
 import '../../../widget/html_view_widget.dart';
@@ -160,8 +161,9 @@ class _PublicationDetailViewState extends State<PublicationDetailView> {
                               left: _hPadding,
                               right: _hPadding,
                             ),
-                            child:
-                                PublicationHubsWidget(hubs: publication.hubs),
+                            child: PublicationHubsWidget(
+                              hubs: publication.hubs,
+                            ),
                           ),
                         ),
                         SliverToBoxAdapter(
@@ -201,10 +203,11 @@ class _PublicationDetailViewState extends State<PublicationDetailView> {
                     right: 0,
                     child: ValueListenableBuilder(
                       valueListenable: isStatsVisible,
-                      builder: (_, value, __) => _BottomBar(
-                        publication: publication,
-                        isVisible: value,
-                      ),
+                      builder:
+                          (_, value, __) => _BottomBar(
+                            publication: publication,
+                            isVisible: value,
+                          ),
                     ),
                   ),
                 ],
@@ -230,6 +233,8 @@ class _AppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = context.theme;
+
     return AnimatedContainer(
       duration: const Duration(milliseconds: 200),
       curve: Curves.decelerate,
@@ -240,28 +245,24 @@ class _AppBar extends StatelessWidget {
           if (isVisible)
             Row(
               children: [
-                const SizedBox(
-                  width: 60,
-                  child: AutoLeadingButton(),
-                ),
+                const SizedBox(width: 60, child: AutoLeadingButton()),
                 Expanded(
-                  child: PublicationDetailAppBarTitle(
-                    publication: publication,
-                  ),
+                  child: PublicationDetailAppBarTitle(publication: publication),
                 ),
                 IconButton(
                   icon: const Icon(Icons.tune_rounded),
                   iconSize: 18,
                   tooltip: 'Настроить',
-                  onPressed: () => showModalBottomSheet(
-                    context: context,
-                    builder: (context) {
-                      return const SizedBox(
-                        height: 240,
-                        child: PublicationSettingsWidget(),
-                      );
-                    },
-                  ),
+                  onPressed:
+                      () => showModalBottomSheet(
+                        context: context,
+                        builder: (context) {
+                          return const SizedBox(
+                            height: 240,
+                            child: PublicationSettingsWidget(),
+                          );
+                        },
+                      ),
                 ),
                 IconButton(
                   icon: const Icon(Icons.share),
@@ -285,8 +286,9 @@ class _AppBar extends StatelessWidget {
                 valueListenable: scrollProgress,
                 builder: (context, value, child) {
                   return LinearProgressIndicator(
+                    stopIndicatorColor: Colors.transparent,
                     backgroundColor: Colors.transparent,
-                    color: Colors.blue.withValues(alpha: .2),
+                    color: theme.colors.progressTrackColor,
                     value: value,
                   );
                 },
@@ -300,10 +302,7 @@ class _AppBar extends StatelessWidget {
 }
 
 class _BottomBar extends StatelessWidget {
-  const _BottomBar({
-    required this.publication,
-    this.isVisible = true,
-  });
+  const _BottomBar({required this.publication, this.isVisible = true});
 
   final Publication publication;
   final bool isVisible;
@@ -336,16 +335,20 @@ class _BottomBar extends StatelessWidget {
                 child: IconButton(
                   icon: const Icon(Icons.more_horiz_rounded),
                   tooltip: 'Дополнительно',
-                  onPressed: () => showModalBottomSheet(
-                    context: context,
-                    builder: (_) => SizedBox(
-                      width: double.infinity,
-                      height: 120,
-                      child: PublicationMoreOptions(publication: publication),
-                    ),
-                  ),
+                  onPressed:
+                      () => showModalBottomSheet(
+                        context: context,
+                        builder:
+                            (_) => SizedBox(
+                              width: double.infinity,
+                              height: 120,
+                              child: PublicationMoreOptions(
+                                publication: publication,
+                              ),
+                            ),
+                      ),
                 ),
-              )
+              ),
             ],
           ),
         ),

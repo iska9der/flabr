@@ -10,6 +10,8 @@ abstract class AppColorsLight {
   static const Color card = Color.fromARGB(255, 255, 255, 255);
   static const Color cardHighlight = Color.fromARGB(255, 231, 243, 255);
 
+  static const Color progressTrackColor = Color.fromARGB(76, 18, 141, 241);
+
   static final AppColorsExtension extension = AppColorsExtension(
     surface: surface,
     primary: primary,
@@ -18,6 +20,7 @@ abstract class AppColorsLight {
     error: error,
     card: card,
     cardHighlight: cardHighlight,
+    progressTrackColor: progressTrackColor,
   );
 }
 
@@ -31,6 +34,8 @@ abstract class AppColorsDark {
   static const Color card = Color.fromARGB(255, 23, 23, 23);
   static const Color cardHighlight = Color.fromARGB(255, 26, 51, 77);
 
+  static const Color progressTrackColor = Color.fromARGB(51, 33, 150, 243);
+
   static final AppColorsExtension extension = AppColorsExtension(
     surface: surface,
     primary: primary,
@@ -39,6 +44,7 @@ abstract class AppColorsDark {
     error: error,
     card: card,
     cardHighlight: cardHighlight,
+    progressTrackColor: progressTrackColor,
   );
 }
 
@@ -51,6 +57,7 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
     required this.error,
     required this.card,
     required this.cardHighlight,
+    required this.progressTrackColor,
   });
 
   final Color surface;
@@ -60,6 +67,7 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
   final Color error;
   final Color card;
   final Color cardHighlight;
+  final Color progressTrackColor;
 
   @override
   ThemeExtension<AppColorsExtension> copyWith({
@@ -70,6 +78,7 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
     Color? error,
     Color? card,
     Color? cardHighlight,
+    Color? progressTrackColor,
   }) {
     return AppColorsExtension(
       surface: surface ?? this.surface,
@@ -79,6 +88,7 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
       error: error ?? this.error,
       card: card ?? this.card,
       cardHighlight: cardHighlight ?? this.cardHighlight,
+      progressTrackColor: progressTrackColor ?? this.progressTrackColor,
     );
   }
 
@@ -99,6 +109,8 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
       error: Color.lerp(error, other.error, t)!,
       card: Color.lerp(card, other.card, t)!,
       cardHighlight: Color.lerp(cardHighlight, other.cardHighlight, t)!,
+      progressTrackColor:
+          Color.lerp(progressTrackColor, other.progressTrackColor, t)!,
     );
   }
 }

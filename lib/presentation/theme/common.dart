@@ -14,11 +14,12 @@ const AppBarTheme appAppBarTheme = AppBarTheme(
   titleTextStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
 );
 
-const PageTransitionsTheme appPageTransitionsTheme =
-    PageTransitionsTheme(builders: {
-  TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
-  TargetPlatform.android: FadeUpwardsPageTransitionsBuilder(),
-});
+const PageTransitionsTheme appPageTransitionsTheme = PageTransitionsTheme(
+  builders: {
+    TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+    TargetPlatform.android: FadeUpwardsPageTransitionsBuilder(),
+  },
+);
 
 ScrollbarThemeData appScrollBarThemeData = ScrollbarThemeData(
   thumbVisibility: WidgetStateProperty.all(false),
@@ -56,9 +57,14 @@ const DialogTheme dialogTheme = DialogTheme(
   shape: RoundedRectangleBorder(borderRadius: AppStyles.borderRadius),
 );
 
-const NavigationBarThemeData navigationBarThemeData =
-    NavigationBarThemeData(height: AppDimensions.navBarHeight);
+const NavigationBarThemeData navigationBarThemeData = NavigationBarThemeData(
+  height: AppDimensions.navBarHeight,
+);
 
 const BottomSheetThemeData bottomSheetThemeData = BottomSheetThemeData(
   showDragHandle: true,
 );
+
+const ProgressIndicatorThemeData proggressIndicatorThemeData =
+// ignore: deprecated_member_use
+ProgressIndicatorThemeData(year2023: false);
