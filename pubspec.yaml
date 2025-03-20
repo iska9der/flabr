@@ -7,7 +7,7 @@ version: 1.2.3+10700
 
 environment:
   flutter: 3.29.2
-  sdk: ">=3.5.0 <4.0.0"
+  sdk: ^3.7.0
 
 workspace:
   - packages/ya_summary
@@ -24,7 +24,10 @@ dependencies:
   dio: ^5.4.3+1
   equatable: ^2.0.7
   flutter_bloc: ^8.1.6
-  flutter_file_dialog: ^3.0.2
+  flutter_file_dialog:
+    git:
+      url: https://github.com/kineapps/flutter_file_dialog.git
+      ref: "5e987a6"
   flutter_secure_storage: 9.2.4
   flutter_svg: ^2.0.10+1
   flutter_widget_from_html_core: ^0.15.2
