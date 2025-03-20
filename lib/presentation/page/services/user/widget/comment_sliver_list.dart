@@ -8,7 +8,7 @@ import '../../../../../core/component/di/injector.dart';
 import '../../../../../core/component/router/app_router.dart';
 import '../../../../../data/model/comment/comment_model.dart';
 import '../../../../../data/model/publication/publication_author_model.dart';
-import '../../../../feature/scroll/part.dart';
+import '../../../../../feature/scroll/scroll.dart';
 import '../../../../utils/utils.dart';
 import '../../../../widget/comment/comment_widget.dart';
 import '../../../../widget/enhancement/card.dart';

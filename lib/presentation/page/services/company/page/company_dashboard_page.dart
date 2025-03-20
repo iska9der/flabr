@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/component/di/injector.dart';
 import '../../../../../core/component/router/app_router.dart';
-import '../../../../feature/scaffold/part.dart';
+import '../../../../../feature/scaffold/scaffold.dart';
 import '../../../../theme/theme.dart';
 import '../../../../widget/dashboard_drawer_link_widget.dart';
 import '../cubit/company_cubit.dart';

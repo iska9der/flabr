@@ -4,8 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/component/di/injector.dart';
 import '../../../../data/model/publication/publication_flow_enum.dart';
-import '../../../feature/publication_list/part.dart';
-import '../../../feature/scroll/part.dart';
+import '../../../../feature/publication_list/publication_list.dart';
+import '../../../../feature/scroll/scroll.dart';
 import '../cubit/flow_publication_list_cubit.dart';
 import '../widget/publication_filters_widget.dart';
 

@@ -7,8 +7,8 @@ import 'package:ya_summary/ya_summary.dart';
 
 import '../core/component/di/injector.dart';
 import '../core/component/router/app_router.dart';
+import '../feature/auth/auth.dart';
 import 'extension/extension.dart';
-import 'feature/auth/cubit/auth_cubit.dart';
 import 'page/settings/cubit/settings_cubit.dart';
 import 'theme/theme.dart';
 import 'widget/enhancement/progress_indicator.dart';

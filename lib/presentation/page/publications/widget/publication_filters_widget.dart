@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../data/model/filter/part.dart';
 import '../../../../data/model/publication/publication_flow_enum.dart';
-import '../../../feature/publication_list/part.dart';
+import '../../../../feature/publication_list/publication_list.dart';
 import '../../../widget/filter/common_filters_widget.dart';
 import '../../../widget/filter/filter_chip_list.dart';
 import '../cubit/flow_publication_list_cubit.dart';

@@ -9,8 +9,8 @@ import 'package:path/path.dart' as p;
 
 import '../../core/component/di/injector.dart';
 import '../../core/component/router/app_router.dart';
+import '../../feature/image_action/image_action.dart';
 import '../extension/extension.dart';
-import '../feature/image_action/part.dart';
 import '../page/settings/cubit/settings_cubit.dart';
 import '../theme/theme.dart';
 import '../utils/utils.dart';

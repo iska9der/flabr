@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/component/di/injector.dart';
-import '../../../feature/publication_list/part.dart';
-import '../../../feature/scroll/part.dart';
+import '../../../../feature/publication_list/publication_list.dart';
+import '../../../../feature/scroll/scroll.dart';
 import 'cubit/feed_publication_list_cubit.dart';
 import 'widget/feed_filters_widget.dart';
 

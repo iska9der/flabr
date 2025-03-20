@@ -8,7 +8,7 @@ import '../../../../../data/exception/part.dart';
 import '../../../../../data/model/filter/part.dart';
 import '../../../../../data/model/list_response/list_response_model.dart';
 import '../../../../../data/model/publication/publication.dart';
-import '../../../../feature/publication_list/part.dart';
+import '../../../../../feature/publication_list/publication_list.dart';
 
 part 'feed_publication_list_state.dart';
 

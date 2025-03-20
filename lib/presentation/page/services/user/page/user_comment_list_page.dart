@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/component/di/injector.dart';
-import '../../../../feature/scroll/part.dart';
+import '../../../../../feature/scroll/scroll.dart';
 import '../../../../widget/enhancement/refresh_indicator.dart';
 import '../../../settings/cubit/settings_cubit.dart';
 import '../cubit/user_comment_list_cubit.dart';

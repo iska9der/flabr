@@ -5,7 +5,7 @@ import '../../../../../data/model/filter/part.dart';
 import '../../../../../data/model/list_response/list_response_model.dart';
 import '../../../../../data/model/publication/publication.dart';
 import '../../../../../data/model/user/user_publication_type.dart';
-import '../../../../feature/publication_list/part.dart';
+import '../../../../../feature/publication_list/publication_list.dart';
 
 part 'user_publication_list_state.dart';
 

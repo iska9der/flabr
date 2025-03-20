@@ -12,8 +12,8 @@ import '../../../widget/enhancement/progress_indicator.dart';
 import '../../../widget/html_view_widget.dart';
 import '../../../widget/publication_settings_widget.dart';
 import '../cubit/publication_detail_cubit.dart';
-import 'card/part.dart';
-import 'publication_more_options_widget.dart';
+import 'card/card.dart';
+import 'publication_more_button.dart';
 import 'stats/part.dart';
 
 part 'publication_detail_appbar.dart';
@@ -341,7 +341,7 @@ class _BottomBar extends StatelessWidget {
                     builder: (_) => SizedBox(
                       width: double.infinity,
                       height: 120,
-                      child: PublicationMoreOptions(publication: publication),
+                      child: PublicationMoreButton(publication: publication),
                     ),
                   ),
                 ),

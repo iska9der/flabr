@@ -1,4 +1,4 @@
-part of 'part.dart';
+part of 'card.dart';
 
 class SkeletonCardWidget extends StatelessWidget {
   const SkeletonCardWidget({

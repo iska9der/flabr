@@ -11,7 +11,7 @@ import '../../../../data/model/list_response/list_response_model.dart';
 import '../../../../data/model/publication/publication.dart';
 import '../../../../data/model/publication/publication_flow_enum.dart';
 import '../../../../data/model/section_enum.dart';
-import '../../../feature/publication_list/part.dart';
+import '../../../../feature/publication_list/publication_list.dart';
 
 part 'flow_publication_list_state.dart';
 

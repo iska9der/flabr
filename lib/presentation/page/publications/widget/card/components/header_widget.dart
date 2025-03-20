@@ -1,4 +1,4 @@
-part of '../part.dart';
+part of '../card.dart';
 
 class PublicationHeaderWidget extends StatelessWidget {
   const PublicationHeaderWidget(this.publication, {super.key});

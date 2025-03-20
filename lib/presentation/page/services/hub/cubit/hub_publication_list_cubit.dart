@@ -7,7 +7,7 @@ import '../../../../../data/model/filter/part.dart';
 import '../../../../../data/model/list_response/list_response_model.dart';
 import '../../../../../data/model/publication/publication.dart';
 import '../../../../../data/model/publication/publication_type_enum.dart';
-import '../../../../feature/publication_list/part.dart';
+import '../../../../../feature/publication_list/publication_list.dart';
 
 part 'hub_publication_list_state.dart';
 

@@ -205,7 +205,7 @@ class _CommentTreeWidgetState extends State<CommentTreeWidget> {
                                     /// перемещаемся к родительскому комментарию
                                     _moveToParent(entry.node.parentId);
                                   },
-                                  child: ParentComment(
+                                  child: CommentParent(
                                     parent: entry.node.parent!,
                                   ),
                                 ),

@@ -4,8 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/component/di/injector.dart';
 import '../../../../../data/model/user/user_bookmarks_type.dart';
-import '../../../../feature/publication_list/part.dart';
-import '../../../../feature/scroll/part.dart';
+import '../../../../../feature/publication_list/publication_list.dart';
+import '../../../../../feature/scroll/scroll.dart';
 import '../../../../widget/enhancement/refresh_indicator.dart';
 import '../../../settings/cubit/settings_cubit.dart';
 import '../cubit/user_bookmark_list_cubit.dart';

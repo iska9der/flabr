@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../feature/image_action/part.dart';
+import '../../feature/image_action/image_action.dart';
 import '../theme/theme.dart';
 
 class CardAvatarWidget extends StatelessWidget {

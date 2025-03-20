@@ -3,9 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/component/di/injector.dart';
 import '../../../../../data/model/filter/part.dart';
-import '../../../../feature/auth/cubit/auth_cubit.dart';
-import '../../../../feature/auth/widget/dialog.dart';
-import '../../../../feature/publication_list/part.dart';
+import '../../../../../feature/auth/auth.dart';
+import '../../../../../feature/publication_list/publication_list.dart';
 import '../../../../utils/utils.dart';
 import '../../../../widget/filter/filter_chip_list.dart';
 import '../../../../widget/filter/publication_filter_submit_button.dart';

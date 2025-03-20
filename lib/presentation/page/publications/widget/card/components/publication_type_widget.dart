@@ -1,4 +1,4 @@
-part of '../part.dart';
+part of '../card.dart';
 
 class PublicationTypeWidget extends StatelessWidget {
   PublicationTypeWidget({super.key, required this.type, Color? color})

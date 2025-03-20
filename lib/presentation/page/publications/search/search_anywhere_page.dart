@@ -9,14 +9,14 @@ import '../../../../core/component/di/injector.dart';
 import '../../../../data/model/render_type_enum.dart';
 import '../../../../data/model/search/search_order_enum.dart';
 import '../../../../data/model/search/search_target_enum.dart';
+import '../../../../feature/scroll/scroll.dart';
 import '../../../extension/extension.dart';
-import '../../../feature/scroll/part.dart';
 import '../../../utils/utils.dart';
 import '../../../widget/enhancement/progress_indicator.dart';
 import '../../services/company/widget/company_card_widget.dart';
 import '../../services/hub/widget/hub_card_widget.dart';
 import '../../services/user/widget/user_card_widget.dart';
-import '../widget/card/part.dart';
+import '../widget/card/card.dart';
 import 'cubit/search_cubit.dart';
 
 @RoutePage(name: SearchAnywherePage.routeName)

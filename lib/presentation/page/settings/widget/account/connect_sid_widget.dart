@@ -3,8 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/component/di/injector.dart';
-import '../../../../feature/auth/cubit/auth_cubit.dart';
-import '../../../../feature/auth/cubit/login_cubit.dart';
+import '../../../../../feature/auth/auth.dart';
 import '../../../../utils/utils.dart';
 import '../settings_card_widget.dart';
 
