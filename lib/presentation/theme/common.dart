@@ -47,7 +47,10 @@ const CheckboxThemeData appCheckboxThemeData = CheckboxThemeData();
 const SwitchThemeData appSwitchThemeData = SwitchThemeData();
 
 const SliderThemeData appSliderThemeData = SliderThemeData(
-  thumbShape: RoundSliderThumbShape(enabledThumbRadius: 6.0),
+  // ignore: deprecated_member_use
+  year2023: false,
+  trackHeight: 12,
+  thumbSize: WidgetStatePropertyAll(Size(5, 28)),
   overlayShape: RoundSliderOverlayShape(overlayRadius: 20.0),
 );
 
