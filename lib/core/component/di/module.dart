@@ -31,16 +31,16 @@ abstract class RegisterModule {
   @Named('mobileClient')
   @Singleton()
   HttpClient mobileClient(Dio dio, TokenRepository repository) => HabraClient(
-        dio..options = BaseOptions(baseUrl: Urls.mobileApiUrl),
-        tokenRepository: repository,
-      );
+    dio..options = BaseOptions(baseUrl: Urls.mobileApiUrl),
+    tokenRepository: repository,
+  );
 
   @Named('siteClient')
   @Singleton()
   HttpClient siteClient(Dio dio, TokenRepository repository) => HabraClient(
-        dio..options = BaseOptions(baseUrl: Urls.siteApiUrl),
-        tokenRepository: repository,
-      );
+    dio..options = BaseOptions(baseUrl: Urls.siteApiUrl),
+    tokenRepository: repository,
+  );
 
   @Singleton()
   SummaryClient summaryClient(Dio dio, SummaryTokenRepository repository) =>

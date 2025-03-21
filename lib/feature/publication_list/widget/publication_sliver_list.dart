@@ -5,15 +5,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
-import '../../../core/component/di/injector.dart';
+import '../../../core/component/di/di.dart';
 import '../../../presentation/page/publications/widget/card/card.dart';
 import '../../../presentation/utils/utils.dart';
 import '../../../presentation/widget/enhancement/progress_indicator.dart';
 import '../../scroll/scroll.dart';
 import '../cubit/publication_list_cubit.dart';
 
-class PublicationSliverList<ListCubit extends PublicationListCubit<ListState>,
-    ListState extends PublicationListState> extends StatelessWidget {
+class PublicationSliverList<
+  ListCubit extends PublicationListCubit<ListState>,
+  ListState extends PublicationListState
+>
+    extends StatelessWidget {
   const PublicationSliverList({super.key});
 
   @override
@@ -22,12 +25,15 @@ class PublicationSliverList<ListCubit extends PublicationListCubit<ListState>,
     const skeletonLoader = _SkeletonLoader();
 
     return BlocConsumer<ListCubit, ListState>(
-      listenWhen: (previous, current) =>
-          previous.page != 1 && current.status == PublicationListStatus.failure,
-      listener: (_, state) => getIt<Utils>().showSnack(
-        context: context,
-        content: Text(state.error),
-      ),
+      listenWhen:
+          (previous, current) =>
+              previous.page != 1 &&
+              current.status == PublicationListStatus.failure,
+      listener:
+          (_, state) => getIt<Utils>().showSnack(
+            context: context,
+            content: Text(state.error),
+          ),
       builder: (context, state) {
         /// При инициализации запрашиваем публикации
         if (state.status == PublicationListStatus.initial) {
@@ -51,17 +57,13 @@ class PublicationSliverList<ListCubit extends PublicationListCubit<ListState>,
         final isErrorShown =
             state.isFirstFetch && state.status == PublicationListStatus.failure;
         if (isErrorShown) {
-          return SliverFillRemaining(
-            child: Center(child: Text(state.error)),
-          );
+          return SliverFillRemaining(child: Center(child: Text(state.error)));
         }
 
         var publications = state.publications;
         if (publications.isEmpty) {
           return const SliverFillRemaining(
-            child: Center(
-              child: Text('Ничего нет'),
-            ),
+            child: Center(child: Text('Ничего нет')),
           );
         }
 
@@ -87,7 +89,8 @@ class PublicationSliverList<ListCubit extends PublicationListCubit<ListState>,
                 child: CircleIndicator.medium(),
               );
             },
-            childCount: publications.length +
+            childCount:
+                publications.length +
                 (state.status == PublicationListStatus.loading ? 1 : 0),
           ),
         );
@@ -104,14 +107,16 @@ class _SkeletonLoader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Skeletonizer.sliver(
       child: SliverList.list(
-        children: List.generate(
-          2,
-          (i) => SkeletonCardWidget(
-            authorAlias: 'author alias' * (Random().nextInt(2) + 1),
-            title: 'card title' * (Random().nextInt(10) + 1),
-            description: 'random card description' * (Random().nextInt(7) + 5),
-          ),
-        ).toList(),
+        children:
+            List.generate(
+              2,
+              (i) => SkeletonCardWidget(
+                authorAlias: 'author alias' * (Random().nextInt(2) + 1),
+                title: 'card title' * (Random().nextInt(10) + 1),
+                description:
+                    'random card description' * (Random().nextInt(7) + 5),
+              ),
+            ).toList(),
       ),
     );
   }

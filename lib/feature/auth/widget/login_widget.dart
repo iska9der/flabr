@@ -6,8 +6,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:webview_cookie_manager/webview_cookie_manager.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-import '../../../core/component/di/injector.dart';
-import '../../../core/component/logger/console.dart';
+import '../../../core/component/di/di.dart';
+import '../../../core/component/logger/logger.dart';
 import '../../../core/constants/constants.dart';
 import '../../../presentation/extension/extension.dart';
 import '../../../presentation/utils/utils.dart';
@@ -26,21 +26,22 @@ class LoginWidget extends StatelessWidget implements DialogUserWidget {
     return Center(
       child: FlabrCard(
         padding: EdgeInsets.zero,
-        child: authState.isAuthorized
-            ? Center(child: Text('Вы уже вошли, ${authState.me.alias}'))
-            : BlocProvider(
-                create: (_) => LoginCubit(tokenRepository: getIt()),
-                child: BlocListener<LoginCubit, LoginState>(
-                  listener: (context, state) {
-                    if (state.status.isSuccess) {
-                      context.read<AuthCubit>().handleTokens();
+        child:
+            authState.isAuthorized
+                ? Center(child: Text('Вы уже вошли, ${authState.me.alias}'))
+                : BlocProvider(
+                  create: (_) => LoginCubit(tokenRepository: getIt()),
+                  child: BlocListener<LoginCubit, LoginState>(
+                    listener: (context, state) {
+                      if (state.status.isSuccess) {
+                        context.read<AuthCubit>().handleTokens();
 
-                      Navigator.of(context).pop();
-                    }
-                  },
-                  child: const _WebViewLogin(),
+                        Navigator.of(context).pop();
+                      }
+                    },
+                    child: const _WebViewLogin(),
+                  ),
                 ),
-              ),
       ),
     );
   }
@@ -63,12 +64,13 @@ class _WebViewLoginState extends State<_WebViewLogin> {
 
   Future<String> getConnectSid(String url) async {
     final list = await cookieManager.getCookies(url);
-    final sid = list
-        .firstWhere(
-          (cookie) => cookie.name == 'connect_sid',
-          orElse: () => Cookie('bababoi', ''),
-        )
-        .value;
+    final sid =
+        list
+            .firstWhere(
+              (cookie) => cookie.name == 'connect_sid',
+              orElse: () => Cookie('bababoi', ''),
+            )
+            .value;
 
     return sid;
   }
@@ -90,35 +92,36 @@ class _WebViewLoginState extends State<_WebViewLogin> {
     super.initState();
 
     cookieManager = WebviewCookieManager();
-    wvController = WebViewController()
-      ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..setNavigationDelegate(
-        NavigationDelegate(
-          onWebResourceError: (WebResourceError error) {},
-          onNavigationRequest: (NavigationRequest request) async {
-            logger.info(request.url, title: 'URL');
+    wvController =
+        WebViewController()
+          ..setJavaScriptMode(JavaScriptMode.unrestricted)
+          ..setNavigationDelegate(
+            NavigationDelegate(
+              onWebResourceError: (WebResourceError error) {},
+              onNavigationRequest: (NavigationRequest request) async {
+                logger.info(request.url, title: 'URL');
 
-            if (request.url.startsWith('${Urls.baseUrl}/ru/all')) {
-              final loginCubit = context.read<LoginCubit>();
-              await getConnectSid(request.url).then(
-                (value) => Timer(
-                  const Duration(seconds: 1),
-                  () => loginCubit.submitConnectSid(value),
-                ),
-              );
-              return NavigationDecision.prevent;
-            }
+                if (request.url.startsWith('${Urls.baseUrl}/ru/all')) {
+                  final loginCubit = context.read<LoginCubit>();
+                  await getConnectSid(request.url).then(
+                    (value) => Timer(
+                      const Duration(seconds: 1),
+                      () => loginCubit.submitConnectSid(value),
+                    ),
+                  );
+                  return NavigationDecision.prevent;
+                }
 
-            if (!request.url.startsWith(Urls.baseUrl) &&
-                !request.url.startsWith('https://account.habr.com')) {
-              return NavigationDecision.prevent;
-            }
+                if (!request.url.startsWith(Urls.baseUrl) &&
+                    !request.url.startsWith('https://account.habr.com')) {
+                  return NavigationDecision.prevent;
+                }
 
-            return NavigationDecision.navigate;
-          },
-        ),
-      )
-      ..loadRequest(_authUri);
+                return NavigationDecision.navigate;
+              },
+            ),
+          )
+          ..loadRequest(_authUri);
   }
 
   @override

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../../core/component/di/injector.dart';
+import '../../../../../core/component/di/di.dart';
 import '../../../../../feature/auth/auth.dart';
 import '../../../../utils/utils.dart';
 import '../settings_card_widget.dart';
@@ -27,9 +27,7 @@ class _ConnectSidWidgetState extends State<ConnectSidWidget> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => LoginCubit(
-        tokenRepository: getIt(),
-      ),
+      create: (_) => LoginCubit(tokenRepository: getIt()),
       child: BlocListener<LoginCubit, LoginState>(
         listenWhen: (_, current) => current.status == LoginStatus.success,
         listener: (_, state) => context.read<AuthCubit>().handleTokens(),
@@ -70,17 +68,17 @@ class _ConnectSidWidgetState extends State<ConnectSidWidget> {
                       children: [
                         state.isAuthorized
                             ? ElevatedButton(
-                                onPressed: () {
-                                  context.read<AuthCubit>().logOut();
-                                },
-                                child: const Text('Очистить'),
-                              )
+                              onPressed: () {
+                                context.read<AuthCubit>().logOut();
+                              },
+                              child: const Text('Очистить'),
+                            )
                             : FilledButton(
-                                onPressed: () {
-                                  loginCubit.submitConnectSid(controller.text);
-                                },
-                                child: const Text('Сохранить'),
-                              ),
+                              onPressed: () {
+                                loginCubit.submitConnectSid(controller.text);
+                              },
+                              child: const Text('Сохранить'),
+                            ),
                         const SizedBox(width: 12),
                         if (state.isAuthorized)
                           ElevatedButton(

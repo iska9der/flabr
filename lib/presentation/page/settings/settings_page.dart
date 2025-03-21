@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ya_summary/ya_summary.dart';
 
-import '../../../core/component/di/injector.dart';
+import '../../../core/component/di/di.dart';
 import '../../../data/model/filter/part.dart';
 import '../../../data/model/language/part.dart';
 import '../../theme/theme.dart';
@@ -62,11 +62,7 @@ class SettingsView extends StatelessWidget {
             ),
             SettingsSectionWidget(
               title: 'Интерфейс',
-              children: [
-                UIThemeWidget(),
-                UILangWidget(),
-                ArticlesLangWidget(),
-              ],
+              children: [UIThemeWidget(), UILangWidget(), ArticlesLangWidget()],
             ),
             SettingsSectionWidget(
               title: 'Лента',
@@ -117,16 +113,19 @@ class _UIThemeWidgetState extends State<UIThemeWidget> {
       child: Padding(
         padding: const EdgeInsets.only(top: 8.0),
         child: FilterChipList(
-          options: ThemeMode.values
-              .map((e) => FilterOption(
-                    label: switch (e) {
-                      ThemeMode.system => 'Системная',
-                      ThemeMode.light => 'Светлая',
-                      ThemeMode.dark => 'Темная',
-                    },
-                    value: e.name,
-                  ))
-              .toList(),
+          options:
+              ThemeMode.values
+                  .map(
+                    (e) => FilterOption(
+                      label: switch (e) {
+                        ThemeMode.system => 'Системная',
+                        ThemeMode.light => 'Светлая',
+                        ThemeMode.dark => 'Темная',
+                      },
+                      value: e.name,
+                    ),
+                  )
+                  .toList(),
           isSelected: (option) => option.value == themeMode.name,
           onSelected: (isSelected, option) {
             if (isLoading) {
@@ -170,14 +169,8 @@ class UILangWidget extends StatelessWidget {
             underline: const SizedBox(),
             value: state.langUI,
             items: const [
-              DropdownMenuItem(
-                value: Language.ru,
-                child: Text('Русский'),
-              ),
-              DropdownMenuItem(
-                value: Language.en,
-                child: Text('Английский'),
-              ),
+              DropdownMenuItem(value: Language.ru, child: Text('Русский')),
+              DropdownMenuItem(value: Language.en, child: Text('Английский')),
             ],
             onChanged: (Language? value) {
               context.read<SettingsCubit>().changeUILang(value);
@@ -202,22 +195,29 @@ class ArticlesLangWidget extends StatelessWidget {
         builder: (context, state) {
           return Column(
             mainAxisSize: MainAxisSize.min,
-            children: Language.values
-                .map(
-                  (lang) => SettingsCheckboxWidget(
-                    type: SettingsCheckboxType.checkboxTile,
-                    title: Text(lang.label),
-                    initialValue: state.langArticles.contains(lang),
-                    validate: (bool val) => context
-                        .read<SettingsCubit>()
-                        .validateChangeArticlesLang(lang, isEnabled: val)
-                        .$1,
-                    onChanged: (bool? val) => context
-                        .read<SettingsCubit>()
-                        .changeArticleLang(lang, isEnabled: val),
-                  ),
-                )
-                .toList(),
+            children:
+                Language.values
+                    .map(
+                      (lang) => SettingsCheckboxWidget(
+                        type: SettingsCheckboxType.checkboxTile,
+                        title: Text(lang.label),
+                        initialValue: state.langArticles.contains(lang),
+                        validate:
+                            (bool val) =>
+                                context
+                                    .read<SettingsCubit>()
+                                    .validateChangeArticlesLang(
+                                      lang,
+                                      isEnabled: val,
+                                    )
+                                    .$1,
+                        onChanged:
+                            (bool? val) => context
+                                .read<SettingsCubit>()
+                                .changeArticleLang(lang, isEnabled: val),
+                      ),
+                    )
+                    .toList(),
           );
         },
       ),
@@ -241,15 +241,17 @@ class SettingsFeedWidget extends StatelessWidget {
           SettingsCheckboxWidget(
             initialValue: settingsCubit.state.feed.isImageVisible,
             title: const Text('Изображения'),
-            onChanged: (bool value) =>
-                settingsCubit.changeFeedImageVisibility(isVisible: value),
+            onChanged:
+                (bool value) =>
+                    settingsCubit.changeFeedImageVisibility(isVisible: value),
           ),
           SettingsCheckboxWidget(
             initialValue: settingsCubit.state.feed.isDescriptionVisible,
             title: const Text('Короткое описание'),
             subtitle: const Text('влияет на производительность'),
-            onChanged: (bool value) =>
-                settingsCubit.changeFeedDescVisibility(isVisible: value),
+            onChanged:
+                (bool value) =>
+                    settingsCubit.changeFeedDescVisibility(isVisible: value),
           ),
         ],
       ),
@@ -265,16 +267,18 @@ class SettingNavVisibilityWidget extends StatelessWidget {
     return SettingsCardWidget(
       title: 'Навигация',
       child: BlocBuilder<SettingsCubit, SettingsState>(
-        buildWhen: (previous, current) =>
-            previous.misc.navigationOnScrollVisible !=
-            current.misc.navigationOnScrollVisible,
+        buildWhen:
+            (previous, current) =>
+                previous.misc.navigationOnScrollVisible !=
+                current.misc.navigationOnScrollVisible,
         builder: (context, state) {
           return SettingsCheckboxWidget(
             initialValue: state.misc.navigationOnScrollVisible,
             title: const Text('Показывать при скролле'),
-            onChanged: (bool value) => context
-                .read<SettingsCubit>()
-                .changeNavigationOnScrollVisibility(isVisible: value),
+            onChanged:
+                (bool value) => context
+                    .read<SettingsCubit>()
+                    .changeNavigationOnScrollVisibility(isVisible: value),
           );
         },
       ),
@@ -290,23 +294,27 @@ class SettingScrollVariantWidget extends StatelessWidget {
     return SettingsCardWidget(
       title: 'Скролл',
       child: BlocBuilder<SettingsCubit, SettingsState>(
-        buildWhen: (previous, current) =>
-            previous.misc.scrollVariant != current.misc.scrollVariant,
+        buildWhen:
+            (previous, current) =>
+                previous.misc.scrollVariant != current.misc.scrollVariant,
         builder: (context, state) {
           return Padding(
             padding: const EdgeInsets.only(top: 8.0),
             child: FilterChipList(
-                options: ScrollVariant.values
-                    .map((e) => FilterOption(label: e.label, value: e.label))
-                    .toList(),
-                isSelected: (option) =>
-                    state.misc.scrollVariant.label == option.label,
-                onSelected: (isSelected, option) {
-                  final newVariant = ScrollVariant.values
-                      .firstWhere((element) => element.label == option.value);
+              options:
+                  ScrollVariant.values
+                      .map((e) => FilterOption(label: e.label, value: e.label))
+                      .toList(),
+              isSelected:
+                  (option) => state.misc.scrollVariant.label == option.label,
+              onSelected: (isSelected, option) {
+                final newVariant = ScrollVariant.values.firstWhere(
+                  (element) => element.label == option.value,
+                );
 
-                  context.read<SettingsCubit>().changeScrollVariant(newVariant);
-                }),
+                context.read<SettingsCubit>().changeScrollVariant(newVariant);
+              },
+            ),
           );
         },
       ),

@@ -3,7 +3,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../../core/component/di/injector.dart';
+import '../../../../../core/component/di/di.dart';
 import '../../../../../data/model/filter/part.dart';
 import '../../../../../feature/publication_list/publication_list.dart';
 import '../../../../../feature/scroll/scroll.dart';
@@ -36,15 +36,14 @@ class HubDetailPage extends StatelessWidget {
       key: ValueKey('hub-$alias-detail'),
       providers: [
         BlocProvider(
-          create: (_) => HubPublicationListCubit(
-            repository: getIt(),
-            languageRepository: getIt(),
-            hub: alias,
-          ),
+          create:
+              (_) => HubPublicationListCubit(
+                repository: getIt(),
+                languageRepository: getIt(),
+                hub: alias,
+              ),
         ),
-        BlocProvider(
-          create: (_) => ScrollCubit(),
-        ),
+        BlocProvider(create: (_) => ScrollCubit()),
       ],
       child: const HubDetailPageView(),
     );
@@ -67,22 +66,25 @@ class HubDetailPageView extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           const FloatingScrollToTopButton(),
-          FloatingFilterButton<HubPublicationListCubit,
-              HubPublicationListState>(
+          FloatingFilterButton<
+            HubPublicationListCubit,
+            HubPublicationListState
+          >(
             filter:
                 BlocBuilder<HubPublicationListCubit, HubPublicationListState>(
-              builder: (context, state) {
-                return CommonFiltersWidget(
-                  isLoading: state.status == PublicationListStatus.loading,
-                  sort: state.filter.sort,
-                  filterOption: switch (state.filter.sort) {
-                    Sort.byBest => state.filter.period,
-                    Sort.byNew => state.filter.score,
+                  builder: (context, state) {
+                    return CommonFiltersWidget(
+                      isLoading: state.status == PublicationListStatus.loading,
+                      sort: state.filter.sort,
+                      filterOption: switch (state.filter.sort) {
+                        Sort.byBest => state.filter.period,
+                        Sort.byNew => state.filter.score,
+                      },
+                      onSubmit:
+                          context.read<HubPublicationListCubit>().applyFilter,
+                    );
                   },
-                  onSubmit: context.read<HubPublicationListCubit>().applyFilter,
-                );
-              },
-            ),
+                ),
           ),
         ],
       ),
@@ -128,14 +130,18 @@ class _HubArticleListView extends StatelessWidget {
           listener: (_, __) => context.read<HubPublicationListCubit>().fetch(),
         ),
         BlocListener<SettingsCubit, SettingsState>(
-          listenWhen: (previous, current) =>
-              previous.langUI != current.langUI ||
-              previous.langArticles != current.langArticles,
+          listenWhen:
+              (previous, current) =>
+                  previous.langUI != current.langUI ||
+                  previous.langArticles != current.langArticles,
           listener: (_, __) => context.read<ScrollCubit>().animateToTop(),
         ),
       ],
-      child: const PublicationSliverList<HubPublicationListCubit,
-          HubPublicationListState>(),
+      child:
+          const PublicationSliverList<
+            HubPublicationListCubit,
+            HubPublicationListState
+          >(),
     );
   }
 }

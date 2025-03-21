@@ -2,7 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 
-import '../../../../../core/component/di/injector.dart';
+import '../../../../../core/component/di/di.dart';
 import '../../../../../core/component/router/app_router.dart';
 import '../../../../../data/model/company/company_model.dart';
 import '../../../../../data/model/company/company_statistics_model.dart';
@@ -25,17 +25,15 @@ class CompanyCardWidget extends StatelessWidget {
   final RenderType renderType;
 
   moveToDetails(BuildContext context) {
-    getIt<AppRouter>().navigate(
-      CompanyDashboardRoute(alias: model.alias),
-    );
+    getIt<AppRouter>().navigate(CompanyDashboardRoute(alias: model.alias));
   }
 
   @override
   Widget build(BuildContext context) {
     final stats = model.statistics as CompanyStatistics;
     final hubLinkStyle = Theme.of(context).textTheme.bodySmall?.copyWith(
-          color: Theme.of(context).colorScheme.primary,
-        );
+      color: Theme.of(context).colorScheme.primary,
+    );
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -48,10 +46,7 @@ class CompanyCardWidget extends StatelessWidget {
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  CardAvatarWidget(
-                    imageUrl: model.imageUrl,
-                    height: 60,
-                  ),
+                  CardAvatarWidget(imageUrl: model.imageUrl, height: 60),
                   const SizedBox(width: 16),
                   Expanded(
                     child: Column(
@@ -74,26 +69,29 @@ class CompanyCardWidget extends StatelessWidget {
               const Text('Пишет в хабы:'),
               Wrap(
                 spacing: 14,
-                children: model.commonHubs.map((hub) {
-                  var title = hub.title;
-                  if (hub.isProfiled) {
-                    title += '*';
-                  }
+                children:
+                    model.commonHubs.map((hub) {
+                      var title = hub.title;
+                      if (hub.isProfiled) {
+                        title += '*';
+                      }
 
-                  final route = switch (hub.type.isCorporative) {
-                    true => CompanyDashboardRoute(alias: hub.alias),
-                    false => HubDashboardRoute(alias: hub.alias),
-                  } as PageRouteInfo;
+                      final route =
+                          switch (hub.type.isCorporative) {
+                                true => CompanyDashboardRoute(alias: hub.alias),
+                                false => HubDashboardRoute(alias: hub.alias),
+                              }
+                              as PageRouteInfo;
 
-                  return InkWell(
-                    onTap: () => getIt<AppRouter>().navigate(route),
-                    borderRadius: AppStyles.borderRadius,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8),
-                      child: Text(title, style: hubLinkStyle),
-                    ),
-                  );
-                }).toList(),
+                      return InkWell(
+                        onTap: () => getIt<AppRouter>().navigate(route),
+                        borderRadius: AppStyles.borderRadius,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8),
+                          child: Text(title, style: hubLinkStyle),
+                        ),
+                      );
+                    }).toList(),
               ),
             ],
           ),
@@ -117,7 +115,7 @@ class CompanyCardWidget extends StatelessWidget {
               ),
             ],
           ),
-        )
+        ),
       ],
     );
   }

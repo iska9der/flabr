@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../core/component/di/injector.dart';
+import '../../../core/component/di/di.dart';
 import '../../../presentation/extension/extension.dart';
 import '../../../presentation/utils/utils.dart';
 import '../cubit/subscription_cubit.dart';
@@ -19,11 +19,12 @@ class SubscribeButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => SubscriptionCubit(
-        repository: getIt(),
-        alias: alias,
-        isSubscribed: isSubscribed,
-      ),
+      create:
+          (_) => SubscriptionCubit(
+            repository: getIt(),
+            alias: alias,
+            isSubscribed: isSubscribed,
+          ),
       child: BlocListener<SubscriptionCubit, SubscriptionState>(
         listenWhen: (p, c) => p.status.isFailure,
         listener: (context, state) {
@@ -45,10 +46,13 @@ class SubscribeButton extends StatelessWidget {
 
             return OutlinedButton(
               style: style,
-              onPressed: state.status.isLoading
-                  ? null
-                  : () =>
-                      context.read<SubscriptionCubit>().toggleSubscription(),
+              onPressed:
+                  state.status.isLoading
+                      ? null
+                      : () =>
+                          context
+                              .read<SubscriptionCubit>()
+                              .toggleSubscription(),
               child: Text(state.buttonText),
             );
           },

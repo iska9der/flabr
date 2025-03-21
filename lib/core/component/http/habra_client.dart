@@ -1,4 +1,9 @@
-part of 'http.dart';
+import 'package:dio/dio.dart';
+
+import '../../../data/model/tokens_model.dart';
+import '../../../data/repository/part.dart';
+import '../../constants/constants.dart';
+import 'dio_client.dart';
 
 class HabraClient extends DioClient {
   HabraClient(super.dio, {required this.tokenRepository}) {
@@ -52,7 +57,8 @@ class HabraClient extends DioClient {
             );
             request.headers.remove(Keys.renewCsrf);
           } else {
-            csrfToken = await tokenRepository.getCsrf() ??
+            csrfToken =
+                await tokenRepository.getCsrf() ??
                 await _fetchCsrf(cookie: tokens.toCookieString());
           }
 

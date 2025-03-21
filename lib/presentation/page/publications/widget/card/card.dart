@@ -5,7 +5,7 @@ import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart
 import 'package:intl/intl.dart';
 import 'package:ya_summary/ya_summary.dart';
 
-import '../../../../../core/component/di/injector.dart';
+import '../../../../../core/component/di/di.dart';
 import '../../../../../core/component/router/app_router.dart';
 import '../../../../../core/constants/constants.dart';
 import '../../../../../data/model/loading_status_enum.dart';

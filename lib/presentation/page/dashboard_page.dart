@@ -4,7 +4,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
-import '../../core/component/di/injector.dart';
+import '../../core/component/di/di.dart';
 import '../../core/component/router/app_router.dart';
 import '../../feature/auth/auth.dart';
 import '../theme/theme.dart';
@@ -38,16 +38,18 @@ class _DashboardPageState extends State<DashboardPage> {
       listeners: [
         /// Слушаем изменение настройки видимости панели навигации
         BlocListener<SettingsCubit, SettingsState>(
-            listenWhen: (previous, current) =>
-                previous.misc.navigationOnScrollVisible !=
-                current.misc.navigationOnScrollVisible,
-            listener: (context, state) {
-              visibleOnScroll = state.misc.navigationOnScrollVisible;
-              if (visibleOnScroll) {
-                /// сброс высоты навигации
-                barHeight.value = themeHeight;
-              }
-            }),
+          listenWhen:
+              (previous, current) =>
+                  previous.misc.navigationOnScrollVisible !=
+                  current.misc.navigationOnScrollVisible,
+          listener: (context, state) {
+            visibleOnScroll = state.misc.navigationOnScrollVisible;
+            if (visibleOnScroll) {
+              /// сброс высоты навигации
+              barHeight.value = themeHeight;
+            }
+          },
+        ),
 
         /// Выводим уведомление об ошибке, если возникла ошибка при получении
         /// данных о вошедшем юзере. Ошибка возникает, если при логине
@@ -65,15 +67,16 @@ class _DashboardPageState extends State<DashboardPage> {
                 'это назойливое окно\n\n'
                 'Может само пройдет? 🤔',
               ),
-              actionsBuilder: (context) => [
-                TextButton(
-                  child: const Text('Выйти из аккаунта'),
-                  onPressed: () {
-                    context.read<AuthCubit>().logOut();
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ],
+              actionsBuilder:
+                  (context) => [
+                    TextButton(
+                      child: const Text('Выйти из аккаунта'),
+                      onPressed: () {
+                        context.read<AuthCubit>().logOut();
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ],
             );
           },
         ),
@@ -126,7 +129,7 @@ class _DashboardPageState extends State<DashboardPage> {
                             Condition.largerThan(
                               name: ScreenType.mobile,
                               value: true,
-                            )
+                            ),
                           ],
                           child: _Drawer(router: tabsRouter),
                         ),
@@ -138,7 +141,7 @@ class _DashboardPageState extends State<DashboardPage> {
               ),
               bottomNavigationBar: ResponsiveVisibility(
                 hiddenConditions: const [
-                  Condition.largerThan(name: ScreenType.mobile, value: false)
+                  Condition.largerThan(name: ScreenType.mobile, value: false),
                 ],
                 child: AnimatedBuilder(
                   animation: barHeight,

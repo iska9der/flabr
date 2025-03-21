@@ -2,7 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../../core/component/di/injector.dart';
+import '../../../../../core/component/di/di.dart';
 import '../../../../../core/component/router/app_router.dart';
 import '../../../../../feature/scaffold/scaffold.dart';
 import '../../../../theme/theme.dart';
@@ -12,10 +12,7 @@ import 'hub_detail_page.dart';
 
 @RoutePage(name: HubDashboardPage.routeName)
 class HubDashboardPage extends StatelessWidget {
-  const HubDashboardPage({
-    super.key,
-    @PathParam() required this.alias,
-  });
+  const HubDashboardPage({super.key, @PathParam() required this.alias});
 
   final String alias;
 
@@ -29,15 +26,14 @@ class HubDashboardPage extends StatelessWidget {
         BlocProvider(
           key: ValueKey('hub-$alias-dashboard'),
           lazy: false,
-          create: (_) => HubCubit(
-            alias,
-            repository: getIt(),
-            languageRepository: getIt(),
-          ),
+          create:
+              (_) => HubCubit(
+                alias,
+                repository: getIt(),
+                languageRepository: getIt(),
+              ),
         ),
-        BlocProvider(
-          create: (_) => ScaffoldCubit(),
-        ),
+        BlocProvider(create: (_) => ScaffoldCubit()),
       ],
       child: const HubDashboardPageView(),
     );
@@ -50,9 +46,7 @@ class HubDashboardPageView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AutoTabsRouter.tabBar(
-      routes: [
-        HubDetailRoute(),
-      ],
+      routes: [HubDetailRoute()],
       builder: (context, child, controller) {
         return Scaffold(
           key: context.read<ScaffoldCubit>().key,
@@ -74,9 +68,7 @@ class HubDashboardPageView extends StatelessWidget {
                     padding: EdgeInsets.zero,
                     dividerColor: Colors.transparent,
                     tabs: const [
-                      DashboardDrawerLinkWidget(
-                        title: HubDetailPage.name,
-                      )
+                      DashboardDrawerLinkWidget(title: HubDetailPage.name),
                     ],
                   ),
                 ),

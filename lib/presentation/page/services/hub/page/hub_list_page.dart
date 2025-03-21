@@ -4,7 +4,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../../core/component/di/injector.dart';
+import '../../../../../core/component/di/di.dart';
 import '../../../../../data/model/hub/hub_model.dart';
 import '../../../../../feature/scroll/scroll.dart';
 import '../../../../theme/theme.dart';
@@ -27,14 +27,13 @@ class HubListPage extends StatelessWidget {
       key: const ValueKey('hub-list'),
       providers: [
         BlocProvider(
-          create: (_) => HubListCubit(
-            repository: getIt(),
-            languageRepository: getIt(),
-          ),
+          create:
+              (_) => HubListCubit(
+                repository: getIt(),
+                languageRepository: getIt(),
+              ),
         ),
-        BlocProvider(
-          create: (c) => ScrollCubit(),
-        ),
+        BlocProvider(create: (c) => ScrollCubit()),
       ],
       child: const HubListPageView(),
     );
@@ -65,8 +64,8 @@ class HubListPageView extends StatelessWidget {
         floatingActionButton: const FloatingScrollToTopButton(),
         body: SafeArea(
           child: BlocConsumer<HubListCubit, HubListState>(
-            listenWhen: (p, c) =>
-                p.page != 1 && c.status == HubListStatus.failure,
+            listenWhen:
+                (p, c) => p.page != 1 && c.status == HubListStatus.failure,
             listener: (c, state) {
               getIt<Utils>().showSnack(
                 context: context,
@@ -94,10 +93,12 @@ class HubListPageView extends StatelessWidget {
                 controller: scrollCtrl,
                 child: ListView.separated(
                   controller: scrollCtrl,
-                  separatorBuilder: (context, index) => const SizedBox(
-                    height: AppDimensions.cardBetweenHeight,
-                  ),
-                  itemCount: state.list.refs.length +
+                  separatorBuilder:
+                      (context, index) => const SizedBox(
+                        height: AppDimensions.cardBetweenHeight,
+                      ),
+                  itemCount:
+                      state.list.refs.length +
                       (state.status == HubListStatus.loading ? 1 : 0),
                   itemBuilder: (context, index) {
                     if (index < state.list.refs.length) {

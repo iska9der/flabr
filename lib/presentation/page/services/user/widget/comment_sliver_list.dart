@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
-import '../../../../../core/component/di/injector.dart';
+import '../../../../../core/component/di/di.dart';
 import '../../../../../core/component/router/app_router.dart';
 import '../../../../../data/model/comment/comment_model.dart';
 import '../../../../../data/model/publication/publication_author_model.dart';
@@ -28,13 +28,10 @@ class CommentSliverList extends StatelessWidget {
     const skeleton = _SkeletonLoader();
 
     return BlocConsumer<UserCommentListCubit, UserCommentListState>(
-      listenWhen: (p, c) =>
-          p.page != 1 && c.status == CommentListStatus.failure,
+      listenWhen:
+          (p, c) => p.page != 1 && c.status == CommentListStatus.failure,
       listener: (c, state) {
-        getIt<Utils>().showSnack(
-          context: context,
-          content: Text(state.error),
-        );
+        getIt<Utils>().showSnack(context: context, content: Text(state.error));
       },
       builder: (context, state) {
         /// Инициализация
@@ -52,18 +49,14 @@ class CommentSliverList extends StatelessWidget {
 
           /// Ошибка при попытке получить статьи
           if (state.status == CommentListStatus.failure) {
-            return SliverFillRemaining(
-              child: Center(child: Text(state.error)),
-            );
+            return SliverFillRemaining(child: Center(child: Text(state.error)));
           }
         }
 
         var comments = state.comments;
         if (comments.isEmpty) {
           return const SliverFillRemaining(
-            child: Center(
-              child: Text('Ничего нет'),
-            ),
+            child: Center(child: Text('Ничего нет')),
           );
         }
 
@@ -78,12 +71,13 @@ class CommentSliverList extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       TextButton(
-                        onPressed: () => getIt<AppRouter>().pushWidget(
-                          PublicationDetailPage(
-                            type: model.publication.type.name,
-                            id: model.publication.id,
-                          ),
-                        ),
+                        onPressed:
+                            () => getIt<AppRouter>().pushWidget(
+                              PublicationDetailPage(
+                                type: model.publication.type.name,
+                                id: model.publication.id,
+                              ),
+                            ),
                         child: Text(
                           model.publication.title,
                           style: Theme.of(context).textTheme.titleLarge,
@@ -107,7 +101,8 @@ class CommentSliverList extends StatelessWidget {
                 child: CircleIndicator.medium(),
               );
             },
-            childCount: comments.length +
+            childCount:
+                comments.length +
                 (state.status == CommentListStatus.loading ? 1 : 0),
           ),
         );
@@ -124,33 +119,31 @@ class _SkeletonLoader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Skeletonizer.sliver(
       child: SliverList.list(
-        children: List.generate(
-          4,
-          (i) => FlabrCard(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Text(
-                  'Some random title',
-                  style: Theme.of(context).textTheme.titleLarge,
+        children:
+            List.generate(
+              4,
+              (i) => FlabrCard(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Text(
+                      'Some random title',
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ),
+                    const Divider(thickness: 1),
+                    const UserTextButton(
+                      PublicationAuthor(id: '0', alias: 'random alias'),
+                    ),
+                    const CommentWidget(
+                      Comment(
+                        id: '0',
+                        message: 'Some random message with some random text...',
+                      ),
+                    ),
+                  ],
                 ),
-                const Divider(thickness: 1),
-                const UserTextButton(
-                  PublicationAuthor(
-                    id: '0',
-                    alias: 'random alias',
-                  ),
-                ),
-                const CommentWidget(
-                  Comment(
-                    id: '0',
-                    message: 'Some random message with some random text...',
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ).toList(),
+              ),
+            ).toList(),
       ),
     );
   }

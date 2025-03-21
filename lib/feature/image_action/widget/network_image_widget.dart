@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import '../../../core/component/di/injector.dart';
+import '../../../core/component/di/di.dart';
 import '../../../presentation/utils/utils.dart';
 import 'full_image_widget.dart';
 
@@ -24,34 +24,35 @@ class NetworkImageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    int? cacheHeight = height != null
-        ? (height! * MediaQuery.of(context).devicePixelRatio).round()
-        : null;
+    int? cacheHeight =
+        height != null
+            ? (height! * MediaQuery.of(context).devicePixelRatio).round()
+            : null;
 
-    final barrierColor =
-        Theme.of(context).colorScheme.surface.withValues(alpha: .9);
+    final barrierColor = Theme.of(
+      context,
+    ).colorScheme.surface.withValues(alpha: .9);
 
     return GestureDetector(
-      onTap: isTapable
-          ? () => showDialog(
+      onTap:
+          isTapable
+              ? () => showDialog(
                 context: context,
                 barrierColor: barrierColor,
                 builder: (_) => FullImageNetworkModal(imageUrl: imageUrl),
               )
-          : null,
-      child: imageUrl.contains('.svg')
-          ? SvgPicture.network(
-              imageUrl,
-              height: height,
-            )
-          : CachedNetworkImage(
-              cacheKey: imageUrl,
-              imageUrl: imageUrl,
-              height: height,
-              memCacheHeight: cacheHeight,
-              placeholder: loadingWidget ?? getIt<Utils>().onImageLoading,
-              errorWidget: errorWidget ?? getIt<Utils>().onImageError,
-            ),
+              : null,
+      child:
+          imageUrl.contains('.svg')
+              ? SvgPicture.network(imageUrl, height: height)
+              : CachedNetworkImage(
+                cacheKey: imageUrl,
+                imageUrl: imageUrl,
+                height: height,
+                memCacheHeight: cacheHeight,
+                placeholder: loadingWidget ?? getIt<Utils>().onImageLoading,
+                errorWidget: errorWidget ?? getIt<Utils>().onImageError,
+              ),
     );
   }
 }

@@ -3,7 +3,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../../core/component/di/injector.dart';
+import '../../../../../core/component/di/di.dart';
 import '../../../../../data/model/user/user_publication_type.dart';
 import '../../../../../feature/publication_list/publication_list.dart';
 import '../../../../../feature/scroll/scroll.dart';
@@ -33,16 +33,15 @@ class UserPublicationListPage extends StatelessWidget {
       key: ValueKey('user-$alias-publications-$type'),
       providers: [
         BlocProvider(
-          create: (_) => UserPublicationListCubit(
-            repository: getIt(),
-            languageRepository: getIt(),
-            user: alias,
-            type: UserPublicationType.fromString(type),
-          ),
+          create:
+              (_) => UserPublicationListCubit(
+                repository: getIt(),
+                languageRepository: getIt(),
+                user: alias,
+                type: UserPublicationType.fromString(type),
+              ),
         ),
-        BlocProvider(
-          create: (_) => ScrollCubit(),
-        ),
+        BlocProvider(create: (_) => ScrollCubit()),
       ],
       child: const UserPublicationListView(),
     );
@@ -82,22 +81,30 @@ class UserPublicationListView extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: TypeDropdownMenu(
                         type: state.type.name,
-                        onChanged: (type) => context
-                            .read<UserPublicationListCubit>()
-                            .changeType(UserPublicationType.fromString(type)),
-                        entries: UserPublicationType.values
-                            .map((type) => DropdownMenuItem(
-                                  value: type.name,
-                                  child: Text(type.label),
-                                ))
-                            .toList(),
+                        onChanged:
+                            (type) => context
+                                .read<UserPublicationListCubit>()
+                                .changeType(
+                                  UserPublicationType.fromString(type),
+                                ),
+                        entries:
+                            UserPublicationType.values
+                                .map(
+                                  (type) => DropdownMenuItem(
+                                    value: type.name,
+                                    child: Text(type.label),
+                                  ),
+                                )
+                                .toList(),
                       ),
                     ),
                   );
                 },
               ),
-              const PublicationSliverList<UserPublicationListCubit,
-                  UserPublicationListState>(),
+              const PublicationSliverList<
+                UserPublicationListCubit,
+                UserPublicationListState
+              >(),
             ],
           ),
         ),

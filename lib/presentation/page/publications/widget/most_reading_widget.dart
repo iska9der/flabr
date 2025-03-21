@@ -2,7 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../core/component/di/injector.dart';
+import '../../../../core/component/di/di.dart';
 import '../../../../core/component/router/app_router.dart';
 import '../../../extension/extension.dart';
 import '../../../theme/theme.dart';
@@ -119,12 +119,13 @@ class _MostReadingListState extends State<_MostReadingList> {
                   ),
                   color: Colors.transparent,
                   elevation: 0,
-                  onTap: () => appRouter.pushWidget(
-                    PublicationDetailPage(
-                      type: model.type.name,
-                      id: model.id,
-                    ),
-                  ),
+                  onTap:
+                      () => appRouter.pushWidget(
+                        PublicationDetailPage(
+                          type: model.type.name,
+                          id: model.id,
+                        ),
+                      ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -147,13 +148,14 @@ class _MostReadingListState extends State<_MostReadingList> {
                             value: model.statistics.commentsCount.compact(),
                             isHighlighted:
                                 model.relatedData.unreadCommentsCount > 0,
-                            onTap: () => context.router.push(
-                              PublicationFlowRoute(
-                                type: model.type.name,
-                                id: model.id,
-                                children: [PublicationCommentRoute()],
-                              ),
-                            ),
+                            onTap:
+                                () => context.router.push(
+                                  PublicationFlowRoute(
+                                    type: model.type.name,
+                                    id: model.id,
+                                    children: [PublicationCommentRoute()],
+                                  ),
+                                ),
                           ),
                         ],
                       ),

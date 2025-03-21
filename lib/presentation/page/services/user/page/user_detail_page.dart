@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
-import '../../../../../core/component/di/injector.dart';
+import '../../../../../core/component/di/di.dart';
 import '../../../../extension/extension.dart';
 import '../../../../theme/theme.dart';
 import '../../../../utils/utils.dart';
@@ -30,9 +30,7 @@ class UserDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     context.read<UserCubit>().fetchCard();
 
-    return UserDetailPageView(
-      key: ValueKey('user-$alias-detail'),
-    );
+    return UserDetailPageView(key: ValueKey('user-$alias-detail'));
   }
 }
 
@@ -49,9 +47,7 @@ class UserDetailPageView extends StatelessWidget {
           }
 
           if (state.status.isFailure) {
-            return const Center(
-              child: Text('Не удалось найти пользователя'),
-            );
+            return const Center(child: Text('Не удалось найти пользователя'));
           }
 
           var model = state.model;
@@ -101,15 +97,19 @@ class UserDetailPageView extends StatelessWidget {
                         title: 'Работает в',
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: model.workplace.map((e) {
-                            return TextButton(
-                              onPressed: () => getIt<Utils>().showSnack(
-                                context: context,
-                                content: const Text('Здесь так тихо...'),
-                              ),
-                              child: Text(e.title),
-                            );
-                          }).toList(),
+                          children:
+                              model.workplace.map((e) {
+                                return TextButton(
+                                  onPressed:
+                                      () => getIt<Utils>().showSnack(
+                                        context: context,
+                                        content: const Text(
+                                          'Здесь так тихо...',
+                                        ),
+                                      ),
+                                  child: Text(e.title),
+                                );
+                              }).toList(),
                         ),
                       ),
                     ],

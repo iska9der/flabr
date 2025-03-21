@@ -2,7 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../../core/component/di/injector.dart';
+import '../../../../../core/component/di/di.dart';
 import '../../../../../core/component/router/app_router.dart';
 import '../../../../../feature/scaffold/scaffold.dart';
 import '../../../../theme/theme.dart';
@@ -15,10 +15,7 @@ import 'user_publication_list_page.dart';
 
 @RoutePage()
 class UserDashboardPage extends StatelessWidget {
-  const UserDashboardPage({
-    super.key,
-    @PathParam() required this.alias,
-  });
+  const UserDashboardPage({super.key, @PathParam() required this.alias});
 
   final String alias;
 
@@ -31,15 +28,14 @@ class UserDashboardPage extends StatelessWidget {
         BlocProvider(
           key: ValueKey('user-$alias-dashboard'),
           lazy: false,
-          create: (_) => UserCubit(
-            alias,
-            repository: getIt(),
-            languageRepository: getIt(),
-          ),
+          create:
+              (_) => UserCubit(
+                alias,
+                repository: getIt(),
+                languageRepository: getIt(),
+              ),
         ),
-        BlocProvider(
-          create: (_) => ScaffoldCubit(),
-        ),
+        BlocProvider(create: (_) => ScaffoldCubit()),
       ],
       child: const UserDashboardView(),
     );
@@ -77,9 +73,7 @@ class UserDashboardView extends StatelessWidget {
                     padding: EdgeInsets.zero,
                     dividerColor: Colors.transparent,
                     tabs: const [
-                      DashboardDrawerLinkWidget(
-                        title: UserDetailPage.title,
-                      ),
+                      DashboardDrawerLinkWidget(title: UserDetailPage.title),
                       DashboardDrawerLinkWidget(
                         title: UserPublicationListPage.title,
                       ),

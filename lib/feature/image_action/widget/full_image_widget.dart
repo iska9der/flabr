@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:photo_view/photo_view.dart';
 
-import '../../../core/component/di/injector.dart';
+import '../../../core/component/di/di.dart';
 import '../cubit/image_action_cubit.dart';
 
 class FullImageAsset extends StatelessWidget {
@@ -13,9 +13,7 @@ class FullImageAsset extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FullImageProvider(
-      provider: AssetImage(assetPath),
-    );
+    return FullImageProvider(provider: AssetImage(assetPath));
   }
 }
 
@@ -64,10 +62,11 @@ class FullImageNetworkModal extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: BlocProvider(
-        create: (_) => ImageActionCubit(
-          client: getIt(instanceName: 'siteClient'),
-          url: imageUrl,
-        ),
+        create:
+            (_) => ImageActionCubit(
+              client: getIt(instanceName: 'siteClient'),
+              url: imageUrl,
+            ),
         child: const FullImageBottomBar(),
       ),
       backgroundColor: Colors.transparent,
@@ -78,10 +77,7 @@ class FullImageNetworkModal extends StatelessWidget {
         child: const Icon(Icons.close_rounded, size: 32),
       ),
       body: FullImageProvider(
-        provider: CachedNetworkImageProvider(
-          imageUrl,
-          cacheKey: imageUrl,
-        ),
+        provider: CachedNetworkImageProvider(imageUrl, cacheKey: imageUrl),
       ),
     );
   }
@@ -96,8 +92,8 @@ class FullImageBottomBar extends StatelessWidget {
       child: Row(
         children: [
           BlocBuilder<ImageActionCubit, ImageActionState>(
-            buildWhen: (previous, current) =>
-                previous.canSave != current.canSave,
+            buildWhen:
+                (previous, current) => previous.canSave != current.canSave,
             builder: (context, state) {
               return IconButton(
                 icon: const Icon(Icons.download),
@@ -110,8 +106,8 @@ class FullImageBottomBar extends StatelessWidget {
             },
           ),
           BlocBuilder<ImageActionCubit, ImageActionState>(
-            buildWhen: (previous, current) =>
-                previous.canShare != current.canShare,
+            buildWhen:
+                (previous, current) => previous.canShare != current.canShare,
             builder: (context, state) {
               return IconButton(
                 icon: const Icon(Icons.share),

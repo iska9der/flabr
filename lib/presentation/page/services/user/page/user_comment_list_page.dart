@@ -2,7 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../../core/component/di/injector.dart';
+import '../../../../../core/component/di/di.dart';
 import '../../../../../feature/scroll/scroll.dart';
 import '../../../../widget/enhancement/refresh_indicator.dart';
 import '../../../settings/cubit/settings_cubit.dart';
@@ -28,14 +28,9 @@ class UserCommentListPage extends StatelessWidget {
       key: ValueKey('user-$alias-comments'),
       providers: [
         BlocProvider(
-          create: (_) => UserCommentListCubit(
-            repository: getIt(),
-            user: alias,
-          ),
+          create: (_) => UserCommentListCubit(repository: getIt(), user: alias),
         ),
-        BlocProvider(
-          create: (_) => ScrollCubit(),
-        ),
+        BlocProvider(create: (_) => ScrollCubit()),
       ],
       child: const _UserCommentListView(),
     );
@@ -71,7 +66,7 @@ class _UserCommentListView extends StatelessWidget {
               ),
               CommentSliverList(
                 fetch: context.read<UserCommentListCubit>().fetch,
-              )
+              ),
             ],
           ),
         ),
