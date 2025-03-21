@@ -51,7 +51,7 @@ android {
 
     defaultConfig {
         applicationId = "ru.iska9der.flabr"
-        minSdk = 21
+        minSdk = Math.max(flutter.minSdkVersion, 21)
         targetSdk = 35
         versionCode = flutterVersionCode.toInteger()
         versionName = flutterVersionName

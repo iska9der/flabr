@@ -29,9 +29,9 @@ class PublicationSettingsWidget extends StatelessWidget {
               title: const Text('Изображения'),
               value: state.publication.isImagesVisible,
               onChanged: (bool? value) {
-                context
-                    .read<SettingsCubit>()
-                    .changeArticleImageVisibility(isVisible: value);
+                context.read<SettingsCubit>().changeArticleImageVisibility(
+                  isVisible: value,
+                );
               },
             );
           },
@@ -43,9 +43,9 @@ class PublicationSettingsWidget extends StatelessWidget {
               title: const Text('WebView'),
               value: state.publication.webViewEnabled,
               onChanged: (bool? value) {
-                context
-                    .read<SettingsCubit>()
-                    .changeWebViewVisibility(isVisible: value);
+                context.read<SettingsCubit>().changeWebViewVisibility(
+                  isVisible: value,
+                );
               },
             );
           },
