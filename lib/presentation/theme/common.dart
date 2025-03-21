@@ -14,11 +14,14 @@ const AppBarTheme appAppBarTheme = AppBarTheme(
   titleTextStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
 );
 
-const PageTransitionsTheme appPageTransitionsTheme =
-    PageTransitionsTheme(builders: {
-  TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
-  TargetPlatform.android: FadeUpwardsPageTransitionsBuilder(),
-});
+const PageTransitionsTheme appPageTransitionsTheme = PageTransitionsTheme(
+  builders: {
+    TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+    TargetPlatform.android: FadeUpwardsPageTransitionsBuilder(),
+    // не корректно работает, возможно проблема с auto_route
+    // TargetPlatform.android: FadeForwardsPageTransitionsBuilder(),
+  },
+);
 
 ScrollbarThemeData appScrollBarThemeData = ScrollbarThemeData(
   thumbVisibility: WidgetStateProperty.all(false),
@@ -46,7 +49,10 @@ const CheckboxThemeData appCheckboxThemeData = CheckboxThemeData();
 const SwitchThemeData appSwitchThemeData = SwitchThemeData();
 
 const SliderThemeData appSliderThemeData = SliderThemeData(
-  thumbShape: RoundSliderThumbShape(enabledThumbRadius: 6.0),
+  // ignore: deprecated_member_use
+  year2023: false,
+  trackHeight: 12,
+  thumbSize: WidgetStatePropertyAll(Size(5, 28)),
   overlayShape: RoundSliderOverlayShape(overlayRadius: 20.0),
 );
 
@@ -56,9 +62,14 @@ const DialogTheme dialogTheme = DialogTheme(
   shape: RoundedRectangleBorder(borderRadius: AppStyles.borderRadius),
 );
 
-const NavigationBarThemeData navigationBarThemeData =
-    NavigationBarThemeData(height: AppDimensions.navBarHeight);
+const NavigationBarThemeData navigationBarThemeData = NavigationBarThemeData(
+  height: AppDimensions.navBarHeight,
+);
 
 const BottomSheetThemeData bottomSheetThemeData = BottomSheetThemeData(
   showDragHandle: true,
 );
+
+const ProgressIndicatorThemeData proggressIndicatorThemeData =
+// ignore: deprecated_member_use
+ProgressIndicatorThemeData(year2023: false);
