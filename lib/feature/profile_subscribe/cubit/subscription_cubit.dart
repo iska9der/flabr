@@ -1,8 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../data/exception/part.dart';
-import '../../../data/repository/part.dart';
+import '../../../data/exception/exception.dart';
+import '../../../data/repository/repository.dart';
 import '../../../presentation/extension/extension.dart';
 
 part 'subscription_state.dart';
@@ -12,8 +12,8 @@ class SubscriptionCubit extends Cubit<SubscriptionState> {
     required SubscriptionRepository repository,
     required String alias,
     required bool isSubscribed,
-  })  : repo = repository,
-        super(SubscriptionState(alias: alias, isSubscribed: isSubscribed));
+  }) : repo = repository,
+       super(SubscriptionState(alias: alias, isSubscribed: isSubscribed));
 
   final SubscriptionRepository repo;
 
@@ -25,15 +25,19 @@ class SubscriptionCubit extends Cubit<SubscriptionState> {
     try {
       await repo.toggleSubscription(alias: state.alias);
 
-      emit(state.copyWith(
-        status: SubscriptionStatus.success,
-        isSubscribed: !state.isSubscribed,
-      ));
+      emit(
+        state.copyWith(
+          status: SubscriptionStatus.success,
+          isSubscribed: !state.isSubscribed,
+        ),
+      );
     } catch (e) {
-      emit(state.copyWith(
-        status: SubscriptionStatus.failure,
-        error: ExceptionHelper.parseMessage(e, 'Не удалось'),
-      ));
+      emit(
+        state.copyWith(
+          status: SubscriptionStatus.failure,
+          error: e.parseException(),
+        ),
+      );
     }
   }
 }

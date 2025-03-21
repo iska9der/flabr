@@ -6,7 +6,7 @@ import '../../../../../core/component/di/di.dart';
 import '../../../../../data/model/company/card/company_card_model.dart';
 import '../../../../../data/model/related_data/company_related_data_model.dart';
 import '../../../../../data/model/stat_type_enum.dart';
-import '../../../../../data/repository/part.dart';
+import '../../../../../data/repository/repository.dart';
 import '../../../../../feature/auth/auth.dart';
 import '../../../../../feature/profile_subscribe/profile_subscribe.dart';
 import '../../../../theme/theme.dart';

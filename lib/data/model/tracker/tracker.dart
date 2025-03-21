@@ -5,8 +5,8 @@ import '../list_response/list_response_model.dart';
 import '../publication/publication_author_model.dart';
 import '../user_base.dart';
 
-part 'part.freezed.dart';
-part 'part.g.dart';
+part 'tracker.freezed.dart';
+part 'tracker.g.dart';
 part 'tracker_notification_category.dart';
 part 'tracker_notification_data.dart';
 part 'tracker_notification_model.dart';

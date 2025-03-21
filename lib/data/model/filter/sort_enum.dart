@@ -1,4 +1,4 @@
-part of 'part.dart';
+part of 'filter.dart';
 
 enum Sort {
   byNew('Новые', 'rating', 'all'),
@@ -11,9 +11,9 @@ enum Sort {
   final String postValue;
 
   List<FilterOption> get filters => switch (this) {
-        Sort.byNew => FilterList.scoreOptions,
-        Sort.byBest => FilterList.dateOptions,
-      };
+    Sort.byNew => FilterList.scoreOptions,
+    Sort.byBest => FilterList.dateOptions,
+  };
 
   factory Sort.fromString(String value) {
     return Sort.values.firstWhere(

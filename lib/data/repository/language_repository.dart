@@ -1,10 +1,9 @@
-part of 'part.dart';
+part of 'repository.dart';
 
 @Singleton()
 class LanguageRepository {
-  LanguageRepository({
-    @Named('sharedStorage') required CacheStorage storage,
-  }) : _storage = storage {
+  LanguageRepository({@Named('sharedStorage') required CacheStorage storage})
+    : _storage = storage {
     _init();
   }
 

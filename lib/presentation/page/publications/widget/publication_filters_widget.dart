@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../data/model/filter/part.dart';
+import '../../../../data/model/filter/filter.dart';
 import '../../../../data/model/publication/publication_flow_enum.dart';
 import '../../../../feature/publication_list/publication_list.dart';
 import '../../../widget/filter/common_filters_widget.dart';
@@ -35,9 +35,10 @@ class _PublicationFiltersWidgetState extends State<PublicationFiltersWidget> {
           builder: (context, state) {
             return FilterChipList(
               isEnabled: state.status != PublicationListStatus.loading,
-              options: PublicationFlow.values
-                  .map((e) => FilterOption(label: e.label, value: e.name))
-                  .toList(),
+              options:
+                  PublicationFlow.values
+                      .map((e) => FilterOption(label: e.label, value: e.name))
+                      .toList(),
               isSelected: (option) => option.value == selectedFlow.name,
               onSelected: (isSelected, option) {
                 final newFlow = PublicationFlow.fromString(option.value);
@@ -60,9 +61,10 @@ class _PublicationFiltersWidgetState extends State<PublicationFiltersWidget> {
                 Sort.byNew => state.filter.score,
               },
               onSubmit: (newFilter) {
-                context
-                    .read<FlowPublicationListCubit>()
-                    .applyFilter(selectedFlow, newFilter);
+                context.read<FlowPublicationListCubit>().applyFilter(
+                  selectedFlow,
+                  newFilter,
+                );
               },
             );
           },

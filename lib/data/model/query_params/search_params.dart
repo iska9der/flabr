@@ -1,4 +1,4 @@
-import '../../exception/part.dart';
+import '../../exception/exception.dart';
 import '../search/search_target_enum.dart';
 import 'params_model.dart';
 import 'search_article_params.dart';
@@ -17,33 +17,33 @@ abstract class SearchParamsFactory extends Params {
   }) {
     return switch (target) {
       SearchTarget.posts => SearchArticleParams(
-          query: query,
-          order: order,
-          langArticles: langArticles,
-          langUI: langUI,
-          page: page.toString(),
-        ),
+        query: query,
+        order: order,
+        langArticles: langArticles,
+        langUI: langUI,
+        page: page.toString(),
+      ),
       SearchTarget.hubs => SearchHubParams(
-          query: query,
-          order: order,
-          langArticles: langArticles,
-          langUI: langUI,
-          page: page.toString(),
-        ),
+        query: query,
+        order: order,
+        langArticles: langArticles,
+        langUI: langUI,
+        page: page.toString(),
+      ),
       SearchTarget.companies => SearchCompanyParams(
-          query: query,
-          order: order,
-          langArticles: langArticles,
-          langUI: langUI,
-          page: page.toString(),
-        ),
+        query: query,
+        order: order,
+        langArticles: langArticles,
+        langUI: langUI,
+        page: page.toString(),
+      ),
       SearchTarget.users => SearchUserParams(
-          query: query,
-          order: order,
-          langArticles: langArticles,
-          langUI: langUI,
-          page: page.toString(),
-        ),
+        query: query,
+        order: order,
+        langArticles: langArticles,
+        langUI: langUI,
+        page: page.toString(),
+      ),
       SearchTarget.comments => throw ValueException('Не реализовано'),
     };
   }

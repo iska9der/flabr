@@ -1,9 +1,3 @@
-part of 'part.dart';
+part of 'tracker.dart';
 
-enum TrackerNotificationCategory {
-  unknown,
-  system,
-  mentions,
-  subscribers,
-  ;
-}
+enum TrackerNotificationCategory { unknown, system, mentions, subscribers }

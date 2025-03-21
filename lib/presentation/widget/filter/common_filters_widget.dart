@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../data/model/filter/part.dart';
+import '../../../data/model/filter/filter.dart';
 import 'filter_chip_list.dart';
 import 'publication_filter_submit_button.dart';
 
@@ -45,22 +45,25 @@ class _CommonFiltersWidgetState extends State<CommonFiltersWidget> {
       children: [
         FilterChipList(
           isEnabled: !widget.isLoading,
-          options: Sort.values
-              .map((e) => FilterOption(label: e.label, value: e.name))
-              .toList(),
+          options:
+              Sort.values
+                  .map((e) => FilterOption(label: e.label, value: e.name))
+                  .toList(),
           isSelected: (option) => option.value == sortValue.name,
-          onSelected: (isSelected, option) => setState(() {
-            sortValue = Sort.fromString(option.value);
-            optionValue = sortValue.filters.first;
-          }),
+          onSelected:
+              (isSelected, option) => setState(() {
+                sortValue = Sort.fromString(option.value);
+                optionValue = sortValue.filters.first;
+              }),
         ),
         FilterChipList(
           isEnabled: !widget.isLoading,
           options: sortValue.filters,
           isSelected: (option) => option == optionValue,
-          onSelected: (isSelected, option) => setState(() {
-            optionValue = option;
-          }),
+          onSelected:
+              (isSelected, option) => setState(() {
+                optionValue = option;
+              }),
         ),
         if (widget.onSubmit != null)
           Padding(

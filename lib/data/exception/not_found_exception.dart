@@ -1,5 +1,5 @@
-part of 'part.dart';
+import 'app_exception.dart';
 
-class NotFoundException implements DisplayableException {
+class NotFoundException implements AppException {
   NotFoundException();
 }

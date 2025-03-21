@@ -1,4 +1,4 @@
-part of 'part.dart';
+part of 'service.dart';
 
 abstract interface class HubService {
   Future<HubListResponse> fetchAll({
@@ -21,8 +21,8 @@ class HubServiceImpl implements HubService {
   const HubServiceImpl({
     @Named('mobileClient') required HttpClient mobileClient,
     @Named('siteClient') required HttpClient siteClient,
-  })  : _mobileClient = mobileClient,
-        _siteClient = siteClient;
+  }) : _mobileClient = mobileClient,
+       _siteClient = siteClient;
 
   final HttpClient _mobileClient;
   final HttpClient _siteClient;
@@ -43,7 +43,7 @@ class HubServiceImpl implements HubService {
       final response = await _mobileClient.get('/hubs/?$queryString');
 
       return HubListResponse.fromMap(response.data);
-    } on DisplayableException {
+    } on AppException {
       rethrow;
     } catch (e) {
       throw FetchException();
@@ -57,16 +57,14 @@ class HubServiceImpl implements HubService {
     required String langArticles,
   }) async {
     try {
-      var params = Params(
-        langUI: langUI,
-        langArticles: langArticles,
-      );
+      var params = Params(langUI: langUI, langArticles: langArticles);
       final queryString = params.toQueryString();
-      final response =
-          await _mobileClient.get('/hubs/$alias/profile?$queryString');
+      final response = await _mobileClient.get(
+        '/hubs/$alias/profile?$queryString',
+      );
 
       return response.data;
-    } on DisplayableException {
+    } on AppException {
       rethrow;
     } catch (e) {
       throw FetchException();
@@ -76,11 +74,8 @@ class HubServiceImpl implements HubService {
   @override
   Future<void> toggleSubscription({required String alias}) async {
     try {
-      await _siteClient.post(
-        '/v2/hubs/$alias/subscription',
-        body: {},
-      );
-    } on DisplayableException {
+      await _siteClient.post('/v2/hubs/$alias/subscription', body: {});
+    } on AppException {
       rethrow;
     } catch (e) {
       throw FetchException();

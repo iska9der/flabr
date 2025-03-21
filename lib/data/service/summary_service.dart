@@ -1,4 +1,4 @@
-part of 'part.dart';
+part of 'service.dart';
 
 @LazySingleton(as: SummaryService)
 class SummaryServiceApp extends SummaryServiceImpl {

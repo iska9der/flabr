@@ -1,4 +1,4 @@
-part of 'part.dart';
+part of 'repository.dart';
 
 abstract class PublicationVoteRepository {
   Future<PublicationVoteResponse> voteUp(String publicationId);

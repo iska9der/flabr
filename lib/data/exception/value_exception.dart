@@ -1,6 +1,6 @@
-part of 'part.dart';
+import 'app_exception.dart';
 
-class ValueException implements DisplayableException {
+class ValueException implements AppException {
   final dynamic message;
 
   ValueException([this.message]);

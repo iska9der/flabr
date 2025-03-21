@@ -1,4 +1,4 @@
-part of 'part.dart';
+part of 'repository.dart';
 
 @LazySingleton()
 class UserRepository {
@@ -64,14 +64,9 @@ class UserRepository {
     required String alias,
     required int page,
   }) async {
-    final response = await _service.fetchComments(
-      alias: alias,
-      page: page,
-    );
+    final response = await _service.fetchComments(alias: alias, page: page);
 
-    response.refs.sort(
-      (a, b) => b.timePublished.compareTo(a.timePublished),
-    );
+    response.refs.sort((a, b) => b.timePublished.compareTo(a.timePublished));
 
     return response;
   }
@@ -79,9 +74,5 @@ class UserRepository {
   Future<UserCommentListResponse> fetchCommentsInBookmarks({
     required String alias,
     int page = 1,
-  }) =>
-      _service.fetchCommentsInBookmarks(
-        alias: alias,
-        page: page,
-      );
+  }) => _service.fetchCommentsInBookmarks(alias: alias, page: page);
 }

@@ -1,11 +1,11 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../../data/exception/part.dart';
+import '../../../../../data/exception/exception.dart';
 import '../../../../../data/model/list_response/list_response_model.dart';
 import '../../../../../data/model/search/search_order_enum.dart';
 import '../../../../../data/model/search/search_target_enum.dart';
-import '../../../../../data/repository/part.dart';
+import '../../../../../data/repository/repository.dart';
 import '../../../../extension/extension.dart';
 
 part 'search_state.dart';
@@ -16,9 +16,9 @@ class SearchCubit extends Cubit<SearchState> {
     required LanguageRepository langRepository,
     SearchTarget target = SearchTarget.posts,
     SearchOrder order = SearchOrder.relevance,
-  })  : _repository = repository,
-        _langRepository = langRepository,
-        super(SearchState(target: target, order: order));
+  }) : _repository = repository,
+       _langRepository = langRepository,
+       super(SearchState(target: target, order: order));
 
   final SearchRepository _repository;
   final LanguageRepository _langRepository;
@@ -54,11 +54,13 @@ class SearchCubit extends Cubit<SearchState> {
   Future<void> changeQuery(String newQuery) async {
     if (state.query == newQuery || state.status.isLoading) return;
 
-    emit(state.copyWith(
-      query: newQuery,
-      page: 1,
-      listResponse: const ListResponse(),
-    ));
+    emit(
+      state.copyWith(
+        query: newQuery,
+        page: 1,
+        listResponse: const ListResponse(),
+      ),
+    );
 
     await fetch();
   }
@@ -86,16 +88,17 @@ class SearchCubit extends Cubit<SearchState> {
         refs: [...state.listResponse.refs, ...list.refs],
       );
 
-      emit(state.copyWith(
-        status: SearchStatus.success,
-        listResponse: newList,
-        page: state.page + 1,
-      ));
+      emit(
+        state.copyWith(
+          status: SearchStatus.success,
+          listResponse: newList,
+          page: state.page + 1,
+        ),
+      );
     } catch (e) {
-      emit(state.copyWith(
-        status: SearchStatus.failure,
-        error: ExceptionHelper.parseMessage(e),
-      ));
+      emit(
+        state.copyWith(status: SearchStatus.failure, error: e.parseException()),
+      );
     }
   }
 

@@ -1,4 +1,4 @@
-part of '../part.dart';
+part of '../filter.dart';
 
 @freezed
 class FeedFilter with _$FeedFilter {

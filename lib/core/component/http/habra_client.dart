@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 
 import '../../../data/model/tokens_model.dart';
-import '../../../data/repository/part.dart';
+import '../../../data/repository/repository.dart';
 import '../../constants/constants.dart';
 import 'dio_client.dart';
 

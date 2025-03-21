@@ -1,4 +1,4 @@
-part of 'part.dart';
+part of 'repository.dart';
 
 @LazySingleton()
 class CompanyRepository {

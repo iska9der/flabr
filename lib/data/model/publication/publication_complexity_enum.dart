@@ -1,4 +1,4 @@
-import '../../exception/part.dart';
+import '../../exception/exception.dart';
 
 enum PublicationComplexity {
   low,
@@ -15,8 +15,8 @@ enum PublicationComplexity {
   }
 
   String get label => switch (this) {
-        PublicationComplexity.low => 'Простой',
-        PublicationComplexity.medium => 'Средний',
-        PublicationComplexity.high => 'Сложный'
-      };
+    PublicationComplexity.low => 'Простой',
+    PublicationComplexity.medium => 'Средний',
+    PublicationComplexity.high => 'Сложный',
+  };
 }

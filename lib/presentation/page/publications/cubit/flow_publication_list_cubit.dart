@@ -5,8 +5,8 @@ import 'package:equatable/equatable.dart';
 
 import '../../../../core/component/storage/storage.dart';
 import '../../../../core/constants/constants.dart';
-import '../../../../data/exception/part.dart';
-import '../../../../data/model/filter/part.dart';
+import '../../../../data/exception/exception.dart';
+import '../../../../data/model/filter/filter.dart';
 import '../../../../data/model/list_response/list_response_model.dart';
 import '../../../../data/model/publication/publication.dart';
 import '../../../../data/model/publication/publication_flow_enum.dart';
@@ -23,10 +23,7 @@ class FlowPublicationListCubit
     required this.storage,
     PublicationFlow flow = PublicationFlow.all,
     Section section = Section.article,
-  }) : super(FlowPublicationListState(
-          flow: flow,
-          section: section,
-        )) {
+  }) : super(FlowPublicationListState(flow: flow, section: section)) {
     _restoreFilter();
   }
 
@@ -71,17 +68,21 @@ class FlowPublicationListCubit
         page: state.page.toString(),
       );
 
-      emit(state.copyWith(
-        status: PublicationListStatus.success,
-        publications: [...state.publications, ...response.refs],
-        page: state.page + 1,
-        pagesCount: response.pagesCount,
-      ));
+      emit(
+        state.copyWith(
+          status: PublicationListStatus.success,
+          publications: [...state.publications, ...response.refs],
+          page: state.page + 1,
+          pagesCount: response.pagesCount,
+        ),
+      );
     } catch (e) {
-      emit(state.copyWith(
-        error: ExceptionHelper.parseMessage(e, 'Не удалось получить статьи'),
-        status: PublicationListStatus.failure,
-      ));
+      emit(
+        state.copyWith(
+          error: e.parseException('Не удалось получить статьи'),
+          status: PublicationListStatus.failure,
+        ),
+      );
 
       rethrow;
     }
@@ -89,12 +90,14 @@ class FlowPublicationListCubit
 
   @override
   void refetch() {
-    emit(state.copyWith(
-      status: PublicationListStatus.initial,
-      page: 1,
-      publications: [],
-      pagesCount: 0,
-    ));
+    emit(
+      state.copyWith(
+        status: PublicationListStatus.initial,
+        page: 1,
+        publications: [],
+        pagesCount: 0,
+      ),
+    );
   }
 
   void applyFilter(PublicationFlow newFlow, FlowFilter newFilter) {
@@ -103,10 +106,12 @@ class FlowPublicationListCubit
       jsonEncode(newFilter),
     );
 
-    emit(FlowPublicationListState(
-      section: state.section,
-      flow: newFlow,
-      filter: newFilter,
-    ));
+    emit(
+      FlowPublicationListState(
+        section: state.section,
+        flow: newFlow,
+        filter: newFilter,
+      ),
+    );
   }
 }

@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../data/model/user/user_comment_model.dart';
-import '../../../../../data/repository/part.dart';
+import '../../../../../data/repository/repository.dart';
 
 part 'user_comment_list_state.dart';
 
@@ -10,18 +10,20 @@ class UserCommentListCubit extends Cubit<UserCommentListState> {
   UserCommentListCubit({
     required UserRepository repository,
     required String user,
-  })  : _repository = repository,
-        super(UserCommentListState(user: user));
+  }) : _repository = repository,
+       super(UserCommentListState(user: user));
 
   final UserRepository _repository;
 
   void refetch() {
-    emit(state.copyWith(
-      status: CommentListStatus.initial,
-      page: 1,
-      comments: [],
-      pages: 0,
-    ));
+    emit(
+      state.copyWith(
+        status: CommentListStatus.initial,
+        page: 1,
+        comments: [],
+        pages: 0,
+      ),
+    );
   }
 
   Future<void> fetch() async {
@@ -38,17 +40,18 @@ class UserCommentListCubit extends Cubit<UserCommentListState> {
         page: state.page,
       );
 
-      emit(state.copyWith(
-        status: CommentListStatus.success,
-        comments: [...state.comments, ...response.refs],
-        page: state.page + 1,
-        pages: response.pagesCount,
-      ));
+      emit(
+        state.copyWith(
+          status: CommentListStatus.success,
+          comments: [...state.comments, ...response.refs],
+          page: state.page + 1,
+          pages: response.pagesCount,
+        ),
+      );
     } catch (e) {
-      emit(state.copyWith(
-        status: CommentListStatus.failure,
-        error: e.toString(),
-      ));
+      emit(
+        state.copyWith(status: CommentListStatus.failure, error: e.toString()),
+      );
     }
   }
 
@@ -66,17 +69,18 @@ class UserCommentListCubit extends Cubit<UserCommentListState> {
         page: state.page,
       );
 
-      emit(state.copyWith(
-        status: CommentListStatus.success,
-        comments: [...state.comments, ...response.refs],
-        page: state.page + 1,
-        pages: response.pagesCount,
-      ));
+      emit(
+        state.copyWith(
+          status: CommentListStatus.success,
+          comments: [...state.comments, ...response.refs],
+          page: state.page + 1,
+          pages: response.pagesCount,
+        ),
+      );
     } catch (e) {
-      emit(state.copyWith(
-        status: CommentListStatus.failure,
-        error: e.toString(),
-      ));
+      emit(
+        state.copyWith(status: CommentListStatus.failure, error: e.toString()),
+      );
     }
   }
 }

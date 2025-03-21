@@ -1,4 +1,4 @@
-part of 'part.dart';
+part of 'tracker.dart';
 
 @freezed
 class TrackerPublicationsResponse with _$TrackerPublicationsResponse {
@@ -39,10 +39,10 @@ class TrackerPublicationListResponse extends ListResponse with EquatableMixin {
     return TrackerPublicationListResponse(
       pagesCount: map['pagesCount'] ?? 0,
       ids: List<String>.from(idsMap),
-      refs: Map.from(refsMap)
-          .entries
-          .map((e) => TrackerPublication.fromJson(e.value))
-          .toList(),
+      refs:
+          Map.from(
+            refsMap,
+          ).entries.map((e) => TrackerPublication.fromJson(e.value)).toList(),
     );
   }
 

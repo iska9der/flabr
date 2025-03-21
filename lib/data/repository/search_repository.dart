@@ -1,4 +1,4 @@
-part of 'part.dart';
+part of 'repository.dart';
 
 @LazySingleton()
 class SearchRepository {
@@ -41,13 +41,11 @@ class SearchRepository {
 
   void _sortArticles(SearchOrder order, PublicationListResponse response) {
     if (order == SearchOrder.date) {
-      response.refs.sort((a, b) => b.timePublished.compareTo(
-            a.timePublished,
-          ));
+      response.refs.sort((a, b) => b.timePublished.compareTo(a.timePublished));
     } else if (order == SearchOrder.rating) {
-      response.refs.sort((a, b) => b.statistics.score.compareTo(
-            a.statistics.score,
-          ));
+      response.refs.sort(
+        (a, b) => b.statistics.score.compareTo(a.statistics.score),
+      );
     }
   }
 }

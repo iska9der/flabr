@@ -1,10 +1,8 @@
-part of 'part.dart';
+part of 'repository.dart';
 
 @Singleton()
 class TokenRepository {
-  TokenRepository(
-    @Named('secureStorage') this._storage,
-  );
+  TokenRepository(@Named('secureStorage') this._storage);
 
   final CacheStorage _storage;
 

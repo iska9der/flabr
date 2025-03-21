@@ -1,10 +1,10 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../../data/exception/part.dart';
+import '../../../../../data/exception/exception.dart';
 import '../../../../../data/model/hub/hub_model.dart';
 import '../../../../../data/model/hub/hub_profile_model.dart';
-import '../../../../../data/repository/part.dart';
+import '../../../../../data/repository/repository.dart';
 
 part 'hub_state.dart';
 
@@ -13,9 +13,9 @@ class HubCubit extends Cubit<HubState> {
     String alias, {
     required HubRepository repository,
     required LanguageRepository languageRepository,
-  })  : _repository = repository,
-        _languageRepository = languageRepository,
-        super(HubState(alias: alias));
+  }) : _repository = repository,
+       _languageRepository = languageRepository,
+       super(HubState(alias: alias));
 
   final HubRepository _repository;
   final LanguageRepository _languageRepository;
@@ -37,10 +37,12 @@ class HubCubit extends Cubit<HubState> {
       emit(state.copyWith(status: HubStatus.success, profile: profile));
     } catch (e) {
       const fallbackMessage = 'Не удалось получить профиль хаба';
-      emit(state.copyWith(
-        status: HubStatus.failure,
-        error: ExceptionHelper.parseMessage(e, fallbackMessage),
-      ));
+      emit(
+        state.copyWith(
+          status: HubStatus.failure,
+          error: e.parseException(fallbackMessage),
+        ),
+      );
     }
   }
 }

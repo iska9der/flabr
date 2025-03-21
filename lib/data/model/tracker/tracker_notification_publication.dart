@@ -1,4 +1,4 @@
-part of 'part.dart';
+part of 'tracker.dart';
 
 @freezed
 class TrackerNotificationPublication with _$TrackerNotificationPublication {

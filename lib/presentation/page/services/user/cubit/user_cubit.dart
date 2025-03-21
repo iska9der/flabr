@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../data/model/user/user_model.dart';
 import '../../../../../data/model/user/user_whois_model.dart';
-import '../../../../../data/repository/part.dart';
+import '../../../../../data/repository/repository.dart';
 
 part 'user_state.dart';
 
@@ -12,9 +12,9 @@ class UserCubit extends Cubit<UserState> {
     String login, {
     required UserRepository repository,
     required LanguageRepository languageRepository,
-  })  : _repository = repository,
-        _languageRepository = languageRepository,
-        super(UserState(login: login, model: User.empty));
+  }) : _repository = repository,
+       _languageRepository = languageRepository,
+       super(UserState(login: login, model: User.empty));
 
   final UserRepository _repository;
   final LanguageRepository _languageRepository;

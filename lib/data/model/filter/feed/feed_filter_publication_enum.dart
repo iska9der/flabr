@@ -1,10 +1,9 @@
-part of '../part.dart';
+part of '../filter.dart';
 
 enum FeedFilterPublication {
   articles(label: 'Статьи'),
   posts(label: 'Посты'),
-  news(label: 'Новости'),
-  ;
+  news(label: 'Новости');
 
   const FeedFilterPublication({required this.label});
 

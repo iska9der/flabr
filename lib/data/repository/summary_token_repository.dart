@@ -1,4 +1,4 @@
-part of 'part.dart';
+part of 'repository.dart';
 
 @Singleton(as: SummaryTokenRepository)
 class SummaryTokenRepositoryImpl implements SummaryTokenRepository {

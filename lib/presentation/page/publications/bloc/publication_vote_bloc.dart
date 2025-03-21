@@ -6,7 +6,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import '../../../../data/model/loading_status_enum.dart';
 import '../../../../data/model/publication/publication.dart';
 import '../../../../data/model/related_data/publication_vote_model.dart';
-import '../../../../data/repository/part.dart';
+import '../../../../data/repository/repository.dart';
 
 part 'publication_vote_bloc.freezed.dart';
 part 'publication_vote_event.dart';
@@ -17,16 +17,18 @@ class PublicationVoteBloc
   PublicationVoteBloc({
     required Publication publication,
     required this.repository,
-  }) : super(PublicationVoteState(
-          id: publication.id,
-          score: publication.statistics.score,
-          actionPlus: publication.relatedData.votePlus,
-          actionMinus: publication.relatedData.voteMinus,
-          votesCount: publication.statistics.votesCount,
-          votesCountPlus: publication.statistics.votesCountPlus,
-          votesCountMinus: publication.statistics.votesCountMinus,
-          vote: publication.relatedData.vote.value,
-        )) {
+  }) : super(
+         PublicationVoteState(
+           id: publication.id,
+           score: publication.statistics.score,
+           actionPlus: publication.relatedData.votePlus,
+           actionMinus: publication.relatedData.voteMinus,
+           votesCount: publication.statistics.votesCount,
+           votesCountPlus: publication.statistics.votesCountPlus,
+           votesCountMinus: publication.statistics.votesCountMinus,
+           vote: publication.relatedData.vote.value,
+         ),
+       ) {
     on<_VoteUpEvent>(_onVoteUp);
     on<_VoteDownEvent>(_onVoteDown);
   }
@@ -55,29 +57,32 @@ class PublicationVoteBloc
 
     final validationError = _commonValidation(state.actionPlus);
     if (validationError != null) {
-      return emit(state.copyWith(
-        status: LoadingStatus.failure,
-        error: validationError,
-      ));
+      return emit(
+        state.copyWith(status: LoadingStatus.failure, error: validationError),
+      );
     }
 
     try {
       final result = await repository.voteUp(state.id);
       final newAction = state.actionPlus.copyWith(canVote: result.canVote);
 
-      emit(state.copyWith(
-        status: LoadingStatus.success,
-        actionPlus: newAction,
-        score: result.score,
-        votesCount: result.votesCount,
-        votesCountPlus: state.votesCountPlus + 1,
-        vote: result.vote.value,
-      ));
+      emit(
+        state.copyWith(
+          status: LoadingStatus.success,
+          actionPlus: newAction,
+          score: result.score,
+          votesCount: result.votesCount,
+          votesCountPlus: state.votesCountPlus + 1,
+          vote: result.vote.value,
+        ),
+      );
     } catch (error, stackTrace) {
-      emit(state.copyWith(
-        status: LoadingStatus.failure,
-        error: 'Не удалось повысить рейтинг',
-      ));
+      emit(
+        state.copyWith(
+          status: LoadingStatus.failure,
+          error: 'Не удалось повысить рейтинг',
+        ),
+      );
 
       super.onError(error, stackTrace);
     }
@@ -90,11 +95,14 @@ class PublicationVoteBloc
   ) async {
     emit(state.copyWith(status: LoadingStatus.loading, error: null));
 
-    return emit(state.copyWith(
-      status: LoadingStatus.failure,
-      error: 'У разработчика не хватает сил ставить минусы на публикации, '
-          'поэтому пока неизвестно, как работает понижение голосов',
-    ));
+    return emit(
+      state.copyWith(
+        status: LoadingStatus.failure,
+        error:
+            'У разработчика не хватает сил ставить минусы на публикации, '
+            'поэтому пока неизвестно, как работает понижение голосов',
+      ),
+    );
 
     // final validationError = _commonValidation(state.actionMinus);
     // if (validationError != null) {

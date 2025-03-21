@@ -1,4 +1,6 @@
-part of 'part.dart';
+import 'package:flutter/widgets.dart';
+
+import '../../exception/exception.dart';
 
 enum Language {
   ru,
@@ -8,17 +10,17 @@ enum Language {
     return switch (value) {
       'ru' => ru,
       'en' => en,
-      _ => throw ValueException('Неизвестный язык')
+      _ => throw ValueException('Неизвестный язык'),
     };
   }
 
   Locale get locale => switch (this) {
-        Language.ru => const Locale('ru', 'RU'),
-        Language.en => const Locale('en', 'EN'),
-      };
+    Language.ru => const Locale('ru', 'RU'),
+    Language.en => const Locale('en', 'EN'),
+  };
 
   String get label => switch (this) {
-        Language.ru => 'Русский',
-        Language.en => 'Английский',
-      };
+    Language.ru => 'Русский',
+    Language.en => 'Английский',
+  };
 }

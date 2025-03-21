@@ -3,10 +3,10 @@ import 'dart:async';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../data/exception/part.dart';
+import '../../../../data/exception/exception.dart';
 import '../../../../data/model/publication/publication.dart';
 import '../../../../data/model/publication/publication_source_enum.dart';
-import '../../../../data/repository/part.dart';
+import '../../../../data/repository/repository.dart';
 import '../../../extension/extension.dart';
 
 part 'publication_detail_state.dart';
@@ -17,16 +17,16 @@ class PublicationDetailCubit extends Cubit<PublicationDetailState> {
     required PublicationSource source,
     required PublicationRepository repository,
     required LanguageRepository languageRepository,
-  })  : _repository = repository,
-        _languageRepository = languageRepository,
-        super(PublicationDetailState(
-          id: id,
-          source: source,
-          publication: Publication.empty,
-        )) {
-    _uiLangSub = _languageRepository.uiStream.listen(
-      (_) => _reInit(),
-    );
+  }) : _repository = repository,
+       _languageRepository = languageRepository,
+       super(
+         PublicationDetailState(
+           id: id,
+           source: source,
+           publication: Publication.empty,
+         ),
+       ) {
+    _uiLangSub = _languageRepository.uiStream.listen((_) => _reInit());
     _articlesLangSub = _languageRepository.articlesStream.listen(
       (_) => _reInit(),
     );
@@ -59,15 +59,19 @@ class PublicationDetailCubit extends Cubit<PublicationDetailState> {
         langArticles: _languageRepository.articles,
       );
 
-      emit(state.copyWith(
-        status: PublicationStatus.success,
-        publication: publication,
-      ));
+      emit(
+        state.copyWith(
+          status: PublicationStatus.success,
+          publication: publication,
+        ),
+      );
     } catch (e) {
-      emit(state.copyWith(
-        status: PublicationStatus.failure,
-        error: ExceptionHelper.parseMessage(e),
-      ));
+      emit(
+        state.copyWith(
+          status: PublicationStatus.failure,
+          error: e.parseException(),
+        ),
+      );
 
       rethrow;
     }

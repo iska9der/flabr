@@ -4,8 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ya_summary/ya_summary.dart';
 
 import '../../../core/component/di/di.dart';
-import '../../../data/model/filter/part.dart';
-import '../../../data/model/language/part.dart';
+import '../../../data/model/filter/filter.dart';
+import '../../../data/model/language/language.dart';
 import '../../theme/theme.dart';
 import '../../utils/utils.dart';
 import '../../widget/filter/filter_chip_list.dart';

@@ -1,10 +1,8 @@
-part of 'part.dart';
+part of 'repository.dart';
 
 @Singleton(as: SummaryRepository)
 class SummaryRepositoryApp extends SummaryRepositoryImpl {
-  SummaryRepositoryApp({
-    required super.service,
-  });
+  SummaryRepositoryApp({required super.service});
 
   final Map<String, SummaryModel> cache = {};
 

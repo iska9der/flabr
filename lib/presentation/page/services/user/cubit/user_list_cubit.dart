@@ -3,9 +3,9 @@ import 'dart:async';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../../data/exception/part.dart';
+import '../../../../../data/exception/exception.dart';
 import '../../../../../data/model/user/user_model.dart';
-import '../../../../../data/repository/part.dart';
+import '../../../../../data/repository/repository.dart';
 
 part 'user_list_state.dart';
 
@@ -13,12 +13,10 @@ class UserListCubit extends Cubit<UserListState> {
   UserListCubit({
     required UserRepository repository,
     required LanguageRepository languageRepository,
-  })  : _repository = repository,
-        _languageRepository = languageRepository,
-        super(const UserListState()) {
-    _uiLangSub = _languageRepository.uiStream.listen(
-      (_) => _reInit(),
-    );
+  }) : _repository = repository,
+       _languageRepository = languageRepository,
+       super(const UserListState()) {
+    _uiLangSub = _languageRepository.uiStream.listen((_) => _reInit());
     _articlesLangSub = _languageRepository.articlesStream.listen(
       (_) => _reInit(),
     );
@@ -54,19 +52,23 @@ class UserListCubit extends Cubit<UserListState> {
         page: state.page.toString(),
       );
 
-      emit(state.copyWith(
-        status: UserListStatus.success,
-        users: [...state.users, ...response.refs],
-        page: state.page + 1,
-        pagesCount: response.pagesCount,
-      ));
+      emit(
+        state.copyWith(
+          status: UserListStatus.success,
+          users: [...state.users, ...response.refs],
+          page: state.page + 1,
+          pagesCount: response.pagesCount,
+        ),
+      );
     } catch (e) {
       const fallbackMessage = 'Не удалось получить пользователей';
 
-      emit(state.copyWith(
-        error: ExceptionHelper.parseMessage(e, fallbackMessage),
-        status: UserListStatus.failure,
-      ));
+      emit(
+        state.copyWith(
+          error: e.parseException(fallbackMessage),
+          status: UserListStatus.failure,
+        ),
+      );
     }
   }
 

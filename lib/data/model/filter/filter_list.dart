@@ -1,4 +1,4 @@
-part of 'part.dart';
+part of 'filter.dart';
 
 abstract class FilterList {
   static const scoreDefault = FilterOption(label: 'Все', value: '');

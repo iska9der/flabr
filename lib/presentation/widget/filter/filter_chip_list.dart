@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../data/model/filter/part.dart';
+import '../../../data/model/filter/filter.dart';
 
 class FilterChipList extends StatelessWidget {
   const FilterChipList({
@@ -24,23 +24,27 @@ class FilterChipList extends StatelessWidget {
         shrinkWrap: true,
         clipBehavior: Clip.none,
         scrollDirection: Axis.horizontal,
-        children: options
-            .map((option) => Padding(
-                  padding: const EdgeInsets.only(right: 8.0),
-                  child: ChoiceChip(
-                    visualDensity: VisualDensity.compact,
-                    label: Text(
-                      option.label,
-                      overflow: TextOverflow.ellipsis,
-                      textAlign: TextAlign.center,
+        children:
+            options
+                .map(
+                  (option) => Padding(
+                    padding: const EdgeInsets.only(right: 8.0),
+                    child: ChoiceChip(
+                      visualDensity: VisualDensity.compact,
+                      label: Text(
+                        option.label,
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.center,
+                      ),
+                      selected: isSelected(option),
+                      onSelected:
+                          isEnabled
+                              ? (bool value) => onSelected(value, option)
+                              : null,
                     ),
-                    selected: isSelected(option),
-                    onSelected: isEnabled
-                        ? (bool value) => onSelected(value, option)
-                        : null,
                   ),
-                ))
-            .toList(),
+                )
+                .toList(),
       ),
     );
   }

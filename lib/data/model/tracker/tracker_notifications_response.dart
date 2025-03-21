@@ -1,4 +1,4 @@
-part of 'part.dart';
+part of 'tracker.dart';
 
 @freezed
 class TrackerNotificationsResponse with _$TrackerNotificationsResponse {
@@ -39,10 +39,10 @@ class TrackerNotificationListResponse extends ListResponse with EquatableMixin {
     return TrackerNotificationListResponse(
       pagesCount: map['pagesCount'] ?? 0,
       ids: List<String>.from(idsMap),
-      refs: Map.from(refsMap)
-          .entries
-          .map((e) => TrackerNotification.fromJson(e.value))
-          .toList(),
+      refs:
+          Map.from(
+            refsMap,
+          ).entries.map((e) => TrackerNotification.fromJson(e.value)).toList(),
     );
   }
 

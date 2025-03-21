@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../data/model/tokens_model.dart';
-import '../../../data/repository/part.dart';
+import '../../../data/repository/repository.dart';
 import '../../../presentation/extension/extension.dart';
 
 part 'login_state.dart';
@@ -12,10 +12,9 @@ final emailValidation = RegExp(
 );
 
 class LoginCubit extends Cubit<LoginState> {
-  LoginCubit({
-    required TokenRepository tokenRepository,
-  })  : _tokenRepository = tokenRepository,
-        super(const LoginState());
+  LoginCubit({required TokenRepository tokenRepository})
+    : _tokenRepository = tokenRepository,
+      super(const LoginState());
 
   final TokenRepository _tokenRepository;
 
@@ -23,10 +22,12 @@ class LoginCubit extends Cubit<LoginState> {
     if (state.status.isLoading) return;
 
     if (value.isEmpty) {
-      return emit(state.copyWith(
-        status: LoginStatus.failure,
-        error: 'Пустой значение токена',
-      ));
+      return emit(
+        state.copyWith(
+          status: LoginStatus.failure,
+          error: 'Пустой значение токена',
+        ),
+      );
     }
 
     emit(state.copyWith(status: LoginStatus.loading));

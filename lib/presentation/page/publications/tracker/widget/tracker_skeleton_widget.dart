@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
-import '../../../../../data/model/tracker/part.dart';
+import '../../../../../data/model/tracker/tracker.dart';
 import '../../../../widget/enhancement/card.dart';
 import '../../../../widget/user_text_button.dart';
 

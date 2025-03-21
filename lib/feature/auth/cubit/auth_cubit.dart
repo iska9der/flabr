@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../data/model/tokens_model.dart';
 import '../../../data/model/user/user_updates_model.dart';
 import '../../../data/model/user_me_model.dart';
-import '../../../data/repository/part.dart';
+import '../../../data/repository/repository.dart';
 
 part 'auth_state.dart';
 
@@ -12,9 +12,9 @@ class AuthCubit extends Cubit<AuthState> {
   AuthCubit({
     required AuthRepository repository,
     required TokenRepository tokenRepository,
-  })  : _repository = repository,
-        _tokenRepository = tokenRepository,
-        super(const AuthState());
+  }) : _repository = repository,
+       _tokenRepository = tokenRepository,
+       super(const AuthState());
 
   final AuthRepository _repository;
   final TokenRepository _tokenRepository;
@@ -28,10 +28,7 @@ class AuthCubit extends Cubit<AuthState> {
       return emit(state.copyWith(status: AuthStatus.unauthorized));
     }
 
-    emit(state.copyWith(
-      status: AuthStatus.authorized,
-      tokens: tokens,
-    ));
+    emit(state.copyWith(status: AuthStatus.authorized, tokens: tokens));
   }
 
   void fetchMe() async {

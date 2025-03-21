@@ -1,4 +1,4 @@
-part of 'part.dart';
+part of 'service.dart';
 
 abstract interface class SearchService {
   Future fetch({
@@ -14,7 +14,7 @@ abstract interface class SearchService {
 @LazySingleton(as: SearchService)
 class SearchServiceImpl implements SearchService {
   const SearchServiceImpl(@Named('mobileClient') HttpClient client)
-      : _mobileClient = client;
+    : _mobileClient = client;
 
   final HttpClient _mobileClient;
 
@@ -41,7 +41,7 @@ class SearchServiceImpl implements SearchService {
       final response = await _mobileClient.get(queryString);
 
       return response.data;
-    } on DisplayableException {
+    } on AppException {
       rethrow;
     } catch (e) {
       throw FetchException();

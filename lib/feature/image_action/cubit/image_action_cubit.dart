@@ -8,16 +8,14 @@ import 'package:path/path.dart' as path;
 import 'package:share_plus/share_plus.dart';
 
 import '../../../core/component/http/http.dart';
-import '../../../data/exception/part.dart';
+import '../../../data/exception/exception.dart';
 
 part 'image_action_state.dart';
 
 class ImageActionCubit extends Cubit<ImageActionState> {
-  ImageActionCubit({
-    required HttpClient client,
-    required String url,
-  })  : _client = client,
-        super(ImageActionState(url: url)) {
+  ImageActionCubit({required HttpClient client, required String url})
+    : _client = client,
+      super(ImageActionState(url: url)) {
     _init();
   }
 
@@ -78,10 +76,9 @@ class ImageActionCubit extends Cubit<ImageActionState> {
 
       emit(state.copyWith(status: ImageActionStatus.success));
     } catch (e) {
-      emit(state.copyWith(
-        status: ImageActionStatus.failure,
-        error: e.toString(),
-      ));
+      emit(
+        state.copyWith(status: ImageActionStatus.failure, error: e.toString()),
+      );
 
       rethrow;
     }
@@ -102,15 +99,14 @@ class ImageActionCubit extends Cubit<ImageActionState> {
           state.bytes!,
           name: state.name,
           mimeType: state.mimeType,
-        )
+        ),
       ]);
 
       emit(state.copyWith(status: ImageActionStatus.success));
     } catch (e) {
-      emit(state.copyWith(
-        status: ImageActionStatus.failure,
-        error: e.toString(),
-      ));
+      emit(
+        state.copyWith(status: ImageActionStatus.failure, error: e.toString()),
+      );
 
       rethrow;
     }

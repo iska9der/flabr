@@ -1,4 +1,4 @@
-part of 'part.dart';
+part of 'service.dart';
 
 abstract interface class PublicationService {
   Future<Map<String, dynamic>> fetchCounters();
@@ -71,10 +71,7 @@ abstract interface class PublicationService {
 
   Future<bool> removeFromBookmark(String articleId);
 
-  fetchMostReading({
-    required String langUI,
-    required String langArticles,
-  });
+  fetchMostReading({required String langUI, required String langArticles});
 
   Future<PublicationVoteResponse> voteUp(String articleId);
 
@@ -86,8 +83,8 @@ class PublicationServiceImpl implements PublicationService {
   const PublicationServiceImpl({
     @Named('mobileClient') required HttpClient mobileClient,
     @Named('siteClient') required HttpClient siteClient,
-  })  : _mobileClient = mobileClient,
-        _siteClient = siteClient;
+  }) : _mobileClient = mobileClient,
+       _siteClient = siteClient;
 
   final HttpClient _mobileClient;
   final HttpClient _siteClient;
@@ -164,7 +161,7 @@ class PublicationServiceImpl implements PublicationService {
       );
 
       return FeedListResponse.fromMap(response.data);
-    } on DisplayableException {
+    } on AppException {
       rethrow;
     } catch (e, trace) {
       Error.throwWithStackTrace(FetchException(), trace);
@@ -187,27 +184,27 @@ class PublicationServiceImpl implements PublicationService {
 
       final params = switch (section) {
         Section.post => PostListParams(
-            langArticles: langArticles,
-            langUI: langUI,
-            page: page,
-            flow: flowStr,
-            sort: sort.postValue,
-            period: sort == Sort.byBest ? period.value : null,
-            score: score.value,
-          ),
+          langArticles: langArticles,
+          langUI: langUI,
+          page: page,
+          flow: flowStr,
+          sort: sort.postValue,
+          period: sort == Sort.byBest ? period.value : null,
+          score: score.value,
+        ),
         _ => PublicationListParams(
-            langArticles: langArticles,
-            langUI: langUI,
-            page: page,
-            flow: flowStr,
-            news: section == Section.news,
+          langArticles: langArticles,
+          langUI: langUI,
+          page: page,
+          flow: flowStr,
+          news: section == Section.news,
 
-            /// если мы находимся не во "Все потоки", в значение sort, по завету
-            /// костыльного api хабра, нужно передавать значение 'all'
-            sort: flow == PublicationFlow.all ? sort.value : 'all',
-            period: sort == Sort.byBest ? period.value : null,
-            score: score.value,
-          ),
+          /// если мы находимся не во "Все потоки", в значение sort, по завету
+          /// костыльного api хабра, нужно передавать значение 'all'
+          sort: flow == PublicationFlow.all ? sort.value : 'all',
+          period: sort == Sort.byBest ? period.value : null,
+          score: score.value,
+        ),
       };
 
       final response = await _mobileClient.get(
@@ -216,10 +213,11 @@ class PublicationServiceImpl implements PublicationService {
       );
 
       return switch (section) {
-        Section.post => PostListResponse.fromMap(response.data),
-        _ => PublicationListResponse.fromMap(response.data),
-      } as ListResponse;
-    } on DisplayableException {
+            Section.post => PostListResponse.fromMap(response.data),
+            _ => PublicationListResponse.fromMap(response.data),
+          }
+          as ListResponse;
+    } on AppException {
       rethrow;
     } catch (e, trace) {
       Error.throwWithStackTrace(FetchException(), trace);
@@ -252,7 +250,7 @@ class PublicationServiceImpl implements PublicationService {
       );
 
       return PublicationListResponse.fromMap(response.data);
-    } on DisplayableException {
+    } on AppException {
       rethrow;
     } catch (e, trace) {
       Error.throwWithStackTrace(FetchException(), trace);
@@ -286,10 +284,13 @@ class PublicationServiceImpl implements PublicationService {
       );
 
       return switch (type) {
-        UserPublicationType.posts => PostListResponse.fromMap(response.data),
-        _ => PublicationListResponse.fromMap(response.data),
-      } as ListResponse;
-    } on DisplayableException {
+            UserPublicationType.posts => PostListResponse.fromMap(
+              response.data,
+            ),
+            _ => PublicationListResponse.fromMap(response.data),
+          }
+          as ListResponse;
+    } on AppException {
       rethrow;
     } catch (e, trace) {
       Error.throwWithStackTrace(FetchException(), trace);
@@ -325,10 +326,11 @@ class PublicationServiceImpl implements PublicationService {
       );
 
       return switch (type) {
-        UserBookmarksType.posts => PostListResponse.fromMap(response.data),
-        _ => PublicationListResponse.fromMap(response.data),
-      } as ListResponse;
-    } on DisplayableException {
+            UserBookmarksType.posts => PostListResponse.fromMap(response.data),
+            _ => PublicationListResponse.fromMap(response.data),
+          }
+          as ListResponse;
+    } on AppException {
       rethrow;
     } catch (e, trace) {
       Error.throwWithStackTrace(FetchException(), trace);
@@ -359,7 +361,7 @@ class PublicationServiceImpl implements PublicationService {
       );
 
       return CommentListResponse.fromMap(response.data);
-    } on DisplayableException {
+    } on AppException {
       rethrow;
     } on DioException catch (e, trace) {
       Error.throwWithStackTrace(
@@ -384,7 +386,7 @@ class PublicationServiceImpl implements PublicationService {
       }
 
       return true;
-    } on DisplayableException {
+    } on AppException {
       rethrow;
     } catch (e, trace) {
       Error.throwWithStackTrace(FetchException(), trace);
@@ -403,7 +405,7 @@ class PublicationServiceImpl implements PublicationService {
       }
 
       return true;
-    } on DisplayableException {
+    } on AppException {
       rethrow;
     } catch (e, trace) {
       Error.throwWithStackTrace(FetchException(), trace);
@@ -427,7 +429,7 @@ class PublicationServiceImpl implements PublicationService {
       );
 
       return MostReadingResponse.fromMap(response.data);
-    } on DisplayableException {
+    } on AppException {
       rethrow;
     } catch (e, trace) {
       Error.throwWithStackTrace(FetchException(), trace);

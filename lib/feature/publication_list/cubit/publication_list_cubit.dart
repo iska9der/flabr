@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../data/model/publication/publication.dart';
-import '../../../data/repository/part.dart';
+import '../../../data/repository/repository.dart';
 
 enum PublicationListStatus { initial, loading, success, failure }
 
@@ -15,9 +15,7 @@ abstract class PublicationListCubit<State extends PublicationListState>
     required this.repository,
     required this.languageRepository,
   }) {
-    _uiLangSub = languageRepository.uiStream.listen(
-      (_) => refetch(),
-    );
+    _uiLangSub = languageRepository.uiStream.listen((_) => refetch());
     _articleLangsSub = languageRepository.articlesStream.listen(
       (_) => refetch(),
     );

@@ -1,4 +1,4 @@
-part of 'part.dart';
+part of 'repository.dart';
 
 abstract interface class TrackerRepository {
   Future<TrackerPublicationsResponse> fetchPublications({
