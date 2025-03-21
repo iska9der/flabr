@@ -18,7 +18,7 @@ dependencies:
   collection: any
   meta: any
 
-  auto_route: ^9.2.2
+  auto_route: 9.3.0+1
   cached_network_image: ^3.4.1
   cupertino_icons: ^1.0.8
   dio: ^5.8.0+1
@@ -57,12 +57,12 @@ dependencies:
   shared_preferences: ^2.5.2
   freezed_annotation: ^2.4.4
   json_annotation: ^4.9.0
-  skeletonizer: ^1.4.2
+  skeletonizer: ^1.4.3
   ya_summary: any
 
 dev_dependencies:
   analyzer: ^7.3.0
-  auto_route_generator: ^9.0.0
+  auto_route_generator: 9.3.1
   build_runner: ^2.4.15
   dart_code_metrics_presets: ^2.21.0
   flutter_launcher_icons: ^0.14.3

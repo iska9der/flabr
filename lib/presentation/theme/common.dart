@@ -18,6 +18,8 @@ const PageTransitionsTheme appPageTransitionsTheme = PageTransitionsTheme(
   builders: {
     TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
     TargetPlatform.android: FadeUpwardsPageTransitionsBuilder(),
+    // не корректно работает, возможно проблема с auto_route
+    // TargetPlatform.android: FadeForwardsPageTransitionsBuilder(),
   },
 );
 
