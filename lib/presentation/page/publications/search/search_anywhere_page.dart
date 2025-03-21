@@ -42,7 +42,7 @@ class SearchAnywherePage extends StatelessWidget {
 }
 
 class _SearchAnywhereView extends StatefulWidget {
-  // ignore: unused_element
+  // ignore: unused_element_parameter
   const _SearchAnywhereView({super.key});
 
   @override

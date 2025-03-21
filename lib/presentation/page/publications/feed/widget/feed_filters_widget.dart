@@ -52,7 +52,7 @@ class FeedFiltersWidget extends StatelessWidget {
 
 class _FilterView extends StatefulWidget {
   const _FilterView({
-    // ignore: unused_element
+    // ignore: unused_element_parameter
     super.key,
     this.isLoading = false,
     required this.currentScore,

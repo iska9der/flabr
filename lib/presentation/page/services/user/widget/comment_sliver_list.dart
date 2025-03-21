@@ -112,7 +112,7 @@ class CommentSliverList extends StatelessWidget {
 }
 
 class _SkeletonLoader extends StatelessWidget {
-  // ignore: unused_element
+  // ignore: unused_element_parameter
   const _SkeletonLoader({super.key});
 
   @override

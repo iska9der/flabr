@@ -74,7 +74,7 @@ class TrackerSubscriptionView extends StatelessWidget {
 }
 
 class _NotificationWidget extends StatefulWidget {
-  // ignore: unused_element
+  // ignore: unused_element_parameter
   const _NotificationWidget({super.key, required this.model});
 
   final TrackerNotification model;
@@ -169,7 +169,7 @@ class _NotificationWidgetState extends State<_NotificationWidget> {
 }
 
 class _UnknownWidget extends StatelessWidget {
-  // ignore: unused_element
+  // ignore: unused_element_parameter
   const _UnknownWidget({super.key, required this.model});
 
   final TrackerNotification model;

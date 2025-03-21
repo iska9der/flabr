@@ -50,7 +50,7 @@ class ScoreWidget extends StatelessWidget {
 
 class _ScoreTooltip extends StatelessWidget {
   const _ScoreTooltip({
-    // ignore: unused_element
+    // ignore: unused_element_parameter
     super.key,
     this.votesCount = 0,
     this.votesCountPlus = 0,
@@ -68,7 +68,8 @@ class _ScoreTooltip extends StatelessWidget {
     return Tooltip(
       triggerMode: TooltipTriggerMode.tap,
       showDuration: Duration(seconds: 5),
-      message: 'Всего голосов $votesCount: '
+      message:
+          'Всего голосов $votesCount: '
           '↑$votesCountPlus и ↓$votesCountMinus',
       child: child,
     );
@@ -77,7 +78,7 @@ class _ScoreTooltip extends StatelessWidget {
 
 class _VoteButtons extends StatelessWidget {
   const _VoteButtons({
-    // ignore: unused_element
+    // ignore: unused_element_parameter
     super.key,
     required this.publication,
   });
@@ -92,10 +93,11 @@ class _VoteButtons extends StatelessWidget {
     );
 
     return BlocProvider(
-      create: (_) => PublicationVoteBloc(
-        publication: publication,
-        repository: getIt(),
-      ),
+      create:
+          (_) => PublicationVoteBloc(
+            publication: publication,
+            repository: getIt(),
+          ),
       child: BlocConsumer<PublicationVoteBloc, PublicationVoteState>(
         listener: (context, state) {
           if (state.status == LoadingStatus.failure && state.error != null) {
@@ -120,9 +122,10 @@ class _VoteButtons extends StatelessWidget {
                 style: iconStyle,
                 tooltip: 'Повысить рейтинг',
                 icon: Icon(Icons.arrow_upward, size: 18),
-                onPressed: isLoading
-                    ? null
-                    : () => context.read<PublicationVoteBloc>().add(
+                onPressed:
+                    isLoading
+                        ? null
+                        : () => context.read<PublicationVoteBloc>().add(
                           PublicationVoteEvent.voteUp(),
                         ),
               ),
@@ -135,10 +138,10 @@ class _VoteButtons extends StatelessWidget {
                   child: Text(
                     score.compact(),
                     textAlign: TextAlign.center,
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodySmall
-                        ?.copyWith(color: color, fontWeight: FontWeight.w600),
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: color,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ),
               ),
@@ -150,9 +153,10 @@ class _VoteButtons extends StatelessWidget {
                   size: 18,
                   color: Theme.of(context).disabledColor,
                 ),
-                onPressed: isLoading
-                    ? null
-                    : () => context.read<PublicationVoteBloc>().add(
+                onPressed:
+                    isLoading
+                        ? null
+                        : () => context.read<PublicationVoteBloc>().add(
                           PublicationVoteEvent.voteDown(),
                         ),
               ),
