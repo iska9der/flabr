@@ -5,10 +5,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:ya_summary/ya_summary.dart';
 
-import '../core/component/di/injector.dart';
+import '../core/component/di/di.dart';
 import '../core/component/router/app_router.dart';
+import '../feature/auth/auth.dart';
 import 'extension/extension.dart';
-import 'feature/auth/cubit/auth_cubit.dart';
 import 'page/settings/cubit/settings_cubit.dart';
 import 'theme/theme.dart';
 import 'widget/enhancement/progress_indicator.dart';
@@ -24,30 +24,30 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(
           lazy: false,
-          create: (_) => SettingsCubit(
-            languageRepository: getIt(),
-            storage: getIt(instanceName: 'sharedStorage'),
-          )..init(),
+          create:
+              (_) => SettingsCubit(
+                languageRepository: getIt(),
+                storage: getIt(instanceName: 'sharedStorage'),
+              )..init(),
         ),
         BlocProvider(
           lazy: false,
-          create: (_) => AuthCubit(
-            repository: getIt(),
-            tokenRepository: getIt(),
-          )..init(),
+          create:
+              (_) =>
+                  AuthCubit(repository: getIt(), tokenRepository: getIt())
+                    ..init(),
         ),
         BlocProvider(
           lazy: false,
-          create: (_) => SummaryAuthCubit(
-            tokenRepository: getIt(),
-          )..init(),
+          create: (_) => SummaryAuthCubit(tokenRepository: getIt())..init(),
         ),
       ],
       child: MultiBlocListener(
         listeners: [
           BlocListener<AuthCubit, AuthState>(
-            listenWhen: (previous, current) =>
-                previous.status.isLoading && current.isAuthorized,
+            listenWhen:
+                (previous, current) =>
+                    previous.status.isLoading && current.isAuthorized,
             listener: (context, _) {
               context.read<AuthCubit>().fetchMe();
               context.read<AuthCubit>().fetchUpdates();
@@ -58,9 +58,7 @@ class MyApp extends StatelessWidget {
           builder: (context, state) {
             if (state.status == SettingsStatus.loading) {
               /// TODO: Splash Page
-              return const Material(
-                child: CircleIndicator(),
-              );
+              return const Material(child: CircleIndicator());
             }
 
             return Listener(

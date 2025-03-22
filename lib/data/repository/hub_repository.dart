@@ -1,4 +1,8 @@
-part of 'part.dart';
+import 'package:injectable/injectable.dart';
+
+import '../model/hub/hub.dart';
+import '../model/language/language.dart';
+import '../service/service.dart';
 
 @LazySingleton()
 class HubRepository {

@@ -1,8 +1,8 @@
 import 'package:equatable/equatable.dart';
 
-import '../publication/publication.dart';
-import '../related_data/user_related_data_model.dart';
+import '../publication/publication_model.dart';
 import 'user_location_model.dart';
+import 'user_related_data_model.dart';
 import 'user_workplace_model.dart';
 
 class User extends Equatable {
@@ -106,20 +106,24 @@ class User extends Equatable {
           map['rating'] != null ? double.parse(map['rating'].toString()) : 0.00,
       ratingPosition:
           map['ratingPos'] != null ? int.parse(map['ratingPos'].toString()) : 0,
-      relatedData: map['relatedData'] != null
-          ? UserRelatedData.fromMap(map['relatedData'])
-          : UserRelatedData.empty,
-      location: map['location'] != null
-          ? UserLocation.fromMap(map['location'])
-          : UserLocation.empty,
-      workplace: map['workplace'] != null
-          ? List<UserWorkplace>.from(
-              map['workplace'].map((e) => UserWorkplace.fromMap(e)),
-            )
-          : const [],
-      lastPost: map['lastPost'] != null
-          ? PublicationCommon.fromMap(map['lastPost'])
-          : PublicationCommon.empty,
+      relatedData:
+          map['relatedData'] != null
+              ? UserRelatedData.fromMap(map['relatedData'])
+              : UserRelatedData.empty,
+      location:
+          map['location'] != null
+              ? UserLocation.fromMap(map['location'])
+              : UserLocation.empty,
+      workplace:
+          map['workplace'] != null
+              ? List<UserWorkplace>.from(
+                map['workplace'].map((e) => UserWorkplace.fromMap(e)),
+              )
+              : const [],
+      lastPost:
+          map['lastPost'] != null
+              ? PublicationCommon.fromMap(map['lastPost'])
+              : PublicationCommon.empty,
     );
   }
 

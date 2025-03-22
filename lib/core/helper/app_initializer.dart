@@ -1,4 +1,12 @@
-part of 'helper.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl.dart';
+
+import '../component/bloc/observer.dart';
+import '../component/di/di.dart';
+import '../constants/constants.dart';
 
 abstract class AppInitializer {
   static Future<void> init() async {

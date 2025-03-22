@@ -7,13 +7,12 @@ import 'package:fwfh_svg/fwfh_svg.dart';
 import 'package:fwfh_webview/fwfh_webview.dart';
 import 'package:path/path.dart' as p;
 
-import '../../core/component/di/injector.dart';
+import '../../core/component/di/di.dart';
 import '../../core/component/router/app_router.dart';
+import '../../feature/image_action/image_action.dart';
 import '../extension/extension.dart';
-import '../feature/image_action/part.dart';
 import '../page/settings/cubit/settings_cubit.dart';
 import '../theme/theme.dart';
-import '../utils/utils.dart';
 import 'enhancement/progress_indicator.dart';
 
 class HtmlView extends StatelessWidget {
@@ -79,16 +78,11 @@ class HtmlView extends StatelessWidget {
               _ => '',
             };
             if (headerWeight.isNotEmpty) {
-              return {
-                'font-family': 'Geologica',
-                'font-weight': headerWeight,
-              };
+              return {'font-family': 'Geologica', 'font-weight': headerWeight};
             }
 
             if (element.localName == 'li') {
-              return {
-                'margin-bottom': '6px',
-              };
+              return {'margin-bottom': '6px'};
             }
 
             return null;
@@ -113,7 +107,8 @@ class HtmlView extends StatelessWidget {
                 return null;
               }
 
-              final imgSrc = element.attributes['data-src'] ??
+              final imgSrc =
+                  element.attributes['data-src'] ??
                   element.attributes['src'] ??
                   '';
               if (imgSrc.isEmpty) {
@@ -141,10 +136,7 @@ class HtmlView extends StatelessWidget {
 
               final tooltip = element.attributes['title'];
               if (tooltip != null) {
-                widget = Tooltip(
-                  message: tooltip,
-                  child: widget,
-                );
+                widget = Tooltip(message: tooltip, child: widget);
               }
 
               widget = Align(child: widget);
@@ -171,9 +163,7 @@ class CustomFactory extends WidgetFactory with SvgFactory, WebViewFactory {
   @override
   bool get webViewMediaPlaybackAlwaysAllow => true;
 
-  List<String> iframeBanList = [
-    'video.yandex.ru/iframe',
-  ];
+  List<String> iframeBanList = ['video.yandex.ru/iframe'];
 
   @override
   Widget? buildImageWidget(BuildTree meta, ImageSource src) {
@@ -230,50 +220,41 @@ class CustomFactory extends WidgetFactory with SvgFactory, WebViewFactory {
                   return go();
                 }
 
-                getIt<Utils>().showAlert(
-                  context: context,
+                context.showAlert(
                   compact: true,
                   title: Text(
                     tree.element.text,
                     style: Theme.of(context).textTheme.titleSmall,
                   ),
                   content: Text(href),
-                  actionsBuilder: (context) => [
-                    TextButton(
-                      onPressed: () {
-                        Clipboard.setData(
-                          ClipboardData(text: href),
-                        );
+                  actionsBuilder:
+                      (context) => [
+                        TextButton(
+                          onPressed: () {
+                            Clipboard.setData(ClipboardData(text: href));
 
-                        getIt<Utils>().showSnack(
-                          context: context,
-                          content: const Text(
-                            'Скопировано в буфер обмена',
-                          ),
-                        );
-                      },
-                      child: Text('Копировать в буфер'),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        go();
-                        Navigator.of(context).pop();
-                      },
-                      child: Text('Перейти'),
-                    ),
-                  ],
+                            context.showSnack(
+                              content: const Text('Скопировано в буфер обмена'),
+                            );
+                          },
+                          child: Text('Копировать в буфер'),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            go();
+                            Navigator.of(context).pop();
+                          },
+                          child: Text('Перейти'),
+                        ),
+                      ],
                 );
               },
             );
 
             final parent = tree.parent;
-            return parent.sub()
-              ..prepend(
-                WidgetBit.inline(
-                  parent,
-                  WidgetPlaceholder(child: widget),
-                ),
-              );
+            return parent.sub()..prepend(
+              WidgetBit.inline(parent, WidgetPlaceholder(child: widget)),
+            );
           },
         );
 
@@ -289,15 +270,16 @@ class CustomFactory extends WidgetFactory with SvgFactory, WebViewFactory {
               );
               final attrs = meta.element.attributes;
               final sandboxAttrs = attrs['sanbox'] ?? attrs['sandbox'];
-              final widget = isWebViewEnabled && !isBanned
-                  ? buildWebView(
-                      meta,
-                      src,
-                      height: tryParseDoubleFromMap(attrs, 'height'),
-                      width: tryParseDoubleFromMap(attrs, 'width'),
-                      sandbox: sandboxAttrs?.split(RegExp(r'\s+')),
-                    )
-                  : buildWebViewLinkOnly(meta, src);
+              final widget =
+                  isWebViewEnabled && !isBanned
+                      ? buildWebView(
+                        meta,
+                        src,
+                        height: tryParseDoubleFromMap(attrs, 'height'),
+                        width: tryParseDoubleFromMap(attrs, 'width'),
+                        sandbox: sandboxAttrs?.split(RegExp(r'\s+')),
+                      )
+                      : buildWebViewLinkOnly(meta, src);
 
               return widget ?? widgets;
             },

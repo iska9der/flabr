@@ -1,4 +1,6 @@
-part of 'storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'cache_storage.dart';
 
 class SharedStorage implements CacheStorage {
   SharedStorage(this._storage);

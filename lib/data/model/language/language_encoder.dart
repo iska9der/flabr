@@ -1,4 +1,4 @@
-part of 'part.dart';
+import 'language_enum.dart';
 
 abstract class LanguageEncoder {
   static String encodeLangs(List<Language> languages) {

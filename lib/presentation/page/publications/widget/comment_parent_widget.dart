@@ -9,8 +9,8 @@ import '../../../extension/extension.dart';
 import '../../../theme/theme.dart';
 import '../../../widget/html_view_widget.dart';
 
-class ParentComment extends StatelessWidget {
-  const ParentComment({super.key, required this.parent});
+class CommentParent extends StatelessWidget {
+  const CommentParent({super.key, required this.parent});
 
   final CommentBase parent;
 

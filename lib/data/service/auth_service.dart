@@ -1,4 +1,7 @@
-part of 'part.dart';
+import 'package:injectable/injectable.dart';
+
+import '../../core/component/http/http.dart';
+import '../exception/exception.dart';
 
 abstract interface class AuthService {
   Future<Map<String, dynamic>?> fetchMe();
@@ -11,8 +14,8 @@ class AuthServiceImpl implements AuthService {
   const AuthServiceImpl({
     @Named('siteClient') required HttpClient siteClient,
     @Named('mobileClient') required HttpClient mobileClient,
-  })  : _siteClient = siteClient,
-        _mobileClient = mobileClient;
+  }) : _siteClient = siteClient,
+       _mobileClient = mobileClient;
 
   final HttpClient _siteClient;
   final HttpClient _mobileClient;

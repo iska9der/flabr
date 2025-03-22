@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../../core/component/router/app_router.dart';
 import '../../data/model/user_base.dart';
-import '../feature/auth/widget/dialog.dart';
-import '../feature/auth/widget/profile_widget.dart';
+import '../../feature/auth/auth.dart';
 import 'card_avatar_widget.dart';
 
 class UserTextButton extends StatelessWidget {

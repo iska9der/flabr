@@ -3,9 +3,10 @@ import 'dart:async';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../../data/exception/part.dart';
-import '../../../../../data/model/list_response/company_list_response.dart';
-import '../../../../../data/repository/part.dart';
+import '../../../../../data/exception/exception.dart';
+import '../../../../../data/model/company/company.dart';
+import '../../../../../data/model/list_response_model.dart';
+import '../../../../../data/repository/repository.dart';
 
 part 'company_list_state.dart';
 
@@ -13,12 +14,10 @@ class CompanyListCubit extends Cubit<CompanyListState> {
   CompanyListCubit({
     required CompanyRepository repository,
     required LanguageRepository languageRepository,
-  })  : _repository = repository,
-        _languageRepository = languageRepository,
-        super(const CompanyListState()) {
-    _uiLangSub = _languageRepository.uiStream.listen(
-      (_) => _reInit(),
-    );
+  }) : _repository = repository,
+       _languageRepository = languageRepository,
+       super(const CompanyListState()) {
+    _uiLangSub = _languageRepository.uiStream.listen((_) => _reInit());
     _articlesLangSub = _languageRepository.articlesStream.listen(
       (_) => _reInit(),
     );
@@ -58,21 +57,24 @@ class CompanyListCubit extends Cubit<CompanyListState> {
         refs: [...state.list.refs, ...response.refs],
       );
 
-      emit(state.copyWith(
-        status: CompanyListStatus.success,
-        list: newList,
-        page: state.page + 1,
-      ));
-    } on DisplayableException catch (e) {
-      emit(state.copyWith(
-        status: CompanyListStatus.failure,
-        error: e.toString(),
-      ));
+      emit(
+        state.copyWith(
+          status: CompanyListStatus.success,
+          list: newList,
+          page: state.page + 1,
+        ),
+      );
+    } on AppException catch (e) {
+      emit(
+        state.copyWith(status: CompanyListStatus.failure, error: e.toString()),
+      );
     } catch (e) {
-      emit(state.copyWith(
-        status: CompanyListStatus.failure,
-        error: 'Не удалось получить список компайний',
-      ));
+      emit(
+        state.copyWith(
+          status: CompanyListStatus.failure,
+          error: 'Не удалось получить список компайний',
+        ),
+      );
     }
   }
 

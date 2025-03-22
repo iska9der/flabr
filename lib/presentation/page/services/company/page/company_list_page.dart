@@ -4,11 +4,11 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../../core/component/di/injector.dart';
-import '../../../../../data/model/company/company_model.dart';
-import '../../../../feature/scroll/part.dart';
+import '../../../../../core/component/di/di.dart';
+import '../../../../../data/model/company/company.dart';
+import '../../../../../feature/scroll/scroll.dart';
+import '../../../../extension/extension.dart';
 import '../../../../theme/theme.dart';
-import '../../../../utils/utils.dart';
 import '../../../../widget/enhancement/progress_indicator.dart';
 import '../../../settings/cubit/settings_cubit.dart';
 import '../cubit/company_list_cubit.dart';
@@ -28,14 +28,13 @@ class CompanyListPage extends StatelessWidget {
       key: const ValueKey('company-list'),
       providers: [
         BlocProvider(
-          create: (_) => CompanyListCubit(
-            repository: getIt(),
-            languageRepository: getIt(),
-          ),
+          create:
+              (_) => CompanyListCubit(
+                repository: getIt(),
+                languageRepository: getIt(),
+              ),
         ),
-        BlocProvider(
-          create: (_) => ScrollCubit(),
-        ),
+        BlocProvider(create: (_) => ScrollCubit()),
       ],
       child: const CompanyListPageView(),
     );
@@ -58,9 +57,10 @@ class CompanyListPageView extends StatelessWidget {
           listener: (context, state) => cubit.fetch(),
         ),
         BlocListener<SettingsCubit, SettingsState>(
-          listenWhen: (previous, current) =>
-              previous.langUI != current.langUI ||
-              previous.langArticles != current.langArticles,
+          listenWhen:
+              (previous, current) =>
+                  previous.langUI != current.langUI ||
+                  previous.langArticles != current.langArticles,
           listener: (_, __) => scrollCubit.animateToTop(),
         ),
       ],
@@ -72,13 +72,10 @@ class CompanyListPageView extends StatelessWidget {
         floatingActionButton: const FloatingScrollToTopButton(),
         body: SafeArea(
           child: BlocConsumer<CompanyListCubit, CompanyListState>(
-            listenWhen: (p, c) =>
-                p.page != 1 && c.status == CompanyListStatus.failure,
+            listenWhen:
+                (p, c) => p.page != 1 && c.status == CompanyListStatus.failure,
             listener: (c, state) {
-              getIt<Utils>().showSnack(
-                context: context,
-                content: Text(state.error),
-              );
+              context.showSnack(content: Text(state.error));
             },
             builder: (context, state) {
               if (state.status == CompanyListStatus.initial) {
@@ -101,10 +98,12 @@ class CompanyListPageView extends StatelessWidget {
                 controller: scrollCtrl,
                 child: ListView.separated(
                   controller: scrollCtrl,
-                  separatorBuilder: (context, index) => const SizedBox(
-                    height: AppDimensions.cardBetweenHeight,
-                  ),
-                  itemCount: state.list.refs.length +
+                  separatorBuilder:
+                      (context, index) => const SizedBox(
+                        height: AppDimensions.cardBetweenHeight,
+                      ),
+                  itemCount:
+                      state.list.refs.length +
                       (state.status == CompanyListStatus.loading ? 1 : 0),
                   itemBuilder: (context, index) {
                     if (index < state.list.refs.length) {

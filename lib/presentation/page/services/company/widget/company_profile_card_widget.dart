@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 
-import '../../../../../core/component/di/injector.dart';
-import '../../../../../data/model/company/card/company_card_model.dart';
-import '../../../../../data/model/related_data/company_related_data_model.dart';
+import '../../../../../core/component/di/di.dart';
+import '../../../../../data/model/company/company.dart';
 import '../../../../../data/model/stat_type_enum.dart';
-import '../../../../../data/repository/part.dart';
-import '../../../../feature/auth/cubit/auth_cubit.dart';
-import '../../../../feature/profile_subscribe/part.dart';
+import '../../../../../data/repository/repository.dart';
+import '../../../../../feature/auth/auth.dart';
+import '../../../../../feature/profile_subscribe/profile_subscribe.dart';
 import '../../../../theme/theme.dart';
 import '../../../../widget/card_avatar_widget.dart';
 import '../../../../widget/enhancement/card.dart';
@@ -60,10 +59,7 @@ class _CompanyProfileCardWidgetState extends State<CompanyProfileCardWidget> {
             children: [
               Row(
                 children: [
-                  CardAvatarWidget(
-                    imageUrl: card.imageUrl,
-                    height: 60,
-                  ),
+                  CardAvatarWidget(imageUrl: card.imageUrl, height: 60),
                   const SizedBox(width: 20),
                   Expanded(
                     child: Row(
@@ -80,7 +76,7 @@ class _CompanyProfileCardWidgetState extends State<CompanyProfileCardWidget> {
                         ),
                       ],
                     ),
-                  )
+                  ),
                 ],
               ),
               const SizedBox(height: 16),

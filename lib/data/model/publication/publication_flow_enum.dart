@@ -1,4 +1,4 @@
-import '../../exception/part.dart';
+import '../../exception/exception.dart';
 
 enum PublicationFlow {
   all,
@@ -10,14 +10,14 @@ enum PublicationFlow {
   popsci;
 
   String get label => switch (this) {
-        PublicationFlow.all => 'Все',
-        PublicationFlow.develop => 'Разработка',
-        PublicationFlow.admin => 'Администрирование',
-        PublicationFlow.design => 'Дизайн',
-        PublicationFlow.management => 'Менеджмент',
-        PublicationFlow.marketing => 'Маркетинг',
-        PublicationFlow.popsci => 'Научпоп'
-      };
+    PublicationFlow.all => 'Все',
+    PublicationFlow.develop => 'Разработка',
+    PublicationFlow.admin => 'Администрирование',
+    PublicationFlow.design => 'Дизайн',
+    PublicationFlow.management => 'Менеджмент',
+    PublicationFlow.marketing => 'Маркетинг',
+    PublicationFlow.popsci => 'Научпоп',
+  };
 
   static PublicationFlow fromString(String value) {
     return PublicationFlow.values.firstWhere(

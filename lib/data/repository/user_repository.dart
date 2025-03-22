@@ -1,4 +1,11 @@
-part of 'part.dart';
+import 'dart:async';
+
+import 'package:injectable/injectable.dart';
+
+import '../model/language/language.dart';
+import '../model/list_response_model.dart';
+import '../model/user/user.dart';
+import '../service/service.dart';
 
 @LazySingleton()
 class UserRepository {
@@ -6,7 +13,7 @@ class UserRepository {
 
   final UserService _service;
 
-  UserListResponse cached = UserListResponse.empty;
+  ListResponse<User> cached = UserListResponse.empty;
 
   Future<UserListResponse> fetchAll({
     required Language langUI,
@@ -64,14 +71,9 @@ class UserRepository {
     required String alias,
     required int page,
   }) async {
-    final response = await _service.fetchComments(
-      alias: alias,
-      page: page,
-    );
+    final response = await _service.fetchComments(alias: alias, page: page);
 
-    response.refs.sort(
-      (a, b) => b.timePublished.compareTo(a.timePublished),
-    );
+    response.refs.sort((a, b) => b.timePublished.compareTo(a.timePublished));
 
     return response;
   }
@@ -79,9 +81,5 @@ class UserRepository {
   Future<UserCommentListResponse> fetchCommentsInBookmarks({
     required String alias,
     int page = 1,
-  }) =>
-      _service.fetchCommentsInBookmarks(
-        alias: alias,
-        page: page,
-      );
+  }) => _service.fetchCommentsInBookmarks(alias: alias, page: page);
 }

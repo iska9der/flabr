@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../core/component/di/injector.dart';
+import '../../../../../core/component/di/di.dart';
 import '../../../../../core/component/router/app_router.dart';
 import '../../../../../data/model/stat_type_enum.dart';
-import '../../../../../data/model/user/user_model.dart';
+import '../../../../../data/model/user/user.dart';
 import '../../../../extension/extension.dart';
 import '../../../../widget/card_avatar_widget.dart';
 import '../../../../widget/enhancement/card.dart';
@@ -17,12 +17,7 @@ class UserCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Column(
-      children: [
-        _UserCard(),
-        _UserScore(),
-      ],
-    );
+    return const Column(children: [_UserCard(), _UserScore()]);
   }
 }
 
@@ -31,10 +26,7 @@ class _UserCard extends StatelessWidget {
 
   void moveToDetails(BuildContext context, String alias) {
     getIt<AppRouter>().navigate(
-      UserDashboardRoute(
-        alias: alias,
-        children: [UserDetailRoute()],
-      ),
+      UserDashboardRoute(alias: alias, children: [UserDetailRoute()]),
     );
   }
 
@@ -42,7 +34,7 @@ class _UserCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final model =
         context.findAncestorWidgetOfExactType<UserCardWidget>()?.model ??
-            User.empty;
+        User.empty;
 
     return FlabrCard(
       onTap: () => moveToDetails(context, model.alias),
@@ -66,7 +58,7 @@ class _UserCard extends StatelessWidget {
                       TextSpan(
                         text: '@${model.alias}',
                         style: Theme.of(context).textTheme.bodySmall,
-                      )
+                      ),
                     ],
                   ),
                 ),
@@ -85,12 +77,13 @@ class _UserCard extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(top: 12.0),
                     child: TextButton(
-                      onPressed: () => getIt<AppRouter>().pushWidget(
-                        PublicationDetailPage(
-                          id: model.lastPost.id,
-                          type: model.lastPost.type.name,
-                        ),
-                      ),
+                      onPressed:
+                          () => getIt<AppRouter>().pushWidget(
+                            PublicationDetailPage(
+                              id: model.lastPost.id,
+                              type: model.lastPost.type.name,
+                            ),
+                          ),
                       child: Text(model.lastPost.titleHtml),
                     ),
                   ),
@@ -110,7 +103,7 @@ class _UserScore extends StatelessWidget {
   Widget build(BuildContext context) {
     final model =
         context.findAncestorWidgetOfExactType<UserCardWidget>()?.model ??
-            User.empty;
+        User.empty;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8),

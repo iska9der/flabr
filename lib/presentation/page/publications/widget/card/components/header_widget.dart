@@ -1,4 +1,8 @@
-part of '../part.dart';
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+
+import '../../../../../../data/model/publication/publication.dart';
+import '../../../../../widget/user_text_button.dart';
 
 class PublicationHeaderWidget extends StatelessWidget {
   const PublicationHeaderWidget(this.publication, {super.key});

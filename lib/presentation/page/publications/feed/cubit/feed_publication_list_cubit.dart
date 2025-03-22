@@ -4,11 +4,10 @@ import 'package:equatable/equatable.dart';
 
 import '../../../../../core/component/storage/storage.dart';
 import '../../../../../core/constants/constants.dart';
-import '../../../../../data/exception/part.dart';
-import '../../../../../data/model/filter/part.dart';
-import '../../../../../data/model/list_response/list_response_model.dart';
+import '../../../../../data/exception/exception.dart';
+import '../../../../../data/model/filter/filter.dart';
 import '../../../../../data/model/publication/publication.dart';
-import '../../../../feature/publication_list/part.dart';
+import '../../../../../feature/publication_list/publication_list.dart';
 
 part 'feed_publication_list_state.dart';
 
@@ -57,27 +56,28 @@ class FeedPublicationListCubit
     emit(state.copyWith(status: PublicationListStatus.loading));
 
     try {
-      ListResponse response = await repository.fetchFeed(
+      final response = await repository.fetchFeed(
         langUI: languageRepository.ui,
         langArticles: languageRepository.articles,
         page: state.page.toString(),
         filter: state.filter,
       );
 
-      emit(state.copyWith(
-        status: PublicationListStatus.success,
-        publications: [...state.publications, ...response.refs],
-        page: state.page + 1,
-        pagesCount: response.pagesCount,
-      ));
-    } catch (e) {
-      emit(state.copyWith(
-        error: ExceptionHelper.parseMessage(
-          e,
-          'Не удалось получить публикации',
+      emit(
+        state.copyWith(
+          status: PublicationListStatus.success,
+          publications: [...state.publications, ...response.refs],
+          page: state.page + 1,
+          pagesCount: response.pagesCount,
         ),
-        status: PublicationListStatus.failure,
-      ));
+      );
+    } catch (e) {
+      emit(
+        state.copyWith(
+          error: e.parseException('Не удалось получить публикации'),
+          status: PublicationListStatus.failure,
+        ),
+      );
 
       rethrow;
     }
@@ -85,12 +85,14 @@ class FeedPublicationListCubit
 
   @override
   void refetch() {
-    emit(state.copyWith(
-      status: PublicationListStatus.initial,
-      page: 1,
-      publications: [],
-      pagesCount: 0,
-    ));
+    emit(
+      state.copyWith(
+        status: PublicationListStatus.initial,
+        page: 1,
+        publications: [],
+        pagesCount: 0,
+      ),
+    );
   }
 
   void applyFilter(FeedFilter newFilter) {

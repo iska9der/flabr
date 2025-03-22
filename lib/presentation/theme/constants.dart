@@ -1,4 +1,4 @@
-part of 'theme.dart';
+import 'package:flutter/material.dart';
 
 abstract class AppDimensions {
   static const double borderRadius = 8.0;
@@ -26,9 +26,7 @@ abstract class AppInsets {
     AppDimensions.screenPadding,
   );
 
-  static const EdgeInsets cardMargin = EdgeInsets.all(
-    AppDimensions.cardMargin,
-  );
+  static const EdgeInsets cardMargin = EdgeInsets.all(AppDimensions.cardMargin);
   static const EdgeInsets cardPadding = EdgeInsets.all(
     AppDimensions.cardPadding,
   );
@@ -44,8 +42,12 @@ abstract class AppInsets {
     vertical: AppDimensions.screenPadding * 2,
   );
 
-  static const EdgeInsets filterSheetPadding =
-      EdgeInsets.fromLTRB(12, 0, 12, 24);
+  static const EdgeInsets filterSheetPadding = EdgeInsets.fromLTRB(
+    12,
+    0,
+    12,
+    24,
+  );
 }
 
 abstract class AppStyles {

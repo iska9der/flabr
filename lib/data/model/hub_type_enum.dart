@@ -1,4 +1,4 @@
-import '../exception/part.dart';
+import '../exception/exception.dart';
 
 enum HubType {
   collective,

@@ -2,9 +2,8 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../core/component/di/injector.dart';
-import '../../../data/model/publication/publication_source_enum.dart';
-import '../../../data/model/publication/publication_type_enum.dart';
+import '../../../core/component/di/di.dart';
+import '../../../data/model/publication/publication.dart';
 import 'cubit/publication_detail_cubit.dart';
 import 'widget/publication_detail_view.dart';
 
@@ -28,12 +27,13 @@ class PublicationDetailPage extends StatelessWidget {
       key: ValueKey('publication-$id-detail'),
       providers: [
         BlocProvider(
-          create: (_) => PublicationDetailCubit(
-            id,
-            source: PublicationSource.fromType(type),
-            repository: getIt(),
-            languageRepository: getIt(),
-          ),
+          create:
+              (_) => PublicationDetailCubit(
+                id,
+                source: PublicationSource.fromType(type),
+                repository: getIt(),
+                languageRepository: getIt(),
+              ),
         ),
       ],
       child: PublicationDetailView(),

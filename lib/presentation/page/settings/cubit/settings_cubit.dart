@@ -7,8 +7,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/component/storage/storage.dart';
 import '../../../../core/constants/constants.dart';
-import '../../../../data/model/language/part.dart';
-import '../../../../data/repository/part.dart';
+import '../../../../data/model/language/language.dart';
+import '../../../../data/repository/repository.dart';
 import '../model/config_model.dart';
 
 part 'settings_state.dart';
@@ -17,9 +17,9 @@ class SettingsCubit extends Cubit<SettingsState> {
   SettingsCubit({
     required CacheStorage storage,
     required LanguageRepository languageRepository,
-  })  : _storage = storage,
-        _langRepository = languageRepository,
-        super(const SettingsState()) {
+  }) : _storage = storage,
+       _langRepository = languageRepository,
+       super(const SettingsState()) {
     _langUiSub = _langRepository.uiStream.listen((lang) {
       emit(state.copyWith(langUI: lang));
     });
@@ -48,21 +48,23 @@ class SettingsCubit extends Cubit<SettingsState> {
     final (langUI, langArticles) = _initLanguages();
     final config = await _initConfig();
 
-    emit(state.copyWith(
-      status: SettingsStatus.success,
-      langUI: langUI,
-      langArticles: langArticles,
-      theme: config.theme,
-      feed: config.feed,
-      publication: config.publication,
-      misc: config.misc,
-    ));
+    emit(
+      state.copyWith(
+        status: SettingsStatus.success,
+        langUI: langUI,
+        langArticles: langArticles,
+        theme: config.theme,
+        feed: config.feed,
+        publication: config.publication,
+        misc: config.misc,
+      ),
+    );
   }
 
   (Language, List<Language>) _initLanguages() => (
-        _langRepository.ui,
-        _langRepository.articles,
-      );
+    _langRepository.ui,
+    _langRepository.articles,
+  );
 
   changeUILang(Language? uiLang) {
     if (uiLang == null) return;
@@ -120,16 +122,12 @@ class SettingsCubit extends Cubit<SettingsState> {
         _storage.write(CacheKeys.themeConfig, jsonEncode(cachedTheme.toJson()));
       }
 
-      config = config.copyWith(
-        theme: cachedTheme,
-      );
+      config = config.copyWith(theme: cachedTheme);
     }
 
     raw = await _storage.read(CacheKeys.feedConfig);
     if (raw != null) {
-      config = config.copyWith(
-        feed: FeedConfigModel.fromJson(jsonDecode(raw)),
-      );
+      config = config.copyWith(feed: FeedConfigModel.fromJson(jsonDecode(raw)));
     }
 
     raw = await _storage.read(CacheKeys.publicationConfig);
@@ -141,9 +139,7 @@ class SettingsCubit extends Cubit<SettingsState> {
 
     raw = await _storage.read(CacheKeys.miscConfig);
     if (raw != null) {
-      config = config.copyWith(
-        misc: MiscConfigModel.fromJson(jsonDecode(raw)),
-      );
+      config = config.copyWith(misc: MiscConfigModel.fromJson(jsonDecode(raw)));
     }
 
     return config;

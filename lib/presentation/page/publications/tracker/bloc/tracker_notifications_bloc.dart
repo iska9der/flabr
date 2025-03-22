@@ -4,8 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../../../../data/model/loading_status_enum.dart';
-import '../../../../../data/model/tracker/part.dart';
-import '../../../../../data/repository/part.dart';
+import '../../../../../data/model/tracker/tracker.dart';
+import '../../../../../data/repository/repository.dart';
 
 part 'tracker_notifications_bloc.freezed.dart';
 part 'tracker_notifications_event.dart';
@@ -35,10 +35,12 @@ class TrackerNotificationsBloc
 
       emit(state.copyWith(status: LoadingStatus.success, response: result));
     } catch (e, trace) {
-      emit(state.copyWith(
-        status: LoadingStatus.failure,
-        error: 'Не удалось получить уведомления',
-      ));
+      emit(
+        state.copyWith(
+          status: LoadingStatus.failure,
+          error: 'Не удалось получить уведомления',
+        ),
+      );
 
       Error.throwWithStackTrace(e, trace);
     }
@@ -51,14 +53,18 @@ class TrackerNotificationsBloc
     try {
       final result = await repository.readNotifications(event.ids);
 
-      emit(state.copyWith(
-        response: state.response.copyWith(unreadCounters: result),
-      ));
+      emit(
+        state.copyWith(
+          response: state.response.copyWith(unreadCounters: result),
+        ),
+      );
     } catch (e, trace) {
-      emit(state.copyWith(
-        status: LoadingStatus.failure,
-        error: 'Не удалось отметить уведомления как прочитанные',
-      ));
+      emit(
+        state.copyWith(
+          status: LoadingStatus.failure,
+          error: 'Не удалось отметить уведомления как прочитанные',
+        ),
+      );
 
       Error.throwWithStackTrace(e, trace);
     }

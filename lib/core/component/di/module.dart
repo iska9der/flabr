@@ -4,7 +4,7 @@ import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ya_summary/ya_summary.dart';
 
-import '../../../data/repository/part.dart';
+import '../../../data/repository/repository.dart';
 import '../../constants/constants.dart';
 import '../http/http.dart';
 import '../storage/storage.dart';
@@ -31,16 +31,16 @@ abstract class RegisterModule {
   @Named('mobileClient')
   @Singleton()
   HttpClient mobileClient(Dio dio, TokenRepository repository) => HabraClient(
-        dio..options = BaseOptions(baseUrl: Urls.mobileApiUrl),
-        tokenRepository: repository,
-      );
+    dio..options = BaseOptions(baseUrl: Urls.mobileApiUrl),
+    tokenRepository: repository,
+  );
 
   @Named('siteClient')
   @Singleton()
   HttpClient siteClient(Dio dio, TokenRepository repository) => HabraClient(
-        dio..options = BaseOptions(baseUrl: Urls.siteApiUrl),
-        tokenRepository: repository,
-      );
+    dio..options = BaseOptions(baseUrl: Urls.siteApiUrl),
+    tokenRepository: repository,
+  );
 
   @Singleton()
   SummaryClient summaryClient(Dio dio, SummaryTokenRepository repository) =>

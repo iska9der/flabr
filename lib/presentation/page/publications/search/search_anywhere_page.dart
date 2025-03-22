@@ -5,18 +5,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../core/component/di/injector.dart';
+import '../../../../core/component/di/di.dart';
 import '../../../../data/model/render_type_enum.dart';
 import '../../../../data/model/search/search_order_enum.dart';
 import '../../../../data/model/search/search_target_enum.dart';
+import '../../../../feature/scroll/scroll.dart';
 import '../../../extension/extension.dart';
-import '../../../feature/scroll/part.dart';
-import '../../../utils/utils.dart';
 import '../../../widget/enhancement/progress_indicator.dart';
 import '../../services/company/widget/company_card_widget.dart';
 import '../../services/hub/widget/hub_card_widget.dart';
 import '../../services/user/widget/user_card_widget.dart';
-import '../widget/card/part.dart';
+import '../widget/card/card.dart';
 import 'cubit/search_cubit.dart';
 
 @RoutePage(name: SearchAnywherePage.routeName)
@@ -31,14 +30,10 @@ class SearchAnywherePage extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (_) => SearchCubit(
-            repository: getIt(),
-            langRepository: getIt(),
-          ),
+          create:
+              (_) => SearchCubit(repository: getIt(), langRepository: getIt()),
         ),
-        BlocProvider<ScrollCubit>(
-          create: (_) => ScrollCubit(),
-        ),
+        BlocProvider<ScrollCubit>(create: (_) => ScrollCubit()),
       ],
       child: const _SearchAnywhereView(),
     );
@@ -46,7 +41,7 @@ class SearchAnywherePage extends StatelessWidget {
 }
 
 class _SearchAnywhereView extends StatefulWidget {
-  // ignore: unused_element
+  // ignore: unused_element_parameter
   const _SearchAnywhereView({super.key});
 
   @override
@@ -62,12 +57,14 @@ class _SearchAnywhereViewState extends State<_SearchAnywhereView> {
     final ColorScheme colorScheme = theme.colorScheme;
     return theme.copyWith(
       appBarTheme: AppBarTheme(
-        systemOverlayStyle: colorScheme.brightness == Brightness.dark
-            ? SystemUiOverlayStyle.light
-            : SystemUiOverlayStyle.dark,
-        backgroundColor: colorScheme.brightness == Brightness.dark
-            ? Colors.grey[900]
-            : Colors.white,
+        systemOverlayStyle:
+            colorScheme.brightness == Brightness.dark
+                ? SystemUiOverlayStyle.light
+                : SystemUiOverlayStyle.dark,
+        backgroundColor:
+            colorScheme.brightness == Brightness.dark
+                ? Colors.grey[900]
+                : Colors.white,
         iconTheme: theme.primaryIconTheme.copyWith(color: Colors.grey),
         titleTextStyle: theme.textTheme.titleLarge,
         toolbarTextStyle: theme.textTheme.bodyMedium,
@@ -96,10 +93,7 @@ class _SearchAnywhereViewState extends State<_SearchAnywhereView> {
         BlocListener<SearchCubit, SearchState>(
           listenWhen: (p, c) => p.page != 1 && c.status.isFailure,
           listener: (c, state) {
-            getIt<Utils>().showSnack(
-              context: context,
-              content: Text(state.error),
-            );
+            context.showSnack(content: Text(state.error));
           },
         ),
         BlocListener<ScrollCubit, ScrollState>(
@@ -136,20 +130,16 @@ class _SearchAnywhereViewState extends State<_SearchAnywhereView> {
                       slivers: [
                         SliverToBoxAdapter(
                           child: _TargetOptions(
-                            onSubmit: (String query) => showResults(
-                              context,
-                              query,
-                            ),
+                            onSubmit:
+                                (String query) => showResults(context, query),
                           ),
                         ),
                         if (state.target == SearchTarget.posts ||
                             state.target == SearchTarget.users)
                           SliverToBoxAdapter(
                             child: _OrderOptions(
-                              onSubmit: (String query) => showResults(
-                                context,
-                                query,
-                              ),
+                              onSubmit:
+                                  (String query) => showResults(context, query),
                             ),
                           ),
                       ],
@@ -175,9 +165,7 @@ class _SearchAnywhereViewState extends State<_SearchAnywhereView> {
 
                     if (models.isEmpty) {
                       return const SliverFillRemaining(
-                        child: Align(
-                          child: Text('Поиск не дал результатов'),
-                        ),
+                        child: Align(child: Text('Поиск не дал результатов')),
                       );
                     }
 
@@ -190,23 +178,21 @@ class _SearchAnywhereViewState extends State<_SearchAnywhereView> {
 
                           return switch (state.target) {
                             SearchTarget.posts => CommonCardWidget(
-                                publication: model,
-                                renderType: RenderType.html,
-                              ),
+                              publication: model,
+                              renderType: RenderType.html,
+                            ),
                             SearchTarget.hubs => HubCardWidget(
-                                model: model,
-                                renderType: RenderType.html,
-                              ),
+                              model: model,
+                              renderType: RenderType.html,
+                            ),
                             SearchTarget.companies => CompanyCardWidget(
-                                model: model,
-                                renderType: RenderType.html,
-                              ),
-                            SearchTarget.users => UserCardWidget(
-                                model: model,
-                              ),
+                              model: model,
+                              renderType: RenderType.html,
+                            ),
+                            SearchTarget.users => UserCardWidget(model: model),
                             SearchTarget.comments => const Center(
-                                child: Text('Не реализовано'),
-                              )
+                              child: Text('Не реализовано'),
+                            ),
                           };
                         }
 
@@ -233,9 +219,7 @@ class _SearchAnywhereViewState extends State<_SearchAnywhereView> {
 }
 
 class _TargetOptions extends StatelessWidget {
-  const _TargetOptions({
-    required this.onSubmit,
-  });
+  const _TargetOptions({required this.onSubmit});
 
   final Function(String query) onSubmit;
 
@@ -249,22 +233,25 @@ class _TargetOptions extends StatelessWidget {
             clipBehavior: Clip.none,
             shrinkWrap: true,
             scrollDirection: Axis.horizontal,
-            children: SearchTarget.values
-                .map((target) => Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 4),
-                      child: ChoiceChip(
-                        label: Text(target.label),
-                        selected: state.target == target,
-                        onSelected: (value) {
-                          context.read<SearchCubit>().changeTarget(target);
+            children:
+                SearchTarget.values
+                    .map(
+                      (target) => Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 4),
+                        child: ChoiceChip(
+                          label: Text(target.label),
+                          selected: state.target == target,
+                          onSelected: (value) {
+                            context.read<SearchCubit>().changeTarget(target);
 
-                          if (state.query.isNotEmpty) {
-                            onSubmit(state.query);
-                          }
-                        },
+                            if (state.query.isNotEmpty) {
+                              onSubmit(state.query);
+                            }
+                          },
+                        ),
                       ),
-                    ))
-                .toList(),
+                    )
+                    .toList(),
           ),
         );
       },
@@ -273,9 +260,7 @@ class _TargetOptions extends StatelessWidget {
 }
 
 class _OrderOptions extends StatelessWidget {
-  const _OrderOptions({
-    required this.onSubmit,
-  });
+  const _OrderOptions({required this.onSubmit});
 
   final Function(String query) onSubmit;
 
@@ -287,22 +272,25 @@ class _OrderOptions extends StatelessWidget {
           width: MediaQuery.of(context).size.width,
           child: FittedBox(
             child: Row(
-              children: SearchOrder.values
-                  .map((order) => Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 4),
-                        child: ChoiceChip(
-                          label: Text(order.label),
-                          selected: state.order == order,
-                          onSelected: (value) {
-                            context.read<SearchCubit>().changeSort(order);
+              children:
+                  SearchOrder.values
+                      .map(
+                        (order) => Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 4),
+                          child: ChoiceChip(
+                            label: Text(order.label),
+                            selected: state.order == order,
+                            onSelected: (value) {
+                              context.read<SearchCubit>().changeSort(order);
 
-                            if (state.query.isNotEmpty) {
-                              onSubmit(state.query);
-                            }
-                          },
+                              if (state.query.isNotEmpty) {
+                                onSubmit(state.query);
+                              }
+                            },
+                          ),
                         ),
-                      ))
-                  .toList(),
+                      )
+                      .toList(),
             ),
           ),
         );

@@ -1,8 +1,8 @@
 import 'package:equatable/equatable.dart';
 
+import '../hub/hub_related_data_model.dart';
 import '../hub_base.dart';
 import '../hub_type_enum.dart';
-import '../related_data/hub_related_data_model.dart';
 
 class PublicationHub extends HubBase with EquatableMixin {
   const PublicationHub({
@@ -26,9 +26,10 @@ class PublicationHub extends HubBase with EquatableMixin {
       title: map['title'] as String,
       type: HubType.fromString((map['type'] ?? 'collective')),
       isProfiled: map['isProfiled'] as bool,
-      relatedData: map['relatedData'] != null
-          ? HubRelatedData.fromMap(map['relatedData'])
-          : HubRelatedData.empty,
+      relatedData:
+          map['relatedData'] != null
+              ? HubRelatedData.fromMap(map['relatedData'])
+              : HubRelatedData.empty,
     );
   }
 
@@ -36,17 +37,17 @@ class PublicationHub extends HubBase with EquatableMixin {
 
   @override
   List<Object?> get props => [
-        id,
-        alias,
-        title,
-        type,
-        relatedData,
-        isProfiled,
-        titleHtml,
-        imageUrl,
-        descriptionHtml,
-        isOfftop,
-        statistics,
-        commonTags,
-      ];
+    id,
+    alias,
+    title,
+    type,
+    relatedData,
+    isProfiled,
+    titleHtml,
+    imageUrl,
+    descriptionHtml,
+    isOfftop,
+    statistics,
+    commonTags,
+  ];
 }

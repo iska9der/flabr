@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 import '../hub_base.dart';
-import '../related_data/hub_related_data_model.dart';
+import 'hub_related_data_model.dart';
 import 'hub_statistics_model.dart';
 
 class Hub extends HubBase with EquatableMixin {
@@ -50,15 +50,18 @@ class Hub extends HubBase with EquatableMixin {
       descriptionHtml: map['descriptionHtml'] as String,
       isProfiled: map['isProfiled'] as bool,
       isOfftop: map['isOfftop'] as bool,
-      relatedData: map['relatedData'] != null
-          ? HubRelatedData.fromMap(map['relatedData'])
-          : HubRelatedData.empty,
-      statistics: map['statistics'] != null
-          ? HubStatistics.fromMap(map['statistics'])
-          : HubStatistics.empty,
-      commonTags: map['commonTags'] != null
-          ? List<String>.from(map['commonTags'])
-          : const [],
+      relatedData:
+          map['relatedData'] != null
+              ? HubRelatedData.fromMap(map['relatedData'])
+              : HubRelatedData.empty,
+      statistics:
+          map['statistics'] != null
+              ? HubStatistics.fromMap(map['statistics'])
+              : HubStatistics.empty,
+      commonTags:
+          map['commonTags'] != null
+              ? List<String>.from(map['commonTags'])
+              : const [],
     );
   }
 

@@ -1,5 +1,7 @@
-part of 'extension.dart';
+import 'package:flutter/material.dart';
 
-extension AppThemeExtension on ThemeData {
+import '../theme/theme.dart';
+
+extension ThemeX on ThemeData {
   AppColorsExtension get colors => extension<AppColorsExtension>()!;
 }

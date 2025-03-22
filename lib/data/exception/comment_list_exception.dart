@@ -1,6 +1,8 @@
-part of 'part.dart';
+import 'package:dio/dio.dart';
 
-class CommentsListException implements DisplayableException {
+import 'app_exception.dart';
+
+class CommentsListException implements AppException {
   int httpCode;
   String errorCode;
   String message;

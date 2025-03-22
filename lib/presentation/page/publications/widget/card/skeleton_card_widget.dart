@@ -1,4 +1,13 @@
-part of 'part.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../../../data/model/publication/publication.dart';
+import '../../../../theme/theme.dart';
+import '../../../../widget/enhancement/enhancement.dart';
+import '../../../../widget/user_text_button.dart';
+import '../../../settings/cubit/settings_cubit.dart';
+import '../stats/stats.dart';
+import 'components/hubs_widget.dart';
 
 class SkeletonCardWidget extends StatelessWidget {
   const SkeletonCardWidget({
@@ -21,10 +30,7 @@ class SkeletonCardWidget extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           UserTextButton(PublicationAuthor(id: '0', alias: authorAlias)),
-          Text(
-            title,
-            style: Theme.of(context).textTheme.titleLarge,
-          ),
+          Text(title, style: Theme.of(context).textTheme.titleLarge),
           Padding(
             padding: const EdgeInsets.only(top: 12),
             child: PublicationHubsWidget(
@@ -36,8 +42,8 @@ class SkeletonCardWidget extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               BlocBuilder<SettingsCubit, SettingsState>(
-                buildWhen: (p, c) =>
-                    p.feed.isImageVisible != c.feed.isImageVisible,
+                buildWhen:
+                    (p, c) => p.feed.isImageVisible != c.feed.isImageVisible,
                 builder: (context, state) {
                   if (!state.feed.isImageVisible) {
                     return const SizedBox();
@@ -53,10 +59,12 @@ class SkeletonCardWidget extends StatelessWidget {
                 },
               ),
               BlocBuilder<SettingsCubit, SettingsState>(
-                buildWhen: (previous, current) =>
-                    previous.feed.isDescriptionVisible !=
-                        current.feed.isDescriptionVisible ||
-                    previous.feed.isImageVisible != current.feed.isImageVisible,
+                buildWhen:
+                    (previous, current) =>
+                        previous.feed.isDescriptionVisible !=
+                            current.feed.isDescriptionVisible ||
+                        previous.feed.isImageVisible !=
+                            current.feed.isImageVisible,
                 builder: (context, state) {
                   if (!state.feed.isDescriptionVisible) {
                     return const SizedBox();

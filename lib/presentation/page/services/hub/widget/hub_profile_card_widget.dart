@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../../core/component/di/injector.dart';
-import '../../../../../data/model/related_data/hub_related_data_model.dart';
+import '../../../../../core/component/di/di.dart';
+import '../../../../../data/model/hub/hub.dart';
 import '../../../../../data/model/stat_type_enum.dart';
-import '../../../../../data/repository/part.dart';
-import '../../../../feature/auth/cubit/auth_cubit.dart';
-import '../../../../feature/profile_subscribe/part.dart';
+import '../../../../../data/repository/repository.dart';
+import '../../../../../feature/auth/auth.dart';
+import '../../../../../feature/profile_subscribe/profile_subscribe.dart';
 import '../../../../theme/theme.dart';
 import '../../../../widget/card_avatar_widget.dart';
 import '../../../../widget/enhancement/card.dart';
@@ -57,10 +57,7 @@ class _HubProfileCardWidgetState extends State<HubProfileCardWidget> {
             children: [
               Row(
                 children: [
-                  CardAvatarWidget(
-                    imageUrl: profile.imageUrl,
-                    height: 60,
-                  ),
+                  CardAvatarWidget(imageUrl: profile.imageUrl, height: 60),
                   const SizedBox(width: 20),
                   Expanded(
                     child: Row(
@@ -77,7 +74,7 @@ class _HubProfileCardWidgetState extends State<HubProfileCardWidget> {
                         ),
                       ],
                     ),
-                  )
+                  ),
                 ],
               ),
               const SizedBox(height: 16),
@@ -96,8 +93,9 @@ class _HubProfileCardWidgetState extends State<HubProfileCardWidget> {
                 const SizedBox(height: 8),
                 SubscribeButton(
                   alias: state.alias,
-                  isSubscribed: (state.profile.relatedData as HubRelatedData)
-                      .isSubscribed,
+                  isSubscribed:
+                      (state.profile.relatedData as HubRelatedData)
+                          .isSubscribed,
                 ),
               ],
             ],

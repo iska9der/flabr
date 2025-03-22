@@ -1,4 +1,4 @@
-part of 'http.dart';
+import 'package:dio/dio.dart';
 
 abstract interface class HttpClient {
   Future<Response> get(

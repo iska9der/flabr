@@ -1,10 +1,6 @@
-import 'dart:io';
-
-import 'package:flutter/material.dart';
-
-part 'app_colors.dart';
-part 'app_scheme.dart';
-part 'app_theme.dart';
-part 'common.dart';
-part 'constants.dart';
-part 'responsive.dart';
+export 'app_colors.dart';
+export 'app_scheme.dart';
+export 'app_theme.dart';
+export 'common.dart';
+export 'constants.dart';
+export 'responsive.dart';

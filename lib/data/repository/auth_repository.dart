@@ -1,4 +1,7 @@
-part of 'part.dart';
+import 'package:injectable/injectable.dart';
+
+import '../model/user/user.dart';
+import '../service/service.dart';
 
 @Singleton()
 class AuthRepository {

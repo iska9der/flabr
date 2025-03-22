@@ -6,16 +6,15 @@ import 'package:share_plus/share_plus.dart';
 
 import '../../../../core/constants/constants.dart';
 import '../../../../data/model/publication/publication.dart';
-import '../../../../data/model/publication/publication_type_enum.dart';
 import '../../../extension/extension.dart';
 import '../../../theme/theme.dart';
 import '../../../widget/enhancement/progress_indicator.dart';
 import '../../../widget/html_view_widget.dart';
 import '../../../widget/publication_settings_widget.dart';
 import '../cubit/publication_detail_cubit.dart';
-import 'card/part.dart';
-import 'publication_more_options_widget.dart';
-import 'stats/part.dart';
+import 'card/card.dart';
+import 'publication_more_button.dart';
+import 'stats/stats.dart';
 
 part 'publication_detail_appbar.dart';
 part 'publication_detail_title.dart';
@@ -342,7 +341,7 @@ class _BottomBar extends StatelessWidget {
                             (_) => SizedBox(
                               width: double.infinity,
                               height: 120,
-                              child: PublicationMoreOptions(
+                              child: PublicationMoreButton(
                                 publication: publication,
                               ),
                             ),

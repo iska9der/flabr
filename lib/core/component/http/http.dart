@@ -1,9 +1,3 @@
-import 'package:dio/dio.dart';
-
-import '../../../data/model/tokens_model.dart';
-import '../../../data/repository/part.dart';
-import '../../constants/constants.dart';
-
-part 'dio_client.dart';
-part 'habra_client.dart';
-part 'http_client.dart';
+export 'dio_client.dart';
+export 'habra_client.dart';
+export 'http_client.dart';

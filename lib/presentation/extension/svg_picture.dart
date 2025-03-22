@@ -1,4 +1,5 @@
-part of 'extension.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 extension SvgPictureX on SvgPicture {
   copyWith({

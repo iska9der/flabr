@@ -1,11 +1,11 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../data/exception/part.dart';
-import '../../../../data/model/language/part.dart';
-import '../../../../data/model/list_response/comment_list_response.dart';
-import '../../../../data/model/publication/publication_source_enum.dart';
-import '../../../../data/repository/part.dart';
+import '../../../../data/exception/exception.dart';
+import '../../../../data/model/comment/comment.dart';
+import '../../../../data/model/language/language.dart';
+import '../../../../data/model/publication/publication.dart';
+import '../../../../data/repository/repository.dart';
 import '../../../extension/extension.dart';
 
 part 'comment_list_state.dart';
@@ -16,12 +16,9 @@ class CommentListCubit extends Cubit<CommentListState> {
     required PublicationSource source,
     required PublicationRepository repository,
     required LanguageRepository languageRepository,
-  })  : _repository = repository,
-        _langRepository = languageRepository,
-        super(CommentListState(
-          publicationId: publicationId,
-          source: source,
-        ));
+  }) : _repository = repository,
+       _langRepository = languageRepository,
+       super(CommentListState(publicationId: publicationId, source: source));
 
   final PublicationRepository _repository;
   final LanguageRepository _langRepository;
@@ -41,10 +38,12 @@ class CommentListCubit extends Cubit<CommentListState> {
 
       emit(state.copyWith(list: newList, status: CommentListStatus.success));
     } catch (e) {
-      emit(state.copyWith(
-        status: CommentListStatus.failure,
-        error: ExceptionHelper.parseMessage(e, 'Не удалось получить данные'),
-      ));
+      emit(
+        state.copyWith(
+          status: CommentListStatus.failure,
+          error: e.parseException('Не удалось получить данные'),
+        ),
+      );
     }
   }
 }

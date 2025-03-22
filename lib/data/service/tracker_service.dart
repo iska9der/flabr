@@ -1,4 +1,8 @@
-part of 'part.dart';
+import 'package:injectable/injectable.dart';
+
+import '../../core/component/http/http.dart';
+import '../exception/exception.dart';
+import '../model/tracker/tracker.dart';
 
 abstract interface class TrackerService {
   /// Получить список отслеживаемых публикаций
@@ -37,7 +41,7 @@ class TrackerServiceImpl implements TrackerService {
     required bool byAuthor,
   }) async {
     try {
-      final params = TrackerPublicationParams(
+      final params = TrackerPublicationListParams(
         page: page,
         byAuthor: byAuthor,
       );
@@ -87,7 +91,7 @@ class TrackerServiceImpl implements TrackerService {
     required String category,
   }) async {
     try {
-      final params = TrackerNotificationParams(
+      final params = TrackerNotificationListParams(
         page: page,
         category: category,
       );

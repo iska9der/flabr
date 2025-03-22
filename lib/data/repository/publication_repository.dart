@@ -1,4 +1,15 @@
-part of 'part.dart';
+import 'dart:async';
+
+import 'package:injectable/injectable.dart';
+
+import '../model/comment/comment.dart';
+import '../model/filter/filter.dart';
+import '../model/language/language.dart';
+import '../model/list_response_model.dart';
+import '../model/publication/publication.dart';
+import '../model/section_enum.dart';
+import '../model/user/user.dart';
+import '../service/service.dart';
 
 @LazySingleton()
 class PublicationRepository {
@@ -22,15 +33,15 @@ class PublicationRepository {
   }) async {
     return switch (source) {
       PublicationSource.post => await _fetchPostById(
-          id,
-          langUI: langUI,
-          langArticles: langArticles,
-        ),
+        id,
+        langUI: langUI,
+        langArticles: langArticles,
+      ),
       _ => await _fetchCommonById(
-          id,
-          langUI: langUI,
-          langArticles: langArticles,
-        ),
+        id,
+        langUI: langUI,
+        langArticles: langArticles,
+      ),
     };
   }
 
@@ -67,19 +78,17 @@ class PublicationRepository {
   }
 
   /// Сортируем статьи в полученном списке
-  void _sortListResponse(Sort sort, ListResponse response) {
+  void _sortListResponse(Sort sort, ListResponse<Publication> response) {
     if (sort == Sort.byBest) {
       response.refs.sort(
         (a, b) => b.statistics.score.compareTo(a.statistics.score),
       );
     } else {
-      response.refs.sort(
-        (a, b) => b.timePublished.compareTo(a.timePublished),
-      );
+      response.refs.sort((a, b) => b.timePublished.compareTo(a.timePublished));
     }
   }
 
-  Future<ListResponse> fetchFeed({
+  Future<FeedListResponse> fetchFeed({
     required Language langUI,
     required List<Language> langArticles,
     required String page,
@@ -98,13 +107,13 @@ class PublicationRepository {
     return response;
   }
 
-  /// Получение статей/новостей
+  /// Получение статей/новостей/постов
   ///
   /// Сортировка полученных статей происходит как на сайте:
   /// если сортировка по лучшим [Sort.byBest], то надо сортировать по рейтингу;
   /// если по новым [Sort.byNew], сортируем по дате публикации
   ///
-  Future<ListResponse> fetchFlowArticles({
+  Future<ListResponse<Publication>> fetchFlowArticles({
     required Language langUI,
     required List<Language> langArticles,
     required Section section,
@@ -128,7 +137,7 @@ class PublicationRepository {
     return response;
   }
 
-  Future<PublicationListResponse> fetchHubArticles({
+  Future<PublicationCommonListResponse> fetchHubArticles({
     required Language langUI,
     required List<Language> langArticles,
     required String hub,
@@ -150,7 +159,7 @@ class PublicationRepository {
     return response;
   }
 
-  Future<ListResponse> fetchUserPublications({
+  Future<ListResponse<Publication>> fetchUserPublications({
     required Language langUI,
     required List<Language> langArticles,
     required String user,
@@ -170,7 +179,7 @@ class PublicationRepository {
     return response;
   }
 
-  Future<ListResponse> fetchUserBookmarks({
+  Future<ListResponse<Publication>> fetchUserBookmarks({
     required Language langUI,
     required List<Language> langArticles,
     required String user,
@@ -186,9 +195,10 @@ class PublicationRepository {
     );
 
     var newResponse = response.copyWith(
-      refs: response.ids
-          .map((id) => response.refs.firstWhere((ref) => id == ref.id))
-          .toList(),
+      refs:
+          response.ids
+              .map((id) => response.refs.firstWhere((ref) => id == ref.id))
+              .toList(),
     );
 
     return newResponse;
@@ -224,15 +234,16 @@ class PublicationRepository {
     required Language langUI,
     required List<Language> langArticles,
   }) async {
-    final MostReadingResponse raw = await service.fetchMostReading(
+    final raw = await service.fetchMostReading(
       langUI: langUI.name,
       langArticles: LanguageEncoder.encodeLangs(langArticles),
     );
 
     List<PublicationCommon> articles = [...raw.refs];
 
-    articles.sort((a, b) =>
-        a.statistics.readingCount > b.statistics.readingCount ? 0 : 1);
+    articles.sort(
+      (a, b) => a.statistics.readingCount > b.statistics.readingCount ? 0 : 1,
+    );
 
     articles = articles.take(8).toList();
 

@@ -1,4 +1,9 @@
-part of 'comment_widget.dart';
+import 'package:flutter/material.dart';
+
+import '../../../data/model/comment_base.dart';
+import '../../../data/model/stat_type_enum.dart';
+import '../../extension/extension.dart';
+import '../stat_text_widget.dart';
 
 class CommentRatingWidget extends StatelessWidget {
   const CommentRatingWidget(this.comment, {super.key});
@@ -19,10 +24,9 @@ class CommentRatingWidget extends StatelessWidget {
         StatTextWidget(
           type: type,
           value: comment.score,
-          style: Theme.of(context)
-              .textTheme
-              .bodySmall
-              ?.copyWith(fontWeight: FontWeight.w700),
+          style: Theme.of(
+            context,
+          ).textTheme.bodySmall?.copyWith(fontWeight: FontWeight.w700),
         ),
       ],
     );

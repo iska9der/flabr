@@ -1,4 +1,9 @@
-part of 'part.dart';
+import 'package:injectable/injectable.dart';
+
+import '../../core/component/http/http.dart';
+import '../exception/exception.dart';
+import '../model/query_params_model.dart';
+import '../model/user/user.dart';
 
 abstract interface class UserService {
   Future<UserListResponse> fetchAll({
@@ -37,8 +42,8 @@ class UserServiceImpl implements UserService {
   const UserServiceImpl({
     @Named('mobileClient') required HttpClient mobileClient,
     @Named('siteClient') required HttpClient siteClient,
-  })  : _mobileClient = mobileClient,
-        _siteClient = siteClient;
+  }) : _mobileClient = mobileClient,
+       _siteClient = siteClient;
 
   final HttpClient _mobileClient;
   final HttpClient _siteClient;
@@ -50,7 +55,7 @@ class UserServiceImpl implements UserService {
     required String page,
   }) async {
     try {
-      final params = Params(
+      final params = QueryParams(
         langArticles: langArticles,
         langUI: langUI,
         page: page,
@@ -61,7 +66,7 @@ class UserServiceImpl implements UserService {
       );
 
       return UserListResponse.fromMap(response.data);
-    } on DisplayableException {
+    } on AppException {
       rethrow;
     }
   }
@@ -73,14 +78,14 @@ class UserServiceImpl implements UserService {
     required String langArticles,
   }) async {
     try {
-      final params = Params(langArticles: langArticles, langUI: langUI);
+      final params = QueryParams(langArticles: langArticles, langUI: langUI);
 
       final response = await _mobileClient.get(
         '/users/$alias/card?${params.toQueryString()}',
       );
 
       return response.data;
-    } on DisplayableException {
+    } on AppException {
       rethrow;
     }
   }
@@ -92,14 +97,14 @@ class UserServiceImpl implements UserService {
     required String langArticles,
   }) async {
     try {
-      final params = Params(langArticles: langArticles, langUI: langUI);
+      final params = QueryParams(langArticles: langArticles, langUI: langUI);
 
       final response = await _mobileClient.get(
         '/users/$alias/whois?${params.toQueryString()}',
       );
 
       return response.data;
-    } on DisplayableException {
+    } on AppException {
       rethrow;
     }
   }
@@ -107,11 +112,8 @@ class UserServiceImpl implements UserService {
   @override
   Future<void> toggleSubscription({required String alias}) async {
     try {
-      await _siteClient.post(
-        '/v2/users/$alias/following/toggle',
-        body: {},
-      );
-    } on DisplayableException {
+      await _siteClient.post('/v2/users/$alias/following/toggle', body: {});
+    } on AppException {
       rethrow;
     } catch (e) {
       throw FetchException();
@@ -129,7 +131,7 @@ class UserServiceImpl implements UserService {
       );
 
       return UserCommentListResponse.fromMap(response.data);
-    } on DisplayableException {
+    } on AppException {
       rethrow;
     } catch (e, trace) {
       Error.throwWithStackTrace(
@@ -150,7 +152,7 @@ class UserServiceImpl implements UserService {
       );
 
       return UserCommentListResponse.fromMap(response.data);
-    } on DisplayableException {
+    } on AppException {
       rethrow;
     } catch (e, trace) {
       Error.throwWithStackTrace(

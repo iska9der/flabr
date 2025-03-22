@@ -2,12 +2,10 @@ import 'dart:async';
 
 import 'package:equatable/equatable.dart';
 
-import '../../../../../data/exception/part.dart';
-import '../../../../../data/model/filter/part.dart';
-import '../../../../../data/model/list_response/list_response_model.dart';
+import '../../../../../data/exception/exception.dart';
+import '../../../../../data/model/filter/filter.dart';
 import '../../../../../data/model/publication/publication.dart';
-import '../../../../../data/model/publication/publication_type_enum.dart';
-import '../../../../feature/publication_list/part.dart';
+import '../../../../../feature/publication_list/publication_list.dart';
 
 part 'hub_publication_list_state.dart';
 
@@ -18,10 +16,7 @@ class HubPublicationListCubit
     required super.languageRepository,
     String hub = '',
     PublicationType type = PublicationType.article,
-  }) : super(HubPublicationListState(
-          hub: hub,
-          type: type,
-        ));
+  }) : super(HubPublicationListState(hub: hub, type: type));
 
   @override
   Future<void> fetch() async {
@@ -32,7 +27,7 @@ class HubPublicationListCubit
     emit(state.copyWith(status: PublicationListStatus.loading));
 
     try {
-      ListResponse response = await repository.fetchHubArticles(
+      final response = await repository.fetchHubArticles(
         langUI: languageRepository.ui,
         langArticles: languageRepository.articles,
         hub: state.hub,
@@ -40,17 +35,21 @@ class HubPublicationListCubit
         page: state.page.toString(),
       );
 
-      emit(state.copyWith(
-        status: PublicationListStatus.success,
-        publications: [...state.publications, ...response.refs],
-        page: state.page + 1,
-        pagesCount: response.pagesCount,
-      ));
+      emit(
+        state.copyWith(
+          status: PublicationListStatus.success,
+          publications: [...state.publications, ...response.refs],
+          page: state.page + 1,
+          pagesCount: response.pagesCount,
+        ),
+      );
     } catch (e) {
-      emit(state.copyWith(
-        error: ExceptionHelper.parseMessage(e, 'Не удалось получить статьи'),
-        status: PublicationListStatus.failure,
-      ));
+      emit(
+        state.copyWith(
+          error: e.parseException('Не удалось получить статьи'),
+          status: PublicationListStatus.failure,
+        ),
+      );
 
       rethrow;
     }
@@ -58,19 +57,19 @@ class HubPublicationListCubit
 
   @override
   void refetch() {
-    emit(state.copyWith(
-      status: PublicationListStatus.initial,
-      page: 1,
-      publications: [],
-      pagesCount: 0,
-    ));
+    emit(
+      state.copyWith(
+        status: PublicationListStatus.initial,
+        page: 1,
+        publications: [],
+        pagesCount: 0,
+      ),
+    );
   }
 
   void applyFilter(FlowFilter filter) {
-    emit(HubPublicationListState(
-      hub: state.hub,
-      type: state.type,
-      filter: filter,
-    ));
+    emit(
+      HubPublicationListState(hub: state.hub, type: state.type, filter: filter),
+    );
   }
 }

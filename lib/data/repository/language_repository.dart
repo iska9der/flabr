@@ -1,10 +1,16 @@
-part of 'part.dart';
+import 'dart:async';
+
+import 'package:injectable/injectable.dart';
+
+import '../../core/component/storage/storage.dart';
+import '../../core/constants/constants.dart';
+import '../exception/exception.dart';
+import '../model/language/language.dart';
 
 @Singleton()
 class LanguageRepository {
-  LanguageRepository({
-    @Named('sharedStorage') required CacheStorage storage,
-  }) : _storage = storage {
+  LanguageRepository({@Named('sharedStorage') required CacheStorage storage})
+    : _storage = storage {
     _init();
   }
 

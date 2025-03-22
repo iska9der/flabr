@@ -1,4 +1,9 @@
-part of 'part.dart';
+import 'dart:async';
+
+import 'package:injectable/injectable.dart';
+
+import '../model/tracker/tracker.dart';
+import '../service/service.dart';
 
 abstract interface class TrackerRepository {
   Future<TrackerPublicationsResponse> fetchPublications({
@@ -72,7 +77,7 @@ class TrackerRepositoryImpl implements TrackerRepository {
       category: category.name,
     );
 
-    final list = TrackerNotificationListResponse.fromJson(raw);
+    final list = TrackerNotificationListResponse.fromMap(raw);
     final unread = TrackerUnreadCounters.fromJson(raw['unreadCounters']);
     final response = TrackerNotificationsResponse(
       list: list,

@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
-import '../../../../core/component/di/injector.dart';
+import '../../../../core/component/di/di.dart';
 import '../../../../core/component/router/app_router.dart';
-import '../../../../core/constants/environment.dart';
+import '../../../../core/constants/constants.dart';
 import '../../../../data/model/loading_status_enum.dart';
-import '../../../../data/model/tracker/part.dart';
+import '../../../../data/model/tracker/tracker.dart';
 import '../../../extension/extension.dart';
 import '../../../widget/enhancement/card.dart';
 import '../../../widget/user_text_button.dart';
@@ -24,10 +24,11 @@ class TrackerSubscriptionPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => TrackerNotificationsBloc(
-        repository: getIt(),
-        category: TrackerNotificationCategory.subscribers,
-      ),
+      create:
+          (_) => TrackerNotificationsBloc(
+            repository: getIt(),
+            category: TrackerNotificationCategory.subscribers,
+          ),
       child: const TrackerSubscriptionView(),
     );
   }
@@ -43,28 +44,28 @@ class TrackerSubscriptionView extends StatelessWidget {
         buildWhen: (previous, current) => previous.status != current.status,
         builder: (context, state) {
           if (state.status == LoadingStatus.initial) {
-            context
-                .read<TrackerNotificationsBloc>()
-                .add(const TrackerNotificationsEvent.load());
+            context.read<TrackerNotificationsBloc>().add(
+              const TrackerNotificationsEvent.load(),
+            );
           }
 
           return switch (state.status) {
             LoadingStatus.failure => Center(child: Text(state.error)),
             LoadingStatus.success => ListView.builder(
-                itemCount: state.response.list.refs.length,
-                itemBuilder: (context, index) {
-                  final model = state.response.list.refs[index];
+              itemCount: state.response.list.refs.length,
+              itemBuilder: (context, index) {
+                final model = state.response.list.refs[index];
 
-                  if (model.typeEnum == TrackerNotificationType.unknown) {
-                    return _UnknownWidget(model: model);
-                  }
+                if (model.typeEnum == TrackerNotificationType.unknown) {
+                  return _UnknownWidget(model: model);
+                }
 
-                  return _NotificationWidget(model: model);
-                },
-              ),
+                return _NotificationWidget(model: model);
+              },
+            ),
             _ => ListView(
-                children: List.filled(6, const TrackerSkeletonWidget()),
-              ),
+              children: List.filled(6, const TrackerSkeletonWidget()),
+            ),
           };
         },
       ),
@@ -73,7 +74,7 @@ class TrackerSubscriptionView extends StatelessWidget {
 }
 
 class _NotificationWidget extends StatefulWidget {
-  // ignore: unused_element
+  // ignore: unused_element_parameter
   const _NotificationWidget({super.key, required this.model});
 
   final TrackerNotification model;
@@ -94,8 +95,8 @@ class _NotificationWidgetState extends State<_NotificationWidget> {
 
   markAsRead(BuildContext context, String id) {
     context.read<TrackerNotificationsBloc>().add(
-          TrackerNotificationsEvent.read(ids: [id]),
-        );
+      TrackerNotificationsEvent.read(ids: [id]),
+    );
 
     setState(() {
       isUnread = false;
@@ -126,17 +127,18 @@ class _NotificationWidgetState extends State<_NotificationWidget> {
                     TextSpan(
                       text: publication.text.trim(),
                       style: TextStyle(color: theme.colorScheme.primary),
-                      recognizer: TapGestureRecognizer()
-                        ..onTap = () {
-                          markAsRead(context, widget.model.id);
+                      recognizer:
+                          TapGestureRecognizer()
+                            ..onTap = () {
+                              markAsRead(context, widget.model.id);
 
-                          context.router.push(
-                            PublicationFlowRoute(
-                              id: publication.id,
-                              type: publication.type,
-                            ),
-                          );
-                        },
+                              context.router.push(
+                                PublicationFlowRoute(
+                                  id: publication.id,
+                                  type: publication.type,
+                                ),
+                              );
+                            },
                     ),
                     const TextSpan(text: '"'),
                   ],
@@ -148,9 +150,7 @@ class _NotificationWidgetState extends State<_NotificationWidget> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  DateFormat.MMMMd().format(widget.model.timeHappened!),
-                ),
+                Text(DateFormat.MMMMd().format(widget.model.timeHappened!)),
                 if (isUnread)
                   IconButton(
                     tooltip: 'Отметить как прочитанное',
@@ -169,7 +169,7 @@ class _NotificationWidgetState extends State<_NotificationWidget> {
 }
 
 class _UnknownWidget extends StatelessWidget {
-  // ignore: unused_element
+  // ignore: unused_element_parameter
   const _UnknownWidget({super.key, required this.model});
 
   final TrackerNotification model;
@@ -195,16 +195,17 @@ class _UnknownWidget extends StatelessWidget {
                 onPressed: () {
                   showDialog(
                     context: context,
-                    builder: (context) => const AlertDialog(
-                      content: Text(
-                        'Чтобы отобразить данные - нужно знать, как они выглядят.\n'
-                        'Уведомления такого типа ко мне не приходили, поэтому '
-                        'мне нужна твоя небольшая помощь:\n'
-                        'по нажатию на иконку почты или телеги скопируется структура '
-                        'этого уведомления и тебя перенаправит в приложение.\n'
-                        'Отправь сообщение, и никто не пострадает. Спасибо!',
-                      ),
-                    ),
+                    builder:
+                        (context) => const AlertDialog(
+                          content: Text(
+                            'Чтобы отобразить данные - нужно знать, как они выглядят.\n'
+                            'Уведомления такого типа ко мне не приходили, поэтому '
+                            'мне нужна твоя небольшая помощь:\n'
+                            'по нажатию на иконку почты или телеги скопируется структура '
+                            'этого уведомления и тебя перенаправит в приложение.\n'
+                            'Отправь сообщение, и никто не пострадает. Спасибо!',
+                          ),
+                        ),
                   );
                 },
               ),
@@ -212,12 +213,13 @@ class _UnknownWidget extends StatelessWidget {
                 icon: const Icon(Icons.attach_email),
                 onPressed: () {
                   final uri = Uri(
-                      scheme: 'mailto',
-                      path: AppEnvironment.contactEmail,
-                      queryParameters: {
-                        'subject': '[Flabr]: Structure of [${model.type}]',
-                        'body': model.toString(),
-                      });
+                    scheme: 'mailto',
+                    path: AppEnvironment.contactEmail,
+                    queryParameters: {
+                      'subject': '[Flabr]: Structure of [${model.type}]',
+                      'body': model.toString(),
+                    },
+                  );
 
                   getIt<AppRouter>().launchUrl(uri.toString());
                 },
@@ -238,7 +240,7 @@ class _UnknownWidget extends StatelessWidget {
                 },
               ),
             ],
-          )
+          ),
         ],
       ),
     );

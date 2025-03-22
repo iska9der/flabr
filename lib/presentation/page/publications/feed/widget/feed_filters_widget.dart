@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../../core/component/di/injector.dart';
-import '../../../../../data/model/filter/part.dart';
-import '../../../../feature/auth/cubit/auth_cubit.dart';
-import '../../../../feature/auth/widget/dialog.dart';
-import '../../../../feature/publication_list/part.dart';
-import '../../../../utils/utils.dart';
+import '../../../../../data/model/filter/filter.dart';
+import '../../../../../feature/auth/auth.dart';
+import '../../../../../feature/publication_list/publication_list.dart';
+import '../../../../extension/extension.dart';
 import '../../../../widget/filter/filter_chip_list.dart';
 import '../../../../widget/filter/publication_filter_submit_button.dart';
 import '../cubit/feed_publication_list_cubit.dart';
@@ -28,20 +26,19 @@ class FeedFiltersWidget extends StatelessWidget {
               currentTypes: state.filter.types,
               onSubmit: (newFilter) {
                 if (context.read<AuthCubit>().state.isAuthorized) {
-                  context
-                      .read<FeedPublicationListCubit>()
-                      .applyFilter(newFilter);
+                  context.read<FeedPublicationListCubit>().applyFilter(
+                    newFilter,
+                  );
                   return;
                 }
 
-                getIt.get<Utils>().showSnack(
-                      context: context,
-                      content: const Text('Войдите, чтобы настроить фильтры'),
-                      action: SnackBarAction(
-                        label: 'Войти',
-                        onPressed: () => showLoginDialog(context),
-                      ),
-                    );
+                context.showSnack(
+                  content: const Text('Войдите, чтобы настроить фильтры'),
+                  action: SnackBarAction(
+                    label: 'Войти',
+                    onPressed: () => showLoginDialog(context),
+                  ),
+                );
               },
             );
           },
@@ -53,7 +50,7 @@ class FeedFiltersWidget extends StatelessWidget {
 
 class _FilterView extends StatefulWidget {
   const _FilterView({
-    // ignore: unused_element
+    // ignore: unused_element_parameter
     super.key,
     this.isLoading = false,
     required this.currentScore,
@@ -82,17 +79,17 @@ class _FilterViewState extends State<_FilterView> {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text(
-          'Тип публикации',
-          style: Theme.of(context).textTheme.labelLarge,
-        ),
+        Text('Тип публикации', style: Theme.of(context).textTheme.labelLarge),
         FilterChipList(
           isEnabled: !widget.isLoading,
-          options: FeedFilterPublication.values
-              .map((e) => FilterOption(label: e.label, value: e.name))
-              .toList(),
-          isSelected: (option) => typesValue
-              .contains(FeedFilterPublication.fromString(option.value)),
+          options:
+              FeedFilterPublication.values
+                  .map((e) => FilterOption(label: e.label, value: e.name))
+                  .toList(),
+          isSelected:
+              (option) => typesValue.contains(
+                FeedFilterPublication.fromString(option.value),
+              ),
           onSelected: (isSelected, newOption) {
             final newType = FeedFilterPublication.fromString(newOption.value);
 
@@ -114,26 +111,24 @@ class _FilterViewState extends State<_FilterView> {
           },
         ),
         const SizedBox(height: 12),
-        Text(
-          'Порог рейтинга',
-          style: Theme.of(context).textTheme.labelLarge,
-        ),
+        Text('Порог рейтинга', style: Theme.of(context).textTheme.labelLarge),
         FilterChipList(
           isEnabled: !widget.isLoading,
           options: FilterList.scoreOptions,
           isSelected: (option) => option == scoreValue,
-          onSelected: (isSelected, option) => setState(() {
-            scoreValue = option;
-          }),
+          onSelected:
+              (isSelected, option) => setState(() {
+                scoreValue = option;
+              }),
         ),
         Padding(
           padding: const EdgeInsets.only(top: 8.0),
           child: PublicationFilterSubmitButton(
             isEnabled: !widget.isLoading,
-            onSubmit: () => widget.onSubmit(FeedFilter(
-              score: scoreValue,
-              types: typesValue,
-            )),
+            onSubmit:
+                () => widget.onSubmit(
+                  FeedFilter(score: scoreValue, types: typesValue),
+                ),
           ),
         ),
       ],

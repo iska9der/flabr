@@ -12,7 +12,7 @@ class HubListState extends Equatable {
 
   final HubListStatus status;
   final String error;
-  final HubListResponse list;
+  final ListResponse<Hub> list;
   final int page;
 
   bool get isFirstFetch => page == 1;
@@ -21,7 +21,7 @@ class HubListState extends Equatable {
   HubListState copyWith({
     HubListStatus? status,
     String? error,
-    HubListResponse? list,
+    ListResponse<Hub>? list,
     int? page,
   }) {
     return HubListState(

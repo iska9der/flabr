@@ -18,13 +18,7 @@ class Tokens extends Equatable {
   final String hSecID;
 
   @override
-  List<Object> get props => [
-        connectSID,
-        habrSID,
-        accCSID,
-        phpSID,
-        hSecID,
-      ];
+  List<Object> get props => [connectSID, habrSID, accCSID, phpSID, hSecID];
 
   static const empty = Tokens();
   bool get isEmpty => this == empty;
@@ -51,11 +45,12 @@ class Tokens extends Equatable {
 
   String toJson() => json.encode(toMap());
 
-  factory Tokens.fromJson(String source) => Tokens.fromMap(
-        json.decode(source) as Map<String, dynamic>,
-      );
+  factory Tokens.fromJson(String source) =>
+      Tokens.fromMap(json.decode(source) as Map<String, dynamic>);
 
   String toCookieString() {
-    return 'connect_sid="$connectSID"; habrsession_id="$habrSID"; fl=ru; hl=ru; acc_csid="$accCSID"; habr_web_redirect_back=%2Fru%2Fall%2F; PHPSESSID="$phpSID"; hsec_id="$hSecID"';
+    return 'connect_sid="$connectSID"; habrsession_id="$habrSID"; fl=ru; hl=ru; '
+        'acc_csid="$accCSID"; habr_web_redirect_back=%2Fru%2Fall%2F; '
+        'PHPSESSID="$phpSID"; hsec_id="$hSecID"';
   }
 }

@@ -1,4 +1,4 @@
-part of 'part.dart';
+import 'package:flutter/material.dart';
 
 class PublicationStat extends StatelessWidget {
   const PublicationStat({
@@ -19,18 +19,15 @@ class PublicationStat extends StatelessWidget {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Icon(
-          icon,
-          color: actualColor,
-        ),
+        Icon(icon, color: actualColor),
         Padding(
           padding: const EdgeInsets.only(left: 4),
           child: Text(
             text,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: actualColor,
-                  fontWeight: FontWeight.w600,
-                ),
+              color: actualColor,
+              fontWeight: FontWeight.w600,
+            ),
           ),
         ),
       ],

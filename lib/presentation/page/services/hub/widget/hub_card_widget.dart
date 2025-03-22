@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../core/component/di/injector.dart';
+import '../../../../../core/component/di/di.dart';
 import '../../../../../core/component/router/app_router.dart';
-import '../../../../../data/model/hub/hub_model.dart';
-import '../../../../../data/model/hub/hub_statistics_model.dart';
+import '../../../../../data/model/hub/hub.dart';
 import '../../../../../data/model/render_type_enum.dart';
 import '../../../../../data/model/stat_type_enum.dart';
 import '../../../../widget/card_avatar_widget.dart';
@@ -30,9 +29,10 @@ class HubCardWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         FlabrCard(
-          onTap: () => getIt<AppRouter>().navigate(
-            HubDashboardRoute(alias: model.alias),
-          ),
+          onTap:
+              () => getIt<AppRouter>().navigate(
+                HubDashboardRoute(alias: model.alias),
+              ),
           child: Row(
             children: [
               CardAvatarWidget(imageUrl: model.imageUrl),
@@ -51,12 +51,20 @@ class HubCardWidget extends StatelessWidget {
                     ),
                     const SizedBox(height: 20),
                     Wrap(
-                      children: model.commonTags
-                          .map((tag) => Padding(
-                                padding: const EdgeInsets.fromLTRB(0, 4, 16, 4),
-                                child: Text(tag, style: tagStyle),
-                              ))
-                          .toList(),
+                      children:
+                          model.commonTags
+                              .map(
+                                (tag) => Padding(
+                                  padding: const EdgeInsets.fromLTRB(
+                                    0,
+                                    4,
+                                    16,
+                                    4,
+                                  ),
+                                  child: Text(tag, style: tagStyle),
+                                ),
+                              )
+                              .toList(),
                     ),
                   ],
                 ),
@@ -83,7 +91,7 @@ class HubCardWidget extends StatelessWidget {
               ),
             ],
           ),
-        )
+        ),
       ],
     );
   }

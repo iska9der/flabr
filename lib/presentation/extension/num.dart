@@ -1,4 +1,4 @@
-part of 'extension.dart';
+import 'package:intl/intl.dart';
 
 extension NumX on num {
   String compact() {

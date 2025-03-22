@@ -1,4 +1,8 @@
-part of 'part.dart';
+import 'package:flutter/material.dart';
+
+import '../../../../extension/extension.dart';
+import '../../../../theme/theme.dart';
+import '../../../../widget/enhancement/enhancement.dart';
 
 class PublicationStatIconButton extends StatelessWidget {
   const PublicationStatIconButton({
@@ -43,15 +47,11 @@ class PublicationStatIconButton extends StatelessWidget {
             children: [
               isLoading
                   ? const SizedBox(
-                      width: iconSize,
-                      height: iconSize,
-                      child: CircleIndicator.small(),
-                    )
-                  : Icon(
-                      icon,
-                      size: iconSize,
-                      color: iconColor,
-                    ),
+                    width: iconSize,
+                    height: iconSize,
+                    child: CircleIndicator.small(),
+                  )
+                  : Icon(icon, size: iconSize, color: iconColor),
               if (value.isNotEmpty)
                 Padding(
                   padding: const EdgeInsets.only(left: 6),

@@ -1,4 +1,8 @@
-part of 'part.dart';
+import 'package:flutter/material.dart';
+
+import '../../../../../data/model/publication/publication.dart';
+import '../../../../extension/extension.dart';
+import 'publication_stat_widget.dart';
 
 class PublicationStatsWidget extends StatelessWidget {
   const PublicationStatsWidget(this.publication, {super.key});
@@ -9,14 +13,14 @@ class PublicationStatsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return switch (publication.type) {
       PublicationType.article || PublicationType.news => ArticleStatsWidget(
-          complexity: (publication as PublicationCommon).complexity,
-          readingTime: (publication as PublicationCommon).readingTime,
-          readingCount: publication.statistics.readingCount,
-        ),
+        complexity: (publication as PublicationCommon).complexity,
+        readingTime: (publication as PublicationCommon).readingTime,
+        readingCount: publication.statistics.readingCount,
+      ),
       _ => PublicationStat(
-          icon: Icons.remove_red_eye_rounded,
-          text: publication.statistics.readingCount.compact(),
-        ),
+        icon: Icons.remove_red_eye_rounded,
+        text: publication.statistics.readingCount.compact(),
+      ),
     };
   }
 }

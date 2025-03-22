@@ -4,10 +4,10 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../../core/component/di/injector.dart';
-import '../../../../feature/scroll/part.dart';
+import '../../../../../core/component/di/di.dart';
+import '../../../../../feature/scroll/scroll.dart';
+import '../../../../extension/extension.dart';
 import '../../../../theme/theme.dart';
-import '../../../../utils/utils.dart';
 import '../../../../widget/enhancement/progress_indicator.dart';
 import '../cubit/user_list_cubit.dart';
 import '../widget/user_card_widget.dart';
@@ -25,14 +25,13 @@ class UserListPage extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (_) => UserListCubit(
-            repository: getIt(),
-            languageRepository: getIt(),
-          ),
+          create:
+              (_) => UserListCubit(
+                repository: getIt(),
+                languageRepository: getIt(),
+              ),
         ),
-        BlocProvider(
-          create: (_) => ScrollCubit(),
-        ),
+        BlocProvider(create: (_) => ScrollCubit()),
       ],
       child: Builder(
         builder: (context) {
@@ -70,12 +69,10 @@ class UserListPageView extends StatelessWidget {
       floatingActionButton: const FloatingScrollToTopButton(),
       body: SafeArea(
         child: BlocConsumer<UserListCubit, UserListState>(
-          listenWhen: (p, c) =>
-              p.page != 1 && c.status == UserListStatus.failure,
-          listener: (context, state) => getIt<Utils>().showSnack(
-            context: context,
-            content: Text(state.error),
-          ),
+          listenWhen:
+              (p, c) => p.page != 1 && c.status == UserListStatus.failure,
+          listener:
+              (context, state) => context.showSnack(content: Text(state.error)),
           builder: (context, state) {
             if (state.status == UserListStatus.initial) {
               usersCubit.fetchAll();
@@ -98,10 +95,11 @@ class UserListPageView extends StatelessWidget {
               controller: scrollCtrl,
               child: ListView.separated(
                 controller: scrollCtrl,
-                separatorBuilder: (context, index) => const SizedBox(
-                  height: AppDimensions.cardBetweenHeight,
-                ),
-                itemCount: users.length +
+                separatorBuilder:
+                    (context, index) =>
+                        const SizedBox(height: AppDimensions.cardBetweenHeight),
+                itemCount:
+                    users.length +
                     (state.status == UserListStatus.loading ? 1 : 0),
                 itemBuilder: (context, i) {
                   if (i < users.length) {

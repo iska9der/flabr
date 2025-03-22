@@ -9,26 +9,26 @@ enum ScrollVariant {
   cupertinoFast;
 
   String get label => switch (this) {
-        ScrollVariant.material => 'Material',
-        ScrollVariant.cupertino => 'Cupertino',
-        ScrollVariant.cupertinoFast => 'Cupertino Fast',
-      };
+    ScrollVariant.material => 'Material',
+    ScrollVariant.cupertino => 'Cupertino',
+    ScrollVariant.cupertinoFast => 'Cupertino Fast',
+  };
 
   ScrollPhysics physics(BuildContext context) => switch (this) {
-        /// для материала используем купертиновскую физику, так как
-        /// по умолчанию Material не поддерживает overscroll
-        /// и поэтому RefreshIndicator не работает
-        ScrollVariant.material => ScrollVariant.cupertinoFast.physics(context),
-        _ => behavior.getScrollPhysics(context),
-      };
+    /// для материала используем купертиновскую физику, так как
+    /// по умолчанию Material не поддерживает overscroll
+    /// и поэтому RefreshIndicator не работает
+    ScrollVariant.material => ScrollVariant.cupertinoFast.physics(context),
+    _ => behavior.getScrollPhysics(context),
+  };
 
   ScrollBehavior get behavior => switch (this) {
-        ScrollVariant.material => _material,
-        ScrollVariant.cupertino => _cupertino,
-        ScrollVariant.cupertinoFast => _cupertino.copyWith(
-            physics: BouncingScrollPhysics(
-              decelerationRate: ScrollDecelerationRate.fast,
-            ),
-          ),
-      };
+    ScrollVariant.material => _material,
+    ScrollVariant.cupertino => _cupertino,
+    ScrollVariant.cupertinoFast => _cupertino.copyWith(
+      physics: BouncingScrollPhysics(
+        decelerationRate: ScrollDecelerationRate.fast,
+      ),
+    ),
+  };
 }

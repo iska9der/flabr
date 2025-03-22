@@ -1,4 +1,9 @@
-part of 'part.dart';
+import 'dart:async';
+
+import 'package:injectable/injectable.dart';
+import 'package:ya_summary/ya_summary.dart';
+
+import '../../core/component/storage/storage.dart';
 
 @Singleton(as: SummaryTokenRepository)
 class SummaryTokenRepositoryImpl implements SummaryTokenRepository {

@@ -3,11 +3,8 @@ import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart
 import 'package:intl/intl.dart';
 
 import '../../../data/model/comment_base.dart';
-import '../../../data/model/stat_type_enum.dart';
 import '../html_view_widget.dart';
-import '../stat_text_widget.dart';
-
-part 'comment_rating_widget.dart';
+import 'comment_rating_widget.dart';
 
 class CommentWidget extends StatelessWidget {
   const CommentWidget(this.comment, {super.key, this.onParentTap});
@@ -43,9 +40,9 @@ class CommentWidget extends StatelessWidget {
               const Spacer(),
               Text(
                 DateFormat.yMd().add_jm().format(comment.publishedAt),
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      fontWeight: FontWeight.w600,
-                    ),
+                style: Theme.of(
+                  context,
+                ).textTheme.bodySmall?.copyWith(fontWeight: FontWeight.w600),
               ),
             ],
           ),

@@ -1,6 +1,6 @@
-part of 'part.dart';
+import 'app_exception.dart';
 
-class FetchException implements DisplayableException {
+class FetchException implements AppException {
   FetchException([this.message]);
 
   final String? message;
