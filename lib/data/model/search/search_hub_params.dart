@@ -1,7 +1,7 @@
-import 'params_model.dart';
+import '../query_params_model.dart';
 import 'search_params.dart';
 
-class SearchHubParams extends Params implements SearchParamsFactory {
+class SearchHubParams extends QueryParams implements SearchParamsFactory {
   const SearchHubParams({
     required this.query,
     required this.order,
@@ -15,6 +15,7 @@ class SearchHubParams extends Params implements SearchParamsFactory {
 
   @override
   String toQueryString() {
-    return '/hubs/search?q=$query&target_type=hubs&order=$order&fl=$langArticles&hl=$langUI&page=$page';
+    return '/hubs/search?q=$query&target_type=hubs'
+        '&order=$order&fl=$langArticles&hl=$langUI&page=$page';
   }
 }

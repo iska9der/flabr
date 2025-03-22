@@ -1,8 +1,8 @@
 import 'package:equatable/equatable.dart';
 
 import '../publication/publication_model.dart';
-import '../related_data/user_related_data_model.dart';
 import 'user_location_model.dart';
+import 'user_related_data_model.dart';
 import 'user_workplace_model.dart';
 
 class User extends Equatable {

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../../../core/component/di/di.dart';
 import '../../../../../core/component/router/app_router.dart';
 import '../../../../../data/model/stat_type_enum.dart';
-import '../../../../../data/model/user/user_model.dart';
+import '../../../../../data/model/user/user.dart';
 import '../../../../extension/extension.dart';
 import '../../../../widget/card_avatar_widget.dart';
 import '../../../../widget/enhancement/card.dart';

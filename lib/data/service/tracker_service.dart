@@ -37,7 +37,10 @@ class TrackerServiceImpl implements TrackerService {
     required bool byAuthor,
   }) async {
     try {
-      final params = TrackerPublicationParams(page: page, byAuthor: byAuthor);
+      final params = TrackerPublicationListParams(
+        page: page,
+        byAuthor: byAuthor,
+      );
 
       final response = await _siteClient.get(
         '/v2/tracker/publications',
@@ -84,7 +87,10 @@ class TrackerServiceImpl implements TrackerService {
     required String category,
   }) async {
     try {
-      final params = TrackerNotificationParams(page: page, category: category);
+      final params = TrackerNotificationListParams(
+        page: page,
+        category: category,
+      );
 
       final response = await _siteClient.get(
         '/v2/me/notifications',

@@ -3,8 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 
 import '../../../../../core/component/di/di.dart';
-import '../../../../../data/model/company/card/company_card_model.dart';
-import '../../../../../data/model/related_data/company_related_data_model.dart';
+import '../../../../../data/model/company/company.dart';
 import '../../../../../data/model/stat_type_enum.dart';
 import '../../../../../data/repository/repository.dart';
 import '../../../../../feature/auth/auth.dart';

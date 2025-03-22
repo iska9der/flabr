@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/component/di/di.dart';
-import '../../../../../data/model/hub/hub_model.dart';
+import '../../../../../data/model/hub/hub.dart';
 import '../../../../../feature/scroll/scroll.dart';
 import '../../../../extension/extension.dart';
 import '../../../../theme/theme.dart';

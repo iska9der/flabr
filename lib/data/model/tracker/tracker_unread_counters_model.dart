@@ -1,4 +1,7 @@
-part of 'tracker.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+part 'tracker_unread_counters_model.freezed.dart';
+part 'tracker_unread_counters_model.g.dart';
 
 @freezed
 class TrackerUnreadCounters with _$TrackerUnreadCounters {

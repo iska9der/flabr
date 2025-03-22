@@ -1,4 +1,7 @@
-part of 'filter.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+part 'filter_option_model.freezed.dart';
+part 'filter_option_model.g.dart';
 
 @freezed
 abstract class FilterOption with _$FilterOption {

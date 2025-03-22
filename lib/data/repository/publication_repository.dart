@@ -126,7 +126,7 @@ class PublicationRepository {
     return response;
   }
 
-  Future<PublicationListResponseCommon> fetchHubArticles({
+  Future<PublicationCommonListResponse> fetchHubArticles({
     required Language langUI,
     required List<Language> langArticles,
     required String hub,

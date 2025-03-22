@@ -57,7 +57,7 @@ class CompanyServiceImpl implements CompanyService {
     required String langArticles,
   }) async {
     try {
-      var params = Params(langUI: langUI, langArticles: langArticles);
+      var params = QueryParams(langUI: langUI, langArticles: langArticles);
       final queryString = params.toQueryString();
       final response = await _mobileClient.get(
         '/companies/$alias/card/?$queryString',

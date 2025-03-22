@@ -50,7 +50,7 @@ class UserServiceImpl implements UserService {
     required String page,
   }) async {
     try {
-      final params = Params(
+      final params = QueryParams(
         langArticles: langArticles,
         langUI: langUI,
         page: page,
@@ -73,7 +73,7 @@ class UserServiceImpl implements UserService {
     required String langArticles,
   }) async {
     try {
-      final params = Params(langArticles: langArticles, langUI: langUI);
+      final params = QueryParams(langArticles: langArticles, langUI: langUI);
 
       final response = await _mobileClient.get(
         '/users/$alias/card?${params.toQueryString()}',
@@ -92,7 +92,7 @@ class UserServiceImpl implements UserService {
     required String langArticles,
   }) async {
     try {
-      final params = Params(langArticles: langArticles, langUI: langUI);
+      final params = QueryParams(langArticles: langArticles, langUI: langUI);
 
       final response = await _mobileClient.get(
         '/users/$alias/whois?${params.toQueryString()}',

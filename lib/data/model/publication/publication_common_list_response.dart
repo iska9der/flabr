@@ -3,19 +3,19 @@ import 'package:equatable/equatable.dart';
 import '../list_response_model.dart';
 import 'publication_model.dart';
 
-class PublicationListResponseCommon extends ListResponse<Publication>
+class PublicationCommonListResponse extends ListResponse<Publication>
     with EquatableMixin {
-  const PublicationListResponseCommon({
+  const PublicationCommonListResponse({
     super.pagesCount = 1,
     super.ids = const [],
     super.refs = const [],
   });
 
-  factory PublicationListResponseCommon.fromMap(Map<String, dynamic> map) {
+  factory PublicationCommonListResponse.fromMap(Map<String, dynamic> map) {
     var idsMap = map['publicationIds'];
     Map refsMap = map['publicationRefs'];
 
-    return PublicationListResponseCommon(
+    return PublicationCommonListResponse(
       pagesCount: map['pagesCount'] ?? 0,
       ids: List<String>.from(idsMap),
       refs:
@@ -25,7 +25,7 @@ class PublicationListResponseCommon extends ListResponse<Publication>
     );
   }
 
-  static const empty = PublicationListResponseCommon(pagesCount: 0);
+  static const empty = PublicationCommonListResponse(pagesCount: 0);
   get isEmpty => this == empty;
 
   @override

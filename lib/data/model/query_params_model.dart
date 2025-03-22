@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
-class Params extends Equatable {
-  const Params({
+class QueryParams extends Equatable {
+  const QueryParams({
     this.langArticles = 'ru',
     this.langUI = 'ru',
     this.page = '',
@@ -21,8 +21,8 @@ class Params extends Equatable {
 
   final String page;
 
-  factory Params.fromMap(map) {
-    return Params(
+  factory QueryParams.fromMap(map) {
+    return QueryParams(
       langArticles: map['fl'] ?? 'ru',
       langUI: map['hl'] ?? 'ru',
       page: map['page'] ?? '',

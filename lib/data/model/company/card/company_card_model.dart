@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 import '../../company_base.dart';
-import '../../related_data/company_related_data_model.dart';
+import '../company_related_data_model.dart';
 
 part 'company_card_information_model.dart';
 part 'company_card_statistics_model.dart';
@@ -54,22 +54,25 @@ class CompanyCard extends CompanyBase {
       imageUrl: (map['imageUrl'] ?? '') as String,
       titleHtml: (map['titleHtml'] ?? '') as String,
       descriptionHtml: (map['descriptionHtml'] ?? '') as String,
-      relatedData: map['relatedData'] != null
-          ? CompanyRelatedData.fromMap(
-              map['relatedData'] as Map<String, dynamic>,
-            )
-          : CompanyRelatedData.empty,
-      statistics: map['statistics'] != null
-          ? CompanyCardStatistics.fromMap(
-              map['statistics'] as Map<String, dynamic>,
-            )
-          : CompanyCardStatistics.empty,
+      relatedData:
+          map['relatedData'] != null
+              ? CompanyRelatedData.fromMap(
+                map['relatedData'] as Map<String, dynamic>,
+              )
+              : CompanyRelatedData.empty,
+      statistics:
+          map['statistics'] != null
+              ? CompanyCardStatistics.fromMap(
+                map['statistics'] as Map<String, dynamic>,
+              )
+              : CompanyCardStatistics.empty,
       information: information,
-      contacts: map['contacts'] != null
-          ? List<CompanyContact>.from(
-              map['contacts'].map((e) => CompanyContact.fromMap(e)),
-            ).toList()
-          : const [],
+      contacts:
+          map['contacts'] != null
+              ? List<CompanyContact>.from(
+                map['contacts'].map((e) => CompanyContact.fromMap(e)),
+              ).toList()
+              : const [],
     );
   }
 
@@ -77,13 +80,13 @@ class CompanyCard extends CompanyBase {
   bool get isEmpty => this == empty;
 
   List<Object> get props => [
-        alias,
-        imageUrl,
-        titleHtml,
-        descriptionHtml,
-        relatedData,
-        statistics,
-        information,
-        contacts,
-      ];
+    alias,
+    imageUrl,
+    titleHtml,
+    descriptionHtml,
+    relatedData,
+    statistics,
+    information,
+    contacts,
+  ];
 }

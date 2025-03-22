@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 import '../../../../../data/exception/exception.dart';
 import '../../../../../data/model/filter/filter.dart';
 import '../../../../../data/model/publication/publication.dart';
-import '../../../../../data/model/user/user_publication_type.dart';
+import '../../../../../data/model/user/user.dart';
 import '../../../../../feature/publication_list/publication_list.dart';
 
 part 'user_publication_list_state.dart';

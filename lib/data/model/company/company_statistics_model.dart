@@ -22,15 +22,7 @@ class CompanyStatistics extends Equatable {
   }
 
   static const CompanyStatistics empty = CompanyStatistics();
-  bool get isEmpty => this == empty;
 
   @override
-  bool get stringify => true;
-
-  @override
-  List<Object?> get props => [
-        subscribersCount,
-        rating,
-        invest,
-      ];
+  List<Object?> get props => [subscribersCount, rating, invest];
 }

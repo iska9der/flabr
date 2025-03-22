@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 
-import '../../../../../data/model/user/user_badget_model.dart';
+import '../../../../../data/model/user/user.dart';
 import '../../../../widget/detail/section_container_widget.dart';
 import '../../../../widget/enhancement/card.dart';
 import '../../../../widget/html_view_widget.dart';
@@ -61,18 +61,19 @@ class _BadgetsWidget extends StatelessWidget {
         thickness: 1,
         child: ListView(
           scrollDirection: Axis.horizontal,
-          children: badgets
-              .map((badge) => Align(
-                    alignment: Alignment.topCenter,
-                    child: Tooltip(
-                      message: badge.description,
-                      triggerMode: TooltipTriggerMode.tap,
-                      child: FlabrCard(
-                        child: Text(badge.title),
+          children:
+              badgets
+                  .map(
+                    (badge) => Align(
+                      alignment: Alignment.topCenter,
+                      child: Tooltip(
+                        message: badge.description,
+                        triggerMode: TooltipTriggerMode.tap,
+                        child: FlabrCard(child: Text(badge.title)),
                       ),
                     ),
-                  ))
-              .toList(),
+                  )
+                  .toList(),
         ),
       ),
     );

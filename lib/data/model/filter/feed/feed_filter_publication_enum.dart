@@ -1,4 +1,4 @@
-part of '../filter.dart';
+import '../../../exception/exception.dart';
 
 enum FeedFilterPublication {
   articles(label: 'Статьи'),

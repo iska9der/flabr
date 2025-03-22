@@ -1,7 +1,7 @@
-import 'params_model.dart';
+import '../query_params_model.dart';
 
-class TrackerNotificationParams extends Params {
-  const TrackerNotificationParams({
+class TrackerNotificationListParams extends QueryParams {
+  const TrackerNotificationListParams({
     super.page = '1',
     this.perPage = '30',
     required this.category,
@@ -16,8 +16,5 @@ class TrackerNotificationParams extends Params {
   }
 
   @override
-  List<Object?> get props => [
-        ...super.props,
-        perPage,
-      ];
+  List<Object?> get props => [...super.props, perPage];
 }

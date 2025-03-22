@@ -1,6 +1,6 @@
-import 'params_model.dart';
+import '../query_params_model.dart';
 
-class FeedListParams extends Params {
+class FeedListParams extends QueryParams {
   const FeedListParams({
     super.langArticles = 'ru',
     super.langUI = 'ru',
@@ -30,10 +30,5 @@ class FeedListParams extends Params {
   }
 
   @override
-  List<Object?> get props => [
-        ...super.props,
-        complexity,
-        score,
-        types,
-      ];
+  List<Object?> get props => [...super.props, complexity, score, types];
 }

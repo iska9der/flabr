@@ -25,7 +25,7 @@ class SearchRepository {
 
     switch (target) {
       case SearchTarget.posts:
-        final response = PublicationListResponseCommon.fromMap(raw);
+        final response = PublicationCommonListResponse.fromMap(raw);
         _sortArticles(order, response);
         return response;
       case SearchTarget.hubs:
@@ -41,7 +41,7 @@ class SearchRepository {
 
   void _sortArticles(
     SearchOrder order,
-    PublicationListResponseCommon response,
+    PublicationCommonListResponse response,
   ) {
     if (order == SearchOrder.date) {
       response.refs.sort((a, b) => b.timePublished.compareTo(a.timePublished));

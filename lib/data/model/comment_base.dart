@@ -1,6 +1,6 @@
 import 'user_base.dart';
 
-class CommentBase {
+abstract class CommentBase {
   const CommentBase({
     required this.id,
     required this.author,

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
-import '../../../data/model/publication/publication_type_enum.dart';
+import '../../../data/model/publication/publication.dart';
 import '../../../presentation/page/dashboard_page.dart';
 import '../../../presentation/page/publications/articles/article_flow.dart';
 import '../../../presentation/page/publications/articles/article_list_page.dart';
@@ -43,16 +43,12 @@ import '../../../presentation/page/settings/settings_page.dart';
 part 'app_router.gr.dart';
 
 @Singleton()
-@AutoRouterConfig(
-  replaceInRouteName: 'Page,Route',
-)
+@AutoRouterConfig(replaceInRouteName: 'Page,Route')
 // extend the generated private router
 class AppRouter extends RootStackRouter {
   /// Открыть внешнюю ссылку
-  Future launchUrl(String url) => launchUrlString(
-        url,
-        mode: LaunchMode.externalApplication,
-      );
+  Future launchUrl(String url) =>
+      launchUrlString(url, mode: LaunchMode.externalApplication);
 
   /// Открыть ссылку в приложении, либо в браузере
   Future navigateOrLaunchUrl(Uri uri) async {
@@ -61,19 +57,14 @@ class AppRouter extends RootStackRouter {
     if (id != null) {
       final type = publicationTypeHandler(uri);
       if (type != null) {
-        return await pushWidget(
-          PublicationDetailPage(id: id, type: type.name),
-        );
+        return await pushWidget(PublicationDetailPage(id: id, type: type.name));
       }
 
       if (isUserUrl(uri)) {
         return await navigate(
           ServicesFlowRoute(
             children: [
-              UserDashboardRoute(
-                alias: id,
-                children: [UserDetailRoute()],
-              )
+              UserDashboardRoute(alias: id, children: [UserDetailRoute()]),
             ],
           ),
         );
@@ -104,7 +95,12 @@ class AppRouter extends RootStackRouter {
     }
 
     final Map<PublicationType, List<String>> compareMap = {
-      PublicationType.article: ['article/' 'articles/', 'blog/', 'blogs/'],
+      PublicationType.article: [
+        'article/'
+            'articles/',
+        'blog/',
+        'blogs/',
+      ],
       PublicationType.post: ['posts/'],
       PublicationType.news: ['news/'],
     };
@@ -216,17 +212,11 @@ class AppRouter extends RootStackRouter {
             ),
 
             /// Хабы
-            AutoRoute(
-              page: HubListRoute.page,
-              path: HubListPage.routePath,
-            ),
+            AutoRoute(page: HubListRoute.page, path: HubListPage.routePath),
             _hubDashboard(),
 
             /// Пользователи/Авторы
-            AutoRoute(
-              page: UserListRoute.page,
-              path: UserListPage.routePath,
-            ),
+            AutoRoute(page: UserListRoute.page, path: UserListPage.routePath),
             _userDashboard(),
 
             /// Компании
@@ -239,10 +229,7 @@ class AppRouter extends RootStackRouter {
         ),
 
         /// Таб "Настройки"
-        AutoRoute(
-          page: SettingsRoute.page,
-          path: SettingsPage.routePath,
-        ),
+        AutoRoute(page: SettingsRoute.page, path: SettingsPage.routePath),
       ],
     ),
 
@@ -314,52 +301,52 @@ class AppRouter extends RootStackRouter {
 }
 
 AutoRoute _userDashboard({bool isRoot = false}) => AutoRoute(
-      page: UserDashboardRoute.page,
-      path: "${isRoot == true ? '/' : ''}${UserDashboardPage.routePath}",
-      children: [
-        AutoRoute(
-          initial: true,
-          page: UserDetailRoute.page,
-          path: UserDetailPage.routePath,
-        ),
-        AutoRoute(
-          page: UserPublicationListRoute.page,
-          path: UserPublicationListPage.routePath,
-        ),
-        AutoRoute(
-          page: UserCommentListRoute.page,
-          path: UserCommentListPage.routePath,
-        ),
-        AutoRoute(
-          page: UserBookmarkListRoute.page,
-          path: UserBookmarkListPage.routePath,
-        ),
-      ],
-    );
+  page: UserDashboardRoute.page,
+  path: "${isRoot == true ? '/' : ''}${UserDashboardPage.routePath}",
+  children: [
+    AutoRoute(
+      initial: true,
+      page: UserDetailRoute.page,
+      path: UserDetailPage.routePath,
+    ),
+    AutoRoute(
+      page: UserPublicationListRoute.page,
+      path: UserPublicationListPage.routePath,
+    ),
+    AutoRoute(
+      page: UserCommentListRoute.page,
+      path: UserCommentListPage.routePath,
+    ),
+    AutoRoute(
+      page: UserBookmarkListRoute.page,
+      path: UserBookmarkListPage.routePath,
+    ),
+  ],
+);
 
 AutoRoute _hubDashboard({bool isRoot = false}) => AutoRoute(
-      page: HubDashboardRoute.page,
-      path: "${isRoot == true ? '/' : ''}${HubDashboardPage.routePath}",
-      children: [
-        AutoRoute(
-          initial: true,
-          page: HubDetailRoute.page,
-          path: HubDetailPage.routePath,
-        ),
-      ],
-    );
+  page: HubDashboardRoute.page,
+  path: "${isRoot == true ? '/' : ''}${HubDashboardPage.routePath}",
+  children: [
+    AutoRoute(
+      initial: true,
+      page: HubDetailRoute.page,
+      path: HubDetailPage.routePath,
+    ),
+  ],
+);
 
 AutoRoute _companyDashboard({bool isRoot = false}) => AutoRoute(
-      page: CompanyDashboardRoute.page,
-      path: "${isRoot == true ? '/' : ''}${CompanyDashboardPage.routePath}",
-      children: [
-        AutoRoute(
-          initial: true,
-          page: CompanyDetailRoute.page,
-          path: CompanyDetailPage.routePath,
-        ),
-      ],
-    );
+  page: CompanyDashboardRoute.page,
+  path: "${isRoot == true ? '/' : ''}${CompanyDashboardPage.routePath}",
+  children: [
+    AutoRoute(
+      initial: true,
+      page: CompanyDetailRoute.page,
+      path: CompanyDetailPage.routePath,
+    ),
+  ],
+);
 
 List<RedirectRoute> _newsRedirects() {
   List<String> externalPathList = [
@@ -368,32 +355,26 @@ List<RedirectRoute> _newsRedirects() {
     '/companies/:companyName/news/:id',
   ];
 
-  List<RedirectRoute> internalRedirectList = externalPathList
-      .map((path) => [
-            RedirectRoute(
-              path: path,
-              redirectTo: '/publication/news/:id',
-            ),
-            RedirectRoute(
-              path: '$path/comments',
-              redirectTo: '/publication/news/:id/comments',
-            ),
-          ])
-      .flattened
-      .toList();
+  List<RedirectRoute> internalRedirectList =
+      externalPathList
+          .map(
+            (path) => [
+              RedirectRoute(path: path, redirectTo: '/publication/news/:id'),
+              RedirectRoute(
+                path: '$path/comments',
+                redirectTo: '/publication/news/:id/comments',
+              ),
+            ],
+          )
+          .flattened
+          .toList();
 
   return [
     /// Флоу в новостях
-    RedirectRoute(
-      path: '/flows/:flow/news',
-      redirectTo: '/news/flows/:flow',
-    ),
+    RedirectRoute(path: '/flows/:flow/news', redirectTo: '/news/flows/:flow'),
 
     /// Новости
-    RedirectRoute(
-      path: '/news/',
-      redirectTo: '/news',
-    ),
+    RedirectRoute(path: '/news/', redirectTo: '/news'),
 
     /// Полная новость и комментарии
     ...internalRedirectList,
@@ -414,36 +395,30 @@ List<RedirectRoute> _articlesRedirects() {
     '/amp/publications/:id',
   ];
 
-  List<RedirectRoute> internalRedirectList = externalPathList
-      .map((path) => [
-            RedirectRoute(
-              path: path,
-              redirectTo: '/publication/article/:id',
-            ),
-            RedirectRoute(
-              path: '$path/comments',
-              redirectTo: '/publication/article/:id/comments',
-            ),
-          ])
-      .flattened
-      .toList();
+  List<RedirectRoute> internalRedirectList =
+      externalPathList
+          .map(
+            (path) => [
+              RedirectRoute(path: path, redirectTo: '/publication/article/:id'),
+              RedirectRoute(
+                path: '$path/comments',
+                redirectTo: '/publication/article/:id/comments',
+              ),
+            ],
+          )
+          .flattened
+          .toList();
 
   return [
     /// Флоу в статьях
-    RedirectRoute(
-      path: '/flows/:flow/',
-      redirectTo: '/articles/flows/:flow',
-    ),
+    RedirectRoute(path: '/flows/:flow/', redirectTo: '/articles/flows/:flow'),
     RedirectRoute(
       path: '/flows/:flow/articles',
       redirectTo: '/articles/flows/:flow',
     ),
 
     /// Статьи
-    RedirectRoute(
-      path: '/articles/',
-      redirectTo: '/articles',
-    ),
+    RedirectRoute(path: '/articles/', redirectTo: '/articles'),
 
     /// Полная статья и комментарии
     ...internalRedirectList,
@@ -456,32 +431,26 @@ List<RedirectRoute> _postsRedirects() {
     '/companies/:companyName/posts/:id',
   ];
 
-  List<RedirectRoute> internalRedirectList = externalPathList
-      .map((path) => [
-            RedirectRoute(
-              path: path,
-              redirectTo: '/publication/post/:id',
-            ),
-            RedirectRoute(
-              path: '$path/comments',
-              redirectTo: '/publication/post/:id/comments',
-            ),
-          ])
-      .flattened
-      .toList();
+  List<RedirectRoute> internalRedirectList =
+      externalPathList
+          .map(
+            (path) => [
+              RedirectRoute(path: path, redirectTo: '/publication/post/:id'),
+              RedirectRoute(
+                path: '$path/comments',
+                redirectTo: '/publication/post/:id/comments',
+              ),
+            ],
+          )
+          .flattened
+          .toList();
 
   return [
     /// Флоу в постах
-    RedirectRoute(
-      path: '/flows/:flow/posts',
-      redirectTo: '/posts/flows/:flow',
-    ),
+    RedirectRoute(path: '/flows/:flow/posts', redirectTo: '/posts/flows/:flow'),
 
     /// Посты
-    RedirectRoute(
-      path: '/posts/',
-      redirectTo: '/posts',
-    ),
+    RedirectRoute(path: '/posts/', redirectTo: '/posts'),
 
     /// Полная версия и комментарии
     ...internalRedirectList,
@@ -497,16 +466,10 @@ List<RedirectRoute> _usersRedirects() {
   const bookmarks = UserBookmarkListPage.routePath;
 
   return [
-    RedirectRoute(
-      path: '/users',
-      redirectTo: basePath,
-    ),
+    RedirectRoute(path: '/users', redirectTo: basePath),
 
     /// Пользователь
-    RedirectRoute(
-      path: '/users/:login',
-      redirectTo: '$basePath/:login',
-    ),
+    RedirectRoute(path: '/users/:login', redirectTo: '$basePath/:login'),
 
     /// Публикации пользователя
     RedirectRoute(
@@ -564,10 +527,7 @@ List<RedirectRoute> _hubsRedirects() {
   const profilePath = HubDetailPage.routePath;
 
   return [
-    RedirectRoute(
-      path: '/hubs',
-      redirectTo: fullPath,
-    ),
+    RedirectRoute(path: '/hubs', redirectTo: fullPath),
     RedirectRoute(
       path: '/hub/:alias',
       redirectTo: '$fullPath/:alias/$profilePath',
@@ -580,10 +540,7 @@ List<RedirectRoute> _hubsRedirects() {
     /// TODO: временный редирект в профиль хаба со статьями,
     /// пока не реализованы вложенные разделы
     /// (авторы, компании)
-    RedirectRoute(
-      path: '/hub/:alias/*',
-      redirectTo: '$fullPath/:alias',
-    ),
+    RedirectRoute(path: '/hub/:alias/*', redirectTo: '$fullPath/:alias'),
     RedirectRoute(
       path: '/hubs/:alias/*',
       redirectTo: '$fullPath/:alias/$profilePath',

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../../../data/model/publication/publication.dart';
+import '../../../../../extension/extension.dart';
 import '../../../../../theme/theme.dart';
 
 class PublicationFormatWidget extends StatelessWidget {

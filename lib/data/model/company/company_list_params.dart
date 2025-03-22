@@ -1,9 +1,9 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:equatable/equatable.dart';
 
-import 'params_model.dart';
+import '../query_params_model.dart';
 
-class CompanyListParams extends Params with EquatableMixin {
+class CompanyListParams extends QueryParams with EquatableMixin {
   const CompanyListParams({
     super.page,
     super.langArticles,

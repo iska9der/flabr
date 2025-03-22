@@ -1,5 +1,3 @@
-part of 'tracker.dart';
-
 enum TrackerNotificationType {
   unknown,
   postAdd,

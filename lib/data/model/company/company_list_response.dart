@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
-import '../company/company_model.dart';
 import '../list_response_model.dart';
+import 'company_model.dart';
 
 class CompanyListResponse extends ListResponse<Company> with EquatableMixin {
   const CompanyListResponse({

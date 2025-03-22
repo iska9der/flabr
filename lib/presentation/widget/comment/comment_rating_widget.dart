@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../data/model/comment_base.dart';
 import '../../../data/model/stat_type_enum.dart';
+import '../../extension/extension.dart';
 import '../stat_text_widget.dart';
 
 class CommentRatingWidget extends StatelessWidget {

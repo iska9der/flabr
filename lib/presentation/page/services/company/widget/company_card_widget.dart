@@ -4,8 +4,7 @@ import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart
 
 import '../../../../../core/component/di/di.dart';
 import '../../../../../core/component/router/app_router.dart';
-import '../../../../../data/model/company/company_model.dart';
-import '../../../../../data/model/company/company_statistics_model.dart';
+import '../../../../../data/model/company/company.dart';
 import '../../../../../data/model/render_type_enum.dart';
 import '../../../../../data/model/stat_type_enum.dart';
 import '../../../../theme/theme.dart';

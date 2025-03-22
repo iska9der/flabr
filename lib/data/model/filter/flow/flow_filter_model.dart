@@ -1,4 +1,11 @@
-part of '../filter.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+import '../filter_list.dart';
+import '../filter_option_model.dart';
+import '../sort_enum.dart';
+
+part 'flow_filter_model.freezed.dart';
+part 'flow_filter_model.g.dart';
 
 @freezed
 class FlowFilter with _$FlowFilter {

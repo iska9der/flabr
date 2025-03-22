@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 
 import '../../../../../../core/component/di/di.dart';
 import '../../../../../../core/component/router/app_router.dart';
+import '../../../../../../data/model/hub/hub.dart';
 import '../../../../../../data/model/publication/publication.dart';
-import '../../../../../../data/model/related_data/hub_related_data_model.dart';
 import '../../../../../theme/theme.dart';
 
 class PublicationHubsWidget extends StatelessWidget {

@@ -34,7 +34,7 @@ abstract interface class PublicationService {
     required FilterOption score,
   });
 
-  Future<PublicationListResponseCommon> fetchHubArticles({
+  Future<PublicationCommonListResponse> fetchHubArticles({
     required String langUI,
     required String langArticles,
     required String hub,
@@ -110,7 +110,7 @@ class PublicationServiceImpl implements PublicationService {
     required String langArticles,
   }) async {
     try {
-      final params = Params(langArticles: langArticles, langUI: langUI);
+      final params = QueryParams(langArticles: langArticles, langUI: langUI);
 
       final response = await _mobileClient.get(
         '/articles/$id/?${params.toQueryString()}',
@@ -129,7 +129,7 @@ class PublicationServiceImpl implements PublicationService {
     required String langArticles,
   }) async {
     try {
-      final params = Params(langArticles: langArticles, langUI: langUI);
+      final params = QueryParams(langArticles: langArticles, langUI: langUI);
 
       final response = await _mobileClient.get(
         '/threads/$id/?${params.toQueryString()}',
@@ -186,7 +186,7 @@ class PublicationServiceImpl implements PublicationService {
       final flowStr = (flow == PublicationFlow.all) ? null : flow.name;
 
       final params = switch (section) {
-        Section.post => PostListParams(
+        Section.post => PublicationPostListParams(
           langArticles: langArticles,
           langUI: langUI,
           page: page,
@@ -216,8 +216,8 @@ class PublicationServiceImpl implements PublicationService {
       );
 
       return switch (section) {
-        Section.post => PublicationListResponsePost.fromMap(response.data),
-        _ => PublicationListResponseCommon.fromMap(response.data),
+        Section.post => PublicationPostListResponse.fromMap(response.data),
+        _ => PublicationCommonListResponse.fromMap(response.data),
       };
     } on AppException {
       rethrow;
@@ -227,7 +227,7 @@ class PublicationServiceImpl implements PublicationService {
   }
 
   @override
-  Future<PublicationListResponseCommon> fetchHubArticles({
+  Future<PublicationCommonListResponse> fetchHubArticles({
     required String langUI,
     required String langArticles,
     required String hub,
@@ -251,7 +251,7 @@ class PublicationServiceImpl implements PublicationService {
         queryParams: params.toMap(),
       );
 
-      return PublicationListResponseCommon.fromMap(response.data);
+      return PublicationCommonListResponse.fromMap(response.data);
     } on AppException {
       rethrow;
     } catch (e, trace) {
@@ -286,10 +286,10 @@ class PublicationServiceImpl implements PublicationService {
       );
 
       return switch (type) {
-        UserPublicationType.posts => PublicationListResponsePost.fromMap(
+        UserPublicationType.posts => PublicationPostListResponse.fromMap(
           response.data,
         ),
-        _ => PublicationListResponseCommon.fromMap(response.data),
+        _ => PublicationCommonListResponse.fromMap(response.data),
       };
     } on AppException {
       rethrow;
@@ -327,10 +327,10 @@ class PublicationServiceImpl implements PublicationService {
       );
 
       return switch (type) {
-        UserBookmarksType.posts => PublicationListResponsePost.fromMap(
+        UserBookmarksType.posts => PublicationPostListResponse.fromMap(
           response.data,
         ),
-        _ => PublicationListResponseCommon.fromMap(response.data),
+        _ => PublicationCommonListResponse.fromMap(response.data),
       };
     } on AppException {
       rethrow;

@@ -2,8 +2,8 @@
 import 'package:equatable/equatable.dart';
 
 import '../company_base.dart';
-import '../related_data/company_related_data_model.dart';
 import 'company_hub_model.dart';
+import 'company_related_data_model.dart';
 import 'company_statistics_model.dart';
 
 class Company extends CompanyBase with EquatableMixin {
@@ -46,21 +46,24 @@ class Company extends CompanyBase with EquatableMixin {
       imageUrl: (map['imageUrl'] ?? '') as String,
       titleHtml: (map['titleHtml'] ?? '') as String,
       descriptionHtml: (map['descriptionHtml'] ?? '') as String,
-      relatedData: map['relatedData'] != null
-          ? CompanyRelatedData.fromMap(
-              map['relatedData'] as Map<String, dynamic>,
-            )
-          : CompanyRelatedData.empty,
-      statistics: map['statistics'] != null
-          ? CompanyStatistics.fromMap(
-              map['statistics'] as Map<String, dynamic>,
-            )
-          : CompanyStatistics.empty,
-      commonHubs: map['commonHubs'] != null
-          ? List<CompanyHub>.from(
-              map['commonHubs'].map((el) => CompanyHub.fromMap(el)),
-            ).toList()
-          : const [],
+      relatedData:
+          map['relatedData'] != null
+              ? CompanyRelatedData.fromMap(
+                map['relatedData'] as Map<String, dynamic>,
+              )
+              : CompanyRelatedData.empty,
+      statistics:
+          map['statistics'] != null
+              ? CompanyStatistics.fromMap(
+                map['statistics'] as Map<String, dynamic>,
+              )
+              : CompanyStatistics.empty,
+      commonHubs:
+          map['commonHubs'] != null
+              ? List<CompanyHub>.from(
+                map['commonHubs'].map((el) => CompanyHub.fromMap(el)),
+              ).toList()
+              : const [],
     );
   }
 
@@ -69,12 +72,12 @@ class Company extends CompanyBase with EquatableMixin {
 
   @override
   List<Object> get props => [
-        alias,
-        imageUrl,
-        titleHtml,
-        descriptionHtml,
-        relatedData,
-        statistics,
-        commonHubs,
-      ];
+    alias,
+    imageUrl,
+    titleHtml,
+    descriptionHtml,
+    relatedData,
+    statistics,
+    commonHubs,
+  ];
 }

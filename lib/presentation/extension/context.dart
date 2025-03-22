@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-extension ContextExtension on BuildContext {
+extension ContextX on BuildContext {
   ThemeData get theme => Theme.of(this);
 
   void showSnack({

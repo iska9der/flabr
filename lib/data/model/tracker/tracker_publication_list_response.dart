@@ -1,4 +1,11 @@
-part of 'tracker.dart';
+import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+import '../list_response_model.dart';
+import 'tracker_publication_model.dart';
+import 'tracker_unread_counters_model.dart';
+
+part 'tracker_publication_list_response.freezed.dart';
 
 @freezed
 class TrackerPublicationsResponse with _$TrackerPublicationsResponse {

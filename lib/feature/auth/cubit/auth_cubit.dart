@@ -2,8 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../data/model/tokens_model.dart';
-import '../../../data/model/user/user_updates_model.dart';
-import '../../../data/model/user_me_model.dart';
+import '../../../data/model/user/user.dart';
 import '../../../data/repository/repository.dart';
 
 part 'auth_state.dart';

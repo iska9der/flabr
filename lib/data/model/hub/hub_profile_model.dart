@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 
 import '../hub_base.dart';
 import '../publication/publication_flow_enum.dart';
-import '../related_data/hub_related_data_model.dart';
+import 'hub_related_data_model.dart';
 import 'hub_statistics_model.dart';
 
 class HubProfile extends HubBase with EquatableMixin {
@@ -61,15 +61,18 @@ class HubProfile extends HubBase with EquatableMixin {
       descriptionHtml: map['descriptionHtml'] as String,
       fullDescriptionHtml: map['fullDescriptionHtml'] as String,
       imageUrl: map['imageUrl'] as String,
-      relatedData: map['relatedData'] != null
-          ? HubRelatedData.fromMap(map['relatedData'])
-          : HubRelatedData.empty,
-      statistics: map['statistics'] != null
-          ? HubStatistics.fromMap(map['statistics'])
-          : HubStatistics.empty,
-      keywords: map['keywords'] != null
-          ? List<String>.from(map['keywords'])
-          : const [],
+      relatedData:
+          map['relatedData'] != null
+              ? HubRelatedData.fromMap(map['relatedData'])
+              : HubRelatedData.empty,
+      statistics:
+          map['statistics'] != null
+              ? HubStatistics.fromMap(map['statistics'])
+              : HubStatistics.empty,
+      keywords:
+          map['keywords'] != null
+              ? List<String>.from(map['keywords'])
+              : const [],
       isProfiled: map['isProfiled'] as bool,
     );
   }
@@ -82,17 +85,17 @@ class HubProfile extends HubBase with EquatableMixin {
 
   @override
   List<Object> get props => [
-        alias,
-        flow,
-        titleHtml,
-        descriptionHtml,
-        fullDescriptionHtml,
-        imageUrl,
-        relatedData,
-        statistics,
-        keywords,
-        isProfiled,
-        isOfftop,
-        commonTags,
-      ];
+    alias,
+    flow,
+    titleHtml,
+    descriptionHtml,
+    fullDescriptionHtml,
+    imageUrl,
+    relatedData,
+    statistics,
+    keywords,
+    isProfiled,
+    isOfftop,
+    commonTags,
+  ];
 }

@@ -1,6 +1,6 @@
-import 'params_model.dart';
+import '../query_params_model.dart';
 
-class PublicationListParams extends Params {
+class PublicationListParams extends QueryParams {
   const PublicationListParams({
     super.langArticles = 'ru',
     super.langUI = 'ru',
@@ -42,12 +42,5 @@ class PublicationListParams extends Params {
   }
 
   @override
-  List<Object?> get props => [
-        ...super.props,
-        news,
-        flow,
-        sort,
-        period,
-        score,
-      ];
+  List<Object?> get props => [...super.props, news, flow, sort, period, score];
 }

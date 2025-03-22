@@ -34,7 +34,7 @@ class HubServiceImpl implements HubService {
     required String langArticles,
   }) async {
     try {
-      var params = Params(
+      var params = QueryParams(
         page: page.toString(),
         langUI: langUI,
         langArticles: langArticles,
@@ -57,7 +57,7 @@ class HubServiceImpl implements HubService {
     required String langArticles,
   }) async {
     try {
-      var params = Params(langUI: langUI, langArticles: langArticles);
+      var params = QueryParams(langUI: langUI, langArticles: langArticles);
       final queryString = params.toQueryString();
       final response = await _mobileClient.get(
         '/hubs/$alias/profile?$queryString',

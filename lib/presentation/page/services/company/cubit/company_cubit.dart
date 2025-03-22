@@ -2,8 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../data/exception/exception.dart';
-import '../../../../../data/model/company/card/company_card_model.dart';
-import '../../../../../data/model/company/company_model.dart';
+import '../../../../../data/model/company/company.dart';
 import '../../../../../data/model/language/language.dart';
 import '../../../../../data/repository/repository.dart';
 

@@ -1,4 +1,4 @@
-part of 'filter.dart';
+import 'filter_option_model.dart';
 
 abstract class FilterList {
   static const scoreDefault = FilterOption(label: 'Все', value: '');

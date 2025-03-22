@@ -1,7 +1,7 @@
-import 'params_model.dart';
+import '../query_params_model.dart';
 
-class TrackerPublicationParams extends Params {
-  const TrackerPublicationParams({
+class TrackerPublicationListParams extends QueryParams {
+  const TrackerPublicationListParams({
     super.langArticles = 'ru',
     super.langUI = 'ru',
     super.page = '1',
@@ -20,8 +20,5 @@ class TrackerPublicationParams extends Params {
   }
 
   @override
-  List<Object?> get props => [
-        ...super.props,
-        perPage,
-      ];
+  List<Object?> get props => [...super.props, perPage];
 }

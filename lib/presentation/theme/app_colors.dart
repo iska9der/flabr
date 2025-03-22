@@ -12,7 +12,7 @@ abstract class AppColorsLight {
 
   static const Color progressTrackColor = Color.fromARGB(76, 18, 141, 241);
 
-  static final AppColorsExtension extension = AppColorsExtension(
+  static final extension = AppColorsExtension(
     surface: surface,
     primary: primary,
     secondary: secondary,
@@ -36,7 +36,7 @@ abstract class AppColorsDark {
 
   static const Color progressTrackColor = Color.fromARGB(51, 33, 150, 243);
 
-  static final AppColorsExtension extension = AppColorsExtension(
+  static final extension = AppColorsExtension(
     surface: surface,
     primary: primary,
     secondary: secondary,

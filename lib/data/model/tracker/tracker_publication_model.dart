@@ -1,4 +1,9 @@
-part of 'tracker.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+import '../publication/publication.dart';
+
+part 'tracker_publication_model.freezed.dart';
+part 'tracker_publication_model.g.dart';
 
 @freezed
 class TrackerPublication with _$TrackerPublication {
