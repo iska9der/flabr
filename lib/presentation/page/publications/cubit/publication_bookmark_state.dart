@@ -7,14 +7,16 @@ class PublicationBookmarkState extends Equatable {
   const PublicationBookmarkState({
     this.status = BookmarkStatus.success,
     this.error = '',
-    required this.articleId,
+    required this.id,
+    required this.source,
     this.isBookmarked = false,
     this.count = 0,
   });
 
   final BookmarkStatus status;
   final String error;
-  final String articleId;
+  final String id;
+  final PublicationSource source;
   final bool isBookmarked;
   final int count;
 
@@ -27,18 +29,13 @@ class PublicationBookmarkState extends Equatable {
     return PublicationBookmarkState(
       status: status ?? this.status,
       error: error ?? this.error,
-      articleId: articleId,
+      id: id,
+      source: source,
       isBookmarked: isBookmarked ?? this.isBookmarked,
       count: count ?? this.count,
     );
   }
 
   @override
-  List<Object> get props => [
-        status,
-        error,
-        articleId,
-        isBookmarked,
-        count,
-      ];
+  List<Object> get props => [status, error, id, source, isBookmarked, count];
 }

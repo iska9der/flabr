@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../data/exception/exception.dart';
+import '../../../../data/model/publication/publication.dart';
 import '../../../../data/repository/repository.dart';
 
 part 'publication_bookmark_state.dart';
@@ -9,13 +10,15 @@ part 'publication_bookmark_state.dart';
 class PublicationBookmarkCubit extends Cubit<PublicationBookmarkState> {
   PublicationBookmarkCubit({
     required PublicationRepository repository,
-    required String articleId,
+    required String publicationId,
+    required PublicationSource source,
     bool isBookmarked = false,
     int count = 0,
   }) : _repository = repository,
        super(
          PublicationBookmarkState(
-           articleId: articleId,
+           id: publicationId,
+           source: source,
            isBookmarked: isBookmarked,
            count: count,
          ),
@@ -44,7 +47,7 @@ class PublicationBookmarkCubit extends Cubit<PublicationBookmarkState> {
   }
 
   Future<void> _addToBookmars() async {
-    await _repository.addToBookmark(state.articleId);
+    await _repository.addToBookmark(id: state.id, source: state.source);
 
     emit(
       state.copyWith(
@@ -56,7 +59,7 @@ class PublicationBookmarkCubit extends Cubit<PublicationBookmarkState> {
   }
 
   Future<void> _removeFromBookmars() async {
-    await _repository.removeFromBookmark(state.articleId);
+    await _repository.removeFromBookmark(id: state.id, source: state.source);
 
     emit(
       state.copyWith(

@@ -78,9 +78,15 @@ abstract interface class PublicationService {
     required String langArticles,
   });
 
-  Future<bool> addToBookmark(String articleId);
+  Future<bool> addToBookmark({
+    required String id,
+    required PublicationSource source,
+  });
 
-  Future<bool> removeFromBookmark(String articleId);
+  Future<bool> removeFromBookmark({
+    required String id,
+    required PublicationSource source,
+  });
 
   Future<MostReadingResponse> fetchMostReading({
     required String langUI,
@@ -387,10 +393,25 @@ class PublicationServiceImpl implements PublicationService {
   }
 
   @override
-  Future<bool> addToBookmark(String articleId) async {
+  Future<bool> addToBookmark({
+    required String id,
+    required PublicationSource source,
+  }) async {
     try {
+      final sourcePath = switch (source) {
+        PublicationSource.post => 'threads',
+        PublicationSource.news => 'news',
+        _ => 'articles',
+      };
+
+      /// для постов в конце пути добавляется слово "add"
+      final append = switch (source) {
+        PublicationSource.post => 'add/',
+        _ => '',
+      };
+
       final response = await _siteClient.post(
-        '/v2/articles/$articleId/bookmarks/',
+        '/v2/$sourcePath/$id/bookmarks/$append',
         body: {},
       );
 
@@ -406,43 +427,31 @@ class PublicationServiceImpl implements PublicationService {
     }
   }
 
-  /// TODO: не работает добавление в закладки новостей и постов
-  // Future<bool> addToBookmark(String articleId, PublicationSource source) async {
-  //   try {
-  //     final firstPathPart = switch (source) {
-  //       PublicationSource.post => 'threads',
-  //       PublicationSource.news => 'news',
-  //       _ => 'articles',
-  //     };
-
-  //     final appendix = switch (source) {
-  //       PublicationSource.post => 'add/',
-  //       _ => '',
-  //     };
-
-  //     final response = await _siteClient.post(
-  //       '/v2/$firstPathPart/$articleId/bookmarks/$appendix',
-  //       body: {},
-  //     );
-
-  //     if (response.data['ok'] != true) {
-  //       throw ValueException('Не удалось!');
-  //     }
-
-  //     return true;
-  //   } on AppException {
-  //     rethrow;
-  //   } catch (e, trace) {
-  //     Error.throwWithStackTrace(FetchException(), trace);
-  //   }
-  // }
-
   @override
-  Future<bool> removeFromBookmark(String articleId) async {
+  Future<bool> removeFromBookmark({
+    required String id,
+    required PublicationSource source,
+  }) async {
     try {
-      final response = await _siteClient.delete(
-        '/v2/articles/$articleId/bookmarks/',
-      );
+      final sourcePath = switch (source) {
+        PublicationSource.post => 'threads',
+        PublicationSource.news => 'news',
+        _ => 'articles',
+      };
+
+      /// для постов в конце пути добавляется слово "remove"
+      final append = switch (source) {
+        PublicationSource.post => 'remove/',
+        _ => '',
+      };
+
+      final path = '/v2/$sourcePath/$id/bookmarks/$append';
+
+      /// для новостей и статей используется DELETE, а для постов используется POST
+      final response = await switch (source) {
+        PublicationSource.post => _siteClient.post(path),
+        _ => _siteClient.delete(path),
+      };
 
       if (response.data['ok'] != true) {
         throw ValueException('Не удалось!');
