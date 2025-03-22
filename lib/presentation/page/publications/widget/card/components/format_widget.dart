@@ -1,10 +1,10 @@
-part of '../card.dart';
+import 'package:flutter/material.dart';
+
+import '../../../../../../data/model/publication/publication.dart';
+import '../../../../../theme/theme.dart';
 
 class PublicationFormatWidget extends StatelessWidget {
-  const PublicationFormatWidget(
-    this.format, {
-    super.key,
-  });
+  const PublicationFormatWidget(this.format, {super.key});
 
   final PublicationFormat format;
 
@@ -23,10 +23,7 @@ class PublicationFormatWidget extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
           child: Text(
             format.label,
-            style: TextStyle(
-              fontWeight: FontWeight.w500,
-              color: actualColor,
-            ),
+            style: TextStyle(fontWeight: FontWeight.w500, color: actualColor),
           ),
         ),
       ),

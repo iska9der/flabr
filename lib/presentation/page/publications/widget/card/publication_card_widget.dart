@@ -1,4 +1,8 @@
-part of 'card.dart';
+import 'package:flutter/material.dart';
+
+import '../../../../../data/model/publication/publication.dart';
+import 'common_card_widget.dart';
+import 'post_card_widget.dart';
 
 class PublicationCardWidget extends StatelessWidget {
   const PublicationCardWidget(
@@ -14,13 +18,13 @@ class PublicationCardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return switch (publication.type) {
       PublicationType.post => PostCardWidget(
-          post: publication as PublicationPost,
-          showType: showType,
-        ),
+        post: publication as PublicationPost,
+        showType: showType,
+      ),
       PublicationType.news || PublicationType.article => CommonCardWidget(
-          publication: publication as PublicationCommon,
-          showType: showType,
-        ),
+        publication: publication as PublicationCommon,
+        showType: showType,
+      ),
 
       /// Неопознанный отлетает в мусорку
       _ => const SizedBox(),

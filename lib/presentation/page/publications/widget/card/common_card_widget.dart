@@ -1,4 +1,21 @@
-part of 'card.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
+
+import '../../../../../core/component/di/di.dart';
+import '../../../../../core/component/router/app_router.dart';
+import '../../../../../data/model/publication/publication.dart';
+import '../../../../../data/model/render_type_enum.dart';
+import '../../../../../feature/image_action/image_action.dart';
+import '../../../../theme/theme.dart';
+import '../../../../widget/enhancement/enhancement.dart';
+import '../../../settings/cubit/settings_cubit.dart';
+import '../stats/publication_stats_widget.dart';
+import 'components/footer_widget.dart';
+import 'components/format_widget.dart';
+import 'components/header_widget.dart';
+import 'components/hubs_widget.dart';
+import 'components/publication_type_widget.dart';
 
 class CommonCardWidget extends StatelessWidget {
   const CommonCardWidget({
@@ -15,12 +32,13 @@ class CommonCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FlabrCard(
-      onTap: () => getIt<AppRouter>().push(
-        PublicationFlowRoute(
-          type: publication.type.name,
-          id: publication.id,
-        ),
-      ),
+      onTap:
+          () => getIt<AppRouter>().push(
+            PublicationFlowRoute(
+              type: publication.type.name,
+              id: publication.id,
+            ),
+          ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
@@ -50,8 +68,8 @@ class CommonCardWidget extends StatelessWidget {
             children: [
               if (publication.leadData.image.isNotEmpty)
                 BlocBuilder<SettingsCubit, SettingsState>(
-                  buildWhen: (p, c) =>
-                      p.feed.isImageVisible != c.feed.isImageVisible,
+                  buildWhen:
+                      (p, c) => p.feed.isImageVisible != c.feed.isImageVisible,
                   builder: (context, state) {
                     if (!state.feed.isImageVisible) {
                       return const SizedBox();
@@ -68,10 +86,12 @@ class CommonCardWidget extends StatelessWidget {
                   },
                 ),
               BlocBuilder<SettingsCubit, SettingsState>(
-                buildWhen: (previous, current) =>
-                    previous.feed.isDescriptionVisible !=
-                        current.feed.isDescriptionVisible ||
-                    previous.feed.isImageVisible != current.feed.isImageVisible,
+                buildWhen:
+                    (previous, current) =>
+                        previous.feed.isDescriptionVisible !=
+                            current.feed.isDescriptionVisible ||
+                        previous.feed.isImageVisible !=
+                            current.feed.isImageVisible,
                 builder: (context, state) {
                   if (!state.feed.isDescriptionVisible) {
                     return const SizedBox();
@@ -81,9 +101,7 @@ class CommonCardWidget extends StatelessWidget {
                     padding: const EdgeInsets.all(8),
                     child: HtmlWidget(
                       publication.leadData.textHtml,
-                      rebuildTriggers: [
-                        state.feed,
-                      ],
+                      rebuildTriggers: [state.feed],
                       customWidgetBuilder: (element) {
                         if (element.localName == 'br') {
                           return SizedBox();
@@ -94,7 +112,8 @@ class CommonCardWidget extends StatelessWidget {
                             return const SizedBox();
                           }
 
-                          String imgSrc = element.attributes['data-src'] ??
+                          String imgSrc =
+                              element.attributes['data-src'] ??
                               element.attributes['src'] ??
                               '';
 
@@ -130,10 +149,7 @@ class CommonCardWidget extends StatelessWidget {
 }
 
 class _ArticleTitleWidget extends StatelessWidget {
-  const _ArticleTitleWidget({
-    required this.title,
-    required this.renderType,
-  });
+  const _ArticleTitleWidget({required this.title, required this.renderType});
 
   final String title;
   final RenderType renderType;
@@ -145,16 +161,16 @@ class _ArticleTitleWidget extends StatelessWidget {
     return switch (renderType) {
       RenderType.plain => Text(title, style: textTheme.titleLarge),
       RenderType.html => HtmlWidget(
-          title,
+        title,
 
-          /// Не знаю почему сделал применение стилей таким образом,
-          /// а не как выше. Как-нибудь проверить
-          textStyle: TextStyle(
-            fontFamily: textTheme.titleLarge?.fontFamily,
-            color: textTheme.titleLarge?.color,
-            fontSize: textTheme.titleLarge?.fontSize,
-          ),
-        )
+        /// Не знаю почему сделал применение стилей таким образом,
+        /// а не как выше. Как-нибудь проверить
+        textStyle: TextStyle(
+          fontFamily: textTheme.titleLarge?.fontFamily,
+          color: textTheme.titleLarge?.color,
+          fontSize: textTheme.titleLarge?.fontSize,
+        ),
+      ),
     };
   }
 }

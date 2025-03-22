@@ -9,6 +9,7 @@ export 'image_utils_mixin.dart';
 class Utils with ImageUtilsMixin {
   const Utils();
 
+  /// TODO убрать в extension BuildContext
   void showSnack({
     required BuildContext context,
     required Widget content,
@@ -22,6 +23,7 @@ class Utils with ImageUtilsMixin {
     );
   }
 
+  /// TODO убрать в extension BuildContext
   Future showAlert({
     required BuildContext context,
     Text? title,

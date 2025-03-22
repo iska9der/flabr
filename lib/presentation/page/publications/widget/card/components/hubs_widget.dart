@@ -1,4 +1,11 @@
-part of '../card.dart';
+import 'package:auto_route/auto_route.dart';
+import 'package:flutter/material.dart';
+
+import '../../../../../../core/component/di/di.dart';
+import '../../../../../../core/component/router/app_router.dart';
+import '../../../../../../data/model/publication/publication.dart';
+import '../../../../../../data/model/related_data/hub_related_data_model.dart';
+import '../../../../../theme/theme.dart';
 
 class PublicationHubsWidget extends StatelessWidget {
   const PublicationHubsWidget({super.key, required this.hubs});
@@ -24,14 +31,12 @@ class _PublicationHub extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var style = Theme.of(context).textTheme.bodySmall?.copyWith(
-          fontWeight: FontWeight.w500,
-        );
+    var style = Theme.of(
+      context,
+    ).textTheme.bodySmall?.copyWith(fontWeight: FontWeight.w500);
 
     if ((hub.relatedData as HubRelatedData).isSubscribed) {
-      style = style?.copyWith(
-        color: Colors.green.shade300,
-      );
+      style = style?.copyWith(color: Colors.green.shade300);
     }
 
     var title = hub.title;
@@ -39,21 +44,19 @@ class _PublicationHub extends StatelessWidget {
       title += '*';
     }
 
-    final route = switch (hub.type.isCorporative) {
-      true => CompanyDashboardRoute(alias: hub.alias),
-      false => HubDashboardRoute(alias: hub.alias),
-    } as PageRouteInfo;
+    final route =
+        switch (hub.type.isCorporative) {
+              true => CompanyDashboardRoute(alias: hub.alias),
+              false => HubDashboardRoute(alias: hub.alias),
+            }
+            as PageRouteInfo;
 
     return InkWell(
       onTap: () => getIt<AppRouter>().navigate(route),
       borderRadius: AppStyles.borderRadius,
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8.0),
-        child: Text(
-          title,
-          style: style,
-          softWrap: true,
-        ),
+        child: Text(title, style: style, softWrap: true),
       ),
     );
   }
