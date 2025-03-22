@@ -5,7 +5,6 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../../../data/model/loading_status_enum.dart';
 import '../../../../data/model/publication/publication.dart';
-import '../../../../data/model/related_data/publication_vote_model.dart';
 import '../../../../data/repository/repository.dart';
 
 part 'publication_vote_bloc.freezed.dart';

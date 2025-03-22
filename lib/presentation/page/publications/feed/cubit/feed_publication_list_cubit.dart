@@ -6,7 +6,6 @@ import '../../../../../core/component/storage/storage.dart';
 import '../../../../../core/constants/constants.dart';
 import '../../../../../data/exception/exception.dart';
 import '../../../../../data/model/filter/filter.dart';
-import '../../../../../data/model/list_response/list_response_model.dart';
 import '../../../../../data/model/publication/publication.dart';
 import '../../../../../feature/publication_list/publication_list.dart';
 
@@ -57,7 +56,7 @@ class FeedPublicationListCubit
     emit(state.copyWith(status: PublicationListStatus.loading));
 
     try {
-      ListResponse response = await repository.fetchFeed(
+      final response = await repository.fetchFeed(
         langUI: languageRepository.ui,
         langArticles: languageRepository.articles,
         page: state.page.toString(),

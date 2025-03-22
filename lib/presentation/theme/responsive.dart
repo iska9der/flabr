@@ -1,4 +1,6 @@
-part of 'theme.dart';
+import 'dart:io';
+
+import 'package:flutter/material.dart';
 
 class ScreenType {
   static const String mobile = 'MOBILE';

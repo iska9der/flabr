@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_fancy_tree_view/flutter_fancy_tree_view.dart';
 
-import '../../../../data/model/comment/comment_model.dart';
+import '../../../../data/model/comment/comment.dart';
 import '../../../../data/model/offset_history.dart';
 import '../../../extension/extension.dart';
 import '../../../theme/theme.dart';
-import '../../../widget/comment/comment_widget.dart';
+import '../../../widget/comment/comment.dart';
 import '../../../widget/enhancement/card.dart';
 import '../../../widget/enhancement/progress_indicator.dart';
 import '../../../widget/user_text_button.dart';
@@ -42,9 +42,7 @@ class CommentListView extends StatelessWidget {
 
             final comments = state.list.comments;
             if (comments.isEmpty) {
-              return const Center(
-                child: Text('Нет комментариев'),
-              );
+              return const Center(child: Text('Нет комментариев'));
             }
 
             return SelectionArea(child: CommentTreeWidget(comments));
@@ -149,13 +147,15 @@ class _CommentTreeWidgetState extends State<CommentTreeWidget> {
                 _parentKeys[entry.node.id] = key;
               }
 
-              final authorColor = entry.node.isPostAuthor
-                  ? Colors.yellowAccent.withValues(alpha: .12)
-                  : null;
+              final authorColor =
+                  entry.node.isPostAuthor
+                      ? Colors.yellowAccent.withValues(alpha: .12)
+                      : null;
 
-              double topPadding = entry.index == 0
-                  ? 0
-                  : entry.node.parentId.isNotEmpty
+              double topPadding =
+                  entry.index == 0
+                      ? 0
+                      : entry.node.parentId.isNotEmpty
                       ? 2
                       : 8;
 
@@ -184,8 +184,10 @@ class _CommentTreeWidgetState extends State<CommentTreeWidget> {
                             ExpandIcon(
                               key: GlobalObjectKey(entry.node),
                               isExpanded: entry.isExpanded,
-                              onPressed: (_) =>
-                                  treeController.toggleExpansion(entry.node),
+                              onPressed:
+                                  (_) => treeController.toggleExpansion(
+                                    entry.node,
+                                  ),
                             ),
                           ],
                         ),
@@ -224,32 +226,34 @@ class _CommentTreeWidgetState extends State<CommentTreeWidget> {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: StreamBuilder(
-                  stream: _history.stream,
-                  builder: (context, snapshot) {
-                    if (!snapshot.hasData) {
-                      return const SizedBox();
-                    }
+                stream: _history.stream,
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return const SizedBox();
+                  }
 
-                    final history = snapshot.data!;
+                  final history = snapshot.data!;
 
-                    return IgnorePointer(
-                      ignoring: history.isEmpty,
-                      child: AnimatedOpacity(
-                        opacity: history.isEmpty ? 0 : 1,
-                        duration: const Duration(milliseconds: 200),
-                        child: FloatingActionButton(
-                          heroTag: null,
-                          mini: true,
-                          onPressed: () => scrollController.animateTo(
-                            history.pop(),
-                            duration: scrollDuration,
-                            curve: scrollCurve,
-                          ),
-                          child: const Icon(Icons.history_rounded),
-                        ),
+                  return IgnorePointer(
+                    ignoring: history.isEmpty,
+                    child: AnimatedOpacity(
+                      opacity: history.isEmpty ? 0 : 1,
+                      duration: const Duration(milliseconds: 200),
+                      child: FloatingActionButton(
+                        heroTag: null,
+                        mini: true,
+                        onPressed:
+                            () => scrollController.animateTo(
+                              history.pop(),
+                              duration: scrollDuration,
+                              curve: scrollCurve,
+                            ),
+                        child: const Icon(Icons.history_rounded),
                       ),
-                    );
-                  }),
+                    ),
+                  );
+                },
+              ),
             ),
           ),
         ],

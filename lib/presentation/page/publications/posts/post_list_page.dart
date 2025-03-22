@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/component/di/di.dart';
-import '../../../../data/model/publication/publication_flow_enum.dart';
+import '../../../../data/model/publication/publication.dart';
 import '../../../../data/model/section_enum.dart';
 import '../../../../feature/publication_list/publication_list.dart';
 import '../../../../feature/scaffold/scaffold.dart';

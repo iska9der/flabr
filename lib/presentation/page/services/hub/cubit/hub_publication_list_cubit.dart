@@ -4,9 +4,7 @@ import 'package:equatable/equatable.dart';
 
 import '../../../../../data/exception/exception.dart';
 import '../../../../../data/model/filter/filter.dart';
-import '../../../../../data/model/list_response/list_response_model.dart';
 import '../../../../../data/model/publication/publication.dart';
-import '../../../../../data/model/publication/publication_type_enum.dart';
 import '../../../../../feature/publication_list/publication_list.dart';
 
 part 'hub_publication_list_state.dart';
@@ -29,7 +27,7 @@ class HubPublicationListCubit
     emit(state.copyWith(status: PublicationListStatus.loading));
 
     try {
-      ListResponse response = await repository.fetchHubArticles(
+      final response = await repository.fetchHubArticles(
         langUI: languageRepository.ui,
         langArticles: languageRepository.articles,
         hub: state.hub,

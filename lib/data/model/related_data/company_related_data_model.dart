@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import 'related_data_base.dart';
+import '../related_data_base.dart';
 
 class CompanyRelatedData extends RelatedDataBase with EquatableMixin {
   const CompanyRelatedData({this.isSubscribed = false});
@@ -11,9 +11,7 @@ class CompanyRelatedData extends RelatedDataBase with EquatableMixin {
   bool get isEmpty => this == empty;
 
   Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'isSubscribed': isSubscribed,
-    };
+    return <String, dynamic>{'isSubscribed': isSubscribed};
   }
 
   factory CompanyRelatedData.fromMap(Map<String, dynamic> map) {

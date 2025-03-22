@@ -2,9 +2,9 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../data/exception/exception.dart';
+import '../../../../data/model/comment/comment.dart';
 import '../../../../data/model/language/language.dart';
-import '../../../../data/model/list_response/comment_list_response.dart';
-import '../../../../data/model/publication/publication_source_enum.dart';
+import '../../../../data/model/publication/publication.dart';
 import '../../../../data/repository/repository.dart';
 import '../../../extension/extension.dart';
 

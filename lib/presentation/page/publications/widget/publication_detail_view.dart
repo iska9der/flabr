@@ -6,7 +6,6 @@ import 'package:share_plus/share_plus.dart';
 
 import '../../../../core/constants/constants.dart';
 import '../../../../data/model/publication/publication.dart';
-import '../../../../data/model/publication/publication_type_enum.dart';
 import '../../../extension/extension.dart';
 import '../../../theme/theme.dart';
 import '../../../widget/enhancement/progress_indicator.dart';
@@ -15,7 +14,7 @@ import '../../../widget/publication_settings_widget.dart';
 import '../cubit/publication_detail_cubit.dart';
 import 'card/card.dart';
 import 'publication_more_button.dart';
-import 'stats/part.dart';
+import 'stats/stats.dart';
 
 part 'publication_detail_appbar.dart';
 part 'publication_detail_title.dart';
@@ -203,10 +202,11 @@ class _PublicationDetailViewState extends State<PublicationDetailView> {
                     right: 0,
                     child: ValueListenableBuilder(
                       valueListenable: isStatsVisible,
-                      builder: (_, value, __) => _BottomBar(
-                        publication: publication,
-                        isVisible: value,
-                      ),
+                      builder:
+                          (_, value, __) => _BottomBar(
+                            publication: publication,
+                            isVisible: value,
+                          ),
                     ),
                   ),
                 ],
@@ -252,15 +252,16 @@ class _AppBar extends StatelessWidget {
                   icon: const Icon(Icons.tune_rounded),
                   iconSize: 18,
                   tooltip: 'Настроить',
-                  onPressed: () => showModalBottomSheet(
-                    context: context,
-                    builder: (context) {
-                      return const SizedBox(
-                        height: 240,
-                        child: PublicationSettingsWidget(),
-                      );
-                    },
-                  ),
+                  onPressed:
+                      () => showModalBottomSheet(
+                        context: context,
+                        builder: (context) {
+                          return const SizedBox(
+                            height: 240,
+                            child: PublicationSettingsWidget(),
+                          );
+                        },
+                      ),
                 ),
                 IconButton(
                   icon: const Icon(Icons.share),
@@ -333,14 +334,18 @@ class _BottomBar extends StatelessWidget {
                 child: IconButton(
                   icon: const Icon(Icons.more_horiz_rounded),
                   tooltip: 'Дополнительно',
-                  onPressed: () => showModalBottomSheet(
-                    context: context,
-                    builder: (_) => SizedBox(
-                      width: double.infinity,
-                      height: 120,
-                      child: PublicationMoreButton(publication: publication),
-                    ),
-                  ),
+                  onPressed:
+                      () => showModalBottomSheet(
+                        context: context,
+                        builder:
+                            (_) => SizedBox(
+                              width: double.infinity,
+                              height: 120,
+                              child: PublicationMoreButton(
+                                publication: publication,
+                              ),
+                            ),
+                      ),
                 ),
               ),
             ],

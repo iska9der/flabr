@@ -9,28 +9,13 @@ class TrackerPublicationsResponse with _$TrackerPublicationsResponse {
   }) = _TrackerPublicationsResponse;
 }
 
-class TrackerPublicationListResponse extends ListResponse with EquatableMixin {
+class TrackerPublicationListResponse extends ListResponse<TrackerPublication>
+    with EquatableMixin {
   const TrackerPublicationListResponse({
     super.pagesCount = 1,
     super.ids = const [],
-    List<TrackerPublication> super.refs = const [],
+    super.refs = const [],
   });
-
-  @override
-  List<TrackerPublication> get refs => super.refs as List<TrackerPublication>;
-
-  @override
-  TrackerPublicationListResponse copyWith({
-    int? pagesCount,
-    List<String>? ids,
-    List<dynamic>? refs,
-  }) {
-    return TrackerPublicationListResponse(
-      pagesCount: pagesCount ?? this.pagesCount,
-      ids: ids ?? this.ids,
-      refs: List<TrackerPublication>.from((refs ?? this.refs)),
-    );
-  }
 
   factory TrackerPublicationListResponse.fromMap(Map<String, dynamic> map) {
     var idsMap = map['publicationIds'];

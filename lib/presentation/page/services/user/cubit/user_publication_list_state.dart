@@ -20,6 +20,7 @@ class UserPublicationListState extends PublicationListState
   final Sort sort;
   final FilterOption period;
   final FilterOption score;
+
   UserPublicationListState copyWith({
     PublicationListStatus? status,
     String? error,
@@ -51,15 +52,15 @@ class UserPublicationListState extends PublicationListState
 
   @override
   List<Object> get props => [
-        status,
-        error,
-        user,
-        type,
-        sort,
-        period,
-        score,
-        page,
-        pagesCount,
-        publications,
-      ];
+    status,
+    error,
+    user,
+    type,
+    sort,
+    period,
+    score,
+    page,
+    pagesCount,
+    publications,
+  ];
 }

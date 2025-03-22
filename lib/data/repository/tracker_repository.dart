@@ -72,7 +72,7 @@ class TrackerRepositoryImpl implements TrackerRepository {
       category: category.name,
     );
 
-    final list = TrackerNotificationListResponse.fromJson(raw);
+    final list = TrackerNotificationListResponse.fromMap(raw);
     final unread = TrackerUnreadCounters.fromJson(raw['unreadCounters']);
     final response = TrackerNotificationsResponse(
       list: list,

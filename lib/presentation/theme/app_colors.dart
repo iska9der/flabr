@@ -1,4 +1,4 @@
-part of 'theme.dart';
+import 'package:flutter/material.dart';
 
 abstract class AppColorsLight {
   static const Color surface = Color.fromARGB(255, 240, 240, 240);

@@ -5,7 +5,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../../../data/exception/exception.dart';
 import '../../../../data/model/loading_status_enum.dart';
-import '../../../../data/model/publication/publication_counters_model.dart';
+import '../../../../data/model/publication/publication.dart';
 import '../../../../data/repository/repository.dart';
 
 part 'publication_counters_bloc.freezed.dart';

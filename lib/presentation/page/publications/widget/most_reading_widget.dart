@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/component/di/di.dart';
 import '../../../../core/component/router/app_router.dart';
+import '../../../../data/model/loading_status_enum.dart';
 import '../../../extension/extension.dart';
 import '../../../theme/theme.dart';
 import '../../../widget/enhancement/app_expansion_panel.dart';
@@ -11,7 +12,7 @@ import '../../../widget/enhancement/card.dart';
 import '../../../widget/enhancement/progress_indicator.dart';
 import '../cubit/most_reading_cubit.dart';
 import '../publication_detail_page.dart';
-import 'stats/part.dart';
+import 'stats/stats.dart';
 
 class MostReadingWidget extends StatelessWidget {
   const MostReadingWidget({super.key}) : isButton = false;
@@ -88,11 +89,17 @@ class _MostReadingListState extends State<_MostReadingList> {
   @override
   Widget build(BuildContext context) {
     final appRouter = getIt<AppRouter>();
-    context.read<MostReadingCubit>().fetch();
 
     return BlocBuilder<MostReadingCubit, MostReadingState>(
       builder: (context, state) {
-        if (state.status.isLoading || state.status.isFailure) {
+        if (state.status == LoadingStatus.initial) {
+          context.read<MostReadingCubit>().fetch();
+
+          return SizedBox();
+        }
+
+        if (state.status == LoadingStatus.loading ||
+            state.status == LoadingStatus.failure) {
           return const Padding(
             padding: EdgeInsets.symmetric(vertical: 24),
             child: CircleIndicator.medium(),
@@ -108,9 +115,9 @@ class _MostReadingListState extends State<_MostReadingList> {
               primary: false,
               shrinkWrap: true,
               separatorBuilder: (c, i) => const SizedBox(height: 18),
-              itemCount: state.articles.length,
+              itemCount: state.publications.length,
               itemBuilder: (itemContext, index) {
-                final model = state.articles[index];
+                final model = state.publications[index];
 
                 return FlabrCard(
                   margin: EdgeInsets.zero,

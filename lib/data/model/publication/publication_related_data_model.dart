@@ -1,7 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import '../related_data_base.dart';
 import 'publication_vote_model.dart';
-import 'related_data_base.dart';
 
 part 'publication_related_data_model.freezed.dart';
 part 'publication_related_data_model.g.dart';

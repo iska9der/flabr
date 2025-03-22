@@ -9,30 +9,15 @@ class TrackerNotificationsResponse with _$TrackerNotificationsResponse {
   }) = _TrackerNotificationsResponse;
 }
 
-class TrackerNotificationListResponse extends ListResponse with EquatableMixin {
+class TrackerNotificationListResponse extends ListResponse<TrackerNotification>
+    with EquatableMixin {
   const TrackerNotificationListResponse({
     super.pagesCount = 1,
     super.ids = const [],
-    List<TrackerNotification> super.refs = const [],
+    super.refs = const [],
   });
 
-  @override
-  List<TrackerNotification> get refs => super.refs as List<TrackerNotification>;
-
-  @override
-  TrackerNotificationListResponse copyWith({
-    int? pagesCount,
-    List<String>? ids,
-    List<dynamic>? refs,
-  }) {
-    return TrackerNotificationListResponse(
-      pagesCount: pagesCount ?? this.pagesCount,
-      ids: ids ?? this.ids,
-      refs: List<TrackerNotification>.from((refs ?? this.refs)),
-    );
-  }
-
-  factory TrackerNotificationListResponse.fromJson(Map<String, dynamic> map) {
+  factory TrackerNotificationListResponse.fromMap(Map<String, dynamic> map) {
     var idsMap = map['itemIds'];
     Map refsMap = map['itemRefs'];
 
@@ -47,7 +32,6 @@ class TrackerNotificationListResponse extends ListResponse with EquatableMixin {
   }
 
   static const empty = TrackerNotificationListResponse(pagesCount: 0);
-  get isEmpty => this == empty;
 
   @override
   List<Object> get props => [pagesCount, ids, refs];

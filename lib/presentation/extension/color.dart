@@ -1,4 +1,4 @@
-part of 'extension.dart';
+import 'package:flutter/material.dart';
 
 extension ColorX on Color {
   String toHex() =>

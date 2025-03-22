@@ -7,9 +7,7 @@ import '../../../../core/component/storage/storage.dart';
 import '../../../../core/constants/constants.dart';
 import '../../../../data/exception/exception.dart';
 import '../../../../data/model/filter/filter.dart';
-import '../../../../data/model/list_response/list_response_model.dart';
 import '../../../../data/model/publication/publication.dart';
-import '../../../../data/model/publication/publication_flow_enum.dart';
 import '../../../../data/model/section_enum.dart';
 import '../../../../feature/publication_list/publication_list.dart';
 
@@ -59,7 +57,7 @@ class FlowPublicationListCubit
     emit(state.copyWith(status: PublicationListStatus.loading));
 
     try {
-      ListResponse response = await repository.fetchFlowArticles(
+      final response = await repository.fetchFlowArticles(
         langUI: languageRepository.ui,
         langArticles: languageRepository.articles,
         section: state.section,

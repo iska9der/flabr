@@ -3,8 +3,6 @@ import 'dart:async';
 import 'package:equatable/equatable.dart';
 
 import '../../../../../data/exception/exception.dart';
-import '../../../../../data/model/comment/comment_model.dart';
-import '../../../../../data/model/list_response/list_response_model.dart';
 import '../../../../../data/model/publication/publication.dart';
 import '../../../../../data/model/user/user_bookmarks_type.dart';
 import '../../../../../feature/publication_list/publication_list.dart';
@@ -29,7 +27,7 @@ class UserBookmarkListCubit
     emit(state.copyWith(status: PublicationListStatus.loading));
 
     try {
-      ListResponse response = await repository.fetchUserBookmarks(
+      final response = await repository.fetchUserBookmarks(
         langUI: languageRepository.ui,
         langArticles: languageRepository.articles,
         user: state.user,

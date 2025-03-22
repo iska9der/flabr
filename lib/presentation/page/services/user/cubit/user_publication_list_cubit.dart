@@ -2,7 +2,6 @@ import 'package:equatable/equatable.dart';
 
 import '../../../../../data/exception/exception.dart';
 import '../../../../../data/model/filter/filter.dart';
-import '../../../../../data/model/list_response/list_response_model.dart';
 import '../../../../../data/model/publication/publication.dart';
 import '../../../../../data/model/user/user_publication_type.dart';
 import '../../../../../feature/publication_list/publication_list.dart';
@@ -27,7 +26,7 @@ class UserPublicationListCubit
     emit(state.copyWith(status: PublicationListStatus.loading));
 
     try {
-      ListResponse response = await repository.fetchUserPublications(
+      final response = await repository.fetchUserPublications(
         langUI: languageRepository.ui,
         langArticles: languageRepository.articles,
         user: state.user,

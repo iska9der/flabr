@@ -67,7 +67,7 @@ class PublicationRepository {
   }
 
   /// Сортируем статьи в полученном списке
-  void _sortListResponse(Sort sort, ListResponse response) {
+  void _sortListResponse(Sort sort, ListResponse<Publication> response) {
     if (sort == Sort.byBest) {
       response.refs.sort(
         (a, b) => b.statistics.score.compareTo(a.statistics.score),
@@ -77,7 +77,7 @@ class PublicationRepository {
     }
   }
 
-  Future<ListResponse> fetchFeed({
+  Future<FeedListResponse> fetchFeed({
     required Language langUI,
     required List<Language> langArticles,
     required String page,
@@ -96,13 +96,13 @@ class PublicationRepository {
     return response;
   }
 
-  /// Получение статей/новостей
+  /// Получение статей/новостей/постов
   ///
   /// Сортировка полученных статей происходит как на сайте:
   /// если сортировка по лучшим [Sort.byBest], то надо сортировать по рейтингу;
   /// если по новым [Sort.byNew], сортируем по дате публикации
   ///
-  Future<ListResponse> fetchFlowArticles({
+  Future<ListResponse<Publication>> fetchFlowArticles({
     required Language langUI,
     required List<Language> langArticles,
     required Section section,
@@ -126,7 +126,7 @@ class PublicationRepository {
     return response;
   }
 
-  Future<PublicationListResponse> fetchHubArticles({
+  Future<PublicationListResponseCommon> fetchHubArticles({
     required Language langUI,
     required List<Language> langArticles,
     required String hub,
@@ -148,7 +148,7 @@ class PublicationRepository {
     return response;
   }
 
-  Future<ListResponse> fetchUserPublications({
+  Future<ListResponse<Publication>> fetchUserPublications({
     required Language langUI,
     required List<Language> langArticles,
     required String user,
@@ -168,7 +168,7 @@ class PublicationRepository {
     return response;
   }
 
-  Future<ListResponse> fetchUserBookmarks({
+  Future<ListResponse<Publication>> fetchUserBookmarks({
     required Language langUI,
     required List<Language> langArticles,
     required String user,
@@ -223,7 +223,7 @@ class PublicationRepository {
     required Language langUI,
     required List<Language> langArticles,
   }) async {
-    final MostReadingResponse raw = await service.fetchMostReading(
+    final raw = await service.fetchMostReading(
       langUI: langUI.name,
       langArticles: LanguageEncoder.encodeLangs(langArticles),
     );

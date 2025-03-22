@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../data/model/publication/publication.dart';
+import '../../../data/model/publication/publication_model.dart';
 import '../../../data/repository/repository.dart';
 
 enum PublicationListStatus { initial, loading, success, failure }

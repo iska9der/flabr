@@ -9,12 +9,10 @@ class UserBookmarkListState extends PublicationListState with EquatableMixin {
     super.publications = const [],
     this.user = '',
     this.type = UserBookmarksType.articles,
-    this.comments = const [],
   });
 
   final String user;
   final UserBookmarksType type;
-  final List<Comment> comments;
 
   UserBookmarkListState copyWith({
     PublicationListStatus? status,
@@ -24,7 +22,6 @@ class UserBookmarkListState extends PublicationListState with EquatableMixin {
     int? page,
     int? pagesCount,
     List<Publication>? publications,
-    List<Comment>? comments,
   }) {
     return UserBookmarkListState(
       status: status ?? this.status,
@@ -34,7 +31,6 @@ class UserBookmarkListState extends PublicationListState with EquatableMixin {
       page: page ?? this.page,
       pagesCount: pagesCount ?? this.pagesCount,
       publications: publications ?? this.publications,
-      comments: comments ?? this.comments,
     );
   }
 
@@ -43,13 +39,12 @@ class UserBookmarkListState extends PublicationListState with EquatableMixin {
 
   @override
   List<Object> get props => [
-        status,
-        error,
-        user,
-        type,
-        page,
-        pagesCount,
-        publications,
-        comments,
-      ];
+    status,
+    error,
+    user,
+    type,
+    page,
+    pagesCount,
+    publications,
+  ];
 }

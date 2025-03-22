@@ -1,4 +1,4 @@
-import 'related_data/related_data_base.dart';
+import 'related_data_base.dart';
 
 abstract class HubBase {
   const HubBase({

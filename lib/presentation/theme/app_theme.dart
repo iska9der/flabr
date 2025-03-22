@@ -1,4 +1,7 @@
-part of 'theme.dart';
+import 'package:flutter/material.dart';
+
+import 'app_scheme.dart';
+import 'common.dart';
 
 abstract class AppTheme {
   static ThemeData get light => theme(

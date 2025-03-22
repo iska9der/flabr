@@ -1,4 +1,6 @@
-part of 'theme.dart';
+import 'package:flutter/material.dart';
+
+import 'constants.dart';
 
 const appCardTheme = CardThemeData(
   elevation: 1,

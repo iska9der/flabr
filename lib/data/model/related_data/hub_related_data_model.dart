@@ -2,12 +2,10 @@ import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
 
-import 'related_data_base.dart';
+import '../related_data_base.dart';
 
 class HubRelatedData extends RelatedDataBase with EquatableMixin {
-  const HubRelatedData({
-    this.isSubscribed = false,
-  });
+  const HubRelatedData({this.isSubscribed = false});
 
   final bool isSubscribed;
 
@@ -15,15 +13,11 @@ class HubRelatedData extends RelatedDataBase with EquatableMixin {
   bool get isEmpty => this == empty;
 
   Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'isSubscribed': isSubscribed,
-    };
+    return <String, dynamic>{'isSubscribed': isSubscribed};
   }
 
   factory HubRelatedData.fromMap(Map<String, dynamic> map) {
-    return HubRelatedData(
-      isSubscribed: (map['isSubscribed'] ?? false) as bool,
-    );
+    return HubRelatedData(isSubscribed: (map['isSubscribed'] ?? false) as bool);
   }
 
   String toJson() => json.encode(toMap());

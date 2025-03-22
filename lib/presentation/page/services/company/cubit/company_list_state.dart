@@ -12,7 +12,7 @@ class CompanyListState extends Equatable {
 
   final CompanyListStatus status;
   final String error;
-  final CompanyListResponse list;
+  final ListResponse<Company> list;
   final int page;
 
   bool get isFirstFetch => page == 1;
@@ -21,7 +21,7 @@ class CompanyListState extends Equatable {
   CompanyListState copyWith({
     CompanyListStatus? status,
     String? error,
-    CompanyListResponse? list,
+    ListResponse<Company>? list,
     int? page,
   }) {
     return CompanyListState(

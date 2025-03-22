@@ -1,27 +1,14 @@
 import 'package:equatable/equatable.dart';
 
+import '../list_response_model.dart';
 import '../user/user_model.dart';
-import 'list_response_model.dart';
 
-class UserListResponse extends ListResponse with EquatableMixin {
+class UserListResponse extends ListResponse<User> with EquatableMixin {
   const UserListResponse({
     super.pagesCount = 1,
     super.ids = const [],
     super.refs = const [],
   });
-
-  @override
-  UserListResponse copyWith({
-    int? pagesCount,
-    List<String>? ids,
-    List<dynamic>? refs,
-  }) {
-    return UserListResponse(
-      pagesCount: pagesCount ?? this.pagesCount,
-      ids: ids ?? this.ids,
-      refs: List<User>.from((refs ?? this.refs)),
-    );
-  }
 
   factory UserListResponse.fromMap(Map<String, dynamic> map) {
     return UserListResponse(
@@ -31,10 +18,10 @@ class UserListResponse extends ListResponse with EquatableMixin {
       //     (user) => UserModel.fromMap(user as Map<String, dynamic>),
       //   ),
       // ),
-      refs: Map.from((map['authorRefs'] ?? map['userRefs'] as Map))
-          .entries
-          .map((e) => User.fromMap({'alias': e.key, ...e.value}))
-          .toList(),
+      refs:
+          Map.from((map['authorRefs'] ?? map['userRefs'] as Map)).entries
+              .map((e) => User.fromMap({'alias': e.key, ...e.value}))
+              .toList(),
     );
   }
 

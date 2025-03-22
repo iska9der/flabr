@@ -4,7 +4,9 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../data/exception/exception.dart';
+import '../../../../../data/model/company/company_model.dart';
 import '../../../../../data/model/list_response/company_list_response.dart';
+import '../../../../../data/model/list_response_model.dart';
 import '../../../../../data/repository/repository.dart';
 
 part 'company_list_state.dart';

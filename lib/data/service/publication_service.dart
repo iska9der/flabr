@@ -15,7 +15,7 @@ abstract interface class PublicationService {
     required String langArticles,
   });
 
-  Future<ListResponse> fetchFeed({
+  Future<FeedListResponse> fetchFeed({
     required String langUI,
     required String langArticles,
     required String page,
@@ -23,7 +23,7 @@ abstract interface class PublicationService {
     required List<String> types,
   });
 
-  Future<ListResponse> fetchFlowArticles({
+  Future<ListResponse<Publication>> fetchFlowArticles({
     required String langUI,
     required String langArticles,
     required Section section,
@@ -34,7 +34,7 @@ abstract interface class PublicationService {
     required FilterOption score,
   });
 
-  Future<PublicationListResponse> fetchHubArticles({
+  Future<PublicationListResponseCommon> fetchHubArticles({
     required String langUI,
     required String langArticles,
     required String hub,
@@ -44,7 +44,7 @@ abstract interface class PublicationService {
     required String page,
   });
 
-  Future<ListResponse> fetchUserPublications({
+  Future<ListResponse<Publication>> fetchUserPublications({
     required String langUI,
     required String langArticles,
     required String user,
@@ -52,7 +52,7 @@ abstract interface class PublicationService {
     required UserPublicationType type,
   });
 
-  Future<ListResponse> fetchUserBookmarks({
+  Future<ListResponse<Publication>> fetchUserBookmarks({
     required String langUI,
     required String langArticles,
     required String user,
@@ -71,7 +71,10 @@ abstract interface class PublicationService {
 
   Future<bool> removeFromBookmark(String articleId);
 
-  fetchMostReading({required String langUI, required String langArticles});
+  Future<MostReadingResponse> fetchMostReading({
+    required String langUI,
+    required String langArticles,
+  });
 
   Future<PublicationVoteResponse> voteUp(String articleId);
 
@@ -139,7 +142,7 @@ class PublicationServiceImpl implements PublicationService {
   }
 
   @override
-  Future<ListResponse> fetchFeed({
+  Future<FeedListResponse> fetchFeed({
     required String langUI,
     required String langArticles,
     required String page,
@@ -169,7 +172,7 @@ class PublicationServiceImpl implements PublicationService {
   }
 
   @override
-  Future<ListResponse> fetchFlowArticles({
+  Future<ListResponse<Publication>> fetchFlowArticles({
     required String langUI,
     required String langArticles,
     required Section section,
@@ -213,10 +216,9 @@ class PublicationServiceImpl implements PublicationService {
       );
 
       return switch (section) {
-            Section.post => PostListResponse.fromMap(response.data),
-            _ => PublicationListResponse.fromMap(response.data),
-          }
-          as ListResponse;
+        Section.post => PublicationListResponsePost.fromMap(response.data),
+        _ => PublicationListResponseCommon.fromMap(response.data),
+      };
     } on AppException {
       rethrow;
     } catch (e, trace) {
@@ -225,7 +227,7 @@ class PublicationServiceImpl implements PublicationService {
   }
 
   @override
-  Future<PublicationListResponse> fetchHubArticles({
+  Future<PublicationListResponseCommon> fetchHubArticles({
     required String langUI,
     required String langArticles,
     required String hub,
@@ -249,7 +251,7 @@ class PublicationServiceImpl implements PublicationService {
         queryParams: params.toMap(),
       );
 
-      return PublicationListResponse.fromMap(response.data);
+      return PublicationListResponseCommon.fromMap(response.data);
     } on AppException {
       rethrow;
     } catch (e, trace) {
@@ -258,7 +260,7 @@ class PublicationServiceImpl implements PublicationService {
   }
 
   @override
-  Future<ListResponse> fetchUserPublications({
+  Future<ListResponse<Publication>> fetchUserPublications({
     required String langUI,
     required String langArticles,
     required String user,
@@ -284,12 +286,11 @@ class PublicationServiceImpl implements PublicationService {
       );
 
       return switch (type) {
-            UserPublicationType.posts => PostListResponse.fromMap(
-              response.data,
-            ),
-            _ => PublicationListResponse.fromMap(response.data),
-          }
-          as ListResponse;
+        UserPublicationType.posts => PublicationListResponsePost.fromMap(
+          response.data,
+        ),
+        _ => PublicationListResponseCommon.fromMap(response.data),
+      };
     } on AppException {
       rethrow;
     } catch (e, trace) {
@@ -298,7 +299,7 @@ class PublicationServiceImpl implements PublicationService {
   }
 
   @override
-  Future<ListResponse> fetchUserBookmarks({
+  Future<ListResponse<Publication>> fetchUserBookmarks({
     required String langUI,
     required String langArticles,
     required String user,
@@ -326,10 +327,11 @@ class PublicationServiceImpl implements PublicationService {
       );
 
       return switch (type) {
-            UserBookmarksType.posts => PostListResponse.fromMap(response.data),
-            _ => PublicationListResponse.fromMap(response.data),
-          }
-          as ListResponse;
+        UserBookmarksType.posts => PublicationListResponsePost.fromMap(
+          response.data,
+        ),
+        _ => PublicationListResponseCommon.fromMap(response.data),
+      };
     } on AppException {
       rethrow;
     } catch (e, trace) {
@@ -393,6 +395,37 @@ class PublicationServiceImpl implements PublicationService {
     }
   }
 
+  /// TODO: не работает добавление в закладки новостей и постов
+  // Future<bool> addToBookmark(String articleId, PublicationSource source) async {
+  //   try {
+  //     final firstPathPart = switch (source) {
+  //       PublicationSource.post => 'threads',
+  //       PublicationSource.news => 'news',
+  //       _ => 'articles',
+  //     };
+
+  //     final appendix = switch (source) {
+  //       PublicationSource.post => 'add/',
+  //       _ => '',
+  //     };
+
+  //     final response = await _siteClient.post(
+  //       '/v2/$firstPathPart/$articleId/bookmarks/$appendix',
+  //       body: {},
+  //     );
+
+  //     if (response.data['ok'] != true) {
+  //       throw ValueException('Не удалось!');
+  //     }
+
+  //     return true;
+  //   } on AppException {
+  //     rethrow;
+  //   } catch (e, trace) {
+  //     Error.throwWithStackTrace(FetchException(), trace);
+  //   }
+  // }
+
   @override
   Future<bool> removeFromBookmark(String articleId) async {
     try {
@@ -413,7 +446,7 @@ class PublicationServiceImpl implements PublicationService {
   }
 
   @override
-  fetchMostReading({
+  Future<MostReadingResponse> fetchMostReading({
     required String langUI,
     required String langArticles,
   }) async {

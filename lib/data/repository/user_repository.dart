@@ -6,7 +6,7 @@ class UserRepository {
 
   final UserService _service;
 
-  UserListResponse cached = UserListResponse.empty;
+  ListResponse<User> cached = UserListResponse.empty;
 
   Future<UserListResponse> fetchAll({
     required Language langUI,

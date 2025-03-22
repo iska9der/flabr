@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 
-import '../theme/theme.dart';
+import 'image_utils_mixin.dart';
 
-part 'image_utils_mixin.dart';
+export 'image_utils_mixin.dart';
 
 @Singleton()
 class Utils with ImageUtilsMixin {
@@ -19,11 +18,7 @@ class Utils with ImageUtilsMixin {
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
 
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: content,
-        action: action,
-        duration: duration,
-      ),
+      SnackBar(content: content, action: action, duration: duration),
     );
   }
 

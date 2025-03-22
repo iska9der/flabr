@@ -10,7 +10,7 @@ import '../../../extension/extension.dart';
 import '../../../widget/enhancement/card.dart';
 import '../../../widget/enhancement/progress_indicator.dart';
 import '../../../widget/user_text_button.dart';
-import '../widget/stats/part.dart';
+import '../widget/stats/stats.dart';
 import 'bloc/tracker_publications_bloc.dart';
 import 'bloc/tracker_publications_marker_bloc.dart';
 import 'widget/tracker_skeleton_widget.dart';

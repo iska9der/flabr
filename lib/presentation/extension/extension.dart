@@ -1,12 +1,6 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:intl/intl.dart';
-
-import '../theme/theme.dart';
-
-part 'color.dart';
-part 'context.dart';
-part 'enum_status.dart';
-part 'num.dart';
-part 'svg_picture.dart';
-part 'theme.dart';
+export 'color.dart';
+export 'context.dart';
+export 'enum_status.dart';
+export 'num.dart';
+export 'svg_picture.dart';
+export 'theme.dart';

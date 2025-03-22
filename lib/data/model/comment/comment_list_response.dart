@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
-import '../comment/comment_access_model.dart';
-import '../comment/comment_model.dart';
+import 'comment_access_model.dart';
+import 'comment_model.dart';
 
 class CommentListResponse extends Equatable {
   const CommentListResponse({
@@ -14,9 +14,8 @@ class CommentListResponse extends Equatable {
   final List<Comment> comments;
   final int lastCommentTimestamp;
 
-  DateTime get lastCommentAt => DateTime.fromMillisecondsSinceEpoch(
-        lastCommentTimestamp * 1000,
-      );
+  DateTime get lastCommentAt =>
+      DateTime.fromMillisecondsSinceEpoch(lastCommentTimestamp * 1000);
 
   CommentListResponse copyWith({
     CommentAccess? commentAccess,
@@ -32,14 +31,18 @@ class CommentListResponse extends Equatable {
 
   factory CommentListResponse.fromMap(Map<String, dynamic> map) {
     return CommentListResponse(
-      commentAccess: map['commentAccess'] != null
-          ? CommentAccess.fromMap(map['commentAccess'])
-          : CommentAccess.empty,
-      comments: map['comments'] != null
-          ? List<Comment>.from(Map.from(map['comments']).entries.map(
-                (x) => Comment.fromMap(x.value),
-              ))
-          : const [],
+      commentAccess:
+          map['commentAccess'] != null
+              ? CommentAccess.fromMap(map['commentAccess'])
+              : CommentAccess.empty,
+      comments:
+          map['comments'] != null
+              ? List<Comment>.from(
+                Map.from(
+                  map['comments'],
+                ).entries.map((x) => Comment.fromMap(x.value)),
+              )
+              : const [],
       lastCommentTimestamp: map['lastCommentTimestamp'] ?? 0,
     );
   }
@@ -76,19 +79,17 @@ class CommentListResponse extends Equatable {
   }
 }
 
-Comment _recursive(
-  List<Comment> comments,
-  Comment parent,
-) {
+Comment _recursive(List<Comment> comments, Comment parent) {
   /// если деток нет, возвращаем одинокого пахана домой
   if (!parent.childrenRaw.isNotEmpty) {
     return parent;
   }
 
   /// ищем детей
-  var childs = parent.childrenRaw
-      .map((id) => comments.firstWhere((element) => element.id == id))
-      .toList();
+  var childs =
+      parent.childrenRaw
+          .map((id) => comments.firstWhere((element) => element.id == id))
+          .toList();
 
   List<Comment> newChilds = [];
 

@@ -1,30 +1,14 @@
 import 'package:equatable/equatable.dart';
 
 import '../hub/hub_model.dart';
-import 'list_response_model.dart';
+import '../list_response_model.dart';
 
-class HubListResponse extends ListResponse with EquatableMixin {
+class HubListResponse extends ListResponse<Hub> with EquatableMixin {
   const HubListResponse({
     super.pagesCount = 1,
     super.ids = const [],
-    List<Hub> super.refs = const [],
+    super.refs = const [],
   });
-
-  @override
-  List<Hub> get refs => super.refs as List<Hub>;
-
-  @override
-  HubListResponse copyWith({
-    int? pagesCount,
-    List<String>? ids,
-    List<dynamic>? refs,
-  }) {
-    return HubListResponse(
-      pagesCount: pagesCount ?? this.pagesCount,
-      ids: ids ?? this.ids,
-      refs: List<Hub>.from((refs ?? this.refs)),
-    );
-  }
 
   factory HubListResponse.fromMap(Map<String, dynamic> map) {
     var idsMap = map['hubIds'];
@@ -38,7 +22,6 @@ class HubListResponse extends ListResponse with EquatableMixin {
   }
 
   static const empty = HubListResponse(pagesCount: 0);
-  get isEmpty => this == empty;
 
   @override
   List<Object?> get props => [pagesCount, ids, refs];

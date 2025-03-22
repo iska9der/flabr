@@ -3,9 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../data/exception/exception.dart';
 import '../../../../data/model/language/language.dart';
+import '../../../../data/model/loading_status_enum.dart';
 import '../../../../data/model/publication/publication.dart';
 import '../../../../data/repository/repository.dart';
-import '../../../extension/extension.dart';
 
 part 'most_reading_state.dart';
 
@@ -17,29 +17,25 @@ class MostReadingCubit extends Cubit<MostReadingState> {
   final PublicationRepository _repository;
 
   void fetch() async {
-    if (state.status.isLoading || state.articles.isNotEmpty) {
+    if (state.status == LoadingStatus.loading ||
+        state.publications.isNotEmpty) {
       return;
     }
 
-    emit(state.copyWith(status: ArticleMostReadingStatus.loading));
+    emit(state.copyWith(status: LoadingStatus.loading));
 
     try {
-      final articles = await _repository.fetchMostReading(
+      final models = await _repository.fetchMostReading(
         langUI: state.langUI,
         langArticles: state.langArticles,
       );
 
-      emit(
-        state.copyWith(
-          status: ArticleMostReadingStatus.success,
-          articles: articles,
-        ),
-      );
+      emit(state.copyWith(status: LoadingStatus.success, publications: models));
     } catch (e) {
       emit(
         state.copyWith(
           error: e.parseException('Не удалось получить статьи'),
-          status: ArticleMostReadingStatus.failure,
+          status: LoadingStatus.failure,
         ),
       );
     }

@@ -6,11 +6,11 @@ import 'package:skeletonizer/skeletonizer.dart';
 
 import '../../../../../core/component/di/di.dart';
 import '../../../../../core/component/router/app_router.dart';
-import '../../../../../data/model/comment/comment_model.dart';
-import '../../../../../data/model/publication/publication_author_model.dart';
+import '../../../../../data/model/comment/comment.dart';
+import '../../../../../data/model/publication/publication.dart';
 import '../../../../../feature/scroll/scroll.dart';
 import '../../../../utils/utils.dart';
-import '../../../../widget/comment/comment_widget.dart';
+import '../../../../widget/comment/comment.dart';
 import '../../../../widget/enhancement/card.dart';
 import '../../../../widget/enhancement/progress_indicator.dart';
 import '../../../../widget/user_text_button.dart';

@@ -1,5 +1,3 @@
-part of 'extension.dart';
-
 extension StateStatusX on Enum {
   bool get isInitial => name == 'initial';
   bool get isLoading => name == 'loading';

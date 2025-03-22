@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../data/exception/exception.dart';
-import '../../../../../data/model/list_response/list_response_model.dart';
+import '../../../../../data/model/list_response_model.dart';
 import '../../../../../data/model/search/search_order_enum.dart';
 import '../../../../../data/model/search/search_target_enum.dart';
 import '../../../../../data/repository/repository.dart';
@@ -31,7 +31,7 @@ class SearchCubit extends Cubit<SearchState> {
     /// если запрос введен и пользователь нажимает на чип,
     /// то повторно выполняем запрос с новым таргетом
     if (state.query.isNotEmpty) {
-      emit(state.copyWith(listResponse: const ListResponse()));
+      emit(state.copyWith(listResponse: ListResponse.empty));
 
       await fetch();
     }
@@ -45,7 +45,7 @@ class SearchCubit extends Cubit<SearchState> {
     /// если запрос введен и пользователь нажимает на чип,
     /// то повторно выполняем запрос с новым таргетом
     if (state.query.isNotEmpty) {
-      emit(state.copyWith(listResponse: const ListResponse()));
+      emit(state.copyWith(listResponse: ListResponse.empty));
 
       await fetch();
     }
@@ -58,7 +58,7 @@ class SearchCubit extends Cubit<SearchState> {
       state.copyWith(
         query: newQuery,
         page: 1,
-        listResponse: const ListResponse(),
+        listResponse: ListResponse.empty,
       ),
     );
 
@@ -73,7 +73,7 @@ class SearchCubit extends Cubit<SearchState> {
     emit(state.copyWith(status: SearchStatus.loading));
 
     try {
-      ListResponse list = await _repository.fetch(
+      final list = await _repository.fetch(
         langUI: _langRepository.ui,
         langArticles: _langRepository.articles,
         query: state.query,
