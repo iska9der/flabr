@@ -222,12 +222,18 @@ class PublicationRepository {
     return listResponse.copyWith(comments: structurizedComments);
   }
 
-  Future<bool> addToBookmark(String articleId) async {
-    return await service.addToBookmark(articleId);
+  Future<bool> addToBookmark({
+    required String id,
+    required PublicationSource source,
+  }) async {
+    return await service.addToBookmark(id: id, source: source);
   }
 
-  Future<bool> removeFromBookmark(String articleId) async {
-    return await service.removeFromBookmark(articleId);
+  Future<bool> removeFromBookmark({
+    required String id,
+    required PublicationSource source,
+  }) async {
+    return await service.removeFromBookmark(id: id, source: source);
   }
 
   Future<List<PublicationCommon>> fetchMostReading({

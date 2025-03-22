@@ -82,7 +82,8 @@ class _BookmarkIconButton extends StatelessWidget {
       create:
           (_) => PublicationBookmarkCubit(
             repository: getIt(),
-            articleId: publication.id,
+            publicationId: publication.id,
+            source: PublicationSource.fromType(publication.type),
             isBookmarked: publication.relatedData.bookmarked,
             count: publication.statistics.favoritesCount,
           ),
