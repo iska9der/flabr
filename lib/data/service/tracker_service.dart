@@ -1,4 +1,8 @@
-part of 'service.dart';
+import 'package:injectable/injectable.dart';
+
+import '../../core/component/http/http.dart';
+import '../exception/exception.dart';
+import '../model/tracker/tracker.dart';
 
 abstract interface class TrackerService {
   /// Получить список отслеживаемых публикаций

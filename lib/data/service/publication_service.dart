@@ -1,4 +1,15 @@
-part of 'service.dart';
+import 'package:dio/dio.dart';
+import 'package:injectable/injectable.dart';
+
+import '../../core/component/http/http.dart';
+import '../exception/exception.dart';
+import '../model/comment/comment.dart';
+import '../model/filter/filter.dart';
+import '../model/list_response_model.dart';
+import '../model/publication/publication.dart';
+import '../model/query_params_model.dart';
+import '../model/section_enum.dart';
+import '../model/user/user.dart';
 
 abstract interface class PublicationService {
   Future<Map<String, dynamic>> fetchCounters();

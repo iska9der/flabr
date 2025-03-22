@@ -1,4 +1,7 @@
-part of 'service.dart';
+import 'package:injectable/injectable.dart';
+
+import '../../core/component/http/http.dart';
+import '../exception/exception.dart';
 
 abstract interface class AuthService {
   Future<Map<String, dynamic>?> fetchMe();

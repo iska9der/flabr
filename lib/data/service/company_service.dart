@@ -1,4 +1,9 @@
-part of 'service.dart';
+import 'package:injectable/injectable.dart';
+
+import '../../core/component/http/http.dart';
+import '../exception/exception.dart';
+import '../model/company/company.dart';
+import '../model/query_params_model.dart';
 
 abstract interface class CompanyService {
   Future<CompanyListResponse> fetchAll({

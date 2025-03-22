@@ -1,4 +1,8 @@
-part of 'service.dart';
+import 'package:injectable/injectable.dart';
+
+import '../../core/component/http/http.dart';
+import '../exception/exception.dart';
+import '../model/search/search.dart';
 
 abstract interface class SearchService {
   Future fetch({
