@@ -3,10 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
-import '../../../../../core/component/di/di.dart';
 import '../../../../extension/extension.dart';
 import '../../../../theme/theme.dart';
-import '../../../../utils/utils.dart';
 import '../../../../widget/detail/section_container_widget.dart';
 import '../../../../widget/enhancement/progress_indicator.dart';
 import '../cubit/user_cubit.dart';
@@ -101,8 +99,7 @@ class UserDetailPageView extends StatelessWidget {
                               model.workplace.map((e) {
                                 return TextButton(
                                   onPressed:
-                                      () => getIt<Utils>().showSnack(
-                                        context: context,
+                                      () => context.showSnack(
                                         content: const Text(
                                           'Здесь так тихо...',
                                         ),

@@ -7,8 +7,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../core/component/di/di.dart';
 import '../../../../../data/model/company/company_model.dart';
 import '../../../../../feature/scroll/scroll.dart';
+import '../../../../extension/extension.dart';
 import '../../../../theme/theme.dart';
-import '../../../../utils/utils.dart';
 import '../../../../widget/enhancement/progress_indicator.dart';
 import '../../../settings/cubit/settings_cubit.dart';
 import '../cubit/company_list_cubit.dart';
@@ -75,10 +75,7 @@ class CompanyListPageView extends StatelessWidget {
             listenWhen:
                 (p, c) => p.page != 1 && c.status == CompanyListStatus.failure,
             listener: (c, state) {
-              getIt<Utils>().showSnack(
-                context: context,
-                content: Text(state.error),
-              );
+              context.showSnack(content: Text(state.error));
             },
             builder: (context, state) {
               if (state.status == CompanyListStatus.initial) {

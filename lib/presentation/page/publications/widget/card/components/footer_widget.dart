@@ -9,7 +9,6 @@ import '../../../../../../core/constants/constants.dart';
 import '../../../../../../data/model/publication/publication.dart';
 import '../../../../../../feature/auth/auth.dart';
 import '../../../../../extension/extension.dart';
-import '../../../../../utils/utils.dart';
 import '../../../../../widget/enhancement/enhancement.dart';
 import '../../../cubit/publication_bookmark_cubit.dart';
 import '../../stats/publication_stat_icon_widget.dart';
@@ -90,10 +89,7 @@ class _BookmarkIconButton extends StatelessWidget {
       child: BlocConsumer<PublicationBookmarkCubit, PublicationBookmarkState>(
         listenWhen: (p, c) => c.status.isFailure,
         listener: (context, state) {
-          getIt<Utils>().showSnack(
-            context: context,
-            content: Text(state.error),
-          );
+          context.showSnack(content: Text(state.error));
         },
         buildWhen: (p, c) => p.status != c.status,
         builder: (context, state) {

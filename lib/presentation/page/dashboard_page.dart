@@ -4,11 +4,10 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
-import '../../core/component/di/di.dart';
 import '../../core/component/router/app_router.dart';
 import '../../feature/auth/auth.dart';
+import '../extension/extension.dart';
 import '../theme/theme.dart';
-import '../utils/utils.dart';
 import 'settings/cubit/settings_cubit.dart';
 
 @RoutePage()
@@ -58,8 +57,7 @@ class _DashboardPageState extends State<DashboardPage> {
         BlocListener<AuthCubit, AuthState>(
           listenWhen: (p, c) => p.isAuthorized && c.isAnomaly,
           listener: (context, state) {
-            getIt<Utils>().showAlert(
-              context: context,
+            context.showAlert(
               title: const Text('Ошибка авторизации'),
               content: const Text(
                 'Возникли проблемы с полученым токеном\n\n'

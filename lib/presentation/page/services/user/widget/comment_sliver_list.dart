@@ -9,7 +9,7 @@ import '../../../../../core/component/router/app_router.dart';
 import '../../../../../data/model/comment/comment.dart';
 import '../../../../../data/model/publication/publication.dart';
 import '../../../../../feature/scroll/scroll.dart';
-import '../../../../utils/utils.dart';
+import '../../../../extension/extension.dart';
 import '../../../../widget/comment/comment.dart';
 import '../../../../widget/enhancement/card.dart';
 import '../../../../widget/enhancement/progress_indicator.dart';
@@ -31,7 +31,7 @@ class CommentSliverList extends StatelessWidget {
       listenWhen:
           (p, c) => p.page != 1 && c.status == CommentListStatus.failure,
       listener: (c, state) {
-        getIt<Utils>().showSnack(context: context, content: Text(state.error));
+        context.showSnack(content: Text(state.error));
       },
       builder: (context, state) {
         /// Инициализация

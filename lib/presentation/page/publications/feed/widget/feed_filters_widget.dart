@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../../core/component/di/di.dart';
 import '../../../../../data/model/filter/filter.dart';
 import '../../../../../feature/auth/auth.dart';
 import '../../../../../feature/publication_list/publication_list.dart';
-import '../../../../utils/utils.dart';
+import '../../../../extension/extension.dart';
 import '../../../../widget/filter/filter_chip_list.dart';
 import '../../../../widget/filter/publication_filter_submit_button.dart';
 import '../cubit/feed_publication_list_cubit.dart';
@@ -33,8 +32,7 @@ class FeedFiltersWidget extends StatelessWidget {
                   return;
                 }
 
-                getIt.get<Utils>().showSnack(
-                  context: context,
+                context.showSnack(
                   content: const Text('Войдите, чтобы настроить фильтры'),
                   action: SnackBarAction(
                     label: 'Войти',

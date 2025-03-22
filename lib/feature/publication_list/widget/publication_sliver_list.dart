@@ -5,9 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
-import '../../../core/component/di/di.dart';
+import '../../../presentation/extension/extension.dart';
 import '../../../presentation/page/publications/widget/card/card.dart';
-import '../../../presentation/utils/utils.dart';
 import '../../../presentation/widget/enhancement/progress_indicator.dart';
 import '../../scroll/scroll.dart';
 import '../cubit/publication_list_cubit.dart';
@@ -29,11 +28,7 @@ class PublicationSliverList<
           (previous, current) =>
               previous.page != 1 &&
               current.status == PublicationListStatus.failure,
-      listener:
-          (_, state) => getIt<Utils>().showSnack(
-            context: context,
-            content: Text(state.error),
-          ),
+      listener: (_, state) => context.showSnack(content: Text(state.error)),
       builder: (context, state) {
         /// При инициализации запрашиваем публикации
         if (state.status == PublicationListStatus.initial) {

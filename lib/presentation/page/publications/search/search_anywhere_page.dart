@@ -11,7 +11,6 @@ import '../../../../data/model/search/search_order_enum.dart';
 import '../../../../data/model/search/search_target_enum.dart';
 import '../../../../feature/scroll/scroll.dart';
 import '../../../extension/extension.dart';
-import '../../../utils/utils.dart';
 import '../../../widget/enhancement/progress_indicator.dart';
 import '../../services/company/widget/company_card_widget.dart';
 import '../../services/hub/widget/hub_card_widget.dart';
@@ -94,10 +93,7 @@ class _SearchAnywhereViewState extends State<_SearchAnywhereView> {
         BlocListener<SearchCubit, SearchState>(
           listenWhen: (p, c) => p.page != 1 && c.status.isFailure,
           listener: (c, state) {
-            getIt<Utils>().showSnack(
-              context: context,
-              content: Text(state.error),
-            );
+            context.showSnack(content: Text(state.error));
           },
         ),
         BlocListener<ScrollCubit, ScrollState>(

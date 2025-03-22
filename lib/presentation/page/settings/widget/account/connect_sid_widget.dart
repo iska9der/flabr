@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/component/di/di.dart';
 import '../../../../../feature/auth/auth.dart';
-import '../../../../utils/utils.dart';
+import '../../../../extension/extension.dart';
 import '../settings_card_widget.dart';
 
 class ConnectSidWidget extends StatefulWidget {
@@ -86,8 +86,7 @@ class _ConnectSidWidgetState extends State<ConnectSidWidget> {
                               Clipboard.setData(
                                 ClipboardData(text: controller.text),
                               );
-                              getIt<Utils>().showSnack(
-                                context: context,
+                              context.showSnack(
                                 content: const Text(
                                   'Скопировано в буфер обмена',
                                 ),

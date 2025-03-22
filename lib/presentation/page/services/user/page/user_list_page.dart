@@ -6,8 +6,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/component/di/di.dart';
 import '../../../../../feature/scroll/scroll.dart';
+import '../../../../extension/extension.dart';
 import '../../../../theme/theme.dart';
-import '../../../../utils/utils.dart';
 import '../../../../widget/enhancement/progress_indicator.dart';
 import '../cubit/user_list_cubit.dart';
 import '../widget/user_card_widget.dart';
@@ -72,10 +72,7 @@ class UserListPageView extends StatelessWidget {
           listenWhen:
               (p, c) => p.page != 1 && c.status == UserListStatus.failure,
           listener:
-              (context, state) => getIt<Utils>().showSnack(
-                context: context,
-                content: Text(state.error),
-              ),
+              (context, state) => context.showSnack(content: Text(state.error)),
           builder: (context, state) {
             if (state.status == UserListStatus.initial) {
               usersCubit.fetchAll();

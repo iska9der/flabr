@@ -7,7 +7,6 @@ import '../../../../../../data/model/publication/publication.dart';
 import '../../../../../../data/model/stat_type_enum.dart';
 import '../../../../../../feature/auth/auth.dart';
 import '../../../../../extension/extension.dart';
-import '../../../../../utils/utils.dart';
 import '../../../bloc/publication_vote_bloc.dart';
 import '../../stats/publication_stat_icon_widget.dart';
 
@@ -112,10 +111,7 @@ class _VoteButtons extends StatelessWidget {
       child: BlocConsumer<PublicationVoteBloc, PublicationVoteState>(
         listener: (context, state) {
           if (state.status == LoadingStatus.failure && state.error != null) {
-            getIt<Utils>().showSnack(
-              context: context,
-              content: Text(state.error!),
-            );
+            context.showSnack(content: Text(state.error!));
           }
         },
         builder: (context, state) {

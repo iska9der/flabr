@@ -10,7 +10,6 @@ import '../../../core/component/di/di.dart';
 import '../../../core/component/logger/logger.dart';
 import '../../../core/constants/constants.dart';
 import '../../../presentation/extension/extension.dart';
-import '../../../presentation/utils/utils.dart';
 import '../../../presentation/widget/enhancement/card.dart';
 import '../cubit/auth_cubit.dart';
 import '../cubit/login_cubit.dart';
@@ -131,8 +130,7 @@ class _WebViewLoginState extends State<_WebViewLogin> {
         listenWhen: (_, current) => current.status.isFailure,
         listener: (context, state) {
           _clearControllerData();
-          getIt<Utils>().showSnack(
-            context: context,
+          context.showSnack(
             content: Text(state.error),
             duration: const Duration(seconds: 5),
           );

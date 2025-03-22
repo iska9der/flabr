@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/component/di/di.dart';
 import '../../../data/model/loading_status_enum.dart';
-import '../../../presentation/utils/utils.dart';
+import '../../../presentation/extension/extension.dart';
 import '../cubit/subscription_cubit.dart';
 
 class SubscribeButton extends StatelessWidget {
@@ -28,10 +28,7 @@ class SubscribeButton extends StatelessWidget {
       child: BlocListener<SubscriptionCubit, SubscriptionState>(
         listenWhen: (p, c) => p.status == LoadingStatus.failure,
         listener: (context, state) {
-          getIt<Utils>().showSnack(
-            context: context,
-            content: Text(state.error),
-          );
+          context.showSnack(content: Text(state.error));
         },
         child: BlocBuilder<SubscriptionCubit, SubscriptionState>(
           builder: (context, state) {

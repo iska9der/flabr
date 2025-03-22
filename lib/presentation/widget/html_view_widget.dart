@@ -13,7 +13,6 @@ import '../../feature/image_action/image_action.dart';
 import '../extension/extension.dart';
 import '../page/settings/cubit/settings_cubit.dart';
 import '../theme/theme.dart';
-import '../utils/utils.dart';
 import 'enhancement/progress_indicator.dart';
 
 class HtmlView extends StatelessWidget {
@@ -221,8 +220,7 @@ class CustomFactory extends WidgetFactory with SvgFactory, WebViewFactory {
                   return go();
                 }
 
-                getIt<Utils>().showAlert(
-                  context: context,
+                context.showAlert(
                   compact: true,
                   title: Text(
                     tree.element.text,
@@ -235,8 +233,7 @@ class CustomFactory extends WidgetFactory with SvgFactory, WebViewFactory {
                           onPressed: () {
                             Clipboard.setData(ClipboardData(text: href));
 
-                            getIt<Utils>().showSnack(
-                              context: context,
+                            context.showSnack(
                               content: const Text('Скопировано в буфер обмена'),
                             );
                           },
