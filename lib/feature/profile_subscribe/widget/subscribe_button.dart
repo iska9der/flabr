@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/component/di/di.dart';
-import '../../../presentation/extension/extension.dart';
+import '../../../data/model/loading_status_enum.dart';
 import '../../../presentation/utils/utils.dart';
 import '../cubit/subscription_cubit.dart';
 
@@ -26,7 +26,7 @@ class SubscribeButton extends StatelessWidget {
             isSubscribed: isSubscribed,
           ),
       child: BlocListener<SubscriptionCubit, SubscriptionState>(
-        listenWhen: (p, c) => p.status.isFailure,
+        listenWhen: (p, c) => p.status == LoadingStatus.failure,
         listener: (context, state) {
           getIt<Utils>().showSnack(
             context: context,
@@ -47,7 +47,7 @@ class SubscribeButton extends StatelessWidget {
             return OutlinedButton(
               style: style,
               onPressed:
-                  state.status.isLoading
+                  state.status == LoadingStatus.loading
                       ? null
                       : () =>
                           context

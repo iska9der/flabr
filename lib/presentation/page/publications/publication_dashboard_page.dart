@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../core/component/di/di.dart';
 import '../../../core/component/router/app_router.dart';
 import '../../../feature/auth/auth.dart';
+import '../../../feature/most_reading/most_reading.dart';
 import '../../extension/extension.dart';
 import '../../theme/theme.dart';
 import '../../widget/dashboard_drawer_link_widget.dart';
@@ -15,18 +16,30 @@ import '../settings/cubit/settings_cubit.dart';
 import 'bloc/publication_counters_bloc.dart';
 
 @RoutePage(name: PublicationDashboardPage.routeName)
-class PublicationDashboardPage extends StatefulWidget {
+class PublicationDashboardPage extends StatelessWidget {
   const PublicationDashboardPage({super.key});
 
   static const String routePath = '';
   static const String routeName = 'PublicationDashboardRoute';
 
   @override
-  State<PublicationDashboardPage> createState() =>
-      _PublicationDashboardPageState();
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (_) => MostReadingCubit(getIt()),
+      child: const PublicationDashboardView(),
+    );
+  }
 }
 
-class _PublicationDashboardPageState extends State<PublicationDashboardPage> {
+class PublicationDashboardView extends StatefulWidget {
+  const PublicationDashboardView({super.key});
+
+  @override
+  State<PublicationDashboardView> createState() =>
+      _PublicationDashboardViewState();
+}
+
+class _PublicationDashboardViewState extends State<PublicationDashboardView> {
   late final PublicationCountersBloc countersBloc;
   late final StreamSubscription authSub;
 

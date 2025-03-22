@@ -16,10 +16,7 @@ abstract class DialogUserWidget extends StatelessWidget {
 
 class DialogUserProfileWidget extends StatelessWidget
     implements DialogUserWidget {
-  const DialogUserProfileWidget({
-    super.key,
-    required this.user,
-  });
+  const DialogUserProfileWidget({super.key, required this.user});
 
   final UserBase user;
 
@@ -38,9 +35,7 @@ class DialogUserProfileWidget extends StatelessWidget
                 title: Text('@${user.alias}'),
                 subtitle: user.fullname.isNotEmpty ? Text(user.fullname) : null,
                 onTap: () {
-                  context.router.push(
-                    UserDashboardRoute(alias: user.alias),
-                  );
+                  context.router.push(UserDashboardRoute(alias: user.alias));
 
                   Navigator.of(context).pop();
                 },

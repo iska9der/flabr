@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
-import 'package:ya_summary/ya_summary.dart';
+
+import 'summary_repository.dart';
 
 class SummaryClient {
   SummaryClient(

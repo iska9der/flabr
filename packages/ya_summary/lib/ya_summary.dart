@@ -1,10 +1,12 @@
-export 'cubit/summary_auth_cubit.dart';
-export 'cubit/summary_cubit.dart';
-export 'data/summary_client.dart';
-export 'data/summary_exception.dart';
-export 'data/summary_model.dart';
-export 'data/summary_repository.dart';
-export 'data/summary_service.dart';
-export 'widget/summary_dialog.dart';
-export 'widget/summary_token_widget.dart';
-export 'widget/summary_widget.dart';
+library ya_summary;
+
+export 'src/cubit/summary_auth_cubit.dart';
+export 'src/cubit/summary_cubit.dart';
+export 'src/data/summary_client.dart';
+export 'src/data/summary_exception.dart';
+export 'src/data/summary_model.dart';
+export 'src/data/summary_repository.dart';
+export 'src/data/summary_service.dart';
+export 'src/widget/summary_dialog.dart';
+export 'src/widget/summary_token_widget.dart';
+export 'src/widget/summary_widget.dart';

@@ -1,5 +1,7 @@
 import 'package:dio/dio.dart';
-import 'package:ya_summary/ya_summary.dart';
+
+import 'summary_client.dart';
+import 'summary_exception.dart';
 
 abstract class SummaryService {
   Future<String> fetchSharingUrl(String articleUrl);

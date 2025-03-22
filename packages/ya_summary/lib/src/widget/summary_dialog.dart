@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ya_summary/ya_summary.dart';
+
+import '../cubit/summary_auth_cubit.dart';
+import '../cubit/summary_cubit.dart';
+import '../data/summary_repository.dart';
+import 'summary_token_widget.dart';
+import 'summary_widget.dart';
 
 Future showSummaryDialog(
   BuildContext context, {

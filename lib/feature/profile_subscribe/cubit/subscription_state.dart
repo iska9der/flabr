@@ -1,22 +1,20 @@
 part of 'subscription_cubit.dart';
 
-enum SubscriptionStatus { loading, success, failure }
-
 class SubscriptionState extends Equatable {
   const SubscriptionState({
-    this.status = SubscriptionStatus.success,
+    this.status = LoadingStatus.success,
     this.error = '',
     required this.alias,
     this.isSubscribed = false,
   });
 
-  final SubscriptionStatus status;
+  final LoadingStatus status;
   final String error;
   final String alias;
   final bool isSubscribed;
 
   SubscriptionState copyWith({
-    SubscriptionStatus? status,
+    LoadingStatus? status,
     String? error,
     String? alias,
     bool? isSubscribed,

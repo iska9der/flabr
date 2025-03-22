@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ya_summary/ya_summary.dart';
+
+import '../cubit/summary_cubit.dart';
 
 class SummaryWidget extends StatelessWidget {
   const SummaryWidget({super.key, this.loaderWidget});

@@ -3,20 +3,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
-import '../../../presentation/page/publications/widget/most_reading_widget.dart';
 import '../../../presentation/page/settings/cubit/settings_cubit.dart';
 import '../../../presentation/theme/theme.dart';
 import '../../../presentation/widget/enhancement/card.dart';
 import '../../../presentation/widget/enhancement/refresh_indicator.dart';
 import '../../../presentation/widget/enhancement/responsive_visibility.dart';
 import '../../auth/auth.dart';
+import '../../most_reading/most_reading.dart';
 import '../../scroll/scroll.dart';
 import '../cubit/publication_list_cubit.dart';
 import 'floating_filter_button.dart';
 import 'publication_sliver_list.dart';
 
-class PublicationListScaffold<ListCubit extends PublicationListCubit<ListState>,
-    ListState extends PublicationListState> extends StatelessWidget {
+class PublicationListScaffold<
+  ListCubit extends PublicationListCubit<ListState>,
+  ListState extends PublicationListState
+>
+    extends StatelessWidget {
   const PublicationListScaffold({
     super.key,
     this.filter,
@@ -42,8 +45,9 @@ class PublicationListScaffold<ListCubit extends PublicationListCubit<ListState>,
       listeners: [
         /// Если пользователь вошел, надо переполучить статьи
         BlocListener<AuthCubit, AuthState>(
-          listenWhen: (previous, current) =>
-              previous.status == AuthStatus.loading && current.isAuthorized,
+          listenWhen:
+              (previous, current) =>
+                  previous.status == AuthStatus.loading && current.isAuthorized,
           listener: (context, state) {
             pubCubit.refetch();
           },
@@ -51,8 +55,10 @@ class PublicationListScaffold<ListCubit extends PublicationListCubit<ListState>,
 
         /// Если пользователь вышел, переполучаем статьи напрямую
         BlocListener<AuthCubit, AuthState>(
-          listenWhen: (previous, current) =>
-              previous.status == AuthStatus.loading && current.isUnauthorized,
+          listenWhen:
+              (previous, current) =>
+                  previous.status == AuthStatus.loading &&
+                  current.isUnauthorized,
           listener: (context, state) {
             pubCubit.refetch();
           },
@@ -60,9 +66,10 @@ class PublicationListScaffold<ListCubit extends PublicationListCubit<ListState>,
 
         /// Смена языков
         BlocListener<SettingsCubit, SettingsState>(
-          listenWhen: (previous, current) =>
-              previous.langUI != current.langUI ||
-              previous.langArticles != current.langArticles,
+          listenWhen:
+              (previous, current) =>
+                  previous.langUI != current.langUI ||
+                  previous.langArticles != current.langArticles,
           listener: (_, __) => scrollCubit.animateToTop(),
         ),
 
@@ -99,7 +106,7 @@ class PublicationListScaffold<ListCubit extends PublicationListCubit<ListState>,
                       Condition.largerThan(
                         name: ScreenType.mobile,
                         value: false,
-                      )
+                      ),
                     ],
                     sliver: SliverToBoxAdapter(
                       child: Padding(
@@ -117,23 +124,24 @@ class PublicationListScaffold<ListCubit extends PublicationListCubit<ListState>,
                         Condition.largerThan(
                           name: ScreenType.mobile,
                           value: true,
-                        )
+                        ),
                       ],
                       replacementSliver: const SliverConstrainedCrossAxis(
                         maxExtent: 0,
                         sliver: SliverToBoxAdapter(),
                       ),
                       sliver: SliverConstrainedCrossAxis(
-                        maxExtent: ResponsiveValue<double>(
-                          context,
-                          defaultValue: 300,
-                          conditionalValues: [
-                            Condition.smallerThan(
-                              name: ScreenType.desktop,
-                              value: Device.getWidth(context) / 3,
-                            ),
-                          ],
-                        ).value,
+                        maxExtent:
+                            ResponsiveValue<double>(
+                              context,
+                              defaultValue: 300,
+                              conditionalValues: [
+                                Condition.smallerThan(
+                                  name: ScreenType.desktop,
+                                  value: Device.getWidth(context) / 3,
+                                ),
+                              ],
+                            ).value,
                         sliver: SliverAppBar(
                           backgroundColor: Colors.transparent,
                           clipBehavior: Clip.none,
@@ -156,7 +164,7 @@ class PublicationListScaffold<ListCubit extends PublicationListCubit<ListState>,
                       ),
                     ),
                   ],
-                )
+                ),
               ],
             ),
           ),
@@ -185,45 +193,48 @@ class _SideWidgetListState extends State<_SideWidgetList> {
 
     return Wrap(
       runSpacing: 12,
-      children: widget.widgets.mapIndexed((index, sideWidget) {
-        final isActiveWidget = showIndex == index;
+      children:
+          widget.widgets.mapIndexed((index, sideWidget) {
+            final isActiveWidget = showIndex == index;
 
-        return FlabrCard(
-          margin: EdgeInsets.zero,
-          padding: EdgeInsets.zero,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              ListTile(
-                enabled: isEnabled,
-                contentPadding: AppInsets.cardPadding.copyWith(
-                  top: 0,
-                  bottom: 0,
-                ),
-                title: Text(
-                  sideWidget.title,
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-                trailing: !isEnabled
-                    ? null
-                    : isActiveWidget
-                        ? const Icon(Icons.keyboard_arrow_up_rounded)
-                        : const Icon(Icons.keyboard_arrow_down_rounded),
-                onTap: () => setState(() {
-                  showIndex = index;
-                }),
+            return FlabrCard(
+              margin: EdgeInsets.zero,
+              padding: EdgeInsets.zero,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  ListTile(
+                    enabled: isEnabled,
+                    contentPadding: AppInsets.cardPadding.copyWith(
+                      top: 0,
+                      bottom: 0,
+                    ),
+                    title: Text(
+                      sideWidget.title,
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                    trailing:
+                        !isEnabled
+                            ? null
+                            : isActiveWidget
+                            ? const Icon(Icons.keyboard_arrow_up_rounded)
+                            : const Icon(Icons.keyboard_arrow_down_rounded),
+                    onTap:
+                        () => setState(() {
+                          showIndex = index;
+                        }),
+                  ),
+                  if (isActiveWidget) ...[
+                    const Divider(),
+                    ConstrainedBox(
+                      constraints: BoxConstraints(maxHeight: widgetHeight),
+                      child: sideWidget.child,
+                    ),
+                  ],
+                ],
               ),
-              if (isActiveWidget) ...[
-                const Divider(),
-                ConstrainedBox(
-                  constraints: BoxConstraints(maxHeight: widgetHeight),
-                  child: sideWidget.child,
-                )
-              ],
-            ],
-          ),
-        );
-      }).toList(),
+            );
+          }).toList(),
     );
   }
 }

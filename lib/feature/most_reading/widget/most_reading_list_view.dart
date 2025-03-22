@@ -1,89 +1,13 @@
-import 'package:auto_route/auto_route.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+part of 'most_reading_widget.dart';
 
-import '../../../../core/component/di/di.dart';
-import '../../../../core/component/router/app_router.dart';
-import '../../../../data/model/loading_status_enum.dart';
-import '../../../extension/extension.dart';
-import '../../../theme/theme.dart';
-import '../../../widget/enhancement/app_expansion_panel.dart';
-import '../../../widget/enhancement/card.dart';
-import '../../../widget/enhancement/progress_indicator.dart';
-import '../cubit/most_reading_cubit.dart';
-import '../publication_detail_page.dart';
-import 'stats/stats.dart';
-
-class MostReadingWidget extends StatelessWidget {
-  const MostReadingWidget({super.key}) : isButton = false;
-  const MostReadingWidget.button({super.key}) : isButton = true;
-
-  final bool isButton;
+class _ListView extends StatefulWidget {
+  const _ListView();
 
   @override
-  Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => MostReadingCubit(getIt()),
-      child: isButton ? const _MostReadingButton() : const _MostReadingList(),
-    );
-  }
+  State<_ListView> createState() => _ListViewState();
 }
 
-class _MostReadingButton extends StatefulWidget {
-  const _MostReadingButton();
-
-  @override
-  State<_MostReadingButton> createState() => _MostReadingButtonState();
-}
-
-class _MostReadingButtonState extends State<_MostReadingButton> {
-  bool isShow = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return FlabrCard(
-      margin: EdgeInsets.zero,
-      padding: EdgeInsets.zero,
-      child: AppExpansionPanelList(
-        elevation: 0,
-        expansionCallback: (panelIndex, isExpanded) {
-          setState(() {
-            isShow = !isExpanded;
-          });
-        },
-        children: [
-          AppExpansionPanel(
-            isExpanded: isShow,
-            canTapOnHeader: true,
-            backgroundColor: Colors.transparent,
-            headerBuilder: (context, isExpanded) {
-              return Align(
-                alignment: Alignment.centerLeft,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 12),
-                  child: Text(
-                    'Читают сейчас',
-                    style: Theme.of(context).textTheme.titleSmall,
-                  ),
-                ),
-              );
-            },
-            body: const _MostReadingList(),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _MostReadingList extends StatefulWidget {
-  const _MostReadingList();
-
-  @override
-  State<_MostReadingList> createState() => _MostReadingListState();
-}
-
-class _MostReadingListState extends State<_MostReadingList> {
+class _ListViewState extends State<_ListView> {
   final ScrollController controller = ScrollController();
 
   @override
