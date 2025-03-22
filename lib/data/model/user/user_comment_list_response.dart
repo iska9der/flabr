@@ -1,5 +1,5 @@
 import '../list_response_model.dart';
-import '../user/user_comment_model.dart';
+import 'user_comment_model.dart';
 
 class UserCommentListResponse extends ListResponse<UserComment> {
   UserCommentListResponse({super.pagesCount, super.ids, super.refs});

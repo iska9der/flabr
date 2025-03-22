@@ -1,4 +1,6 @@
-part of 'repository.dart';
+import 'dart:async';
+
+import '../service/service.dart';
 
 abstract interface class SubscriptionRepository {
   toggleSubscription({required String alias});

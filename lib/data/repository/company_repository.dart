@@ -1,4 +1,8 @@
-part of 'repository.dart';
+import 'package:injectable/injectable.dart';
+
+import '../model/company/company.dart';
+import '../model/language/language.dart';
+import '../service/service.dart';
 
 @LazySingleton()
 class CompanyRepository {

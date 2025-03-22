@@ -1,4 +1,9 @@
-part of 'repository.dart';
+import 'dart:async';
+
+import 'package:injectable/injectable.dart';
+
+import '../model/publication/publication.dart';
+import '../service/service.dart';
 
 abstract class PublicationVoteRepository {
   Future<PublicationVoteResponse> voteUp(String publicationId);

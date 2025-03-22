@@ -1,4 +1,16 @@
-part of 'repository.dart';
+import 'dart:async';
+
+import 'package:injectable/injectable.dart';
+
+import '../exception/exception.dart';
+import '../model/company/company.dart' show CompanyListResponse;
+import '../model/hub/hub.dart' show HubListResponse;
+import '../model/language/language.dart';
+import '../model/list_response_model.dart';
+import '../model/publication/publication.dart';
+import '../model/search/search.dart';
+import '../model/user/user_list_response.dart' show UserListResponse;
+import '../service/service.dart';
 
 @LazySingleton()
 class SearchRepository {

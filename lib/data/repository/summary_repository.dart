@@ -1,4 +1,7 @@
-part of 'repository.dart';
+import 'dart:async';
+
+import 'package:injectable/injectable.dart';
+import 'package:ya_summary/ya_summary.dart';
 
 @Singleton(as: SummaryRepository)
 class SummaryRepositoryApp extends SummaryRepositoryImpl {

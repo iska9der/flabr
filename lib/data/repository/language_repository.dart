@@ -1,4 +1,11 @@
-part of 'repository.dart';
+import 'dart:async';
+
+import 'package:injectable/injectable.dart';
+
+import '../../core/component/storage/storage.dart';
+import '../../core/constants/constants.dart';
+import '../exception/exception.dart';
+import '../model/language/language.dart';
 
 @Singleton()
 class LanguageRepository {

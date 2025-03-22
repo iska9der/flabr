@@ -1,7 +1,9 @@
 export 'user_badget_model.dart';
 export 'user_bookmarks_type.dart';
+export 'user_comment_list_response.dart';
 export 'user_comment_model.dart';
 export 'user_comment_publication_model.dart';
+export 'user_list_response.dart';
 export 'user_location_model.dart';
 export 'user_me_model.dart';
 export 'user_model.dart';

@@ -1,4 +1,11 @@
-part of 'repository.dart';
+import 'dart:async';
+
+import 'package:injectable/injectable.dart';
+
+import '../model/language/language.dart';
+import '../model/list_response_model.dart';
+import '../model/user/user.dart';
+import '../service/service.dart';
 
 @LazySingleton()
 class UserRepository {

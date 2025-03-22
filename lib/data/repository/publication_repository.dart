@@ -1,4 +1,15 @@
-part of 'repository.dart';
+import 'dart:async';
+
+import 'package:injectable/injectable.dart';
+
+import '../model/comment/comment.dart';
+import '../model/filter/filter.dart';
+import '../model/language/language.dart';
+import '../model/list_response_model.dart';
+import '../model/publication/publication.dart';
+import '../model/section_enum.dart';
+import '../model/user/user.dart';
+import '../service/service.dart';
 
 @LazySingleton()
 class PublicationRepository {

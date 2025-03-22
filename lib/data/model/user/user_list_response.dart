@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 import '../list_response_model.dart';
-import '../user/user_model.dart';
+import 'user_model.dart';
 
 class UserListResponse extends ListResponse<User> with EquatableMixin {
   const UserListResponse({
