@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 enum IndicatorSize {
-  small(10, 1),
-  medium(20, 2),
-  large(40, 3);
+  small(20, 1),
+  medium(40, 2),
+  large(60, 3);
 
   const IndicatorSize(this.height, this.strokeWidth);
 
@@ -26,9 +26,7 @@ class CircleIndicator extends StatelessWidget {
       child: SizedBox(
         height: size.height,
         width: size.height,
-        child: CircularProgressIndicator.adaptive(
-          strokeWidth: size.strokeWidth,
-        ),
+        child: CircularProgressIndicator(strokeWidth: size.strokeWidth),
       ),
     );
   }
