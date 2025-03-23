@@ -64,29 +64,10 @@ class _WebViewLoginState extends State<_WebViewLogin> {
     '${Urls.siteApiUrl}/v1/auth/habrahabr/?back=/ru/all',
   );
 
-  Future<String> getConnectSid(String url) async {
-    final list = await cookieManager.getCookies(url);
-    final sid =
-        list
-            .firstWhere(
-              (cookie) => cookie.name == 'connect_sid',
-              orElse: () => Cookie('bababoi', ''),
-            )
-            .value;
-
-    return sid;
-  }
-
   @override
   void dispose() {
     _clearControllerData();
     super.dispose();
-  }
-
-  void _clearControllerData() async {
-    await wvController.clearCache();
-    await wvController.clearLocalStorage();
-    await cookieManager.clearCookies();
   }
 
   @override
@@ -124,6 +105,25 @@ class _WebViewLoginState extends State<_WebViewLogin> {
             ),
           )
           ..loadRequest(_authUri);
+  }
+
+  Future<String> getConnectSid(String url) async {
+    final list = await cookieManager.getCookies(url);
+    final sid =
+        list
+            .firstWhere(
+              (cookie) => cookie.name == 'connect_sid',
+              orElse: () => Cookie('bababoi', ''),
+            )
+            .value;
+
+    return sid;
+  }
+
+  void _clearControllerData() async {
+    await wvController.clearCache();
+    await wvController.clearLocalStorage();
+    await cookieManager.clearCookies();
   }
 
   @override

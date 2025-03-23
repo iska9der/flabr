@@ -7,23 +7,19 @@ import 'dio_client.dart';
 
 class HabraClient extends DioClient {
   HabraClient(super.dio, {required this.tokenRepository}) {
-    dio.options = dio.options.copyWith(
-      connectTimeout: const Duration(seconds: 10),
-      receiveTimeout: const Duration(seconds: 15),
-    );
-
     dio.interceptors.clear();
     dio.interceptors.add(_authInterceptor());
   }
 
   final TokenRepository tokenRepository;
+  String? csrfToken;
 
   Future<String?> _fetchCsrf({
-    required String cookie,
+    required String cookies,
     String url = 'https://habr.com/ru/conversations/',
   }) async {
     try {
-      final options = Options(headers: {'Cookie': cookie});
+      final options = Options(headers: {'Cookie': cookies});
       final response = await get(url, options: options);
 
       String rawHtml = await response.data;
@@ -52,9 +48,8 @@ class HabraClient extends DioClient {
         Tokens? tokens = await tokenRepository.getTokens();
 
         if (tokens != null && !request.headers.containsKey('Cookie')) {
-          request.headers['Cookie'] = tokens.toCookieString();
-
-          String? csrfToken;
+          final cookies = tokens.toCookieString();
+          request.headers['Cookie'] = cookies;
 
           /// механизм обновления csrf токена в зависимости от указанного заголовка:
           /// если в заголовках указан ключ Keys.renewCsrf, берем по нему url
@@ -63,20 +58,16 @@ class HabraClient extends DioClient {
             final url = request.headers[Keys.renewCsrf];
             request.headers.remove(Keys.renewCsrf);
 
-            csrfToken = await _fetchCsrf(
-              cookie: tokens.toCookieString(),
-              url: url,
-            );
+            csrfToken = await _fetchCsrf(cookies: cookies, url: url);
           } else {
-            csrfToken =
+            csrfToken ??=
                 await tokenRepository.getCsrf() ??
-                await _fetchCsrf(cookie: tokens.toCookieString());
+                await _fetchCsrf(cookies: cookies);
           }
 
           if (csrfToken != null) {
             request.headers['csrf-token'] = csrfToken;
           }
-          return handler.next(request);
         }
 
         handler.next(request);

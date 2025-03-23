@@ -23,7 +23,6 @@ class SummaryClient {
 
         if (token != null) {
           request.headers['Authorization'] = 'OAuth $token';
-          return handler.next(request);
         }
 
         handler.next(request);
