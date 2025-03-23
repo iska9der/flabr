@@ -18,11 +18,10 @@ class _ListViewState extends State<_ListView> {
       builder: (context, state) {
         if (state.status == LoadingStatus.initial) {
           context.read<MostReadingCubit>().fetch();
-
-          return SizedBox();
         }
 
-        if (state.status == LoadingStatus.loading ||
+        if (state.status == LoadingStatus.initial ||
+            state.status == LoadingStatus.loading ||
             state.status == LoadingStatus.failure) {
           return const Padding(
             padding: EdgeInsets.symmetric(vertical: 24),
