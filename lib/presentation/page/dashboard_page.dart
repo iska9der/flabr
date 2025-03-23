@@ -116,25 +116,20 @@ class _DashboardPageState extends State<DashboardPage> {
 
             return Scaffold(
               body: SafeArea(
-                child: Center(
-                  child: MaxWidthBox(
-                    maxWidth: 1200,
-                    child: Row(
-                      children: [
-                        ResponsiveVisibility(
-                          visible: false,
-                          visibleConditions: const [
-                            Condition.largerThan(
-                              name: ScreenType.mobile,
-                              value: true,
-                            ),
-                          ],
-                          child: _Drawer(router: tabsRouter),
+                child: Row(
+                  children: [
+                    ResponsiveVisibility(
+                      visible: false,
+                      visibleConditions: const [
+                        Condition.largerThan(
+                          name: ScreenType.mobile,
+                          value: true,
                         ),
-                        Expanded(child: child),
                       ],
+                      child: _Drawer(router: tabsRouter),
                     ),
-                  ),
+                    Expanded(child: child),
+                  ],
                 ),
               ),
               bottomNavigationBar: ResponsiveVisibility(

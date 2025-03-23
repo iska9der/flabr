@@ -20,27 +20,30 @@ class LoginWidget extends StatelessWidget implements DialogUserWidget {
 
   @override
   Widget build(BuildContext context) {
-    final authState = context.read<AuthCubit>().state;
-
     return Center(
       child: FlabrCard(
         padding: EdgeInsets.zero,
-        child:
-            authState.isAuthorized
-                ? Center(child: Text('Вы уже вошли, ${authState.me.alias}'))
-                : BlocProvider(
-                  create: (_) => LoginCubit(tokenRepository: getIt()),
-                  child: BlocListener<LoginCubit, LoginState>(
-                    listener: (context, state) {
-                      if (state.status.isSuccess) {
-                        context.read<AuthCubit>().handleTokens();
+        child: BlocBuilder<AuthCubit, AuthState>(
+          builder: (context, state) {
+            if (state.isAuthorized) {
+              return Center(child: Text('Вы уже вошли, ${state.me.alias}'));
+            }
 
-                        Navigator.of(context).pop();
-                      }
-                    },
-                    child: const _WebViewLogin(),
-                  ),
-                ),
+            return BlocProvider(
+              create: (_) => LoginCubit(tokenRepository: getIt()),
+              child: BlocListener<LoginCubit, LoginState>(
+                listener: (context, state) {
+                  if (state.status.isSuccess) {
+                    context.read<AuthCubit>().handleTokens();
+
+                    Navigator.of(context).pop();
+                  }
+                },
+                child: const _WebViewLogin(),
+              ),
+            );
+          },
+        ),
       ),
     );
   }

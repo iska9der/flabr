@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_file_dialog/flutter_file_dialog.dart';
 
@@ -14,24 +15,27 @@ class PublicationDownloadCubit extends Cubit<PublicationDownloadState> {
     required String publicationId,
     required String publicationText,
     required PublicationDownloadFormat format,
-  })  : converter = PublicationTextConverter(
-          text: publicationText,
-          desiredFormat: format,
-        ),
-        super(PublicationDownloadState(
-          id: publicationId,
-          htmlText: publicationText,
-          format: format,
-        )) {
+  }) : converter = PublicationTextConverter(
+         text: publicationText,
+         desiredFormat: format,
+       ),
+       super(
+         PublicationDownloadState(
+           id: publicationId,
+           htmlText: publicationText,
+           format: format,
+         ),
+       ) {
     _init();
   }
 
   final PublicationTextConverter converter;
 
   _init() async {
-    if (!await FlutterFileDialog.isPickDirectorySupported()) {
+    if (kIsWeb || !await FlutterFileDialog.isPickDirectorySupported()) {
       return emit(
-          state.copyWith(status: PublicationDownloadStatus.notSupported));
+        state.copyWith(status: PublicationDownloadStatus.notSupported),
+      );
     }
   }
 
@@ -62,10 +66,12 @@ class PublicationDownloadCubit extends Cubit<PublicationDownloadState> {
 
       emit(state.copyWith(status: PublicationDownloadStatus.success));
     } catch (e) {
-      emit(state.copyWith(
-        status: PublicationDownloadStatus.failure,
-        error: e.toString(),
-      ));
+      emit(
+        state.copyWith(
+          status: PublicationDownloadStatus.failure,
+          error: e.toString(),
+        ),
+      );
     }
   }
 }

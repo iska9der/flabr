@@ -39,9 +39,10 @@ class AuthCubit extends Cubit<AuthState> {
       }
 
       emit(state.copyWith(me: me));
-    } catch (e, stack) {
+    } catch (error, stackTrace) {
       emit(state.copyWith(me: UserMe.empty));
-      Error.throwWithStackTrace(e, stack);
+
+      super.onError(error, stackTrace);
     }
   }
 
@@ -50,8 +51,8 @@ class AuthCubit extends Cubit<AuthState> {
       final updates = await _repository.fetchUpdates();
 
       emit(state.copyWith(updates: updates));
-    } catch (e, stack) {
-      Error.throwWithStackTrace(e, stack);
+    } catch (error, stackTrace) {
+      super.onError(error, stackTrace);
     }
   }
 

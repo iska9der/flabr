@@ -39,7 +39,7 @@
             "type": "dart",
             "args": [
                 "-d",
-                "chrome",
+                "edge",
                 "--web-browser-flag",
                 "--disable-web-security",
                 "--dart-define-from-file",

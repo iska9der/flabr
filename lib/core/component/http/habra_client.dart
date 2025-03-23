@@ -18,23 +18,32 @@ class HabraClient extends DioClient {
 
   final TokenRepository tokenRepository;
 
-  Future<String> _fetchCsrf({
+  Future<String?> _fetchCsrf({
     required String cookie,
-    String url = 'https://habr.com/ru/conversations',
+    String url = 'https://habr.com/ru/conversations/',
   }) async {
-    final options = Options(headers: {'Cookie': cookie});
-    final response = await get(url, options: options);
+    try {
+      final options = Options(headers: {'Cookie': cookie});
+      final response = await get(url, options: options);
 
-    String rawHtml = await response.data;
+      String rawHtml = await response.data;
 
-    String csrf = '';
-    int indexOfCsrfStart = rawHtml.indexOf('csrf-token') + 11;
-    int indexOfFirstQuote = rawHtml.indexOf('"', indexOfCsrfStart) + 1;
-    int indexOfLastQuote = rawHtml.indexOf('"', indexOfFirstQuote);
-    csrf = rawHtml.substring(indexOfFirstQuote, indexOfLastQuote);
-    tokenRepository.setCsrf(csrf);
+      int indexOfCsrf = rawHtml.indexOf('csrf-token');
+      if (indexOfCsrf == -1) {
+        return null;
+      }
 
-    return csrf;
+      String csrf = '';
+      int indexOfCsrfStart = rawHtml.indexOf('csrf-token') + 11;
+      int indexOfFirstQuote = rawHtml.indexOf('"', indexOfCsrfStart) + 1;
+      int indexOfLastQuote = rawHtml.indexOf('"', indexOfFirstQuote);
+      csrf = rawHtml.substring(indexOfFirstQuote, indexOfLastQuote);
+      tokenRepository.setCsrf(csrf);
+
+      return csrf;
+    } catch (e) {
+      return null;
+    }
   }
 
   Interceptor _authInterceptor() {
@@ -43,7 +52,7 @@ class HabraClient extends DioClient {
         Tokens? tokens = await tokenRepository.getTokens();
 
         if (tokens != null && !request.headers.containsKey('Cookie')) {
-          request.headers['Cookie'] = 'connect_sid=${tokens.connectSID};';
+          request.headers['Cookie'] = tokens.toCookieString();
 
           String? csrfToken;
 
@@ -51,18 +60,22 @@ class HabraClient extends DioClient {
           /// если в заголовках указан ключ Keys.renewCsrf, берем по нему url
           /// страницы из которой нужно вытащить csrf токен
           if (request.headers.containsKey(Keys.renewCsrf)) {
+            final url = request.headers[Keys.renewCsrf];
+            request.headers.remove(Keys.renewCsrf);
+
             csrfToken = await _fetchCsrf(
               cookie: tokens.toCookieString(),
-              url: request.headers[Keys.renewCsrf],
+              url: url,
             );
-            request.headers.remove(Keys.renewCsrf);
           } else {
             csrfToken =
                 await tokenRepository.getCsrf() ??
                 await _fetchCsrf(cookie: tokens.toCookieString());
           }
 
-          request.headers['csrf-token'] = csrfToken;
+          if (csrfToken != null) {
+            request.headers['csrf-token'] = csrfToken;
+          }
           return handler.next(request);
         }
 

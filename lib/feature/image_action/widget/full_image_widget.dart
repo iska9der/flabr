@@ -70,12 +70,6 @@ class FullImageNetworkModal extends StatelessWidget {
         child: const FullImageBottomBar(),
       ),
       backgroundColor: Colors.transparent,
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: FloatingActionButton(
-        mini: true,
-        onPressed: () => Navigator.of(context).pop(),
-        child: const Icon(Icons.close_rounded, size: 32),
-      ),
       body: FullImageProvider(
         provider: CachedNetworkImageProvider(imageUrl, cacheKey: imageUrl),
       ),
@@ -89,35 +83,49 @@ class FullImageBottomBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BottomAppBar(
-      child: Row(
+      child: Stack(
         children: [
-          BlocBuilder<ImageActionCubit, ImageActionState>(
-            buildWhen:
-                (previous, current) => previous.canSave != current.canSave,
-            builder: (context, state) {
-              return IconButton(
-                icon: const Icon(Icons.download),
-                tooltip: 'Скачать',
-                onPressed: switch (state.canSave) {
-                  true => () => context.read<ImageActionCubit>().pickAndSave(),
-                  false => null,
+          Row(
+            children: [
+              BlocBuilder<ImageActionCubit, ImageActionState>(
+                buildWhen:
+                    (previous, current) => previous.canSave != current.canSave,
+                builder: (context, state) {
+                  return IconButton(
+                    icon: const Icon(Icons.download),
+                    tooltip: 'Скачать',
+                    onPressed: switch (state.canSave) {
+                      true =>
+                        () => context.read<ImageActionCubit>().pickAndSave(),
+                      false => null,
+                    },
+                  );
                 },
-              );
-            },
+              ),
+              BlocBuilder<ImageActionCubit, ImageActionState>(
+                buildWhen:
+                    (previous, current) =>
+                        previous.canShare != current.canShare,
+                builder: (context, state) {
+                  return IconButton(
+                    icon: const Icon(Icons.share),
+                    tooltip: 'Поделиться',
+                    onPressed: switch (state.canShare) {
+                      true => () => context.read<ImageActionCubit>().share(),
+                      false => null,
+                    },
+                  );
+                },
+              ),
+            ],
           ),
-          BlocBuilder<ImageActionCubit, ImageActionState>(
-            buildWhen:
-                (previous, current) => previous.canShare != current.canShare,
-            builder: (context, state) {
-              return IconButton(
-                icon: const Icon(Icons.share),
-                tooltip: 'Поделиться',
-                onPressed: switch (state.canShare) {
-                  true => () => context.read<ImageActionCubit>().share(),
-                  false => null,
-                },
-              );
-            },
+          Align(
+            alignment: Alignment.topCenter,
+            child: FloatingActionButton(
+              mini: true,
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Icon(Icons.close_rounded, size: 32),
+            ),
           ),
         ],
       ),

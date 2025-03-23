@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../core/component/di/di.dart';
 import '../../../../../feature/auth/auth.dart';
 import '../../../../extension/extension.dart';
-import '../settings_card_widget.dart';
 
 class ConnectSidWidget extends StatefulWidget {
   const ConnectSidWidget({super.key});
@@ -33,72 +32,64 @@ class _ConnectSidWidgetState extends State<ConnectSidWidget> {
         listener: (_, state) => context.read<AuthCubit>().handleTokens(),
         child: BlocBuilder<AuthCubit, AuthState>(
           builder: (context, state) {
-            final loginCubit = context.read<LoginCubit>();
-
-            if (state.isAuthorized) {
-              controller.text = state.tokens.connectSID;
-            } else {
+            if (state.status == AuthStatus.unauthorized) {
               controller.text = '';
+            } else {
+              controller.text = state.tokens.connectSID;
             }
 
-            return SettingsCardWidget(
-              title: 'connect_sid',
-              subtitle: 'Если не удается войти через форму логина',
-              child: Padding(
-                padding: const EdgeInsets.only(top: 12.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
+            return Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                TextFormField(
+                  onTapOutside: (event) {
+                    FocusManager.instance.primaryFocus?.unfocus();
+                  },
+                  enabled: !state.isAuthorized,
+                  controller: controller,
+                  keyboardType: TextInputType.text,
+                  decoration: const InputDecoration(
+                    floatingLabelBehavior: FloatingLabelBehavior.always,
+                    labelText: 'Токен connect_sid',
+                    hintText: 'Можно найти в cookies',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Row(
                   children: [
-                    TextFormField(
-                      onTapOutside: (event) {
-                        FocusManager.instance.primaryFocus?.unfocus();
-                      },
-                      enabled: !state.isAuthorized,
-                      controller: controller,
-                      keyboardType: TextInputType.text,
-                      decoration: const InputDecoration(
-                        floatingLabelBehavior: FloatingLabelBehavior.always,
-                        labelText: 'Токен',
-                        hintText: 'Можно найти в cookies',
-                        border: OutlineInputBorder(),
+                    state.isAuthorized
+                        ? ElevatedButton(
+                          onPressed: () {
+                            context.read<AuthCubit>().logOut();
+                          },
+                          child: const Text('Очистить'),
+                        )
+                        : FilledButton(
+                          onPressed: () {
+                            context.read<LoginCubit>().submitConnectSid(
+                              controller.text,
+                            );
+                          },
+                          child: const Text('Сохранить'),
+                        ),
+                    const SizedBox(width: 12),
+                    if (state.isAuthorized)
+                      ElevatedButton(
+                        onPressed: () {
+                          Clipboard.setData(
+                            ClipboardData(text: controller.text),
+                          );
+                          context.showSnack(
+                            content: const Text('Скопировано в буфер обмена'),
+                          );
+                        },
+                        child: const Text('Скопировать'),
                       ),
-                    ),
-                    const SizedBox(height: 8),
-                    Row(
-                      children: [
-                        state.isAuthorized
-                            ? ElevatedButton(
-                              onPressed: () {
-                                context.read<AuthCubit>().logOut();
-                              },
-                              child: const Text('Очистить'),
-                            )
-                            : FilledButton(
-                              onPressed: () {
-                                loginCubit.submitConnectSid(controller.text);
-                              },
-                              child: const Text('Сохранить'),
-                            ),
-                        const SizedBox(width: 12),
-                        if (state.isAuthorized)
-                          ElevatedButton(
-                            onPressed: () {
-                              Clipboard.setData(
-                                ClipboardData(text: controller.text),
-                              );
-                              context.showSnack(
-                                content: const Text(
-                                  'Скопировано в буфер обмена',
-                                ),
-                              );
-                            },
-                            child: const Text('Скопировать'),
-                          ),
-                      ],
-                    ),
                   ],
                 ),
-              ),
+              ],
             );
           },
         ),
