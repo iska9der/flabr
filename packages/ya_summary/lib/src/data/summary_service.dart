@@ -35,7 +35,7 @@ class SummaryServiceImpl implements SummaryService {
   Future<Map<String, dynamic>> fetchSharedData(String token) async {
     try {
       final response = await _client.post(
-        '/sharing',
+        '/sharing?nr=&utm_referrer=',
         body: {'token': token},
       );
 
