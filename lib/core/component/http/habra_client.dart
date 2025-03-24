@@ -3,10 +3,12 @@ import 'package:dio/dio.dart';
 import '../../../data/model/tokens_model.dart';
 import '../../../data/repository/repository.dart';
 import '../../constants/constants.dart';
+import 'client_adapter/client_adapter.dart';
 import 'dio_client.dart';
 
 class HabraClient extends DioClient {
   HabraClient(super.dio, {required this.tokenRepository}) {
+    dio.httpClientAdapter = makeHttpClientAdapter();
     dio.interceptors.clear();
     dio.interceptors.add(_authInterceptor());
   }
