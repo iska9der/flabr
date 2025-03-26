@@ -59,6 +59,7 @@ dependencies:
   json_annotation: ^4.9.0
   skeletonizer: ^1.4.3
   ya_summary: any
+  flutter_displaymode: ^0.6.0
 
 dev_dependencies:
   analyzer: ^7.3.0
