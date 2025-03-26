@@ -90,7 +90,13 @@ class MyApp extends StatelessWidget {
                   return DevicePreview.appBuilder(
                     context,
                     ResponsiveBreakpoints.builder(
-                      child: child ?? const SizedBox.shrink(),
+                      child: ColoredBox(
+                        color: context.theme.colors.surface,
+                        child: MaxWidthBox(
+                          maxWidth: AppDimensions.maxWidth,
+                          child: child ?? const SizedBox.shrink(),
+                        ),
+                      ),
                       breakpoints: [
                         const Breakpoint(
                           start: 0,

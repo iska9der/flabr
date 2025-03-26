@@ -39,11 +39,13 @@
             "type": "dart",
             "args": [
                 "-d",
-                "chrome",
+                "edge",
+                "--web-port",
+                "63080",
+                "--dart-define-from-file",
+                ".env",
                 "--web-browser-flag",
                 "--disable-web-security",
-                "--dart-define-from-file",
-                ".env"
             ]
         }
     ]

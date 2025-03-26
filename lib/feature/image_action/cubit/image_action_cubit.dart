@@ -1,7 +1,6 @@
-import 'dart:typed_data';
-
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_file_dialog/flutter_file_dialog.dart';
 import 'package:path/path.dart' as path;
@@ -27,7 +26,7 @@ class ImageActionCubit extends Cubit<ImageActionState> {
       return emit(state.copyWith(isSaveEnabled: false));
     }
 
-    if (!await FlutterFileDialog.isPickDirectorySupported()) {
+    if (kIsWeb || !await FlutterFileDialog.isPickDirectorySupported()) {
       return emit(state.copyWith(isSaveEnabled: false));
     }
   }

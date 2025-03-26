@@ -41,7 +41,14 @@ class SettingsView extends StatelessWidget {
             SettingsSectionWidget(
               title: 'Аккаунт',
               children: [
-                ConnectSidWidget(),
+                SettingsCardWidget(
+                  title: 'connect_sid',
+                  subtitle: 'Если не удается войти через форму логина',
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 12.0),
+                    child: ConnectSidWidget(),
+                  ),
+                ),
                 SettingsCardWidget(
                   title: 'YandexGPT',
                   subtitle: 'Для генерации пересказов статей',

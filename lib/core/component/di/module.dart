@@ -12,7 +12,12 @@ import '../storage/storage.dart';
 @module
 abstract class RegisterModule {
   @FactoryMethod()
-  Dio get dio => Dio();
+  Dio get dio => Dio(
+    BaseOptions(
+      connectTimeout: const Duration(seconds: 5),
+      receiveTimeout: const Duration(seconds: 15),
+    ),
+  );
 
   // ignore: invalid_annotation_target
   @preResolve
@@ -31,14 +36,14 @@ abstract class RegisterModule {
   @Named('mobileClient')
   @Singleton()
   HttpClient mobileClient(Dio dio, TokenRepository repository) => HabraClient(
-    dio..options = BaseOptions(baseUrl: Urls.mobileApiUrl),
+    dio..options = dio.options.copyWith(baseUrl: Urls.mobileApiUrl),
     tokenRepository: repository,
   );
 
   @Named('siteClient')
   @Singleton()
   HttpClient siteClient(Dio dio, TokenRepository repository) => HabraClient(
-    dio..options = BaseOptions(baseUrl: Urls.siteApiUrl),
+    dio..options = dio.options.copyWith(baseUrl: Urls.siteApiUrl),
     tokenRepository: repository,
   );
 

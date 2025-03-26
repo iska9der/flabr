@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 abstract class AppDimensions {
+  static const double maxWidth = 1200;
+
   static const double borderRadius = 8.0;
 
   static const double screenPadding = 8.0;

@@ -20,27 +20,30 @@ class LoginWidget extends StatelessWidget implements DialogUserWidget {
 
   @override
   Widget build(BuildContext context) {
-    final authState = context.read<AuthCubit>().state;
-
     return Center(
       child: FlabrCard(
         padding: EdgeInsets.zero,
-        child:
-            authState.isAuthorized
-                ? Center(child: Text('Вы уже вошли, ${authState.me.alias}'))
-                : BlocProvider(
-                  create: (_) => LoginCubit(tokenRepository: getIt()),
-                  child: BlocListener<LoginCubit, LoginState>(
-                    listener: (context, state) {
-                      if (state.status.isSuccess) {
-                        context.read<AuthCubit>().handleTokens();
+        child: BlocBuilder<AuthCubit, AuthState>(
+          builder: (context, state) {
+            if (state.isAuthorized) {
+              return Center(child: Text('Вы уже вошли, ${state.me.alias}'));
+            }
 
-                        Navigator.of(context).pop();
-                      }
-                    },
-                    child: const _WebViewLogin(),
-                  ),
-                ),
+            return BlocProvider(
+              create: (_) => LoginCubit(tokenRepository: getIt()),
+              child: BlocListener<LoginCubit, LoginState>(
+                listener: (context, state) {
+                  if (state.status.isSuccess) {
+                    context.read<AuthCubit>().handleTokens();
+
+                    Navigator.of(context).pop();
+                  }
+                },
+                child: const _WebViewLogin(),
+              ),
+            );
+          },
+        ),
       ),
     );
   }
@@ -61,29 +64,10 @@ class _WebViewLoginState extends State<_WebViewLogin> {
     '${Urls.siteApiUrl}/v1/auth/habrahabr/?back=/ru/all',
   );
 
-  Future<String> getConnectSid(String url) async {
-    final list = await cookieManager.getCookies(url);
-    final sid =
-        list
-            .firstWhere(
-              (cookie) => cookie.name == 'connect_sid',
-              orElse: () => Cookie('bababoi', ''),
-            )
-            .value;
-
-    return sid;
-  }
-
   @override
   void dispose() {
     _clearControllerData();
     super.dispose();
-  }
-
-  void _clearControllerData() async {
-    await wvController.clearCache();
-    await wvController.clearLocalStorage();
-    await cookieManager.clearCookies();
   }
 
   @override
@@ -121,6 +105,25 @@ class _WebViewLoginState extends State<_WebViewLogin> {
             ),
           )
           ..loadRequest(_authUri);
+  }
+
+  Future<String> getConnectSid(String url) async {
+    final list = await cookieManager.getCookies(url);
+    final sid =
+        list
+            .firstWhere(
+              (cookie) => cookie.name == 'connect_sid',
+              orElse: () => Cookie('bababoi', ''),
+            )
+            .value;
+
+    return sid;
+  }
+
+  void _clearControllerData() async {
+    await wvController.clearCache();
+    await wvController.clearLocalStorage();
+    await cookieManager.clearCookies();
   }
 
   @override
