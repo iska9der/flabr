@@ -7,11 +7,11 @@ import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 
-import '../../di/di.dart';
-import '../component/bloc/observer.dart';
-import '../constants/constants.dart';
+import 'core/component/bloc/observer.dart';
+import 'core/constants/constants.dart';
+import 'di/di.dart';
 
-abstract class AppInitializer {
+abstract class Bootstrap {
   static Future<void> init() async {
     await configureDependencies(env: AppEnvironment.env);
 
@@ -26,7 +26,7 @@ abstract class AppInitializer {
     if (Platform.isAndroid) {
       /// максимальная герцовка
       /// issue https://github.com/flutter/flutter/issues/35162
-      await FlutterDisplayMode.setHighRefreshRate();
+      FlutterDisplayMode.setHighRefreshRate().ignore();
     }
   }
 

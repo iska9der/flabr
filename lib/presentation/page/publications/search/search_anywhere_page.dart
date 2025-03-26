@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../data/model/render_type_enum.dart';
@@ -53,18 +52,10 @@ class _SearchAnywhereViewState extends State<_SearchAnywhereView> {
   final TextEditingController _queryTextController = TextEditingController();
 
   ThemeData appBarTheme(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-    final ColorScheme colorScheme = theme.colorScheme;
+    final theme = context.theme;
+
     return theme.copyWith(
       appBarTheme: AppBarTheme(
-        systemOverlayStyle:
-            colorScheme.brightness == Brightness.dark
-                ? SystemUiOverlayStyle.light
-                : SystemUiOverlayStyle.dark,
-        backgroundColor:
-            colorScheme.brightness == Brightness.dark
-                ? Colors.grey[900]
-                : Colors.white,
         iconTheme: theme.primaryIconTheme.copyWith(color: Colors.grey),
         titleTextStyle: theme.textTheme.titleLarge,
         toolbarTextStyle: theme.textTheme.bodyMedium,

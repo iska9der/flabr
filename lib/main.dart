@@ -4,15 +4,15 @@ import 'package:device_preview/device_preview.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+import 'bootstrap.dart';
 import 'core/component/logger/logger.dart';
-import 'core/helper/helper.dart';
 import 'presentation/app.dart';
 
 void main() => runZonedGuarded(
   () async {
     WidgetsFlutterBinding.ensureInitialized();
 
-    await AppInitializer.init();
+    await Bootstrap.init();
 
     runApp(
       DevicePreview(

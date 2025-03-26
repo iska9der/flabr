@@ -1,6 +1,7 @@
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:ya_summary/ya_summary.dart';
@@ -71,7 +72,7 @@ class ApplicationView extends StatelessWidget {
           return const Material(child: CircleIndicator());
         }
 
-        final theme = context.select(
+        final themeConfig = context.select(
           (SettingsCubit cubit) => cubit.state.theme,
         );
 
@@ -84,7 +85,7 @@ class ApplicationView extends StatelessWidget {
           // ignore: deprecated_member_use
           useInheritedMediaQuery: true,
           locale: DevicePreview.locale(context),
-          themeMode: theme.modeByBool ?? theme.mode,
+          themeMode: themeConfig.modeByBool ?? themeConfig.mode,
           theme: AppTheme.light,
           darkTheme: AppTheme.dark,
           scrollBehavior: scroll.behavior,
@@ -98,14 +99,22 @@ class ApplicationView extends StatelessWidget {
             },
           ),
           builder: (context, child) {
+            final theme = context.theme;
+
             return DevicePreview.appBuilder(
               context,
               ResponsiveBreakpoints.builder(
                 child: ColoredBox(
-                  color: context.theme.colors.surface,
+                  color: theme.colors.surface,
                   child: MaxWidthBox(
                     maxWidth: AppDimensions.maxWidth,
-                    child: child ?? const SizedBox.shrink(),
+                    child: AnnotatedRegion(
+                      value:
+                          theme.colorScheme.brightness == Brightness.dark
+                              ? SystemUiOverlayStyle.light
+                              : SystemUiOverlayStyle.dark,
+                      child: child ?? const SizedBox.shrink(),
+                    ),
                   ),
                 ),
                 breakpoints: [
