@@ -15,8 +15,8 @@ part 'settings_state.dart';
 
 class SettingsCubit extends Cubit<SettingsState> {
   SettingsCubit({
-    required CacheStorage storage,
     required LanguageRepository languageRepository,
+    required CacheStorage storage,
   }) : _storage = storage,
        _langRepository = languageRepository,
        super(const SettingsState()) {

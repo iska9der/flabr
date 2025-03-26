@@ -4,10 +4,10 @@ import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ya_summary/ya_summary.dart';
 
-import '../../../data/repository/repository.dart';
-import '../../constants/constants.dart';
-import '../http/http.dart';
-import '../storage/storage.dart';
+import '../core/component/http/http.dart';
+import '../core/component/storage/storage.dart';
+import '../core/constants/constants.dart';
+import '../data/repository/repository.dart';
 
 @module
 abstract class RegisterModule {

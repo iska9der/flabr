@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
-import '../../../../../core/component/di/di.dart';
 import '../../../../../core/component/router/app_router.dart';
 import '../../../../../data/model/comment/comment.dart';
 import '../../../../../data/model/publication/publication.dart';
+import '../../../../../di/di.dart';
 import '../../../../../feature/scroll/scroll.dart';
 import '../../../../extension/extension.dart';
 import '../../../../widget/comment/comment.dart';

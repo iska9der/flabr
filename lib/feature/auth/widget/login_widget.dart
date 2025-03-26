@@ -6,9 +6,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:webview_cookie_manager/webview_cookie_manager.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-import '../../../core/component/di/di.dart';
 import '../../../core/component/logger/logger.dart';
 import '../../../core/constants/constants.dart';
+import '../../../di/di.dart';
 import '../../../presentation/extension/extension.dart';
 import '../../../presentation/widget/enhancement/card.dart';
 import '../cubit/auth_cubit.dart';

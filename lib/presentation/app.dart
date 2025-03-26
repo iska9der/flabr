@@ -5,18 +5,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:ya_summary/ya_summary.dart';
 
-import '../core/component/di/di.dart';
 import '../core/component/router/app_router.dart';
+import '../di/di.dart';
 import '../feature/auth/auth.dart';
 import 'extension/extension.dart';
 import 'page/settings/cubit/settings_cubit.dart';
 import 'theme/theme.dart';
 import 'widget/enhancement/progress_indicator.dart';
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key, required this.router});
-
-  final AppRouter router;
+class Application extends StatelessWidget {
+  const Application({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -54,74 +52,80 @@ class MyApp extends StatelessWidget {
             },
           ),
         ],
-        child: BlocBuilder<SettingsCubit, SettingsState>(
-          builder: (context, state) {
-            if (state.status == SettingsStatus.loading) {
-              /// TODO: Splash Page
-              return const Material(child: CircleIndicator());
-            }
+        child: ApplicationView(),
+      ),
+    );
+  }
+}
 
-            return Listener(
-              onPointerDown: (_) {
-                // FocusScopeNode currentFocus = FocusScope.of(context);
-                // if (!currentFocus.hasPrimaryFocus) {
-                //   currentFocus.focusedChild?.unfocus();
-                // }
-              },
-              child: MaterialApp.router(
-                title: 'Flabr',
-                // ignore: deprecated_member_use
-                useInheritedMediaQuery: true,
-                locale: DevicePreview.locale(context),
-                themeMode: state.theme.modeByBool ?? state.theme.mode,
-                theme: AppTheme.light,
-                darkTheme: AppTheme.dark,
-                scrollBehavior: state.misc.scrollVariant.behavior,
-                routerConfig: router.config(
-                  deepLinkTransformer: (uri) {
-                    if (uri.path.startsWith('/ru')) {
-                      final newPath = uri.path.replaceFirst('/ru', '');
-                      return SynchronousFuture(uri.replace(path: newPath));
-                    }
-                    return SynchronousFuture(uri);
-                  },
+class ApplicationView extends StatelessWidget {
+  const ApplicationView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocSelector<SettingsCubit, SettingsState, SettingsStatus>(
+      selector: (state) => state.status,
+      builder: (context, status) {
+        if (status == SettingsStatus.loading) {
+          /// TODO: Splash Page
+          return const Material(child: CircleIndicator());
+        }
+
+        final theme = context.select(
+          (SettingsCubit cubit) => cubit.state.theme,
+        );
+
+        final scroll = context.select(
+          (SettingsCubit cubit) => cubit.state.misc.scrollVariant,
+        );
+
+        return MaterialApp.router(
+          title: 'Flabr',
+          // ignore: deprecated_member_use
+          useInheritedMediaQuery: true,
+          locale: DevicePreview.locale(context),
+          themeMode: theme.modeByBool ?? theme.mode,
+          theme: AppTheme.light,
+          darkTheme: AppTheme.dark,
+          scrollBehavior: scroll.behavior,
+          routerConfig: getIt<AppRouter>().config(
+            deepLinkTransformer: (uri) {
+              if (uri.path.startsWith('/ru')) {
+                final newPath = uri.path.replaceFirst('/ru', '');
+                return SynchronousFuture(uri.replace(path: newPath));
+              }
+              return SynchronousFuture(uri);
+            },
+          ),
+          builder: (context, child) {
+            return DevicePreview.appBuilder(
+              context,
+              ResponsiveBreakpoints.builder(
+                child: ColoredBox(
+                  color: context.theme.colors.surface,
+                  child: MaxWidthBox(
+                    maxWidth: AppDimensions.maxWidth,
+                    child: child ?? const SizedBox.shrink(),
+                  ),
                 ),
-                builder: (context, child) {
-                  return DevicePreview.appBuilder(
-                    context,
-                    ResponsiveBreakpoints.builder(
-                      child: ColoredBox(
-                        color: context.theme.colors.surface,
-                        child: MaxWidthBox(
-                          maxWidth: AppDimensions.maxWidth,
-                          child: child ?? const SizedBox.shrink(),
-                        ),
-                      ),
-                      breakpoints: [
-                        const Breakpoint(
-                          start: 0,
-                          end: 600,
-                          name: ScreenType.mobile,
-                        ),
-                        const Breakpoint(
-                          start: 601,
-                          end: 840,
-                          name: ScreenType.tablet,
-                        ),
-                        const Breakpoint(
-                          start: 841,
-                          end: double.infinity,
-                          name: ScreenType.desktop,
-                        ),
-                      ],
-                    ),
-                  );
-                },
+                breakpoints: [
+                  const Breakpoint(start: 0, end: 600, name: ScreenType.mobile),
+                  const Breakpoint(
+                    start: 601,
+                    end: 840,
+                    name: ScreenType.tablet,
+                  ),
+                  const Breakpoint(
+                    start: 841,
+                    end: double.infinity,
+                    name: ScreenType.desktop,
+                  ),
+                ],
               ),
             );
           },
-        ),
-      ),
+        );
+      },
     );
   }
 }

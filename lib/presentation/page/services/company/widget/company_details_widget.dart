@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
-import '../../../../../core/component/di/di.dart';
 import '../../../../../core/component/router/app_router.dart';
+import '../../../../../di/di.dart';
 import '../../../../../feature/image_action/image_action.dart';
 import '../../../../extension/extension.dart';
 import '../../../../widget/detail/section_container_widget.dart';

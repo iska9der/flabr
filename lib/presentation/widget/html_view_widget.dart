@@ -7,8 +7,8 @@ import 'package:fwfh_svg/fwfh_svg.dart';
 import 'package:fwfh_webview/fwfh_webview.dart';
 import 'package:path/path.dart' as p;
 
-import '../../core/component/di/di.dart';
 import '../../core/component/router/app_router.dart';
+import '../../di/di.dart';
 import '../../feature/image_action/image_action.dart';
 import '../extension/extension.dart';
 import '../page/settings/cubit/settings_cubit.dart';

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 
-import '../../../../../core/component/di/di.dart';
 import '../../../../../core/component/router/app_router.dart';
 import '../../../../../data/model/publication/publication.dart';
 import '../../../../../data/model/render_type_enum.dart';
+import '../../../../../di/di.dart';
 import '../../../../widget/enhancement/enhancement.dart';
 import '../stats/publication_stats_widget.dart';
 import 'components/footer_widget.dart';

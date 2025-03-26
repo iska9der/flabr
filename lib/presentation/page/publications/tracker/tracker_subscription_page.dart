@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
-import '../../../../core/component/di/di.dart';
 import '../../../../core/component/router/app_router.dart';
 import '../../../../core/constants/constants.dart';
 import '../../../../data/model/loading_status_enum.dart';
 import '../../../../data/model/tracker/tracker.dart';
+import '../../../../di/di.dart';
 import '../../../extension/extension.dart';
 import '../../../widget/enhancement/card.dart';
 import '../../../widget/user_text_button.dart';

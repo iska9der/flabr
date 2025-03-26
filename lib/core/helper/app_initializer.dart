@@ -7,8 +7,8 @@ import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 
+import '../../di/di.dart';
 import '../component/bloc/observer.dart';
-import '../component/di/di.dart';
 import '../constants/constants.dart';
 
 abstract class AppInitializer {

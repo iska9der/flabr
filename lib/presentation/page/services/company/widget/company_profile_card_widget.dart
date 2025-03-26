@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 
-import '../../../../../core/component/di/di.dart';
 import '../../../../../data/model/company/company.dart';
 import '../../../../../data/model/stat_type_enum.dart';
 import '../../../../../data/repository/repository.dart';
+import '../../../../../di/di.dart';
 import '../../../../../feature/auth/auth.dart';
 import '../../../../../feature/profile_subscribe/profile_subscribe.dart';
 import '../../../../theme/theme.dart';

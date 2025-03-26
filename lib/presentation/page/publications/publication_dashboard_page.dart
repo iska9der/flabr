@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../core/component/di/di.dart';
 import '../../../core/component/router/app_router.dart';
+import '../../../di/di.dart';
 import '../../../feature/auth/auth.dart';
 import '../../../feature/most_reading/most_reading.dart';
 import '../../extension/extension.dart';
@@ -209,14 +209,15 @@ class _PublicationDashboardViewState extends State<PublicationDashboardView> {
                                         ),
                                         tooltip: 'Трекер',
                                         onPressed: () async {
-                                          final authCubit =
-                                              context.read<AuthCubit>();
-
                                           await getIt<AppRouter>().push(
                                             const TrackerDashboardRoute(),
                                           );
 
-                                          authCubit.fetchUpdates();
+                                          if (context.mounted) {
+                                            context
+                                                .read<AuthCubit>()
+                                                .fetchUpdates();
+                                          }
                                         },
                                       ),
                                     );

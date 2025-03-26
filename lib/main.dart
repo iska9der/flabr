@@ -4,7 +4,6 @@ import 'package:device_preview/device_preview.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import 'core/component/di/di.dart';
 import 'core/component/logger/logger.dart';
 import 'core/helper/helper.dart';
 import 'presentation/app.dart';
@@ -19,7 +18,7 @@ void main() => runZonedGuarded(
       DevicePreview(
         // ignore: avoid_redundant_argument_values
         enabled: !kReleaseMode,
-        builder: (_) => MyApp(router: getIt()),
+        builder: (_) => Application(),
       ),
     );
   },

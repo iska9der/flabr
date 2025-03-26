@@ -2,7 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../../core/component/di/di.dart';
+import '../../../../../di/di.dart';
 import '../../../../../feature/scroll/scroll.dart';
 import '../../../../widget/enhancement/refresh_indicator.dart';
 import '../../../settings/cubit/settings_cubit.dart';

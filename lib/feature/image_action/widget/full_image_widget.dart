@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:photo_view/photo_view.dart';
 
-import '../../../core/component/di/di.dart';
+import '../../../di/di.dart';
 import '../cubit/image_action_cubit.dart';
 
 class FullImageAsset extends StatelessWidget {

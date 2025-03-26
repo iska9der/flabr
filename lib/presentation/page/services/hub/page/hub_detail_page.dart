@@ -3,8 +3,8 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../../core/component/di/di.dart';
 import '../../../../../data/model/filter/filter.dart';
+import '../../../../../di/di.dart';
 import '../../../../../feature/publication_list/publication_list.dart';
 import '../../../../../feature/scroll/scroll.dart';
 import '../../../../widget/enhancement/progress_indicator.dart';

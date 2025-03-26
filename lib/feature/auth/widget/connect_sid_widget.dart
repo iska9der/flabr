@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../../core/component/di/di.dart';
-import '../../../../../feature/auth/auth.dart';
-import '../../../../extension/extension.dart';
+import '../../../di/di.dart';
+import '../../../presentation/extension/extension.dart';
+import '../cubit/auth_cubit.dart';
+import '../cubit/login_cubit.dart';
 
 class ConnectSidWidget extends StatefulWidget {
   const ConnectSidWidget({super.key});

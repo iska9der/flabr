@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import '../../../presentation/page/settings/widget/account/connect_sid_widget.dart';
+import 'connect_sid_widget.dart';
 import 'login_widget.dart';
 import 'profile_widget.dart';
 
