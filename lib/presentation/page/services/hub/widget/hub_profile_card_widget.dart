@@ -57,7 +57,7 @@ class _HubProfileCardWidgetState extends State<HubProfileCardWidget> {
             children: [
               Row(
                 children: [
-                  CardAvatarWidget(imageUrl: profile.imageUrl, height: 60),
+                  CardAvatarWidget(imageUrl: profile.imageUrl),
                   const SizedBox(width: 20),
                   Expanded(
                     child: Row(

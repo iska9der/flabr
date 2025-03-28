@@ -75,6 +75,7 @@ abstract class AppTheme {
       dialogTheme: dialogTheme,
       navigationBarTheme: navigationBarThemeData,
       bottomSheetTheme: bottomSheetThemeData,
+      listTileTheme: listTileThemeData,
     );
 
     return data;

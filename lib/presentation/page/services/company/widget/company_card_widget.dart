@@ -43,9 +43,8 @@ class CompanyCardWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  CardAvatarWidget(imageUrl: model.imageUrl, height: 60),
+                  CardAvatarWidget(imageUrl: model.imageUrl),
                   const SizedBox(width: 16),
                   Expanded(
                     child: Column(
@@ -55,43 +54,48 @@ class CompanyCardWidget extends StatelessWidget {
                           title: model.titleHtml,
                           renderType: renderType,
                         ),
-                        HtmlWidget(
-                          model.descriptionHtml,
-                          textStyle: Theme.of(context).textTheme.labelMedium,
-                        ),
+                        if (model.descriptionHtml.isNotEmpty)
+                          HtmlWidget(
+                            model.descriptionHtml,
+                            textStyle: Theme.of(context).textTheme.labelMedium,
+                          ),
                       ],
                     ),
                   ),
                 ],
               ),
-              const SizedBox(height: 20),
-              const Text('Пишет в хабы:'),
-              Wrap(
-                spacing: 14,
-                children:
-                    model.commonHubs.map((hub) {
-                      var title = hub.title;
-                      if (hub.isProfiled) {
-                        title += '*';
-                      }
+              if (model.commonHubs.isNotEmpty) ...[
+                const SizedBox(height: 20),
+                const Text('Пишет в хабы:'),
+                Wrap(
+                  spacing: 14,
+                  children:
+                      model.commonHubs.map((hub) {
+                        var title = hub.title;
+                        if (hub.isProfiled) {
+                          title += '*';
+                        }
 
-                      final route =
-                          switch (hub.type.isCorporative) {
-                                true => CompanyDashboardRoute(alias: hub.alias),
-                                false => HubDashboardRoute(alias: hub.alias),
-                              }
-                              as PageRouteInfo;
+                        final route =
+                            switch (hub.type.isCorporative) {
+                                  true => CompanyDashboardRoute(
+                                    alias: hub.alias,
+                                  ),
+                                  false => HubDashboardRoute(alias: hub.alias),
+                                }
+                                as PageRouteInfo;
 
-                      return InkWell(
-                        onTap: () => getIt<AppRouter>().navigate(route),
-                        borderRadius: AppStyles.borderRadius,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8),
-                          child: Text(title, style: hubLinkStyle),
-                        ),
-                      );
-                    }).toList(),
-              ),
+                        return InkWell(
+                          onTap: () => getIt<AppRouter>().navigate(route),
+                          borderRadius: AppStyles.borderRadius,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 8),
+                            child: Text(title, style: hubLinkStyle),
+                          ),
+                        );
+                      }).toList(),
+                ),
+              ],
             ],
           ),
         ),

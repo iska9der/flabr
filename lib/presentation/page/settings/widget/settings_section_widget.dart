@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 class SettingsSectionWidget extends StatelessWidget {
   const SettingsSectionWidget({
     super.key,
-    required this.title,
-    required this.children,
+    this.title,
+    this.children = const [],
   });
 
-  final String title;
+  final String? title;
   final List<Widget> children;
 
   @override
@@ -17,17 +17,12 @@ class SettingsSectionWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Padding(
-          padding: const EdgeInsets.only(top: 18, bottom: 10),
-          child: Text(
-            title,
-            style: textTheme.headlineMedium,
+        if (title != null)
+          Padding(
+            padding: const EdgeInsets.only(top: 18, bottom: 10),
+            child: Text(title!, style: textTheme.headlineMedium),
           ),
-        ),
-        Wrap(
-          runSpacing: 14,
-          children: children,
-        ),
+        Wrap(runSpacing: 14, children: children),
       ],
     );
   }

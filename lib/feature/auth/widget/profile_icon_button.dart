@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../presentation/extension/context.dart';
+import '../../../presentation/widget/card_avatar_widget.dart';
 import '../cubit/auth_cubit.dart';
 import 'dialog.dart';
 import 'profile_widget.dart';
@@ -13,15 +15,21 @@ class MyProfileIconButton extends StatelessWidget {
     return BlocBuilder<AuthCubit, AuthState>(
       builder: (context, state) {
         return IconButton(
-          onPressed: () => state.isAuthorized
-              ? showProfileDialog(context, child: const DialogMyProfileWidget())
-              : showLoginDialog(context),
-          icon: Icon(
-            Icons.account_circle_rounded,
-            color: state.isAuthorized
-                ? Theme.of(context).colorScheme.primary
-                : null,
-          ),
+          onPressed:
+              state.isAuthorized
+                  ? () => showProfileDialog(
+                    context,
+                    child: const DialogMyProfileWidget(),
+                  )
+                  : () => showLoginDialog(context),
+          icon:
+              state.isAuthorized
+                  ? CardAvatarWidget(
+                    imageUrl: state.me.avatarUrl,
+                    placeholderColor: context.theme.colorScheme.primary,
+                    height: context.theme.iconTheme.size ?? 24,
+                  )
+                  : Icon(Icons.no_accounts_rounded),
         );
       },
     );

@@ -17,7 +17,8 @@ abstract class AppDimensions {
   static const double cardPadding = 8.0;
   static const double cardBetweenHeight = 16.0;
 
-  static const double avatarHeight = 30.0;
+  static const double avatarHeight = 50.0;
+  static const double avatarPublicationHeight = 30.0;
   static const double imageHeight = 200.0;
 
   static const double publicationBottomBarHeight = 36.0;

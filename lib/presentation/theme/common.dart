@@ -75,3 +75,7 @@ const BottomSheetThemeData bottomSheetThemeData = BottomSheetThemeData(
 const ProgressIndicatorThemeData proggressIndicatorThemeData =
 // ignore: deprecated_member_use
 ProgressIndicatorThemeData(year2023: false);
+
+const ListTileThemeData listTileThemeData = ListTileThemeData(
+  shape: RoundedRectangleBorder(borderRadius: AppStyles.borderRadius),
+);

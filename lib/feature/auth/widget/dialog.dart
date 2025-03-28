@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'connect_sid_widget.dart';
-import 'login_widget.dart';
+import 'login_webview.dart';
 import 'profile_widget.dart';
 
 Future showProfileDialog(
@@ -53,7 +53,7 @@ Future showLoginDialog(BuildContext context) async {
                   )
                   : SizedBox(
                     width: MediaQuery.of(context).size.width,
-                    child: const LoginWidget(),
+                    child: const LoginWebView(),
                   ),
         ),
   );

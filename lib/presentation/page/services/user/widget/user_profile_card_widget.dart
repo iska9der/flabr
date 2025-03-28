@@ -56,10 +56,7 @@ class _UserProfileCardWidgetState extends State<UserProfileCardWidget> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(right: 20),
-                    child: CardAvatarWidget(
-                      imageUrl: model.avatarUrl,
-                      height: 50,
-                    ),
+                    child: CardAvatarWidget(imageUrl: model.avatarUrl),
                   ),
                   Row(
                     children: [
