@@ -5,7 +5,7 @@ import 'package:ya_summary/ya_summary.dart';
 
 import '../../../data/model/filter/filter.dart';
 import '../../../data/model/language/language.dart';
-import '../../../feature/auth/widget/connect_sid_widget.dart';
+import '../../../feature/auth/auth.dart';
 import '../../extension/extension.dart';
 import '../../theme/theme.dart';
 import '../../widget/filter/filter_chip_list.dart';
@@ -36,11 +36,11 @@ class SettingsView extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: ListView(
-          padding: AppInsets.screenPadding.copyWith(top: 0),
+          padding: AppInsets.screenPadding,
           children: [
             SettingsSectionWidget(
-              title: 'Аккаунт',
               children: [
+                AccountTile(),
                 SettingsCardWidget(
                   title: 'connect_sid',
                   subtitle: 'Если не удается войти через форму логина',

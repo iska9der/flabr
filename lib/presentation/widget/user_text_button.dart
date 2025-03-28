@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../../core/component/router/app_router.dart';
 import '../../data/model/user_base.dart';
 import '../../feature/auth/auth.dart';
+import '../theme/theme.dart';
 import 'card_avatar_widget.dart';
 
 class UserTextButton extends StatelessWidget {
@@ -15,23 +16,22 @@ class UserTextButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextButton(
       style: Theme.of(context).textButtonTheme.style!.copyWith(
-            alignment: Alignment.centerLeft,
-            padding: const WidgetStatePropertyAll(EdgeInsets.zero),
-            visualDensity: VisualDensity(vertical: -4, horizontal: -4),
-          ),
-      onPressed: () => context.router.push(
-        UserDashboardRoute(alias: user.alias),
+        alignment: Alignment.centerLeft,
+        padding: const WidgetStatePropertyAll(EdgeInsets.zero),
+        visualDensity: VisualDensity(vertical: -4, horizontal: -4),
       ),
+      onPressed:
+          () => context.router.push(UserDashboardRoute(alias: user.alias)),
       onLongPress: () {
-        showProfileDialog(
-          context,
-          child: DialogUserProfileWidget(user: user),
-        );
+        showProfileDialog(context, child: DialogUserProfileWidget(user: user));
       },
       child: Wrap(
         crossAxisAlignment: WrapCrossAlignment.center,
         children: [
-          CardAvatarWidget(imageUrl: user.avatarUrl),
+          CardAvatarWidget(
+            imageUrl: user.avatarUrl,
+            height: AppDimensions.avatarPublicationHeight,
+          ),
           const SizedBox(width: 8),
           Text(user.alias),
         ],
