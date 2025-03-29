@@ -204,34 +204,25 @@ class _DashboardAppBar extends StatelessWidget {
                 onPressed:
                     () => getIt<AppRouter>().push(const SearchAnywhereRoute()),
               ),
-              BlocBuilder<AuthCubit, AuthState>(
-                buildWhen:
-                    (previous, current) => previous.status != current.status,
-                builder: (context, state) {
-                  if (state.isUnauthorized) {
-                    return const SizedBox();
-                  }
+              if (context.read<AuthCubit>().state.isAuthorized)
+                Badge.count(
+                  count: userUpdates.trackerUnreadCount,
+                  isLabelVisible: userUpdates.trackerUnreadCount > 0,
+                  offset: const Offset(-8, 5),
+                  child: IconButton(
+                    icon: const Icon(Icons.notifications_outlined),
+                    tooltip: 'Трекер',
+                    onPressed: () async {
+                      await getIt<AppRouter>().push(
+                        const TrackerDashboardRoute(),
+                      );
 
-                  return Badge.count(
-                    count: userUpdates.trackerUnreadCount,
-                    isLabelVisible: userUpdates.trackerUnreadCount > 0,
-                    offset: const Offset(-8, 5),
-                    child: IconButton(
-                      icon: const Icon(Icons.notifications_outlined),
-                      tooltip: 'Трекер',
-                      onPressed: () async {
-                        await getIt<AppRouter>().push(
-                          const TrackerDashboardRoute(),
-                        );
-
-                        if (context.mounted) {
-                          context.read<AuthCubit>().fetchUpdates();
-                        }
-                      },
-                    ),
-                  );
-                },
-              ),
+                      if (context.mounted) {
+                        context.read<AuthCubit>().fetchUpdates();
+                      }
+                    },
+                  ),
+                ),
               const MyProfileIconButton(),
             ],
           ),
