@@ -37,13 +37,13 @@ class CompanyDetailPage extends StatelessWidget {
         }
 
         return ListView(
-          children: const [
-            CompanyProfileCardWidget(),
+          children: [
+            CompanyProfileCardWidget(card: state.card),
             Padding(
               padding: EdgeInsets.symmetric(
                 horizontal: AppDimensions.screenPadding,
               ),
-              child: CompanyDetailsWidget(),
+              child: CompanyDetailsWidget(card: state.card),
             ),
           ],
         );

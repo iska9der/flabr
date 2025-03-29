@@ -4,7 +4,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../../data/model/company/company.dart';
 import '../../../../../di/di.dart';
 import '../../../../../feature/scroll/scroll.dart';
 import '../../../../extension/extension.dart';
@@ -107,9 +106,9 @@ class CompanyListPageView extends StatelessWidget {
                       (state.status == CompanyListStatus.loading ? 1 : 0),
                   itemBuilder: (context, index) {
                     if (index < state.list.refs.length) {
-                      Company item = state.list.refs[index];
+                      final company = state.list.refs[index];
 
-                      return CompanyCardWidget(model: item);
+                      return CompanyCardWidget(company: company);
                     }
 
                     Timer(

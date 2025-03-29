@@ -19,17 +19,22 @@ class _FloatingScrollToTopButtonState extends State<FloatingScrollToTopButton> {
 
   @override
   Widget build(BuildContext context) {
-    var scrollCubit = context.read<ScrollCubit>();
-    var scrollCtrl = scrollCubit.state.controller;
+    var state = context.select<ScrollCubit, ScrollState>(
+      (value) => value.state,
+    );
+
+    if (!state.controller.hasClients) {
+      return const SizedBox();
+    }
 
     return AnimatedBuilder(
-      animation: scrollCtrl,
+      animation: state.controller.position.isScrollingNotifier,
       builder: (context, child) {
         bool visible = isVisible.value;
 
-        if (scrollCtrl.positions.isNotEmpty) {
-          final topEdge = scrollCubit.state.isTopEdge;
-          final direction = scrollCtrl.position.userScrollDirection;
+        if (state.controller.positions.isNotEmpty) {
+          final topEdge = state.isTopEdge;
+          final direction = state.controller.position.userScrollDirection;
           if (topEdge || direction == ScrollDirection.reverse) {
             visible = false;
           } else if (direction == ScrollDirection.forward) {
@@ -37,21 +42,20 @@ class _FloatingScrollToTopButtonState extends State<FloatingScrollToTopButton> {
           }
         }
 
-        isVisible.value = visible;
+        if (visible != isVisible.value) {
+          isVisible.value = visible;
+        }
 
-        return IgnorePointer(
-          ignoring: !isVisible.value,
-          child: AnimatedOpacity(
-            duration: scrollCubit.duration,
-            opacity: isVisible.value ? 1 : 0,
-            child: child,
-          ),
+        return AnimatedOpacity(
+          duration: context.read<ScrollCubit>().duration,
+          opacity: isVisible.value ? 1 : 0,
+          child: IgnorePointer(ignoring: !isVisible.value, child: child),
         );
       },
       child: FloatingActionButton(
         heroTag: null,
         mini: true,
-        onPressed: () => scrollCubit.animateToTop(),
+        onPressed: () => context.read<ScrollCubit>().animateToTop(),
         child: const Icon(Icons.arrow_upward),
       ),
     );

@@ -330,23 +330,6 @@ class CustomFactory extends WidgetFactory with SvgFactory, WebViewFactory {
             ),
           ),
         ),
-
-        /// TODO: копирование в буфер обмена
-        // Positioned(
-        //   top: 0,
-        //   right: 0,
-        //   child: IconButton(
-        //     onPressed: () {
-        //       Clipboard.setData(ClipboardData(text: text));
-
-        //       getIt<Utils>().showSnack(
-        //         context: context,
-        //         content: const Text('Скопировано в буфер обмена'),
-        //       );
-        //     },
-        //     icon: Icon(Icons.copy),
-        //   ),
-        // ),
       ],
     );
   }

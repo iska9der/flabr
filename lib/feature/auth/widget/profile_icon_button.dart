@@ -12,26 +12,25 @@ class MyProfileIconButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AuthCubit, AuthState>(
-      builder: (context, state) {
-        return IconButton(
-          onPressed:
-              state.isAuthorized
-                  ? () => showProfileDialog(
-                    context,
-                    child: const DialogMyProfileWidget(),
-                  )
-                  : () => showLoginDialog(context),
-          icon:
-              state.isAuthorized
-                  ? CardAvatarWidget(
-                    imageUrl: state.me.avatarUrl,
-                    placeholderColor: context.theme.colorScheme.primary,
-                    height: context.theme.iconTheme.size ?? 24,
-                  )
-                  : Icon(Icons.no_accounts_rounded),
-        );
-      },
+    final state = context.watch<AuthCubit>().state;
+
+    return IconButton(
+      key: Key('MyProfileIconButton'),
+      onPressed:
+          state.isAuthorized
+              ? () => showProfileDialog(
+                context,
+                child: const DialogMyProfileWidget(),
+              )
+              : () => showLoginDialog(context),
+      icon:
+          state.isAuthorized
+              ? CardAvatarWidget(
+                imageUrl: state.me.avatarUrl,
+                placeholderColor: context.theme.colorScheme.primary,
+                height: context.theme.iconTheme.size ?? 24,
+              )
+              : Icon(Icons.no_accounts_rounded),
     );
   }
 }

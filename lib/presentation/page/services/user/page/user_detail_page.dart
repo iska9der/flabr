@@ -48,11 +48,11 @@ class UserDetailPageView extends StatelessWidget {
             return const Center(child: Text('Не удалось найти пользователя'));
           }
 
-          var model = state.model;
+          var user = state.model;
 
           return ListView(
             children: [
-              const UserProfileCardWidget(),
+              UserProfileCardWidget(user: user),
               Padding(
                 padding: const EdgeInsets.symmetric(
                   horizontal: AppDimensions.screenPadding,
@@ -61,18 +61,18 @@ class UserDetailPageView extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     const Divider(),
-                    if (model.fullname.isNotEmpty)
+                    if (user.fullname.isNotEmpty)
                       FittedBox(
                         fit: BoxFit.scaleDown,
                         alignment: Alignment.topLeft,
                         child: Text(
-                          model.fullname,
+                          user.fullname,
                           style: Theme.of(context).textTheme.headlineMedium,
                         ),
                       ),
                     Text(
-                      model.speciality.isNotEmpty
-                          ? model.speciality
+                      user.speciality.isNotEmpty
+                          ? user.speciality
                           : 'Пользователь',
                       style: Theme.of(context).textTheme.labelLarge,
                     ),
@@ -80,23 +80,23 @@ class UserDetailPageView extends StatelessWidget {
                     SectionContainerWidget(
                       title: 'В рейтинге',
                       child: Text(
-                        model.ratingPosition == 0
+                        user.ratingPosition == 0
                             ? 'Не участвует'
-                            : '${model.ratingPosition.toString()}-й',
+                            : '${user.ratingPosition.toString()}-й',
                       ),
                     ),
-                    if (model.location.fullLocation.isNotEmpty)
+                    if (user.location.fullLocation.isNotEmpty)
                       SectionContainerWidget(
                         title: 'Откуда',
-                        child: Text(model.location.fullLocation),
+                        child: Text(user.location.fullLocation),
                       ),
-                    if (model.workplace.isNotEmpty) ...[
+                    if (user.workplace.isNotEmpty) ...[
                       SectionContainerWidget(
                         title: 'Работает в',
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children:
-                              model.workplace.map((e) {
+                              user.workplace.map((e) {
                                 return TextButton(
                                   onPressed:
                                       () => context.showSnack(
@@ -110,18 +110,18 @@ class UserDetailPageView extends StatelessWidget {
                         ),
                       ),
                     ],
-                    if (model.registeredAt != null)
+                    if (user.registeredAt != null)
                       SectionContainerWidget(
                         title: 'Зарегистрирован',
                         child: Text(
-                          DateFormat.yMMMMEEEEd().format(model.registeredAt!),
+                          DateFormat.yMMMMEEEEd().format(user.registeredAt!),
                         ),
                       ),
-                    if (model.lastActivityAt != null)
+                    if (user.lastActivityAt != null)
                       SectionContainerWidget(
                         title: 'Активность',
                         child: Text(
-                          DateFormat.yMMMMEEEEd().format(model.lastActivityAt!),
+                          DateFormat.yMMMMEEEEd().format(user.lastActivityAt!),
                         ),
                       ),
                     const UserWhoisWidget(),

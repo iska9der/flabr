@@ -21,7 +21,7 @@ class SubscriptionCubit extends Cubit<SubscriptionState> {
   void toggleSubscription() async {
     if (state.status.isLoading) return;
 
-    emit(state.copyWith(status: LoadingStatus.loading));
+    emit(state.copyWith(status: LoadingStatus.loading, error: ''));
 
     try {
       await repo.toggleSubscription(alias: state.alias);
@@ -32,13 +32,15 @@ class SubscriptionCubit extends Cubit<SubscriptionState> {
           isSubscribed: !state.isSubscribed,
         ),
       );
-    } catch (e) {
+    } catch (error, stackTrace) {
       emit(
         state.copyWith(
           status: LoadingStatus.failure,
-          error: e.parseException(),
+          error: error.parseException(),
         ),
       );
+
+      super.onError(error, stackTrace);
     }
   }
 }

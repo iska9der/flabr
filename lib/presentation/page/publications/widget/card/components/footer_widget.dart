@@ -29,6 +29,10 @@ class ArticleFooterWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isSummaryAuthorized = context.select<SummaryAuthCubit, bool>(
+      (cubit) => cubit.state.isAuthorized,
+    );
+
     return Row(
       mainAxisAlignment: mainAxisAlignment,
       children: [
@@ -46,23 +50,23 @@ class ArticleFooterWidget extends StatelessWidget {
                 ),
               ),
         ),
-        _BookmarkIconButton(publication: publication),
-        BlocBuilder<SummaryAuthCubit, SummaryAuthState>(
-          builder: (context, state) {
-            return PublicationStatIconButton(
-              icon: Icons.auto_awesome,
-              isHighlighted: state.isAuthorized,
-              onTap: () {
-                final url = '${Urls.baseUrl}/ru/articles/${publication.id}';
+        _BookmarkIconButton(
+          key: Key('PublicationFooter_bookmark_${publication.id}'),
+          publication: publication,
+        ),
+        PublicationStatIconButton(
+          key: Key('PublicationFooter_summary_${publication.id}'),
+          icon: Icons.auto_awesome,
+          isHighlighted: isSummaryAuthorized,
+          onTap: () {
+            final url = '${Urls.baseUrl}/ru/articles/${publication.id}';
 
-                showSummaryDialog(
-                  context,
-                  url: url,
-                  repository: getIt(),
-                  loaderWidget: CircleIndicator.medium(),
-                  onLinkPressed: (link) => getIt<AppRouter>().launchUrl(link),
-                );
-              },
+            showSummaryDialog(
+              context,
+              url: url,
+              repository: getIt(),
+              loaderWidget: CircleIndicator.medium(),
+              onLinkPressed: (link) => getIt<AppRouter>().launchUrl(link),
             );
           },
         ),
@@ -72,7 +76,7 @@ class ArticleFooterWidget extends StatelessWidget {
 }
 
 class _BookmarkIconButton extends StatelessWidget {
-  const _BookmarkIconButton({required this.publication});
+  const _BookmarkIconButton({required this.publication, super.key});
 
   final Publication publication;
 
@@ -101,9 +105,9 @@ class _BookmarkIconButton extends StatelessWidget {
             isLoading: state.status.isLoading,
             onTap:
                 () =>
-                    context.read<AuthCubit>().state.isUnauthorized
-                        ? showLoginDialog(context)
-                        : context.read<PublicationBookmarkCubit>().toggle(),
+                    context.read<AuthCubit>().state.isAuthorized
+                        ? context.read<PublicationBookmarkCubit>().toggle()
+                        : showLoginSnackBar(context),
           );
         },
       ),

@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../data/model/hub/hub.dart';
 import '../../../../../data/model/stat_type_enum.dart';
 import '../../../../../data/repository/repository.dart';
 import '../../../../../di/di.dart';
-import '../../../../../feature/auth/auth.dart';
 import '../../../../../feature/profile_subscribe/profile_subscribe.dart';
 import '../../../../theme/theme.dart';
 import '../../../../widget/card_avatar_widget.dart';
 import '../../../../widget/enhancement/card.dart';
 import '../../../../widget/profile_stat_widget.dart';
-import '../cubit/hub_cubit.dart';
 
 class HubProfileCardWidget extends StatefulWidget {
-  const HubProfileCardWidget({super.key});
+  const HubProfileCardWidget({super.key, required this.profile});
+
+  final HubProfile profile;
 
   @override
   State<HubProfileCardWidget> createState() => _HubProfileCardWidgetState();
@@ -45,63 +44,55 @@ class _HubProfileCardWidgetState extends State<HubProfileCardWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<HubCubit, HubState>(
-      builder: (context, state) {
-        var profile = state.profile;
-        var stats = profile.statistics;
+    var profile = widget.profile;
+    var stats = profile.statistics;
 
-        return FlabrCard(
-          padding: AppInsets.profileCardPadding,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+    return FlabrCard(
+      padding: AppInsets.profileCardPadding,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Row(
             children: [
-              Row(
-                children: [
-                  CardAvatarWidget(imageUrl: profile.imageUrl),
-                  const SizedBox(width: 20),
-                  Expanded(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        ProfileStatWidget(
-                          type: StatType.rating,
-                          title: 'Рейтинг',
-                          value: stats.rating,
-                        ),
-                        ProfileStatWidget(
-                          title: 'Подписчиков',
-                          value: stats.subscribersCount,
-                        ),
-                      ],
+              CardAvatarWidget(imageUrl: profile.imageUrl),
+              const SizedBox(width: 20),
+              Expanded(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    ProfileStatWidget(
+                      type: StatType.rating,
+                      title: 'Рейтинг',
+                      value: stats.rating,
                     ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 16),
-              Text(
-                profile.descriptionHtml,
-                textAlign: TextAlign.left,
-                style: Theme.of(context).textTheme.labelLarge,
-              ),
-              const SizedBox(height: 8),
-              Text(
-                profile.fullDescriptionHtml,
-                textAlign: TextAlign.left,
-                style: Theme.of(context).textTheme.bodySmall,
-              ),
-              if (context.watch<AuthCubit>().state.isAuthorized) ...[
-                const SizedBox(height: 8),
-                SubscribeButton(
-                  alias: state.alias,
-                  isSubscribed:
-                      (state.profile.relatedData as HubRelatedData)
-                          .isSubscribed,
+                    ProfileStatWidget(
+                      title: 'Подписчиков',
+                      value: stats.subscribersCount,
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ],
           ),
-        );
-      },
+          const SizedBox(height: 16),
+          Text(
+            profile.descriptionHtml,
+            textAlign: TextAlign.left,
+            style: Theme.of(context).textTheme.labelLarge,
+          ),
+          const SizedBox(height: 8),
+          Text(
+            profile.fullDescriptionHtml,
+            textAlign: TextAlign.left,
+            style: Theme.of(context).textTheme.bodySmall,
+          ),
+          const SizedBox(height: 8),
+          SubscribeButton(
+            alias: profile.alias,
+            isSubscribed: (profile.relatedData as HubRelatedData).isSubscribed,
+          ),
+        ],
+      ),
     );
   }
 }

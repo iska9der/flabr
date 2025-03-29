@@ -13,19 +13,20 @@ class AccountTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final state = context.select<AuthCubit, AuthState>((cubit) => cubit.state);
-    final titleText = state.me.alias.isEmpty ? 'Аккаунт' : state.me.alias;
+    final authState = context.select<AuthCubit, AuthState>((c) => c.state);
+    final titleText =
+        authState.me.alias.isEmpty ? 'Аккаунт' : authState.me.alias;
     final subtitleText =
-        state.me.fullname.isEmpty ? 'Вы не вошли' : state.me.fullname;
+        authState.me.fullname.isEmpty ? 'Вы не вошли' : authState.me.fullname;
 
     return ListTile(
       tileColor: context.theme.colors.card,
       title: Text(titleText),
       subtitle: Text(subtitleText),
       leading:
-          state.isAuthorized
+          authState.isAuthorized
               ? CardAvatarWidget(
-                imageUrl: state.me.avatarUrl,
+                imageUrl: authState.me.avatarUrl,
                 placeholderColor: context.theme.colorScheme.primary,
               )
               : Icon(
@@ -33,7 +34,7 @@ class AccountTile extends StatelessWidget {
                 size: AppDimensions.avatarHeight,
               ),
       onTap:
-          state.isAuthorized
+          authState.isAuthorized
               ? () => showProfileDialog(
                 context,
                 child: const DialogMyProfileWidget(),

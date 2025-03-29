@@ -177,7 +177,7 @@ class _SearchAnywhereViewState extends State<_SearchAnywhereView> {
                               renderType: RenderType.html,
                             ),
                             SearchTarget.companies => CompanyCardWidget(
-                              model: model,
+                              company: model,
                               renderType: RenderType.html,
                             ),
                             SearchTarget.users => UserCardWidget(model: model),
