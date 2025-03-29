@@ -168,27 +168,27 @@ class _DashboardAppBar extends StatelessWidget {
               child: TabBar(
                 controller: tabController,
                 isScrollable: true,
-                padding: EdgeInsets.zero,
-                labelPadding: const EdgeInsets.symmetric(horizontal: 12),
+                tabAlignment: TabAlignment.center,
+                labelPadding: const EdgeInsets.symmetric(horizontal: 8),
                 dividerColor: Colors.transparent,
                 tabs: [
                   DashboardDrawerLinkWidget(
-                    key: Key('DashboardDrawer_MyFeed'),
+                    key: Key('DashboardAppBar_MyFeed'),
                     title: 'Моя лента',
                     count: userUpdates.feeds.newCount,
                   ),
                   DashboardDrawerLinkWidget(
-                    key: Key('DashboardDrawer_Articles'),
+                    key: Key('DashboardAppBar_Articles'),
                     title: 'Статьи',
                     count: counters.articles,
                   ),
                   DashboardDrawerLinkWidget(
-                    key: Key('DashboardDrawer_Posts'),
+                    key: Key('DashboardAppBar_Posts'),
                     title: 'Посты',
                     count: counters.posts,
                   ),
                   DashboardDrawerLinkWidget(
-                    key: Key('DashboardDrawer_News'),
+                    key: Key('DashboardAppBar_News'),
                     title: 'Новости',
                     count: counters.news,
                   ),
@@ -205,23 +205,23 @@ class _DashboardAppBar extends StatelessWidget {
                     () => getIt<AppRouter>().push(const SearchAnywhereRoute()),
               ),
               if (context.read<AuthCubit>().state.isAuthorized)
-                Badge.count(
-                  count: userUpdates.trackerUnreadCount,
-                  isLabelVisible: userUpdates.trackerUnreadCount > 0,
-                  offset: const Offset(-8, 5),
-                  child: IconButton(
-                    icon: const Icon(Icons.notifications_outlined),
-                    tooltip: 'Трекер',
-                    onPressed: () async {
-                      await getIt<AppRouter>().push(
-                        const TrackerDashboardRoute(),
-                      );
-
-                      if (context.mounted) {
-                        context.read<AuthCubit>().fetchUpdates();
-                      }
-                    },
+                IconButton(
+                  key: Key('DashboardAppBar_TrackerIcon'),
+                  icon: Badge.count(
+                    count: userUpdates.trackerUnreadCount,
+                    isLabelVisible: userUpdates.trackerUnreadCount > 0,
+                    child: const Icon(Icons.notifications_outlined),
                   ),
+                  tooltip: 'Трекер',
+                  onPressed: () async {
+                    await getIt<AppRouter>().push(
+                      const TrackerDashboardRoute(),
+                    );
+
+                    if (context.mounted) {
+                      context.read<AuthCubit>().fetchUpdates();
+                    }
+                  },
                 ),
               const MyProfileIconButton(),
             ],
