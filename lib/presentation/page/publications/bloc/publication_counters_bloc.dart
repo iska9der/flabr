@@ -16,12 +16,12 @@ class PublicationCountersBloc
     extends Bloc<PublicationCountersEvent, PublicationCountersState> {
   PublicationCountersBloc({required this.repository})
     : super(const PublicationCountersState()) {
-    on<LoadEvent>(fetch);
+    on<LoadEvent>(_fetch);
   }
 
   final PublicationRepository repository;
 
-  FutureOr<void> fetch(
+  FutureOr<void> _fetch(
     LoadEvent event,
     Emitter<PublicationCountersState> emit,
   ) async {
