@@ -115,6 +115,7 @@ class HtmlView extends StatelessWidget {
                 return null;
               }
 
+              /// svg обрабатывется с помощью `SvgFactory`
               String imgExt = p.extension(imgSrc);
               if (imgExt == '.svg') return null;
 
@@ -160,9 +161,11 @@ class CustomFactory extends WidgetFactory with SvgFactory, WebViewFactory {
 
   @override
   bool get webView => true;
+
   @override
   bool get webViewMediaPlaybackAlwaysAllow => true;
 
+  /// список кривых iframe-источников
   List<String> iframeBanList = ['video.yandex.ru/iframe'];
 
   @override

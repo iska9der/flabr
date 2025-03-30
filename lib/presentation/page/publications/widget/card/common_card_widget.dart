@@ -11,6 +11,7 @@ import '../../../../theme/theme.dart';
 import '../../../../widget/enhancement/enhancement.dart';
 import '../../../settings/cubit/settings_cubit.dart';
 import '../stats/publication_stats_widget.dart';
+import 'card_html_widget.dart';
 import 'components/footer_widget.dart';
 import 'components/format_widget.dart';
 import 'components/header_widget.dart';
@@ -99,42 +100,10 @@ class CommonCardWidget extends StatelessWidget {
 
                   return Padding(
                     padding: const EdgeInsets.all(8),
-                    child: HtmlWidget(
-                      publication.leadData.textHtml,
+                    child: CardHtmlWidget(
+                      textHtml: publication.leadData.textHtml,
                       rebuildTriggers: [state.feed],
-                      customWidgetBuilder: (element) {
-                        if (element.localName == 'br') {
-                          return const SizedBox();
-                        }
-
-                        if (element.localName == 'img') {
-                          if (!state.feed.isImageVisible) {
-                            return const SizedBox();
-                          }
-
-                          String imgSrc =
-                              element.attributes['data-src'] ??
-                              element.attributes['src'] ??
-                              '';
-
-                          if (imgSrc.isEmpty) {
-                            return null;
-                          }
-
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 8),
-                            child: Align(
-                              child: NetworkImageWidget(
-                                imageUrl: imgSrc,
-                                height: AppDimensions.imageHeight,
-                                isTapable: true,
-                              ),
-                            ),
-                          );
-                        }
-
-                        return null;
-                      },
+                      isImageVisible: state.feed.isImageVisible,
                     ),
                   );
                 },
