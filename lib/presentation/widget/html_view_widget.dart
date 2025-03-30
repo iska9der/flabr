@@ -66,7 +66,7 @@ class HtmlView extends StatelessWidget {
             if (element.localName == 'code' &&
                 element.parent?.localName != 'pre') {
               return {
-                'background-color': theme.colors.cardHighlight.toHex(),
+                'background-color': theme.colors.cardHighlight.toHex,
                 'font-weight': '500',
               };
             }
