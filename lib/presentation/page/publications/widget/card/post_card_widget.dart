@@ -73,7 +73,7 @@ class PostCardWidget extends StatelessWidget {
               ),
             ],
           ),
-          ArticleFooterWidget(publication: post),
+          PublicationFooterWidget(publication: post),
         ],
       ),
     );

@@ -14,8 +14,8 @@ import '../../../cubit/publication_bookmark_cubit.dart';
 import '../../stats/publication_stat_icon_widget.dart';
 import 'score_widget.dart';
 
-class ArticleFooterWidget extends StatelessWidget {
-  const ArticleFooterWidget({
+class PublicationFooterWidget extends StatelessWidget {
+  const PublicationFooterWidget({
     super.key,
     required this.publication,
     this.isVoteBlocked = true,
@@ -87,6 +87,18 @@ class _BookmarkIconButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isAuthorized = context.select<AuthCubit, bool>(
+      (cubit) => cubit.state.isAuthorized,
+    );
+
+    if (!isAuthorized) {
+      return PublicationStatIconButton(
+        icon: Icons.bookmark_rounded,
+        value: publication.statistics.favoritesCount.compact(),
+        onTap: () => showLoginSnackBar(context),
+      );
+    }
+
     return BlocProvider(
       create:
           (_) => PublicationBookmarkCubit(
@@ -108,11 +120,7 @@ class _BookmarkIconButton extends StatelessWidget {
             value: state.count.compact(),
             isHighlighted: state.isBookmarked,
             isLoading: state.status.isLoading,
-            onTap:
-                () =>
-                    context.read<AuthCubit>().state.isAuthorized
-                        ? context.read<PublicationBookmarkCubit>().toggle()
-                        : showLoginSnackBar(context),
+            onTap: () => context.read<PublicationBookmarkCubit>().toggle(),
           );
         },
       ),

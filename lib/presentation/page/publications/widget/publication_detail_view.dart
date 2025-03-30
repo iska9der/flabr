@@ -323,7 +323,7 @@ class _BottomBar extends StatelessWidget {
             children: [
               Expanded(
                 flex: 7,
-                child: ArticleFooterWidget(
+                child: PublicationFooterWidget(
                   publication: publication,
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   isVoteBlocked: false,
