@@ -16,7 +16,10 @@ class PublicationHubsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Wrap(
       spacing: 14,
-      children: hubs.map((hub) => _PublicationHub(hub)).toList(),
+      children:
+          hubs
+              .map((hub) => _PublicationHub(key: Key(hub.alias), hub: hub))
+              .toList(),
     );
   }
 }
@@ -25,7 +28,7 @@ class PublicationHubsWidget extends StatelessWidget {
 /// который может быть коллективным (хаб), или корпоративным (блог компании).
 /// в зависимости от типа, ссылка перехода в методе `onTap` будет меняться
 class _PublicationHub extends StatelessWidget {
-  const _PublicationHub(this.hub);
+  const _PublicationHub({super.key, required this.hub});
 
   final PublicationHub hub;
 

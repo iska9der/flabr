@@ -18,7 +18,7 @@ class UserTextButton extends StatelessWidget {
       style: Theme.of(context).textButtonTheme.style!.copyWith(
         alignment: Alignment.centerLeft,
         padding: const WidgetStatePropertyAll(EdgeInsets.zero),
-        visualDensity: VisualDensity(vertical: -4, horizontal: -4),
+        visualDensity: const VisualDensity(vertical: -4, horizontal: -4),
       ),
       onPressed:
           () => context.router.push(UserDashboardRoute(alias: user.alias)),

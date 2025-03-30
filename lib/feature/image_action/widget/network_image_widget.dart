@@ -45,27 +45,34 @@ class NetworkImageWidget extends StatelessWidget {
       child:
           imageUrl.contains('.svg')
               ? SvgPicture.network(imageUrl, height: height)
-              : CachedNetworkImage(
-                cacheKey: imageUrl,
-                imageUrl: imageUrl,
+              : SizedBox(
                 height: height,
-                memCacheHeight: cacheHeight,
-                placeholder: loadingWidget ?? (_, _) => const _ImageSkeleton(),
-                errorWidget: errorWidget ?? (_, _, _) => const _ImageError(),
+                child: Image(
+                  height: height,
+                  errorBuilder: (_, _, _) => const _ImageError(),
+                  frameBuilder: (
+                    context,
+                    child,
+                    frame,
+                    wasSynchronouslyLoaded,
+                  ) {
+                    final isLoading = frame == null && !wasSynchronouslyLoaded;
+                    if (!isLoading) {
+                      return child;
+                    }
+
+                    return Skeletonizer(
+                      enabled: isLoading,
+                      child: const ColoredBox(color: Colors.white),
+                    );
+                  },
+                  image: ResizeImage.resizeIfNeeded(
+                    null,
+                    cacheHeight,
+                    CachedNetworkImageProvider(imageUrl, cacheKey: imageUrl),
+                  ),
+                ),
               ),
-    );
-  }
-}
-
-class _ImageSkeleton extends StatelessWidget {
-  // ignore: unused_element_parameter
-  const _ImageSkeleton({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const SizedBox(
-      height: AppDimensions.imageHeight,
-      child: Skeletonizer(child: ColoredBox(color: Colors.white)),
     );
   }
 }

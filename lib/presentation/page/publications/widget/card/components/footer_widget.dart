@@ -36,8 +36,13 @@ class ArticleFooterWidget extends StatelessWidget {
     return Row(
       mainAxisAlignment: mainAxisAlignment,
       children: [
-        ScoreWidget(isBlocked: isVoteBlocked, publication: publication),
+        ScoreWidget(
+          key: Key('PublicationFooter_score_${publication.id}'),
+          isBlocked: isVoteBlocked,
+          publication: publication,
+        ),
         PublicationStatIconButton(
+          key: Key('PublicationFooter_comments_${publication.id}'),
           icon: Icons.chat_bubble_rounded,
           value: publication.statistics.commentsCount.compact(),
           isHighlighted: publication.relatedData.unreadCommentsCount > 0,
@@ -65,7 +70,7 @@ class ArticleFooterWidget extends StatelessWidget {
               context,
               url: url,
               repository: getIt(),
-              loaderWidget: CircleIndicator.medium(),
+              loaderWidget: const CircleIndicator.medium(),
               onLinkPressed: (link) => getIt<AppRouter>().launchUrl(link),
             );
           },

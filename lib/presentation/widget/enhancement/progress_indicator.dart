@@ -26,7 +26,9 @@ class CircleIndicator extends StatelessWidget {
       child: SizedBox(
         height: size.height,
         width: size.height,
-        child: CircularProgressIndicator(strokeWidth: size.strokeWidth),
+        child: RepaintBoundary(
+          child: CircularProgressIndicator(strokeWidth: size.strokeWidth),
+        ),
       ),
     );
   }

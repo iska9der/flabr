@@ -62,32 +62,28 @@ class PublicationSliverList<
           );
         }
 
-        return SliverList(
-          delegate: SliverChildBuilderDelegate(
-            (c, i) {
-              if (i < publications.length) {
-                final publication = publications[i];
+        int additional =
+            (state.status == PublicationListStatus.loading ? 1 : 0);
 
-                return PublicationCardWidget(
-                  publication,
-                  showType: context.read<ListCubit>().showType,
-                );
-              }
+        return SliverList.builder(
+          itemCount: publications.length + additional,
+          itemBuilder: (context, index) {
+            if (index < publications.length) {
+              final publication = publications[index];
 
-              Timer(
-                scrollCubit?.duration ?? const Duration(milliseconds: 30),
-                () => scrollCubit?.animateToBottom(),
+              return PublicationCardWidget(
+                publication,
+                showType: context.read<ListCubit>().showType,
               );
+            }
 
-              return const SizedBox(
-                height: 60,
-                child: CircleIndicator.medium(),
-              );
-            },
-            childCount:
-                publications.length +
-                (state.status == PublicationListStatus.loading ? 1 : 0),
-          ),
+            Timer(
+              scrollCubit?.duration ?? const Duration(milliseconds: 30),
+              () => scrollCubit?.animateToBottom(),
+            );
+
+            return const SizedBox(height: 60, child: CircleIndicator.medium());
+          },
         );
       },
     );
