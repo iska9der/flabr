@@ -1,20 +1,27 @@
 import 'package:flutter/material.dart';
 
+import 'app_colors.dart';
 import 'app_scheme.dart';
 import 'common.dart';
 
 abstract class AppTheme {
-  static ThemeData get light => theme(
-    AppSchemeLight.scheme,
-  ).copyWith(extensions: [AppSchemeLight.colors]);
+  static ThemeData get light => createThemeData(
+    scheme: AppSchemeLight.scheme,
+    colors: AppSchemeLight.colors,
+  );
 
-  static ThemeData get dark =>
-      theme(AppSchemeDark.scheme).copyWith(extensions: [AppSchemeDark.colors]);
+  static ThemeData get dark => createThemeData(
+    scheme: AppSchemeDark.scheme,
+    colors: AppSchemeDark.colors,
+  );
 
-  static ThemeData theme(ColorScheme colorScheme) {
-    var typography = Typography.material2021(colorScheme: colorScheme);
+  static ThemeData createThemeData({
+    required ColorScheme scheme,
+    required AppColorsExtension colors,
+  }) {
+    var typography = Typography.material2021(colorScheme: scheme);
 
-    var textTheme = switch (colorScheme.brightness) {
+    var textTheme = switch (scheme.brightness) {
       Brightness.light => typography.black,
       Brightness.dark => typography.white,
     };
@@ -48,18 +55,19 @@ abstract class AppTheme {
 
     var data = ThemeData(
       useMaterial3: true,
-      colorScheme: colorScheme,
-      brightness: colorScheme.brightness,
-      scaffoldBackgroundColor: colorScheme.surface,
-      canvasColor: colorScheme.surface,
+      colorScheme: scheme,
+      brightness: scheme.brightness,
+      scaffoldBackgroundColor: scheme.surface,
+      canvasColor: scheme.surface,
       textTheme: textTheme,
+      extensions: [colors],
     );
 
     data = data.copyWith(
       cardTheme: appCardTheme,
       appBarTheme: appAppBarTheme.copyWith(
         titleTextStyle: appAppBarTheme.titleTextStyle?.apply(
-          color: colorScheme.onSurface,
+          color: scheme.onSurface,
         ),
       ),
       drawerTheme: appDrawerThemeData,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../extension/extension.dart';
 import '../../theme/theme.dart';
 
 class FlabrCard extends StatelessWidget {
@@ -22,14 +23,25 @@ class FlabrCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color: color,
-      elevation: elevation,
-      margin: margin,
-      clipBehavior: Clip.hardEdge,
-      child: InkWell(
-        onTap: onTap,
-        child: Padding(padding: padding, child: child),
+    final theme = context.theme;
+    final cardTheme = theme.cardTheme;
+    final cardMargin = margin ?? cardTheme.margin ?? const EdgeInsets.all(4.0);
+    final cardElevation = elevation ?? cardTheme.elevation ?? 1.0;
+    final cardColor = theme.colors.card;
+
+    return Padding(
+      padding: cardMargin,
+      child: Material(
+        elevation: cardElevation,
+        color: cardColor,
+        shadowColor: theme.colorScheme.shadow,
+        surfaceTintColor: cardColor,
+        shape: cardTheme.shape,
+        clipBehavior: Clip.hardEdge,
+        child: InkWell(
+          onTap: onTap,
+          child: Padding(padding: padding, child: child),
+        ),
       ),
     );
   }

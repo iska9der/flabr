@@ -11,17 +11,6 @@ abstract class AppColorsLight {
   static const Color cardHighlight = Color.fromARGB(255, 231, 243, 255);
 
   static const Color progressTrackColor = Color.fromARGB(76, 18, 141, 241);
-
-  static final extension = AppColorsExtension(
-    surface: surface,
-    primary: primary,
-    secondary: secondary,
-    tertiary: tertiary,
-    error: error,
-    card: card,
-    cardHighlight: cardHighlight,
-    progressTrackColor: progressTrackColor,
-  );
 }
 
 abstract class AppColorsDark {
@@ -35,17 +24,6 @@ abstract class AppColorsDark {
   static const Color cardHighlight = Color.fromARGB(255, 26, 51, 77);
 
   static const Color progressTrackColor = Color.fromARGB(51, 33, 150, 243);
-
-  static final extension = AppColorsExtension(
-    surface: surface,
-    primary: primary,
-    secondary: secondary,
-    tertiary: tertiary,
-    error: error,
-    card: card,
-    cardHighlight: cardHighlight,
-    progressTrackColor: progressTrackColor,
-  );
 }
 
 class AppColorsExtension extends ThemeExtension<AppColorsExtension> {

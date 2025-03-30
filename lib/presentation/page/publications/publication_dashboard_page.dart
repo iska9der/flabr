@@ -158,7 +158,7 @@ class _DashboardAppBar extends StatelessWidget {
     );
 
     return ColoredBox(
-      color: context.theme.colorScheme.surfaceContainerLow,
+      color: context.theme.colors.card,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
