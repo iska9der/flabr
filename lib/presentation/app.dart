@@ -53,7 +53,7 @@ class Application extends StatelessWidget {
             },
           ),
         ],
-        child: ApplicationView(),
+        child: const ApplicationView(),
       ),
     );
   }

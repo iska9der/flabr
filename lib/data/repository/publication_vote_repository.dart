@@ -36,7 +36,7 @@ class PublicationVoteRepositoryTest implements PublicationVoteRepository {
   Future<PublicationVoteResponse> voteUp(String publicationId) async {
     await Future.delayed(const Duration(seconds: 1));
 
-    return PublicationVoteResponse(
+    return const PublicationVoteResponse(
       score: 15,
       votesCount: 10,
       vote: PublicationVote(value: 1),
@@ -47,7 +47,7 @@ class PublicationVoteRepositoryTest implements PublicationVoteRepository {
   Future<PublicationVoteResponse> voteDown(String publicationId) async {
     await Future.delayed(const Duration(seconds: 1));
 
-    return PublicationVoteResponse(
+    return const PublicationVoteResponse(
       score: 14,
       votesCount: 10,
       vote: PublicationVote(value: -1),

@@ -15,7 +15,7 @@ class MyProfileIconButton extends StatelessWidget {
     final state = context.watch<AuthCubit>().state;
 
     return IconButton(
-      key: Key('MyProfileIconButton'),
+      key: const Key('MyProfileIconButton'),
       onPressed:
           state.isAuthorized
               ? () => showProfileDialog(
@@ -30,7 +30,7 @@ class MyProfileIconButton extends StatelessWidget {
                 placeholderColor: context.theme.colorScheme.primary,
                 height: context.theme.iconTheme.size ?? 24,
               )
-              : Icon(Icons.no_accounts_rounded),
+              : const Icon(Icons.no_accounts_rounded),
     );
   }
 }

@@ -104,7 +104,7 @@ class CommonCardWidget extends StatelessWidget {
                       rebuildTriggers: [state.feed],
                       customWidgetBuilder: (element) {
                         if (element.localName == 'br') {
-                          return SizedBox();
+                          return const SizedBox();
                         }
 
                         if (element.localName == 'img') {

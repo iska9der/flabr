@@ -77,7 +77,7 @@ class _ScoreTooltip extends StatelessWidget {
   Widget build(BuildContext context) {
     return Tooltip(
       triggerMode: TooltipTriggerMode.tap,
-      showDuration: Duration(seconds: 5),
+      showDuration: const Duration(seconds: 5),
       message:
           'Всего голосов $votesCount: '
           '↑$votesCountPlus и ↓$votesCountMinus',
@@ -98,7 +98,7 @@ class _VoteButtons extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final iconStyle = IconButton.styleFrom(
-      visualDensity: VisualDensity(horizontal: -4, vertical: -4),
+      visualDensity: const VisualDensity(horizontal: -4, vertical: -4),
       minimumSize: const Size(36, double.infinity),
     );
 
@@ -128,12 +128,12 @@ class _VoteButtons extends StatelessWidget {
               IconButton(
                 style: iconStyle,
                 tooltip: 'Повысить рейтинг',
-                icon: Icon(Icons.arrow_upward, size: 18),
+                icon: const Icon(Icons.arrow_upward, size: 18),
                 onPressed:
                     isLoading
                         ? null
                         : () => context.read<PublicationVoteBloc>().add(
-                          PublicationVoteEvent.voteUp(),
+                          const PublicationVoteEvent.voteUp(),
                         ),
               ),
               _ScoreTooltip(
@@ -164,7 +164,7 @@ class _VoteButtons extends StatelessWidget {
                     isLoading
                         ? null
                         : () => context.read<PublicationVoteBloc>().add(
-                          PublicationVoteEvent.voteDown(),
+                          const PublicationVoteEvent.voteDown(),
                         ),
               ),
             ],

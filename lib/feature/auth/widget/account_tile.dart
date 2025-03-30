@@ -29,7 +29,7 @@ class AccountTile extends StatelessWidget {
                 imageUrl: authState.me.avatarUrl,
                 placeholderColor: context.theme.colorScheme.primary,
               )
-              : Icon(
+              : const Icon(
                 Icons.no_accounts_rounded,
                 size: AppDimensions.avatarHeight,
               ),

@@ -34,13 +34,13 @@ ScrollbarThemeData appScrollBarThemeData = ScrollbarThemeData(
 
 TextButtonThemeData appTextButtonThemeData = TextButtonThemeData(
   style: TextButton.styleFrom(
-    shape: RoundedRectangleBorder(borderRadius: AppStyles.borderRadius),
+    shape: const RoundedRectangleBorder(borderRadius: AppStyles.borderRadius),
   ),
 );
 
 IconButtonThemeData appIconButtonThemeData = IconButtonThemeData(
   style: IconButton.styleFrom(
-    shape: RoundedRectangleBorder(borderRadius: AppStyles.borderRadius),
+    shape: const RoundedRectangleBorder(borderRadius: AppStyles.borderRadius),
   ),
 );
 

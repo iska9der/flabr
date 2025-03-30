@@ -85,7 +85,7 @@ class _PublicationDetailViewState extends State<PublicationDetailView> {
                     Text(state.error),
                     FilledButton(
                       onPressed: () => fetchPublication(),
-                      child: Text('Попробовать снова'),
+                      child: const Text('Попробовать снова'),
                     ),
                   ],
                 ),
@@ -315,7 +315,7 @@ class _BottomBar extends StatelessWidget {
       child: ColoredBox(
         color: Theme.of(context).colorScheme.surface.withValues(alpha: .94),
         child: ConstrainedBox(
-          constraints: BoxConstraints(
+          constraints: const BoxConstraints(
             maxHeight: AppDimensions.publicationBottomBarHeight,
           ),
           child: Row(

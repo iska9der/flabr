@@ -237,14 +237,14 @@ class CustomFactory extends WidgetFactory with SvgFactory, WebViewFactory {
                               content: const Text('Скопировано в буфер обмена'),
                             );
                           },
-                          child: Text('Копировать в буфер'),
+                          child: const Text('Копировать в буфер'),
                         ),
                         TextButton(
                           onPressed: () {
                             go();
                             Navigator.of(context).pop();
                           },
-                          child: Text('Перейти'),
+                          child: const Text('Перейти'),
                         ),
                       ],
                 );
@@ -324,7 +324,7 @@ class CustomFactory extends WidgetFactory with SvgFactory, WebViewFactory {
               child: Text(
                 text,
                 style: textStyle?.copyWith(
-                  fontVariations: [FontVariation('wght', 500)],
+                  fontVariations: [const FontVariation('wght', 500)],
                 ),
               ),
             ),

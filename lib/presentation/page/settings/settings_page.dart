@@ -40,12 +40,12 @@ class SettingsView extends StatelessWidget {
           children: [
             SettingsSectionWidget(
               children: [
-                AccountTile(),
-                SettingsCardWidget(
+                const AccountTile(),
+                const SettingsCardWidget(
                   title: 'connect_sid',
                   subtitle: 'Если не удается войти через форму логина',
                   child: Padding(
-                    padding: const EdgeInsets.only(top: 12.0),
+                    padding: EdgeInsets.only(top: 12.0),
                     child: ConnectSidWidget(),
                   ),
                 ),
@@ -63,11 +63,11 @@ class SettingsView extends StatelessWidget {
                 ),
               ],
             ),
-            SettingsSectionWidget(
+            const SettingsSectionWidget(
               title: 'Интерфейс',
               children: [UIThemeWidget(), UILangWidget(), ArticlesLangWidget()],
             ),
-            SettingsSectionWidget(
+            const SettingsSectionWidget(
               title: 'Лента',
               children: [
                 SettingsFeedWidget(),
@@ -75,7 +75,7 @@ class SettingsView extends StatelessWidget {
                 SettingScrollVariantWidget(),
               ],
             ),
-            SettingsSectionWidget(
+            const SettingsSectionWidget(
               title: 'Публикации',
               children: [
                 SettingsCardWidget(
