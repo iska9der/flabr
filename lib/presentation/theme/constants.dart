@@ -58,3 +58,9 @@ abstract class AppStyles {
     Radius.circular(AppDimensions.borderRadius),
   );
 }
+
+abstract class AppIcons {
+  static const IconData hubPlaceholder = Icons.hub_rounded;
+  static const IconData authorPlaceholder = Icons.account_circle;
+  static const IconData companyPlaceholder = Icons.schedule_rounded;
+}

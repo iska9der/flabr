@@ -44,7 +44,10 @@ class CompanyCardWidget extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  CardAvatarWidget(imageUrl: company.imageUrl),
+                  CardAvatarWidget(
+                    imageUrl: company.imageUrl,
+                    placeholderIcon: AppIcons.companyPlaceholder,
+                  ),
                   const SizedBox(width: 16),
                   Expanded(
                     child: Column(

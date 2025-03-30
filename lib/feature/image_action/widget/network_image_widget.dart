@@ -12,15 +12,15 @@ class NetworkImageWidget extends StatelessWidget {
     required this.imageUrl,
     this.isTapable = false,
     this.height,
-    this.loadingWidget,
-    this.errorWidget,
+    this.loadingPlaceholder,
+    this.errorBuilder,
   });
 
   final String imageUrl;
   final bool isTapable;
   final double? height;
-  final PlaceholderWidgetBuilder? loadingWidget;
-  final LoadingErrorWidgetBuilder? errorWidget;
+  final Widget? loadingPlaceholder;
+  final ImageErrorWidgetBuilder? errorBuilder;
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +49,8 @@ class NetworkImageWidget extends StatelessWidget {
                 height: height,
                 child: Image(
                   height: height,
-                  errorBuilder: (_, _, _) => const _ImageError(),
+                  errorBuilder:
+                      errorBuilder ?? (_, _, _) => const _ImageError(),
                   frameBuilder: (
                     context,
                     child,
@@ -59,6 +60,10 @@ class NetworkImageWidget extends StatelessWidget {
                     final isLoading = frame == null && !wasSynchronouslyLoaded;
                     if (!isLoading) {
                       return child;
+                    }
+
+                    if (loadingPlaceholder != null) {
+                      return loadingPlaceholder!;
                     }
 
                     return Skeletonizer(

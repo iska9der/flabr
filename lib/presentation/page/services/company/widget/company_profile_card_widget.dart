@@ -56,7 +56,10 @@ class _CompanyProfileCardWidgetState extends State<CompanyProfileCardWidget> {
         children: [
           Row(
             children: [
-              CardAvatarWidget(imageUrl: card.imageUrl),
+              CardAvatarWidget(
+                imageUrl: card.imageUrl,
+                placeholderIcon: AppIcons.companyPlaceholder,
+              ),
               const SizedBox(width: 20),
               Expanded(
                 child: Row(
