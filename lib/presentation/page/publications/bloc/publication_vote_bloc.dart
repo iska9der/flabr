@@ -28,8 +28,12 @@ class PublicationVoteBloc
            vote: publication.relatedData.vote.value,
          ),
        ) {
-    on<_VoteUpEvent>(_onVoteUp);
-    on<_VoteDownEvent>(_onVoteDown);
+    on<PublicationVoteEvent>(
+      (event, emit) => event.map(
+        voteUp: (value) => _voteUp(value, emit),
+        voteDown: (value) => _voteDown(value, emit),
+      ),
+    );
   }
 
   final PublicationVoteRepository repository;
@@ -48,7 +52,7 @@ class PublicationVoteBloc
     return null;
   }
 
-  FutureOr<void> _onVoteUp(
+  FutureOr<void> _voteUp(
     _VoteUpEvent event,
     Emitter<PublicationVoteState> emit,
   ) async {
@@ -88,7 +92,7 @@ class PublicationVoteBloc
   }
 
   /// TODO: неизвестно как работает понижение голосов
-  FutureOr<void> _onVoteDown(
+  FutureOr<void> _voteDown(
     _VoteDownEvent event,
     Emitter<PublicationVoteState> emit,
   ) async {

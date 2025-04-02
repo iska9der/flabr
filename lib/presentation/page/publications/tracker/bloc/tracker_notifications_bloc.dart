@@ -17,8 +17,12 @@ class TrackerNotificationsBloc
     required this.repository,
     required TrackerNotificationCategory category,
   }) : super(TrackerNotificationsState(category: category)) {
-    on<LoadEvent>(_fetch);
-    on<MarkAsReadEvent>(_read);
+    on<TrackerNotificationsEvent>(
+      (event, emit) => event.map(
+        load: (event) => _fetch(event, emit),
+        read: (event) => _read(event, emit),
+      ),
+    );
   }
 
   final TrackerRepository repository;

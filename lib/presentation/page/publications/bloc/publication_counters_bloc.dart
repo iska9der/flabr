@@ -16,7 +16,9 @@ class PublicationCountersBloc
     extends Bloc<PublicationCountersEvent, PublicationCountersState> {
   PublicationCountersBloc({required this.repository})
     : super(const PublicationCountersState()) {
-    on<LoadEvent>(_fetch);
+    on<PublicationCountersEvent>(
+      (event, emit) => event.map(load: (event) => _fetch(event, emit)),
+    );
   }
 
   final PublicationRepository repository;

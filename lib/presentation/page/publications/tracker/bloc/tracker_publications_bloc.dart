@@ -15,7 +15,9 @@ class TrackerPublicationsBloc
     extends Bloc<TrackerPublicationsEvent, TrackerPublicationsState> {
   TrackerPublicationsBloc({required this.repository})
     : super(const TrackerPublicationsState()) {
-    on<LoadEvent>(_fetch);
+    on<TrackerPublicationsEvent>(
+      (event, emit) => event.map(load: (event) => _fetch(event, emit)),
+    );
   }
 
   final TrackerRepository repository;

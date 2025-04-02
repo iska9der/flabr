@@ -15,9 +15,13 @@ class TrackerPublicationsMarkerBloc
         Bloc<TrackerPublicationsMarkerEvent, TrackerPublicationsMarkerState> {
   TrackerPublicationsMarkerBloc({required this.repository})
     : super(const TrackerPublicationsMarkerState()) {
-    on<MarkEvent>(_mark);
-    on<RemoveEvent>(_delete);
-    on<ReadEvent>(_read);
+    on<TrackerPublicationsMarkerEvent>(
+      (event, emit) => event.map(
+        read: (event) => _read(event, emit),
+        mark: (event) => _mark(event, emit),
+        remove: (event) => _remove(event, emit),
+      ),
+    );
   }
 
   final TrackerRepository repository;
@@ -62,7 +66,7 @@ class TrackerPublicationsMarkerBloc
     }
   }
 
-  FutureOr<void> _delete(
+  FutureOr<void> _remove(
     RemoveEvent event,
     Emitter<TrackerPublicationsMarkerState> emit,
   ) async {
