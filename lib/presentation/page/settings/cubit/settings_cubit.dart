@@ -32,8 +32,8 @@ class SettingsCubit extends Cubit<SettingsState> {
   final LanguageRepository _langRepository;
   final CacheStorage _storage;
 
-  late final StreamSubscription _langUiSub;
-  late final StreamSubscription _langArticleSub;
+  late final StreamSubscription<Language> _langUiSub;
+  late final StreamSubscription<List<Language>> _langArticleSub;
 
   @override
   Future<void> close() {
@@ -42,7 +42,7 @@ class SettingsCubit extends Cubit<SettingsState> {
     return super.close();
   }
 
-  void init() async {
+  Future<void> init() async {
     emit(state.copyWith(status: SettingsStatus.loading));
 
     final (langUI, langArticles) = _initLanguages();
@@ -66,8 +66,10 @@ class SettingsCubit extends Cubit<SettingsState> {
     _langRepository.articles,
   );
 
-  changeUILang(Language? uiLang) {
-    if (uiLang == null) return;
+  void changeUILang(Language? uiLang) {
+    if (uiLang == null) {
+      return;
+    }
 
     emit(state.copyWith(langUI: uiLang));
 
@@ -86,18 +88,25 @@ class SettingsCubit extends Cubit<SettingsState> {
       newLangs.remove(lang);
     }
 
-    if (newLangs.isEmpty) return (false, []);
+    if (newLangs.isEmpty) {
+      return (false, []);
+    }
 
     return (true, newLangs);
   }
 
-  changeArticleLang(Language lang, {bool? isEnabled}) async {
-    if (isEnabled == null) return;
+  Future<void> changeArticleLang(Language lang, {bool? isEnabled}) async {
+    if (isEnabled == null) {
+      return;
+    }
+
     var (isValid, newLangs) = validateChangeArticlesLang(
       lang,
       isEnabled: isEnabled,
     );
-    if (!isValid) return;
+    if (!isValid) {
+      return;
+    }
 
     emit(state.copyWith(langArticles: newLangs));
 
@@ -146,7 +155,9 @@ class SettingsCubit extends Cubit<SettingsState> {
   }
 
   void changeTheme(ThemeMode mode) {
-    if (state.theme.mode == mode) return;
+    if (state.theme.mode == mode) {
+      return;
+    }
 
     final newConfig = state.theme.copyWith(mode: mode, isDarkTheme: null);
 
@@ -180,7 +191,9 @@ class SettingsCubit extends Cubit<SettingsState> {
   }
 
   void changeArticleFontScale(double newScale) {
-    if (state.publication.fontScale == newScale) return;
+    if (state.publication.fontScale == newScale) {
+      return;
+    }
 
     var newConfig = state.publication.copyWith(fontScale: newScale);
 

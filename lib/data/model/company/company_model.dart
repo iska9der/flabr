@@ -43,6 +43,8 @@ class Company extends CompanyBase with EquatableMixin {
   }
 
   factory Company.fromMap(Map<String, dynamic> map) {
+    final hubsList = List<Map<String, dynamic>>.from(map['commonHubs'] ?? []);
+
     return Company(
       alias: (map['alias'] ?? '') as String,
       imageUrl: (map['imageUrl'] ?? '') as String,
@@ -61,9 +63,7 @@ class Company extends CompanyBase with EquatableMixin {
               )
               : CompanyStatistics.empty,
       commonHubs: UnmodifiableListView(
-        List.from(
-          map['commonHubs'] ?? {},
-        ).map((hub) => CompanyHub.fromMap(hub)),
+        hubsList.map((hub) => CompanyHub.fromMap(hub)),
       ),
     );
   }

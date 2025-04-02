@@ -67,7 +67,7 @@ class UserBookmarkListCubit
     );
   }
 
-  changeType(UserBookmarksType type) {
+  void changeType(UserBookmarksType type) {
     if (type == state.type) return;
 
     emit(UserBookmarkListState(user: state.user, type: type));

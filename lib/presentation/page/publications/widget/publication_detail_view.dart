@@ -44,18 +44,18 @@ class _PublicationDetailViewState extends State<PublicationDetailView> {
   }
 
   @override
-  dispose() {
+  void dispose() {
     controller.removeListener(_progressListener);
     controller.dispose();
     super.dispose();
   }
 
-  fetchPublication() {
+  void fetchPublication() {
     context.read<PublicationDetailCubit>().fetch();
   }
 
   /// Вычисление прогресса скролла
-  _progressListener() {
+  void _progressListener() {
     final max = controller.position.maxScrollExtent;
     final current = controller.position.pixels;
     final normalized = (current - 0) / (max - 0);

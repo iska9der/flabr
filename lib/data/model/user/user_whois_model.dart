@@ -17,13 +17,13 @@ class UserWhois extends Equatable {
 
   final List<UserBadget> badgets;
   final String aboutHtml;
-  final List contacts;
+  final List<dynamic> contacts;
   final UserInvitedByModel invitedBy;
 
   UserWhois copyWith({
     List<UserBadget>? badgets,
     String? aboutHtml,
-    List? contacts,
+    List<dynamic>? contacts,
     UserInvitedByModel? invitedBy,
   }) {
     return UserWhois(

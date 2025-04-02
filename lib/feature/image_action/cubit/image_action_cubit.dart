@@ -21,7 +21,7 @@ class ImageActionCubit extends Cubit<ImageActionState> {
   final HttpClient _client;
   final String additionalPath = 'images';
 
-  _init() async {
+  Future<void> _init() async {
     if (state.url.isEmpty) {
       return emit(state.copyWith(isSaveEnabled: false));
     }
@@ -31,7 +31,7 @@ class ImageActionCubit extends Cubit<ImageActionState> {
     }
   }
 
-  _parseImage() async {
+  Future<void> _parseImage() async {
     if (state.bytes != null) return;
 
     final response = await _client.get(
@@ -50,7 +50,7 @@ class ImageActionCubit extends Cubit<ImageActionState> {
     emit(state.copyWith(name: name, mimeType: mimeType, bytes: bytes));
   }
 
-  pickAndSave() async {
+  Future<void> pickAndSave() async {
     if (state.status == ImageActionStatus.loading || !state.isSaveEnabled) {
       return;
     }
@@ -74,16 +74,19 @@ class ImageActionCubit extends Cubit<ImageActionState> {
       );
 
       emit(state.copyWith(status: ImageActionStatus.success));
-    } catch (e) {
+    } catch (error, stackTrace) {
       emit(
-        state.copyWith(status: ImageActionStatus.failure, error: e.toString()),
+        state.copyWith(
+          status: ImageActionStatus.failure,
+          error: error.parseException(),
+        ),
       );
 
-      rethrow;
+      super.onError(error, stackTrace);
     }
   }
 
-  share() async {
+  Future<void> share() async {
     if (state.status == ImageActionStatus.loading || !state.isShareEnabled) {
       return;
     }
@@ -102,12 +105,15 @@ class ImageActionCubit extends Cubit<ImageActionState> {
       ]);
 
       emit(state.copyWith(status: ImageActionStatus.success));
-    } catch (e) {
+    } catch (error, stackTrace) {
       emit(
-        state.copyWith(status: ImageActionStatus.failure, error: e.toString()),
+        state.copyWith(
+          status: ImageActionStatus.failure,
+          error: error.parseException(),
+        ),
       );
 
-      rethrow;
+      super.onError(error, stackTrace);
     }
   }
 }

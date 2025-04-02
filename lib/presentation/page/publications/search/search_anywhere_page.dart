@@ -67,7 +67,7 @@ class _SearchAnywhereViewState extends State<_SearchAnywhereView> {
     );
   }
 
-  void showResults(BuildContext context, query) {
+  void showResults(BuildContext context, String query) {
     _focusNode.unfocus();
     context.read<SearchCubit>().changeQuery(query);
   }
@@ -212,7 +212,7 @@ class _SearchAnywhereViewState extends State<_SearchAnywhereView> {
 class _TargetOptions extends StatelessWidget {
   const _TargetOptions({required this.onSubmit});
 
-  final Function(String query) onSubmit;
+  final void Function(String query) onSubmit;
 
   @override
   Widget build(BuildContext context) {
@@ -253,7 +253,7 @@ class _TargetOptions extends StatelessWidget {
 class _OrderOptions extends StatelessWidget {
   const _OrderOptions({required this.onSubmit});
 
-  final Function(String query) onSubmit;
+  final void Function(String query) onSubmit;
 
   @override
   Widget build(BuildContext context) {

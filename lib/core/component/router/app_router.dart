@@ -47,11 +47,11 @@ part 'app_router.gr.dart';
 // extend the generated private router
 class AppRouter extends RootStackRouter {
   /// Открыть внешнюю ссылку
-  Future launchUrl(String url) =>
+  Future<bool> launchUrl(String url) =>
       launchUrlString(url, mode: LaunchMode.externalApplication);
 
   /// Открыть ссылку в приложении, либо в браузере
-  Future navigateOrLaunchUrl(Uri uri) async {
+  Future<dynamic> navigateOrLaunchUrl(Uri uri) async {
     final id = parseId(uri);
 
     if (id != null) {

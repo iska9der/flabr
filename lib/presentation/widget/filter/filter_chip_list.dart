@@ -14,7 +14,7 @@ class FilterChipList extends StatelessWidget {
   final bool isEnabled;
   final List<FilterOption> options;
   final bool Function(FilterOption option) isSelected;
-  final Function(bool isSelected, FilterOption option) onSelected;
+  final void Function(bool isSelected, FilterOption option) onSelected;
 
   @override
   Widget build(BuildContext context) {

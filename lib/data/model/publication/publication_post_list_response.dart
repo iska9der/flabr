@@ -27,7 +27,7 @@ class PublicationPostListResponse extends ListResponse<Publication>
   }
 
   static const empty = PublicationPostListResponse(pagesCount: 0);
-  get isEmpty => this == empty;
+  bool get isEmpty => this == empty;
 
   @override
   List<Object> get props => [pagesCount, ids, refs];

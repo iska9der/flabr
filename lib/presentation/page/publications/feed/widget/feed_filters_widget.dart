@@ -56,7 +56,7 @@ class _FilterView extends StatefulWidget {
   final FilterOption currentScore;
 
   final List<FeedFilterPublication> currentTypes;
-  final Function(FeedFilter filter) onSubmit;
+  final void Function(FeedFilter filter) onSubmit;
 
   @override
   State<_FilterView> createState() => _FilterViewState();

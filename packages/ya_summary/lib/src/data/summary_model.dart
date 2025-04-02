@@ -24,9 +24,9 @@ class SummaryModel extends Equatable {
   }
 
   factory SummaryModel.fromMap(Map<String, dynamic> map) {
-    final thesis = List.from(map['thesis'] ?? []);
+    final thesisList = List<Map<String, dynamic>>.from(map['thesis'] ?? []);
     final parsedContent =
-        List<String>.from(thesis.map((t) => t['content'])).toList();
+        List<String>.from(thesisList.map((t) => t['content'])).toList();
 
     return SummaryModel(
       title: (map['title'] ?? '') as String,

@@ -26,7 +26,7 @@ class FeedListResponse extends ListResponse<Publication> with EquatableMixin {
   }
 
   static const empty = FeedListResponse(pagesCount: 0);
-  get isEmpty => this == empty;
+  bool get isEmpty => this == empty;
 
   @override
   List<Object> get props => [pagesCount, ids, refs];

@@ -18,7 +18,7 @@ class LoginCubit extends Cubit<LoginState> {
 
   final TokenRepository _tokenRepository;
 
-  submitConnectSid(String value) async {
+  Future<void> submitConnectSid(String value) async {
     if (state.status.isLoading) return;
 
     if (value.isEmpty) {

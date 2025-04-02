@@ -18,7 +18,7 @@ class SearchRepository {
 
   final SearchService _service;
 
-  Future<ListResponse> fetch({
+  Future<ListResponse<dynamic>> fetch({
     required Language langUI,
     required List<Language> langArticles,
     required String query,

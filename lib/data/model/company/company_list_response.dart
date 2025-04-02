@@ -26,7 +26,7 @@ class CompanyListResponse extends ListResponse<Company> with EquatableMixin {
   }
 
   static const empty = CompanyListResponse(pagesCount: 0);
-  get isEmpty => this == empty;
+  bool get isEmpty => this == empty;
 
   @override
   List<Object?> get props => [pagesCount, ids, refs];

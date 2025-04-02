@@ -97,6 +97,9 @@ class PublicationCommon extends Publication {
   final PublicationFormat? format;
 
   factory PublicationCommon.fromMap(Map<String, dynamic> map) {
+    final hubsList = List<Map<String, dynamic>>.from(map['hubs'] ?? []);
+    final tagsList = List<Map<String, dynamic>>.from(map['tags'] ?? []);
+
     return PublicationCommon(
       id: map['id'],
       type:
@@ -120,11 +123,9 @@ class PublicationCommon extends Publication {
               ? PublicationRelatedData.fromJson(map['relatedData'])
               : PublicationRelatedData.empty,
       hubs: UnmodifiableListView(
-        List.from(map['hubs'] ?? []).map((e) => PublicationHub.fromMap(e)),
+        hubsList.map((e) => PublicationHub.fromMap(e)),
       ),
-      tags: UnmodifiableListView(
-        List.from(map['tags'] ?? []).map((tag) => tag['titleHtml']),
-      ),
+      tags: UnmodifiableListView(tagsList.map((tag) => tag['titleHtml'])),
 
       /// добавленные поля
       titleHtml: map['titleHtml'] ?? '',
@@ -172,6 +173,9 @@ class PublicationPost extends Publication {
   });
 
   factory PublicationPost.fromMap(Map<String, dynamic> map) {
+    final hubsList = List<Map<String, dynamic>>.from(map['hubs'] ?? []);
+    final tagsList = List<Map<String, dynamic>>.from(map['tags'] ?? []);
+
     return PublicationPost(
       id: map['id'],
       type: PublicationType.post,
@@ -190,11 +194,9 @@ class PublicationPost extends Publication {
               ? PublicationRelatedData.fromJson(map['relatedData'])
               : PublicationRelatedData.empty,
       hubs: UnmodifiableListView(
-        List.from(map['hubs'] ?? []).map((e) => PublicationHub.fromMap(e)),
+        hubsList.map((e) => PublicationHub.fromMap(e)),
       ),
-      tags: UnmodifiableListView(
-        List.from(map['tags'] ?? []).map((tag) => tag['titleHtml']),
-      ),
+      tags: UnmodifiableListView(tagsList.map((tag) => tag['titleHtml'])),
     );
   }
 

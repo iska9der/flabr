@@ -26,7 +26,7 @@ class PublicationBookmarkCubit extends Cubit<PublicationBookmarkState> {
 
   final PublicationRepository _repository;
 
-  toggle() async {
+  Future<void> toggle() async {
     emit(state.copyWith(status: BookmarkStatus.loading));
 
     try {
@@ -36,13 +36,15 @@ class PublicationBookmarkCubit extends Cubit<PublicationBookmarkState> {
         case true:
           await _removeFromBookmars();
       }
-    } catch (e) {
+    } catch (error, stackTrace) {
       emit(
         state.copyWith(
           status: BookmarkStatus.failure,
-          error: e.parseException(),
+          error: error.parseException(),
         ),
       );
+
+      super.onError(error, stackTrace);
     }
   }
 

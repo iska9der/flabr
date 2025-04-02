@@ -85,11 +85,11 @@ class _NotificationWidget extends StatefulWidget {
 
 class _NotificationWidgetState extends State<_NotificationWidget> {
   @override
-  initState() {
+  void initState() {
     super.initState();
   }
 
-  markAsRead(BuildContext context, String id) {
+  void markAsRead(BuildContext context, String id) {
     context.read<TrackerNotificationsBloc>().add(
       TrackerNotificationsEvent.read(ids: [id]),
     );

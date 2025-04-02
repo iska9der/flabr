@@ -4,6 +4,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../data/exception/exception.dart';
+import '../../../../../data/model/language/language.dart';
 import '../../../../../data/model/user/user.dart';
 import '../../../../../data/repository/repository.dart';
 
@@ -25,8 +26,8 @@ class UserListCubit extends Cubit<UserListState> {
   final UserRepository _repository;
   final LanguageRepository _languageRepository;
 
-  late final StreamSubscription _uiLangSub;
-  late final StreamSubscription _articlesLangSub;
+  late final StreamSubscription<Language> _uiLangSub;
+  late final StreamSubscription<List<Language>> _articlesLangSub;
 
   @override
   Future<void> close() {

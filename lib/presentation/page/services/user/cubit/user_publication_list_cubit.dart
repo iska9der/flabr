@@ -66,7 +66,7 @@ class UserPublicationListCubit
     );
   }
 
-  changeType(UserPublicationType type) {
+  void changeType(UserPublicationType type) {
     if (state.type == type) return;
 
     emit(UserPublicationListState(user: state.user, type: type));

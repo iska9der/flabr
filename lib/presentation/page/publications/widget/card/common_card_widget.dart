@@ -67,7 +67,7 @@ class CommonCardWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisSize: MainAxisSize.min,
             children: [
-              if (publication.leadData.image.isNotEmpty)
+              if (!publication.leadData.image.isEmpty)
                 BlocBuilder<SettingsCubit, SettingsState>(
                   buildWhen:
                       (p, c) => p.feed.isImageVisible != c.feed.isImageVisible,

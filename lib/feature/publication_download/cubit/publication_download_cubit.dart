@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_file_dialog/flutter_file_dialog.dart';
 
+import '../../../data/exception/exception.dart';
 import '../model/publication_download_format.dart';
 import '../service/publication_text_converter.dart';
 
@@ -31,7 +32,7 @@ class PublicationDownloadCubit extends Cubit<PublicationDownloadState> {
 
   final PublicationTextConverter converter;
 
-  _init() async {
+  Future<void> _init() async {
     if (kIsWeb || !await FlutterFileDialog.isPickDirectorySupported()) {
       return emit(
         state.copyWith(status: PublicationDownloadStatus.notSupported),
@@ -39,7 +40,7 @@ class PublicationDownloadCubit extends Cubit<PublicationDownloadState> {
     }
   }
 
-  pickAndSave() async {
+  Future<void> pickAndSave() async {
     if (state.status == PublicationDownloadStatus.loading ||
         state.status == PublicationDownloadStatus.notSupported) {
       return;
@@ -65,13 +66,15 @@ class PublicationDownloadCubit extends Cubit<PublicationDownloadState> {
       );
 
       emit(state.copyWith(status: PublicationDownloadStatus.success));
-    } catch (e) {
+    } catch (error, stackTrace) {
       emit(
         state.copyWith(
           status: PublicationDownloadStatus.failure,
-          error: e.toString(),
+          error: error.parseException(),
         ),
       );
+
+      super.onError(error, stackTrace);
     }
   }
 }

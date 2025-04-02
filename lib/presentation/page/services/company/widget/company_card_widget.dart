@@ -23,7 +23,7 @@ class CompanyCardWidget extends StatelessWidget {
   final Company company;
   final RenderType renderType;
 
-  moveToDetails(BuildContext context) {
+  void moveToDetails(BuildContext context) {
     getIt<AppRouter>().navigate(CompanyDashboardRoute(alias: company.alias));
   }
 

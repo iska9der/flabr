@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../data/model/language/language.dart';
 import '../../../data/model/publication/publication.dart';
 import '../../../data/repository/repository.dart';
 
@@ -24,8 +25,8 @@ abstract class PublicationListCubit<State extends PublicationListState>
   final PublicationRepository repository;
   final LanguageRepository languageRepository;
 
-  late final StreamSubscription _uiLangSub;
-  late final StreamSubscription _articleLangsSub;
+  late final StreamSubscription<Language> _uiLangSub;
+  late final StreamSubscription<List<Language>> _articleLangsSub;
 
   /// Показывать тип поста в карточках
   bool get showType => false;

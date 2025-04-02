@@ -29,7 +29,7 @@ class MostReadingResponse extends ListResponse<PublicationCommon>
   }
 
   static const empty = MostReadingResponse(pagesCount: 0);
-  get isEmpty => this == empty;
+  bool get isEmpty => this == empty;
 
   @override
   List<Object> get props => [pagesCount, ids, refs];

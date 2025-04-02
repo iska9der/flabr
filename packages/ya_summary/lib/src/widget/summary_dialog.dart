@@ -14,7 +14,7 @@ Future showSummaryDialog(
   Widget? loaderWidget,
 
   /// обработчик нажатия: ссылка на пересказ
-  Function(String)? onLinkPressed,
+  void Function(String)? onLinkPressed,
 }) async {
   final theme = Theme.of(context);
   final barrierColor = theme.colorScheme.surface.withValues(alpha: .8);

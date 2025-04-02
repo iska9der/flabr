@@ -33,7 +33,7 @@ class UserListResponse extends ListResponse<User> with EquatableMixin {
   }
 
   static const UserListResponse empty = UserListResponse(pagesCount: 0);
-  get isEmpty => this == empty;
+  bool get isEmpty => this == empty;
 
   @override
   List<Object> get props => [pagesCount, ids, refs];

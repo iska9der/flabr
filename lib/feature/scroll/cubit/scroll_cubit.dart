@@ -39,7 +39,7 @@ class ScrollCubit extends Cubit<ScrollState> {
     }
   }
 
-  _setBottomEdgeListener() {
+  void _setBottomEdgeListener() {
     if (state.controller.position.atEdge &&
         state.controller.position.pixels != 0) {
       if (!state.isBottomEdge) emit(state.copyWith(isBottomEdge: true));
@@ -61,11 +61,7 @@ class ScrollCubit extends Cubit<ScrollState> {
   }
 
   Future<void> animateToTop({Duration? duration, Curve? curve}) async {
-    await animateTo(
-      0.00,
-      duration: duration,
-      curve: curve,
-    );
+    await animateTo(0.00, duration: duration, curve: curve);
   }
 
   Future<void> animateToBottom({Duration? duration, Curve? curve}) async {

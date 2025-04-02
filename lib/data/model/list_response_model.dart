@@ -14,7 +14,7 @@ class ListResponse<T> {
   final List<String> ids;
   final List<T> refs;
 
-  static const empty = ListResponse();
+  static const empty = ListResponse<dynamic>();
 
   ListResponse<T> copyWith({
     int? pagesCount,

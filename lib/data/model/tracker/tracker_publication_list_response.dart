@@ -40,7 +40,7 @@ class TrackerPublicationListResponse extends ListResponse<TrackerPublication>
   }
 
   static const empty = TrackerPublicationListResponse(pagesCount: 0);
-  get isEmpty => this == empty;
+  bool get isEmpty => this == empty;
 
   @override
   List<Object> get props => [pagesCount, ids, refs];

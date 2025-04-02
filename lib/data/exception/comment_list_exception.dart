@@ -13,7 +13,7 @@ class CommentsListException implements AppException {
     this.message = 'Не удалось получить данные',
   ]);
 
-  static fromDioException(DioException exception) {
+  static AppException fromDioException(DioException exception) {
     int httpCode = 400;
     String errorCode = 'BAD_REQUEST';
     String message = 'Не удалось получить данные';
@@ -29,7 +29,7 @@ class CommentsListException implements AppException {
     return CommentsListException(httpCode, errorCode, message);
   }
 
-  static parseMessage(String errorCode) {
+  static String parseMessage(String errorCode) {
     return switch (errorCode) {
       'NOT_FOUND' => 'Не найдено',
       'POST_IN_DRAFTS' => 'Публикация в черновиках',

@@ -17,7 +17,7 @@ class SubscribeButton extends StatelessWidget {
   final String alias;
   final bool isSubscribed;
 
-  onSubscribePressed(BuildContext context) {
+  void onSubscribePressed(BuildContext context) {
     if (context.read<AuthCubit>().state.isAuthorized) {
       context.read<SubscriptionCubit>().toggleSubscription();
     } else {

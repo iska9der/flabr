@@ -26,7 +26,7 @@ class TrackerNotificationPublication with _$TrackerNotificationPublication {
       _$TrackerNotificationPublicationFromJson(json);
 }
 
-Object? _typeReader(Map json, String key) {
+Object? _typeReader(Map<dynamic, dynamic> json, String key) {
   if (key == 'type') {
     return json['postType'] ?? json['publicationType'];
   }
@@ -34,7 +34,7 @@ Object? _typeReader(Map json, String key) {
   return json[key];
 }
 
-Object? _textReader(Map json, String key) {
+Object? _textReader(Map<dynamic, dynamic> json, String key) {
   if (key == 'text') {
     return json['titleHtml'] ?? json['preview'];
   }

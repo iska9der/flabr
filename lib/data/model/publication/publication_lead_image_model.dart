@@ -17,17 +17,19 @@ class PublicationLeadImage extends Equatable {
     return PublicationLeadImage(
       url: map['url'] as String,
       fit: map['fit'] ?? '',
-      positionY: map['positionY'] != null
-          ? double.parse(map['positionY'].toString())
-          : 0.00,
-      positionX: map['positionX'] != null
-          ? double.parse(map['positionX'].toString())
-          : 0.00,
+      positionY:
+          map['positionY'] != null
+              ? double.parse(map['positionY'].toString())
+              : 0.00,
+      positionX:
+          map['positionX'] != null
+              ? double.parse(map['positionX'].toString())
+              : 0.00,
     );
   }
 
   static const empty = PublicationLeadImage(url: '');
-  get isNotEmpty => this != empty;
+  bool get isEmpty => this == empty;
 
   @override
   List<Object?> get props => [url, fit, positionY, positionX];

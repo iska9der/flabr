@@ -184,7 +184,7 @@ class CustomFactory extends WidgetFactory with SvgFactory, WebViewFactory {
       ),
     );
 
-    return widget ?? super.buildImageWidget(meta, src);
+    return widget;
   }
 
   @override
@@ -214,7 +214,8 @@ class CustomFactory extends WidgetFactory with SvgFactory, WebViewFactory {
             ///
             /// если текст не совпадает со ссылкой - показываем
             final isNeedPopup = tree.element.text != href;
-            go() => getIt<AppRouter>().navigateOrLaunchUrl(Uri.parse(href));
+            Future<void> go() =>
+                getIt<AppRouter>().navigateOrLaunchUrl(Uri.parse(href));
 
             final widget = GestureDetector(
               child: tree.build(),
@@ -244,8 +245,8 @@ class CustomFactory extends WidgetFactory with SvgFactory, WebViewFactory {
                         ),
                         TextButton(
                           onPressed: () {
-                            go();
                             Navigator.of(context).pop();
+                            go();
                           },
                           child: const Text('Перейти'),
                         ),
