@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:equatable/equatable.dart';
 
 import '../list_response_model.dart';
@@ -12,16 +14,15 @@ class PublicationPostListResponse extends ListResponse<Publication>
   });
 
   factory PublicationPostListResponse.fromMap(Map<String, dynamic> map) {
-    var idsMap = map['publicationIds'];
-    Map refsMap = map['publicationRefs'];
+    final idsMap = List<String>.from(map['publicationIds'] ?? []);
+    final refsMap = Map<String, dynamic>.from(map['publicationRefs'] ?? {});
 
     return PublicationPostListResponse(
       pagesCount: map['pagesCount'] ?? 0,
-      ids: List<String>.from(idsMap),
-      refs:
-          Map.from(
-            refsMap,
-          ).entries.map((e) => PublicationPost.fromMap(e.value)).toList(),
+      ids: UnmodifiableListView(idsMap),
+      refs: UnmodifiableListView(
+        refsMap.entries.map((e) => PublicationPost.fromMap(e.value)),
+      ),
     );
   }
 

@@ -26,7 +26,7 @@ abstract interface class PublicationService {
     required String langArticles,
   });
 
-  Future<FeedListResponse> fetchFeed({
+  Future<ListResponse<Publication>> fetchFeed({
     required String langUI,
     required String langArticles,
     required String page,
@@ -45,7 +45,7 @@ abstract interface class PublicationService {
     required FilterOption score,
   });
 
-  Future<PublicationCommonListResponse> fetchHubArticles({
+  Future<ListResponse<Publication>> fetchHubArticles({
     required String langUI,
     required String langArticles,
     required String hub,
@@ -159,7 +159,7 @@ class PublicationServiceImpl implements PublicationService {
   }
 
   @override
-  Future<FeedListResponse> fetchFeed({
+  Future<ListResponse<Publication>> fetchFeed({
     required String langUI,
     required String langArticles,
     required String page,
@@ -244,7 +244,7 @@ class PublicationServiceImpl implements PublicationService {
   }
 
   @override
-  Future<PublicationCommonListResponse> fetchHubArticles({
+  Future<ListResponse<Publication>> fetchHubArticles({
     required String langUI,
     required String langArticles,
     required String hub,

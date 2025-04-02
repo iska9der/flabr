@@ -45,7 +45,7 @@ class UserDetailPageView extends StatelessWidget {
           }
 
           if (state.status.isFailure) {
-            return const Center(child: Text('Не удалось найти пользователя'));
+            return Center(child: Text(state.error));
           }
 
           var user = state.model;

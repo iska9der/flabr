@@ -37,8 +37,11 @@ class SearchRepository {
 
     switch (target) {
       case SearchTarget.posts:
-        final response = PublicationCommonListResponse.fromMap(raw);
-        _sortArticles(order, response);
+        ListResponse<Publication> response =
+            PublicationCommonListResponse.fromMap(raw);
+        final sortedList = _sortPublications(order, response);
+
+        response = response.copyWith(refs: sortedList);
         return response;
       case SearchTarget.hubs:
         return HubListResponse.fromMap(raw);
@@ -51,16 +54,18 @@ class SearchRepository {
     }
   }
 
-  void _sortArticles(
+  List<Publication> _sortPublications(
     SearchOrder order,
-    PublicationCommonListResponse response,
+    ListResponse<Publication> response,
   ) {
+    final refs = [...response.refs];
+
     if (order == SearchOrder.date) {
-      response.refs.sort((a, b) => b.timePublished.compareTo(a.timePublished));
+      refs.sort((a, b) => b.timePublished.compareTo(a.timePublished));
     } else if (order == SearchOrder.rating) {
-      response.refs.sort(
-        (a, b) => b.statistics.score.compareTo(a.statistics.score),
-      );
+      refs.sort((a, b) => b.statistics.score.compareTo(a.statistics.score));
     }
+
+    return refs;
   }
 }

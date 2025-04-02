@@ -72,6 +72,7 @@ class PublicationSliverList<
               final publication = publications[index];
 
               return PublicationCardWidget(
+                key: Key('publication_card_${publication.id}'),
                 publication,
                 showType: context.read<ListCubit>().showType,
               );

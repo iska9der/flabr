@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:equatable/equatable.dart';
 
 import '../list_response_model.dart';
@@ -11,16 +13,15 @@ class FeedListResponse extends ListResponse<Publication> with EquatableMixin {
   });
 
   factory FeedListResponse.fromMap(Map<String, dynamic> map) {
-    var idsMap = map['publicationIds'];
-    Map refsMap = map['publicationRefs'];
+    final idsMap = List<String>.from(map['publicationIds'] ?? []);
+    final refsMap = Map<String, dynamic>.from(map['publicationRefs'] ?? {});
 
     return FeedListResponse(
       pagesCount: map['pagesCount'] ?? 0,
-      ids: List<String>.from(idsMap),
-      refs:
-          Map.from(
-            refsMap,
-          ).entries.map((e) => Publication.fromMap(e.value)).toList(),
+      ids: UnmodifiableListView(idsMap),
+      refs: UnmodifiableListView(
+        refsMap.entries.map((e) => Publication.fromMap(e.value)),
+      ),
     );
   }
 

@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../data/exception/exception.dart';
 import '../../../../../data/model/user/user.dart';
 import '../../../../../data/repository/repository.dart';
 
@@ -33,8 +34,17 @@ class UserCubit extends Cubit<UserState> {
       }
 
       emit(state.copyWith(status: UserStatus.success, model: model));
-    } catch (e) {
-      emit(state.copyWith(status: UserStatus.failure));
+    } catch (error, stackTrace) {
+      emit(
+        state.copyWith(
+          status: UserStatus.failure,
+          error: error.parseException(
+            'Не удалось получить карточку пользователя',
+          ),
+        ),
+      );
+
+      super.onError(error, stackTrace);
     }
   }
 

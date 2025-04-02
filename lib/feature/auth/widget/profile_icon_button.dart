@@ -15,7 +15,6 @@ class MyProfileIconButton extends StatelessWidget {
     final state = context.watch<AuthCubit>().state;
 
     return IconButton(
-      key: const Key('MyProfileIconButton'),
       onPressed:
           state.isAuthorized
               ? () => showProfileDialog(

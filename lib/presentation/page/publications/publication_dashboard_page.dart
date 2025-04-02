@@ -173,22 +173,18 @@ class _DashboardAppBar extends StatelessWidget {
                 dividerColor: Colors.transparent,
                 tabs: [
                   DashboardDrawerLinkWidget(
-                    key: const Key('DashboardAppBar_MyFeed'),
                     title: 'Моя лента',
                     count: userUpdates.feeds.newCount,
                   ),
                   DashboardDrawerLinkWidget(
-                    key: const Key('DashboardAppBar_Articles'),
                     title: 'Статьи',
                     count: counters.articles,
                   ),
                   DashboardDrawerLinkWidget(
-                    key: const Key('DashboardAppBar_Posts'),
                     title: 'Посты',
                     count: counters.posts,
                   ),
                   DashboardDrawerLinkWidget(
-                    key: const Key('DashboardAppBar_News'),
                     title: 'Новости',
                     count: counters.news,
                   ),
@@ -206,7 +202,6 @@ class _DashboardAppBar extends StatelessWidget {
               ),
               if (context.read<AuthCubit>().state.isAuthorized)
                 IconButton(
-                  key: const Key('DashboardAppBar_TrackerIcon'),
                   icon: Badge.count(
                     count: userUpdates.trackerUnreadCount,
                     isLabelVisible: userUpdates.trackerUnreadCount > 0,

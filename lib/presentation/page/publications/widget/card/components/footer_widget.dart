@@ -36,13 +36,8 @@ class PublicationFooterWidget extends StatelessWidget {
     return Row(
       mainAxisAlignment: mainAxisAlignment,
       children: [
-        ScoreWidget(
-          key: Key('PublicationFooter_score_${publication.id}'),
-          isBlocked: isVoteBlocked,
-          publication: publication,
-        ),
+        ScoreWidget(isBlocked: isVoteBlocked, publication: publication),
         PublicationStatIconButton(
-          key: Key('PublicationFooter_comments_${publication.id}'),
           icon: Icons.chat_bubble_rounded,
           value: publication.statistics.commentsCount.compact(),
           isHighlighted: publication.relatedData.unreadCommentsCount > 0,
@@ -55,12 +50,8 @@ class PublicationFooterWidget extends StatelessWidget {
                 ),
               ),
         ),
-        _BookmarkIconButton(
-          key: Key('PublicationFooter_bookmark_${publication.id}'),
-          publication: publication,
-        ),
+        _BookmarkIconButton(publication: publication),
         PublicationStatIconButton(
-          key: Key('PublicationFooter_summary_${publication.id}'),
           icon: Icons.auto_awesome,
           isHighlighted: isSummaryAuthorized,
           onTap: () {
@@ -81,6 +72,7 @@ class PublicationFooterWidget extends StatelessWidget {
 }
 
 class _BookmarkIconButton extends StatelessWidget {
+  // ignore: unused_element_parameter
   const _BookmarkIconButton({required this.publication, super.key});
 
   final Publication publication;

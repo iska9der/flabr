@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:equatable/equatable.dart';
 
 import 'publication_author_model.dart';
@@ -117,18 +119,12 @@ class PublicationCommon extends Publication {
           map['relatedData'] != null
               ? PublicationRelatedData.fromJson(map['relatedData'])
               : PublicationRelatedData.empty,
-      hubs:
-          map['hubs'] != null
-              ? List<PublicationHub>.from(
-                map['hubs'].map((e) => PublicationHub.fromMap(e)),
-              ).toList()
-              : const [],
-      tags:
-          map.containsKey('tags')
-              ? List<String>.from(
-                map['tags'].map((tag) => tag['titleHtml']),
-              ).toList()
-              : const [],
+      hubs: UnmodifiableListView(
+        List.from(map['hubs'] ?? []).map((e) => PublicationHub.fromMap(e)),
+      ),
+      tags: UnmodifiableListView(
+        List.from(map['tags'] ?? []).map((tag) => tag['titleHtml']),
+      ),
 
       /// добавленные поля
       titleHtml: map['titleHtml'] ?? '',
@@ -193,18 +189,12 @@ class PublicationPost extends Publication {
           map['relatedData'] != null
               ? PublicationRelatedData.fromJson(map['relatedData'])
               : PublicationRelatedData.empty,
-      hubs:
-          map['hubs'] != null
-              ? List<PublicationHub>.from(
-                map['hubs'].map((e) => PublicationHub.fromMap(e)),
-              ).toList()
-              : const [],
-      tags:
-          map.containsKey('tags')
-              ? List<String>.from(
-                map['tags'].map((tag) => tag['titleHtml']),
-              ).toList()
-              : const [],
+      hubs: UnmodifiableListView(
+        List.from(map['hubs'] ?? []).map((e) => PublicationHub.fromMap(e)),
+      ),
+      tags: UnmodifiableListView(
+        List.from(map['tags'] ?? []).map((tag) => tag['titleHtml']),
+      ),
     );
   }
 

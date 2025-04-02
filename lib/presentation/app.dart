@@ -64,75 +64,68 @@ class ApplicationView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocSelector<SettingsCubit, SettingsState, SettingsStatus>(
-      selector: (state) => state.status,
-      builder: (context, status) {
-        if (status == SettingsStatus.loading) {
-          /// TODO: Splash Page
-          return const Material(child: CircleIndicator());
-        }
+    final status = context.select((SettingsCubit cubit) => cubit.state.status);
 
-        final themeConfig = context.select(
-          (SettingsCubit cubit) => cubit.state.theme,
-        );
+    if (status == SettingsStatus.loading) {
+      /// TODO: Splash Page
+      return const Material(child: CircleIndicator());
+    }
 
-        final scroll = context.select(
-          (SettingsCubit cubit) => cubit.state.misc.scrollVariant,
-        );
+    final themeConfig = context.select(
+      (SettingsCubit cubit) => cubit.state.theme,
+    );
 
-        return MaterialApp.router(
-          title: 'Flabr',
-          // ignore: deprecated_member_use
-          useInheritedMediaQuery: true,
-          locale: DevicePreview.locale(context),
-          themeMode: themeConfig.modeByBool ?? themeConfig.mode,
-          theme: AppTheme.light,
-          darkTheme: AppTheme.dark,
-          scrollBehavior: scroll.behavior,
-          routerConfig: getIt<AppRouter>().config(
-            deepLinkTransformer: (uri) {
-              if (uri.path.startsWith('/ru')) {
-                final newPath = uri.path.replaceFirst('/ru', '');
-                return SynchronousFuture(uri.replace(path: newPath));
-              }
-              return SynchronousFuture(uri);
-            },
-          ),
-          builder: (context, child) {
-            final theme = context.theme;
+    final scroll = context.select(
+      (SettingsCubit cubit) => cubit.state.misc.scrollVariant,
+    );
 
-            return DevicePreview.appBuilder(
-              context,
-              ResponsiveBreakpoints.builder(
-                child: ColoredBox(
-                  color: theme.colors.surface,
-                  child: MaxWidthBox(
-                    maxWidth: AppDimensions.maxWidth,
-                    child: AnnotatedRegion(
-                      value:
-                          theme.colorScheme.brightness == Brightness.dark
-                              ? SystemUiOverlayStyle.light
-                              : SystemUiOverlayStyle.dark,
-                      child: child ?? const SizedBox.shrink(),
-                    ),
-                  ),
+    return MaterialApp.router(
+      title: 'Flabr',
+      // ignore: deprecated_member_use
+      useInheritedMediaQuery: true,
+      locale: DevicePreview.locale(context),
+      themeMode: themeConfig.modeByBool ?? themeConfig.mode,
+      theme: AppTheme.light,
+      darkTheme: AppTheme.dark,
+      scrollBehavior: scroll.behavior,
+      routerConfig: getIt<AppRouter>().config(
+        deepLinkTransformer: (uri) {
+          if (uri.path.startsWith('/ru')) {
+            final newPath = uri.path.replaceFirst('/ru', '');
+            return SynchronousFuture(uri.replace(path: newPath));
+          }
+          return SynchronousFuture(uri);
+        },
+      ),
+      builder: (context, child) {
+        final theme = context.theme;
+
+        return DevicePreview.appBuilder(
+          context,
+          ResponsiveBreakpoints.builder(
+            child: ColoredBox(
+              color: theme.colors.surface,
+              child: MaxWidthBox(
+                maxWidth: AppDimensions.maxWidth,
+                child: AnnotatedRegion(
+                  value:
+                      theme.colorScheme.brightness == Brightness.dark
+                          ? SystemUiOverlayStyle.light
+                          : SystemUiOverlayStyle.dark,
+                  child: child ?? const SizedBox.shrink(),
                 ),
-                breakpoints: [
-                  const Breakpoint(start: 0, end: 600, name: ScreenType.mobile),
-                  const Breakpoint(
-                    start: 601,
-                    end: 840,
-                    name: ScreenType.tablet,
-                  ),
-                  const Breakpoint(
-                    start: 841,
-                    end: double.infinity,
-                    name: ScreenType.desktop,
-                  ),
-                ],
               ),
-            );
-          },
+            ),
+            breakpoints: [
+              const Breakpoint(start: 0, end: 600, name: ScreenType.mobile),
+              const Breakpoint(start: 601, end: 840, name: ScreenType.tablet),
+              const Breakpoint(
+                start: 841,
+                end: double.infinity,
+                name: ScreenType.desktop,
+              ),
+            ],
+          ),
         );
       },
     );

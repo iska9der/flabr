@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:equatable/equatable.dart';
 
 import '../comment_base.dart';
@@ -75,7 +77,7 @@ class UserComment extends CommentBase with EquatableMixin {
       votesCount: votesCount ?? this.votesCount,
       level: level ?? this.level,
       parentId: parentId ?? this.parentId,
-      childrenRaw: childrenRaw ?? this.childrenRaw,
+      childrenRaw: UnmodifiableListView(childrenRaw ?? this.childrenRaw),
       publication: publication ?? this.publication,
     );
   }
@@ -84,9 +86,10 @@ class UserComment extends CommentBase with EquatableMixin {
     return UserComment(
       id: map['id'],
       parentId: map['parentId'] ?? '',
-      author: map['author'] != null && map['author'].isNotEmpty
-          ? PublicationAuthor.fromMap(map['author'])
-          : PublicationAuthor.empty,
+      author:
+          map['author'] != null && map['author'].isNotEmpty
+              ? PublicationAuthor.fromMap(map['author'])
+              : PublicationAuthor.empty,
       isPostAuthor: map['isPostAuthor'] as bool,
       isAuthor: map['isAuthor'] as bool,
       isFavorite: map['isFavorite'] as bool,
@@ -102,37 +105,38 @@ class UserComment extends CommentBase with EquatableMixin {
       score: map['score'],
       votesCount: map['votesCount'],
       level: map['level'],
-      childrenRaw: map['children'] != null
-          ? List<String>.from(map['children'])
-          : const [],
-      publication: map['publication'] != null
-          ? UserCommentPublication.fromMap(map['publication'])
-          : UserCommentPublication.empty,
+      childrenRaw: UnmodifiableListView(
+        List<String>.from(map['children'] ?? []),
+      ),
+      publication:
+          map['publication'] != null
+              ? UserCommentPublication.fromMap(map['publication'])
+              : UserCommentPublication.empty,
     );
   }
 
   @override
   List<Object?> get props => [
-        id,
-        author,
-        isPostAuthor,
-        isAuthor,
-        isFavorite,
-        isNew,
-        isPinned,
-        isSuspended,
-        isCanEdit,
-        message,
-        status,
-        timeChanged,
-        timeEditAllowedTill,
-        timePublished,
-        publishedAt,
-        score,
-        votesCount,
-        level,
-        parentId,
-        childrenRaw,
-        publication,
-      ];
+    id,
+    author,
+    isPostAuthor,
+    isAuthor,
+    isFavorite,
+    isNew,
+    isPinned,
+    isSuspended,
+    isCanEdit,
+    message,
+    status,
+    timeChanged,
+    timeEditAllowedTill,
+    timePublished,
+    publishedAt,
+    score,
+    votesCount,
+    level,
+    parentId,
+    childrenRaw,
+    publication,
+  ];
 }

@@ -52,8 +52,8 @@ class CompanyListCubit extends Cubit<CompanyListState> {
       );
 
       var newList = state.list.copyWith(
-        ids: [...state.list.ids, ...response.ids],
         pagesCount: response.pagesCount,
+        ids: [...state.list.ids, ...response.ids],
         refs: [...state.list.refs, ...response.refs],
       );
 
@@ -64,17 +64,15 @@ class CompanyListCubit extends Cubit<CompanyListState> {
           page: state.page + 1,
         ),
       );
-    } on AppException catch (e) {
-      emit(
-        state.copyWith(status: CompanyListStatus.failure, error: e.toString()),
-      );
-    } catch (e) {
+    } catch (error, stackTrace) {
       emit(
         state.copyWith(
           status: CompanyListStatus.failure,
-          error: 'Не удалось получить список компайний',
+          error: error.parseException('Не удалось получить список компаний'),
         ),
       );
+
+      super.onError(error, stackTrace);
     }
   }
 

@@ -1,4 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:collection';
+
 import 'package:equatable/equatable.dart';
 
 import '../company_base.dart';
@@ -36,7 +38,7 @@ class Company extends CompanyBase with EquatableMixin {
       descriptionHtml: descriptionHtml ?? this.descriptionHtml,
       relatedData: relatedData ?? this.relatedData,
       statistics: statistics ?? this.statistics,
-      commonHubs: commonHubs ?? this.commonHubs,
+      commonHubs: UnmodifiableListView(commonHubs ?? this.commonHubs),
     );
   }
 
@@ -58,12 +60,11 @@ class Company extends CompanyBase with EquatableMixin {
                 map['statistics'] as Map<String, dynamic>,
               )
               : CompanyStatistics.empty,
-      commonHubs:
-          map['commonHubs'] != null
-              ? List<CompanyHub>.from(
-                map['commonHubs'].map((el) => CompanyHub.fromMap(el)),
-              ).toList()
-              : const [],
+      commonHubs: UnmodifiableListView(
+        List.from(
+          map['commonHubs'] ?? {},
+        ).map((hub) => CompanyHub.fromMap(hub)),
+      ),
     );
   }
 

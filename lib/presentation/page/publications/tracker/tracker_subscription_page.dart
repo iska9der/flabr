@@ -84,12 +84,8 @@ class _NotificationWidget extends StatefulWidget {
 }
 
 class _NotificationWidgetState extends State<_NotificationWidget> {
-  late bool isUnread;
-
   @override
   initState() {
-    isUnread = widget.model.unread;
-
     super.initState();
   }
 
@@ -97,10 +93,6 @@ class _NotificationWidgetState extends State<_NotificationWidget> {
     context.read<TrackerNotificationsBloc>().add(
       TrackerNotificationsEvent.read(ids: [id]),
     );
-
-    setState(() {
-      isUnread = false;
-    });
   }
 
   @override
@@ -108,6 +100,9 @@ class _NotificationWidgetState extends State<_NotificationWidget> {
     final theme = context.theme;
     final user = widget.model.dataModel.user;
     final publication = widget.model.dataModel.publication;
+    final isUnread = context.select<TrackerNotificationsBloc, bool>(
+      (bloc) => bloc.state.isUnreaded(widget.model.id),
+    );
 
     return FlabrCard(
       color: isUnread ? theme.colors.cardHighlight : null,
@@ -115,53 +110,62 @@ class _NotificationWidgetState extends State<_NotificationWidget> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (user != null) UserTextButton(user),
-          Padding(
-            padding: const EdgeInsets.only(bottom: 8.0),
-            child: RichText(
-              text: TextSpan(
-                style: theme.textTheme.bodyMedium,
-                children: [
-                  TextSpan(text: widget.model.typeEnum.text),
-                  if (publication != null) ...[
-                    const TextSpan(text: ' "'),
-                    TextSpan(
-                      text: publication.text.trim(),
-                      style: TextStyle(color: theme.colorScheme.primary),
-                      recognizer:
-                          TapGestureRecognizer()
-                            ..onTap = () {
-                              markAsRead(context, widget.model.id);
-
-                              context.router.push(
-                                PublicationFlowRoute(
-                                  id: publication.id,
-                                  type: publication.type,
-                                ),
-                              );
-                            },
-                    ),
-                    const TextSpan(text: '"'),
-                  ],
-                ],
-              ),
-            ),
-          ),
-          if (widget.model.timeHappened != null)
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          RichText(
+            text: TextSpan(
+              style: theme.textTheme.bodyMedium,
               children: [
-                Text(DateFormat.MMMMd().format(widget.model.timeHappened!)),
-                if (isUnread)
-                  IconButton(
-                    tooltip: 'Отметить как прочитанное',
-                    icon: Icon(
-                      Icons.circle,
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                    onPressed: () => markAsRead(context, widget.model.id),
+                TextSpan(text: widget.model.typeEnum.text),
+                if (publication != null) ...[
+                  const TextSpan(text: ' "'),
+                  TextSpan(
+                    text: publication.text.trim(),
+                    style: TextStyle(color: theme.colorScheme.primary),
+                    recognizer:
+                        TapGestureRecognizer()
+                          ..onTap = () {
+                            markAsRead(context, widget.model.id);
+
+                            context.router.push(
+                              PublicationFlowRoute(
+                                id: publication.id,
+                                type: publication.type,
+                              ),
+                            );
+                          },
                   ),
+                  const TextSpan(text: '"'),
+                ],
               ],
             ),
+          ),
+          const SizedBox(height: 12),
+          Padding(
+            padding: const EdgeInsets.only(right: 8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                widget.model.timeHappened != null
+                    ? Text(
+                      DateFormat.MMMMd().format(widget.model.timeHappened!),
+                    )
+                    : const SizedBox.shrink(),
+                isUnread
+                    ? Tooltip(
+                      message: 'Отметить как прочитанное',
+                      child: GestureDetector(
+                        child: Icon(
+                          Icons.circle,
+                          color: Theme.of(context).colorScheme.primary,
+                          size: 24,
+                        ),
+                        onTap: () => markAsRead(context, widget.model.id),
+                      ),
+                    )
+                    : const SizedBox.square(dimension: 24),
+              ],
+            ),
+          ),
         ],
       ),
     );

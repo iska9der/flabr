@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:equatable/equatable.dart';
 
 import '../publication/publication_model.dart';
@@ -86,12 +88,16 @@ class User extends Equatable {
       ratingPosition: ratingPosition ?? this.ratingPosition,
       relatedData: relatedData ?? this.relatedData,
       location: location ?? this.location,
-      workplace: workplace ?? this.workplace,
+      workplace: UnmodifiableListView(workplace ?? this.workplace),
       lastPost: lastPost ?? this.lastPost,
     );
   }
 
   factory User.fromMap(Map<String, dynamic> map) {
+    final workplacesList = List<Map<String, dynamic>>.from(
+      map['workplace'] ?? [],
+    );
+
     return User(
       id: map['id'] ?? '',
       alias: map['alias'],
@@ -114,12 +120,9 @@ class User extends Equatable {
           map['location'] != null
               ? UserLocation.fromMap(map['location'])
               : UserLocation.empty,
-      workplace:
-          map['workplace'] != null
-              ? List<UserWorkplace>.from(
-                map['workplace'].map((e) => UserWorkplace.fromMap(e)),
-              )
-              : const [],
+      workplace: UnmodifiableListView(
+        workplacesList.map((e) => UserWorkplace.fromMap(e)),
+      ),
       lastPost:
           map['lastPost'] != null
               ? PublicationCommon.fromMap(map['lastPost'])

@@ -16,16 +16,12 @@ class PublicationCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final key = Key('publication_card_${publication.id}');
-
     return switch (publication.type) {
       PublicationType.post => PostCardWidget(
-        key: key,
         post: publication as PublicationPost,
         showType: showType,
       ),
       PublicationType.news || PublicationType.article => CommonCardWidget(
-        key: key,
         publication: publication as PublicationCommon,
         showType: showType,
       ),

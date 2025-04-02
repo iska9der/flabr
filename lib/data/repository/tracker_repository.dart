@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:injectable/injectable.dart';
 
+import '../model/list_response_model.dart';
 import '../model/tracker/tracker.dart';
 import '../service/service.dart';
 
@@ -38,15 +39,18 @@ class TrackerRepositoryImpl implements TrackerRepository {
       page: page,
       byAuthor: byAuthor,
     );
-
-    final list = TrackerPublicationListResponse.fromMap(map);
-    list.refs.sort(
-      (a, b) => b.unreadCommentsCount.compareTo(a.unreadCommentsCount),
-    );
-
     final unread = TrackerUnreadCounters.fromJson(map['unreadCounters']);
+
+    ListResponse<TrackerPublication> listResponse =
+        TrackerPublicationListResponse.fromMap(map);
+
+    /// сортируем по количеству непрочитанных комментариев
+    final sortedRefs = [...listResponse.refs]
+      ..sort((a, b) => b.unreadCommentsCount.compareTo(a.unreadCommentsCount));
+    listResponse = listResponse.copyWith(refs: sortedRefs);
+
     final response = TrackerPublicationsResponse(
-      list: list,
+      list: listResponse,
       unreadCounters: unread,
     );
 
@@ -76,11 +80,12 @@ class TrackerRepositoryImpl implements TrackerRepository {
       page: page,
       category: category.name,
     );
-
-    final list = TrackerNotificationListResponse.fromMap(raw);
     final unread = TrackerUnreadCounters.fromJson(raw['unreadCounters']);
+
+    final listResponse = TrackerNotificationListResponse.fromMap(raw);
+
     final response = TrackerNotificationsResponse(
-      list: list,
+      list: listResponse,
       unreadCounters: unread,
     );
 

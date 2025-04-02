@@ -33,7 +33,14 @@ class TrackerNotificationsBloc
         category: state.category,
       );
 
-      emit(state.copyWith(status: LoadingStatus.success, response: result));
+      emit(
+        state.copyWith(
+          status: LoadingStatus.success,
+          response: result,
+          unreadIds:
+              result.list.refs.where((e) => e.unread).map((e) => e.id).toSet(),
+        ),
+      );
     } catch (e, trace) {
       emit(
         state.copyWith(
@@ -53,11 +60,10 @@ class TrackerNotificationsBloc
     try {
       final result = await repository.readNotifications(event.ids);
 
-      emit(
-        state.copyWith(
-          response: state.response.copyWith(unreadCounters: result),
-        ),
-      );
+      final newResponse = state.response.copyWith(unreadCounters: result);
+      final newUnreadIds = state.unreadIds.difference(Set.from(event.ids));
+
+      emit(state.copyWith(response: newResponse, unreadIds: newUnreadIds));
     } catch (e, trace) {
       emit(
         state.copyWith(

@@ -78,23 +78,28 @@ class PublicationRepository {
   }
 
   /// Сортируем статьи в полученном списке
-  void _sortListResponse(Sort sort, ListResponse<Publication> response) {
+  List<Publication> _sortListResponse(
+    Sort sort,
+    ListResponse<Publication> response,
+  ) {
+    final List<Publication> refs = [...response.refs];
+
     if (sort == Sort.byBest) {
-      response.refs.sort(
-        (a, b) => b.statistics.score.compareTo(a.statistics.score),
-      );
+      refs.sort((a, b) => b.statistics.score.compareTo(a.statistics.score));
     } else {
-      response.refs.sort((a, b) => b.timePublished.compareTo(a.timePublished));
+      refs.sort((a, b) => b.timePublished.compareTo(a.timePublished));
     }
+
+    return refs;
   }
 
-  Future<FeedListResponse> fetchFeed({
+  Future<ListResponse<Publication>> fetchFeed({
     required Language langUI,
     required List<Language> langArticles,
     required String page,
     required FeedFilter filter,
   }) async {
-    final response = await service.fetchFeed(
+    var response = await service.fetchFeed(
       langUI: langUI.name,
       langArticles: LanguageEncoder.encodeLangs(langArticles),
       page: page,
@@ -102,7 +107,8 @@ class PublicationRepository {
       types: filter.types.map((t) => t.name).toList(),
     );
 
-    _sortListResponse(Sort.byNew, response);
+    final sortedList = _sortListResponse(Sort.byNew, response);
+    response = response.copyWith(refs: sortedList);
 
     return response;
   }
@@ -121,7 +127,7 @@ class PublicationRepository {
     required FlowFilter filter,
     required String page,
   }) async {
-    final response = await service.fetchFlowArticles(
+    var response = await service.fetchFlowArticles(
       langUI: langUI.name,
       langArticles: LanguageEncoder.encodeLangs(langArticles),
       section: section,
@@ -132,19 +138,20 @@ class PublicationRepository {
       page: page,
     );
 
-    _sortListResponse(filter.sort, response);
+    final sortedList = _sortListResponse(filter.sort, response);
+    response = response.copyWith(refs: sortedList);
 
     return response;
   }
 
-  Future<PublicationCommonListResponse> fetchHubArticles({
+  Future<ListResponse<Publication>> fetchHubArticles({
     required Language langUI,
     required List<Language> langArticles,
     required String hub,
     required FlowFilter filter,
     required String page,
   }) async {
-    final response = await service.fetchHubArticles(
+    var response = await service.fetchHubArticles(
       langUI: langUI.name,
       langArticles: LanguageEncoder.encodeLangs(langArticles),
       hub: hub,
@@ -154,7 +161,8 @@ class PublicationRepository {
       page: page,
     );
 
-    _sortListResponse(filter.sort, response);
+    final sortedList = _sortListResponse(filter.sort, response);
+    response = response.copyWith(refs: sortedList);
 
     return response;
   }
@@ -166,7 +174,7 @@ class PublicationRepository {
     required String page,
     required UserPublicationType type,
   }) async {
-    final response = await service.fetchUserPublications(
+    var response = await service.fetchUserPublications(
       langUI: langUI.name,
       langArticles: LanguageEncoder.encodeLangs(langArticles),
       user: user,
@@ -174,7 +182,8 @@ class PublicationRepository {
       type: type,
     );
 
-    _sortListResponse(Sort.byNew, response);
+    final sortedList = _sortListResponse(Sort.byNew, response);
+    response = response.copyWith(refs: sortedList);
 
     return response;
   }
@@ -210,16 +219,17 @@ class PublicationRepository {
     required Language langUI,
     required List<Language> langArticles,
   }) async {
-    final listResponse = await service.fetchComments(
+    var listResponse = await service.fetchComments(
       articleId: articleId,
       source: source,
       langUI: langUI.name,
       langArticles: LanguageEncoder.encodeLangs(langArticles),
     );
 
-    final structurizedComments = listResponse.structurize();
+    final structComments = listResponse.structurizeComments();
+    listResponse = listResponse.copyWith(comments: structComments);
 
-    return listResponse.copyWith(comments: structurizedComments);
+    return listResponse;
   }
 
   Future<bool> addToBookmark({
@@ -245,14 +255,14 @@ class PublicationRepository {
       langArticles: LanguageEncoder.encodeLangs(langArticles),
     );
 
-    List<PublicationCommon> articles = [...raw.refs];
+    List<PublicationCommon> publications =
+        [...raw.refs]
+          ..sort(
+            (a, b) =>
+                a.statistics.readingCount > b.statistics.readingCount ? 0 : 1,
+          )
+          ..take(8).toList();
 
-    articles.sort(
-      (a, b) => a.statistics.readingCount > b.statistics.readingCount ? 0 : 1,
-    );
-
-    articles = articles.take(8).toList();
-
-    return articles;
+    return publications;
   }
 }
