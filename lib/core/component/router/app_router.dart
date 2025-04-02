@@ -95,12 +95,7 @@ class AppRouter extends RootStackRouter {
     }
 
     final Map<PublicationType, List<String>> compareMap = {
-      PublicationType.article: [
-        'article/'
-            'articles/',
-        'blog/',
-        'blogs/',
-      ],
+      PublicationType.article: ['article/', 'articles/', 'blog/', 'blogs/'],
       PublicationType.post: ['posts/'],
       PublicationType.news: ['news/'],
     };
