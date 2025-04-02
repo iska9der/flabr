@@ -27,7 +27,7 @@ class FlabrCard extends StatelessWidget {
     final cardTheme = theme.cardTheme;
     final cardMargin = margin ?? cardTheme.margin ?? const EdgeInsets.all(4.0);
     final cardElevation = elevation ?? cardTheme.elevation ?? 1.0;
-    final cardColor = theme.colors.card;
+    final cardColor = color ?? theme.colors.card;
 
     return Padding(
       padding: cardMargin,
