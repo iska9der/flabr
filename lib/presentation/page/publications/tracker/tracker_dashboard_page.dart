@@ -14,61 +14,62 @@ class TrackerDashboardPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AutoTabsRouter.tabBar(
-        routes: const [
-          TrackerPublicationsRoute(),
-          TrackerSubscriptionRoute(),
-          // TrackerSystemRoute(),
-        ],
-        builder: (context, child, controller) {
-          return Scaffold(
-            body: SafeArea(
-              child: NestedScrollView(
-                headerSliverBuilder: (context, innerBoxIsScrolled) {
-                  return [
-                    SliverAppBar(
-                      snap: true,
-                      floating: true,
-                      pinned: true,
-                      leading: const AutoLeadingButton(),
-                      title: const Text('Трекер'),
-                      toolbarHeight: AppDimensions.toolBarHeight,
-                      actions: const [
-                        /// TODO блок для отметки раздела как прочитанный
-                        /// Нужно отмечать прочитанным тот раздел, в котором
-                        /// находится пользователь
-                        // IconButton(
-                        //   icon: const Icon(Icons.check_outlined),
-                        //   tooltip: 'Отметить раздел прочитанным',
-                        //   onPressed: () {
-                        //   },
-                        // ),
-                      ],
-                      bottom: AppBar(
-                        automaticallyImplyLeading: false,
-                        titleSpacing: 0,
-                        toolbarHeight: AppDimensions.dashTabHeight,
-                        title: TabBar(
-                          controller: controller,
-                          isScrollable: true,
-                          padding: EdgeInsets.zero,
-                          labelPadding: const EdgeInsets.symmetric(
-                            horizontal: 12,
-                          ),
-                          dividerColor: Colors.transparent,
-                          tabs: const [
-                            DashboardDrawerLinkWidget(title: 'Публикации'),
-                            DashboardDrawerLinkWidget(title: 'Подписки'),
-                            // DashboardDrawerLinkWidget(title: 'Уведомления'),
-                          ],
+      routes: const [
+        TrackerPublicationsRoute(),
+        TrackerSubscriptionRoute(),
+        // TrackerSystemRoute(),
+      ],
+      builder: (context, child, controller) {
+        return Scaffold(
+          body: SafeArea(
+            child: NestedScrollView(
+              headerSliverBuilder: (context, innerBoxIsScrolled) {
+                return [
+                  SliverAppBar(
+                    snap: true,
+                    floating: true,
+                    pinned: true,
+                    leading: const AutoLeadingButton(),
+                    title: const Text('Трекер'),
+                    toolbarHeight: AppDimensions.toolBarHeight,
+                    actions: const [
+                      /// TODO блок для отметки раздела как прочитанный
+                      /// Нужно отмечать прочитанным тот раздел, в котором
+                      /// находится пользователь
+                      // IconButton(
+                      //   icon: const Icon(Icons.check_outlined),
+                      //   tooltip: 'Отметить раздел прочитанным',
+                      //   onPressed: () {
+                      //   },
+                      // ),
+                    ],
+                    bottom: AppBar(
+                      automaticallyImplyLeading: false,
+                      titleSpacing: 0,
+                      toolbarHeight: AppDimensions.tabBarHeight,
+                      title: TabBar(
+                        controller: controller,
+                        isScrollable: true,
+                        padding: EdgeInsets.zero,
+                        labelPadding: const EdgeInsets.symmetric(
+                          horizontal: 12,
                         ),
+                        dividerColor: Colors.transparent,
+                        tabs: const [
+                          DashboardDrawerLinkWidget(title: 'Публикации'),
+                          DashboardDrawerLinkWidget(title: 'Подписки'),
+                          // DashboardDrawerLinkWidget(title: 'Уведомления'),
+                        ],
                       ),
-                    )
-                  ];
-                },
-                body: child,
-              ),
+                    ),
+                  ),
+                ];
+              },
+              body: child,
             ),
-          );
-        });
+          ),
+        );
+      },
+    );
   }
 }

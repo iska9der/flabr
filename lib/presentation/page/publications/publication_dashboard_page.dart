@@ -45,8 +45,8 @@ class PublicationDashboardView extends StatefulWidget {
 }
 
 class _PublicationDashboardViewState extends State<PublicationDashboardView> {
-  final double themeHeight = AppDimensions.dashTabHeight;
-  ValueNotifier<double> barHeight = ValueNotifier(AppDimensions.dashTabHeight);
+  final double themeHeight = AppDimensions.tabBarHeight;
+  ValueNotifier<double> barHeight = ValueNotifier(AppDimensions.tabBarHeight);
   late bool visibleOnScroll;
 
   @override
@@ -118,19 +118,26 @@ class _PublicationDashboardViewState extends State<PublicationDashboardView> {
             NewsFlowRoute(),
           ],
           builder: (context, child, controller) {
-            return Column(
+            return Stack(
+              alignment: Alignment.topCenter,
               children: [
-                AnimatedBuilder(
-                  animation: barHeight,
-                  builder: (context, child) {
+                child,
+                ValueListenableBuilder<double>(
+                  valueListenable: barHeight,
+                  builder: (context, value, child) {
                     return AnimatedContainer(
                       duration: const Duration(milliseconds: 200),
-                      height: barHeight.value,
-                      child: _DashboardAppBar(tabController: controller),
+                      height: value,
+                      child: child,
                     );
                   },
+
+                  /// Без клипа иконки остаются на виду, когда шапка скрыта
+                  child: ClipRRect(
+                    clipBehavior: Clip.hardEdge,
+                    child: _DashboardAppBar(tabController: controller),
+                  ),
                 ),
-                Expanded(child: child),
               ],
             );
           },
@@ -158,7 +165,7 @@ class _DashboardAppBar extends StatelessWidget {
     );
 
     return ColoredBox(
-      color: context.theme.colors.card,
+      color: context.theme.colorScheme.surfaceContainer,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [

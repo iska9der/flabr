@@ -19,16 +19,16 @@ class DashboardPage extends StatefulWidget {
 }
 
 class _DashboardPageState extends State<DashboardPage> {
-  final double themeHeight = AppDimensions.navBarHeight;
-  ValueNotifier<double> barHeight = ValueNotifier(AppDimensions.navBarHeight);
-  late bool visibleOnScroll;
+  late final double themeHeight = context.theme.navigationBarTheme.height!;
+  late final ValueNotifier<double> barHeight = ValueNotifier(themeHeight);
+  late bool visibleOnScroll =
+      context.read<SettingsCubit>().state.misc.navigationOnScrollVisible;
 
   @override
-  void initState() {
-    super.initState();
+  void dispose() {
+    barHeight.dispose();
 
-    visibleOnScroll =
-        context.read<SettingsCubit>().state.misc.navigationOnScrollVisible;
+    super.dispose();
   }
 
   @override
@@ -136,12 +136,12 @@ class _DashboardPageState extends State<DashboardPage> {
                 hiddenConditions: const [
                   Condition.largerThan(name: ScreenType.mobile, value: false),
                 ],
-                child: AnimatedBuilder(
-                  animation: barHeight,
-                  builder: (context, child) {
+                child: ValueListenableBuilder<double>(
+                  valueListenable: barHeight,
+                  builder: (context, value, child) {
                     return AnimatedContainer(
                       duration: const Duration(milliseconds: 200),
-                      height: barHeight.value,
+                      height: value,
                       child: child,
                     );
                   },

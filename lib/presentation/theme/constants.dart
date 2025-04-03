@@ -8,7 +8,7 @@ abstract class AppDimensions {
   static const double screenPadding = 8.0;
 
   static const double navBarHeight = 68.0;
-  static const double dashTabHeight = 40.0;
+  static const double tabBarHeight = 40.0;
   static const double toolBarHeight = 60.0;
   static const double underElevation = 20.0;
   static const double toolBarHeightOnScroll = toolBarHeight - underElevation;

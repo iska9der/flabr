@@ -97,8 +97,13 @@ class PublicationListScaffold<
               controller: scrollController,
               physics: scrollPhysics,
               slivers: [
-                FlabrSliverRefreshIndicator(
-                  onRefresh: context.read<ListCubit>().refetch,
+                SliverPadding(
+                  padding: const EdgeInsets.only(
+                    top: AppDimensions.tabBarHeight,
+                  ),
+                  sliver: FlabrSliverRefreshIndicator(
+                    onRefresh: context.read<ListCubit>().refetch,
+                  ),
                 ),
                 if (showMostReading)
                   const ResponsiveVisibilitySliver(
