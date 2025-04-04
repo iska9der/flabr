@@ -53,6 +53,7 @@ class TrackerSubscriptionView extends StatelessWidget {
             LoadingStatus.failure => Center(child: Text(state.error)),
             LoadingStatus.success => ListView.builder(
               itemCount: state.response.list.refs.length,
+              itemExtent: 150,
               itemBuilder: (context, index) {
                 final model = state.response.list.refs[index];
 
@@ -110,7 +111,10 @@ class _NotificationWidgetState extends State<_NotificationWidget> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (user != null) UserTextButton(user),
+          const Spacer(),
           RichText(
+            overflow: TextOverflow.ellipsis,
+            maxLines: 3,
             text: TextSpan(
               style: theme.textTheme.bodyMedium,
               children: [
@@ -138,7 +142,7 @@ class _NotificationWidgetState extends State<_NotificationWidget> {
               ],
             ),
           ),
-          const SizedBox(height: 12),
+          const Spacer(),
           Padding(
             padding: const EdgeInsets.only(right: 8.0),
             child: Row(
