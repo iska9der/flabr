@@ -9,25 +9,25 @@ extension UrlLauncherX on AppRouter {
   Future<dynamic> navigateOrLaunchUrl(Uri uri) async {
     final id = _parseId(uri);
 
-    if (id == null) {
-      return await launchUrl(uri.toString());
+    if (id != null) {
+      final type = _publicationTypeHandler(uri);
+      if (type != null) {
+        return await pushWidget(PublicationDetailPage(id: id, type: type.name));
+      }
+
+      final isUser = isUserUrl(uri);
+      if (isUser) {
+        return await navigate(
+          ServicesFlowRoute(
+            children: [
+              UserDashboardRoute(alias: id, children: [UserDetailRoute()]),
+            ],
+          ),
+        );
+      }
     }
 
-    final type = _publicationTypeHandler(uri);
-    if (type != null) {
-      return await pushWidget(PublicationDetailPage(id: id, type: type.name));
-    }
-
-    final isUser = isUserUrl(uri);
-    if (isUser) {
-      return await navigate(
-        ServicesFlowRoute(
-          children: [
-            UserDashboardRoute(alias: id, children: [UserDetailRoute()]),
-          ],
-        ),
-      );
-    }
+    return await launchUrl(uri.toString());
   }
 
   String? _parseId(Uri url) {
