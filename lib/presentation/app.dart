@@ -100,31 +100,36 @@ class ApplicationView extends StatelessWidget {
       builder: (context, child) {
         final theme = context.theme;
 
-        return DevicePreview.appBuilder(
-          context,
-          ResponsiveBreakpoints.builder(
-            child: ColoredBox(
-              color: theme.colors.surface,
-              child: MaxWidthBox(
-                maxWidth: AppDimensions.maxWidth,
-                child: AnnotatedRegion(
-                  value:
-                      theme.colorScheme.brightness == Brightness.dark
-                          ? SystemUiOverlayStyle.light
-                          : SystemUiOverlayStyle.dark,
-                  child: child ?? const SizedBox.shrink(),
+        return MediaQuery(
+          data: MediaQuery.of(
+            context,
+          ).copyWith(textScaler: const TextScaler.linear(1)),
+          child: DevicePreview.appBuilder(
+            context,
+            ResponsiveBreakpoints.builder(
+              child: ColoredBox(
+                color: theme.colors.surface,
+                child: MaxWidthBox(
+                  maxWidth: AppDimensions.maxWidth,
+                  child: AnnotatedRegion(
+                    value:
+                        theme.colorScheme.brightness == Brightness.dark
+                            ? SystemUiOverlayStyle.light
+                            : SystemUiOverlayStyle.dark,
+                    child: child ?? const SizedBox.shrink(),
+                  ),
                 ),
               ),
+              breakpoints: [
+                const Breakpoint(start: 0, end: 600, name: ScreenType.mobile),
+                const Breakpoint(start: 601, end: 840, name: ScreenType.tablet),
+                const Breakpoint(
+                  start: 841,
+                  end: double.infinity,
+                  name: ScreenType.desktop,
+                ),
+              ],
             ),
-            breakpoints: [
-              const Breakpoint(start: 0, end: 600, name: ScreenType.mobile),
-              const Breakpoint(start: 601, end: 840, name: ScreenType.tablet),
-              const Breakpoint(
-                start: 841,
-                end: double.infinity,
-                name: ScreenType.desktop,
-              ),
-            ],
           ),
         );
       },
