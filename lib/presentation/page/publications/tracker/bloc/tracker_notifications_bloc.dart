@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import '../../../../../data/model/list_response_model.dart';
 import '../../../../../data/model/loading_status_enum.dart';
 import '../../../../../data/model/tracker/tracker.dart';
 import '../../../../../data/repository/repository.dart';
@@ -32,17 +33,19 @@ class TrackerNotificationsBloc
     Emitter<TrackerNotificationsState> emit,
   ) async {
     try {
-      final result = await repository.fetchNotifications(
+      final response = await repository.fetchNotifications(
         page: state.page.toString(),
         category: state.category,
       );
 
+      final newUnreadIds =
+          response.refs.where((e) => e.unread).map((e) => e.id).toSet();
+
       emit(
         state.copyWith(
           status: LoadingStatus.success,
-          response: result,
-          unreadIds:
-              result.list.refs.where((e) => e.unread).map((e) => e.id).toSet(),
+          response: response,
+          unreadIds: newUnreadIds,
         ),
       );
     } catch (e, trace) {
@@ -62,12 +65,11 @@ class TrackerNotificationsBloc
     Emitter<TrackerNotificationsState> emit,
   ) async {
     try {
-      final result = await repository.readNotifications(event.ids);
+      await repository.readNotifications(event.ids);
 
-      final newResponse = state.response.copyWith(unreadCounters: result);
       final newUnreadIds = state.unreadIds.difference(Set.from(event.ids));
 
-      emit(state.copyWith(response: newResponse, unreadIds: newUnreadIds));
+      emit(state.copyWith(unreadIds: newUnreadIds));
     } catch (e, trace) {
       emit(
         state.copyWith(

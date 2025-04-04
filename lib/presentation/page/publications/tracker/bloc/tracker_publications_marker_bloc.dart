@@ -48,6 +48,8 @@ class TrackerPublicationsMarkerBloc
     ReadEvent event,
     Emitter<TrackerPublicationsMarkerState> emit,
   ) async {
+    emit(state.copyWith(status: LoadingStatus.loading));
+
     try {
       final ids = List<String>.from(
         state.markedIds.entries

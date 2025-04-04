@@ -52,10 +52,10 @@ class TrackerSubscriptionView extends StatelessWidget {
           return switch (state.status) {
             LoadingStatus.failure => Center(child: Text(state.error)),
             LoadingStatus.success => ListView.builder(
-              itemCount: state.response.list.refs.length,
+              itemCount: state.response.refs.length,
               itemExtent: 150,
               itemBuilder: (context, index) {
-                final model = state.response.list.refs[index];
+                final model = state.response.refs[index];
 
                 if (model.typeEnum == TrackerNotificationType.unknown) {
                   return _UnknownWidget(model: model);

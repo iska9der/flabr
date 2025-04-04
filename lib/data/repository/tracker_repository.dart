@@ -1,27 +1,30 @@
 import 'dart:async';
 
 import 'package:injectable/injectable.dart';
+import 'package:rxdart/rxdart.dart';
 
 import '../model/list_response_model.dart';
 import '../model/tracker/tracker.dart';
 import '../service/service.dart';
 
 abstract interface class TrackerRepository {
-  Future<TrackerPublicationsResponse> fetchPublications({
+  Stream<ListResponse<TrackerPublication>> getPublications();
+
+  Future<ListResponse<TrackerPublication>> fetchPublications({
     String page,
     bool byAuthor,
   });
 
-  Future<TrackerUnreadCounters> readPublications(List<String> ids);
+  Future<void> readPublications(List<String> ids);
 
   Future<void> deletePublications(List<String> ids);
 
-  Future<TrackerNotificationsResponse> fetchNotifications({
+  Future<ListResponse<TrackerNotification>> fetchNotifications({
     String page,
     required TrackerNotificationCategory category,
   });
 
-  Future<TrackerUnreadCounters> readNotifications(List<String> ids);
+  Future<void> readNotifications(List<String> ids);
 }
 
 @Singleton(as: TrackerRepository)
@@ -30,8 +33,17 @@ class TrackerRepositoryImpl implements TrackerRepository {
 
   final TrackerService _service;
 
+  late final _publicationsController =
+      BehaviorSubject<ListResponse<TrackerPublication>>.seeded(
+        TrackerPublicationListResponse.empty,
+      );
+
   @override
-  Future<TrackerPublicationsResponse> fetchPublications({
+  Stream<ListResponse<TrackerPublication>> getPublications() =>
+      _publicationsController.asBroadcastStream();
+
+  @override
+  Future<ListResponse<TrackerPublication>> fetchPublications({
     String page = '1',
     bool byAuthor = false,
   }) async {
@@ -39,7 +51,9 @@ class TrackerRepositoryImpl implements TrackerRepository {
       page: page,
       byAuthor: byAuthor,
     );
-    final unread = TrackerUnreadCounters.fromJson(map['unreadCounters']);
+
+    /// TODO: реализовать стрим для счетчиков
+    // final unread = TrackerUnreadCounters.fromJson(map['unreadCounters']);
 
     ListResponse<TrackerPublication> listResponse =
         TrackerPublicationListResponse.fromMap(map);
@@ -49,30 +63,46 @@ class TrackerRepositoryImpl implements TrackerRepository {
       ..sort((a, b) => b.unreadCommentsCount.compareTo(a.unreadCommentsCount));
     listResponse = listResponse.copyWith(refs: sortedRefs);
 
-    final response = TrackerPublicationsResponse(
-      list: listResponse,
-      unreadCounters: unread,
-    );
+    _publicationsController.add(listResponse);
 
-    return response;
+    return listResponse;
   }
 
   @override
-  Future<TrackerUnreadCounters> readPublications(List<String> ids) async {
+  Future<void> readPublications(List<String> ids) async {
+    // ignore: unused_local_variable
     final raw = await _service.readPublications(ids);
 
-    final unread = TrackerUnreadCounters.fromJson(raw['unreadCounters']);
+    /// TODO: реализовать стрим для счетчиков
+    // final unread = TrackerUnreadCounters.fromJson(raw['unreadCounters']);
 
-    return unread;
+    /// отмечаем публикации как прочитанные и обновляем стрим
+    final last = _publicationsController.value;
+    final newModels = [...last.refs];
+    for (int i = 0; i < newModels.length; i++) {
+      final model = newModels[i];
+      if (ids.contains(model.id)) {
+        newModels[i] = model.copyWith(unreadCommentsCount: 0);
+      }
+    }
+    final result = last.copyWith(refs: newModels);
+    _publicationsController.add(result);
   }
 
   @override
   Future<void> deletePublications(List<String> ids) async {
     await _service.deletePublications(ids);
+
+    /// удаляем публикации и обновляем стрим
+    final last = _publicationsController.value;
+    final newModels = [...last.refs];
+    newModels.removeWhere((element) => ids.contains(element.id));
+    final result = last.copyWith(refs: newModels);
+    _publicationsController.add(result);
   }
 
   @override
-  Future<TrackerNotificationsResponse> fetchNotifications({
+  Future<ListResponse<TrackerNotification>> fetchNotifications({
     String page = '1',
     required TrackerNotificationCategory category,
   }) async {
@@ -80,24 +110,21 @@ class TrackerRepositoryImpl implements TrackerRepository {
       page: page,
       category: category.name,
     );
-    final unread = TrackerUnreadCounters.fromJson(raw['unreadCounters']);
+
+    /// TODO: реализовать стрим для счетчиков
+    // final unread = TrackerUnreadCounters.fromJson(raw['unreadCounters']);
 
     final listResponse = TrackerNotificationListResponse.fromMap(raw);
 
-    final response = TrackerNotificationsResponse(
-      list: listResponse,
-      unreadCounters: unread,
-    );
-
-    return response;
+    return listResponse;
   }
 
   @override
-  Future<TrackerUnreadCounters> readNotifications(List<String> ids) async {
+  Future<void> readNotifications(List<String> ids) async {
+    // ignore: unused_local_variable
     final raw = await _service.readNotifications(ids);
 
-    final unread = TrackerUnreadCounters.fromJson(raw['unreadCounters']);
-
-    return unread;
+    /// TODO: реализовать стрим для счетчиков
+    // final unread = TrackerUnreadCounters.fromJson(raw['unreadCounters']);
   }
 }

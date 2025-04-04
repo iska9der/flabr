@@ -61,6 +61,7 @@ dependencies:
   ya_summary:
     path: packages/ya_summary
   flutter_displaymode: ^0.6.0
+  rxdart: ^0.28.0
 
 dev_dependencies:
   analyzer: ^7.3.0
