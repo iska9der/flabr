@@ -11,10 +11,8 @@ class TrackerNotificationsState with _$TrackerNotificationsState {
     @Default(TrackerNotificationListResponse.empty)
     ListResponse<TrackerNotification> response,
     @Default(1) int page,
-    @Default({}) Set<String> unreadIds,
   }) = _TrackerNotificationsState;
 
   bool get isFirstFetch => page == 1;
   bool get isLastPage => page >= response.pagesCount;
-  bool isUnreaded(String id) => unreadIds.contains(id);
 }

@@ -13,6 +13,7 @@ import '../../../extension/extension.dart';
 import '../../../widget/enhancement/card.dart';
 import '../../../widget/user_text_button.dart';
 import 'bloc/tracker_notifications_bloc.dart';
+import 'bloc/tracker_notifications_marker_bloc.dart';
 import 'widget/tracker_skeleton_widget.dart';
 
 @RoutePage(name: TrackerSubscriptionPage.routeName)
@@ -23,12 +24,26 @@ class TrackerSubscriptionPage extends StatelessWidget {
   static const String routeName = 'TrackerSubscriptionRoute';
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create:
-          (_) => TrackerNotificationsBloc(
-            repository: getIt(),
-            category: TrackerNotificationCategory.subscribers,
-          ),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create:
+              (_) =>
+                  TrackerNotificationsBloc(
+                      repository: getIt(),
+                      category: TrackerNotificationCategory.subscribers,
+                    )
+                    ..add(const TrackerNotificationsEvent.load())
+                    ..add(const TrackerNotificationsEvent.subscribe()),
+        ),
+        BlocProvider(
+          create:
+              (_) => TrackerNotificationsMarkerBloc(
+                repository: getIt(),
+                category: TrackerNotificationCategory.subscribers,
+              ),
+        ),
+      ],
       child: const TrackerSubscriptionView(),
     );
   }
@@ -41,36 +56,28 @@ class TrackerSubscriptionView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocBuilder<TrackerNotificationsBloc, TrackerNotificationsState>(
-        buildWhen: (previous, current) => previous.status != current.status,
-        builder: (context, state) {
-          if (state.status == LoadingStatus.initial) {
-            context.read<TrackerNotificationsBloc>().add(
-              const TrackerNotificationsEvent.load(),
-            );
-          }
+        builder:
+            (context, state) => switch (state.status) {
+              LoadingStatus.failure => Center(child: Text(state.error)),
+              LoadingStatus.success => ListView.builder(
+                itemCount: state.response.refs.length,
+                itemExtent: 150,
+                itemBuilder: (context, index) {
+                  final model = state.response.refs[index];
 
-          return switch (state.status) {
-            LoadingStatus.failure => Center(child: Text(state.error)),
-            LoadingStatus.success => ListView.builder(
-              itemCount: state.response.refs.length,
-              itemExtent: 150,
-              itemBuilder: (context, index) {
-                final model = state.response.refs[index];
+                  final key = ValueKey('tracker-subscription-${model.id}');
 
-                final key = ValueKey('tracker-subscription-${model.id}');
+                  if (model.typeEnum == TrackerNotificationType.unknown) {
+                    return _UnknownWidget(key: key, model: model);
+                  }
 
-                if (model.typeEnum == TrackerNotificationType.unknown) {
-                  return _UnknownWidget(key: key, model: model);
-                }
-
-                return _NotificationWidget(key: key, model: model);
-              },
-            ),
-            _ => ListView(
-              children: List.filled(6, const TrackerSkeletonWidget()),
-            ),
-          };
-        },
+                  return _NotificationWidget(key: key, model: model);
+                },
+              ),
+              _ => ListView(
+                children: List.filled(6, const TrackerSkeletonWidget()),
+              ),
+            },
       ),
     );
   }
@@ -83,8 +90,8 @@ class _NotificationWidget extends StatelessWidget {
   final TrackerNotification model;
 
   void markAsRead(BuildContext context, String id) {
-    context.read<TrackerNotificationsBloc>().add(
-      TrackerNotificationsEvent.read(ids: [id]),
+    context.read<TrackerNotificationsMarkerBloc>().add(
+      TrackerNotificationsMarkerEvent.read(ids: [id]),
     );
   }
 
@@ -93,9 +100,7 @@ class _NotificationWidget extends StatelessWidget {
     final theme = context.theme;
     final user = model.dataModel.user;
     final publication = model.dataModel.publication;
-    final isUnread = context.select<TrackerNotificationsBloc, bool>(
-      (bloc) => bloc.state.isUnreaded(model.id),
-    );
+    final isUnread = model.unread;
 
     return FlabrCard(
       color: isUnread ? theme.colors.cardHighlight : null,

@@ -30,6 +30,7 @@ class TrackerPublicationsPage extends StatelessWidget {
           create:
               (_) =>
                   TrackerPublicationsBloc(repository: getIt())
+                    ..add(const TrackerPublicationsEvent.load())
                     ..add(const TrackerPublicationsEvent.subscribe()),
         ),
         BlocProvider(
@@ -49,32 +50,25 @@ class TrackerPublicationsView extends StatelessWidget {
     return Scaffold(
       floatingActionButton: const _TrackerFloatingButton(),
       body: BlocBuilder<TrackerPublicationsBloc, TrackerPublicationsState>(
-        builder: (context, state) {
-          if (state.status == LoadingStatus.initial) {
-            context.read<TrackerPublicationsBloc>().add(
-              const TrackerPublicationsEvent.load(),
-            );
-          }
+        builder:
+            (context, state) => switch (state.status) {
+              LoadingStatus.failure => Center(child: Text(state.error)),
+              LoadingStatus.success => ListView.builder(
+                itemCount: state.response.refs.length,
+                itemExtent: 150,
+                itemBuilder: (context, index) {
+                  final model = state.response.refs[index];
 
-          return switch (state.status) {
-            LoadingStatus.failure => Center(child: Text(state.error)),
-            LoadingStatus.success => ListView.builder(
-              itemCount: state.response.refs.length,
-              itemExtent: 150,
-              itemBuilder: (context, index) {
-                final model = state.response.refs[index];
-
-                return TrackerPublicationWidget(
-                  key: ValueKey('tracker-publication-${model.id}'),
-                  model: model,
-                );
-              },
-            ),
-            _ => ListView(
-              children: List.filled(6, const TrackerSkeletonWidget()),
-            ),
-          };
-        },
+                  return TrackerPublicationWidget(
+                    key: ValueKey('tracker-publication-${model.id}'),
+                    model: model,
+                  );
+                },
+              ),
+              _ => ListView(
+                children: List.filled(6, const TrackerSkeletonWidget()),
+              ),
+            },
       ),
     );
   }

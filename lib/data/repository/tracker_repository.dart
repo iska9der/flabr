@@ -25,6 +25,10 @@ abstract interface class TrackerRepository {
   /// удалить публикации из трекера
   Future<void> deletePublications(List<String> ids);
 
+  Stream<ListResponse<TrackerNotification>> getNotifications({
+    required TrackerNotificationCategory category,
+  });
+
   /// получить список уведомлений по указанной категории
   Future<ListResponse<TrackerNotification>> fetchNotifications({
     String page,
@@ -32,7 +36,10 @@ abstract interface class TrackerRepository {
   });
 
   /// отметить уведомления как прочитанные
-  Future<void> markAsReadNotifications(List<String> ids);
+  Future<void> markAsReadNotifications({
+    required TrackerNotificationCategory category,
+    List<String> ids = const [],
+  });
 }
 
 @Singleton(as: TrackerRepository)
@@ -41,10 +48,17 @@ class TrackerRepositoryImpl implements TrackerRepository {
 
   final TrackerService _service;
 
-  late final _publicationsController =
-      BehaviorSubject<ListResponse<TrackerPublication>>.seeded(
-        TrackerPublicationListResponse.empty,
-      );
+  final BehaviorSubject<ListResponse<TrackerPublication>>
+  _publicationsController = BehaviorSubject();
+
+  final Map<
+    TrackerNotificationCategory,
+    BehaviorSubject<ListResponse<TrackerNotification>>
+  >
+  _notificationsControllers = {
+    for (var category in TrackerNotificationCategory.values)
+      category: BehaviorSubject(),
+  };
 
   @override
   Stream<ListResponse<TrackerPublication>> getPublications() =>
@@ -70,7 +84,6 @@ class TrackerRepositoryImpl implements TrackerRepository {
     final sortedRefs = [...listResponse.refs]
       ..sort((a, b) => b.unreadCommentsCount.compareTo(a.unreadCommentsCount));
     listResponse = listResponse.copyWith(refs: sortedRefs);
-
     _publicationsController.add(listResponse);
 
     return listResponse;
@@ -133,16 +146,37 @@ class TrackerRepositoryImpl implements TrackerRepository {
     // final unread = TrackerUnreadCounters.fromJson(raw['unreadCounters']);
 
     final listResponse = TrackerNotificationListResponse.fromMap(raw);
+    _notificationsControllers[category]!.add(listResponse);
 
     return listResponse;
   }
 
   @override
-  Future<void> markAsReadNotifications(List<String> ids) async {
+  Stream<ListResponse<TrackerNotification>> getNotifications({
+    required TrackerNotificationCategory category,
+  }) => _notificationsControllers[category]!.asBroadcastStream();
+
+  @override
+  Future<void> markAsReadNotifications({
+    required TrackerNotificationCategory category,
+    List<String> ids = const [],
+  }) async {
     // ignore: unused_local_variable
     final raw = await _service.readNotifications(ids);
 
     /// TODO: реализовать стрим для счетчиков
     // final unread = TrackerUnreadCounters.fromJson(raw['unreadCounters']);
+
+    /// отмечаем уведомления как прочитанные и обновляем стрим
+    final last = _notificationsControllers[category]!.value;
+    final newModels = [...last.refs];
+    for (int i = 0; i < newModels.length; i++) {
+      final model = newModels[i];
+      if (ids.contains(model.id)) {
+        newModels[i] = model.copyWith(unread: false);
+      }
+    }
+    final result = last.copyWith(refs: newModels);
+    _notificationsControllers[category]!.add(result);
   }
 }
