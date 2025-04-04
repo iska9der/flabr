@@ -59,6 +59,11 @@ class TrackerPublicationsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final fabLoader = CircleIndicator.small(
+      color: context.theme.colorScheme.onPrimaryContainer,
+    );
+    final iconSize = fabLoader.size.height;
+
     return Scaffold(
       floatingActionButton: BlocBuilder<
         TrackerPublicationsMarkerBloc,
@@ -72,29 +77,27 @@ class TrackerPublicationsView extends StatelessWidget {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             mainAxisSize: MainAxisSize.min,
-            spacing: 8.0,
             children: [
               if (state.isAnyUnreaded)
-                FloatingActionButton.extended(
-                  heroTag: null,
+                FilledButton.icon(
                   label: const Text('Пометить как прочитанное'),
                   icon:
                       state.status == LoadingStatus.loading
-                          ? const CircleIndicator.medium()
-                          : const Icon(Icons.mark_chat_read),
+                          ? fabLoader
+                          : Icon(Icons.mark_chat_read, size: iconSize),
                   onPressed: () {
                     context.read<TrackerPublicationsMarkerBloc>().add(
                       const TrackerPublicationsMarkerEvent.read(),
                     );
                   },
                 ),
-              FloatingActionButton.extended(
-                heroTag: null,
+
+              FilledButton.icon(
                 label: const Text('Удалить из трекера'),
                 icon:
                     state.status == LoadingStatus.loading
-                        ? const CircleIndicator.medium()
-                        : const Icon(Icons.delete),
+                        ? fabLoader
+                        : Icon(Icons.delete, size: iconSize),
                 onPressed: () {
                   context.read<TrackerPublicationsMarkerBloc>().add(
                     const TrackerPublicationsMarkerEvent.remove(),
@@ -117,6 +120,7 @@ class TrackerPublicationsView extends StatelessWidget {
             LoadingStatus.failure => Center(child: Text(state.error)),
             LoadingStatus.success => ListView.builder(
               itemCount: state.response.list.refs.length,
+              itemExtent: 150,
               itemBuilder: (context, index) {
                 final model = state.response.list.refs[index];
 
@@ -171,13 +175,14 @@ class _TrackerPublicationWidgetState extends State<TrackerPublicationWidget> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 UserTextButton(widget.model.author),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 8.0),
-                  child: Text(
-                    widget.model.title.trim(),
-                    style: theme.textTheme.titleMedium,
-                  ),
+                const Spacer(),
+                Text(
+                  widget.model.title.trim(),
+                  style: theme.textTheme.titleMedium,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 2,
                 ),
+                const Spacer(),
                 Row(
                   children: [
                     PublicationStatIconButton(
