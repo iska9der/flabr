@@ -49,9 +49,13 @@ class TrackerPublicationsMarkerBloc
     Emitter<TrackerPublicationsMarkerState> emit,
   ) async {
     try {
-      await repository.readPublications(
-        List<String>.from(state.markedIds.keys),
+      final ids = List<String>.from(
+        state.markedIds.entries
+            .where((element) => element.value)
+            .map((e) => e.key),
       );
+
+      await repository.readPublications(ids);
 
       emit(state.copyWith(status: LoadingStatus.success, markedIds: {}));
     } catch (e, trace) {
@@ -73,9 +77,9 @@ class TrackerPublicationsMarkerBloc
     emit(state.copyWith(status: LoadingStatus.loading));
 
     try {
-      await repository.deletePublications(
-        List<String>.from(state.markedIds.keys),
-      );
+      final ids = List<String>.from(state.markedIds.keys);
+
+      await repository.deletePublications(ids);
 
       emit(state.copyWith(status: LoadingStatus.success, markedIds: {}));
     } catch (e, trace) {
