@@ -76,6 +76,11 @@ abstract class AppTheme {
       progressIndicatorTheme: proggressIndicatorThemeData,
       textButtonTheme: appTextButtonThemeData,
       iconButtonTheme: appIconButtonThemeData,
+      filledButtonTheme: FilledButtonThemeData(
+        style: appFilledButtonStyle.merge(
+          FilledButton.styleFrom(disabledBackgroundColor: colors.disabled),
+        ),
+      ),
       checkboxTheme: appCheckboxThemeData,
       switchTheme: appSwitchThemeData,
       sliderTheme: appSliderThemeData,

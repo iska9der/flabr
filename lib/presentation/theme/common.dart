@@ -44,6 +44,10 @@ IconButtonThemeData appIconButtonThemeData = IconButtonThemeData(
   ),
 );
 
+ButtonStyle appFilledButtonStyle = FilledButton.styleFrom(
+  shape: const RoundedRectangleBorder(borderRadius: AppStyles.borderRadius),
+);
+
 const DrawerThemeData appDrawerThemeData = DrawerThemeData(width: 200);
 
 const CheckboxThemeData appCheckboxThemeData = CheckboxThemeData();
