@@ -40,8 +40,8 @@ class CompanyDetailPage extends StatelessWidget {
           children: [
             CompanyProfileCardWidget(card: state.card),
             Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: AppDimensions.screenPadding,
+              padding: EdgeInsets.symmetric(
+                horizontal: AppInsets.screenPadding.left,
               ),
               child: CompanyDetailsWidget(card: state.card),
             ),

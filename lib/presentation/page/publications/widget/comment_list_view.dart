@@ -6,7 +6,6 @@ import 'package:flutter_fancy_tree_view/flutter_fancy_tree_view.dart';
 import '../../../../data/model/comment/comment.dart';
 import '../../../../data/model/offset_history.dart';
 import '../../../extension/extension.dart';
-import '../../../theme/theme.dart';
 import '../../../widget/comment/comment.dart';
 import '../../../widget/enhancement/card.dart';
 import '../../../widget/enhancement/progress_indicator.dart';
@@ -175,9 +174,7 @@ class _CommentTreeWidgetState extends State<CommentTreeWidget> {
                         Row(
                           children: [
                             Padding(
-                              padding: const EdgeInsets.only(
-                                left: AppDimensions.cardPadding,
-                              ),
+                              padding: const EdgeInsets.only(left: 8),
                               child: UserTextButton(entry.node.author),
                             ),
                             const Spacer(),

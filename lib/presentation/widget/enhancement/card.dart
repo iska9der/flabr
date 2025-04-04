@@ -11,13 +11,13 @@ class FlabrCard extends StatelessWidget {
     this.color,
     this.elevation,
     this.margin,
-    this.padding = AppInsets.cardPadding,
+    this.padding,
   });
 
   final Color? color;
   final double? elevation;
   final EdgeInsetsGeometry? margin;
-  final EdgeInsetsGeometry padding;
+  final EdgeInsetsGeometry? padding;
   final Widget child;
   final void Function()? onTap;
 
@@ -26,6 +26,7 @@ class FlabrCard extends StatelessWidget {
     final theme = context.theme;
     final cardTheme = theme.cardTheme;
     final cardMargin = margin ?? cardTheme.margin ?? const EdgeInsets.all(4.0);
+    final cardPadding = padding ?? AppInsets.cardPadding;
     final cardElevation = elevation ?? cardTheme.elevation ?? 1.0;
     final cardColor = color ?? theme.colors.card;
 
@@ -40,7 +41,7 @@ class FlabrCard extends StatelessWidget {
         clipBehavior: Clip.hardEdge,
         child: InkWell(
           onTap: onTap,
-          child: Padding(padding: padding, child: child),
+          child: Padding(padding: cardPadding, child: child),
         ),
       ),
     );
