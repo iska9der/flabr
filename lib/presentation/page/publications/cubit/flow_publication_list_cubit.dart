@@ -36,7 +36,7 @@ class FlowPublicationListCubit
       /// вспоминаем последний примененный фильтр во флоу
       final str = await storage.read(key);
       if (str == null) {
-        throw NotFoundException();
+        throw const NotFoundException();
       }
 
       final lastFilter = FlowFilter.fromJson(jsonDecode(str));

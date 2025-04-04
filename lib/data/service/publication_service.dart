@@ -115,8 +115,8 @@ class PublicationServiceImpl implements PublicationService {
       final response = await _mobileClient.get('/feed/counters');
 
       return response.data;
-    } catch (e, trace) {
-      Error.throwWithStackTrace(FetchException(), trace);
+    } catch (_, trace) {
+      Error.throwWithStackTrace(const FetchException(), trace);
     }
   }
 
@@ -134,8 +134,8 @@ class PublicationServiceImpl implements PublicationService {
       );
 
       return response.data;
-    } catch (e, trace) {
-      Error.throwWithStackTrace(FetchException(), trace);
+    } catch (_, trace) {
+      Error.throwWithStackTrace(const FetchException(), trace);
     }
   }
 
@@ -153,8 +153,8 @@ class PublicationServiceImpl implements PublicationService {
       );
 
       return response.data;
-    } catch (e, trace) {
-      Error.throwWithStackTrace(FetchException(), trace);
+    } catch (_, trace) {
+      Error.throwWithStackTrace(const FetchException(), trace);
     }
   }
 
@@ -183,8 +183,8 @@ class PublicationServiceImpl implements PublicationService {
       return FeedListResponse.fromMap(response.data);
     } on AppException {
       rethrow;
-    } catch (e, trace) {
-      Error.throwWithStackTrace(FetchException(), trace);
+    } catch (_, trace) {
+      Error.throwWithStackTrace(const FetchException(), trace);
     }
   }
 
@@ -238,8 +238,8 @@ class PublicationServiceImpl implements PublicationService {
       };
     } on AppException {
       rethrow;
-    } catch (e, trace) {
-      Error.throwWithStackTrace(FetchException(), trace);
+    } catch (_, trace) {
+      Error.throwWithStackTrace(const FetchException(), trace);
     }
   }
 
@@ -271,8 +271,8 @@ class PublicationServiceImpl implements PublicationService {
       return PublicationCommonListResponse.fromMap(response.data);
     } on AppException {
       rethrow;
-    } catch (e, trace) {
-      Error.throwWithStackTrace(FetchException(), trace);
+    } catch (_, trace) {
+      Error.throwWithStackTrace(const FetchException(), trace);
     }
   }
 
@@ -310,8 +310,8 @@ class PublicationServiceImpl implements PublicationService {
       };
     } on AppException {
       rethrow;
-    } catch (e, trace) {
-      Error.throwWithStackTrace(FetchException(), trace);
+    } catch (_, trace) {
+      Error.throwWithStackTrace(const FetchException(), trace);
     }
   }
 
@@ -335,7 +335,7 @@ class PublicationServiceImpl implements PublicationService {
         UserBookmarksType.posts => 'user_bookmarks_posts=true',
         UserBookmarksType.news => 'user_bookmarks_news=true',
         UserBookmarksType.comments =>
-          throw ValueException('Вы не туда попали...'),
+          throw const ValueException('Вы не туда попали...'),
       };
 
       final queryString = params.toQueryString();
@@ -351,8 +351,8 @@ class PublicationServiceImpl implements PublicationService {
       };
     } on AppException {
       rethrow;
-    } catch (e, trace) {
-      Error.throwWithStackTrace(FetchException(), trace);
+    } catch (_, trace) {
+      Error.throwWithStackTrace(const FetchException(), trace);
     }
   }
 
@@ -387,8 +387,8 @@ class PublicationServiceImpl implements PublicationService {
         CommentsListException.fromDioException(e),
         trace,
       );
-    } catch (e, trace) {
-      Error.throwWithStackTrace(FetchException(), trace);
+    } catch (_, trace) {
+      Error.throwWithStackTrace(const FetchException(), trace);
     }
   }
 
@@ -416,14 +416,14 @@ class PublicationServiceImpl implements PublicationService {
       );
 
       if (response.data['ok'] != true) {
-        throw ValueException('Не удалось!');
+        throw const ValueException('Не удалось!');
       }
 
       return true;
     } on AppException {
       rethrow;
-    } catch (e, trace) {
-      Error.throwWithStackTrace(FetchException(), trace);
+    } catch (_, trace) {
+      Error.throwWithStackTrace(const FetchException(), trace);
     }
   }
 
@@ -454,14 +454,14 @@ class PublicationServiceImpl implements PublicationService {
       };
 
       if (response.data['ok'] != true) {
-        throw ValueException('Не удалось!');
+        throw const ValueException('Не удалось!');
       }
 
       return true;
     } on AppException {
       rethrow;
-    } catch (e, trace) {
-      Error.throwWithStackTrace(FetchException(), trace);
+    } catch (_, trace) {
+      Error.throwWithStackTrace(const FetchException(), trace);
     }
   }
 
@@ -484,8 +484,8 @@ class PublicationServiceImpl implements PublicationService {
       return MostReadingResponse.fromMap(response.data);
     } on AppException {
       rethrow;
-    } catch (e, trace) {
-      Error.throwWithStackTrace(FetchException(), trace);
+    } catch (_, trace) {
+      Error.throwWithStackTrace(const FetchException(), trace);
     }
   }
 
@@ -498,8 +498,8 @@ class PublicationServiceImpl implements PublicationService {
       );
 
       return PublicationVoteResponse.fromJson(response.data);
-    } catch (e, trace) {
-      Error.throwWithStackTrace(FetchException(), trace);
+    } catch (_, trace) {
+      Error.throwWithStackTrace(const FetchException(), trace);
     }
   }
 
@@ -512,8 +512,8 @@ class PublicationServiceImpl implements PublicationService {
       );
 
       return PublicationVoteResponse.fromJson(response.data);
-    } catch (e, trace) {
-      Error.throwWithStackTrace(FetchException(), trace);
+    } catch (_, trace) {
+      Error.throwWithStackTrace(const FetchException(), trace);
     }
   }
 }

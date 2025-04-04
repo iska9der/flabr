@@ -53,7 +53,7 @@ class TrackerServiceImpl implements TrackerService {
 
       return response.data;
     } catch (e, trace) {
-      Error.throwWithStackTrace(FetchException(), trace);
+      Error.throwWithStackTrace(const FetchException(), trace);
     }
   }
 
@@ -67,7 +67,7 @@ class TrackerServiceImpl implements TrackerService {
 
       return response.data;
     } catch (e, trace) {
-      Error.throwWithStackTrace(FetchException(), trace);
+      Error.throwWithStackTrace(const FetchException(), trace);
     }
   }
 
@@ -81,7 +81,7 @@ class TrackerServiceImpl implements TrackerService {
 
       return response.data;
     } catch (e, trace) {
-      Error.throwWithStackTrace(FetchException(), trace);
+      Error.throwWithStackTrace(const FetchException(), trace);
     }
   }
 
@@ -103,7 +103,7 @@ class TrackerServiceImpl implements TrackerService {
 
       return response.data;
     } catch (e, trace) {
-      Error.throwWithStackTrace(FetchException(), trace);
+      Error.throwWithStackTrace(const FetchException(), trace);
     }
   }
 
@@ -117,7 +117,7 @@ class TrackerServiceImpl implements TrackerService {
 
       return response.data;
     } catch (e, trace) {
-      Error.throwWithStackTrace(FetchException(), trace);
+      Error.throwWithStackTrace(const FetchException(), trace);
     }
   }
 }

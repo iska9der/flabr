@@ -1,5 +1,5 @@
 import 'app_exception.dart';
 
-class NotFoundException implements AppException {
-  NotFoundException();
+class NotFoundException extends AppException {
+  const NotFoundException([super.message = 'Не найдено']);
 }

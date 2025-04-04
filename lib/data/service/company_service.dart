@@ -50,8 +50,8 @@ class CompanyServiceImpl implements CompanyService {
       return CompanyListResponse.fromMap(response.data);
     } on AppException {
       rethrow;
-    } catch (e) {
-      throw FetchException();
+    } catch (_, stackTrace) {
+      Error.throwWithStackTrace(const FetchException(), stackTrace);
     }
   }
 
@@ -71,8 +71,8 @@ class CompanyServiceImpl implements CompanyService {
       return response.data;
     } on AppException {
       rethrow;
-    } catch (e) {
-      throw FetchException();
+    } catch (_, stackTrace) {
+      Error.throwWithStackTrace(const FetchException(), stackTrace);
     }
   }
 
@@ -82,8 +82,8 @@ class CompanyServiceImpl implements CompanyService {
       await _siteClient.post('/v2/companies/$alias/subscription', body: {});
     } on AppException {
       rethrow;
-    } catch (e) {
-      throw FetchException();
+    } catch (_, stackTrace) {
+      Error.throwWithStackTrace(const FetchException(), stackTrace);
     }
   }
 }

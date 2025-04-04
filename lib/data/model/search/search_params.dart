@@ -43,6 +43,6 @@ abstract class SearchParamsFactory extends QueryParams {
       langUI: langUI,
       page: page.toString(),
     ),
-    SearchTarget.comments => throw ValueException('Не реализовано'),
+    SearchTarget.comments => throw const ValueException('Не реализовано'),
   };
 }

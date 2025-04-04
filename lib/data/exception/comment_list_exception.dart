@@ -2,21 +2,20 @@ import 'package:dio/dio.dart';
 
 import 'app_exception.dart';
 
-class CommentsListException implements AppException {
-  int httpCode;
-  String errorCode;
-  String message;
-
-  CommentsListException([
+class CommentsListException extends AppException {
+  const CommentsListException([
     this.httpCode = 400,
     this.errorCode = 'BAD_REQUEST',
-    this.message = 'Не удалось получить данные',
+    super.message = 'Не удалось получить список комментариев',
   ]);
+
+  final int httpCode;
+  final String errorCode;
 
   static AppException fromDioException(DioException exception) {
     int httpCode = 400;
     String errorCode = 'BAD_REQUEST';
-    String message = 'Не удалось получить данные';
+    String message = 'Не удалось получить список комментариев';
 
     if (exception.response?.data != null) {
       Map<String, dynamic> data = exception.response!.data;
@@ -34,12 +33,7 @@ class CommentsListException implements AppException {
       'NOT_FOUND' => 'Не найдено',
       'POST_IN_DRAFTS' => 'Публикация в черновиках',
       'POST_COMMENTS_DISABLED' => 'Комментарии к этой публикации отключены',
-      _ => 'Не удалось получить данные',
+      _ => 'Не удалось получить список комментариев',
     };
-  }
-
-  @override
-  String toString() {
-    return message;
   }
 }

@@ -116,8 +116,8 @@ class UserServiceImpl implements UserService {
       await _siteClient.post('/v2/users/$alias/following/toggle', body: {});
     } on AppException {
       rethrow;
-    } catch (e) {
-      throw FetchException();
+    } catch (_, stackTrace) {
+      Error.throwWithStackTrace(const FetchException(), stackTrace);
     }
   }
 
@@ -134,9 +134,9 @@ class UserServiceImpl implements UserService {
       return UserCommentListResponse.fromMap(response.data);
     } on AppException {
       rethrow;
-    } catch (e, trace) {
+    } catch (_, trace) {
       Error.throwWithStackTrace(
-        FetchException('Не удалось получить комментарии в закладках'),
+        const FetchException('Не удалось получить комментарии в закладках'),
         trace,
       );
     }
@@ -155,9 +155,9 @@ class UserServiceImpl implements UserService {
       return UserCommentListResponse.fromMap(response.data);
     } on AppException {
       rethrow;
-    } catch (e, trace) {
+    } catch (_, trace) {
       Error.throwWithStackTrace(
-        FetchException('Не удалось получить комментарии пользователя'),
+        const FetchException('Не удалось получить комментарии пользователя'),
         trace,
       );
     }

@@ -50,7 +50,7 @@ class SearchRepository {
       case SearchTarget.users:
         return UserListResponse.fromMap(raw);
       case SearchTarget.comments:
-        throw ValueException('Не реализовано');
+        throw const ValueException('Не реализовано');
     }
   }
 

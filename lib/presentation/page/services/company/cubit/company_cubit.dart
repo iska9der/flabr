@@ -35,15 +35,15 @@ class CompanyCubit extends Cubit<CompanyState> {
       }
 
       emit(state.copyWith(status: CompanyStatus.success, card: card));
-    } on AppException catch (e) {
-      emit(state.copyWith(status: CompanyStatus.failure, error: e.toString()));
-    } catch (e) {
+    } catch (error, stackTrace) {
       emit(
         state.copyWith(
           status: CompanyStatus.failure,
-          error: 'Не удалось получить профиль компании',
+          error: error.parseException('Не удалось получить профиль компании'),
         ),
       );
+
+      super.onError(error, stackTrace);
     }
   }
 }

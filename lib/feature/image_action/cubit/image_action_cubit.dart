@@ -40,7 +40,7 @@ class ImageActionCubit extends Cubit<ImageActionState> {
     );
 
     if (!response.headers.map.containsKey('content-type')) {
-      throw FetchException('В заголовках не указан mime/type');
+      throw const FetchException('В заголовках не указан mime/type');
     }
 
     final name = path.basename(state.url);
