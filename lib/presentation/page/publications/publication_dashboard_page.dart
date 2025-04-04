@@ -216,13 +216,13 @@ class _DashboardAppBar extends StatelessWidget {
                   ),
                   tooltip: 'Трекер',
                   onPressed: () async {
+                    final authCubit = context.read<AuthCubit>();
+
                     await getIt<AppRouter>().push(
                       const TrackerDashboardRoute(),
                     );
 
-                    if (context.mounted) {
-                      context.read<AuthCubit>().fetchUpdates();
-                    }
+                    authCubit.fetchUpdates();
                   },
                 ),
               const MyProfileIconButton(),
