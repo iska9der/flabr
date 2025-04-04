@@ -27,6 +27,9 @@ class _FloatingScrollToTopButtonState extends State<FloatingScrollToTopButton> {
       return const SizedBox();
     }
 
+    /// TODO: переехать на ValueListenableBuilder:
+    /// можно добавить к isScrollingNotifier listener
+    /// в котором будет меняться isVisible
     return AnimatedBuilder(
       animation: state.controller.position.isScrollingNotifier,
       builder: (context, child) {

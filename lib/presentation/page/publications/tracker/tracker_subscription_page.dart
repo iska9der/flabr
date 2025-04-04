@@ -57,11 +57,13 @@ class TrackerSubscriptionView extends StatelessWidget {
               itemBuilder: (context, index) {
                 final model = state.response.refs[index];
 
+                final key = ValueKey('tracker-subscription-${model.id}');
+
                 if (model.typeEnum == TrackerNotificationType.unknown) {
-                  return _UnknownWidget(model: model);
+                  return _UnknownWidget(key: key, model: model);
                 }
 
-                return _NotificationWidget(model: model);
+                return _NotificationWidget(key: key, model: model);
               },
             ),
             _ => ListView(
@@ -74,21 +76,11 @@ class TrackerSubscriptionView extends StatelessWidget {
   }
 }
 
-class _NotificationWidget extends StatefulWidget {
+class _NotificationWidget extends StatelessWidget {
   // ignore: unused_element_parameter
   const _NotificationWidget({super.key, required this.model});
 
   final TrackerNotification model;
-
-  @override
-  State<_NotificationWidget> createState() => _NotificationWidgetState();
-}
-
-class _NotificationWidgetState extends State<_NotificationWidget> {
-  @override
-  void initState() {
-    super.initState();
-  }
 
   void markAsRead(BuildContext context, String id) {
     context.read<TrackerNotificationsBloc>().add(
@@ -99,10 +91,10 @@ class _NotificationWidgetState extends State<_NotificationWidget> {
   @override
   Widget build(BuildContext context) {
     final theme = context.theme;
-    final user = widget.model.dataModel.user;
-    final publication = widget.model.dataModel.publication;
+    final user = model.dataModel.user;
+    final publication = model.dataModel.publication;
     final isUnread = context.select<TrackerNotificationsBloc, bool>(
-      (bloc) => bloc.state.isUnreaded(widget.model.id),
+      (bloc) => bloc.state.isUnreaded(model.id),
     );
 
     return FlabrCard(
@@ -118,7 +110,7 @@ class _NotificationWidgetState extends State<_NotificationWidget> {
             text: TextSpan(
               style: theme.textTheme.bodyMedium,
               children: [
-                TextSpan(text: widget.model.typeEnum.text),
+                TextSpan(text: model.typeEnum.text),
                 if (publication != null) ...[
                   const TextSpan(text: ' "'),
                   TextSpan(
@@ -127,7 +119,7 @@ class _NotificationWidgetState extends State<_NotificationWidget> {
                     recognizer:
                         TapGestureRecognizer()
                           ..onTap = () {
-                            markAsRead(context, widget.model.id);
+                            markAsRead(context, model.id);
 
                             context.router.push(
                               PublicationFlowRoute(
@@ -149,10 +141,8 @@ class _NotificationWidgetState extends State<_NotificationWidget> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                widget.model.timeHappened != null
-                    ? Text(
-                      DateFormat.MMMMd().format(widget.model.timeHappened!),
-                    )
+                model.timeHappened != null
+                    ? Text(DateFormat.MMMMd().format(model.timeHappened!))
                     : const SizedBox.shrink(),
                 isUnread
                     ? Tooltip(
@@ -163,7 +153,7 @@ class _NotificationWidgetState extends State<_NotificationWidget> {
                           color: Theme.of(context).colorScheme.primary,
                           size: 24,
                         ),
-                        onTap: () => markAsRead(context, widget.model.id),
+                        onTap: () => markAsRead(context, model.id),
                       ),
                     )
                     : const SizedBox.square(dimension: 24),
