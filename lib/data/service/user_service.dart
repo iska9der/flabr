@@ -2,6 +2,7 @@ import 'package:injectable/injectable.dart';
 
 import '../../core/component/http/http.dart';
 import '../exception/exception.dart';
+import '../model/list_response_model.dart';
 import '../model/query_params_model.dart';
 import '../model/user/user.dart';
 
@@ -31,7 +32,7 @@ abstract interface class UserService {
     required int page,
   });
 
-  Future<UserCommentListResponse> fetchComments({
+  Future<ListResponse<UserComment>> fetchComments({
     required String alias,
     required int page,
   });
@@ -115,8 +116,8 @@ class UserServiceImpl implements UserService {
       await _siteClient.post('/v2/users/$alias/following/toggle', body: {});
     } on AppException {
       rethrow;
-    } catch (e) {
-      throw FetchException();
+    } catch (_, stackTrace) {
+      Error.throwWithStackTrace(const FetchException(), stackTrace);
     }
   }
 
@@ -133,16 +134,16 @@ class UserServiceImpl implements UserService {
       return UserCommentListResponse.fromMap(response.data);
     } on AppException {
       rethrow;
-    } catch (e, trace) {
+    } catch (_, trace) {
       Error.throwWithStackTrace(
-        FetchException('Не удалось получить комментарии в закладках'),
+        const FetchException('Не удалось получить комментарии в закладках'),
         trace,
       );
     }
   }
 
   @override
-  Future<UserCommentListResponse> fetchComments({
+  Future<ListResponse<UserComment>> fetchComments({
     required String alias,
     required int page,
   }) async {
@@ -154,9 +155,9 @@ class UserServiceImpl implements UserService {
       return UserCommentListResponse.fromMap(response.data);
     } on AppException {
       rethrow;
-    } catch (e, trace) {
+    } catch (_, trace) {
       Error.throwWithStackTrace(
-        FetchException('Не удалось получить комментарии пользователя'),
+        const FetchException('Не удалось получить комментарии пользователя'),
         trace,
       );
     }

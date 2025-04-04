@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:equatable/equatable.dart';
 
 import '../hub_base.dart';
@@ -48,7 +50,7 @@ class HubProfile extends HubBase with EquatableMixin {
       imageUrl: imageUrl ?? this.imageUrl,
       relatedData: relatedData ?? this.relatedData as HubRelatedData,
       statistics: statistics ?? this.statistics,
-      keywords: keywords ?? this.keywords,
+      keywords: UnmodifiableListView(keywords ?? this.keywords),
       isProfiled: isProfiled ?? this.isProfiled,
     );
   }
@@ -69,10 +71,7 @@ class HubProfile extends HubBase with EquatableMixin {
           map['statistics'] != null
               ? HubStatistics.fromMap(map['statistics'])
               : HubStatistics.empty,
-      keywords:
-          map['keywords'] != null
-              ? List<String>.from(map['keywords'])
-              : const [],
+      keywords: UnmodifiableListView(List<String>.from(map['keywords'] ?? [])),
       isProfiled: map['isProfiled'] as bool,
     );
   }

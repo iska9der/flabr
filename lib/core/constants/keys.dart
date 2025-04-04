@@ -11,7 +11,7 @@ abstract class CacheKeys {
   static const langArticle = 'lang_article';
 
   static const feedFilter = 'feed_filter';
-  static flowFilter(String section) => 'flow_filter_$section';
+  static String flowFilter(String section) => 'flow_filter_$section';
 }
 
 abstract class Keys {

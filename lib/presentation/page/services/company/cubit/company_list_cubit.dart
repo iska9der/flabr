@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../data/exception/exception.dart';
 import '../../../../../data/model/company/company.dart';
+import '../../../../../data/model/language/language.dart';
 import '../../../../../data/model/list_response_model.dart';
 import '../../../../../data/repository/repository.dart';
 
@@ -26,8 +27,8 @@ class CompanyListCubit extends Cubit<CompanyListState> {
   final CompanyRepository _repository;
   final LanguageRepository _languageRepository;
 
-  late final StreamSubscription _uiLangSub;
-  late final StreamSubscription _articlesLangSub;
+  late final StreamSubscription<Language> _uiLangSub;
+  late final StreamSubscription<List<Language>> _articlesLangSub;
 
   @override
   Future<void> close() {
@@ -52,8 +53,8 @@ class CompanyListCubit extends Cubit<CompanyListState> {
       );
 
       var newList = state.list.copyWith(
-        ids: [...state.list.ids, ...response.ids],
         pagesCount: response.pagesCount,
+        ids: [...state.list.ids, ...response.ids],
         refs: [...state.list.refs, ...response.refs],
       );
 
@@ -64,17 +65,15 @@ class CompanyListCubit extends Cubit<CompanyListState> {
           page: state.page + 1,
         ),
       );
-    } on AppException catch (e) {
-      emit(
-        state.copyWith(status: CompanyListStatus.failure, error: e.toString()),
-      );
-    } catch (e) {
+    } catch (error, stackTrace) {
       emit(
         state.copyWith(
           status: CompanyListStatus.failure,
-          error: 'Не удалось получить список компайний',
+          error: error.parseException('Не удалось получить список компаний'),
         ),
       );
+
+      super.onError(error, stackTrace);
     }
   }
 

@@ -35,7 +35,7 @@ class FeedPublicationListCubit
       /// вспоминаем последний примененный фильтр в моей ленте
       final str = await storage.read(key);
       if (str == null) {
-        throw NotFoundException();
+        throw const NotFoundException();
       }
 
       final lastFilter = FeedFilter.fromJson(jsonDecode(str));

@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../data/exception/exception.dart';
 import '../../../../../data/model/user/user.dart';
 import '../../../../../data/repository/repository.dart';
 
@@ -48,10 +49,15 @@ class UserCommentListCubit extends Cubit<UserCommentListState> {
           pages: response.pagesCount,
         ),
       );
-    } catch (e) {
+    } catch (error, stackTrace) {
       emit(
-        state.copyWith(status: CommentListStatus.failure, error: e.toString()),
+        state.copyWith(
+          status: CommentListStatus.failure,
+          error: error.parseException('Не удалось получить комментарии'),
+        ),
       );
+
+      super.onError(error, stackTrace);
     }
   }
 

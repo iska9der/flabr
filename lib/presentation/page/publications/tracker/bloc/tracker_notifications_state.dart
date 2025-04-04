@@ -8,11 +8,11 @@ class TrackerNotificationsState with _$TrackerNotificationsState {
     @Default(LoadingStatus.initial) LoadingStatus status,
     @Default('') String error,
     required TrackerNotificationCategory category,
-    @Default(TrackerNotificationsResponse())
-    TrackerNotificationsResponse response,
+    @Default(TrackerNotificationListResponse.empty)
+    ListResponse<TrackerNotification> response,
     @Default(1) int page,
   }) = _TrackerNotificationsState;
 
   bool get isFirstFetch => page == 1;
-  bool get isLastPage => page >= response.list.pagesCount;
+  bool get isLastPage => page >= response.pagesCount;
 }

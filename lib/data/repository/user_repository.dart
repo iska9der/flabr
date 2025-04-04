@@ -26,7 +26,11 @@ class UserRepository {
       page: page,
     );
 
-    cached = cached.copyWith(refs: [...cached.refs, ...response.refs]);
+    cached = cached.copyWith(
+      pagesCount: response.pagesCount,
+      ids: [...cached.ids, ...response.ids],
+      refs: [...cached.refs, ...response.refs],
+    );
 
     return response;
   }
@@ -47,10 +51,6 @@ class UserRepository {
     return model;
   }
 
-  User getByLogin(String login) {
-    return cached.refs.firstWhere((element) => element.alias == login);
-  }
-
   Future<UserWhois> fetchWhois({
     required String login,
     required Language langUI,
@@ -67,13 +67,15 @@ class UserRepository {
     return model;
   }
 
-  Future<UserCommentListResponse> fetchComments({
+  Future<ListResponse<UserComment>> fetchComments({
     required String alias,
     required int page,
   }) async {
-    final response = await _service.fetchComments(alias: alias, page: page);
+    var response = await _service.fetchComments(alias: alias, page: page);
 
-    response.refs.sort((a, b) => b.timePublished.compareTo(a.timePublished));
+    final sortedList = [...response.refs]
+      ..sort((a, b) => b.timePublished.compareTo(a.timePublished));
+    response = response.copyWith(refs: sortedList);
 
     return response;
   }

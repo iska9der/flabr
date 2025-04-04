@@ -71,6 +71,6 @@ class AuthCubit extends Cubit<AuthState> {
 
     await _tokenRepository.clearAll();
 
-    emit(AuthState(status: AuthStatus.unauthorized));
+    emit(const AuthState(status: AuthStatus.unauthorized));
   }
 }

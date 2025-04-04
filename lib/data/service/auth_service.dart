@@ -26,8 +26,8 @@ class AuthServiceImpl implements AuthService {
       final response = await _mobileClient.get('/me');
 
       return response.data;
-    } catch (e) {
-      throw FetchException();
+    } catch (e, trace) {
+      Error.throwWithStackTrace(const FetchException(), trace);
     }
   }
 
@@ -38,7 +38,7 @@ class AuthServiceImpl implements AuthService {
 
       return response.data;
     } catch (e, trace) {
-      Error.throwWithStackTrace(FetchException(), trace);
+      Error.throwWithStackTrace(const FetchException(), trace);
     }
   }
 }

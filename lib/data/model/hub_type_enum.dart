@@ -10,7 +10,7 @@ enum HubType {
   factory HubType.fromString(String value) {
     return HubType.values.firstWhere(
       (type) => type.name == value,
-      orElse: () => throw ValueException('Неизвестный тип хаба'),
+      orElse: () => throw const ValueException('Неизвестный тип хаба'),
     );
   }
 }

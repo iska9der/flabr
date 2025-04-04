@@ -107,7 +107,9 @@ class HubDetailPageView extends StatelessWidget {
                 FlabrSliverRefreshIndicator(
                   onRefresh: context.read<HubPublicationListCubit>().refetch,
                 ),
-                const SliverToBoxAdapter(child: HubProfileCardWidget()),
+                SliverToBoxAdapter(
+                  child: HubProfileCardWidget(profile: state.profile),
+                ),
                 const _HubArticleListView(),
               ],
             ),

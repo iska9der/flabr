@@ -1,4 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:collection';
 import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
@@ -16,17 +17,17 @@ class UserWhois extends Equatable {
 
   final List<UserBadget> badgets;
   final String aboutHtml;
-  final List contacts;
+  final List<dynamic> contacts;
   final UserInvitedByModel invitedBy;
 
   UserWhois copyWith({
     List<UserBadget>? badgets,
     String? aboutHtml,
-    List? contacts,
+    List<dynamic>? contacts,
     UserInvitedByModel? invitedBy,
   }) {
     return UserWhois(
-      badgets: badgets ?? this.badgets,
+      badgets: UnmodifiableListView(badgets ?? this.badgets),
       aboutHtml: aboutHtml ?? this.aboutHtml,
       contacts: contacts ?? this.contacts,
       invitedBy: invitedBy ?? this.invitedBy,
@@ -34,15 +35,18 @@ class UserWhois extends Equatable {
   }
 
   factory UserWhois.fromMap(Map<String, dynamic> map) {
+    final badgetsList = List<Map<String, dynamic>>.from(map['badgets'] ?? []);
+
     return UserWhois(
-      badgets: List<UserBadget>.from(map['badgets'].map(
-        (x) => UserBadget.fromMap(x),
-      )),
+      badgets: UnmodifiableListView(
+        badgetsList.map((e) => UserBadget.fromMap(e)),
+      ),
       aboutHtml: map['aboutHtml'] ?? '',
       contacts: map['contacts'] != null ? List.from(map['contacts']) : const [],
-      invitedBy: map['invitedBy'] != null
-          ? UserInvitedByModel.fromMap(map['invitedBy'])
-          : UserInvitedByModel.empty,
+      invitedBy:
+          map['invitedBy'] != null
+              ? UserInvitedByModel.fromMap(map['invitedBy'])
+              : UserInvitedByModel.empty,
     );
   }
 
@@ -67,15 +71,9 @@ class UserInvitedByModel extends Equatable {
   final String timeCreated;
   DateTime get createdAt => DateTime.parse(timeCreated).toLocal();
 
-  const UserInvitedByModel({
-    this.issuerLogin = 'НЛО',
-    this.timeCreated = '',
-  });
+  const UserInvitedByModel({this.issuerLogin = 'НЛО', this.timeCreated = ''});
 
-  UserInvitedByModel copyWith({
-    String? issuerLogin,
-    String? timeCreated,
-  }) {
+  UserInvitedByModel copyWith({String? issuerLogin, String? timeCreated}) {
     return UserInvitedByModel(
       issuerLogin: issuerLogin ?? this.issuerLogin,
       timeCreated: timeCreated ?? this.timeCreated,

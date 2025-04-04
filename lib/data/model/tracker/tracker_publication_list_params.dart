@@ -20,5 +20,5 @@ class TrackerPublicationListParams extends QueryParams {
   }
 
   @override
-  List<Object?> get props => [...super.props, perPage];
+  List<Object?> get props => [...super.props, perPage, byAuthor];
 }

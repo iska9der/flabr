@@ -16,20 +16,20 @@ import '../../../../widget/profile_stat_card_widget.dart';
 class CompanyCardWidget extends StatelessWidget {
   const CompanyCardWidget({
     super.key,
-    required this.model,
+    required this.company,
     this.renderType = RenderType.plain,
   });
 
-  final Company model;
+  final Company company;
   final RenderType renderType;
 
-  moveToDetails(BuildContext context) {
-    getIt<AppRouter>().navigate(CompanyDashboardRoute(alias: model.alias));
+  void moveToDetails(BuildContext context) {
+    getIt<AppRouter>().navigate(CompanyDashboardRoute(alias: company.alias));
   }
 
   @override
   Widget build(BuildContext context) {
-    final stats = model.statistics as CompanyStatistics;
+    final stats = company.statistics as CompanyStatistics;
     final hubLinkStyle = Theme.of(context).textTheme.bodySmall?.copyWith(
       color: Theme.of(context).colorScheme.primary,
     );
@@ -44,19 +44,22 @@ class CompanyCardWidget extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  CardAvatarWidget(imageUrl: model.imageUrl),
+                  CardAvatarWidget(
+                    imageUrl: company.imageUrl,
+                    placeholderIcon: AppIcons.companyPlaceholder,
+                  ),
                   const SizedBox(width: 16),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         CardTitleWidget(
-                          title: model.titleHtml,
+                          title: company.titleHtml,
                           renderType: renderType,
                         ),
-                        if (model.descriptionHtml.isNotEmpty)
+                        if (company.descriptionHtml.isNotEmpty)
                           HtmlWidget(
-                            model.descriptionHtml,
+                            company.descriptionHtml,
                             textStyle: Theme.of(context).textTheme.labelMedium,
                           ),
                       ],
@@ -64,13 +67,13 @@ class CompanyCardWidget extends StatelessWidget {
                   ),
                 ],
               ),
-              if (model.commonHubs.isNotEmpty) ...[
+              if (company.commonHubs.isNotEmpty) ...[
                 const SizedBox(height: 20),
                 const Text('Пишет в хабы:'),
                 Wrap(
                   spacing: 14,
                   children:
-                      model.commonHubs.map((hub) {
+                      company.commonHubs.map((hub) {
                         var title = hub.title;
                         if (hub.isProfiled) {
                           title += '*';

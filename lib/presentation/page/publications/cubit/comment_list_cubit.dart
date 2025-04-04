@@ -37,13 +37,15 @@ class CommentListCubit extends Cubit<CommentListState> {
       );
 
       emit(state.copyWith(list: newList, status: CommentListStatus.success));
-    } catch (e) {
+    } catch (error, stackTrace) {
       emit(
         state.copyWith(
           status: CommentListStatus.failure,
-          error: e.parseException('Не удалось получить данные'),
+          error: error.parseException('Не удалось получить комментарии'),
         ),
       );
+
+      super.onError(error, stackTrace);
     }
   }
 }

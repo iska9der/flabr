@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:equatable/equatable.dart';
 
 import '../hub_base.dart';
@@ -38,7 +40,7 @@ class Hub extends HubBase with EquatableMixin {
       isOfftop: isOfftop ?? this.isOfftop,
       relatedData: relatedData ?? this.relatedData,
       statistics: statistics ?? this.statistics,
-      commonTags: commonTags ?? this.commonTags,
+      commonTags: UnmodifiableListView(commonTags ?? this.commonTags),
     );
   }
 
@@ -58,10 +60,9 @@ class Hub extends HubBase with EquatableMixin {
           map['statistics'] != null
               ? HubStatistics.fromMap(map['statistics'])
               : HubStatistics.empty,
-      commonTags:
-          map['commonTags'] != null
-              ? List<String>.from(map['commonTags'])
-              : const [],
+      commonTags: UnmodifiableListView(
+        List<String>.from(map['commonTags'] ?? []),
+      ),
     );
   }
 

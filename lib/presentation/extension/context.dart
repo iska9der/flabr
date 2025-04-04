@@ -27,9 +27,9 @@ extension ContextX on BuildContext {
     EdgeInsets? actionsPadding;
 
     if (compact) {
-      titlePadding = EdgeInsets.fromLTRB(24, 12, 12, 12);
-      contentPadding = EdgeInsets.fromLTRB(24, 0, 24, 12);
-      actionsPadding = EdgeInsets.fromLTRB(0, 0, 12, 12);
+      titlePadding = const EdgeInsets.fromLTRB(24, 12, 12, 12);
+      contentPadding = const EdgeInsets.fromLTRB(24, 0, 24, 12);
+      actionsPadding = const EdgeInsets.fromLTRB(0, 0, 12, 12);
     }
 
     return await showDialog(

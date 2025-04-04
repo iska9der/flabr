@@ -10,7 +10,7 @@ enum Language {
     return switch (value) {
       'ru' => ru,
       'en' => en,
-      _ => throw ValueException('Неизвестный язык'),
+      _ => throw const ValueException('Неизвестный язык'),
     };
   }
 

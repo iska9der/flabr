@@ -47,8 +47,8 @@ class SearchServiceImpl implements SearchService {
       return response.data;
     } on AppException {
       rethrow;
-    } catch (e) {
-      throw FetchException();
+    } catch (_, stackTrace) {
+      Error.throwWithStackTrace(const FetchException(), stackTrace);
     }
   }
 }

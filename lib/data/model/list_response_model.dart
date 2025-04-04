@@ -1,6 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
+import 'package:collection/collection.dart';
+
 class ListResponse<T> {
   const ListResponse({
     this.pagesCount = 1,
@@ -12,7 +14,7 @@ class ListResponse<T> {
   final List<String> ids;
   final List<T> refs;
 
-  static const empty = ListResponse();
+  static const empty = ListResponse<dynamic>();
 
   ListResponse<T> copyWith({
     int? pagesCount,
@@ -21,8 +23,8 @@ class ListResponse<T> {
   }) {
     return ListResponse<T>(
       pagesCount: pagesCount ?? this.pagesCount,
-      ids: ids ?? this.ids,
-      refs: refs ?? this.refs,
+      ids: UnmodifiableListView(ids ?? this.ids),
+      refs: UnmodifiableListView(refs ?? this.refs),
     );
   }
 

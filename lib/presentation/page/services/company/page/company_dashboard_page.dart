@@ -55,9 +55,9 @@ class CompanyDashboardPageView extends StatelessWidget {
           appBar: AppBar(
             title: Text(companyCubit.state.alias),
             bottom: PreferredSize(
-              preferredSize: const Size.fromHeight(AppDimensions.dashTabHeight),
+              preferredSize: const Size.fromHeight(AppDimensions.tabBarHeight),
               child: SizedBox(
-                height: AppDimensions.dashTabHeight,
+                height: AppDimensions.tabBarHeight,
                 child: Align(
                   alignment: Alignment.centerLeft,
                   child: TabBar(

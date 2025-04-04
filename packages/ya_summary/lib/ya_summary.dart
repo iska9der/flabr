@@ -1,4 +1,4 @@
-library ya_summary;
+library;
 
 export 'src/cubit/summary_auth_cubit.dart';
 export 'src/cubit/summary_cubit.dart';

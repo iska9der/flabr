@@ -18,7 +18,7 @@ void main() => runZonedGuarded(
       DevicePreview(
         // ignore: avoid_redundant_argument_values
         enabled: !kReleaseMode,
-        builder: (_) => Application(),
+        builder: (_) => const Application(),
       ),
     );
   },

@@ -18,7 +18,7 @@ class TrackerNotificationData with _$TrackerNotificationData {
       _$TrackerNotificationDataFromJson(json);
 }
 
-Object? _publicationReader(Map json, String key) {
+Object? _publicationReader(Map<dynamic, dynamic> json, String key) {
   if (key == 'publication') {
     return json['post'] ?? json['thread'];
   }

@@ -90,6 +90,11 @@ android {
             applicationIdSuffix ".debug"
             minifyEnabled false
         }
+
+        profile {
+            applicationIdSuffix ".debug"
+            minifyEnabled false
+        }
     }
 }
 

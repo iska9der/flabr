@@ -15,7 +15,8 @@ linter:
     use_super_parameters: true
     use_key_in_widget_constructors: true
     eol_at_end_of_file: true
-    # always_declare_return_types: true
+    prefer_const_constructors: true
+    always_declare_return_types: true
 
 analyzer:
   exclude:

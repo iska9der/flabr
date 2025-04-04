@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../data/exception/exception.dart';
 import '../../../../../data/model/hub/hub.dart';
+import '../../../../../data/model/language/language.dart';
 import '../../../../../data/model/list_response_model.dart';
 import '../../../../../data/repository/repository.dart';
 
@@ -26,8 +27,8 @@ class HubListCubit extends Cubit<HubListState> {
   final HubRepository _repository;
   final LanguageRepository _languageRepository;
 
-  late final StreamSubscription _uiLangSub;
-  late final StreamSubscription _articlesLangSub;
+  late final StreamSubscription<Language> _uiLangSub;
+  late final StreamSubscription<List<Language>> _articlesLangSub;
 
   @override
   Future<void> close() {

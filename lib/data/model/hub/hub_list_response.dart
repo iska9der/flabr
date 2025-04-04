@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:equatable/equatable.dart';
 
 import '../list_response_model.dart';
@@ -11,13 +13,15 @@ class HubListResponse extends ListResponse<Hub> with EquatableMixin {
   });
 
   factory HubListResponse.fromMap(Map<String, dynamic> map) {
-    var idsMap = map['hubIds'];
-    Map refsMap = map['hubRefs'];
+    final idsMap = List<String>.from(map['hubIds'] ?? []);
+    final refsMap = Map<String, dynamic>.from(map['hubRefs'] ?? {});
 
     return HubListResponse(
       pagesCount: map['pagesCount'] ?? 1,
-      ids: List<String>.from(idsMap),
-      refs: Map.from(refsMap).entries.map((e) => Hub.fromMap(e.value)).toList(),
+      ids: UnmodifiableListView(idsMap),
+      refs: UnmodifiableListView(
+        refsMap.entries.map((e) => Hub.fromMap(e.value)),
+      ),
     );
   }
 

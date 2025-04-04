@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:equatable/equatable.dart';
 
 import '../../company_base.dart';
@@ -42,12 +44,13 @@ class CompanyCard extends CompanyBase {
       relatedData: relatedData ?? this.relatedData,
       statistics: statistics ?? this.statistics,
       information: information ?? this.information,
-      contacts: contacts ?? this.contacts,
+      contacts: UnmodifiableListView(contacts ?? this.contacts),
     );
   }
 
   factory CompanyCard.fromMap(Map<String, dynamic> map) {
     final information = CompanyCardInformation.fromMap(map);
+    final contactsList = List<Map<String, dynamic>>.from(map['contacts'] ?? []);
 
     return CompanyCard(
       alias: (map['alias'] ?? '') as String,
@@ -67,12 +70,9 @@ class CompanyCard extends CompanyBase {
               )
               : CompanyCardStatistics.empty,
       information: information,
-      contacts:
-          map['contacts'] != null
-              ? List<CompanyContact>.from(
-                map['contacts'].map((e) => CompanyContact.fromMap(e)),
-              ).toList()
-              : const [],
+      contacts: UnmodifiableListView(
+        contactsList.map((e) => CompanyContact.fromMap(e)),
+      ),
     );
   }
 

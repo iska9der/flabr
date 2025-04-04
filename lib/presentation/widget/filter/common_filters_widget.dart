@@ -16,7 +16,7 @@ class CommonFiltersWidget extends StatefulWidget {
   final bool isLoading;
   final Sort sort;
   final FilterOption filterOption;
-  final Function(FlowFilter filter)? onSubmit;
+  final void Function(FlowFilter filter)? onSubmit;
 
   @override
   State<CommonFiltersWidget> createState() => _CommonFiltersWidgetState();

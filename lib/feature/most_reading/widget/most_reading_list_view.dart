@@ -44,8 +44,8 @@ class _ListViewState extends State<_ListView> {
 
                 return FlabrCard(
                   margin: EdgeInsets.zero,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: AppDimensions.screenPadding,
+                  padding: EdgeInsets.symmetric(
+                    horizontal: AppInsets.screenPadding.left,
                   ),
                   color: Colors.transparent,
                   elevation: 0,

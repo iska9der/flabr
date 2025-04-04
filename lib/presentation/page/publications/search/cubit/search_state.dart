@@ -19,7 +19,7 @@ class SearchState extends Equatable {
   final String query;
   final SearchOrder order;
   final SearchTarget target;
-  final ListResponse listResponse;
+  final ListResponse<dynamic> listResponse;
   final int page;
 
   bool get isFirstFetch => page == 1;
@@ -31,7 +31,7 @@ class SearchState extends Equatable {
     String? query,
     SearchOrder? order,
     SearchTarget? target,
-    ListResponse? listResponse,
+    ListResponse<dynamic>? listResponse,
     int? page,
   }) {
     return SearchState(
@@ -47,12 +47,12 @@ class SearchState extends Equatable {
 
   @override
   List<Object> get props => [
-        status,
-        error,
-        query,
-        order,
-        target,
-        listResponse,
-        page,
-      ];
+    status,
+    error,
+    query,
+    order,
+    target,
+    listResponse,
+    page,
+  ];
 }

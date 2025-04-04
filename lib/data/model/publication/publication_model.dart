@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:equatable/equatable.dart';
 
 import 'publication_author_model.dart';
@@ -95,6 +97,9 @@ class PublicationCommon extends Publication {
   final PublicationFormat? format;
 
   factory PublicationCommon.fromMap(Map<String, dynamic> map) {
+    final hubsList = List<Map<String, dynamic>>.from(map['hubs'] ?? []);
+    final tagsList = List<Map<String, dynamic>>.from(map['tags'] ?? []);
+
     return PublicationCommon(
       id: map['id'],
       type:
@@ -117,18 +122,10 @@ class PublicationCommon extends Publication {
           map['relatedData'] != null
               ? PublicationRelatedData.fromJson(map['relatedData'])
               : PublicationRelatedData.empty,
-      hubs:
-          map['hubs'] != null
-              ? List<PublicationHub>.from(
-                map['hubs'].map((e) => PublicationHub.fromMap(e)),
-              ).toList()
-              : const [],
-      tags:
-          map.containsKey('tags')
-              ? List<String>.from(
-                map['tags'].map((tag) => tag['titleHtml']),
-              ).toList()
-              : const [],
+      hubs: UnmodifiableListView(
+        hubsList.map((e) => PublicationHub.fromMap(e)),
+      ),
+      tags: UnmodifiableListView(tagsList.map((tag) => tag['titleHtml'])),
 
       /// добавленные поля
       titleHtml: map['titleHtml'] ?? '',
@@ -176,6 +173,9 @@ class PublicationPost extends Publication {
   });
 
   factory PublicationPost.fromMap(Map<String, dynamic> map) {
+    final hubsList = List<Map<String, dynamic>>.from(map['hubs'] ?? []);
+    final tagsList = List<Map<String, dynamic>>.from(map['tags'] ?? []);
+
     return PublicationPost(
       id: map['id'],
       type: PublicationType.post,
@@ -193,18 +193,10 @@ class PublicationPost extends Publication {
           map['relatedData'] != null
               ? PublicationRelatedData.fromJson(map['relatedData'])
               : PublicationRelatedData.empty,
-      hubs:
-          map['hubs'] != null
-              ? List<PublicationHub>.from(
-                map['hubs'].map((e) => PublicationHub.fromMap(e)),
-              ).toList()
-              : const [],
-      tags:
-          map.containsKey('tags')
-              ? List<String>.from(
-                map['tags'].map((tag) => tag['titleHtml']),
-              ).toList()
-              : const [],
+      hubs: UnmodifiableListView(
+        hubsList.map((e) => PublicationHub.fromMap(e)),
+      ),
+      tags: UnmodifiableListView(tagsList.map((tag) => tag['titleHtml'])),
     );
   }
 

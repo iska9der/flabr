@@ -23,5 +23,5 @@ class TrackerPublication with _$TrackerPublication {
   factory TrackerPublication.fromJson(Map<String, dynamic> json) =>
       _$TrackerPublicationFromJson(json);
 
-  bool get isHighlighted => unreadCommentsCount > 0;
+  bool get isUnread => unreadCommentsCount > 0;
 }

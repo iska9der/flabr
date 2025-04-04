@@ -95,10 +95,15 @@ class SearchCubit extends Cubit<SearchState> {
           page: state.page + 1,
         ),
       );
-    } catch (e) {
+    } catch (error, stackTrace) {
       emit(
-        state.copyWith(status: SearchStatus.failure, error: e.parseException()),
+        state.copyWith(
+          status: SearchStatus.failure,
+          error: error.parseException(),
+        ),
       );
+
+      super.onError(error, stackTrace);
     }
   }
 

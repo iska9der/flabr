@@ -36,7 +36,7 @@ class PublicationDetailPage extends StatelessWidget {
               ),
         ),
       ],
-      child: PublicationDetailView(),
+      child: const PublicationDetailView(),
     );
   }
 }

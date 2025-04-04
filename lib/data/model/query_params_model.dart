@@ -21,7 +21,7 @@ class QueryParams extends Equatable {
 
   final String page;
 
-  factory QueryParams.fromMap(map) {
+  factory QueryParams.fromMap(Map<String, dynamic> map) {
     return QueryParams(
       langArticles: map['fl'] ?? 'ru',
       langUI: map['hl'] ?? 'ru',
