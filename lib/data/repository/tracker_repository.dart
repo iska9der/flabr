@@ -10,21 +10,29 @@ import '../service/service.dart';
 abstract interface class TrackerRepository {
   Stream<ListResponse<TrackerPublication>> getPublications();
 
+  /// получить список публикаций
   Future<ListResponse<TrackerPublication>> fetchPublications({
     String page,
     bool byAuthor,
   });
 
-  Future<void> readPublications(List<String> ids);
+  /// отметить публикации как прочитанные
+  Future<void> markAsReadPublications(List<String> ids);
 
+  /// отметить публикацию как прочитанную локально
+  void readPublication(String id);
+
+  /// удалить публикации из трекера
   Future<void> deletePublications(List<String> ids);
 
+  /// получить список уведомлений по указанной категории
   Future<ListResponse<TrackerNotification>> fetchNotifications({
     String page,
     required TrackerNotificationCategory category,
   });
 
-  Future<void> readNotifications(List<String> ids);
+  /// отметить уведомления как прочитанные
+  Future<void> markAsReadNotifications(List<String> ids);
 }
 
 @Singleton(as: TrackerRepository)
@@ -69,7 +77,7 @@ class TrackerRepositoryImpl implements TrackerRepository {
   }
 
   @override
-  Future<void> readPublications(List<String> ids) async {
+  Future<void> markAsReadPublications(List<String> ids) async {
     // ignore: unused_local_variable
     final raw = await _service.readPublications(ids);
 
@@ -85,6 +93,16 @@ class TrackerRepositoryImpl implements TrackerRepository {
         newModels[i] = model.copyWith(unreadCommentsCount: 0);
       }
     }
+    final result = last.copyWith(refs: newModels);
+    _publicationsController.add(result);
+  }
+
+  @override
+  void readPublication(String id) {
+    final last = _publicationsController.value;
+    final newModels = [...last.refs];
+    final index = newModels.indexWhere((element) => element.id == id);
+    newModels[index] = newModels[index].copyWith(unreadCommentsCount: 0);
     final result = last.copyWith(refs: newModels);
     _publicationsController.add(result);
   }
@@ -120,7 +138,7 @@ class TrackerRepositoryImpl implements TrackerRepository {
   }
 
   @override
-  Future<void> readNotifications(List<String> ids) async {
+  Future<void> markAsReadNotifications(List<String> ids) async {
     // ignore: unused_local_variable
     final raw = await _service.readNotifications(ids);
 

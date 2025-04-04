@@ -8,7 +8,11 @@ class TrackerPublicationsMarkerEvent with _$TrackerPublicationsMarkerEvent {
     @Default(false) bool isUnreaded,
   }) = MarkEvent;
 
-  const factory TrackerPublicationsMarkerEvent.remove() = RemoveEvent;
+  const factory TrackerPublicationsMarkerEvent.read({required String id}) =
+      ReadEvent;
 
-  const factory TrackerPublicationsMarkerEvent.read() = ReadEvent;
+  const factory TrackerPublicationsMarkerEvent.readMarked() = ReadMarkedEvent;
+
+  const factory TrackerPublicationsMarkerEvent.removeMarked() =
+      RemoveMarkedEvent;
 }

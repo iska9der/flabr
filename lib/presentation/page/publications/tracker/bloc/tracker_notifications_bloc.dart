@@ -65,7 +65,7 @@ class TrackerNotificationsBloc
     Emitter<TrackerNotificationsState> emit,
   ) async {
     try {
-      await repository.readNotifications(event.ids);
+      await repository.markAsReadNotifications(event.ids);
 
       final newUnreadIds = state.unreadIds.difference(Set.from(event.ids));
 

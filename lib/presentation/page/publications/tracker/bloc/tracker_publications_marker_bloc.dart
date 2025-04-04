@@ -17,9 +17,10 @@ class TrackerPublicationsMarkerBloc
     : super(const TrackerPublicationsMarkerState()) {
     on<TrackerPublicationsMarkerEvent>(
       (event, emit) => event.map(
-        read: (event) => _read(event, emit),
         mark: (event) => _mark(event, emit),
-        remove: (event) => _remove(event, emit),
+        readMarked: (event) => _readMarked(event, emit),
+        removeMarked: (event) => _removeMarked(event, emit),
+        read: (event) => _read(event, emit),
       ),
     );
   }
@@ -30,22 +31,22 @@ class TrackerPublicationsMarkerBloc
     MarkEvent event,
     Emitter<TrackerPublicationsMarkerState> emit,
   ) {
-    Map<String, bool> newSet;
+    Map<String, bool> newMarkedIds;
 
     if (event.isMarked) {
-      newSet = {
+      newMarkedIds = {
         ...state.markedIds,
         ...{event.id: event.isUnreaded},
       };
     } else {
-      newSet = Map.from(state.markedIds)..remove(event.id);
+      newMarkedIds = Map.from(state.markedIds)..remove(event.id);
     }
 
-    emit(state.copyWith(markedIds: newSet));
+    emit(state.copyWith(markedIds: newMarkedIds));
   }
 
-  FutureOr<void> _read(
-    ReadEvent event,
+  FutureOr<void> _readMarked(
+    ReadMarkedEvent event,
     Emitter<TrackerPublicationsMarkerState> emit,
   ) async {
     emit(state.copyWith(status: LoadingStatus.loading));
@@ -53,11 +54,11 @@ class TrackerPublicationsMarkerBloc
     try {
       final ids = List<String>.from(
         state.markedIds.entries
-            .where((element) => element.value)
+            .where((element) => element.value == true)
             .map((e) => e.key),
       );
 
-      await repository.readPublications(ids);
+      await repository.markAsReadPublications(ids);
 
       emit(state.copyWith(status: LoadingStatus.success, markedIds: {}));
     } catch (e, trace) {
@@ -68,12 +69,12 @@ class TrackerPublicationsMarkerBloc
         ),
       );
 
-      Error.throwWithStackTrace(e, trace);
+      super.onError(e, trace);
     }
   }
 
-  FutureOr<void> _remove(
-    RemoveEvent event,
+  FutureOr<void> _removeMarked(
+    RemoveMarkedEvent event,
     Emitter<TrackerPublicationsMarkerState> emit,
   ) async {
     emit(state.copyWith(status: LoadingStatus.loading));
@@ -92,7 +93,33 @@ class TrackerPublicationsMarkerBloc
         ),
       );
 
-      Error.throwWithStackTrace(e, trace);
+      super.onError(e, trace);
+    }
+  }
+
+  FutureOr<void> _read(
+    ReadEvent event,
+    Emitter<TrackerPublicationsMarkerState> emit,
+  ) {
+    try {
+      repository.readPublication(event.id);
+
+      final newMarkedIds = Map<String, bool>.from(state.markedIds);
+      if (newMarkedIds.keys.contains(event.id) &&
+          newMarkedIds[event.id] == true) {
+        newMarkedIds.update(event.id, (value) => false, ifAbsent: () => false);
+      }
+
+      emit(state.copyWith(markedIds: newMarkedIds));
+    } catch (e, trace) {
+      emit(
+        state.copyWith(
+          status: LoadingStatus.failure,
+          error: 'Не удалось прочесть публикацию',
+        ),
+      );
+
+      super.onError(e, trace);
     }
   }
 }

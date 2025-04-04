@@ -80,45 +80,21 @@ class TrackerPublicationsView extends StatelessWidget {
   }
 }
 
-class TrackerPublicationWidget extends StatefulWidget {
+class TrackerPublicationWidget extends StatelessWidget {
   const TrackerPublicationWidget({super.key, required this.model});
 
   final TrackerPublication model;
 
   @override
-  State<TrackerPublicationWidget> createState() =>
-      _TrackerPublicationWidgetState();
-}
-
-class _TrackerPublicationWidgetState extends State<TrackerPublicationWidget> {
-  late bool isHighlighted = widget.model.isHighlighted;
-
-  void markAsHighlighted() {
-    isHighlighted = false;
-    setState(() {});
-  }
-
-  @override
-  void didUpdateWidget(covariant TrackerPublicationWidget oldWidget) {
-    if (oldWidget.model.isHighlighted != widget.model.isHighlighted) {
-      isHighlighted = widget.model.isHighlighted;
-    }
-
-    super.didUpdateWidget(oldWidget);
-  }
-
-  @override
   Widget build(BuildContext context) {
     final theme = context.theme;
+    final isUnread = model.isUnread;
 
     return FlabrCard(
-      color: isHighlighted ? theme.colors.cardHighlight : null,
+      color: isUnread ? theme.colors.cardHighlight : null,
       onTap:
           () => context.router.push(
-            PublicationFlowRoute(
-              type: widget.model.publicationType,
-              id: widget.model.id,
-            ),
+            PublicationFlowRoute(type: model.publicationType, id: model.id),
           ),
       child: Row(
         children: [
@@ -126,10 +102,10 @@ class _TrackerPublicationWidgetState extends State<TrackerPublicationWidget> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                UserTextButton(widget.model.author),
+                UserTextButton(model.author),
                 const Spacer(),
                 Text(
-                  widget.model.title.trim(),
+                  model.title.trim(),
                   style: theme.textTheme.titleMedium,
                   overflow: TextOverflow.ellipsis,
                   maxLines: 2,
@@ -139,24 +115,26 @@ class _TrackerPublicationWidgetState extends State<TrackerPublicationWidget> {
                   children: [
                     PublicationStatIconButton(
                       icon: Icons.chat_bubble_rounded,
-                      value: widget.model.commentsCount.compact(),
-                      isHighlighted: widget.model.isHighlighted,
+                      value: model.commentsCount.compact(),
+                      isHighlighted: isUnread,
                       onTap: () {
                         context.router.push(
                           PublicationFlowRoute(
-                            type: widget.model.publicationType,
-                            id: widget.model.id,
+                            type: model.publicationType,
+                            id: model.id,
                             children: [PublicationCommentRoute()],
                           ),
                         );
 
-                        markAsHighlighted();
+                        context.read<TrackerPublicationsMarkerBloc>().add(
+                          TrackerPublicationsMarkerEvent.read(id: model.id),
+                        );
                       },
                     ),
-                    if (widget.model.isHighlighted)
+                    if (isUnread)
                       PublicationStatIconButton(
                         icon: Icons.add,
-                        value: widget.model.unreadCommentsCount.compact(),
+                        value: model.unreadCommentsCount.compact(),
                         isHighlighted: true,
                         color: Colors.green,
 
@@ -173,13 +151,13 @@ class _TrackerPublicationWidgetState extends State<TrackerPublicationWidget> {
           >(
             builder: (context, state) {
               return Checkbox(
-                value: state.markedIds.keys.contains(widget.model.id),
+                value: state.markedIds.keys.contains(model.id),
                 onChanged: (isChecked) {
                   context.read<TrackerPublicationsMarkerBloc>().add(
                     TrackerPublicationsMarkerEvent.mark(
-                      id: widget.model.id,
+                      id: model.id,
                       isMarked: isChecked ?? false,
-                      isUnreaded: widget.model.unreadCommentsCount > 0,
+                      isUnreaded: isUnread,
                     ),
                   );
                 },
@@ -226,9 +204,10 @@ class _TrackerFloatingButton extends StatelessWidget {
                 onPressed:
                     isLoading
                         ? null
-                        : () => context
-                            .read<TrackerPublicationsMarkerBloc>()
-                            .add(const TrackerPublicationsMarkerEvent.read()),
+                        : () =>
+                            context.read<TrackerPublicationsMarkerBloc>().add(
+                              const TrackerPublicationsMarkerEvent.readMarked(),
+                            ),
               ),
 
             FilledButton.icon(
@@ -238,7 +217,7 @@ class _TrackerFloatingButton extends StatelessWidget {
                   isLoading
                       ? null
                       : () => context.read<TrackerPublicationsMarkerBloc>().add(
-                        const TrackerPublicationsMarkerEvent.remove(),
+                        const TrackerPublicationsMarkerEvent.removeMarked(),
                       ),
             ),
           ],
