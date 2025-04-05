@@ -67,7 +67,7 @@ class SettingsCubit extends Cubit<SettingsState> {
   );
 
   void changeUILang(Language? uiLang) {
-    if (uiLang == null) {
+    if (uiLang == null || uiLang == state.langUI) {
       return;
     }
 

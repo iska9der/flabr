@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 
-enum SettingsCheckboxType {
-  checkboxTile,
-  switchTile;
-}
+enum SettingsCheckboxType { checkboxTile, switchTile }
 
 class SettingsCheckboxWidget extends StatefulWidget {
   const SettingsCheckboxWidget({
@@ -37,65 +34,41 @@ class _SettingsCheckboxWidgetState extends State<SettingsCheckboxWidget> {
     super.initState();
   }
 
+  void onChanged(bool? value) {
+    if (value == null) return;
+
+    bool isValidated = true;
+
+    if (widget.validate != null) {
+      isValidated = widget.validate!(value);
+    }
+
+    if (isValidated) {
+      setState(() => isChecked = value);
+
+      Future.delayed(const Duration(milliseconds: 300), () {
+        widget.onChanged(value);
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return switch (widget.type) {
-      SettingsCheckboxType.checkboxTile => CheckboxListTile.adaptive(
-          title: widget.title,
-          subtitle: widget.subtitle,
-          contentPadding: EdgeInsets.zero,
-          value: isChecked,
-          onChanged: (bool? value) {
-            if (value == null) return;
-
-            bool isValidated = true;
-
-            if (widget.validate != null) {
-              isValidated = widget.validate!(value);
-            }
-
-            if (isValidated) {
-              setState(() {
-                isChecked = value;
-              });
-
-              Future.delayed(
-                const Duration(milliseconds: 300),
-                () {
-                  widget.onChanged(value);
-                },
-              );
-            }
-          },
-        ),
-      SettingsCheckboxType.switchTile => SwitchListTile.adaptive(
-          title: widget.title,
-          subtitle: widget.subtitle,
-          contentPadding: EdgeInsets.zero,
-          value: isChecked,
-          onChanged: (bool? value) {
-            if (value == null) return;
-
-            bool isValidated = true;
-
-            if (widget.validate != null) {
-              isValidated = widget.validate!(value);
-            }
-
-            if (isValidated) {
-              setState(() {
-                isChecked = value;
-              });
-
-              Future.delayed(
-                const Duration(milliseconds: 300),
-                () {
-                  widget.onChanged(value);
-                },
-              );
-            }
-          },
-        ),
+      SettingsCheckboxType.checkboxTile => CheckboxListTile(
+        title: widget.title,
+        subtitle: widget.subtitle,
+        contentPadding: EdgeInsets.zero,
+        value: isChecked,
+        onChanged: onChanged,
+      ),
+      SettingsCheckboxType.switchTile => SwitchListTile(
+        title: widget.title,
+        subtitle: widget.subtitle,
+        contentPadding: EdgeInsets.zero,
+        value: isChecked,
+        onChanged: onChanged,
+      ),
     };
   }
 }
