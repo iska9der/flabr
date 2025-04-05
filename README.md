@@ -14,9 +14,10 @@
 - темная/светлая тема
 - авторизация
 - кастомизация ленты и статей
+- краткий пересказ статей с помощью YandexGPT
 
 [<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
-     alt="Get it on F-Droid"
-     height="80">](https://f-droid.org/packages/ru.iska9der.flabr/)
+     alt="Скачать на F-Droid"
+     height="60">](https://f-droid.org/packages/ru.iska9der.flabr/)
 
-Or download the latest APK from the [Releases Section](https://github.com/iska9der/flabr/releases/latest).
+Или скачайте APK со страницы [релиза](https://github.com/iska9der/flabr/releases/latest)
