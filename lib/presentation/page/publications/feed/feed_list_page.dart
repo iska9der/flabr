@@ -34,7 +34,7 @@ class FeedListPage extends StatelessWidget {
       child: const PublicationListScaffold<
         FeedPublicationListCubit,
         FeedPublicationListState
-      >(filter: FeedFiltersWidget()),
+      >(filter: FeedFiltersWidget(), showPublicationType: true),
     );
   }
 }

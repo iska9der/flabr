@@ -16,7 +16,10 @@ class PublicationSliverList<
   ListState extends PublicationListState
 >
     extends StatelessWidget {
-  const PublicationSliverList({super.key});
+  const PublicationSliverList({super.key, this.showType = false});
+
+  /// Показывать тип поста в карточках
+  final bool showType;
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +77,7 @@ class PublicationSliverList<
               return PublicationCardWidget(
                 key: Key('publication_card_${publication.id}'),
                 publication,
-                showType: context.read<ListCubit>().showType,
+                showType: showType,
               );
             }
 

@@ -23,9 +23,6 @@ class FeedPublicationListCubit
 
   final CacheStorage storage;
 
-  @override
-  bool get showType => true;
-
   Future<void> _restoreFilter() async {
     emit(state.copyWith(status: PublicationListStatus.loading));
 

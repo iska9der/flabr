@@ -12,6 +12,7 @@ class FloatingFilterButton<
   const FloatingFilterButton({super.key, required this.filter});
 
   final Widget filter;
+
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton(
