@@ -23,7 +23,7 @@ abstract class Bootstrap {
       Bloc.observer = MyBlocObserver();
     }
 
-    if (Platform.isAndroid) {
+    if (!kIsWeb && Platform.isAndroid) {
       /// максимальная герцовка
       /// issue https://github.com/flutter/flutter/issues/35162
       FlutterDisplayMode.setHighRefreshRate().ignore();

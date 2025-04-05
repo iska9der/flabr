@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'constants.dart';
+import 'responsive.dart';
 
 const appCardTheme = CardThemeData(
   elevation: 1,
@@ -80,6 +81,7 @@ const ProgressIndicatorThemeData proggressIndicatorThemeData =
 // ignore: deprecated_member_use
 ProgressIndicatorThemeData(year2023: false);
 
-const ListTileThemeData listTileThemeData = ListTileThemeData(
-  shape: RoundedRectangleBorder(borderRadius: AppStyles.borderRadius),
+final ListTileThemeData listTileThemeData = ListTileThemeData(
+  shape: const RoundedRectangleBorder(borderRadius: AppStyles.borderRadius),
+  controlAffinity: !Device.isMobile ? ListTileControlAffinity.leading : null,
 );
