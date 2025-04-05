@@ -2,6 +2,8 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../bloc/tracker/tracker_publications_bloc.dart';
+import '../../../../bloc/tracker/tracker_publications_marker_bloc.dart';
 import '../../../../core/component/router/app_router.dart';
 import '../../../../data/model/loading_status_enum.dart';
 import '../../../../data/model/tracker/tracker.dart';
@@ -11,8 +13,6 @@ import '../../../widget/enhancement/card.dart';
 import '../../../widget/enhancement/progress_indicator.dart';
 import '../../../widget/user_text_button.dart';
 import '../widget/stats/stats.dart';
-import 'bloc/tracker_publications_bloc.dart';
-import 'bloc/tracker_publications_marker_bloc.dart';
 import 'widget/tracker_skeleton_widget.dart';
 
 @RoutePage(name: TrackerPublicationsPage.routeName)

@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
+import '../../../../bloc/tracker/tracker_notifications_bloc.dart';
+import '../../../../bloc/tracker/tracker_notifications_marker_bloc.dart';
 import '../../../../core/component/router/app_router.dart';
 import '../../../../core/constants/constants.dart';
 import '../../../../data/model/loading_status_enum.dart';
@@ -12,8 +14,6 @@ import '../../../../di/di.dart';
 import '../../../extension/extension.dart';
 import '../../../widget/enhancement/card.dart';
 import '../../../widget/user_text_button.dart';
-import 'bloc/tracker_notifications_bloc.dart';
-import 'bloc/tracker_notifications_marker_bloc.dart';
 import 'widget/tracker_skeleton_widget.dart';
 
 @RoutePage(name: TrackerSubscriptionPage.routeName)

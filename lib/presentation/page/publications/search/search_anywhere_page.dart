@@ -4,6 +4,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../bloc/search/search_cubit.dart';
 import '../../../../data/model/render_type_enum.dart';
 import '../../../../data/model/search/search_order_enum.dart';
 import '../../../../data/model/search/search_target_enum.dart';
@@ -15,7 +16,6 @@ import '../../services/company/widget/company_card_widget.dart';
 import '../../services/hub/widget/hub_card_widget.dart';
 import '../../services/user/widget/user_card_widget.dart';
 import '../widget/card/card.dart';
-import 'cubit/search_cubit.dart';
 
 @RoutePage(name: SearchAnywherePage.routeName)
 class SearchAnywherePage extends StatelessWidget {

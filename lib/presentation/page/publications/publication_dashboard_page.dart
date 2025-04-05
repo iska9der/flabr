@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../bloc/publication/publication_counters_bloc.dart';
+import '../../../bloc/settings/settings_cubit.dart';
 import '../../../core/component/router/app_router.dart';
 import '../../../data/model/publication/publication.dart';
 import '../../../data/model/user/user.dart';
@@ -12,8 +14,6 @@ import '../../../feature/most_reading/most_reading.dart';
 import '../../extension/extension.dart';
 import '../../theme/theme.dart';
 import '../../widget/dashboard_drawer_link_widget.dart';
-import '../settings/cubit/settings_cubit.dart';
-import 'bloc/publication_counters_bloc.dart';
 
 @RoutePage(name: PublicationDashboardPage.routeName)
 class PublicationDashboardPage extends StatelessWidget {

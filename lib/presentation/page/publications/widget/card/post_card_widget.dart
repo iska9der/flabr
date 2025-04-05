@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../bloc/settings/settings_cubit.dart';
 import '../../../../../core/component/router/app_router.dart';
 import '../../../../../data/model/publication/publication.dart';
 import '../../../../../data/model/render_type_enum.dart';
 import '../../../../../di/di.dart';
 import '../../../../widget/enhancement/enhancement.dart';
-import '../../../settings/cubit/settings_cubit.dart';
 import '../stats/publication_stats_widget.dart';
 import 'card_html_widget.dart';
 import 'components/footer_widget.dart';

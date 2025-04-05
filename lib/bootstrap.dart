@@ -7,7 +7,7 @@ import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 
-import 'core/component/bloc/observer.dart';
+import 'bloc/observer.dart';
 import 'core/constants/constants.dart';
 import 'di/di.dart';
 

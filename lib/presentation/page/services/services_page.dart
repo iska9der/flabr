@@ -2,9 +2,9 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
 import '../../theme/theme.dart';
-import 'company/page/company_list_page.dart';
-import 'hub/page/hub_list_page.dart';
-import 'user/page/user_list_page.dart';
+import 'company/company_list_page.dart';
+import 'hub/hub_list_page.dart';
+import 'user/user_list_page.dart';
 
 @RoutePage(name: ServicesPage.routeName)
 class ServicesPage extends StatelessWidget {
@@ -73,9 +73,10 @@ class ServiceCard extends StatelessWidget {
     return Card(
       elevation: onTap != null ? 6 : 0,
       clipBehavior: Clip.hardEdge,
-      color: onTap != null
-          ? Theme.of(context).cardTheme.color
-          : Theme.of(context).disabledColor,
+      color:
+          onTap != null
+              ? Theme.of(context).cardTheme.color
+              : Theme.of(context).disabledColor,
       child: InkWell(
         onTap: onTap,
         child: Stack(
@@ -84,9 +85,10 @@ class ServiceCard extends StatelessWidget {
             Icon(
               icon,
               size: 60,
-              color: onTap != null
-                  ? Colors.yellow.shade800.withValues(alpha: .8)
-                  : theme.iconTheme.color?.withValues(alpha: 0.2),
+              color:
+                  onTap != null
+                      ? Colors.yellow.shade800.withValues(alpha: .8)
+                      : theme.iconTheme.color?.withValues(alpha: 0.2),
             ),
             Align(
               alignment: Alignment.bottomCenter,
@@ -95,20 +97,24 @@ class ServiceCard extends StatelessWidget {
                 margin: const EdgeInsets.only(bottom: 10),
                 decoration: BoxDecoration(
                   borderRadius: AppStyles.borderRadius,
-                  color: onTap != null
-                      ? theme.colorScheme.onSurface.withValues(alpha: .7)
-                      : theme.colorScheme.onInverseSurface
-                          .withValues(alpha: .4),
+                  color:
+                      onTap != null
+                          ? theme.colorScheme.onSurface.withValues(alpha: .7)
+                          : theme.colorScheme.onInverseSurface.withValues(
+                            alpha: .4,
+                          ),
                 ),
                 child: Text(
                   title,
                   textAlign: TextAlign.center,
                   maxLines: 1,
                   style: TextStyle(
-                    color: onTap != null
-                        ? theme.colorScheme.onInverseSurface
-                        : theme.colorScheme.inverseSurface
-                            .withValues(alpha: .4),
+                    color:
+                        onTap != null
+                            ? theme.colorScheme.onInverseSurface
+                            : theme.colorScheme.inverseSurface.withValues(
+                              alpha: .4,
+                            ),
                   ),
                 ),
               ),

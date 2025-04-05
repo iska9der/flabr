@@ -4,11 +4,11 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
+import '../../bloc/settings/settings_cubit.dart';
 import '../../core/component/router/app_router.dart';
 import '../../feature/auth/auth.dart';
 import '../extension/extension.dart';
 import '../theme/theme.dart';
-import 'settings/cubit/settings_cubit.dart';
 
 @RoutePage()
 class DashboardPage extends StatefulWidget {

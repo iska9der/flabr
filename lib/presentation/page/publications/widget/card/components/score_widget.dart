@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../../bloc/publication/publication_vote_bloc.dart';
 import '../../../../../../data/model/loading_status_enum.dart';
 import '../../../../../../data/model/publication/publication.dart';
 import '../../../../../../data/model/stat_type_enum.dart';
 import '../../../../../../di/di.dart';
 import '../../../../../../feature/auth/auth.dart';
 import '../../../../../extension/extension.dart';
-import '../../../bloc/publication_vote_bloc.dart';
 import '../../stats/publication_stat_icon_widget.dart';
 
 class ScoreWidget extends StatelessWidget {

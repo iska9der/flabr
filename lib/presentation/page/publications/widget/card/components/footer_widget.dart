@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ya_summary/ya_summary.dart';
 
+import '../../../../../../bloc/publication/publication_bookmark_cubit.dart';
 import '../../../../../../core/component/router/app_router.dart';
 import '../../../../../../core/constants/constants.dart';
 import '../../../../../../data/model/publication/publication.dart';
@@ -10,7 +11,6 @@ import '../../../../../../di/di.dart';
 import '../../../../../../feature/auth/auth.dart';
 import '../../../../../extension/extension.dart';
 import '../../../../../widget/enhancement/enhancement.dart';
-import '../../../cubit/publication_bookmark_cubit.dart';
 import '../../stats/publication_stat_icon_widget.dart';
 import 'score_widget.dart';
 

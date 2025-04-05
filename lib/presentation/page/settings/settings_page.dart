@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ya_summary/ya_summary.dart';
 
+import '../../../bloc/settings/settings_cubit.dart';
 import '../../../data/model/filter/filter.dart';
 import '../../../data/model/language/language.dart';
 import '../../../feature/auth/auth.dart';
@@ -10,7 +11,6 @@ import '../../extension/extension.dart';
 import '../../theme/theme.dart';
 import '../../widget/filter/filter_chip_list.dart';
 import '../../widget/publication_settings_widget.dart';
-import 'cubit/settings_cubit.dart';
 import 'model/config_model.dart';
 import 'widget/settings_card_widget.dart';
 import 'widget/settings_checkbox_widget.dart';

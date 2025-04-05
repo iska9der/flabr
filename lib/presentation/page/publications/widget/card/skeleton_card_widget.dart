@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../bloc/settings/settings_cubit.dart';
 import '../../../../../data/model/publication/publication.dart';
 import '../../../../theme/theme.dart';
 import '../../../../widget/enhancement/enhancement.dart';
 import '../../../../widget/user_text_button.dart';
-import '../../../settings/cubit/settings_cubit.dart';
 import '../stats/stats.dart';
 import 'components/hubs_widget.dart';
 
