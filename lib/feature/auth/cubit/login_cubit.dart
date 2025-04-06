@@ -33,7 +33,7 @@ class LoginCubit extends Cubit<LoginState> {
     emit(state.copyWith(status: LoginStatus.loading));
 
     final tokens = Tokens(connectSID: value);
-    await _tokenRepository.setTokens(tokens);
+    await _tokenRepository.saveTokens(tokens);
 
     emit(state.copyWith(status: LoginStatus.success));
   }

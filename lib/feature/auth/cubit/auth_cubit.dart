@@ -61,7 +61,9 @@ class AuthCubit extends Cubit<AuthState> {
 
     final tokens = _tokenRepository.tokens;
 
-    if (tokens.isEmpty) return;
+    if (tokens.isEmpty) {
+      return;
+    }
 
     emit(state.copyWith(status: AuthStatus.authorized, tokens: tokens));
   }

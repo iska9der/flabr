@@ -5,7 +5,6 @@ abstract class CacheKeys {
   static const miscConfig = 'misc_config';
 
   static const authTokens = 'aData';
-  static const authCsrf = 'cData';
 
   static const langUI = 'lang_ui';
   static const langPublications = 'lang_article';

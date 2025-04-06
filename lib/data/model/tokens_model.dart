@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
@@ -22,11 +23,12 @@ class Tokens extends Equatable {
 
   static const empty = Tokens();
   bool get isEmpty => this == empty;
+  bool get isNotEmpty => !isEmpty;
 
   Map<String, dynamic> toMap() {
     return {
-      'connectSID': connectSID,
-      'habrSessionID': habrSID,
+      'connect_sid': connectSID,
+      'habrsession_id': habrSID,
       'acc_csid': accCSID,
       'PHPSESSID': phpSID,
       'hsec_id': hSecID,
@@ -35,11 +37,11 @@ class Tokens extends Equatable {
 
   factory Tokens.fromMap(Map<String, dynamic> map) {
     return Tokens(
-      connectSID: map['connectSID'] as String,
-      habrSID: map['habrSessionID'] as String,
-      accCSID: map['acc_csid'] as String,
-      phpSID: map['PHPSESSID'] as String,
-      hSecID: map['hsec_id'] as String,
+      connectSID: map['connectSID'] ?? map['connect_sid'] ?? '',
+      habrSID: map['habrSessionID'] ?? map['habrsession_id'] ?? '',
+      accCSID: map['acc_csid'] ?? '',
+      phpSID: map['PHPSESSID'] ?? '',
+      hSecID: map['hsec_id'] ?? '',
     );
   }
 
@@ -49,8 +51,9 @@ class Tokens extends Equatable {
       Tokens.fromMap(json.decode(source) as Map<String, dynamic>);
 
   String toCookieString() {
-    return 'connect_sid="$connectSID"; habrsession_id="$habrSID"; fl=ru; hl=ru; '
-        'acc_csid="$accCSID"; habr_web_redirect_back=%2Fru%2Fall%2F; '
-        'PHPSESSID="$phpSID"; hsec_id="$hSecID"';
+    return toMap().entries
+        .where((entry) => entry.value.isNotEmpty)
+        .map((e) => '${e.key}=${e.value}')
+        .join('; ');
   }
 }

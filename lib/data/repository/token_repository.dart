@@ -15,13 +15,15 @@ class TokenRepository {
   Tokens _tokens = Tokens.empty;
   Tokens get tokens => _tokens;
 
-  String _csrf = '';
+  String? _csrf;
+  String? get csrf => _csrf;
 
   Future<Tokens?> getTokens() async {
-    if (!_tokens.isEmpty) return _tokens;
+    if (_tokens.isNotEmpty) {
+      return _tokens;
+    }
 
     final raw = await _storage.read(CacheKeys.authTokens);
-
     if (raw == null) {
       return null;
     }
@@ -31,28 +33,20 @@ class TokenRepository {
     return _tokens;
   }
 
-  Future<void> setTokens(Tokens newTokens) async {
+  Future<void> saveTokens(Tokens newTokens) async {
+    if (newTokens.isEmpty) {
+      return;
+    }
+
     await _storage.write(CacheKeys.authTokens, newTokens.toJson());
 
     _tokens = newTokens;
   }
 
-  Future<String?> getCsrf() async {
-    if (_csrf.isNotEmpty) return _csrf;
-
-    final raw = await _storage.read(CacheKeys.authCsrf);
-
-    if (raw == null) {
-      return null;
+  void setCsrf(String value) {
+    if (_csrf == value || value.isEmpty) {
+      return;
     }
-
-    _csrf = raw;
-
-    return raw;
-  }
-
-  Future<void> setCsrf(String value) async {
-    await _storage.write(CacheKeys.authCsrf, value);
 
     _csrf = value;
   }
@@ -62,6 +56,5 @@ class TokenRepository {
     _csrf = '';
 
     await _storage.delete(CacheKeys.authTokens);
-    await _storage.delete(CacheKeys.authCsrf);
   }
 }
