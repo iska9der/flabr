@@ -2,8 +2,6 @@ import '../query_params_model.dart';
 
 class PublicationPostListParams extends QueryParams {
   const PublicationPostListParams({
-    super.langArticles = 'ru',
-    super.langUI = 'ru',
     super.page = '',
     this.flow,
     this.sort,
@@ -30,11 +28,11 @@ class PublicationPostListParams extends QueryParams {
       postsParam = '&posts=true';
     }
 
-    String flowParam = flow != null ? '&flow=$flow' : '';
+    String flowParam = flow != null ? 'flow=$flow' : '';
     String periodParam = period != null ? '&period=$period' : '';
     String scoreParam = score.isNotEmpty ? '&score=$score' : '';
 
-    return 'fl=$langArticles&hl=$langUI$flowParam$postsParam$sortParam$periodParam$scoreParam&page=$page';
+    return '$flowParam$postsParam$sortParam$periodParam$scoreParam&page=$page';
   }
 
   @override

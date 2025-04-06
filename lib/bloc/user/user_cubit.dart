@@ -8,16 +8,11 @@ import '../../data/repository/repository.dart';
 part 'user_state.dart';
 
 class UserCubit extends Cubit<UserState> {
-  UserCubit(
-    String login, {
-    required UserRepository repository,
-    required LanguageRepository languageRepository,
-  }) : _repository = repository,
-       _languageRepository = languageRepository,
-       super(UserState(login: login, model: User.empty));
+  UserCubit(String login, {required UserRepository repository})
+    : _repository = repository,
+      super(UserState(login: login, model: User.empty));
 
   final UserRepository _repository;
-  final LanguageRepository _languageRepository;
 
   void fetchCard() async {
     emit(state.copyWith(status: UserStatus.loading));
@@ -26,11 +21,7 @@ class UserCubit extends Cubit<UserState> {
       User model = state.model;
 
       if (model.isEmpty) {
-        model = await _repository.fetchCard(
-          login: state.login,
-          langUI: _languageRepository.ui,
-          langArticles: _languageRepository.articles,
-        );
+        model = await _repository.fetchCard(login: state.login);
       }
 
       emit(state.copyWith(status: UserStatus.success, model: model));
@@ -52,11 +43,7 @@ class UserCubit extends Cubit<UserState> {
     UserWhois model;
 
     if (state.whoisModel.isEmpty) {
-      model = await _repository.fetchWhois(
-        login: state.login,
-        langUI: _languageRepository.ui,
-        langArticles: _languageRepository.articles,
-      );
+      model = await _repository.fetchWhois(login: state.login);
     } else {
       model = state.whoisModel;
     }

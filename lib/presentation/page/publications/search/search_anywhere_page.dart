@@ -28,10 +28,7 @@ class SearchAnywherePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(
-          create:
-              (_) => SearchCubit(repository: getIt(), langRepository: getIt()),
-        ),
+        BlocProvider(create: (_) => SearchCubit(repository: getIt())),
         BlocProvider<ScrollCubit>(create: (_) => ScrollCubit()),
       ],
       child: const _SearchAnywhereView(),

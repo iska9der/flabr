@@ -58,8 +58,6 @@ class FlowPublicationListCubit
 
     try {
       final response = await repository.fetchFlowArticles(
-        langUI: languageRepository.ui,
-        langArticles: languageRepository.articles,
         section: state.section,
         flow: state.flow,
         filter: state.filter,

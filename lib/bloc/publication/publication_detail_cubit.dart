@@ -1,10 +1,7 @@
-import 'dart:async';
-
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../data/exception/exception.dart';
-import '../../data/model/language/language.dart';
 import '../../data/model/publication/publication.dart';
 import '../../data/repository/repository.dart';
 import '../../presentation/extension/extension.dart';
@@ -18,33 +15,15 @@ class PublicationDetailCubit extends Cubit<PublicationDetailState> {
     required PublicationRepository repository,
     required LanguageRepository languageRepository,
   }) : _repository = repository,
-       _languageRepository = languageRepository,
        super(
          PublicationDetailState(
            id: id,
            source: source,
            publication: Publication.empty,
          ),
-       ) {
-    _uiLangSub = _languageRepository.uiStream.listen((_) => _reInit());
-    _articlesLangSub = _languageRepository.articlesStream.listen(
-      (_) => _reInit(),
-    );
-  }
+       );
 
   final PublicationRepository _repository;
-  final LanguageRepository _languageRepository;
-
-  late final StreamSubscription<Language> _uiLangSub;
-  late final StreamSubscription<List<Language>> _articlesLangSub;
-
-  @override
-  Future<void> close() {
-    _uiLangSub.cancel();
-    _articlesLangSub.cancel();
-
-    return super.close();
-  }
 
   void fetch() async {
     if (state.status.isLoading) return;
@@ -55,8 +34,6 @@ class PublicationDetailCubit extends Cubit<PublicationDetailState> {
       final publication = await _repository.fetchPublicationById(
         state.id,
         source: state.source,
-        langUI: _languageRepository.ui,
-        langArticles: _languageRepository.articles,
       );
 
       emit(
@@ -75,9 +52,5 @@ class PublicationDetailCubit extends Cubit<PublicationDetailState> {
 
       rethrow;
     }
-  }
-
-  void _reInit() {
-    emit(state.copyWith(status: PublicationStatus.initial));
   }
 }

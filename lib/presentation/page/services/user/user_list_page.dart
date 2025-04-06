@@ -24,13 +24,7 @@ class UserListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(
-          create:
-              (_) => UserListCubit(
-                repository: getIt(),
-                languageRepository: getIt(),
-              ),
-        ),
+        BlocProvider(create: (_) => UserListCubit(repository: getIt())),
         BlocProvider(create: (_) => ScrollCubit()),
       ],
       child: Builder(

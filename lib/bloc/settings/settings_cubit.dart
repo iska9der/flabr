@@ -20,11 +20,11 @@ class SettingsCubit extends Cubit<SettingsState> {
   }) : _storage = storage,
        _langRepository = languageRepository,
        super(const SettingsState()) {
-    _langUiSub = _langRepository.uiStream.listen((lang) {
+    _uiLangSub = _langRepository.ui.listen((lang) {
       emit(state.copyWith(langUI: lang));
     });
 
-    _langArticleSub = _langRepository.articlesStream.listen((langs) {
+    _publicationsLangsSub = _langRepository.publications.listen((langs) {
       emit(state.copyWith(langArticles: langs));
     });
   }
@@ -32,27 +32,27 @@ class SettingsCubit extends Cubit<SettingsState> {
   final LanguageRepository _langRepository;
   final CacheStorage _storage;
 
-  late final StreamSubscription<Language> _langUiSub;
-  late final StreamSubscription<List<Language>> _langArticleSub;
+  late final StreamSubscription<Language> _uiLangSub;
+  late final StreamSubscription<List<Language>> _publicationsLangsSub;
 
   @override
   Future<void> close() {
-    _langUiSub.cancel();
-    _langArticleSub.cancel();
+    _uiLangSub.cancel();
+    _publicationsLangsSub.cancel();
     return super.close();
   }
 
   Future<void> init() async {
     emit(state.copyWith(status: SettingsStatus.loading));
 
-    final (langUI, langArticles) = _initLanguages();
+    final (uiLang, publicationsLangs) = _initLanguages();
     final config = await _initConfig();
 
     emit(
       state.copyWith(
         status: SettingsStatus.success,
-        langUI: langUI,
-        langArticles: langArticles,
+        langUI: uiLang,
+        langArticles: publicationsLangs,
         theme: config.theme,
         feed: config.feed,
         publication: config.publication,
@@ -62,8 +62,8 @@ class SettingsCubit extends Cubit<SettingsState> {
   }
 
   (Language, List<Language>) _initLanguages() => (
-    _langRepository.ui,
-    _langRepository.articles,
+    _langRepository.lastUI,
+    _langRepository.lastPublications,
   );
 
   void changeUILang(Language? uiLang) {
@@ -73,7 +73,7 @@ class SettingsCubit extends Cubit<SettingsState> {
 
     emit(state.copyWith(langUI: uiLang));
 
-    _langRepository.updateUILang(uiLang);
+    _langRepository.changeUILanguage(uiLang);
   }
 
   (bool, List<Language>) validateChangeArticlesLang(
@@ -110,7 +110,7 @@ class SettingsCubit extends Cubit<SettingsState> {
 
     emit(state.copyWith(langArticles: newLangs));
 
-    _langRepository.updateArticleLang(newLangs);
+    _langRepository.changePublicationsLanguages(newLangs);
   }
 
   /// Инициализация конфигурации

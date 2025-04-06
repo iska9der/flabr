@@ -2,8 +2,6 @@ import '../query_params_model.dart';
 
 class PublicationListParams extends QueryParams {
   const PublicationListParams({
-    super.langArticles = 'ru',
-    super.langUI = 'ru',
     super.page = '',
     this.news = false,
     this.flow,
@@ -22,23 +20,32 @@ class PublicationListParams extends QueryParams {
 
   @override
   String toQueryString() {
-    String? sortParam = sort != null ? '&sort=$sort' : '';
-
+    String flowParam = flow != null ? 'flow=$flow' : '';
     String newsParam = '';
+    String sortParam = '';
     if (news) {
-      sortParam = '';
-      if (flow != null) {
-        newsParam = '&flowNews=true';
-      } else {
-        newsParam = '&news=true';
-      }
+      newsParam = flow != null ? 'flowNews=true' : 'news=true';
+    } else {
+      sortParam = sort != null ? 'sort=$sort' : '';
     }
 
-    String flowParam = flow != null ? '&flow=$flow' : '';
-    String periodParam = period != null ? '&period=$period' : '';
-    String scoreParam = score.isNotEmpty ? '&score=$score' : '';
+    String periodParam = period != null ? 'period=$period' : '';
+    String scoreParam = score.isNotEmpty ? 'score=$score' : '';
 
-    return 'fl=$langArticles&hl=$langUI$flowParam$newsParam$sortParam$periodParam$scoreParam&page=$page';
+    final params =
+        [
+          flowParam,
+          newsParam,
+          sortParam,
+          periodParam,
+          scoreParam,
+        ].where((element) => element.isNotEmpty).toList();
+
+    params.add('page=$page');
+
+    final queryString = params.join('&');
+
+    return queryString;
   }
 
   @override

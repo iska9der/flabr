@@ -54,8 +54,6 @@ class FeedPublicationListCubit
 
     try {
       final response = await repository.fetchFeed(
-        langUI: languageRepository.ui,
-        langArticles: languageRepository.articles,
         page: state.page.toString(),
         filter: state.filter,
       );

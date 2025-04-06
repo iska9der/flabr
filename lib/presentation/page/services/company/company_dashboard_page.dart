@@ -26,12 +26,7 @@ class CompanyDashboardPage extends StatelessWidget {
         BlocProvider(
           key: ValueKey('company-$alias-dashboard'),
           lazy: false,
-          create:
-              (_) => CompanyCubit(
-                alias,
-                repository: getIt(),
-                languageRepository: getIt(),
-              ),
+          create: (_) => CompanyCubit(alias, repository: getIt()),
         ),
         BlocProvider(create: (_) => ScaffoldCubit()),
       ],

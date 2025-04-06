@@ -2,13 +2,7 @@ import '../query_params_model.dart';
 import 'search_params.dart';
 
 class SearchHubParams extends QueryParams implements SearchParamsFactory {
-  const SearchHubParams({
-    required this.query,
-    required this.order,
-    super.langArticles,
-    super.langUI,
-    super.page,
-  });
+  const SearchHubParams({required this.query, required this.order, super.page});
 
   final String query;
   final String order;
@@ -16,6 +10,6 @@ class SearchHubParams extends QueryParams implements SearchParamsFactory {
   @override
   String toQueryString() {
     return '/hubs/search?q=$query&target_type=hubs'
-        '&order=$order&fl=$langArticles&hl=$langUI&page=$page';
+        '&order=$order&page=$page';
   }
 }

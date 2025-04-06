@@ -1,41 +1,19 @@
-import 'dart:async';
-
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../data/exception/exception.dart';
 import '../../data/model/hub/hub.dart';
-import '../../data/model/language/language.dart';
 import '../../data/model/list_response_model.dart';
 import '../../data/repository/repository.dart';
 
 part 'hub_list_state.dart';
 
 class HubListCubit extends Cubit<HubListState> {
-  HubListCubit({
-    required HubRepository repository,
-    required LanguageRepository languageRepository,
-  }) : _repository = repository,
-       _languageRepository = languageRepository,
-       super(const HubListState()) {
-    _uiLangSub = _languageRepository.uiStream.listen((_) => _reInit());
-    _articlesLangSub = _languageRepository.articlesStream.listen(
-      (_) => _reInit(),
-    );
-  }
+  HubListCubit({required HubRepository repository})
+    : _repository = repository,
+      super(const HubListState());
 
   final HubRepository _repository;
-  final LanguageRepository _languageRepository;
-
-  late final StreamSubscription<Language> _uiLangSub;
-  late final StreamSubscription<List<Language>> _articlesLangSub;
-
-  @override
-  Future<void> close() {
-    _uiLangSub.cancel();
-    _articlesLangSub.cancel();
-    return super.close();
-  }
 
   void fetch() async {
     if (state.status == HubListStatus.loading ||
@@ -46,11 +24,7 @@ class HubListCubit extends Cubit<HubListState> {
     emit(state.copyWith(status: HubListStatus.loading));
 
     try {
-      final response = await _repository.fetchAll(
-        page: state.page,
-        langUI: _languageRepository.ui,
-        langArticles: _languageRepository.articles,
-      );
+      final response = await _repository.fetchAll(page: state.page);
 
       var newList = state.list.copyWith(
         ids: [...state.list.ids, ...response.ids],
@@ -76,9 +50,5 @@ class HubListCubit extends Cubit<HubListState> {
 
       super.onError(error, stackTrace);
     }
-  }
-
-  void _reInit() {
-    emit(const HubListState());
   }
 }

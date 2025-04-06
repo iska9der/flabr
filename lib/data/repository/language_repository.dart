@@ -16,18 +16,17 @@ class LanguageRepository {
 
   final CacheStorage _storage;
 
-  final _uiController = StreamController<Language>.broadcast();
-  Stream<Language> get uiStream => _uiController.stream;
+  final _uiCtrl = StreamController<Language>.broadcast();
+  Stream<Language> get ui => _uiCtrl.stream;
 
-  final _articlesController = StreamController<List<Language>>.broadcast();
-  Stream<List<Language>> get articlesStream => _articlesController.stream;
+  final _publicationsCtrl = StreamController<List<Language>>.broadcast();
+  Stream<List<Language>> get publications => _publicationsCtrl.stream;
 
   /// Последние значения из стрима
   Language _ui = Language.ru;
-  Language get ui => _ui;
-
-  List<Language> _articles = [Language.ru];
-  List<Language> get articles => _articles;
+  Language get lastUI => _ui;
+  List<Language> _publications = [Language.ru];
+  List<Language> get lastPublications => _publications;
 
   /// Получаем кэшированные значения из хранилища
   /// и сохраняем как последния значения, а так же
@@ -35,17 +34,19 @@ class LanguageRepository {
   Future<void> _init() async {
     final lang = await _getCachedUILanguage();
     _ui = lang ?? _ui;
-    _uiController.add(_ui);
+    _uiCtrl.add(_ui);
 
-    final article = await _getCachedArticlesLanguage();
-    _articles = article ?? _articles;
-    _articlesController.add(_articles);
+    final publication = await _getCachedPublicationLanguages();
+    _publications = publication ?? _publications;
+    _publicationsCtrl.add(_publications);
   }
 
   Future<Language?> _getCachedUILanguage() async {
     try {
       String? raw = await _storage.read(CacheKeys.langUI);
-      if (raw == null) return null;
+      if (raw == null) {
+        return null;
+      }
 
       final lang = Language.fromString(raw);
       return lang;
@@ -55,29 +56,29 @@ class LanguageRepository {
     }
   }
 
-  void updateUILang(Language lang) {
+  void changeUILanguage(Language lang) {
     _ui = lang;
-    _uiController.add(lang);
+    _uiCtrl.add(lang);
     _storage.write(CacheKeys.langUI, lang.name);
   }
 
-  Future<List<Language>?> _getCachedArticlesLanguage() async {
+  Future<List<Language>?> _getCachedPublicationLanguages() async {
     try {
-      String? raw = await _storage.read(CacheKeys.langArticle);
+      String? raw = await _storage.read(CacheKeys.langPublications);
       if (raw == null) return null;
 
       final langs = LanguageEncoder.decodeLangs(raw);
       return langs;
     } on ValueException {
-      await _storage.delete(CacheKeys.langArticle);
+      await _storage.delete(CacheKeys.langPublications);
       return null;
     }
   }
 
-  void updateArticleLang(List<Language> langs) async {
-    _articles = langs;
-    _articlesController.add(langs);
+  void changePublicationsLanguages(List<Language> langs) async {
+    _publications = langs;
+    _publicationsCtrl.add(langs);
     String langsAsString = LanguageEncoder.encodeLangs(langs);
-    _storage.write(CacheKeys.langArticle, langsAsString);
+    _storage.write(CacheKeys.langPublications, langsAsString);
   }
 }

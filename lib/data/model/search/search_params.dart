@@ -8,8 +8,6 @@ import 'search_user_params.dart';
 
 abstract class SearchParamsFactory extends QueryParams {
   factory SearchParamsFactory.from({
-    required String langUI,
-    required String langArticles,
     required String query,
     required SearchTarget target,
     required String order,
@@ -18,29 +16,21 @@ abstract class SearchParamsFactory extends QueryParams {
     SearchTarget.posts => SearchArticleParams(
       query: query,
       order: order,
-      langArticles: langArticles,
-      langUI: langUI,
       page: page.toString(),
     ),
     SearchTarget.hubs => SearchHubParams(
       query: query,
       order: order,
-      langArticles: langArticles,
-      langUI: langUI,
       page: page.toString(),
     ),
     SearchTarget.companies => SearchCompanyParams(
       query: query,
       order: order,
-      langArticles: langArticles,
-      langUI: langUI,
       page: page.toString(),
     ),
     SearchTarget.users => SearchUserParams(
       query: query,
       order: order,
-      langArticles: langArticles,
-      langUI: langUI,
       page: page.toString(),
     ),
     SearchTarget.comments => throw const ValueException('Не реализовано'),

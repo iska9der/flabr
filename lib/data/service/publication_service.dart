@@ -7,36 +7,23 @@ import '../model/comment/comment.dart';
 import '../model/filter/filter.dart';
 import '../model/list_response_model.dart';
 import '../model/publication/publication.dart';
-import '../model/query_params_model.dart';
 import '../model/section_enum.dart';
 import '../model/user/user.dart';
 
 abstract interface class PublicationService {
   Future<Map<String, dynamic>> fetchCounters();
 
-  Future<Map<String, dynamic>> fetchArticleById(
-    String id, {
-    required String langUI,
-    required String langArticles,
-  });
+  Future<Map<String, dynamic>> fetchArticleById(String id);
 
-  Future<Map<String, dynamic>> fetchPostById(
-    String id, {
-    required String langUI,
-    required String langArticles,
-  });
+  Future<Map<String, dynamic>> fetchPostById(String id);
 
   Future<ListResponse<Publication>> fetchFeed({
-    required String langUI,
-    required String langArticles,
     required String page,
     required String score,
     required List<String> types,
   });
 
   Future<ListResponse<Publication>> fetchFlowArticles({
-    required String langUI,
-    required String langArticles,
     required Section section,
     required PublicationFlow flow,
     required Sort sort,
@@ -46,8 +33,6 @@ abstract interface class PublicationService {
   });
 
   Future<ListResponse<Publication>> fetchHubArticles({
-    required String langUI,
-    required String langArticles,
     required String hub,
     required Sort sort,
     required FilterOption period,
@@ -56,16 +41,12 @@ abstract interface class PublicationService {
   });
 
   Future<ListResponse<Publication>> fetchUserPublications({
-    required String langUI,
-    required String langArticles,
     required String user,
     required String page,
     required UserPublicationType type,
   });
 
   Future<ListResponse<Publication>> fetchUserBookmarks({
-    required String langUI,
-    required String langArticles,
     required String user,
     required String page,
     required UserBookmarksType type,
@@ -74,8 +55,6 @@ abstract interface class PublicationService {
   Future<CommentListResponse> fetchComments({
     required String articleId,
     required PublicationSource source,
-    required String langUI,
-    required String langArticles,
   });
 
   Future<bool> addToBookmark({
@@ -88,10 +67,7 @@ abstract interface class PublicationService {
     required PublicationSource source,
   });
 
-  Future<MostReadingResponse> fetchMostReading({
-    required String langUI,
-    required String langArticles,
-  });
+  Future<MostReadingResponse> fetchMostReading();
 
   Future<PublicationVoteResponse> voteUp(String articleId);
 
@@ -121,17 +97,9 @@ class PublicationServiceImpl implements PublicationService {
   }
 
   @override
-  Future<Map<String, dynamic>> fetchArticleById(
-    String id, {
-    required String langUI,
-    required String langArticles,
-  }) async {
+  Future<Map<String, dynamic>> fetchArticleById(String id) async {
     try {
-      final params = QueryParams(langArticles: langArticles, langUI: langUI);
-
-      final response = await _mobileClient.get(
-        '/articles/$id/?${params.toQueryString()}',
-      );
+      final response = await _mobileClient.get('/articles/$id/');
 
       return response.data;
     } catch (_, trace) {
@@ -140,17 +108,9 @@ class PublicationServiceImpl implements PublicationService {
   }
 
   @override
-  Future<Map<String, dynamic>> fetchPostById(
-    String id, {
-    required String langUI,
-    required String langArticles,
-  }) async {
+  Future<Map<String, dynamic>> fetchPostById(String id) async {
     try {
-      final params = QueryParams(langArticles: langArticles, langUI: langUI);
-
-      final response = await _mobileClient.get(
-        '/threads/$id/?${params.toQueryString()}',
-      );
+      final response = await _mobileClient.get('/threads/$id/');
 
       return response.data;
     } catch (_, trace) {
@@ -160,24 +120,17 @@ class PublicationServiceImpl implements PublicationService {
 
   @override
   Future<ListResponse<Publication>> fetchFeed({
-    required String langUI,
-    required String langArticles,
     required String page,
     required String score,
     required List<String> types,
   }) async {
     try {
-      final params = FeedListParams(
-        langArticles: langArticles,
-        langUI: langUI,
-        page: page,
-        score: score,
-        types: types,
-      );
+      final params =
+          FeedListParams(page: page, score: score, types: types).toMap();
 
-      final response = await _mobileClient.get(
-        '/articles',
-        queryParams: params.toMap(),
+      final response = await _siteClient.get(
+        '/v2/articles/',
+        queryParams: params,
       );
 
       return FeedListResponse.fromMap(response.data);
@@ -190,8 +143,6 @@ class PublicationServiceImpl implements PublicationService {
 
   @override
   Future<ListResponse<Publication>> fetchFlowArticles({
-    required String langUI,
-    required String langArticles,
     required Section section,
     required PublicationFlow flow,
     required Sort sort,
@@ -202,34 +153,31 @@ class PublicationServiceImpl implements PublicationService {
     try {
       final flowStr = (flow == PublicationFlow.all) ? null : flow.name;
 
-      final params = switch (section) {
-        Section.post => PublicationPostListParams(
-          langArticles: langArticles,
-          langUI: langUI,
-          page: page,
-          flow: flowStr,
-          sort: sort.postValue,
-          period: sort == Sort.byBest ? period.value : null,
-          score: score.value,
-        ),
-        _ => PublicationListParams(
-          langArticles: langArticles,
-          langUI: langUI,
-          page: page,
-          flow: flowStr,
-          news: section == Section.news,
+      final params =
+          switch (section) {
+            Section.post => PublicationPostListParams(
+              page: page,
+              flow: flowStr,
+              sort: sort.postValue,
+              period: sort == Sort.byBest ? period.value : null,
+              score: score.value,
+            ),
+            _ => PublicationListParams(
+              page: page,
+              flow: flowStr,
+              news: section == Section.news,
 
-          /// если мы находимся не во "Все потоки", в значение sort, по завету
-          /// костыльного api хабра, нужно передавать значение 'all'
-          sort: flow == PublicationFlow.all ? sort.value : 'all',
-          period: sort == Sort.byBest ? period.value : null,
-          score: score.value,
-        ),
-      };
+              /// если мы находимся не во "Все потоки", в значение sort, по завету
+              /// костыльного api хабра, нужно передавать значение 'all'
+              sort: flow == PublicationFlow.all ? sort.value : 'all',
+              period: sort == Sort.byBest ? period.value : null,
+              score: score.value,
+            ),
+          }.toMap();
 
-      final response = await _mobileClient.get(
-        '/articles',
-        queryParams: params.toMap(),
+      final response = await _siteClient.get(
+        '/v2/articles/',
+        queryParams: params,
       );
 
       return switch (section) {
@@ -245,8 +193,6 @@ class PublicationServiceImpl implements PublicationService {
 
   @override
   Future<ListResponse<Publication>> fetchHubArticles({
-    required String langUI,
-    required String langArticles,
     required String hub,
     required Sort sort,
     required FilterOption period,
@@ -254,18 +200,19 @@ class PublicationServiceImpl implements PublicationService {
     required String page,
   }) async {
     try {
-      final params = PublicationListParams(
-        langArticles: langArticles,
-        langUI: langUI,
-        page: page,
-        sort: 'all',
-        period: sort == Sort.byBest ? period.value : null,
-        score: score.value,
-      );
+      final params =
+          PublicationListParams(
+            page: page,
+            sort: 'all',
+            period: sort == Sort.byBest ? period.value : null,
+            score: score.value,
+          ).toMap();
+
+      params.addAll({'hub': hub});
 
       final response = await _mobileClient.get(
-        '/articles/?hub=$hub',
-        queryParams: params.toMap(),
+        '/articles/',
+        queryParams: params,
       );
 
       return PublicationCommonListResponse.fromMap(response.data);
@@ -278,28 +225,27 @@ class PublicationServiceImpl implements PublicationService {
 
   @override
   Future<ListResponse<Publication>> fetchUserPublications({
-    required String langUI,
-    required String langArticles,
     required String user,
     required String page,
     required UserPublicationType type,
   }) async {
     try {
-      final params = PublicationListParams(
-        langArticles: langArticles,
-        langUI: langUI,
-        page: page,
-      );
+      final params = PublicationListParams(page: page).toMap();
 
-      final String typeQuery = switch (type) {
-        UserPublicationType.articles => '',
-        UserPublicationType.posts => '&posts=true',
-        UserPublicationType.news => '&news=true',
+      final typeQuery = switch (type) {
+        UserPublicationType.articles => null,
+        UserPublicationType.posts => {'posts': 'true'},
+        UserPublicationType.news => {'news': 'true'},
       };
 
+      params.addAll({'user': user});
+      if (typeQuery != null) {
+        params.addAll(typeQuery);
+      }
+
       final response = await _mobileClient.get(
-        '/articles/?user=$user$typeQuery',
-        queryParams: params.toMap(),
+        '/articles/',
+        queryParams: params,
       );
 
       return switch (type) {
@@ -317,30 +263,26 @@ class PublicationServiceImpl implements PublicationService {
 
   @override
   Future<ListResponse<Publication>> fetchUserBookmarks({
-    required String langUI,
-    required String langArticles,
     required String user,
     required String page,
     required UserBookmarksType type,
   }) async {
     try {
-      final params = PublicationListParams(
-        langArticles: langArticles,
-        langUI: langUI,
-        page: page,
-      );
+      final params = PublicationListParams(page: page).toMap();
 
-      final String typeQuery = switch (type) {
-        UserBookmarksType.articles => 'user_bookmarks=true',
-        UserBookmarksType.posts => 'user_bookmarks_posts=true',
-        UserBookmarksType.news => 'user_bookmarks_news=true',
+      final typeQuery = switch (type) {
+        UserBookmarksType.articles => {'user_bookmarks': 'true'},
+        UserBookmarksType.posts => {'user_bookmarks_posts': 'true'},
+        UserBookmarksType.news => {'user_bookmarks_news': 'true'},
         UserBookmarksType.comments =>
           throw const ValueException('Вы не туда попали...'),
       };
 
-      final queryString = params.toQueryString();
+      params.addAll({'user': user, ...typeQuery});
+
       final response = await _mobileClient.get(
-        '/articles/?user=$user&$typeQuery&$queryString',
+        '/articles/',
+        queryParams: params,
       );
 
       return switch (type) {
@@ -360,23 +302,15 @@ class PublicationServiceImpl implements PublicationService {
   Future<CommentListResponse> fetchComments({
     required String articleId,
     required PublicationSource source,
-    required String langUI,
-    required String langArticles,
   }) async {
     try {
-      final params = CommentListParams(
-        langArticles: langArticles,
-        langUI: langUI,
-      );
-
       final firstPathPart = switch (source) {
         PublicationSource.post => 'threads',
         _ => 'articles',
       };
 
-      final queryString = params.toQueryString();
       final response = await _mobileClient.get(
-        '/$firstPathPart/$articleId/comments/$queryString',
+        '/$firstPathPart/$articleId/comments/',
       );
 
       return CommentListResponse.fromMap(response.data);
@@ -466,20 +400,9 @@ class PublicationServiceImpl implements PublicationService {
   }
 
   @override
-  Future<MostReadingResponse> fetchMostReading({
-    required String langUI,
-    required String langArticles,
-  }) async {
+  Future<MostReadingResponse> fetchMostReading() async {
     try {
-      final params = PublicationListParams(
-        langArticles: langArticles,
-        langUI: langUI,
-      );
-
-      final queryString = params.toQueryString();
-      final response = await _mobileClient.get(
-        '/articles/most-reading?$queryString',
-      );
+      final response = await _mobileClient.get('/articles/most-reading');
 
       return MostReadingResponse.fromMap(response.data);
     } on AppException {

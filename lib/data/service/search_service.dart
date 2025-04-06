@@ -6,8 +6,6 @@ import '../model/search/search.dart';
 
 abstract interface class SearchService {
   Future fetch({
-    required String langUI,
-    required String langArticles,
     required String query,
     required SearchTarget target,
     required String order,
@@ -24,8 +22,6 @@ class SearchServiceImpl implements SearchService {
 
   @override
   Future fetch({
-    required String langUI,
-    required String langArticles,
     required String query,
     required SearchTarget target,
     required String order,
@@ -33,8 +29,6 @@ class SearchServiceImpl implements SearchService {
   }) async {
     try {
       final params = SearchParamsFactory.from(
-        langUI: langUI,
-        langArticles: langArticles,
         query: query,
         target: target,
         order: order,

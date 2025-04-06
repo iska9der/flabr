@@ -1,40 +1,18 @@
-import 'dart:async';
-
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../data/exception/exception.dart';
-import '../../data/model/language/language.dart';
 import '../../data/model/user/user.dart';
 import '../../data/repository/repository.dart';
 
 part 'user_list_state.dart';
 
 class UserListCubit extends Cubit<UserListState> {
-  UserListCubit({
-    required UserRepository repository,
-    required LanguageRepository languageRepository,
-  }) : _repository = repository,
-       _languageRepository = languageRepository,
-       super(const UserListState()) {
-    _uiLangSub = _languageRepository.uiStream.listen((_) => _reInit());
-    _articlesLangSub = _languageRepository.articlesStream.listen(
-      (_) => _reInit(),
-    );
-  }
+  UserListCubit({required UserRepository repository})
+    : _repository = repository,
+      super(const UserListState());
 
   final UserRepository _repository;
-  final LanguageRepository _languageRepository;
-
-  late final StreamSubscription<Language> _uiLangSub;
-  late final StreamSubscription<List<Language>> _articlesLangSub;
-
-  @override
-  Future<void> close() {
-    _uiLangSub.cancel();
-    _articlesLangSub.cancel();
-    return super.close();
-  }
 
   bool get isFirstFetch => state.page == 1;
   bool get isLastPage => state.page >= state.pagesCount;
@@ -47,11 +25,7 @@ class UserListCubit extends Cubit<UserListState> {
     emit(state.copyWith(status: UserListStatus.loading));
 
     try {
-      var response = await _repository.fetchAll(
-        langUI: _languageRepository.ui,
-        langArticles: _languageRepository.articles,
-        page: state.page.toString(),
-      );
+      var response = await _repository.fetchAll(page: state.page.toString());
 
       emit(
         state.copyWith(
@@ -71,9 +45,5 @@ class UserListCubit extends Cubit<UserListState> {
         ),
       );
     }
-  }
-
-  void _reInit() {
-    emit(const UserListState());
   }
 }

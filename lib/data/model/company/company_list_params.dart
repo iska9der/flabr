@@ -6,8 +6,6 @@ import '../query_params_model.dart';
 class CompanyListParams extends QueryParams with EquatableMixin {
   const CompanyListParams({
     super.page,
-    super.langArticles,
-    super.langUI,
     this.order = 'rating',
     this.orderDirection = 'desc',
   });
@@ -17,7 +15,7 @@ class CompanyListParams extends QueryParams with EquatableMixin {
 
   @override
   String toQueryString() {
-    return '/companies/?page=$page&order=$order&orderDirection=$orderDirection&fl=$langArticles&hl=$langUI';
+    return 'page=$page&order=$order&orderDirection=$orderDirection';
   }
 
   @override

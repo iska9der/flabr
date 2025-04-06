@@ -26,13 +26,7 @@ class HubListPage extends StatelessWidget {
     return MultiBlocProvider(
       key: const ValueKey('hub-list'),
       providers: [
-        BlocProvider(
-          create:
-              (_) => HubListCubit(
-                repository: getIt(),
-                languageRepository: getIt(),
-              ),
-        ),
+        BlocProvider(create: (_) => HubListCubit(repository: getIt())),
         BlocProvider(create: (c) => ScrollCubit()),
       ],
       child: const HubListPageView(),

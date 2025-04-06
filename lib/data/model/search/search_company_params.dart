@@ -5,8 +5,6 @@ class SearchCompanyParams extends QueryParams implements SearchParamsFactory {
   const SearchCompanyParams({
     required this.query,
     required this.order,
-    super.langArticles,
-    super.langUI,
     super.page,
   });
 
@@ -15,7 +13,6 @@ class SearchCompanyParams extends QueryParams implements SearchParamsFactory {
 
   @override
   String toQueryString() {
-    return '/companies/search?q=$query&sort=$order'
-        '&order=$order&fl=$langArticles&hl=$langUI&page=$page';
+    return '/companies/search?q=$query&sort=$order&order=$order&page=$page';
   }
 }

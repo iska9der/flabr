@@ -27,8 +27,6 @@ class UserPublicationListCubit
 
     try {
       final response = await repository.fetchUserPublications(
-        langUI: languageRepository.ui,
-        langArticles: languageRepository.articles,
         user: state.user,
         page: state.page.toString(),
         type: state.type,

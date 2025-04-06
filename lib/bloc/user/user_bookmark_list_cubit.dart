@@ -28,8 +28,6 @@ class UserBookmarkListCubit
 
     try {
       final response = await repository.fetchUserBookmarks(
-        langUI: languageRepository.ui,
-        langArticles: languageRepository.articles,
         user: state.user,
         page: state.page.toString(),
         type: state.type,

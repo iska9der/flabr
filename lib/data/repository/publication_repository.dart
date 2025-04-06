@@ -4,7 +4,6 @@ import 'package:injectable/injectable.dart';
 
 import '../model/comment/comment.dart';
 import '../model/filter/filter.dart';
-import '../model/language/language.dart';
 import '../model/list_response_model.dart';
 import '../model/publication/publication.dart';
 import '../model/section_enum.dart';
@@ -28,49 +27,23 @@ class PublicationRepository {
   Future<Publication> fetchPublicationById(
     String id, {
     required PublicationSource source,
-    required Language langUI,
-    required List<Language> langArticles,
   }) async {
     return switch (source) {
-      PublicationSource.post => await _fetchPostById(
-        id,
-        langUI: langUI,
-        langArticles: langArticles,
-      ),
-      _ => await _fetchCommonById(
-        id,
-        langUI: langUI,
-        langArticles: langArticles,
-      ),
+      PublicationSource.post => await _fetchPostById(id),
+      _ => await _fetchCommonById(id),
     };
   }
 
-  Future<PublicationCommon> _fetchCommonById(
-    String id, {
-    required Language langUI,
-    required List<Language> langArticles,
-  }) async {
-    final rawData = await service.fetchArticleById(
-      id,
-      langUI: langUI.name,
-      langArticles: LanguageEncoder.encodeLangs(langArticles),
-    );
+  Future<PublicationCommon> _fetchCommonById(String id) async {
+    final rawData = await service.fetchArticleById(id);
 
     final publication = PublicationCommon.fromMap(rawData);
 
     return publication;
   }
 
-  Future<PublicationPost> _fetchPostById(
-    String id, {
-    required Language langUI,
-    required List<Language> langArticles,
-  }) async {
-    final rawData = await service.fetchPostById(
-      id,
-      langUI: langUI.name,
-      langArticles: LanguageEncoder.encodeLangs(langArticles),
-    );
+  Future<PublicationPost> _fetchPostById(String id) async {
+    final rawData = await service.fetchPostById(id);
 
     final post = PublicationPost.fromMap(rawData);
 
@@ -94,14 +67,10 @@ class PublicationRepository {
   }
 
   Future<ListResponse<Publication>> fetchFeed({
-    required Language langUI,
-    required List<Language> langArticles,
     required String page,
     required FeedFilter filter,
   }) async {
     var response = await service.fetchFeed(
-      langUI: langUI.name,
-      langArticles: LanguageEncoder.encodeLangs(langArticles),
       page: page,
       score: filter.score.value.isEmpty ? 'all' : filter.score.value,
       types: filter.types.map((t) => t.name).toList(),
@@ -120,16 +89,12 @@ class PublicationRepository {
   /// если по новым [Sort.byNew], сортируем по дате публикации
   ///
   Future<ListResponse<Publication>> fetchFlowArticles({
-    required Language langUI,
-    required List<Language> langArticles,
     required Section section,
     required PublicationFlow flow,
     required FlowFilter filter,
     required String page,
   }) async {
     var response = await service.fetchFlowArticles(
-      langUI: langUI.name,
-      langArticles: LanguageEncoder.encodeLangs(langArticles),
       section: section,
       flow: flow,
       sort: filter.sort,
@@ -145,15 +110,11 @@ class PublicationRepository {
   }
 
   Future<ListResponse<Publication>> fetchHubArticles({
-    required Language langUI,
-    required List<Language> langArticles,
     required String hub,
     required FlowFilter filter,
     required String page,
   }) async {
     var response = await service.fetchHubArticles(
-      langUI: langUI.name,
-      langArticles: LanguageEncoder.encodeLangs(langArticles),
       hub: hub,
       sort: filter.sort,
       period: filter.period,
@@ -168,15 +129,11 @@ class PublicationRepository {
   }
 
   Future<ListResponse<Publication>> fetchUserPublications({
-    required Language langUI,
-    required List<Language> langArticles,
     required String user,
     required String page,
     required UserPublicationType type,
   }) async {
     var response = await service.fetchUserPublications(
-      langUI: langUI.name,
-      langArticles: LanguageEncoder.encodeLangs(langArticles),
       user: user,
       page: page,
       type: type,
@@ -189,15 +146,11 @@ class PublicationRepository {
   }
 
   Future<ListResponse<Publication>> fetchUserBookmarks({
-    required Language langUI,
-    required List<Language> langArticles,
     required String user,
     required String page,
     required UserBookmarksType type,
   }) async {
     final response = await service.fetchUserBookmarks(
-      langUI: langUI.name,
-      langArticles: LanguageEncoder.encodeLangs(langArticles),
       user: user,
       page: page,
       type: type,
@@ -216,14 +169,10 @@ class PublicationRepository {
   Future<CommentListResponse> fetchComments({
     required String articleId,
     required PublicationSource source,
-    required Language langUI,
-    required List<Language> langArticles,
   }) async {
     var listResponse = await service.fetchComments(
       articleId: articleId,
       source: source,
-      langUI: langUI.name,
-      langArticles: LanguageEncoder.encodeLangs(langArticles),
     );
 
     final structComments = listResponse.structurizeComments();
@@ -246,14 +195,8 @@ class PublicationRepository {
     return await service.removeFromBookmark(id: id, source: source);
   }
 
-  Future<List<PublicationCommon>> fetchMostReading({
-    required Language langUI,
-    required List<Language> langArticles,
-  }) async {
-    final raw = await service.fetchMostReading(
-      langUI: langUI.name,
-      langArticles: LanguageEncoder.encodeLangs(langArticles),
-    );
+  Future<List<PublicationCommon>> fetchMostReading() async {
+    final raw = await service.fetchMostReading();
 
     List<PublicationCommon> publications =
         [...raw.refs]

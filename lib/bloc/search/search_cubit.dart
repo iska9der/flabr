@@ -13,15 +13,12 @@ part 'search_state.dart';
 class SearchCubit extends Cubit<SearchState> {
   SearchCubit({
     required SearchRepository repository,
-    required LanguageRepository langRepository,
     SearchTarget target = SearchTarget.posts,
     SearchOrder order = SearchOrder.relevance,
   }) : _repository = repository,
-       _langRepository = langRepository,
        super(SearchState(target: target, order: order));
 
   final SearchRepository _repository;
-  final LanguageRepository _langRepository;
 
   Future<void> changeTarget(SearchTarget newTarget) async {
     if (state.target == newTarget) return;
@@ -74,8 +71,6 @@ class SearchCubit extends Cubit<SearchState> {
 
     try {
       final list = await _repository.fetch(
-        langUI: _langRepository.ui,
-        langArticles: _langRepository.articles,
         query: state.query,
         target: state.target,
         order: state.order,

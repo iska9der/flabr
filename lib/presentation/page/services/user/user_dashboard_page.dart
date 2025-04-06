@@ -28,12 +28,7 @@ class UserDashboardPage extends StatelessWidget {
         BlocProvider(
           key: ValueKey('user-$alias-dashboard'),
           lazy: false,
-          create:
-              (_) => UserCubit(
-                alias,
-                repository: getIt(),
-                languageRepository: getIt(),
-              ),
+          create: (_) => UserCubit(alias, repository: getIt()),
         ),
         BlocProvider(create: (_) => ScaffoldCubit()),
       ],

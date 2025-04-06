@@ -7,23 +7,11 @@ import '../model/query_params_model.dart';
 import '../model/user/user.dart';
 
 abstract interface class UserService {
-  Future<UserListResponse> fetchAll({
-    required String langUI,
-    required String langArticles,
-    required String page,
-  });
+  Future<UserListResponse> fetchAll({required String page});
 
-  Future<Map<String, dynamic>> fetchCard({
-    required String alias,
-    required String langUI,
-    required String langArticles,
-  });
+  Future<Map<String, dynamic>> fetchCard({required String alias});
 
-  Future<Map<String, dynamic>> fetchWhois({
-    required String alias,
-    required String langUI,
-    required String langArticles,
-  });
+  Future<Map<String, dynamic>> fetchWhois({required String alias});
 
   Future<void> toggleSubscription({required String alias});
 
@@ -50,21 +38,11 @@ class UserServiceImpl implements UserService {
   final HttpClient _siteClient;
 
   @override
-  Future<UserListResponse> fetchAll({
-    required String langUI,
-    required String langArticles,
-    required String page,
-  }) async {
+  Future<UserListResponse> fetchAll({required String page}) async {
     try {
-      final params = QueryParams(
-        langArticles: langArticles,
-        langUI: langUI,
-        page: page,
-      );
+      final params = QueryParams(page: page).toMap();
 
-      final response = await _mobileClient.get(
-        '/users?${params.toQueryString()}',
-      );
+      final response = await _mobileClient.get('/users', queryParams: params);
 
       return UserListResponse.fromMap(response.data);
     } on AppException {
@@ -73,17 +51,9 @@ class UserServiceImpl implements UserService {
   }
 
   @override
-  Future<Map<String, dynamic>> fetchCard({
-    required String alias,
-    required String langUI,
-    required String langArticles,
-  }) async {
+  Future<Map<String, dynamic>> fetchCard({required String alias}) async {
     try {
-      final params = QueryParams(langArticles: langArticles, langUI: langUI);
-
-      final response = await _mobileClient.get(
-        '/users/$alias/card?${params.toQueryString()}',
-      );
+      final response = await _mobileClient.get('/users/$alias/card');
 
       return response.data;
     } on AppException {
@@ -92,17 +62,9 @@ class UserServiceImpl implements UserService {
   }
 
   @override
-  Future<Map<String, dynamic>> fetchWhois({
-    required String alias,
-    required String langUI,
-    required String langArticles,
-  }) async {
+  Future<Map<String, dynamic>> fetchWhois({required String alias}) async {
     try {
-      final params = QueryParams(langArticles: langArticles, langUI: langUI);
-
-      final response = await _mobileClient.get(
-        '/users/$alias/whois?${params.toQueryString()}',
-      );
+      final response = await _mobileClient.get('/users/$alias/whois');
 
       return response.data;
     } on AppException {
@@ -128,7 +90,7 @@ class UserServiceImpl implements UserService {
   }) async {
     try {
       final response = await _siteClient.get(
-        '/v2/users/$alias/bookmarks/comments?fl=ru&hl=ru&page=$page',
+        '/v2/users/$alias/bookmarks/comments?page=$page',
       );
 
       return UserCommentListResponse.fromMap(response.data);
@@ -149,7 +111,7 @@ class UserServiceImpl implements UserService {
   }) async {
     try {
       final response = await _siteClient.get(
-        '/v2/users/$alias/comments?fl=ru&hl=ru&page=$page',
+        '/v2/users/$alias/comments?page=$page',
       );
 
       return UserCommentListResponse.fromMap(response.data);

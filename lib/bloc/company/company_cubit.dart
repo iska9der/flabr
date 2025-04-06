@@ -9,16 +9,11 @@ import '../../data/repository/repository.dart';
 part 'company_state.dart';
 
 class CompanyCubit extends Cubit<CompanyState> {
-  CompanyCubit(
-    String alias, {
-    required CompanyRepository repository,
-    required LanguageRepository languageRepository,
-  }) : _repository = repository,
-       _languageRepository = languageRepository,
-       super(CompanyState(alias: alias));
+  CompanyCubit(String alias, {required CompanyRepository repository})
+    : _repository = repository,
+      super(CompanyState(alias: alias));
 
   final CompanyRepository _repository;
-  final LanguageRepository _languageRepository;
 
   void fetchCard() async {
     CompanyCard card = state.card;
@@ -27,11 +22,7 @@ class CompanyCubit extends Cubit<CompanyState> {
       if (card.isEmpty) {
         emit(state.copyWith(status: CompanyStatus.loading));
 
-        card = await _repository.fetchCard(
-          state.alias,
-          langUI: _languageRepository.ui,
-          langArticles: _languageRepository.articles,
-        );
+        card = await _repository.fetchCard(state.alias);
       }
 
       emit(state.copyWith(status: CompanyStatus.success, card: card));

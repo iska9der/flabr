@@ -26,12 +26,7 @@ class HubDashboardPage extends StatelessWidget {
         BlocProvider(
           key: ValueKey('hub-$alias-dashboard'),
           lazy: false,
-          create:
-              (_) => HubCubit(
-                alias,
-                repository: getIt(),
-                languageRepository: getIt(),
-              ),
+          create: (_) => HubCubit(alias, repository: getIt()),
         ),
         BlocProvider(create: (_) => ScaffoldCubit()),
       ],

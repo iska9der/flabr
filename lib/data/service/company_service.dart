@@ -3,20 +3,11 @@ import 'package:injectable/injectable.dart';
 import '../../core/component/http/http.dart';
 import '../exception/exception.dart';
 import '../model/company/company.dart';
-import '../model/query_params_model.dart';
 
 abstract interface class CompanyService {
-  Future<CompanyListResponse> fetchAll({
-    required int page,
-    required String langUI,
-    required String langArticles,
-  });
+  Future<CompanyListResponse> fetchAll({required int page});
 
-  Future<Map<String, dynamic>> fetchCard(
-    String alias, {
-    required String langUI,
-    required String langArticles,
-  });
+  Future<Map<String, dynamic>> fetchCard(String alias);
 
   Future<void> toggleSubscription({required String alias});
 }
@@ -33,19 +24,14 @@ class CompanyServiceImpl implements CompanyService {
   final HttpClient _siteClient;
 
   @override
-  Future<CompanyListResponse> fetchAll({
-    required int page,
-    required String langUI,
-    required String langArticles,
-  }) async {
+  Future<CompanyListResponse> fetchAll({required int page}) async {
     try {
-      var params = CompanyListParams(
-        page: page.toString(),
-        langUI: langUI,
-        langArticles: langArticles,
+      var params = CompanyListParams(page: page.toString()).toMap();
+
+      final response = await _mobileClient.get(
+        '/companies/',
+        queryParams: params,
       );
-      final queryString = params.toQueryString();
-      final response = await _mobileClient.get(queryString);
 
       return CompanyListResponse.fromMap(response.data);
     } on AppException {
@@ -56,17 +42,9 @@ class CompanyServiceImpl implements CompanyService {
   }
 
   @override
-  Future<Map<String, dynamic>> fetchCard(
-    String alias, {
-    required String langUI,
-    required String langArticles,
-  }) async {
+  Future<Map<String, dynamic>> fetchCard(String alias) async {
     try {
-      var params = QueryParams(langUI: langUI, langArticles: langArticles);
-      final queryString = params.toQueryString();
-      final response = await _mobileClient.get(
-        '/companies/$alias/card/?$queryString',
-      );
+      final response = await _mobileClient.get('/companies/$alias/card');
 
       return response.data;
     } on AppException {

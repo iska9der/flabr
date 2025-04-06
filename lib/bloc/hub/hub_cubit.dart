@@ -8,16 +8,11 @@ import '../../data/repository/repository.dart';
 part 'hub_state.dart';
 
 class HubCubit extends Cubit<HubState> {
-  HubCubit(
-    String alias, {
-    required HubRepository repository,
-    required LanguageRepository languageRepository,
-  }) : _repository = repository,
-       _languageRepository = languageRepository,
-       super(HubState(alias: alias));
+  HubCubit(String alias, {required HubRepository repository})
+    : _repository = repository,
+      super(HubState(alias: alias));
 
   final HubRepository _repository;
-  final LanguageRepository _languageRepository;
 
   void fetchProfile() async {
     HubProfile profile = state.profile;
@@ -26,11 +21,7 @@ class HubCubit extends Cubit<HubState> {
       if (profile.isEmpty) {
         emit(state.copyWith(status: HubStatus.loading));
 
-        profile = await _repository.fetchProfile(
-          state.alias,
-          langUI: _languageRepository.ui,
-          langArticles: _languageRepository.articles,
-        );
+        profile = await _repository.fetchProfile(state.alias);
       }
 
       emit(state.copyWith(status: HubStatus.success, profile: profile));

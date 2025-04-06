@@ -16,8 +16,8 @@ abstract class PublicationListCubit<State extends PublicationListState>
     required this.repository,
     required this.languageRepository,
   }) {
-    _uiLangSub = languageRepository.uiStream.listen((_) => refetch());
-    _articleLangsSub = languageRepository.articlesStream.listen(
+    _uiLanguageSub = languageRepository.ui.listen((_) => refetch());
+    _publicationLanguagesSub = languageRepository.publications.listen(
       (_) => refetch(),
     );
   }
@@ -25,13 +25,13 @@ abstract class PublicationListCubit<State extends PublicationListState>
   final PublicationRepository repository;
   final LanguageRepository languageRepository;
 
-  late final StreamSubscription<Language> _uiLangSub;
-  late final StreamSubscription<List<Language>> _articleLangsSub;
+  late final StreamSubscription<Language> _uiLanguageSub;
+  late final StreamSubscription<List<Language>> _publicationLanguagesSub;
 
   @override
   Future<void> close() {
-    _uiLangSub.cancel();
-    _articleLangsSub.cancel();
+    _uiLanguageSub.cancel();
+    _publicationLanguagesSub.cancel();
 
     return super.close();
   }

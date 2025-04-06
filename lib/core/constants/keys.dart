@@ -8,7 +8,7 @@ abstract class CacheKeys {
   static const authCsrf = 'cData';
 
   static const langUI = 'lang_ui';
-  static const langArticle = 'lang_article';
+  static const langPublications = 'lang_article';
 
   static const feedFilter = 'feed_filter';
   static String flowFilter(String section) => 'flow_filter_$section';

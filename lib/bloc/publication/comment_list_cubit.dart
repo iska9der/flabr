@@ -17,11 +17,9 @@ class CommentListCubit extends Cubit<CommentListState> {
     required PublicationRepository repository,
     required LanguageRepository languageRepository,
   }) : _repository = repository,
-       _langRepository = languageRepository,
        super(CommentListState(publicationId: publicationId, source: source));
 
   final PublicationRepository _repository;
-  final LanguageRepository _langRepository;
 
   Future<void> fetch() async {
     if (state.status.isLoading) return;
@@ -32,8 +30,6 @@ class CommentListCubit extends Cubit<CommentListState> {
       final newList = await _repository.fetchComments(
         articleId: state.publicationId,
         source: state.source,
-        langUI: _langRepository.ui,
-        langArticles: _langRepository.articles,
       );
 
       emit(state.copyWith(list: newList, status: CommentListStatus.success));

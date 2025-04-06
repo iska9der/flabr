@@ -5,7 +5,6 @@ import 'package:injectable/injectable.dart';
 import '../exception/exception.dart';
 import '../model/company/company.dart' show CompanyListResponse;
 import '../model/hub/hub.dart' show HubListResponse;
-import '../model/language/language.dart';
 import '../model/list_response_model.dart';
 import '../model/publication/publication.dart';
 import '../model/search/search.dart';
@@ -19,16 +18,12 @@ class SearchRepository {
   final SearchService _service;
 
   Future<ListResponse<dynamic>> fetch({
-    required Language langUI,
-    required List<Language> langArticles,
     required String query,
     required SearchTarget target,
     required SearchOrder order,
     required int page,
   }) async {
     var raw = await _service.fetch(
-      langUI: langUI.name,
-      langArticles: LanguageEncoder.encodeLangs(langArticles),
       query: query,
       target: target,
       order: order.name,

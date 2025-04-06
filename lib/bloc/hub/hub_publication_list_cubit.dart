@@ -28,8 +28,6 @@ class HubPublicationListCubit
 
     try {
       final response = await repository.fetchHubArticles(
-        langUI: languageRepository.ui,
-        langArticles: languageRepository.articles,
         hub: state.hub,
         filter: state.filter,
         page: state.page.toString(),
