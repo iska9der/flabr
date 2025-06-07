@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ya_summary/ya_summary.dart';
 
 import '../../../bloc/settings/settings_cubit.dart';
+import '../../../core/constants/constants.dart';
 import '../../../data/model/filter/filter.dart';
 import '../../../data/model/language/language.dart';
 import '../../../feature/auth/auth.dart';
@@ -42,7 +43,7 @@ class SettingsView extends StatelessWidget {
               children: [
                 const AccountTile(),
                 const SettingsCardWidget(
-                  title: 'connect_sid',
+                  title: Keys.sidToken,
                   subtitle: 'Если не удается войти через форму логина',
                   child: Padding(
                     padding: EdgeInsets.only(top: 12.0),

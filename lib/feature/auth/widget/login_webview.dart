@@ -108,7 +108,7 @@ class _WebViewLoginState extends State<_WebViewLogin> {
     final cookieJar = getIt<TokenRepository>().cookieJar;
     await cookieJar.saveFromResponse(Uri.parse(Urls.baseUrl), list);
     await cookieJar.saveFromResponse(Uri.parse(Urls.mobileBaseUrl), list);
-    return list.firstWhere((element) => element.name == 'connect_sid').value;
+    return list.firstWhere((element) => element.name == Keys.sidToken).value;
   }
 
   void _clearControllerData() async {

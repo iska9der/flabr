@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../core/constants/constants.dart';
 import '../../../di/di.dart';
 import '../../../presentation/extension/extension.dart';
 import '../cubit/auth_cubit.dart';
@@ -49,7 +50,7 @@ class _ConnectSidWidgetState extends State<ConnectSidWidget> {
                 keyboardType: TextInputType.text,
                 decoration: const InputDecoration(
                   floatingLabelBehavior: FloatingLabelBehavior.always,
-                  labelText: 'Токен connect_sid',
+                  labelText: 'Токен ${Keys.sidToken}',
                   hintText: 'Можно найти в cookies',
                   border: OutlineInputBorder(),
                 ),

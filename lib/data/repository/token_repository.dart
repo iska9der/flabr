@@ -21,12 +21,11 @@ class TokenRepository {
   String? get csrf => _csrf;
 
   Future<void> init() async {
-    /// Получаем из кук токен connect_sid
+    /// Получаем из кук токен [Keys.sidToken]
     final cookies = await cookieJar.loadForRequest(Uri.parse(Urls.baseUrl));
-
     final token =
         cookies
-            .firstWhereOrNull((cookie) => cookie.name == 'connect_sid')
+            .firstWhereOrNull((cookie) => cookie.name == Keys.sidToken)
             ?.value ??
         '';
 
@@ -39,7 +38,7 @@ class TokenRepository {
     }
 
     if (asCookie) {
-      final Cookie cookie = Cookie('connect_sid', newToken);
+      final Cookie cookie = Cookie(Keys.sidToken, newToken);
       await cookieJar.saveFromResponse(Uri.parse(Urls.baseUrl), [cookie]);
       await cookieJar.saveFromResponse(Uri.parse(Urls.mobileBaseUrl), [cookie]);
     }

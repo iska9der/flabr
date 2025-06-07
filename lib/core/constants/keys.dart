@@ -14,5 +14,9 @@ abstract class CacheKeys {
 }
 
 abstract class Keys {
-  static const renewCsrf = 'renew-csrf';
+  static const csrfToken = 'csrf-token';
+  static const sidToken = 'connect_sid';
+
+  static const skipCsrf = 'X-Skip-Csrf';
+  static const renewCsrf = 'X-Renew-Csrf';
 }

@@ -51,17 +51,17 @@ class HabraClient extends DioClient {
 
     try {
       final options = Options(
-        headers: {'Cookie': cookies, 'X-Skip-Csrf': true},
+        headers: {'Cookie': cookies, Keys.skipCsrf: true},
       );
       final response = await get(url, options: options);
       final String rawHtml = response.data;
 
-      final indexOfCsrf = rawHtml.indexOf('csrf-token');
+      final indexOfCsrf = rawHtml.indexOf(Keys.csrfToken);
       if (indexOfCsrf == -1) {
         return;
       }
 
-      final indexOfStart = rawHtml.indexOf('csrf-token') + 11;
+      final indexOfStart = rawHtml.indexOf(Keys.csrfToken) + 11;
       final indexOfFirstQuote = rawHtml.indexOf('"', indexOfStart) + 1;
       final indexOfLastQuote = rawHtml.indexOf('"', indexOfFirstQuote);
 
@@ -78,19 +78,19 @@ class HabraClient extends DioClient {
   Interceptor _csrfInterceptor() {
     return InterceptorsWrapper(
       onRequest: (request, handler) async {
-        if (request.headers.containsKey('X-Skip-Csrf')) {
-          request.headers.remove('X-Skip-Csrf');
+        /// Избавляемся от циклического запроса csrf
+        if (request.headers.containsKey(Keys.skipCsrf)) {
+          request.headers.remove(Keys.skipCsrf);
           return handler.next(request);
         }
 
+        /// Если нет токена - нет смысла получать csrf
         final cookieList = await tokenRepository.cookieJar.loadForRequest(
           request.uri,
         );
         final hasAuthCookie = cookieList.any(
-          (cookie) => cookie.name == 'connect_sid',
+          (cookie) => cookie.name == Keys.sidToken,
         );
-
-        /// Если нет токена авторизации - нет смысла получать csrf
         if (!hasAuthCookie) {
           return handler.next(request);
         }
@@ -119,7 +119,7 @@ class HabraClient extends DioClient {
 
         /// Добавляем csrf токен в заголовки
         if (csrfToken != null) {
-          request.headers['csrf-token'] = csrfToken;
+          request.headers[Keys.csrfToken] = csrfToken;
         }
 
         handler.next(request);
