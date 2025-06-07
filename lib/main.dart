@@ -23,6 +23,6 @@ void main() => runZonedGuarded(
     );
   },
   (error, stack) {
-    if (kDebugMode) logger.error(error, stack);
+    logger.error(error, stack);
   },
 );

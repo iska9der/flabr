@@ -1,6 +1,9 @@
+import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:injectable/injectable.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ya_summary/ya_summary.dart';
 
@@ -33,6 +36,21 @@ abstract class RegisterModule {
   @Singleton()
   CacheStorage get secureStorage => SecureStorage(const FlutterSecureStorage());
 
+  @preResolve
+  @Singleton()
+  Future<CookieJar> cookieManager() async {
+    if (kIsWeb) {
+      return CookieJar();
+    }
+
+    final appDir = await getApplicationDocumentsDirectory();
+    final cookieJar = PersistCookieJar(
+      storage: FileStorage('${appDir.path}/cookies'),
+    );
+
+    return cookieJar;
+  }
+
   @Named('mobileClient')
   @Singleton()
   HttpClient mobileClient(
@@ -43,7 +61,7 @@ abstract class RegisterModule {
     dio..options = dio.options.copyWith(baseUrl: Urls.mobileApiUrl),
     tokenRepository: repository,
     languageRepository: languageRepository,
-  );
+  )..init();
 
   @Named('siteClient')
   @Singleton()
@@ -55,7 +73,7 @@ abstract class RegisterModule {
     dio..options = dio.options.copyWith(baseUrl: Urls.siteApiUrl),
     tokenRepository: repository,
     languageRepository: languageRepository,
-  );
+  )..init();
 
   @Singleton()
   SummaryClient summaryClient(Dio dio, SummaryTokenRepository repository) =>

@@ -356,7 +356,7 @@ class PublicationServiceImpl implements PublicationService {
       return true;
     } on AppException {
       rethrow;
-    } catch (_, trace) {
+    } catch (e, trace) {
       Error.throwWithStackTrace(const FetchException(), trace);
     }
   }

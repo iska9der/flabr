@@ -4,31 +4,30 @@ enum AuthStatus { initial, loading, authorized, unauthorized, anomaly }
 
 class AuthState extends Equatable {
   const AuthState({
-    this.error = '',
     this.status = AuthStatus.initial,
-    this.tokens = Tokens.empty,
+    this.error = '',
+    this.token = '',
     this.me = UserMe.empty,
     this.updates = const UserUpdates(),
   });
 
-  final String error;
   final AuthStatus status;
-  final Tokens tokens;
+  final String error;
+  final String token;
   final UserMe me;
   final UserUpdates updates;
 
   AuthState copyWith({
-    String? error,
     AuthStatus? status,
-    Tokens? tokens,
-    String? csrfToken,
+    String? error,
+    String? token,
     UserMe? me,
     UserUpdates? updates,
   }) {
     return AuthState(
       error: error ?? this.error,
       status: status ?? this.status,
-      tokens: tokens ?? this.tokens,
+      token: token ?? this.token,
       me: me ?? this.me,
       updates: updates ?? this.updates,
     );
@@ -39,11 +38,5 @@ class AuthState extends Equatable {
   bool get isAnomaly => status == AuthStatus.anomaly;
 
   @override
-  List<Object> get props => [
-        error,
-        status,
-        tokens,
-        me,
-        updates,
-      ];
+  List<Object> get props => [error, status, token, me, updates];
 }

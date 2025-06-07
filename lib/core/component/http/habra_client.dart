@@ -1,12 +1,14 @@
+import 'dart:async';
+
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:flutter/foundation.dart';
 
 import '../../../data/model/language/language.dart';
-import '../../../data/model/tokens_model.dart';
 import '../../../data/repository/repository.dart';
 import '../../constants/constants.dart';
+import '../logger/logger.dart';
 import 'client_adapter/client_adapter.dart';
 import 'dio_client.dart';
 
@@ -15,95 +17,81 @@ class HabraClient extends DioClient {
     super.dio, {
     required this.tokenRepository,
     required this.languageRepository,
-  }) {
+  });
+
+  final TokenRepository tokenRepository;
+  final LanguageRepository languageRepository;
+
+  Completer<void>? _csrfCompleter;
+
+  Future<void> init() async {
     dio.httpClientAdapter = makeHttpClientAdapter();
-    cookieJar = CookieJar();
 
     dio.interceptors.clear();
     if (!kIsWeb) {
-      dio.interceptors.add(CookieManager(cookieJar));
+      dio.interceptors.add(CookieManager(tokenRepository.cookieJar));
+    } else {
+      dio.options.extra = {...dio.options.extra, 'withCredentials': true};
     }
-    dio.interceptors.add(_authInterceptor());
+
     dio.interceptors.add(_csrfInterceptor());
     dio.interceptors.add(_languageInterceptor());
   }
 
-  final TokenRepository tokenRepository;
-  final LanguageRepository languageRepository;
-  late final CookieJar cookieJar;
-  bool csrfHandling = false;
-
-  void _fetchCsrf({
+  Future<void> _fetchCsrf({
     required String cookies,
     String url = 'https://habr.com/ru/conversations/',
-  }) {
-    if (csrfHandling) {
-      return;
+  }) async {
+    // Уже запущен — возвращаем текущий future
+    if (_csrfCompleter != null) {
+      return _csrfCompleter!.future;
     }
 
-    csrfHandling = true;
-    final options = Options(headers: {'Cookie': cookies});
+    _csrfCompleter = Completer<void>();
 
-    get(url, options: options).then((response) {
-      String rawHtml = response.data;
+    try {
+      final options = Options(
+        headers: {'Cookie': cookies, 'X-Skip-Csrf': true},
+      );
+      final response = await get(url, options: options);
+      final String rawHtml = response.data;
 
-      int indexOfCsrf = rawHtml.indexOf('csrf-token');
+      final indexOfCsrf = rawHtml.indexOf('csrf-token');
       if (indexOfCsrf == -1) {
-        return null;
+        return;
       }
 
-      String csrf = '';
-      int indexOfCsrfStart = rawHtml.indexOf('csrf-token') + 11;
-      int indexOfFirstQuote = rawHtml.indexOf('"', indexOfCsrfStart) + 1;
-      int indexOfLastQuote = rawHtml.indexOf('"', indexOfFirstQuote);
-      csrf = rawHtml.substring(indexOfFirstQuote, indexOfLastQuote);
+      final indexOfStart = rawHtml.indexOf('csrf-token') + 11;
+      final indexOfFirstQuote = rawHtml.indexOf('"', indexOfStart) + 1;
+      final indexOfLastQuote = rawHtml.indexOf('"', indexOfFirstQuote);
+
+      final csrf = rawHtml.substring(indexOfFirstQuote, indexOfLastQuote);
       tokenRepository.setCsrf(csrf);
-      csrfHandling = false;
-    });
-  }
-
-  Interceptor _authInterceptor() {
-    return InterceptorsWrapper(
-      onRequest: (request, handler) async {
-        Tokens? tokens = tokenRepository.tokens;
-
-        /// Если токенов нет - добавляем их в куки.
-        /// Сработает только на первых запросах,
-        /// дальше [CookieManager] сам будет подставлять куки
-        final headerCookies = (request.headers['Cookie'] ?? '') as String;
-        if (tokens.isNotEmpty && headerCookies.isEmpty) {
-          final cookies = tokens.toCookieString();
-          request.headers['cookie'] = cookies;
-        }
-
-        /// Если токенов в репозитории нет - значит пользователь вышел
-        /// и нужно удалить все куки
-        if (tokens.isEmpty && headerCookies.isNotEmpty) {
-          cookieJar.deleteAll();
-          request.headers.remove('cookie');
-        }
-
-        handler.next(request);
-      },
-    );
+    } catch (e, stack) {
+      logger.error(e, stack);
+    } finally {
+      _csrfCompleter?.complete();
+      _csrfCompleter = null;
+    }
   }
 
   Interceptor _csrfInterceptor() {
     return InterceptorsWrapper(
       onRequest: (request, handler) async {
-        final headerCookies = (request.headers['Cookie'] ?? '') as String;
-        final cookieList =
-            headerCookies
-                .split(';')
-                .where((e) => e.isNotEmpty)
-                .map((c) => Cookie.fromSetCookieValue(c))
-                .toList();
-        final isTokenExist = cookieList.any(
+        if (request.headers.containsKey('X-Skip-Csrf')) {
+          request.headers.remove('X-Skip-Csrf');
+          return handler.next(request);
+        }
+
+        final cookieList = await tokenRepository.cookieJar.loadForRequest(
+          request.uri,
+        );
+        final hasAuthCookie = cookieList.any(
           (cookie) => cookie.name == 'connect_sid',
         );
 
-        /// Если нет токена - нет смысла парсить csrf
-        if (!isTokenExist) {
+        /// Если нет токена авторизации - нет смысла получать csrf
+        if (!hasAuthCookie) {
           return handler.next(request);
         }
 
@@ -115,9 +103,8 @@ class HabraClient extends DioClient {
         if (isRenewal) {
           final url = request.headers[Keys.renewCsrf];
           request.headers.remove(Keys.renewCsrf);
-
           final cookies = CookieManager.getCookies(cookieList);
-          _fetchCsrf(cookies: cookies, url: url);
+          await _fetchCsrf(cookies: cookies, url: url);
           return handler.next(request);
         }
 
@@ -126,12 +113,14 @@ class HabraClient extends DioClient {
         String? csrfToken = tokenRepository.csrf;
         if (csrfToken == null) {
           final cookies = CookieManager.getCookies(cookieList);
-          _fetchCsrf(cookies: cookies);
-          return handler.next(request);
+          await _fetchCsrf(cookies: cookies);
+          csrfToken = tokenRepository.csrf;
         }
 
         /// Добавляем csrf токен в заголовки
-        request.headers['csrf-token'] = csrfToken;
+        if (csrfToken != null) {
+          request.headers['csrf-token'] = csrfToken;
+        }
 
         handler.next(request);
       },
@@ -149,7 +138,7 @@ class HabraClient extends DioClient {
         final uiLang = languageRepository.lastUI.name;
         final domain = request.uri.host;
         final path = '/';
-        final cookies = [
+        final langCookies = [
           Cookie('fl', pubsLangsUri)
             ..domain = domain
             ..path = path,
@@ -158,14 +147,12 @@ class HabraClient extends DioClient {
             ..path = path,
         ];
 
-        final previousCookies = request.headers['cookie'] as String?;
-
+        final previousCookies = await tokenRepository.cookieJar.loadForRequest(
+          request.uri,
+        );
         final newCookies = CookieManager.getCookies([
-          ...?previousCookies
-              ?.split(';')
-              .where((e) => e.isNotEmpty)
-              .map((c) => Cookie.fromSetCookieValue(c)),
-          ...cookies,
+          ...previousCookies,
+          ...langCookies,
         ]);
 
         request.headers['cookie'] = newCookies.isNotEmpty ? newCookies : null;

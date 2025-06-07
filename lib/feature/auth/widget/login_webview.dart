@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,6 +7,7 @@ import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../../core/component/logger/logger.dart';
 import '../../../core/constants/constants.dart';
+import '../../../data/repository/repository.dart';
 import '../../../di/di.dart';
 import '../../../presentation/extension/extension.dart';
 import '../../../presentation/widget/enhancement/card.dart';
@@ -33,9 +33,7 @@ class LoginWebView extends StatelessWidget implements DialogUserWidget {
               create: (_) => LoginCubit(tokenRepository: getIt()),
               child: BlocListener<LoginCubit, LoginState>(
                 listener: (context, state) {
-                  if (state.status.isSuccess) {
-                    context.read<AuthCubit>().handleTokens();
-
+                  if (state.status == LoginStatus.success) {
                     Navigator.of(context).pop();
                   }
                 },
@@ -86,12 +84,9 @@ class _WebViewLoginState extends State<_WebViewLogin> {
 
                 if (request.url.startsWith('${Urls.baseUrl}/ru/all')) {
                   final loginCubit = context.read<LoginCubit>();
-                  await getConnectSid(request.url).then(
-                    (value) => Timer(
-                      const Duration(seconds: 1),
-                      () => loginCubit.submitConnectSid(value),
-                    ),
-                  );
+                  final token = await handleCookies(request.url);
+                  await loginCubit.handle(token: token);
+
                   return NavigationDecision.prevent;
                 }
 
@@ -107,17 +102,13 @@ class _WebViewLoginState extends State<_WebViewLogin> {
           ..loadRequest(_authUri);
   }
 
-  Future<String> getConnectSid(String url) async {
+  Future<String> handleCookies(String url) async {
     final list = await cookieManager.getCookies(url);
-    final sid =
-        list
-            .firstWhere(
-              (cookie) => cookie.name == 'connect_sid',
-              orElse: () => Cookie('bababoi', ''),
-            )
-            .value;
 
-    return sid;
+    final cookieJar = getIt<TokenRepository>().cookieJar;
+    await cookieJar.saveFromResponse(Uri.parse(Urls.baseUrl), list);
+    await cookieJar.saveFromResponse(Uri.parse(Urls.mobileBaseUrl), list);
+    return list.firstWhere((element) => element.name == 'connect_sid').value;
   }
 
   void _clearControllerData() async {
@@ -130,7 +121,7 @@ class _WebViewLoginState extends State<_WebViewLogin> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocListener<LoginCubit, LoginState>(
-        listenWhen: (_, current) => current.status.isFailure,
+        listenWhen: (_, current) => current.status == LoginStatus.failure,
         listener: (context, state) {
           _clearControllerData();
           context.showSnack(

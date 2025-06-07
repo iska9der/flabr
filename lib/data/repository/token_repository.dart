@@ -1,46 +1,50 @@
 import 'dart:async';
 
+import 'package:collection/collection.dart';
+import 'package:cookie_jar/cookie_jar.dart';
 import 'package:injectable/injectable.dart';
+import 'package:rxdart/rxdart.dart';
 
-import '../../core/component/storage/storage.dart';
 import '../../core/constants/constants.dart';
-import '../model/tokens_model.dart';
 
 @Singleton()
 class TokenRepository {
-  TokenRepository(@Named('secureStorage') this._storage);
+  TokenRepository({required this.cookieJar});
 
-  final CacheStorage _storage;
+  final CookieJar cookieJar;
 
-  Tokens _tokens = Tokens.empty;
-  Tokens get tokens => _tokens;
+  final _tokenController = BehaviorSubject<String>.seeded('');
+  Stream<String> get onTokenChanged => _tokenController.asBroadcastStream();
+  String get token => _tokenController.value;
 
   String? _csrf;
   String? get csrf => _csrf;
 
-  Future<Tokens?> getTokens() async {
-    if (_tokens.isNotEmpty) {
-      return _tokens;
-    }
+  Future<void> init() async {
+    /// Получаем из кук токен connect_sid
+    final cookies = await cookieJar.loadForRequest(Uri.parse(Urls.baseUrl));
 
-    final raw = await _storage.read(CacheKeys.authTokens);
-    if (raw == null) {
-      return null;
-    }
+    final token =
+        cookies
+            .firstWhereOrNull((cookie) => cookie.name == 'connect_sid')
+            ?.value ??
+        '';
 
-    _tokens = Tokens.fromJson(raw);
-
-    return _tokens;
+    saveToken(token);
   }
 
-  Future<void> saveTokens(Tokens newTokens) async {
-    if (newTokens.isEmpty) {
+  Future<void> saveToken(String newToken, {bool asCookie = false}) async {
+    if (newToken == _tokenController.value) {
       return;
     }
 
-    await _storage.write(CacheKeys.authTokens, newTokens.toJson());
+    if (asCookie) {
+      final Cookie cookie = Cookie('connect_sid', newToken);
+      await cookieJar.saveFromResponse(Uri.parse(Urls.baseUrl), [cookie]);
+      await cookieJar.saveFromResponse(Uri.parse(Urls.mobileBaseUrl), [cookie]);
+    }
 
-    _tokens = newTokens;
+    _tokenController.add(newToken);
   }
 
   void setCsrf(String value) {
@@ -52,9 +56,8 @@ class TokenRepository {
   }
 
   Future<void> clearAll() async {
-    _tokens = Tokens.empty;
-    _csrf = '';
-
-    await _storage.delete(CacheKeys.authTokens);
+    _csrf = null;
+    await cookieJar.deleteAll();
+    _tokenController.add('');
   }
 }

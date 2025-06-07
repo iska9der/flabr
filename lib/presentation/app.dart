@@ -41,20 +41,7 @@ class Application extends StatelessWidget {
           create: (_) => SummaryAuthCubit(tokenRepository: getIt())..init(),
         ),
       ],
-      child: MultiBlocListener(
-        listeners: [
-          BlocListener<AuthCubit, AuthState>(
-            listenWhen:
-                (previous, current) =>
-                    previous.status.isLoading && current.isAuthorized,
-            listener: (context, _) {
-              context.read<AuthCubit>().fetchMe();
-              context.read<AuthCubit>().fetchUpdates();
-            },
-          ),
-        ],
-        child: const ApplicationView(),
-      ),
+      child: const ApplicationView(),
     );
   }
 }

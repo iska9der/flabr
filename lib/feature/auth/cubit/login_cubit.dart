@@ -1,7 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../data/model/tokens_model.dart';
 import '../../../data/repository/repository.dart';
 import '../../../presentation/extension/extension.dart';
 
@@ -18,22 +17,13 @@ class LoginCubit extends Cubit<LoginState> {
 
   final TokenRepository _tokenRepository;
 
-  Future<void> submitConnectSid(String value) async {
+  Future<void> handle({required String token, bool isManual = false}) async {
     if (state.status.isLoading) return;
-
-    if (value.isEmpty) {
-      return emit(
-        state.copyWith(
-          status: LoginStatus.failure,
-          error: 'Пустой значение токена',
-        ),
-      );
-    }
 
     emit(state.copyWith(status: LoginStatus.loading));
 
-    final tokens = Tokens(connectSID: value);
-    await _tokenRepository.saveTokens(tokens);
+    await Future.delayed(const Duration(seconds: 1));
+    await _tokenRepository.saveToken(token, asCookie: isManual);
 
     emit(state.copyWith(status: LoginStatus.success));
   }
