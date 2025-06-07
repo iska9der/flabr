@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 
+import '../../../../../bloc/user/user_cubit.dart';
 import '../../../../../data/model/user/user.dart';
 import '../../../../widget/detail/section_container_widget.dart';
 import '../../../../widget/enhancement/card.dart';
 import '../../../../widget/html_view_widget.dart';
-import '../cubit/user_cubit.dart';
 
 class UserWhoisWidget extends StatelessWidget {
   const UserWhoisWidget({super.key});

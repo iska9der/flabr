@@ -7,11 +7,11 @@ import 'package:fwfh_svg/fwfh_svg.dart';
 import 'package:fwfh_webview/fwfh_webview.dart';
 import 'package:path/path.dart' as p;
 
+import '../../bloc/settings/settings_cubit.dart';
 import '../../core/component/router/app_router.dart';
 import '../../di/di.dart';
 import '../../feature/image_action/image_action.dart';
 import '../extension/extension.dart';
-import '../page/settings/cubit/settings_cubit.dart';
 import '../theme/theme.dart';
 import 'enhancement/progress_indicator.dart';
 
@@ -66,7 +66,7 @@ class HtmlView extends StatelessWidget {
             if (element.localName == 'code' &&
                 element.parent?.localName != 'pre') {
               return {
-                'background-color': theme.colors.cardHighlight.toHex(),
+                'background-color': theme.colors.cardHighlight.toHex,
                 'font-weight': '500',
               };
             }
@@ -115,6 +115,7 @@ class HtmlView extends StatelessWidget {
                 return null;
               }
 
+              /// svg обрабатывется с помощью `SvgFactory`
               String imgExt = p.extension(imgSrc);
               if (imgExt == '.svg') return null;
 
@@ -160,9 +161,11 @@ class CustomFactory extends WidgetFactory with SvgFactory, WebViewFactory {
 
   @override
   bool get webView => true;
+
   @override
   bool get webViewMediaPlaybackAlwaysAllow => true;
 
+  /// список кривых iframe-источников
   List<String> iframeBanList = ['video.yandex.ru/iframe'];
 
   @override
@@ -181,7 +184,7 @@ class CustomFactory extends WidgetFactory with SvgFactory, WebViewFactory {
       ),
     );
 
-    return widget ?? super.buildImageWidget(meta, src);
+    return widget;
   }
 
   @override
@@ -211,7 +214,8 @@ class CustomFactory extends WidgetFactory with SvgFactory, WebViewFactory {
             ///
             /// если текст не совпадает со ссылкой - показываем
             final isNeedPopup = tree.element.text != href;
-            go() => getIt<AppRouter>().navigateOrLaunchUrl(Uri.parse(href));
+            Future<void> go() =>
+                getIt<AppRouter>().navigateOrLaunchUrl(Uri.parse(href));
 
             final widget = GestureDetector(
               child: tree.build(),
@@ -237,14 +241,14 @@ class CustomFactory extends WidgetFactory with SvgFactory, WebViewFactory {
                               content: const Text('Скопировано в буфер обмена'),
                             );
                           },
-                          child: Text('Копировать в буфер'),
+                          child: const Text('Копировать в буфер'),
                         ),
                         TextButton(
                           onPressed: () {
-                            go();
                             Navigator.of(context).pop();
+                            go();
                           },
-                          child: Text('Перейти'),
+                          child: const Text('Перейти'),
                         ),
                       ],
                 );
@@ -324,29 +328,12 @@ class CustomFactory extends WidgetFactory with SvgFactory, WebViewFactory {
               child: Text(
                 text,
                 style: textStyle?.copyWith(
-                  fontVariations: [FontVariation('wght', 500)],
+                  fontVariations: [const FontVariation('wght', 500)],
                 ),
               ),
             ),
           ),
         ),
-
-        /// TODO: копирование в буфер обмена
-        // Positioned(
-        //   top: 0,
-        //   right: 0,
-        //   child: IconButton(
-        //     onPressed: () {
-        //       Clipboard.setData(ClipboardData(text: text));
-
-        //       getIt<Utils>().showSnack(
-        //         context: context,
-        //         content: const Text('Скопировано в буфер обмена'),
-        //       );
-        //     },
-        //     icon: Icon(Icons.copy),
-        //   ),
-        // ),
       ],
     );
   }

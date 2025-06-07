@@ -24,110 +24,29 @@ import '../../../presentation/page/publications/tracker/tracker_flow.dart';
 import '../../../presentation/page/publications/tracker/tracker_publications_page.dart';
 import '../../../presentation/page/publications/tracker/tracker_subscription_page.dart';
 import '../../../presentation/page/publications/tracker/tracker_system_page.dart';
-import '../../../presentation/page/services/company/page/company_dashboard_page.dart';
-import '../../../presentation/page/services/company/page/company_detail_page.dart';
-import '../../../presentation/page/services/company/page/company_list_page.dart';
-import '../../../presentation/page/services/hub/page/hub_dashboard_page.dart';
-import '../../../presentation/page/services/hub/page/hub_detail_page.dart';
-import '../../../presentation/page/services/hub/page/hub_list_page.dart';
+import '../../../presentation/page/services/company/company_dashboard_page.dart';
+import '../../../presentation/page/services/company/company_detail_page.dart';
+import '../../../presentation/page/services/company/company_list_page.dart';
+import '../../../presentation/page/services/hub/hub_dashboard_page.dart';
+import '../../../presentation/page/services/hub/hub_detail_page.dart';
+import '../../../presentation/page/services/hub/hub_list_page.dart';
 import '../../../presentation/page/services/services_flow.dart';
 import '../../../presentation/page/services/services_page.dart';
-import '../../../presentation/page/services/user/page/user_bookmark_list_page.dart';
-import '../../../presentation/page/services/user/page/user_comment_list_page.dart';
-import '../../../presentation/page/services/user/page/user_dashboard_page.dart';
-import '../../../presentation/page/services/user/page/user_detail_page.dart';
-import '../../../presentation/page/services/user/page/user_list_page.dart';
-import '../../../presentation/page/services/user/page/user_publication_list_page.dart';
+import '../../../presentation/page/services/user/user_bookmark_list_page.dart';
+import '../../../presentation/page/services/user/user_comment_list_page.dart';
+import '../../../presentation/page/services/user/user_dashboard_page.dart';
+import '../../../presentation/page/services/user/user_detail_page.dart';
+import '../../../presentation/page/services/user/user_list_page.dart';
+import '../../../presentation/page/services/user/user_publication_list_page.dart';
 import '../../../presentation/page/settings/settings_page.dart';
 
 part 'app_router.gr.dart';
+part 'url_launcher.dart';
 
 @Singleton()
 @AutoRouterConfig(replaceInRouteName: 'Page,Route')
 // extend the generated private router
 class AppRouter extends RootStackRouter {
-  /// Открыть внешнюю ссылку
-  Future launchUrl(String url) =>
-      launchUrlString(url, mode: LaunchMode.externalApplication);
-
-  /// Открыть ссылку в приложении, либо в браузере
-  Future navigateOrLaunchUrl(Uri uri) async {
-    final id = parseId(uri);
-
-    if (id != null) {
-      final type = publicationTypeHandler(uri);
-      if (type != null) {
-        return await pushWidget(PublicationDetailPage(id: id, type: type.name));
-      }
-
-      if (isUserUrl(uri)) {
-        return await navigate(
-          ServicesFlowRoute(
-            children: [
-              UserDashboardRoute(alias: id, children: [UserDetailRoute()]),
-            ],
-          ),
-        );
-      }
-    }
-
-    return await launchUrl(uri.toString());
-  }
-
-  String? parseId(Uri url) {
-    Iterable<String> parts = url.pathSegments.where(
-      (element) => element.isNotEmpty,
-    );
-
-    if (parts.isEmpty) {
-      return null;
-    }
-
-    return parts.last;
-  }
-
-  bool _isHostCompatible(Uri uri) =>
-      uri.host.contains('habr.com') || uri.host.contains('habrahabr.ru');
-
-  PublicationType? publicationTypeHandler(Uri uri) {
-    if (!_isHostCompatible(uri)) {
-      return null;
-    }
-
-    final Map<PublicationType, List<String>> compareMap = {
-      PublicationType.article: [
-        'article/'
-            'articles/',
-        'blog/',
-        'blogs/',
-      ],
-      PublicationType.post: ['posts/'],
-      PublicationType.news: ['news/'],
-    };
-
-    for (final source in compareMap.keys) {
-      for (final path in compareMap[source]!) {
-        if (uri.path.contains(path)) {
-          return source;
-        }
-      }
-    }
-
-    return null;
-  }
-
-  bool isUserUrl(Uri uri) {
-    if (_isHostCompatible(uri) && uri.path.contains('users/')) {
-      return true;
-    }
-
-    if (uri.host.isEmpty && uri.path.contains('/users/')) {
-      return true;
-    }
-
-    return false;
-  }
-
   @override
   RouteType get defaultRouteType => const RouteType.material();
 

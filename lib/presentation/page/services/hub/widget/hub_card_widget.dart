@@ -5,6 +5,7 @@ import '../../../../../data/model/hub/hub.dart';
 import '../../../../../data/model/render_type_enum.dart';
 import '../../../../../data/model/stat_type_enum.dart';
 import '../../../../../di/di.dart';
+import '../../../../theme/theme.dart';
 import '../../../../widget/card_avatar_widget.dart';
 import '../../../../widget/card_title_widget.dart';
 import '../../../../widget/enhancement/card.dart';
@@ -35,7 +36,10 @@ class HubCardWidget extends StatelessWidget {
               ),
           child: Row(
             children: [
-              CardAvatarWidget(imageUrl: model.imageUrl),
+              CardAvatarWidget(
+                imageUrl: model.imageUrl,
+                placeholderIcon: AppIcons.hubPlaceholder,
+              ),
               const SizedBox(width: 16),
               Expanded(
                 child: Column(

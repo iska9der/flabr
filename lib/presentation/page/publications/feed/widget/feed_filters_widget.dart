@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../bloc/publication/feed_publication_list_cubit.dart';
 import '../../../../../data/model/filter/filter.dart';
 import '../../../../../feature/auth/auth.dart';
 import '../../../../../feature/publication_list/publication_list.dart';
-import '../../../../extension/extension.dart';
 import '../../../../widget/filter/filter_chip_list.dart';
 import '../../../../widget/filter/publication_filter_submit_button.dart';
-import '../cubit/feed_publication_list_cubit.dart';
 
 class FeedFiltersWidget extends StatelessWidget {
   const FeedFiltersWidget({super.key});
@@ -32,13 +31,7 @@ class FeedFiltersWidget extends StatelessWidget {
                   return;
                 }
 
-                context.showSnack(
-                  content: const Text('Войдите, чтобы настроить фильтры'),
-                  action: SnackBarAction(
-                    label: 'Войти',
-                    onPressed: () => showLoginDialog(context),
-                  ),
-                );
+                showLoginSnackBar(context);
               },
             );
           },
@@ -63,7 +56,7 @@ class _FilterView extends StatefulWidget {
   final FilterOption currentScore;
 
   final List<FeedFilterPublication> currentTypes;
-  final Function(FeedFilter filter) onSubmit;
+  final void Function(FeedFilter filter) onSubmit;
 
   @override
   State<_FilterView> createState() => _FilterViewState();

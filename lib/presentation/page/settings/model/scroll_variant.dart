@@ -26,7 +26,7 @@ enum ScrollVariant {
     ScrollVariant.material => _material,
     ScrollVariant.cupertino => _cupertino,
     ScrollVariant.cupertinoFast => _cupertino.copyWith(
-      physics: BouncingScrollPhysics(
+      physics: const BouncingScrollPhysics(
         decelerationRate: ScrollDecelerationRate.fast,
       ),
     ),

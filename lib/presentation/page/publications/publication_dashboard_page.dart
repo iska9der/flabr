@@ -1,19 +1,19 @@
-import 'dart:async';
-
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../bloc/publication/publication_counters_bloc.dart';
+import '../../../bloc/settings/settings_cubit.dart';
 import '../../../core/component/router/app_router.dart';
+import '../../../data/model/publication/publication.dart';
+import '../../../data/model/user/user.dart';
 import '../../../di/di.dart';
 import '../../../feature/auth/auth.dart';
 import '../../../feature/most_reading/most_reading.dart';
 import '../../extension/extension.dart';
 import '../../theme/theme.dart';
 import '../../widget/dashboard_drawer_link_widget.dart';
-import '../settings/cubit/settings_cubit.dart';
-import 'bloc/publication_counters_bloc.dart';
 
 @RoutePage(name: PublicationDashboardPage.routeName)
 class PublicationDashboardPage extends StatelessWidget {
@@ -24,8 +24,13 @@ class PublicationDashboardPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => MostReadingCubit(getIt()),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (_) => MostReadingCubit(repository: getIt())),
+        BlocProvider(
+          create: (_) => PublicationCountersBloc(repository: getIt()),
+        ),
+      ],
       child: const PublicationDashboardView(),
     );
   }
@@ -40,21 +45,12 @@ class PublicationDashboardView extends StatefulWidget {
 }
 
 class _PublicationDashboardViewState extends State<PublicationDashboardView> {
-  late final PublicationCountersBloc countersBloc;
-  late final StreamSubscription authSub;
-
-  final double themeHeight = AppDimensions.dashTabHeight;
-  ValueNotifier<double> barHeight = ValueNotifier(AppDimensions.dashTabHeight);
+  final double themeHeight = AppDimensions.tabBarHeight;
+  ValueNotifier<double> barHeight = ValueNotifier(AppDimensions.tabBarHeight);
   late bool visibleOnScroll;
 
   @override
   void initState() {
-    countersBloc = PublicationCountersBloc(repository: getIt());
-    authSub = context.read<AuthCubit>().stream.listen((state) {
-      if (state.isAuthorized || state.isUnauthorized) {
-        countersBloc.add(const PublicationCountersEvent.load());
-      }
-    });
     visibleOnScroll =
         context.read<SettingsCubit>().state.misc.navigationOnScrollVisible;
 
@@ -62,27 +58,33 @@ class _PublicationDashboardViewState extends State<PublicationDashboardView> {
   }
 
   @override
-  void dispose() {
-    authSub.cancel();
-    countersBloc.close();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    /// Слушаем изменение настройки видимости панели навигации
-    return BlocListener<SettingsCubit, SettingsState>(
-      listenWhen:
-          (previous, current) =>
-              previous.misc.navigationOnScrollVisible !=
-              current.misc.navigationOnScrollVisible,
-      listener: (context, state) {
-        visibleOnScroll = state.misc.navigationOnScrollVisible;
-        if (visibleOnScroll) {
-          /// сброс высоты навигации
-          barHeight.value = themeHeight;
-        }
-      },
+    return MultiBlocListener(
+      listeners: [
+        /// Слушаем изменение настройки видимости панели навигации
+        BlocListener<SettingsCubit, SettingsState>(
+          listenWhen:
+              (previous, current) =>
+                  previous.misc.navigationOnScrollVisible !=
+                  current.misc.navigationOnScrollVisible,
+          listener: (context, state) {
+            visibleOnScroll = state.misc.navigationOnScrollVisible;
+            if (visibleOnScroll) {
+              /// сброс высоты навигации
+              barHeight.value = themeHeight;
+            }
+          },
+        ),
+        BlocListener<AuthCubit, AuthState>(
+          listener: (context, state) {
+            if (state.isAuthorized || state.isUnauthorized) {
+              context.read<PublicationCountersBloc>().add(
+                const PublicationCountersEvent.load(),
+              );
+            }
+          },
+        ),
+      ],
       child: NotificationListener<UserScrollNotification>(
         onNotification: (notification) {
           if (visibleOnScroll) {
@@ -116,127 +118,117 @@ class _PublicationDashboardViewState extends State<PublicationDashboardView> {
             NewsFlowRoute(),
           ],
           builder: (context, child, controller) {
-            return Column(
+            return Stack(
+              alignment: Alignment.topCenter,
               children: [
-                AnimatedBuilder(
-                  animation: barHeight,
-                  builder: (context, child) {
+                child,
+                ValueListenableBuilder<double>(
+                  valueListenable: barHeight,
+                  builder: (context, value, child) {
                     return AnimatedContainer(
                       duration: const Duration(milliseconds: 200),
-                      height: barHeight.value,
-                      child: ColoredBox(
-                        color: context.theme.colorScheme.surfaceContainerLow,
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            Expanded(
-                              child: BlocBuilder<
-                                PublicationCountersBloc,
-                                PublicationCountersState
-                              >(
-                                bloc: countersBloc,
-                                builder: (context, state) {
-                                  return Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: TabBar(
-                                      controller: controller,
-                                      isScrollable: true,
-                                      padding: EdgeInsets.zero,
-                                      labelPadding: const EdgeInsets.symmetric(
-                                        horizontal: 12,
-                                      ),
-                                      dividerColor: Colors.transparent,
-                                      tabs: [
-                                        BlocBuilder<AuthCubit, AuthState>(
-                                          buildWhen:
-                                              (previous, current) =>
-                                                  previous.updates !=
-                                                  current.updates,
-                                          builder: (context, state) {
-                                            return DashboardDrawerLinkWidget(
-                                              title: 'Моя лента',
-                                              count:
-                                                  state.updates.feeds.newCount,
-                                            );
-                                          },
-                                        ),
-                                        DashboardDrawerLinkWidget(
-                                          title: 'Статьи',
-                                          count: state.counters.articles,
-                                        ),
-                                        DashboardDrawerLinkWidget(
-                                          title: 'Посты',
-                                          count: state.counters.posts,
-                                        ),
-                                        DashboardDrawerLinkWidget(
-                                          title: 'Новости',
-                                          count: state.counters.news,
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                },
-                              ),
-                            ),
-                            Row(
-                              children: [
-                                IconButton(
-                                  icon: const Icon(Icons.search_rounded),
-                                  tooltip: 'Поиск',
-                                  onPressed:
-                                      () => getIt<AppRouter>().push(
-                                        const SearchAnywhereRoute(),
-                                      ),
-                                ),
-                                BlocBuilder<AuthCubit, AuthState>(
-                                  buildWhen:
-                                      (previous, current) =>
-                                          previous.updates != current.updates ||
-                                          previous.status != current.status,
-                                  builder: (context, state) {
-                                    if (state.isUnauthorized) {
-                                      return const SizedBox();
-                                    }
-
-                                    return Badge.count(
-                                      count: state.updates.trackerUnreadCount,
-                                      isLabelVisible:
-                                          state.updates.trackerUnreadCount > 0,
-                                      offset: const Offset(-8, 5),
-                                      child: IconButton(
-                                        icon: const Icon(
-                                          Icons.notifications_outlined,
-                                        ),
-                                        tooltip: 'Трекер',
-                                        onPressed: () async {
-                                          await getIt<AppRouter>().push(
-                                            const TrackerDashboardRoute(),
-                                          );
-
-                                          if (context.mounted) {
-                                            context
-                                                .read<AuthCubit>()
-                                                .fetchUpdates();
-                                          }
-                                        },
-                                      ),
-                                    );
-                                  },
-                                ),
-                                const MyProfileIconButton(),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
+                      height: value,
+                      child: child,
                     );
                   },
+
+                  /// Без клипа иконки остаются на виду, когда шапка скрыта
+                  child: ClipRRect(
+                    clipBehavior: Clip.hardEdge,
+                    child: _DashboardAppBar(tabController: controller),
+                  ),
                 ),
-                Expanded(child: child),
               ],
             );
           },
         ),
+      ),
+    );
+  }
+}
+
+class _DashboardAppBar extends StatelessWidget {
+  // ignore: unused_element_parameter
+  const _DashboardAppBar({super.key, required this.tabController});
+
+  final TabController tabController;
+
+  @override
+  Widget build(BuildContext context) {
+    final counters = context
+        .select<PublicationCountersBloc, PublicationCounters>(
+          (cubit) => cubit.state.counters,
+        );
+
+    final userUpdates = context.select<AuthCubit, UserUpdates>(
+      (cubit) => cubit.state.updates,
+    );
+
+    return ColoredBox(
+      color: context.theme.colorScheme.surfaceContainer,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Expanded(
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: TabBar(
+                controller: tabController,
+                isScrollable: true,
+                tabAlignment: TabAlignment.center,
+                labelPadding: const EdgeInsets.symmetric(horizontal: 8),
+                dividerColor: Colors.transparent,
+                tabs: [
+                  DashboardDrawerLinkWidget(
+                    title: 'Моя лента',
+                    count: userUpdates.feeds.newCount,
+                  ),
+                  DashboardDrawerLinkWidget(
+                    title: 'Статьи',
+                    count: counters.articles,
+                  ),
+                  DashboardDrawerLinkWidget(
+                    title: 'Посты',
+                    count: counters.posts,
+                  ),
+                  DashboardDrawerLinkWidget(
+                    title: 'Новости',
+                    count: counters.news,
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Row(
+            children: [
+              IconButton(
+                icon: const Icon(Icons.search_rounded),
+                tooltip: 'Поиск',
+                onPressed:
+                    () => getIt<AppRouter>().push(const SearchAnywhereRoute()),
+              ),
+              if (context.read<AuthCubit>().state.isAuthorized)
+                IconButton(
+                  icon: Badge.count(
+                    count: userUpdates.trackerUnreadCount,
+                    isLabelVisible: userUpdates.trackerUnreadCount > 0,
+                    child: const Icon(Icons.notifications_outlined),
+                  ),
+                  tooltip: 'Трекер',
+                  onPressed: () async {
+                    final authCubit = context.read<AuthCubit>();
+
+                    await getIt<AppRouter>().push(
+                      const TrackerDashboardRoute(),
+                    );
+
+                    authCubit.fetchUpdates();
+                  },
+                ),
+              const MyProfileIconButton(),
+            ],
+          ),
+        ],
       ),
     );
   }

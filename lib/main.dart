@@ -18,11 +18,11 @@ void main() => runZonedGuarded(
       DevicePreview(
         // ignore: avoid_redundant_argument_values
         enabled: !kReleaseMode,
-        builder: (_) => Application(),
+        builder: (_) => const Application(),
       ),
     );
   },
   (error, stack) {
-    if (kDebugMode) logger.error(error, stack);
+    logger.error(error, stack);
   },
 );

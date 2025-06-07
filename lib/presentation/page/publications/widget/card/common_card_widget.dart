@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 
+import '../../../../../bloc/settings/settings_cubit.dart';
 import '../../../../../core/component/router/app_router.dart';
 import '../../../../../data/model/publication/publication.dart';
 import '../../../../../data/model/render_type_enum.dart';
@@ -9,8 +10,8 @@ import '../../../../../di/di.dart';
 import '../../../../../feature/image_action/image_action.dart';
 import '../../../../theme/theme.dart';
 import '../../../../widget/enhancement/enhancement.dart';
-import '../../../settings/cubit/settings_cubit.dart';
 import '../stats/publication_stats_widget.dart';
+import 'card_html_widget.dart';
 import 'components/footer_widget.dart';
 import 'components/format_widget.dart';
 import 'components/header_widget.dart';
@@ -66,7 +67,7 @@ class CommonCardWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisSize: MainAxisSize.min,
             children: [
-              if (publication.leadData.image.isNotEmpty)
+              if (!publication.leadData.image.isEmpty)
                 BlocBuilder<SettingsCubit, SettingsState>(
                   buildWhen:
                       (p, c) => p.feed.isImageVisible != c.feed.isImageVisible,
@@ -99,49 +100,17 @@ class CommonCardWidget extends StatelessWidget {
 
                   return Padding(
                     padding: const EdgeInsets.all(8),
-                    child: HtmlWidget(
-                      publication.leadData.textHtml,
+                    child: CardHtmlWidget(
+                      textHtml: publication.leadData.textHtml,
                       rebuildTriggers: [state.feed],
-                      customWidgetBuilder: (element) {
-                        if (element.localName == 'br') {
-                          return SizedBox();
-                        }
-
-                        if (element.localName == 'img') {
-                          if (!state.feed.isImageVisible) {
-                            return const SizedBox();
-                          }
-
-                          String imgSrc =
-                              element.attributes['data-src'] ??
-                              element.attributes['src'] ??
-                              '';
-
-                          if (imgSrc.isEmpty) {
-                            return null;
-                          }
-
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 8),
-                            child: Align(
-                              child: NetworkImageWidget(
-                                imageUrl: imgSrc,
-                                height: AppDimensions.imageHeight,
-                                isTapable: true,
-                              ),
-                            ),
-                          );
-                        }
-
-                        return null;
-                      },
+                      isImageVisible: state.feed.isImageVisible,
                     ),
                   );
                 },
               ),
             ],
           ),
-          ArticleFooterWidget(publication: publication),
+          PublicationFooterWidget(publication: publication),
         ],
       ),
     );

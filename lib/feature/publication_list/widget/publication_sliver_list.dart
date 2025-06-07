@@ -16,7 +16,10 @@ class PublicationSliverList<
   ListState extends PublicationListState
 >
     extends StatelessWidget {
-  const PublicationSliverList({super.key});
+  const PublicationSliverList({super.key, this.showType = false});
+
+  /// Показывать тип поста в карточках
+  final bool showType;
 
   @override
   Widget build(BuildContext context) {
@@ -62,32 +65,29 @@ class PublicationSliverList<
           );
         }
 
-        return SliverList(
-          delegate: SliverChildBuilderDelegate(
-            (c, i) {
-              if (i < publications.length) {
-                final publication = publications[i];
+        int additional =
+            (state.status == PublicationListStatus.loading ? 1 : 0);
 
-                return PublicationCardWidget(
-                  publication,
-                  showType: context.read<ListCubit>().showType,
-                );
-              }
+        return SliverList.builder(
+          itemCount: publications.length + additional,
+          itemBuilder: (context, index) {
+            if (index < publications.length) {
+              final publication = publications[index];
 
-              Timer(
-                scrollCubit?.duration ?? const Duration(milliseconds: 30),
-                () => scrollCubit?.animateToBottom(),
+              return PublicationCardWidget(
+                key: Key('publication_card_${publication.id}'),
+                publication,
+                showType: showType,
               );
+            }
 
-              return const SizedBox(
-                height: 60,
-                child: CircleIndicator.medium(),
-              );
-            },
-            childCount:
-                publications.length +
-                (state.status == PublicationListStatus.loading ? 1 : 0),
-          ),
+            Timer(
+              scrollCubit?.duration ?? const Duration(milliseconds: 30),
+              () => scrollCubit?.animateToBottom(),
+            );
+
+            return const SizedBox(height: 60, child: CircleIndicator.medium());
+          },
         );
       },
     );

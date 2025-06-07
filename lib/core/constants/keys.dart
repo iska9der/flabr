@@ -5,15 +5,18 @@ abstract class CacheKeys {
   static const miscConfig = 'misc_config';
 
   static const authTokens = 'aData';
-  static const authCsrf = 'cData';
 
   static const langUI = 'lang_ui';
-  static const langArticle = 'lang_article';
+  static const langPublications = 'lang_article';
 
   static const feedFilter = 'feed_filter';
-  static flowFilter(String section) => 'flow_filter_$section';
+  static String flowFilter(String section) => 'flow_filter_$section';
 }
 
 abstract class Keys {
-  static const renewCsrf = 'renew-csrf';
+  static const csrfToken = 'csrf-token';
+  static const sidToken = 'connect_sid';
+
+  static const skipCsrf = 'X-Skip-Csrf';
+  static const renewCsrf = 'X-Renew-Csrf';
 }

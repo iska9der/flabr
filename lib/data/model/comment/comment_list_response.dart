@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:equatable/equatable.dart';
 
 import 'comment_access_model.dart';
@@ -24,25 +26,22 @@ class CommentListResponse extends Equatable {
   }) {
     return CommentListResponse(
       commentAccess: commentAccess ?? this.commentAccess,
-      comments: comments ?? this.comments,
+      comments: UnmodifiableListView(comments ?? this.comments),
       lastCommentTimestamp: lastCommentTimestamp ?? this.lastCommentTimestamp,
     );
   }
 
   factory CommentListResponse.fromMap(Map<String, dynamic> map) {
+    final commentsMap = Map<String, dynamic>.from(map['comments'] ?? {});
+
     return CommentListResponse(
       commentAccess:
           map['commentAccess'] != null
               ? CommentAccess.fromMap(map['commentAccess'])
               : CommentAccess.empty,
-      comments:
-          map['comments'] != null
-              ? List<Comment>.from(
-                Map.from(
-                  map['comments'],
-                ).entries.map((x) => Comment.fromMap(x.value)),
-              )
-              : const [],
+      comments: UnmodifiableListView(
+        commentsMap.entries.map((e) => Comment.fromMap(e.value)),
+      ),
       lastCommentTimestamp: map['lastCommentTimestamp'] ?? 0,
     );
   }
@@ -59,7 +58,7 @@ class CommentListResponse extends Equatable {
   ///
   /// А значит мы пересобираем комменты с уже вложенными детками
   /// с помощью рекурсивной функции [_recursive]
-  List<Comment> structurize() {
+  List<Comment> structurizeComments() {
     if (comments.isEmpty) return [];
 
     List<Comment> newComments = [];

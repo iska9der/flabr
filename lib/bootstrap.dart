@@ -7,7 +7,7 @@ import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 
-import 'core/component/bloc/observer.dart';
+import 'bloc/observer.dart';
 import 'core/constants/constants.dart';
 import 'di/di.dart';
 
@@ -23,7 +23,7 @@ abstract class Bootstrap {
       Bloc.observer = MyBlocObserver();
     }
 
-    if (Platform.isAndroid) {
+    if (!kIsWeb && Platform.isAndroid) {
       /// максимальная герцовка
       /// issue https://github.com/flutter/flutter/issues/35162
       FlutterDisplayMode.setHighRefreshRate().ignore();

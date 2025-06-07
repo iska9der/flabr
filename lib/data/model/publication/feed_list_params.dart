@@ -2,8 +2,6 @@ import '../query_params_model.dart';
 
 class FeedListParams extends QueryParams {
   const FeedListParams({
-    super.langArticles = 'ru',
-    super.langUI = 'ru',
     super.page = '',
     this.complexity = 'all',
     this.score = 'all',
@@ -26,7 +24,7 @@ class FeedListParams extends QueryParams {
     /// Сложность и рейтинг
     filterParams += '&complexity=$complexity&score=$score';
 
-    return 'myFeed=true&fl=$langArticles&hl=$langUI$filterParams&page=$page';
+    return 'myFeed=true$filterParams&page=$page';
   }
 
   @override

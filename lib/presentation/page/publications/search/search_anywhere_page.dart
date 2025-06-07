@@ -4,6 +4,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../bloc/search/search_cubit.dart';
 import '../../../../data/model/render_type_enum.dart';
 import '../../../../data/model/search/search_order_enum.dart';
 import '../../../../data/model/search/search_target_enum.dart';
@@ -15,7 +16,6 @@ import '../../services/company/widget/company_card_widget.dart';
 import '../../services/hub/widget/hub_card_widget.dart';
 import '../../services/user/widget/user_card_widget.dart';
 import '../widget/card/card.dart';
-import 'cubit/search_cubit.dart';
 
 @RoutePage(name: SearchAnywherePage.routeName)
 class SearchAnywherePage extends StatelessWidget {
@@ -28,10 +28,7 @@ class SearchAnywherePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(
-          create:
-              (_) => SearchCubit(repository: getIt(), langRepository: getIt()),
-        ),
+        BlocProvider(create: (_) => SearchCubit(repository: getIt())),
         BlocProvider<ScrollCubit>(create: (_) => ScrollCubit()),
       ],
       child: const _SearchAnywhereView(),
@@ -67,7 +64,7 @@ class _SearchAnywhereViewState extends State<_SearchAnywhereView> {
     );
   }
 
-  void showResults(BuildContext context, query) {
+  void showResults(BuildContext context, String query) {
     _focusNode.unfocus();
     context.read<SearchCubit>().changeQuery(query);
   }
@@ -120,17 +117,33 @@ class _SearchAnywhereViewState extends State<_SearchAnywhereView> {
                     return SliverMainAxisGroup(
                       slivers: [
                         SliverToBoxAdapter(
-                          child: _TargetOptions(
-                            onSubmit:
-                                (String query) => showResults(context, query),
+                          child: _OptionsListView(
+                            buildLabel: (option) => option.label,
+                            isSelected: (option) => state.target == option,
+                            onSelected: (option) {
+                              context.read<SearchCubit>().changeTarget(option);
+
+                              if (state.query.isNotEmpty) {
+                                showResults(context, state.query);
+                              }
+                            },
+                            children: SearchTarget.values,
                           ),
                         ),
                         if (state.target == SearchTarget.posts ||
                             state.target == SearchTarget.users)
                           SliverToBoxAdapter(
-                            child: _OrderOptions(
-                              onSubmit:
-                                  (String query) => showResults(context, query),
+                            child: _OptionsListView(
+                              buildLabel: (option) => option.label,
+                              isSelected: (option) => state.order == option,
+                              onSelected: (option) {
+                                context.read<SearchCubit>().changeSort(option);
+
+                                if (state.query.isNotEmpty) {
+                                  showResults(context, state.query);
+                                }
+                              },
+                              children: SearchOrder.values,
                             ),
                           ),
                       ],
@@ -177,7 +190,7 @@ class _SearchAnywhereViewState extends State<_SearchAnywhereView> {
                               renderType: RenderType.html,
                             ),
                             SearchTarget.companies => CompanyCardWidget(
-                              model: model,
+                              company: model,
                               renderType: RenderType.html,
                             ),
                             SearchTarget.users => UserCardWidget(model: model),
@@ -209,83 +222,40 @@ class _SearchAnywhereViewState extends State<_SearchAnywhereView> {
   }
 }
 
-class _TargetOptions extends StatelessWidget {
-  const _TargetOptions({required this.onSubmit});
+class _OptionsListView<T> extends StatelessWidget {
+  const _OptionsListView({
+    required this.buildLabel,
+    required this.isSelected,
+    required this.onSelected,
+    required this.children,
+  });
 
-  final Function(String query) onSubmit;
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<SearchCubit, SearchState>(
-      builder: (context, state) {
-        return SizedBox(
-          height: 40,
-          child: ListView(
-            clipBehavior: Clip.none,
-            shrinkWrap: true,
-            scrollDirection: Axis.horizontal,
-            children:
-                SearchTarget.values
-                    .map(
-                      (target) => Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 4),
-                        child: ChoiceChip(
-                          label: Text(target.label),
-                          selected: state.target == target,
-                          onSelected: (value) {
-                            context.read<SearchCubit>().changeTarget(target);
-
-                            if (state.query.isNotEmpty) {
-                              onSubmit(state.query);
-                            }
-                          },
-                        ),
-                      ),
-                    )
-                    .toList(),
-          ),
-        );
-      },
-    );
-  }
-}
-
-class _OrderOptions extends StatelessWidget {
-  const _OrderOptions({required this.onSubmit});
-
-  final Function(String query) onSubmit;
+  final String Function(T option) buildLabel;
+  final bool Function(T option) isSelected;
+  final void Function(T option) onSelected;
+  final List<T> children;
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SearchCubit, SearchState>(
-      builder: (context, state) {
-        return SizedBox(
-          width: MediaQuery.of(context).size.width,
-          child: FittedBox(
-            child: Row(
-              children:
-                  SearchOrder.values
-                      .map(
-                        (order) => Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 4),
-                          child: ChoiceChip(
-                            label: Text(order.label),
-                            selected: state.order == order,
-                            onSelected: (value) {
-                              context.read<SearchCubit>().changeSort(order);
-
-                              if (state.query.isNotEmpty) {
-                                onSubmit(state.query);
-                              }
-                            },
-                          ),
-                        ),
-                      )
-                      .toList(),
-            ),
-          ),
-        );
-      },
+    return SizedBox(
+      height: 40,
+      child: ListView(
+        clipBehavior: Clip.none,
+        scrollDirection: Axis.horizontal,
+        children:
+            children
+                .map(
+                  (target) => Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 4),
+                    child: ChoiceChip(
+                      label: Text(buildLabel(target)),
+                      selected: isSelected(target),
+                      onSelected: (value) => onSelected.call(target),
+                    ),
+                  ),
+                )
+                .toList(),
+      ),
     );
   }
 }

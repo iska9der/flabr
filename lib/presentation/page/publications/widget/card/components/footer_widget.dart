@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ya_summary/ya_summary.dart';
 
+import '../../../../../../bloc/publication/publication_bookmark_cubit.dart';
 import '../../../../../../core/component/router/app_router.dart';
 import '../../../../../../core/constants/constants.dart';
 import '../../../../../../data/model/publication/publication.dart';
@@ -10,12 +11,11 @@ import '../../../../../../di/di.dart';
 import '../../../../../../feature/auth/auth.dart';
 import '../../../../../extension/extension.dart';
 import '../../../../../widget/enhancement/enhancement.dart';
-import '../../../cubit/publication_bookmark_cubit.dart';
 import '../../stats/publication_stat_icon_widget.dart';
 import 'score_widget.dart';
 
-class ArticleFooterWidget extends StatelessWidget {
-  const ArticleFooterWidget({
+class PublicationFooterWidget extends StatelessWidget {
+  const PublicationFooterWidget({
     super.key,
     required this.publication,
     this.isVoteBlocked = true,
@@ -29,6 +29,10 @@ class ArticleFooterWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isSummaryAuthorized = context.select<SummaryAuthCubit, bool>(
+      (cubit) => cubit.state.isAuthorized,
+    );
+
     return Row(
       mainAxisAlignment: mainAxisAlignment,
       children: [
@@ -47,22 +51,18 @@ class ArticleFooterWidget extends StatelessWidget {
               ),
         ),
         _BookmarkIconButton(publication: publication),
-        BlocBuilder<SummaryAuthCubit, SummaryAuthState>(
-          builder: (context, state) {
-            return PublicationStatIconButton(
-              icon: Icons.auto_awesome,
-              isHighlighted: state.isAuthorized,
-              onTap: () {
-                final url = '${Urls.baseUrl}/ru/articles/${publication.id}';
+        PublicationStatIconButton(
+          icon: Icons.auto_awesome,
+          isHighlighted: isSummaryAuthorized,
+          onTap: () {
+            final url = '${Urls.baseUrl}/ru/articles/${publication.id}';
 
-                showSummaryDialog(
-                  context,
-                  url: url,
-                  repository: getIt(),
-                  loaderWidget: CircleIndicator.medium(),
-                  onLinkPressed: (link) => getIt<AppRouter>().launchUrl(link),
-                );
-              },
+            showSummaryDialog(
+              context,
+              url: url,
+              repository: getIt(),
+              loaderWidget: const CircleIndicator.medium(),
+              onLinkPressed: (link) => getIt<AppRouter>().launchUrl(link),
             );
           },
         ),
@@ -72,12 +72,25 @@ class ArticleFooterWidget extends StatelessWidget {
 }
 
 class _BookmarkIconButton extends StatelessWidget {
-  const _BookmarkIconButton({required this.publication});
+  // ignore: unused_element_parameter
+  const _BookmarkIconButton({required this.publication, super.key});
 
   final Publication publication;
 
   @override
   Widget build(BuildContext context) {
+    final isAuthorized = context.select<AuthCubit, bool>(
+      (cubit) => cubit.state.isAuthorized,
+    );
+
+    if (!isAuthorized) {
+      return PublicationStatIconButton(
+        icon: Icons.bookmark_rounded,
+        value: publication.statistics.favoritesCount.compact(),
+        onTap: () => showLoginSnackBar(context),
+      );
+    }
+
     return BlocProvider(
       create:
           (_) => PublicationBookmarkCubit(
@@ -99,11 +112,7 @@ class _BookmarkIconButton extends StatelessWidget {
             value: state.count.compact(),
             isHighlighted: state.isBookmarked,
             isLoading: state.status.isLoading,
-            onTap:
-                () =>
-                    context.read<AuthCubit>().state.isUnauthorized
-                        ? showLoginDialog(context)
-                        : context.read<PublicationBookmarkCubit>().toggle(),
+            onTap: () => context.read<PublicationBookmarkCubit>().toggle(),
           );
         },
       ),

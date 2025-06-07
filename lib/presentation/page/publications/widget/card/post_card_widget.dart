@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../bloc/settings/settings_cubit.dart';
 import '../../../../../core/component/router/app_router.dart';
 import '../../../../../data/model/publication/publication.dart';
 import '../../../../../data/model/render_type_enum.dart';
 import '../../../../../di/di.dart';
 import '../../../../widget/enhancement/enhancement.dart';
 import '../stats/publication_stats_widget.dart';
+import 'card_html_widget.dart';
 import 'components/footer_widget.dart';
 import 'components/header_widget.dart';
 import 'components/hubs_widget.dart';
@@ -40,9 +42,20 @@ class PostCardWidget extends StatelessWidget {
           PublicationHeaderWidget(post),
           PublicationStatsWidget(post),
           PublicationHubsWidget(hubs: post.hubs),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8),
-            child: HtmlWidget(post.textHtml),
+          BlocBuilder<SettingsCubit, SettingsState>(
+            buildWhen:
+                (previous, current) =>
+                    previous.feed.isImageVisible != current.feed.isImageVisible,
+            builder: (context, state) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                child: CardHtmlWidget(
+                  textHtml: post.textHtml,
+                  rebuildTriggers: [state.feed],
+                  isImageVisible: state.feed.isImageVisible,
+                ),
+              );
+            },
           ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -60,7 +73,7 @@ class PostCardWidget extends StatelessWidget {
               ),
             ],
           ),
-          ArticleFooterWidget(publication: post),
+          PublicationFooterWidget(publication: post),
         ],
       ),
     );

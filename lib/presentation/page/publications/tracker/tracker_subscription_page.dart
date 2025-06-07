@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
+import '../../../../bloc/tracker/tracker_notifications_bloc.dart';
+import '../../../../bloc/tracker/tracker_notifications_marker_bloc.dart';
 import '../../../../core/component/router/app_router.dart';
 import '../../../../core/constants/constants.dart';
 import '../../../../data/model/loading_status_enum.dart';
@@ -12,7 +14,6 @@ import '../../../../di/di.dart';
 import '../../../extension/extension.dart';
 import '../../../widget/enhancement/card.dart';
 import '../../../widget/user_text_button.dart';
-import 'bloc/tracker_notifications_bloc.dart';
 import 'widget/tracker_skeleton_widget.dart';
 
 @RoutePage(name: TrackerSubscriptionPage.routeName)
@@ -23,12 +24,26 @@ class TrackerSubscriptionPage extends StatelessWidget {
   static const String routeName = 'TrackerSubscriptionRoute';
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create:
-          (_) => TrackerNotificationsBloc(
-            repository: getIt(),
-            category: TrackerNotificationCategory.subscribers,
-          ),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create:
+              (_) =>
+                  TrackerNotificationsBloc(
+                      repository: getIt(),
+                      category: TrackerNotificationCategory.subscribers,
+                    )
+                    ..add(const TrackerNotificationsEvent.load())
+                    ..add(const TrackerNotificationsEvent.subscribe()),
+        ),
+        BlocProvider(
+          create:
+              (_) => TrackerNotificationsMarkerBloc(
+                repository: getIt(),
+                category: TrackerNotificationCategory.subscribers,
+              ),
+        ),
+      ],
       child: const TrackerSubscriptionView(),
     );
   }
@@ -41,73 +56,51 @@ class TrackerSubscriptionView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocBuilder<TrackerNotificationsBloc, TrackerNotificationsState>(
-        buildWhen: (previous, current) => previous.status != current.status,
-        builder: (context, state) {
-          if (state.status == LoadingStatus.initial) {
-            context.read<TrackerNotificationsBloc>().add(
-              const TrackerNotificationsEvent.load(),
-            );
-          }
+        builder:
+            (context, state) => switch (state.status) {
+              LoadingStatus.failure => Center(child: Text(state.error)),
+              LoadingStatus.success => ListView.builder(
+                itemCount: state.response.refs.length,
+                itemExtent: 150,
+                itemBuilder: (context, index) {
+                  final model = state.response.refs[index];
 
-          return switch (state.status) {
-            LoadingStatus.failure => Center(child: Text(state.error)),
-            LoadingStatus.success => ListView.builder(
-              itemCount: state.response.list.refs.length,
-              itemBuilder: (context, index) {
-                final model = state.response.list.refs[index];
+                  final key = ValueKey('tracker-subscription-${model.id}');
 
-                if (model.typeEnum == TrackerNotificationType.unknown) {
-                  return _UnknownWidget(model: model);
-                }
+                  if (model.typeEnum == TrackerNotificationType.unknown) {
+                    return _UnknownWidget(key: key, model: model);
+                  }
 
-                return _NotificationWidget(model: model);
-              },
-            ),
-            _ => ListView(
-              children: List.filled(6, const TrackerSkeletonWidget()),
-            ),
-          };
-        },
+                  return _NotificationWidget(key: key, model: model);
+                },
+              ),
+              _ => ListView(
+                children: List.filled(6, const TrackerSkeletonWidget()),
+              ),
+            },
       ),
     );
   }
 }
 
-class _NotificationWidget extends StatefulWidget {
+class _NotificationWidget extends StatelessWidget {
   // ignore: unused_element_parameter
   const _NotificationWidget({super.key, required this.model});
 
   final TrackerNotification model;
 
-  @override
-  State<_NotificationWidget> createState() => _NotificationWidgetState();
-}
-
-class _NotificationWidgetState extends State<_NotificationWidget> {
-  late bool isUnread;
-
-  @override
-  initState() {
-    isUnread = widget.model.unread;
-
-    super.initState();
-  }
-
-  markAsRead(BuildContext context, String id) {
-    context.read<TrackerNotificationsBloc>().add(
-      TrackerNotificationsEvent.read(ids: [id]),
+  void markAsRead(BuildContext context, String id) {
+    context.read<TrackerNotificationsMarkerBloc>().add(
+      TrackerNotificationsMarkerEvent.read(ids: [id]),
     );
-
-    setState(() {
-      isUnread = false;
-    });
   }
 
   @override
   Widget build(BuildContext context) {
     final theme = context.theme;
-    final user = widget.model.dataModel.user;
-    final publication = widget.model.dataModel.publication;
+    final user = model.dataModel.user;
+    final publication = model.dataModel.publication;
+    final isUnread = model.unread;
 
     return FlabrCard(
       color: isUnread ? theme.colors.cardHighlight : null,
@@ -115,53 +108,63 @@ class _NotificationWidgetState extends State<_NotificationWidget> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (user != null) UserTextButton(user),
-          Padding(
-            padding: const EdgeInsets.only(bottom: 8.0),
-            child: RichText(
-              text: TextSpan(
-                style: theme.textTheme.bodyMedium,
-                children: [
-                  TextSpan(text: widget.model.typeEnum.text),
-                  if (publication != null) ...[
-                    const TextSpan(text: ' "'),
-                    TextSpan(
-                      text: publication.text.trim(),
-                      style: TextStyle(color: theme.colorScheme.primary),
-                      recognizer:
-                          TapGestureRecognizer()
-                            ..onTap = () {
-                              markAsRead(context, widget.model.id);
-
-                              context.router.push(
-                                PublicationFlowRoute(
-                                  id: publication.id,
-                                  type: publication.type,
-                                ),
-                              );
-                            },
-                    ),
-                    const TextSpan(text: '"'),
-                  ],
-                ],
-              ),
-            ),
-          ),
-          if (widget.model.timeHappened != null)
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          const Spacer(),
+          RichText(
+            overflow: TextOverflow.ellipsis,
+            maxLines: 3,
+            text: TextSpan(
+              style: theme.textTheme.bodyMedium,
               children: [
-                Text(DateFormat.MMMMd().format(widget.model.timeHappened!)),
-                if (isUnread)
-                  IconButton(
-                    tooltip: 'Отметить как прочитанное',
-                    icon: Icon(
-                      Icons.circle,
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                    onPressed: () => markAsRead(context, widget.model.id),
+                TextSpan(text: model.typeEnum.text),
+                if (publication != null) ...[
+                  const TextSpan(text: ' "'),
+                  TextSpan(
+                    text: publication.text.trim(),
+                    style: TextStyle(color: theme.colorScheme.primary),
+                    recognizer:
+                        TapGestureRecognizer()
+                          ..onTap = () {
+                            markAsRead(context, model.id);
+
+                            context.router.push(
+                              PublicationFlowRoute(
+                                id: publication.id,
+                                type: publication.type,
+                              ),
+                            );
+                          },
                   ),
+                  const TextSpan(text: '"'),
+                ],
               ],
             ),
+          ),
+          const Spacer(),
+          Padding(
+            padding: const EdgeInsets.only(right: 8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                model.timeHappened != null
+                    ? Text(DateFormat.MMMMd().format(model.timeHappened!))
+                    : const SizedBox.shrink(),
+                isUnread
+                    ? Tooltip(
+                      message: 'Отметить как прочитанное',
+                      child: GestureDetector(
+                        child: Icon(
+                          Icons.circle,
+                          color: Theme.of(context).colorScheme.primary,
+                          size: 24,
+                        ),
+                        onTap: () => markAsRead(context, model.id),
+                      ),
+                    )
+                    : const SizedBox.square(dimension: 24),
+              ],
+            ),
+          ),
         ],
       ),
     );

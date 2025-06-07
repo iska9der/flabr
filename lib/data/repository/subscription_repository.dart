@@ -3,7 +3,7 @@ import 'dart:async';
 import '../service/service.dart';
 
 abstract interface class SubscriptionRepository {
-  toggleSubscription({required String alias});
+  Future<void> toggleSubscription({required String alias});
 }
 
 class CompanySubscriptionRepository extends SubscriptionRepository {

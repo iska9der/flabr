@@ -4,6 +4,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:share_plus/share_plus.dart';
 
+import '../../../../bloc/publication/publication_detail_cubit.dart';
 import '../../../../core/constants/constants.dart';
 import '../../../../data/model/publication/publication.dart';
 import '../../../extension/extension.dart';
@@ -11,7 +12,6 @@ import '../../../theme/theme.dart';
 import '../../../widget/enhancement/progress_indicator.dart';
 import '../../../widget/html_view_widget.dart';
 import '../../../widget/publication_settings_widget.dart';
-import '../cubit/publication_detail_cubit.dart';
 import 'card/card.dart';
 import 'publication_more_button.dart';
 import 'stats/stats.dart';
@@ -44,18 +44,18 @@ class _PublicationDetailViewState extends State<PublicationDetailView> {
   }
 
   @override
-  dispose() {
+  void dispose() {
     controller.removeListener(_progressListener);
     controller.dispose();
     super.dispose();
   }
 
-  fetchPublication() {
+  void fetchPublication() {
     context.read<PublicationDetailCubit>().fetch();
   }
 
   /// Вычисление прогресса скролла
-  _progressListener() {
+  void _progressListener() {
     final max = controller.position.maxScrollExtent;
     final current = controller.position.pixels;
     final normalized = (current - 0) / (max - 0);
@@ -85,7 +85,7 @@ class _PublicationDetailViewState extends State<PublicationDetailView> {
                     Text(state.error),
                     FilledButton(
                       onPressed: () => fetchPublication(),
-                      child: Text('Попробовать снова'),
+                      child: const Text('Попробовать снова'),
                     ),
                   ],
                 ),
@@ -315,7 +315,7 @@ class _BottomBar extends StatelessWidget {
       child: ColoredBox(
         color: Theme.of(context).colorScheme.surface.withValues(alpha: .94),
         child: ConstrainedBox(
-          constraints: BoxConstraints(
+          constraints: const BoxConstraints(
             maxHeight: AppDimensions.publicationBottomBarHeight,
           ),
           child: Row(
@@ -323,7 +323,7 @@ class _BottomBar extends StatelessWidget {
             children: [
               Expanded(
                 flex: 7,
-                child: ArticleFooterWidget(
+                child: PublicationFooterWidget(
                   publication: publication,
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   isVoteBlocked: false,

@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:injectable/injectable.dart';
 
-import '../model/language/language.dart';
 import '../model/list_response_model.dart';
 import '../model/user/user.dart';
 import '../service/service.dart';
@@ -15,65 +14,43 @@ class UserRepository {
 
   ListResponse<User> cached = UserListResponse.empty;
 
-  Future<UserListResponse> fetchAll({
-    required Language langUI,
-    required List<Language> langArticles,
-    required String page,
-  }) async {
-    final response = await _service.fetchAll(
-      langUI: langUI.name,
-      langArticles: LanguageEncoder.encodeLangs(langArticles),
-      page: page,
-    );
+  Future<UserListResponse> fetchAll({required String page}) async {
+    final response = await _service.fetchAll(page: page);
 
-    cached = cached.copyWith(refs: [...cached.refs, ...response.refs]);
+    cached = cached.copyWith(
+      pagesCount: response.pagesCount,
+      ids: [...cached.ids, ...response.ids],
+      refs: [...cached.refs, ...response.refs],
+    );
 
     return response;
   }
 
-  Future<User> fetchCard({
-    required String login,
-    required Language langUI,
-    required List<Language> langArticles,
-  }) async {
-    final raw = await _service.fetchCard(
-      alias: login,
-      langUI: langUI.name,
-      langArticles: LanguageEncoder.encodeLangs(langArticles),
-    );
+  Future<User> fetchCard({required String login}) async {
+    final raw = await _service.fetchCard(alias: login);
 
     User model = User.fromMap(raw);
 
     return model;
   }
 
-  User getByLogin(String login) {
-    return cached.refs.firstWhere((element) => element.alias == login);
-  }
-
-  Future<UserWhois> fetchWhois({
-    required String login,
-    required Language langUI,
-    required List<Language> langArticles,
-  }) async {
-    final raw = await _service.fetchWhois(
-      alias: login,
-      langUI: langUI.name,
-      langArticles: LanguageEncoder.encodeLangs(langArticles),
-    );
+  Future<UserWhois> fetchWhois({required String login}) async {
+    final raw = await _service.fetchWhois(alias: login);
 
     UserWhois model = UserWhois.fromMap(raw);
 
     return model;
   }
 
-  Future<UserCommentListResponse> fetchComments({
+  Future<ListResponse<UserComment>> fetchComments({
     required String alias,
     required int page,
   }) async {
-    final response = await _service.fetchComments(alias: alias, page: page);
+    var response = await _service.fetchComments(alias: alias, page: page);
 
-    response.refs.sort((a, b) => b.timePublished.compareTo(a.timePublished));
+    final sortedList = [...response.refs]
+      ..sort((a, b) => b.timePublished.compareTo(a.timePublished));
+    response = response.copyWith(refs: sortedList);
 
     return response;
   }

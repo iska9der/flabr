@@ -1,3 +1,4 @@
+export 'card_html_widget.dart';
 export 'common_card_widget.dart';
 export 'components/footer_widget.dart';
 export 'components/format_widget.dart';

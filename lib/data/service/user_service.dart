@@ -2,27 +2,16 @@ import 'package:injectable/injectable.dart';
 
 import '../../core/component/http/http.dart';
 import '../exception/exception.dart';
+import '../model/list_response_model.dart';
 import '../model/query_params_model.dart';
 import '../model/user/user.dart';
 
 abstract interface class UserService {
-  Future<UserListResponse> fetchAll({
-    required String langUI,
-    required String langArticles,
-    required String page,
-  });
+  Future<UserListResponse> fetchAll({required String page});
 
-  Future<Map<String, dynamic>> fetchCard({
-    required String alias,
-    required String langUI,
-    required String langArticles,
-  });
+  Future<Map<String, dynamic>> fetchCard({required String alias});
 
-  Future<Map<String, dynamic>> fetchWhois({
-    required String alias,
-    required String langUI,
-    required String langArticles,
-  });
+  Future<Map<String, dynamic>> fetchWhois({required String alias});
 
   Future<void> toggleSubscription({required String alias});
 
@@ -31,7 +20,7 @@ abstract interface class UserService {
     required int page,
   });
 
-  Future<UserCommentListResponse> fetchComments({
+  Future<ListResponse<UserComment>> fetchComments({
     required String alias,
     required int page,
   });
@@ -49,21 +38,11 @@ class UserServiceImpl implements UserService {
   final HttpClient _siteClient;
 
   @override
-  Future<UserListResponse> fetchAll({
-    required String langUI,
-    required String langArticles,
-    required String page,
-  }) async {
+  Future<UserListResponse> fetchAll({required String page}) async {
     try {
-      final params = QueryParams(
-        langArticles: langArticles,
-        langUI: langUI,
-        page: page,
-      );
+      final params = QueryParams(page: page).toMap();
 
-      final response = await _mobileClient.get(
-        '/users?${params.toQueryString()}',
-      );
+      final response = await _mobileClient.get('/users', queryParams: params);
 
       return UserListResponse.fromMap(response.data);
     } on AppException {
@@ -72,17 +51,9 @@ class UserServiceImpl implements UserService {
   }
 
   @override
-  Future<Map<String, dynamic>> fetchCard({
-    required String alias,
-    required String langUI,
-    required String langArticles,
-  }) async {
+  Future<Map<String, dynamic>> fetchCard({required String alias}) async {
     try {
-      final params = QueryParams(langArticles: langArticles, langUI: langUI);
-
-      final response = await _mobileClient.get(
-        '/users/$alias/card?${params.toQueryString()}',
-      );
+      final response = await _mobileClient.get('/users/$alias/card');
 
       return response.data;
     } on AppException {
@@ -91,17 +62,9 @@ class UserServiceImpl implements UserService {
   }
 
   @override
-  Future<Map<String, dynamic>> fetchWhois({
-    required String alias,
-    required String langUI,
-    required String langArticles,
-  }) async {
+  Future<Map<String, dynamic>> fetchWhois({required String alias}) async {
     try {
-      final params = QueryParams(langArticles: langArticles, langUI: langUI);
-
-      final response = await _mobileClient.get(
-        '/users/$alias/whois?${params.toQueryString()}',
-      );
+      final response = await _mobileClient.get('/users/$alias/whois');
 
       return response.data;
     } on AppException {
@@ -115,8 +78,8 @@ class UserServiceImpl implements UserService {
       await _siteClient.post('/v2/users/$alias/following/toggle', body: {});
     } on AppException {
       rethrow;
-    } catch (e) {
-      throw FetchException();
+    } catch (_, stackTrace) {
+      Error.throwWithStackTrace(const FetchException(), stackTrace);
     }
   }
 
@@ -127,36 +90,36 @@ class UserServiceImpl implements UserService {
   }) async {
     try {
       final response = await _siteClient.get(
-        '/v2/users/$alias/bookmarks/comments?fl=ru&hl=ru&page=$page',
+        '/v2/users/$alias/bookmarks/comments?page=$page',
       );
 
       return UserCommentListResponse.fromMap(response.data);
     } on AppException {
       rethrow;
-    } catch (e, trace) {
+    } catch (_, trace) {
       Error.throwWithStackTrace(
-        FetchException('Не удалось получить комментарии в закладках'),
+        const FetchException('Не удалось получить комментарии в закладках'),
         trace,
       );
     }
   }
 
   @override
-  Future<UserCommentListResponse> fetchComments({
+  Future<ListResponse<UserComment>> fetchComments({
     required String alias,
     required int page,
   }) async {
     try {
       final response = await _siteClient.get(
-        '/v2/users/$alias/comments?fl=ru&hl=ru&page=$page',
+        '/v2/users/$alias/comments?page=$page',
       );
 
       return UserCommentListResponse.fromMap(response.data);
     } on AppException {
       rethrow;
-    } catch (e, trace) {
+    } catch (_, trace) {
       Error.throwWithStackTrace(
-        FetchException('Не удалось получить комментарии пользователя'),
+        const FetchException('Не удалось получить комментарии пользователя'),
         trace,
       );
     }

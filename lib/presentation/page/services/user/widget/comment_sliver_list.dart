@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
+import '../../../../../bloc/user/user_comment_list_cubit.dart';
 import '../../../../../core/component/router/app_router.dart';
 import '../../../../../data/model/comment/comment.dart';
 import '../../../../../data/model/publication/publication.dart';
@@ -15,7 +16,6 @@ import '../../../../widget/enhancement/card.dart';
 import '../../../../widget/enhancement/progress_indicator.dart';
 import '../../../../widget/user_text_button.dart';
 import '../../../publications/publication_detail_page.dart';
-import '../cubit/user_comment_list_cubit.dart';
 
 class CommentSliverList extends StatelessWidget {
   const CommentSliverList({super.key, required this.fetch});

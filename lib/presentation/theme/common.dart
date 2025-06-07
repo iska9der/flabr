@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'constants.dart';
+import 'responsive.dart';
 
 const appCardTheme = CardThemeData(
   elevation: 1,
@@ -34,14 +35,18 @@ ScrollbarThemeData appScrollBarThemeData = ScrollbarThemeData(
 
 TextButtonThemeData appTextButtonThemeData = TextButtonThemeData(
   style: TextButton.styleFrom(
-    shape: RoundedRectangleBorder(borderRadius: AppStyles.borderRadius),
+    shape: const RoundedRectangleBorder(borderRadius: AppStyles.borderRadius),
   ),
 );
 
 IconButtonThemeData appIconButtonThemeData = IconButtonThemeData(
   style: IconButton.styleFrom(
-    shape: RoundedRectangleBorder(borderRadius: AppStyles.borderRadius),
+    shape: const RoundedRectangleBorder(borderRadius: AppStyles.borderRadius),
   ),
+);
+
+ButtonStyle appFilledButtonStyle = FilledButton.styleFrom(
+  shape: const RoundedRectangleBorder(borderRadius: AppStyles.borderRadius),
 );
 
 const DrawerThemeData appDrawerThemeData = DrawerThemeData(width: 200);
@@ -76,6 +81,7 @@ const ProgressIndicatorThemeData proggressIndicatorThemeData =
 // ignore: deprecated_member_use
 ProgressIndicatorThemeData(year2023: false);
 
-const ListTileThemeData listTileThemeData = ListTileThemeData(
-  shape: RoundedRectangleBorder(borderRadius: AppStyles.borderRadius),
+final ListTileThemeData listTileThemeData = ListTileThemeData(
+  shape: const RoundedRectangleBorder(borderRadius: AppStyles.borderRadius),
+  controlAffinity: !Device.isMobile ? ListTileControlAffinity.leading : null,
 );

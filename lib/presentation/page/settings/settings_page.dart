@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ya_summary/ya_summary.dart';
 
+import '../../../bloc/settings/settings_cubit.dart';
+import '../../../core/constants/constants.dart';
 import '../../../data/model/filter/filter.dart';
 import '../../../data/model/language/language.dart';
 import '../../../feature/auth/auth.dart';
@@ -10,7 +12,6 @@ import '../../extension/extension.dart';
 import '../../theme/theme.dart';
 import '../../widget/filter/filter_chip_list.dart';
 import '../../widget/publication_settings_widget.dart';
-import 'cubit/settings_cubit.dart';
 import 'model/config_model.dart';
 import 'widget/settings_card_widget.dart';
 import 'widget/settings_checkbox_widget.dart';
@@ -40,12 +41,12 @@ class SettingsView extends StatelessWidget {
           children: [
             SettingsSectionWidget(
               children: [
-                AccountTile(),
-                SettingsCardWidget(
-                  title: 'connect_sid',
+                const AccountTile(),
+                const SettingsCardWidget(
+                  title: Keys.sidToken,
                   subtitle: 'Если не удается войти через форму логина',
                   child: Padding(
-                    padding: const EdgeInsets.only(top: 12.0),
+                    padding: EdgeInsets.only(top: 12.0),
                     child: ConnectSidWidget(),
                   ),
                 ),
@@ -63,11 +64,11 @@ class SettingsView extends StatelessWidget {
                 ),
               ],
             ),
-            SettingsSectionWidget(
+            const SettingsSectionWidget(
               title: 'Интерфейс',
               children: [UIThemeWidget(), UILangWidget(), ArticlesLangWidget()],
             ),
-            SettingsSectionWidget(
+            const SettingsSectionWidget(
               title: 'Лента',
               children: [
                 SettingsFeedWidget(),
@@ -75,7 +76,7 @@ class SettingsView extends StatelessWidget {
                 SettingScrollVariantWidget(),
               ],
             ),
-            SettingsSectionWidget(
+            const SettingsSectionWidget(
               title: 'Публикации',
               children: [
                 SettingsCardWidget(
@@ -163,23 +164,32 @@ class UILangWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return SettingsCardWidget(
       title: 'Язык интерфейса',
-      child: BlocBuilder<SettingsCubit, SettingsState>(
-        buildWhen: (previous, current) => previous.langUI != current.langUI,
-        builder: (context, state) {
-          return DropdownButton(
-            hint: const Text('Язык'),
-            isExpanded: true,
-            underline: const SizedBox(),
-            value: state.langUI,
-            items: const [
-              DropdownMenuItem(value: Language.ru, child: Text('Русский')),
-              DropdownMenuItem(value: Language.en, child: Text('Английский')),
-            ],
-            onChanged: (Language? value) {
-              context.read<SettingsCubit>().changeUILang(value);
-            },
-          );
-        },
+      child: Padding(
+        padding: const EdgeInsets.only(top: 8.0),
+        child: BlocBuilder<SettingsCubit, SettingsState>(
+          buildWhen: (previous, current) => previous.langUI != current.langUI,
+          builder: (context, state) {
+            return FilterChipList(
+              options:
+                  Language.values
+                      .map(
+                        (lang) => FilterOption(
+                          value: lang.name,
+                          label: switch (lang) {
+                            Language.ru => 'Русский',
+                            Language.en => 'Английский',
+                          },
+                        ),
+                      )
+                      .toList(),
+              isSelected: (option) => option.value == state.langUI.name,
+              onSelected: (isSelected, option) {
+                final newLang = Language.fromString(option.value);
+                context.read<SettingsCubit>().changeUILang(newLang);
+              },
+            );
+          },
+        ),
       ),
     );
   }

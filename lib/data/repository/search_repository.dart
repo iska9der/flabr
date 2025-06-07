@@ -5,7 +5,6 @@ import 'package:injectable/injectable.dart';
 import '../exception/exception.dart';
 import '../model/company/company.dart' show CompanyListResponse;
 import '../model/hub/hub.dart' show HubListResponse;
-import '../model/language/language.dart';
 import '../model/list_response_model.dart';
 import '../model/publication/publication.dart';
 import '../model/search/search.dart';
@@ -18,17 +17,13 @@ class SearchRepository {
 
   final SearchService _service;
 
-  Future<ListResponse> fetch({
-    required Language langUI,
-    required List<Language> langArticles,
+  Future<ListResponse<dynamic>> fetch({
     required String query,
     required SearchTarget target,
     required SearchOrder order,
     required int page,
   }) async {
     var raw = await _service.fetch(
-      langUI: langUI.name,
-      langArticles: LanguageEncoder.encodeLangs(langArticles),
       query: query,
       target: target,
       order: order.name,
@@ -37,8 +32,11 @@ class SearchRepository {
 
     switch (target) {
       case SearchTarget.posts:
-        final response = PublicationCommonListResponse.fromMap(raw);
-        _sortArticles(order, response);
+        ListResponse<Publication> response =
+            PublicationCommonListResponse.fromMap(raw);
+        final sortedList = _sortPublications(order, response);
+
+        response = response.copyWith(refs: sortedList);
         return response;
       case SearchTarget.hubs:
         return HubListResponse.fromMap(raw);
@@ -47,20 +45,22 @@ class SearchRepository {
       case SearchTarget.users:
         return UserListResponse.fromMap(raw);
       case SearchTarget.comments:
-        throw ValueException('Не реализовано');
+        throw const ValueException('Не реализовано');
     }
   }
 
-  void _sortArticles(
+  List<Publication> _sortPublications(
     SearchOrder order,
-    PublicationCommonListResponse response,
+    ListResponse<Publication> response,
   ) {
+    final refs = [...response.refs];
+
     if (order == SearchOrder.date) {
-      response.refs.sort((a, b) => b.timePublished.compareTo(a.timePublished));
+      refs.sort((a, b) => b.timePublished.compareTo(a.timePublished));
     } else if (order == SearchOrder.rating) {
-      response.refs.sort(
-        (a, b) => b.statistics.score.compareTo(a.statistics.score),
-      );
+      refs.sort((a, b) => b.statistics.score.compareTo(a.statistics.score));
     }
+
+    return refs;
   }
 }

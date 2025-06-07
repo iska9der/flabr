@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
-import '../../../presentation/page/settings/cubit/settings_cubit.dart';
+import '../../../bloc/settings/settings_cubit.dart';
 import '../../../presentation/theme/theme.dart';
 import '../../../presentation/widget/enhancement/card.dart';
 import '../../../presentation/widget/enhancement/refresh_indicator.dart';
@@ -23,23 +23,18 @@ class PublicationListScaffold<
   const PublicationListScaffold({
     super.key,
     this.filter,
-    this.showMostReading = true,
+    this.sidebarEnabled = true,
+    this.showPublicationType = false,
   });
 
   final Widget? filter;
-  final bool showMostReading;
+  final bool sidebarEnabled;
+  final bool showPublicationType;
 
   @override
   Widget build(BuildContext context) {
     final pubCubit = context.read<ListCubit>();
     final scrollCubit = context.read<ScrollCubit>();
-    final scrollController = scrollCubit.state.controller;
-    final scrollPhysics = context.select<SettingsCubit, ScrollPhysics>(
-      (cubit) => cubit.state.misc.scrollVariant.physics(context),
-    );
-
-    final sidebarHeight =
-        Device.getHeight(context) - AppDimensions.toolBarHeight;
 
     return MultiBlocListener(
       listeners: [
@@ -89,48 +84,123 @@ class PublicationListScaffold<
           ],
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-        body: SafeArea(
-          child: Scrollbar(
-            controller: scrollController,
-            child: CustomScrollView(
-              cacheExtent: 1000,
-              controller: scrollController,
-              physics: scrollPhysics,
-              slivers: [
-                FlabrSliverRefreshIndicator(
-                  onRefresh: context.read<ListCubit>().refetch,
+        body: PublicationListScaffoldParams(
+          filter: filter,
+          sidebarEnabled: sidebarEnabled,
+          showPublicationType: showPublicationType,
+          child: _PublicationListView<ListCubit, ListState>(),
+        ),
+      ),
+    );
+  }
+}
+
+class PublicationListScaffoldParams extends InheritedWidget {
+  const PublicationListScaffoldParams({
+    super.key,
+    this.filter,
+    this.sidebarEnabled = true,
+    this.showPublicationType = false,
+    required super.child,
+  });
+
+  final Widget? filter;
+  final bool sidebarEnabled;
+  final bool showPublicationType;
+
+  @override
+  bool updateShouldNotify(PublicationListScaffoldParams oldWidget) {
+    return filter != oldWidget.filter ||
+        sidebarEnabled != oldWidget.sidebarEnabled ||
+        showPublicationType != oldWidget.showPublicationType;
+  }
+
+  static PublicationListScaffoldParams of(BuildContext context) {
+    final PublicationListScaffoldParams? result =
+        context
+            .dependOnInheritedWidgetOfExactType<
+              PublicationListScaffoldParams
+            >();
+    assert(result != null, 'No PublicationListParams found in context');
+    return result!;
+  }
+}
+
+class _PublicationListView<
+  ListCubit extends PublicationListCubit<ListState>,
+  ListState extends PublicationListState
+>
+    extends StatelessWidget {
+  // ignore: unused_element_parameter
+  const _PublicationListView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final params = PublicationListScaffoldParams.of(context);
+    final scrollController = context.read<ScrollCubit>().state.controller;
+    final scrollPhysics = context.select<SettingsCubit, ScrollPhysics>(
+      (cubit) => cubit.state.misc.scrollVariant.physics(context),
+    );
+
+    return SafeArea(
+      child: Scrollbar(
+        controller: scrollController,
+        child: CustomScrollView(
+          cacheExtent: 1000,
+          controller: scrollController,
+          physics: scrollPhysics,
+          slivers: [
+            SliverPadding(
+              padding: const EdgeInsets.only(top: AppDimensions.tabBarHeight),
+              sliver: FlabrSliverRefreshIndicator(
+                onRefresh: context.read<ListCubit>().refetch,
+              ),
+            ),
+
+            /// Кнопка "Читают сейчас"
+            /// видна только на мобильных устройствах
+            const ResponsiveVisibilitySliver(
+              hiddenConditions: [
+                Condition.largerThan(name: ScreenType.mobile, value: false),
+              ],
+              sliver: SliverToBoxAdapter(
+                child: Padding(
+                  padding: AppInsets.mostReadingMobile,
+                  child: MostReadingWidget.button(),
                 ),
-                if (showMostReading)
-                  const ResponsiveVisibilitySliver(
-                    hiddenConditions: [
-                      Condition.largerThan(
-                        name: ScreenType.mobile,
-                        value: false,
-                      ),
-                    ],
-                    sliver: SliverToBoxAdapter(
-                      child: Padding(
-                        padding: AppInsets.mostReadingMobile,
-                        child: MostReadingWidget.button(),
-                      ),
-                    ),
+              ),
+            ),
+            SliverCrossAxisGroup(
+              slivers: [
+                PublicationSliverList<ListCubit, ListState>(
+                  showType: params.showPublicationType,
+                ),
+
+                /// Боковая панель с дополнительными виджетами, например "Читают сейчас"
+                /// Видна на планшетах и десктопных устройствах,
+                /// и если sidebarEnabled = true
+                ResponsiveVisibilitySliver(
+                  visible: false,
+                  visibleConditions:
+                      params.sidebarEnabled
+                          ? const [
+                            Condition.largerThan(
+                              name: ScreenType.mobile,
+                              value: true,
+                            ),
+                          ]
+                          : const [],
+                  replacementSliver: const SliverConstrainedCrossAxis(
+                    maxExtent: 0,
+                    sliver: SliverToBoxAdapter(),
                   ),
-                SliverCrossAxisGroup(
-                  slivers: [
-                    PublicationSliverList<ListCubit, ListState>(),
-                    ResponsiveVisibilitySliver(
-                      visible: false,
-                      visibleConditions: const [
-                        Condition.largerThan(
-                          name: ScreenType.mobile,
-                          value: true,
-                        ),
-                      ],
-                      replacementSliver: const SliverConstrainedCrossAxis(
-                        maxExtent: 0,
-                        sliver: SliverToBoxAdapter(),
-                      ),
-                      sliver: SliverConstrainedCrossAxis(
+                  sliver: Builder(
+                    builder: (context) {
+                      final sidebarHeight =
+                          Device.getHeight(context) -
+                          AppDimensions.toolBarHeight;
+
+                      return SliverConstrainedCrossAxis(
                         maxExtent:
                             ResponsiveValue<double>(
                               context,
@@ -143,11 +213,11 @@ class PublicationListScaffold<
                               ],
                             ).value,
                         sliver: SliverAppBar(
+                          automaticallyImplyLeading: false,
                           backgroundColor: Colors.transparent,
                           clipBehavior: Clip.none,
                           toolbarHeight: sidebarHeight,
                           expandedHeight: sidebarHeight,
-                          floating: true,
                           pinned: true,
                           flexibleSpace: const Padding(
                             padding: AppInsets.mostReadingDesktop,
@@ -161,13 +231,13 @@ class PublicationListScaffold<
                             ),
                           ),
                         ),
-                      ),
-                    ),
-                  ],
+                      );
+                    },
+                  ),
                 ),
               ],
             ),
-          ),
+          ],
         ),
       ),
     );

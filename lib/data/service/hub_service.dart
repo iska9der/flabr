@@ -6,17 +6,9 @@ import '../model/hub/hub.dart';
 import '../model/query_params_model.dart';
 
 abstract interface class HubService {
-  Future<HubListResponse> fetchAll({
-    required int page,
-    required String langUI,
-    required String langArticles,
-  });
+  Future<HubListResponse> fetchAll({required int page});
 
-  Future<Map<String, dynamic>> fetchProfile(
-    String alias, {
-    required String langUI,
-    required String langArticles,
-  });
+  Future<Map<String, dynamic>> fetchProfile(String alias);
 
   Future<void> toggleSubscription({required String alias});
 }
@@ -33,46 +25,29 @@ class HubServiceImpl implements HubService {
   final HttpClient _siteClient;
 
   @override
-  Future<HubListResponse> fetchAll({
-    required int page,
-    required String langUI,
-    required String langArticles,
-  }) async {
+  Future<HubListResponse> fetchAll({required int page}) async {
     try {
-      var params = QueryParams(
-        page: page.toString(),
-        langUI: langUI,
-        langArticles: langArticles,
-      );
-      final queryString = params.toQueryString();
-      final response = await _mobileClient.get('/hubs/?$queryString');
+      var params = QueryParams(page: page.toString()).toMap();
+      final response = await _mobileClient.get('/hubs', queryParams: params);
 
       return HubListResponse.fromMap(response.data);
     } on AppException {
       rethrow;
-    } catch (e) {
-      throw FetchException();
+    } catch (_, stackTrace) {
+      Error.throwWithStackTrace(const FetchException(), stackTrace);
     }
   }
 
   @override
-  Future<Map<String, dynamic>> fetchProfile(
-    String alias, {
-    required String langUI,
-    required String langArticles,
-  }) async {
+  Future<Map<String, dynamic>> fetchProfile(String alias) async {
     try {
-      var params = QueryParams(langUI: langUI, langArticles: langArticles);
-      final queryString = params.toQueryString();
-      final response = await _mobileClient.get(
-        '/hubs/$alias/profile?$queryString',
-      );
+      final response = await _mobileClient.get('/hubs/$alias/profile');
 
       return response.data;
     } on AppException {
       rethrow;
-    } catch (e) {
-      throw FetchException();
+    } catch (_, stackTrace) {
+      Error.throwWithStackTrace(const FetchException(), stackTrace);
     }
   }
 
@@ -82,8 +57,8 @@ class HubServiceImpl implements HubService {
       await _siteClient.post('/v2/hubs/$alias/subscription', body: {});
     } on AppException {
       rethrow;
-    } catch (e) {
-      throw FetchException();
+    } catch (_, stackTrace) {
+      Error.throwWithStackTrace(const FetchException(), stackTrace);
     }
   }
 }

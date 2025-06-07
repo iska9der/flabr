@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+import '../../../presentation/extension/extension.dart';
 import 'connect_sid_widget.dart';
 import 'login_webview.dart';
 import 'profile_widget.dart';
@@ -26,6 +27,16 @@ Future showProfileDialog(
   );
 }
 
+void showLoginSnackBar(BuildContext context) async {
+  return context.showSnack(
+    content: const Text('Необходимо войти в аккаунт'),
+    action: SnackBarAction(
+      label: 'Вход',
+      onPressed: () => showLoginDialog(context),
+    ),
+  );
+}
+
 Future showLoginDialog(BuildContext context) async {
   return await showDialog(
     context: context,
@@ -47,7 +58,7 @@ Future showLoginDialog(BuildContext context) async {
           content:
               /// в вебе не работает webview_flutter
               kIsWeb
-                  ? Padding(
+                  ? const Padding(
                     padding: EdgeInsets.symmetric(horizontal: 12, vertical: 24),
                     child: ConnectSidWidget(),
                   )

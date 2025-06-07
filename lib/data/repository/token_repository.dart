@@ -1,67 +1,62 @@
 import 'dart:async';
 
+import 'package:collection/collection.dart';
+import 'package:cookie_jar/cookie_jar.dart';
 import 'package:injectable/injectable.dart';
+import 'package:rxdart/rxdart.dart';
 
-import '../../core/component/storage/storage.dart';
 import '../../core/constants/constants.dart';
-import '../model/tokens_model.dart';
 
 @Singleton()
 class TokenRepository {
-  TokenRepository(@Named('secureStorage') this._storage);
+  TokenRepository({required this.cookieJar});
 
-  final CacheStorage _storage;
+  final CookieJar cookieJar;
 
-  Tokens _tokens = Tokens.empty;
-  Tokens get tokens => _tokens;
+  final _tokenController = BehaviorSubject<String>.seeded('');
+  Stream<String> get onTokenChanged => _tokenController.asBroadcastStream();
+  String get token => _tokenController.value;
 
-  String _csrf = '';
+  String? _csrf;
+  String? get csrf => _csrf;
 
-  Future<Tokens?> getTokens() async {
-    if (!_tokens.isEmpty) return _tokens;
+  Future<void> init() async {
+    /// Получаем из кук токен [Keys.sidToken]
+    final cookies = await cookieJar.loadForRequest(Uri.parse(Urls.baseUrl));
+    final token =
+        cookies
+            .firstWhereOrNull((cookie) => cookie.name == Keys.sidToken)
+            ?.value ??
+        '';
 
-    final raw = await _storage.read(CacheKeys.authTokens);
+    saveToken(token);
+  }
 
-    if (raw == null) {
-      return null;
+  Future<void> saveToken(String newToken, {bool asCookie = false}) async {
+    if (newToken == _tokenController.value) {
+      return;
     }
 
-    _tokens = Tokens.fromJson(raw);
-
-    return _tokens;
-  }
-
-  Future<void> setTokens(Tokens newTokens) async {
-    await _storage.write(CacheKeys.authTokens, newTokens.toJson());
-
-    _tokens = newTokens;
-  }
-
-  Future<String?> getCsrf() async {
-    if (_csrf.isNotEmpty) return _csrf;
-
-    final raw = await _storage.read(CacheKeys.authCsrf);
-
-    if (raw == null) {
-      return null;
+    if (asCookie) {
+      final Cookie cookie = Cookie(Keys.sidToken, newToken);
+      await cookieJar.saveFromResponse(Uri.parse(Urls.baseUrl), [cookie]);
+      await cookieJar.saveFromResponse(Uri.parse(Urls.mobileBaseUrl), [cookie]);
     }
 
-    _csrf = raw;
-
-    return raw;
+    _tokenController.add(newToken);
   }
 
-  Future<void> setCsrf(String value) async {
-    await _storage.write(CacheKeys.authCsrf, value);
+  void setCsrf(String value) {
+    if (_csrf == value || value.isEmpty) {
+      return;
+    }
 
     _csrf = value;
   }
 
   Future<void> clearAll() async {
-    _tokens = Tokens.empty;
-    _csrf = '';
-
-    await _storage.delete(CacheKeys.authTokens);
-    await _storage.delete(CacheKeys.authCsrf);
+    _csrf = null;
+    await cookieJar.deleteAll();
+    _tokenController.add('');
   }
 }

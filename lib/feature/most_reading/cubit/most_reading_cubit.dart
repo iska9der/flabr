@@ -10,7 +10,7 @@ import '../../../data/repository/repository.dart';
 part 'most_reading_state.dart';
 
 class MostReadingCubit extends Cubit<MostReadingState> {
-  MostReadingCubit(PublicationRepository repository)
+  MostReadingCubit({required PublicationRepository repository})
     : _repository = repository,
       super(const MostReadingState());
 
@@ -25,10 +25,7 @@ class MostReadingCubit extends Cubit<MostReadingState> {
     emit(state.copyWith(status: LoadingStatus.loading));
 
     try {
-      final models = await _repository.fetchMostReading(
-        langUI: state.langUI,
-        langArticles: state.langArticles,
-      );
+      final models = await _repository.fetchMostReading();
 
       emit(state.copyWith(status: LoadingStatus.success, publications: models));
     } catch (e) {
