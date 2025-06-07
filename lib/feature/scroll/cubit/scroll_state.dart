@@ -5,11 +5,13 @@ class ScrollState extends Equatable {
     required this.controller,
     this.isTopEdge = false,
     this.isBottomEdge = false,
+    this.isScrollToTopVisible = false,
   });
 
   final ScrollController controller;
   final bool isTopEdge;
   final bool isBottomEdge;
+  final bool isScrollToTopVisible;
 
   bool get isBetweenEdge => !isTopEdge && !isBottomEdge;
 
@@ -18,11 +20,13 @@ class ScrollState extends Equatable {
     ScrollPosition? position,
     bool? isTopEdge,
     bool? isBottomEdge,
+    bool? isScrollToTopVisible,
   }) {
     return ScrollState(
       controller: controller ?? this.controller,
       isTopEdge: isTopEdge ?? this.isTopEdge,
       isBottomEdge: isBottomEdge ?? this.isBottomEdge,
+      isScrollToTopVisible: isScrollToTopVisible ?? this.isScrollToTopVisible,
     );
   }
 
@@ -30,5 +34,10 @@ class ScrollState extends Equatable {
   bool get stringify => true;
 
   @override
-  List<Object?> get props => [controller, isTopEdge, isBottomEdge];
+  List<Object?> get props => [
+    controller,
+    isTopEdge,
+    isBottomEdge,
+    isScrollToTopVisible,
+  ];
 }
