@@ -60,6 +60,7 @@ class CommonCardWidget extends StatelessWidget {
                 PublicationHubsWidget(hubs: publication.hubs),
                 if (publication.format != null)
                   PublicationFormatWidget(publication.format!),
+                const SizedBox(),
               ],
             ),
           ),

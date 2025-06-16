@@ -20,7 +20,7 @@ part 'publication_detail_appbar.dart';
 part 'publication_detail_title.dart';
 
 const double _hPadding = 12.0;
-const double _vPadding = 10.0;
+const double _vPadding = 6.0;
 const double _appbarPadding = 40.0;
 
 class PublicationDetailView extends StatefulWidget {
@@ -134,31 +134,26 @@ class _PublicationDetailViewState extends State<PublicationDetailView> {
                         SliverToBoxAdapter(
                           child: PublicationDetailTitle(
                             publication: publication,
-                            padding: const EdgeInsets.only(
-                              top: _vPadding,
-                              left: _hPadding,
-                              right: _hPadding,
-                              bottom: _vPadding,
+                            padding: const EdgeInsets.symmetric(
+                              vertical: _vPadding,
+                              horizontal: _hPadding,
                             ),
                           ),
                         ),
                         SliverToBoxAdapter(
                           child: Padding(
-                            padding: const EdgeInsets.only(
-                              top: _vPadding,
-                              left: _hPadding,
-                              right: _hPadding,
-                              bottom: _vPadding,
+                            padding: const EdgeInsets.symmetric(
+                              vertical: _vPadding,
+                              horizontal: _hPadding,
                             ),
                             child: PublicationStatsWidget(publication),
                           ),
                         ),
                         SliverToBoxAdapter(
                           child: Padding(
-                            padding: const EdgeInsets.only(
-                              top: _vPadding - 6,
-                              left: _hPadding,
-                              right: _hPadding,
+                            padding: const EdgeInsets.symmetric(
+                              vertical: _vPadding,
+                              horizontal: _hPadding,
                             ),
                             child: PublicationHubsWidget(
                               hubs: publication.hubs,
@@ -167,12 +162,13 @@ class _PublicationDetailViewState extends State<PublicationDetailView> {
                         ),
                         SliverToBoxAdapter(
                           child: switch (publication) {
-                            (PublicationCommon a) when a.format != null =>
+                            (PublicationCommon c) when c.format != null =>
                               Padding(
                                 padding: const EdgeInsets.symmetric(
+                                  vertical: _vPadding,
                                   horizontal: _hPadding,
                                 ),
-                                child: PublicationFormatWidget(a.format!),
+                                child: PublicationFormatWidget(c.format!),
                               ),
                             _ => const SizedBox(),
                           },

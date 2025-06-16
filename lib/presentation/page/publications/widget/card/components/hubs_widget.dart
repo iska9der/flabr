@@ -5,6 +5,7 @@ import '../../../../../../core/component/router/app_router.dart';
 import '../../../../../../data/model/hub/hub.dart';
 import '../../../../../../data/model/publication/publication.dart';
 import '../../../../../../di/di.dart';
+import '../../../../../extension/context.dart';
 import '../../../../../theme/theme.dart';
 
 class PublicationHubsWidget extends StatelessWidget {
@@ -15,7 +16,8 @@ class PublicationHubsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Wrap(
-      spacing: 14,
+      spacing: 4,
+      runSpacing: 6,
       children: hubs.map((hub) => _PublicationHub(hub: hub)).toList(),
     );
   }
@@ -32,9 +34,7 @@ class _PublicationHub extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var style = Theme.of(
-      context,
-    ).textTheme.bodySmall?.copyWith(fontWeight: FontWeight.w500);
+    var style = context.theme.textTheme.labelMedium;
 
     if ((hub.relatedData as HubRelatedData).isSubscribed) {
       style = style?.copyWith(color: Colors.green.shade300);
@@ -56,7 +56,7 @@ class _PublicationHub extends StatelessWidget {
       onTap: () => getIt<AppRouter>().navigate(route),
       borderRadius: AppStyles.borderRadius,
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8.0),
+        padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
         child: Text(title, style: style, softWrap: true),
       ),
     );

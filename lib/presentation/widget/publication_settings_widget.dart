@@ -67,9 +67,20 @@ class FontScaleSlider extends StatefulWidget {
 class _FontScaleSliderState extends State<FontScaleSlider> {
   double sliderValue = 1;
 
+  static const double _min = 0.92;
+  static const double _max = 1.4;
+
   @override
   void initState() {
-    sliderValue = widget.initialScale;
+    double initial = widget.initialScale;
+
+    if (initial < _min) {
+      initial = _min;
+    } else if (initial > _max) {
+      initial = _max;
+    }
+
+    sliderValue = initial;
 
     super.initState();
   }
@@ -81,8 +92,8 @@ class _FontScaleSliderState extends State<FontScaleSlider> {
         return Slider(
           label: 'Размер шрифта',
           value: sliderValue,
-          min: 0.8,
-          max: 1.4,
+          min: _min,
+          max: _max,
           onChanged: (value) {
             setState(() {
               sliderValue = value;

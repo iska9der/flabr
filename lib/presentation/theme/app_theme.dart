@@ -29,27 +29,27 @@ abstract class AppTheme {
     textTheme = textTheme.copyWith(
       titleSmall: textTheme.titleSmall?.copyWith(
         fontFamily: 'Geologica',
-        fontVariations: [const FontVariation('wght', 400)],
+        fontVariations: [const FontVariation.weight(400)],
       ),
       titleMedium: textTheme.titleMedium?.copyWith(
         fontFamily: 'Geologica',
-        fontVariations: [const FontVariation('wght', 500)],
+        fontVariations: [const FontVariation.weight(500)],
       ),
       titleLarge: textTheme.titleLarge?.copyWith(
         fontFamily: 'Geologica',
-        fontVariations: [const FontVariation('wght', 600)],
+        fontVariations: [const FontVariation.weight(600)],
       ),
       headlineSmall: textTheme.headlineSmall?.copyWith(
         fontFamily: 'Geologica',
-        fontVariations: [const FontVariation('wght', 400)],
+        fontVariations: [const FontVariation.weight(400)],
       ),
       headlineMedium: textTheme.headlineMedium?.copyWith(
         fontFamily: 'Geologica',
-        fontVariations: [const FontVariation('wght', 500)],
+        fontVariations: [const FontVariation.weight(500)],
       ),
       headlineLarge: textTheme.headlineLarge?.copyWith(
         fontFamily: 'Geologica',
-        fontVariations: [const FontVariation('wght', 600)],
+        fontVariations: [const FontVariation.weight(600)],
       ),
     );
 
