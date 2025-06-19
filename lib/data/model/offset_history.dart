@@ -30,10 +30,8 @@ class OffsetHistory {
     return value;
   }
 
-  String? lessThan(double value) {
-    final entry = _data.entries.firstWhereOrNull(
-      (e) => value > e.value,
-    );
+  String? lessThan(double pixels) {
+    final entry = _data.entries.firstWhereOrNull((e) => pixels > e.value);
     return entry?.key;
   }
 

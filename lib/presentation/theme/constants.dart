@@ -47,6 +47,10 @@ abstract class AppStyles {
   static const BorderRadius borderRadius = BorderRadius.all(
     Radius.circular(8.0),
   );
+
+  static const BorderRadius borderRadiusSm = BorderRadius.all(
+    Radius.circular(4.0),
+  );
 }
 
 abstract class AppIcons {

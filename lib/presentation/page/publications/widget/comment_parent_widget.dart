@@ -9,90 +9,178 @@ import '../../../extension/extension.dart';
 import '../../../theme/theme.dart';
 import '../../../widget/html_view_widget.dart';
 
-class CommentParent extends StatelessWidget {
-  const CommentParent({super.key, required this.parent});
+class CommentParent extends StatefulWidget {
+  const CommentParent({super.key, required this.parent, this.onParentTapped});
 
   final CommentBase parent;
+  final VoidCallback? onParentTapped;
+
+  @override
+  State<CommentParent> createState() => _CommentParentState();
+}
+
+class _CommentParentState extends State<CommentParent> {
+  final tag = UniqueKey();
+
+  late TextStyle textStyle = DefaultTextStyle.of(context).style;
+  late Color bgColor = context.theme.colors.cardHighlight;
+  late final parentHtml = HtmlView(
+    textHtml: widget.parent.message,
+    textStyle: textStyle,
+    renderMode: RenderMode.column,
+    padding: EdgeInsets.zero,
+  );
+
+  @override
+  void didChangeDependencies() {
+    bgColor = context.theme.colors.cardHighlight;
+    textStyle = DefaultTextStyle.of(context).style;
+
+    super.didChangeDependencies();
+  }
+
+  PageRoute buildPageRoute(BuildContext context) {
+    return PageRouteBuilder(
+      opaque: false,
+      barrierDismissible: true,
+      pageBuilder:
+          (_, __, ___) => Center(
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxWidth: Device.getWidth(context) * .9,
+                  maxHeight: Device.getHeight(context) * .5,
+                ),
+                child: Hero(
+                  tag: tag,
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      borderRadius: AppStyles.borderRadius,
+                      color: bgColor,
+                    ),
+                    child: SingleChildScrollView(
+                      padding: const EdgeInsets.all(16),
+                      child: parentHtml,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    final text = parse(parent.message).documentElement?.text ?? '';
-
+    final text = parse(widget.parent.message).documentElement?.text ?? '';
     if (text.isEmpty) {
       return const SizedBox();
     }
 
-    final tag = UniqueKey();
-    final textStyle = DefaultTextStyle.of(context).style;
-    final bgColor = context.theme.colors.cardHighlight;
-
     return Padding(
-      padding: const EdgeInsets.all(10),
+      // TODO: bottom padding Для iconbutton?
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 6),
       child: Hero(
         tag: tag,
         child: DecoratedBox(
           decoration: BoxDecoration(
-            borderRadius: AppStyles.borderRadius,
+            borderRadius: AppStyles.borderRadiusSm,
             color: bgColor,
           ),
-          child: Padding(
-            padding: const EdgeInsets.all(8),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  text,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: textStyle,
-                ),
-                IconButton.outlined(
-                  visualDensity: VisualDensity.compact,
-                  icon: const Icon(
-                    Icons.remove_red_eye_sharp,
-                    size: 16,
-                  ),
-                  onPressed: () => Navigator.of(
-                    context,
-                    rootNavigator: true,
-                  ).push(
-                    PageRouteBuilder(
-                      opaque: false,
-                      barrierDismissible: true,
-                      pageBuilder: (_, __, ___) => Center(
-                        child: BackdropFilter(
-                          filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
-                          child: ConstrainedBox(
-                            constraints: BoxConstraints(
-                              maxWidth: Device.getWidth(context) * .9,
-                              maxHeight: Device.getHeight(context) * .5,
-                            ),
-                            child: Hero(
-                              tag: tag,
-                              child: DecoratedBox(
-                                decoration: BoxDecoration(
-                                  borderRadius: AppStyles.borderRadius,
-                                  color: bgColor,
-                                ),
-                                child: SingleChildScrollView(
-                                  padding: const EdgeInsets.all(16),
-                                  child: HtmlView(
-                                    textHtml: parent.message,
-                                    textStyle: textStyle,
-                                    renderMode: RenderMode.column,
-                                    padding: EdgeInsets.zero,
-                                  ),
-                                ),
+          child: Stack(
+            alignment: Alignment.bottomCenter,
+            children: [
+              ConstrainedBox(
+                constraints: const BoxConstraints(maxHeight: 100),
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.fromLTRB(10, 0, 10, 40),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      GestureDetector(
+                        onTap: widget.onParentTapped,
+                        behavior: HitTestBehavior.translucent,
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 10, bottom: 8),
+                          child: Row(
+                            spacing: 4,
+                            children: [
+                              Icon(
+                                Icons.arrow_upward,
+                                size: 18,
+                                color: context.theme.colors.primary,
                               ),
-                            ),
+                              SelectableText.rich(
+                                TextSpan(
+                                  text: 'ответил на ',
+                                  style: textStyle,
+                                  children: [
+                                    TextSpan(
+                                      text: 'сообщение от ',
+                                      style: textStyle.copyWith(
+                                        color: context.theme.colors.primary,
+                                      ),
+                                      children: [
+                                        TextSpan(
+                                          text: widget.parent.author.alias,
+                                          style: textStyle.copyWith(
+                                            color: context.theme.colors.primary,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    const TextSpan(text: ':'),
+                                  ],
+                                ),
+                                onTap: widget.onParentTapped,
+                              ),
+                            ],
                           ),
                         ),
+                      ),
+                      parentHtml,
+                    ],
+                  ),
+                ),
+              ),
+              Positioned.fill(
+                top: 60,
+                child: IgnorePointer(
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      borderRadius: AppStyles.borderRadius,
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          bgColor.withValues(alpha: .1),
+                          bgColor.withValues(alpha: .3),
+                          bgColor.withValues(alpha: .6),
+                          bgColor.withValues(alpha: .9),
+                          bgColor,
+                        ],
                       ),
                     ),
                   ),
                 ),
-              ],
-            ),
+              ),
+              Positioned(
+                bottom: 0,
+                right: 0,
+                child: IconButton.filled(
+                  visualDensity: VisualDensity.compact,
+                  icon: const Icon(Icons.remove_red_eye_sharp, size: 16),
+                  tooltip: 'Показать полностью',
+                  onPressed:
+                      () => Navigator.of(
+                        context,
+                        rootNavigator: true,
+                      ).push(buildPageRoute(context)),
+                ),
+              ),
+            ],
           ),
         ),
       ),

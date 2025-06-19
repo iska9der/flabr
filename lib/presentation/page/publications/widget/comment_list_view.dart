@@ -93,8 +93,29 @@ class _CommentTreeWidgetState extends State<CommentTreeWidget> {
     super.dispose();
   }
 
-  void _moveToParent(String id) async {
-    final key = _parentKeys[id];
+  /// добавляем в историю текущий оффсет скролла
+  void _saveToHistory({
+    required String id,
+    required double offset,
+    required String parentId,
+  }) {
+    final key = _parentKeys[parentId];
+    final box = key?.currentContext?.findRenderObject();
+    if (box != null) {
+      final double yPosition = (box as RenderBox).localToGlobal(Offset.zero).dy;
+
+      /// если родительский комментарий не очень далеко - не сохраняем в историю
+      if (yPosition > -400) {
+        return;
+      }
+    }
+
+    _history.push(id, scrollController.offset);
+  }
+
+  /// скролл к родительскому комментарию
+  void _moveToParent(String parentId) async {
+    final key = _parentKeys[parentId];
     if (key == null) {
       return;
     }
@@ -111,7 +132,7 @@ class _CommentTreeWidgetState extends State<CommentTreeWidget> {
         duration: const Duration(milliseconds: 50),
         curve: scrollCurve,
       );
-      return _moveToParent(id);
+      return _moveToParent(parentId);
     }
 
     Scrollable.ensureVisible(
@@ -193,20 +214,17 @@ class _CommentTreeWidgetState extends State<CommentTreeWidget> {
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
                               if (entry.node.parent != null)
-                                GestureDetector(
-                                  onTap: () {
-                                    /// добавляем в историю текущий оффсет скролла
-                                    _history.push(
-                                      entry.node.id,
-                                      scrollController.offset,
+                                CommentParent(
+                                  parent: entry.node.parent!,
+                                  onParentTapped: () {
+                                    _saveToHistory(
+                                      id: entry.node.id,
+                                      offset: scrollController.offset,
+                                      parentId: entry.node.parent!.id,
                                     );
 
-                                    /// перемещаемся к родительскому комментарию
                                     _moveToParent(entry.node.parentId);
                                   },
-                                  child: CommentParent(
-                                    parent: entry.node.parent!,
-                                  ),
                                 ),
                               CommentWidget(entry.node),
                             ],
