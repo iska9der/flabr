@@ -64,6 +64,7 @@ dependencies:
   rxdart: ^0.28.0
   dio_cookie_manager: ^3.2.0
   cookie_jar: ^4.0.8
+  flutter_highlight: ^0.7.0
 
 dev_dependencies:
   analyzer: ^7.3.0

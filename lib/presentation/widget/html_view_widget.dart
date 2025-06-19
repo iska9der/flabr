@@ -1,6 +1,10 @@
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_highlight/flutter_highlight.dart';
+import 'package:flutter_highlight/themes/darcula.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:fwfh_svg/fwfh_svg.dart';
@@ -21,13 +25,13 @@ class HtmlView extends StatelessWidget {
     required this.textHtml,
     this.renderMode = RenderMode.sliverList,
     this.padding = const EdgeInsets.only(left: 20, right: 20, bottom: 40),
-    this.textStyle,
+    this.textStyle = const TextStyle(),
   });
 
   final String textHtml;
   final RenderMode renderMode;
   final EdgeInsets padding;
-  final TextStyle? textStyle;
+  final TextStyle textStyle;
 
   @override
   Widget build(BuildContext context) {
@@ -36,8 +40,9 @@ class HtmlView extends StatelessWidget {
         final theme = Theme.of(context);
         final publicationConfig = state.publication;
         final isImageVisible = publicationConfig.isImagesVisible;
+        final fontScale = publicationConfig.fontScale;
         final fontSize =
-            theme.textTheme.bodyLarge!.fontSize! * publicationConfig.fontScale;
+            (theme.textTheme.bodyMedium?.fontSize ?? 14) * fontScale;
         final isWebViewEnabled = publicationConfig.webViewEnabled;
 
         return HtmlWidget(
@@ -45,14 +50,19 @@ class HtmlView extends StatelessWidget {
           renderMode: renderMode,
           textStyle: textStyle,
           rebuildTriggers: [
-            Theme.of(context).brightness,
+            theme.brightness,
             fontSize,
             isImageVisible,
             isWebViewEnabled,
           ],
           onErrorBuilder: (_, element, error) => Text('$element error: $error'),
           onLoadingBuilder: (ctx, el, prgrs) => const CircleIndicator.medium(),
-          factoryBuilder: () => CustomFactory(context, textStyle: textStyle),
+          factoryBuilder:
+              () => CustomFactory(
+                context,
+                textStyle: textStyle,
+                fontScale: fontScale,
+              ),
           customStylesBuilder: (element) {
             if (element.localName == 'div' && element.parent == null) {
               return {
@@ -72,9 +82,7 @@ class HtmlView extends StatelessWidget {
             }
 
             final headerWeight = switch (element.localName) {
-              'h1' || 'h2' => '600',
-              'h3' || 'h4' => '500',
-              'h5' || 'h6' => '400',
+              'h1' || 'h2' || 'h3' || 'h4' || 'h5' || 'h6' => '700',
               _ => '',
             };
             if (headerWeight.isNotEmpty) {
@@ -115,9 +123,12 @@ class HtmlView extends StatelessWidget {
                 return null;
               }
 
-              /// svg обрабатывется с помощью `SvgFactory`
               String imgExt = p.extension(imgSrc);
-              if (imgExt == '.svg') return null;
+
+              /// svg обрабатывется с помощью `SvgFactory`
+              if (imgExt == '.svg') {
+                return null;
+              }
 
               Widget widget = NetworkImageWidget(
                 imageUrl: imgSrc,
@@ -154,19 +165,17 @@ class HtmlView extends StatelessWidget {
 }
 
 class CustomFactory extends WidgetFactory with SvgFactory, WebViewFactory {
-  CustomFactory(this.context, {this.textStyle});
+  CustomFactory(this.context, {required this.textStyle, this.fontScale = 1.0});
 
   final BuildContext context;
-  final TextStyle? textStyle;
+  final TextStyle textStyle;
+  final double fontScale;
 
   @override
   bool get webView => true;
 
   @override
   bool get webViewMediaPlaybackAlwaysAllow => true;
-
-  /// список кривых iframe-источников
-  List<String> iframeBanList = ['video.yandex.ru/iframe'];
 
   @override
   Widget? buildImageWidget(BuildTree meta, ImageSource src) {
@@ -191,102 +200,23 @@ class CustomFactory extends WidgetFactory with SvgFactory, WebViewFactory {
   void parse(BuildTree meta) {
     final element = meta.element;
     final attributes = element.attributes;
-
-    final isWebViewEnabled =
-        context.read<SettingsCubit>().state.publication.webViewEnabled;
+    final finalTextStyle = textStyle.copyWith(
+      fontSize: (textStyle.fontSize ?? 14) * fontScale,
+    );
 
     switch (element.localName) {
       case 'a':
-        final op = BuildOp.v2(
-          onParsed: (tree) {
-            final href = attributes['href'];
-            if (href == null) {
-              return tree;
-            }
-
-            /// anchor links обрабатываются самой библиотекой
-            if (href.startsWith('#')) {
-              return tree;
-            }
-
-            /// проверяем необходимость открытия модалки
-            /// для того чтобы показать полную ссылку на ресурс
-            ///
-            /// если текст не совпадает со ссылкой - показываем
-            final isNeedPopup = tree.element.text != href;
-            Future<void> go() =>
-                getIt<AppRouter>().navigateOrLaunchUrl(Uri.parse(href));
-
-            final widget = GestureDetector(
-              child: tree.build(),
-              onTap: () async {
-                if (!isNeedPopup) {
-                  return go();
-                }
-
-                context.showAlert(
-                  compact: true,
-                  title: Text(
-                    tree.element.text,
-                    style: Theme.of(context).textTheme.titleSmall,
-                  ),
-                  content: Text(href),
-                  actionsBuilder:
-                      (context) => [
-                        TextButton(
-                          onPressed: () {
-                            Clipboard.setData(ClipboardData(text: href));
-
-                            context.showSnack(
-                              content: const Text('Скопировано в буфер обмена'),
-                            );
-                          },
-                          child: const Text('Копировать в буфер'),
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                            go();
-                          },
-                          child: const Text('Перейти'),
-                        ),
-                      ],
-                );
-              },
-            );
-
-            final parent = tree.parent;
-            return parent.sub()..prepend(
-              WidgetBit.inline(parent, WidgetPlaceholder(child: widget)),
-            );
-          },
-        );
+        final op = CustomBuildOp.buildLinkOp(context, attributes);
 
         meta.register(op);
         break;
       case 'div':
         if (element.className.contains('tm-iframe_temp')) {
-          final op = BuildOp(
-            onRenderBlock: (meta, widgets) {
-              String src = attributes['data-src'] ?? attributes['src'] ?? '';
-              final isBanned = iframeBanList.any(
-                (element) => src.contains(element),
-              );
-              final attrs = meta.element.attributes;
-              final sandboxAttrs = attrs['sanbox'] ?? attrs['sandbox'];
-              final widget =
-                  isWebViewEnabled && !isBanned
-                      ? buildWebView(
-                        meta,
-                        src,
-                        height: tryParseDoubleFromMap(attrs, 'height'),
-                        width: tryParseDoubleFromMap(attrs, 'width'),
-                        sandbox: sandboxAttrs?.split(RegExp(r'\s+')),
-                      )
-                      : buildWebViewLinkOnly(meta, src);
-
-              return widget ?? widgets;
-            },
+          final op = CustomBuildOp.buildWebViewOp(
+            context,
+            this,
+            attributes,
+            banFrameSources: ['video.yandex.ru/iframe'],
           );
 
           meta.register(op);
@@ -300,10 +230,11 @@ class CustomFactory extends WidgetFactory with SvgFactory, WebViewFactory {
           break;
         }
 
-        final op = BuildOp(
-          onRenderBlock: (tree, placeholder) {
-            return buildBlockCodeWidget(element.text);
-          },
+        final op = CustomBuildOp.buildCodeOp(
+          context,
+          attributes,
+          text: element.text,
+          textStyle: finalTextStyle,
         );
 
         meta.register(op);
@@ -312,29 +243,166 @@ class CustomFactory extends WidgetFactory with SvgFactory, WebViewFactory {
 
     return super.parse(meta);
   }
+}
 
-  Widget buildBlockCodeWidget(String text) {
-    return Stack(
-      children: [
-        ColoredBox(
-          color: context.theme.colors.cardHighlight,
-          child: ConstrainedBox(
+abstract class CustomBuildOp {
+  static BuildOp buildLinkOp(
+    BuildContext context,
+    Map<Object, String> attributes,
+  ) {
+    return BuildOp.v2(
+      onParsed: (tree) {
+        final href = attributes['href'];
+        if (href == null) {
+          return tree;
+        }
+
+        /// anchor links обрабатываются самой библиотекой
+        if (href.startsWith('#')) {
+          return tree;
+        }
+
+        /// проверяем необходимость открытия модалки
+        /// для того чтобы показать полную ссылку на ресурс
+        ///
+        /// если текст не совпадает со ссылкой - показываем
+        final isNeedPopup = tree.element.text != href;
+        Future<void> go() =>
+            getIt<AppRouter>().navigateOrLaunchUrl(Uri.parse(href));
+
+        final widget = GestureDetector(
+          child: tree.build(),
+          onTap: () async {
+            if (!isNeedPopup) {
+              return go();
+            }
+
+            context.showAlert(
+              compact: true,
+              title: Text(
+                tree.element.text,
+                style: Theme.of(context).textTheme.titleSmall,
+              ),
+              content: Text(href),
+              actionsBuilder:
+                  (context) => [
+                    TextButton(
+                      onPressed: () {
+                        Clipboard.setData(ClipboardData(text: href));
+
+                        context.showSnack(
+                          content: const Text('Скопировано в буфер обмена'),
+                        );
+                      },
+                      child: const Text('Копировать в буфер'),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        go();
+                      },
+                      child: const Text('Перейти'),
+                    ),
+                  ],
+            );
+          },
+        );
+
+        final parent = tree.parent;
+        return parent.sub()
+          ..prepend(WidgetBit.inline(parent, WidgetPlaceholder(child: widget)));
+      },
+    );
+  }
+
+  static BuildOp buildWebViewOp(
+    BuildContext context,
+    WebViewFactory factory,
+    Map<Object, String> attributes, {
+
+    /// список кривых iframe-источников
+    List<String> banFrameSources = const [],
+  }) {
+    final isWebViewEnabled =
+        context.read<SettingsCubit>().state.publication.webViewEnabled;
+
+    return BuildOp(
+      onRenderBlock: (meta, widgets) {
+        String src = attributes['data-src'] ?? attributes['src'] ?? '';
+        final isBanned = banFrameSources.any(
+          (element) => src.contains(element),
+        );
+        final attrs = meta.element.attributes;
+        final sandboxAttrs = attrs['sanbox'] ?? attrs['sandbox'];
+        final widget =
+            isWebViewEnabled && !isBanned
+                ? factory.buildWebView(
+                  meta,
+                  src,
+                  height: tryParseDoubleFromMap(attrs, 'height'),
+                  width: tryParseDoubleFromMap(attrs, 'width'),
+                  sandbox: sandboxAttrs?.split(RegExp(r'\s+')),
+                )
+                : factory.buildWebViewLinkOnly(meta, src);
+
+        return widget ?? widgets;
+      },
+    );
+  }
+
+  static BuildOp buildCodeOp(
+    BuildContext context,
+    LinkedHashMap<Object, String> attributes, {
+    required String text,
+    TextStyle? textStyle,
+  }) {
+    final String? lang = attributes['class'];
+    final codeTextStyle = textStyle?.copyWith(
+      fontVariations: [const FontVariation.weight(300)],
+    );
+    final padding = const EdgeInsets.all(12);
+
+    final codeTheme = darculaTheme;
+    final bgColor =
+        codeTheme['root']?.backgroundColor ??
+        context.theme.colors.cardHighlight;
+
+    return BuildOp(
+      onRenderBlock: (tree, placeholder) {
+        if (lang != null) {
+          return ConstrainedBox(
             constraints: BoxConstraints(
               minWidth: MediaQuery.of(context).size.width,
             ),
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.all(12),
-              child: Text(
-                text,
-                style: textStyle?.copyWith(
-                  fontVariations: [const FontVariation('wght', 500)],
+            child: HighlightView(
+              text,
+              language: lang,
+              tabSize: 4,
+              textStyle: codeTextStyle,
+              theme: codeTheme,
+              padding: padding,
+            ),
+          );
+        }
+
+        return Stack(
+          children: [
+            ColoredBox(
+              color: bgColor,
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  minWidth: MediaQuery.of(context).size.width,
+                ),
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  padding: const EdgeInsets.all(12),
+                  child: Text(text, style: codeTextStyle),
                 ),
               ),
             ),
-          ),
-        ),
-      ],
+          ],
+        );
+      },
     );
   }
 }
