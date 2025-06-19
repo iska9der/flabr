@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_highlight/flutter_highlight.dart';
 import 'package:flutter_highlight/themes/darcula.dart';
+import 'package:flutter_highlight/themes/github_gist.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:fwfh_svg/fwfh_svg.dart';
@@ -362,7 +363,11 @@ abstract class CustomBuildOp {
     );
     final padding = const EdgeInsets.all(12);
 
-    final codeTheme = darculaTheme;
+    final codeTheme = switch (context.theme.brightness) {
+      Brightness.dark => darculaTheme,
+      Brightness.light => githubGistTheme,
+    };
+
     final bgColor =
         codeTheme['root']?.backgroundColor ??
         context.theme.colors.cardHighlight;
