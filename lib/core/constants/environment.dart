@@ -1,8 +1,10 @@
 abstract class AppEnvironment {
-  /// варианты: prod, test
-  static const env = String.fromEnvironment(
-    'ENV',
-    defaultValue: 'prod',
+  /// варианты: prod, dev, test
+  static const env = String.fromEnvironment('ENV', defaultValue: 'prod');
+
+  static const appName = String.fromEnvironment(
+    'APP_NAME',
+    defaultValue: 'Flabr',
   );
 
   static const contactEmail = String.fromEnvironment(

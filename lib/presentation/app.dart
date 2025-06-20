@@ -8,6 +8,7 @@ import 'package:ya_summary/ya_summary.dart';
 
 import '../bloc/settings/settings_cubit.dart';
 import '../core/component/router/app_router.dart';
+import '../core/constants/constants.dart';
 import '../di/di.dart';
 import '../feature/auth/auth.dart';
 import 'extension/extension.dart';
@@ -67,7 +68,7 @@ class ApplicationView extends StatelessWidget {
     );
 
     return MaterialApp.router(
-      title: 'Flabr',
+      title: AppEnvironment.appName,
       // ignore: deprecated_member_use
       useInheritedMediaQuery: true,
       locale: DevicePreview.locale(context),

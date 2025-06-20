@@ -12,6 +12,7 @@ abstract class PublicationVoteRepository {
 }
 
 @prod
+@dev
 @LazySingleton(as: PublicationVoteRepository)
 class PublicationVoteRepositoryApi implements PublicationVoteRepository {
   PublicationVoteRepositoryApi(this.service);

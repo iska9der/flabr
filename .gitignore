@@ -62,5 +62,5 @@ app.*.map.json
 release
 
 # Env files
-.env*.local
-.env
+.env*
+!.env.example

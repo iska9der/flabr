@@ -1,28 +1,20 @@
-## Pre-build
+## Конфигурация
 
-```
-flutter pub get
-```
+1. Создать файл `.env.prod` в корне проекта. Пример можно посмотреть в `.env.example`
 
-```
-if (Platform.isIOS)  {
-    cd ios && pod install && cd ..
-}
-```
-
-```
-flutter pub run build_runner build --delete-conflicting-outputs
-```
-
-## Build
+## Сборка
 
 apk
 ```
-flutter build apk --release --dart-define-from-file .env --split-per-abi
+sh scripts/build.sh env=prod --no-runner
 ```
 
-## Dev
-###### Testing App Links
+```
+--env - определяет окружение для сборки
+--no-runner - пропустить запуск build_runner
+```
+
+###### Тестирование deeplink через терминал
 
 Android
 ```

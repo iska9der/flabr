@@ -10,7 +10,7 @@
             "type": "dart",
             "args": [
                 "--dart-define-from-file",
-                ".env"
+                ".env.prod"
             ]
         },
         {
@@ -20,7 +20,7 @@
             "flutterMode": "profile",
             "args": [
                 "--dart-define-from-file",
-                ".env"
+                ".env.prod"
             ]
         },
         {
@@ -30,7 +30,7 @@
             "flutterMode": "release",
             "args": [
                 "--dart-define-from-file",
-                ".env"
+                ".env.prod"
             ]
         },
         {
@@ -43,7 +43,7 @@
                 "--web-port",
                 "63080",
                 "--dart-define-from-file",
-                ".env",
+                ".env.prod",
                 "--web-browser-flag",
                 "--disable-web-security",
             ]

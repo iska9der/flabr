@@ -10,7 +10,7 @@
         "--release",
         "--split-per-abi",
         "--dart-define-from-file",
-        ".env"
+        ".env.prod"
       ],
       "group": "build",
       "problemMatcher": [],

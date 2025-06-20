@@ -1,11 +1,11 @@
 {
-    "name": "flabr",
-    "short_name": "flabr",
+    "name": "Flabr",
+    "short_name": "Flabr",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "mobile client for habr.com",
+    "description": "client for habr.com",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

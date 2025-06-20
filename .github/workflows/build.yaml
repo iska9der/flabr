@@ -43,7 +43,7 @@ jobs:
         flutter-version-file: pubspec.yaml
 
     - name: Configure .env
-      run: echo "$ENV_B64" | base64 --decode > .env
+      run: echo "$ENV_B64" | base64 --decode > .env.prod
       env:
         ENV_B64: ${{ secrets.ENV_B64 }}
 
@@ -67,7 +67,7 @@ jobs:
         flutter pub run build_runner build
 
     - name: Build APKs
-      run: flutter build apk --release --split-per-abi --dart-define-from-file .env
+      run: flutter build apk --release --split-per-abi --dart-define-from-file .env.prod
 
     - name: Archive APK
       uses: actions/upload-artifact@v4
@@ -80,4 +80,4 @@ jobs:
       run: |
         rm -f android/app/keystore.jks
         rm -f android/key.properties
-        rm -f .env
+        rm -f .env.prod

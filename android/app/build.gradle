@@ -4,6 +4,20 @@ plugins {
     id "dev.flutter.flutter-gradle-plugin"
 }
 
+// Dart env variables
+def dartEnvironmentVariables = [];
+if (project.hasProperty('dart-defines')) {
+    dartEnvironmentVariables = project.property('dart-defines')
+            .split(',')
+            .collectEntries { entry ->
+                def pair = new String(entry.decodeBase64(), 'UTF-8').split('=')
+                [(pair.first()): pair.last()]
+            }
+}
+
+def appName = dartEnvironmentVariables.APP_NAME ?: 'Flabr'
+def appIdSuffix = dartEnvironmentVariables.ENV.toString().equalsIgnoreCase('dev') ? '.dev' : ''
+
 // Keystore properties
 def keystoreProperties = new Properties()
 def keystorePropertiesFile = rootProject.file('key.properties')
@@ -51,10 +65,12 @@ android {
 
     defaultConfig {
         applicationId = "ru.iska9der.flabr"
+        applicationIdSuffix = appIdSuffix
         minSdk = Math.max(flutter.minSdkVersion, 21)
         targetSdk = 35
         versionCode = flutterVersionCode.toInteger()
         versionName = flutterVersionName
+        resValue "string", "app_name", appName
     }
 
     splits {
