@@ -379,13 +379,15 @@ abstract class CustomBuildOp {
             constraints: BoxConstraints(
               minWidth: MediaQuery.of(context).size.width,
             ),
-            child: HighlightView(
-              text,
-              language: lang,
-              tabSize: 4,
-              textStyle: codeTextStyle,
-              theme: codeTheme,
-              padding: padding,
+            child: HighlightBackgroundEnvironment(
+              child: HighlightView(
+                text,
+                language: lang,
+                tabSize: 4,
+                textStyle: codeTextStyle,
+                theme: codeTheme,
+                padding: padding,
+              ),
             ),
           );
         }

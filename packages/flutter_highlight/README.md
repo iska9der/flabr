@@ -44,6 +44,14 @@ class MyWidget extends StatelessWidget {
 }
 ```
 
+### Background processing
+
+Processing large amounts of text can be slow. To perform text processing in the background, add a
+`HighlightBackgroundEnvironment` above any `HighlightView`s in your widget tree.
+
+A background isolate will be automatically started in `HighlightBackgroundEnvironment.initState`, and stopped in
+`HighlightBackgroundEnvironment.dispose`.
+
 ## References
 
 - [All available languages](https://github.com/pd4d10/highlight/tree/master/highlight/lib/languages)
@@ -52,3 +60,12 @@ class MyWidget extends StatelessWidget {
 ## License
 
 MIT
+
+
+## Credits
+
+Original author
+- [pd4d10](https://github.com/pd4d10)
+
+For improvements (background processing)
+- [hacker1024](https://github.com/hacker1024)
