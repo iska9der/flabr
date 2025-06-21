@@ -375,20 +375,24 @@ abstract class CustomBuildOp {
     return BuildOp(
       onRenderBlock: (tree, placeholder) {
         if (lang != null) {
+          Widget child = HighlightView(
+            text,
+            language: lang,
+            tabSize: 4,
+            textStyle: codeTextStyle,
+            theme: codeTheme,
+            padding: padding,
+          );
+
+          if (text.length > 200) {
+            child = HighlightBackgroundEnvironment(child: child);
+          }
+
           return ConstrainedBox(
             constraints: BoxConstraints(
               minWidth: MediaQuery.of(context).size.width,
             ),
-            child: HighlightBackgroundEnvironment(
-              child: HighlightView(
-                text,
-                language: lang,
-                tabSize: 4,
-                textStyle: codeTextStyle,
-                theme: codeTheme,
-                padding: padding,
-              ),
-            ),
+            child: child,
           );
         }
 

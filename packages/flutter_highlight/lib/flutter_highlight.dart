@@ -206,8 +206,6 @@ class _HighlightViewState extends State<HighlightView> {
               return progressIndicator;
             }
 
-            print('fire');
-
             return SelectableText.rich(
               TextSpan(
                 style: textStyle,
