@@ -315,34 +315,31 @@ class _BottomBar extends StatelessWidget {
             maxHeight: AppDimensions.publicationBottomBarHeight,
           ),
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(
-                flex: 7,
                 child: PublicationFooterWidget(
                   publication: publication,
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   isVoteBlocked: false,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                 ),
               ),
-              Expanded(
-                flex: 3,
-                child: IconButton(
-                  icon: const Icon(Icons.more_horiz_rounded),
-                  tooltip: 'Дополнительно',
-                  onPressed:
-                      () => showModalBottomSheet(
-                        context: context,
-                        builder:
-                            (_) => SizedBox(
-                              width: double.infinity,
-                              height: 120,
-                              child: PublicationMoreButton(
-                                publication: publication,
-                              ),
+              IconButton(
+                icon: const Icon(Icons.more_horiz_rounded),
+                tooltip: 'Дополнительно',
+                onPressed:
+                    () => showModalBottomSheet(
+                      context: context,
+                      builder:
+                          (_) => SizedBox(
+                            width: double.infinity,
+                            height: 120,
+                            child: PublicationMoreButton(
+                              publication: publication,
                             ),
-                      ),
-                ),
+                          ),
+                    ),
               ),
             ],
           ),

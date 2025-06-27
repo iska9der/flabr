@@ -20,12 +20,14 @@ class PublicationFooterWidget extends StatelessWidget {
     required this.publication,
     this.isVoteBlocked = true,
     this.mainAxisAlignment = MainAxisAlignment.spaceAround,
+    this.crossAxisAlignment = CrossAxisAlignment.center,
   });
 
   final Publication publication;
   final bool isVoteBlocked;
 
   final MainAxisAlignment mainAxisAlignment;
+  final CrossAxisAlignment crossAxisAlignment;
 
   @override
   Widget build(BuildContext context) {
@@ -35,8 +37,14 @@ class PublicationFooterWidget extends StatelessWidget {
 
     return Row(
       mainAxisAlignment: mainAxisAlignment,
+      crossAxisAlignment: crossAxisAlignment,
       children: [
-        ScoreWidget(isBlocked: isVoteBlocked, publication: publication),
+        ScoreWidget(
+          isBlocked: isVoteBlocked,
+          publication: publication,
+          mainAxisAlignment: mainAxisAlignment,
+          crossAxisAlignment: crossAxisAlignment,
+        ),
         PublicationStatIconButton(
           icon: Icons.chat_bubble_rounded,
           value: publication.statistics.commentsCount.compact(),

@@ -14,11 +14,16 @@ class ScoreWidget extends StatelessWidget {
   const ScoreWidget({
     required this.publication,
     this.isBlocked = true,
+    this.crossAxisAlignment = CrossAxisAlignment.center,
+    this.mainAxisAlignment = MainAxisAlignment.spaceAround,
     super.key,
   });
 
   final Publication publication;
   final bool isBlocked;
+
+  final CrossAxisAlignment crossAxisAlignment;
+  final MainAxisAlignment mainAxisAlignment;
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +57,11 @@ class ScoreWidget extends StatelessWidget {
           );
         }
 
-        return _VoteButtons(publication: publication);
+        return _VoteButtons(
+          publication: publication,
+          mainAxisAlignment: mainAxisAlignment,
+          crossAxisAlignment: crossAxisAlignment,
+        );
       },
     );
   }
@@ -88,12 +97,18 @@ class _ScoreTooltip extends StatelessWidget {
 
 class _VoteButtons extends StatelessWidget {
   const _VoteButtons({
+    required this.publication,
+    this.crossAxisAlignment = CrossAxisAlignment.center,
+    this.mainAxisAlignment = MainAxisAlignment.spaceAround,
+
     // ignore: unused_element_parameter
     super.key,
-    required this.publication,
   });
 
   final Publication publication;
+
+  final CrossAxisAlignment crossAxisAlignment;
+  final MainAxisAlignment mainAxisAlignment;
 
   @override
   Widget build(BuildContext context) {
