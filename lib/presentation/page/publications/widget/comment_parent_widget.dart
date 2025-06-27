@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:html/parser.dart';
@@ -37,38 +35,6 @@ class _CommentParentState extends State<CommentParent> {
     textStyle = DefaultTextStyle.of(context).style;
 
     super.didChangeDependencies();
-  }
-
-  PageRoute buildPageRoute(BuildContext context) {
-    return PageRouteBuilder(
-      opaque: false,
-      barrierDismissible: true,
-      pageBuilder:
-          (_, __, ___) => Center(
-            child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
-              child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  maxWidth: Device.getWidth(context) * .9,
-                  maxHeight: Device.getHeight(context) * .5,
-                ),
-                child: Hero(
-                  tag: tag,
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(
-                      borderRadius: AppStyles.borderRadius,
-                      color: bgColor,
-                    ),
-                    child: SingleChildScrollView(
-                      padding: const EdgeInsets.all(16),
-                      child: parentHtml,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
-    );
   }
 
   @override
@@ -174,10 +140,22 @@ class _CommentParentState extends State<CommentParent> {
                   icon: const Icon(Icons.remove_red_eye_sharp, size: 16),
                   tooltip: 'Показать полностью',
                   onPressed:
-                      () => Navigator.of(
-                        context,
+                      () => context.buildModalRoute(
                         rootNavigator: true,
-                      ).push(buildPageRoute(context)),
+                        child: Hero(
+                          tag: tag,
+                          child: DecoratedBox(
+                            decoration: BoxDecoration(
+                              borderRadius: AppStyles.borderRadius,
+                              color: bgColor,
+                            ),
+                            child: SingleChildScrollView(
+                              padding: const EdgeInsets.all(16),
+                              child: parentHtml,
+                            ),
+                          ),
+                        ),
+                      ),
                 ),
               ),
             ],

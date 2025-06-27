@@ -85,18 +85,24 @@ class _HighlightBackgroundEnvironmentState
   Future<List<TextSpan>> _render(
     List<Node> nodes,
     Map<String, TextStyle> theme,
+    int? maxLines,
   ) =>
-      _performTask(_RenderRequest(nodes, theme))
+      _performTask(_RenderRequest(nodes, theme, maxLines: maxLines))
           .then((response) => response.spans);
 
   Future<HighlightBackgroundResult> _parseAndRender(
     String source,
     Map<String, TextStyle> theme, {
     String? language,
+    int? maxLines,
   }) =>
-      _performTask(_ParseAndRenderRequest(source, theme, language: language))
-          .then((response) =>
-              HighlightBackgroundResult(response.nodes, response.spans));
+      _performTask(_ParseAndRenderRequest(
+        source,
+        theme,
+        language: language,
+        maxLines: maxLines,
+      )).then((response) =>
+          HighlightBackgroundResult(response.nodes, response.spans));
 
   @override
   Widget build(BuildContext context) {
@@ -118,6 +124,7 @@ class HighlightBackgroundProvider extends InheritedWidget {
   final Future<List<TextSpan>> Function(
     List<Node> nodes,
     Map<String, TextStyle> theme,
+    int? maxLines,
   ) render;
 
   final Future<HighlightBackgroundResult> Function(
@@ -181,7 +188,8 @@ void _isolateEntrypoint(SendPort sendPort) {
       if (request is _ParseRequest) {
         sendPort.send(_ParseResponse(request, nodes));
       } else if (request is _RenderingRequest) {
-        final spans = HighlightView.render(nodes, request.theme);
+        final spans =
+            HighlightView.render(nodes, request.theme, request.maxLines);
         if (request is _RenderRequest) {
           sendPort.send(_RenderResponse(request, spans));
         } else if (request is _ParseAndRenderRequest) {
@@ -231,6 +239,7 @@ class _ParseRequest implements _ParsingRequest<_ParseResponse> {
 abstract class _RenderingRequest<T extends _RenderingResponse>
     implements _IdentifiableIsolateRequest<T> {
   Map<String, TextStyle> get theme;
+  int? get maxLines;
 }
 
 class _RenderRequest implements _RenderingRequest {
@@ -242,7 +251,10 @@ class _RenderRequest implements _RenderingRequest {
   @override
   final Map<String, TextStyle> theme;
 
-  _RenderRequest(this.nodes, this.theme);
+  @override
+  final int? maxLines;
+
+  _RenderRequest(this.nodes, this.theme, {this.maxLines});
 }
 
 class _ParseAndRenderRequest
@@ -261,7 +273,11 @@ class _ParseAndRenderRequest
   @override
   final Map<String, TextStyle> theme;
 
-  _ParseAndRenderRequest(this.source, this.theme, {this.language});
+  @override
+  final int? maxLines;
+
+  _ParseAndRenderRequest(this.source, this.theme,
+      {this.language, this.maxLines});
 }
 
 abstract class _IsolateResponse {}

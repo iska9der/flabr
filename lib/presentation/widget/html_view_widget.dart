@@ -251,6 +251,7 @@ abstract class CustomBuildOp {
     BuildContext context,
     Map<Object, String> attributes,
   ) {
+    /// TODO: перенести в customWidgetBuilder с использованием InlineCustomWidget
     return BuildOp.v2(
       onParsed: (tree) {
         final href = attributes['href'];
@@ -358,10 +359,10 @@ abstract class CustomBuildOp {
     TextStyle? textStyle,
   }) {
     final String? lang = attributes['class'];
-    final codeTextStyle = textStyle?.copyWith(
-      fontVariations: [const FontVariation.weight(300)],
-    );
-    final padding = const EdgeInsets.all(12);
+    final codeTextStyle = DefaultTextStyle.of(
+      context,
+    ).style.copyWith(fontVariations: [const FontVariation.weight(300)]);
+    EdgeInsets padding = const EdgeInsets.all(12);
 
     final codeTheme = switch (context.theme.brightness) {
       Brightness.dark => darculaTheme,
@@ -375,19 +376,67 @@ abstract class CustomBuildOp {
     return BuildOp(
       onRenderBlock: (tree, placeholder) {
         if (lang != null) {
-          return ConstrainedBox(
-            constraints: BoxConstraints(
-              minWidth: MediaQuery.of(context).size.width,
-            ),
-            child: HighlightBackgroundEnvironment(
-              child: HighlightView(
-                text,
-                language: lang,
-                tabSize: 4,
-                textStyle: codeTextStyle,
-                theme: codeTheme,
-                padding: padding,
-              ),
+          final maxRows = 5;
+          final splittedText = text.split('\n');
+          final isLong = splittedText.length > maxRows;
+          final previewText =
+              isLong ? splittedText.getRange(0, 5).join('\n') : text;
+          final tabSize = 4;
+
+          padding = isLong ? padding.copyWith(bottom: 28) : padding;
+
+          VoidCallback? onTap =
+              !isLong
+                  ? null
+                  : () => context.buildModalRoute(
+                    rootNavigator: true,
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(
+                        minWidth: MediaQuery.of(context).size.width,
+                      ),
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: HighlightView(
+                          text,
+                          language: lang,
+                          tabSize: tabSize,
+                          textStyle: codeTextStyle,
+                          theme: codeTheme,
+                          padding: padding,
+                        ),
+                      ),
+                    ),
+                  );
+
+          return GestureDetector(
+            onTap: onTap,
+            child: Stack(
+              alignment: Alignment.bottomLeft,
+              children: [
+                ConstrainedBox(
+                  constraints: BoxConstraints(
+                    minWidth: MediaQuery.of(context).size.width,
+                  ),
+                  child: HighlightBackgroundEnvironment(
+                    child: HighlightView(
+                      previewText,
+                      language: lang,
+                      tabSize: tabSize,
+                      textStyle: codeTextStyle,
+                      maxLines: maxRows,
+                      theme: codeTheme,
+                      padding: padding,
+                      onTap: onTap,
+                      progressIndicator: const CircleIndicator.small(),
+                    ),
+                  ),
+                ),
+                if (isLong)
+                  const Padding(
+                    padding: EdgeInsets.only(left: 12, bottom: 6),
+                    child: Text('Показать полностью...'),
+                  ),
+              ],
             ),
           );
         }

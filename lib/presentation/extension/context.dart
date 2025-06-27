@@ -1,4 +1,8 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
+
+import '../theme/theme.dart';
 
 extension ContextX on BuildContext {
   ThemeData get theme => Theme.of(this);
@@ -61,6 +65,34 @@ extension ContextX on BuildContext {
           ),
         );
       },
+    );
+  }
+}
+
+extension ModalX on BuildContext {
+  Future<T?> buildModalRoute<T>({
+    bool rootNavigator = false,
+    required Widget child,
+  }) {
+    Widget body = Center(
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            maxWidth: Device.getWidth(this) * .9,
+            maxHeight: Device.getHeight(this) * .5,
+          ),
+          child: child,
+        ),
+      ),
+    );
+
+    return Navigator.of(this, rootNavigator: rootNavigator).push<T>(
+      PageRouteBuilder(
+        opaque: false,
+        barrierDismissible: true,
+        pageBuilder: (_, _, _) => body,
+      ),
     );
   }
 }
