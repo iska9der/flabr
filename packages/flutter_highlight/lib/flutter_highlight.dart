@@ -39,6 +39,12 @@ class HighlightView extends StatefulWidget {
   /// This may only be used if a [HighlightBackgroundEnvironment] is available.
   final Widget? progressIndicator;
 
+  final int? minLines;
+
+  final int? maxLines;
+
+  final GestureTapCallback? onTap;
+
   HighlightView(
     String input, {
     Key? key,
@@ -48,6 +54,9 @@ class HighlightView extends StatefulWidget {
     this.textStyle,
     int tabSize = 8, // https://github.com/flutter/flutter/issues/50087
     this.progressIndicator,
+    this.minLines,
+    this.maxLines,
+    this.onTap,
   })  : source = input.replaceAll('\t', ' ' * tabSize),
         super(key: key);
 
@@ -68,6 +77,7 @@ class HighlightView extends StatefulWidget {
   static List<TextSpan> render(
     List<Node> nodes,
     Map<String, TextStyle> theme,
+    int? maxLines,
   ) {
     List<TextSpan> spans = [];
     var currentSpans = spans;
@@ -99,6 +109,16 @@ class HighlightView extends StatefulWidget {
     }
 
     for (var node in nodes) {
+      /// If maxLines is set, we need to check if we have reached the limit
+      /// and break the loop if we have.
+      if (maxLines != null) {
+        final strings =
+            spans.map((s) => s.toPlainText(includePlaceholders: false)).join();
+        final matches = '\n'.allMatches(strings).length;
+        if (matches >= maxLines) {
+          break;
+        }
+      }
       traverse(node);
     }
 
@@ -127,10 +147,11 @@ class _HighlightViewState extends State<HighlightView> {
   void _render(HighlightBackgroundProvider? backgroundProvider) {
     _spansFuture = _nodesFuture.then((nodes) {
       if (backgroundProvider == null) {
-        return Future.value(HighlightView.render(nodes, widget.theme));
+        return Future.value(
+            HighlightView.render(nodes, widget.theme, widget.maxLines));
       }
 
-      return backgroundProvider.render(nodes, widget.theme);
+      return backgroundProvider.render(nodes, widget.theme, widget.maxLines);
     });
   }
 
@@ -211,6 +232,9 @@ class _HighlightViewState extends State<HighlightView> {
                 style: textStyle,
                 children: snapshot.requireData,
               ),
+              // minLines: widget.minLines,
+              // maxLines: widget.maxLines,
+              onTap: widget.onTap,
             );
           },
         ),
