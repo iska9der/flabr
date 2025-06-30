@@ -9,7 +9,7 @@ const appCardTheme = CardThemeData(
   shape: RoundedRectangleBorder(borderRadius: AppStyles.borderRadius),
 );
 
-const AppBarTheme appAppBarTheme = AppBarTheme(
+const appAppBarTheme = AppBarTheme(
   surfaceTintColor: Colors.transparent,
   elevation: 0,
   scrolledUnderElevation: AppDimensions.underElevation,
@@ -17,7 +17,7 @@ const AppBarTheme appAppBarTheme = AppBarTheme(
   titleTextStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
 );
 
-const PageTransitionsTheme appPageTransitionsTheme = PageTransitionsTheme(
+const appPageTransitionsTheme = PageTransitionsTheme(
   builders: {
     TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
     TargetPlatform.android: FadeUpwardsPageTransitionsBuilder(),
@@ -26,36 +26,36 @@ const PageTransitionsTheme appPageTransitionsTheme = PageTransitionsTheme(
   },
 );
 
-ScrollbarThemeData appScrollBarThemeData = ScrollbarThemeData(
+final appScrollBarThemeData = ScrollbarThemeData(
   thumbVisibility: WidgetStateProperty.all(false),
   interactive: true,
   thickness: WidgetStateProperty.all(6),
   minThumbLength: AppDimensions.toolBarHeightOnScroll,
 );
 
-TextButtonThemeData appTextButtonThemeData = TextButtonThemeData(
+final appTextButtonThemeData = TextButtonThemeData(
   style: TextButton.styleFrom(
     shape: const RoundedRectangleBorder(borderRadius: AppStyles.borderRadius),
   ),
 );
 
-IconButtonThemeData appIconButtonThemeData = IconButtonThemeData(
+final appIconButtonThemeData = IconButtonThemeData(
   style: IconButton.styleFrom(
     shape: const RoundedRectangleBorder(borderRadius: AppStyles.borderRadius),
   ),
 );
 
-ButtonStyle appFilledButtonStyle = FilledButton.styleFrom(
+final appFilledButtonStyle = FilledButton.styleFrom(
   shape: const RoundedRectangleBorder(borderRadius: AppStyles.borderRadius),
 );
 
-const DrawerThemeData appDrawerThemeData = DrawerThemeData(width: 200);
+const appDrawerThemeData = DrawerThemeData(width: 200);
 
-const CheckboxThemeData appCheckboxThemeData = CheckboxThemeData();
+const appCheckboxThemeData = CheckboxThemeData();
 
-const SwitchThemeData appSwitchThemeData = SwitchThemeData();
+const appSwitchThemeData = SwitchThemeData();
 
-const SliderThemeData appSliderThemeData = SliderThemeData(
+const appSliderThemeData = SliderThemeData(
   // ignore: deprecated_member_use
   year2023: false,
   trackHeight: 12,
@@ -63,23 +63,22 @@ const SliderThemeData appSliderThemeData = SliderThemeData(
   overlayShape: RoundSliderOverlayShape(overlayRadius: 20.0),
 );
 
-const ChipThemeData appChipThemeData = ChipThemeData();
+const appChipThemeData = ChipThemeData();
 
-const DialogTheme dialogTheme = DialogTheme(
+const dialogTheme = DialogThemeData(
   shape: RoundedRectangleBorder(borderRadius: AppStyles.borderRadius),
 );
 
-const NavigationBarThemeData navigationBarThemeData = NavigationBarThemeData(
+const navigationBarThemeData = NavigationBarThemeData(
   height: AppDimensions.navBarHeight,
 );
 
-const BottomSheetThemeData bottomSheetThemeData = BottomSheetThemeData(
-  showDragHandle: true,
-);
+const bottomSheetThemeData = BottomSheetThemeData(showDragHandle: true);
 
-const ProgressIndicatorThemeData proggressIndicatorThemeData =
-// ignore: deprecated_member_use
-ProgressIndicatorThemeData(year2023: false);
+const proggressIndicatorThemeData = ProgressIndicatorThemeData(
+  // ignore: deprecated_member_use
+  year2023: false,
+);
 
 final ListTileThemeData listTileThemeData = ListTileThemeData(
   shape: const RoundedRectangleBorder(borderRadius: AppStyles.borderRadius),

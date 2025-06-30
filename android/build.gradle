@@ -6,9 +6,31 @@ allprojects {
 }
 
 rootProject.buildDir = "../build"
+
 subprojects {
     project.buildDir = "${rootProject.buildDir}/${project.name}"
 }
+
+// https://github.com/flutter/flutter/issues/169215
+subprojects {
+    afterEvaluate { project ->
+        if (project.extensions.findByName("android") != null) {
+            // Specific configuration for libraries
+            if (project.name != 'app') {
+                android {
+                    buildTypes {
+                        all { buildType ->
+                            // Disable applicationIdSuffix for libraries
+                            buildType.applicationIdSuffix = null
+                        }
+                    }
+                }
+            }
+            // ... 
+        }
+    }
+}
+
 subprojects {
     project.evaluationDependsOn(":app")
 }
