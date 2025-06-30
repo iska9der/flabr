@@ -129,7 +129,7 @@ class _HubArticleListView extends StatelessWidget {
       listeners: [
         BlocListener<ScrollCubit, ScrollState>(
           listenWhen: (previous, current) => current.isBottomEdge,
-          listener: (_, __) => context.read<HubPublicationListCubit>().fetch(),
+          listener: (_, _) => context.read<HubPublicationListCubit>().fetch(),
         ),
         BlocListener<SettingsCubit, SettingsState>(
           listenWhen:

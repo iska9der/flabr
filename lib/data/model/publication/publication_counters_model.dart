@@ -4,7 +4,7 @@ part 'publication_counters_model.freezed.dart';
 part 'publication_counters_model.g.dart';
 
 @freezed
-class PublicationCounters with _$PublicationCounters {
+abstract class PublicationCounters with _$PublicationCounters {
   const factory PublicationCounters({
     @JsonKey(name: 'countPosts') @Default(0) int articles,
     @JsonKey(name: 'countNews') @Default(0) int news,

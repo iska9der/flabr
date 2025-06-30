@@ -1,7 +1,7 @@
 part of 'config_model.dart';
 
 @freezed
-class FeedConfigModel with _$FeedConfigModel {
+abstract class FeedConfigModel with _$FeedConfigModel {
   const FeedConfigModel._();
 
   const factory FeedConfigModel({

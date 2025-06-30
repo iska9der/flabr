@@ -19,7 +19,9 @@ class TrackerNotificationsMarkerBloc
     required TrackerNotificationCategory category,
   }) : super(TrackerNotificationsMarkerState(category: category)) {
     on<TrackerNotificationsMarkerEvent>(
-      (event, emit) => event.map(read: (event) => _read(event, emit)),
+      (event, emit) => switch (event) {
+        MarkAsReadEvent event => _read(event, emit),
+      },
     );
   }
 

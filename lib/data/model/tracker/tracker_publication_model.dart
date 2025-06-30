@@ -6,7 +6,7 @@ part 'tracker_publication_model.freezed.dart';
 part 'tracker_publication_model.g.dart';
 
 @freezed
-class TrackerPublication with _$TrackerPublication {
+abstract class TrackerPublication with _$TrackerPublication {
   const TrackerPublication._();
 
   const factory TrackerPublication({

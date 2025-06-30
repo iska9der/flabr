@@ -8,7 +8,7 @@ part 'tracker_notification_model.freezed.dart';
 part 'tracker_notification_model.g.dart';
 
 @freezed
-class TrackerNotification with _$TrackerNotification {
+abstract class TrackerNotification with _$TrackerNotification {
   const TrackerNotification._();
 
   const factory TrackerNotification({

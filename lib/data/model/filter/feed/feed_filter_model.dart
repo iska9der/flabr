@@ -8,7 +8,7 @@ part 'feed_filter_model.freezed.dart';
 part 'feed_filter_model.g.dart';
 
 @freezed
-class FeedFilter with _$FeedFilter {
+abstract class FeedFilter with _$FeedFilter {
   const factory FeedFilter({
     @Default(FilterList.scoreDefault) FilterOption score,
     @Default(FeedFilterPublication.values) List<FeedFilterPublication> types,

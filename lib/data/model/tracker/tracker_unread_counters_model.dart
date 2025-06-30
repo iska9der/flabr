@@ -4,7 +4,7 @@ part 'tracker_unread_counters_model.freezed.dart';
 part 'tracker_unread_counters_model.g.dart';
 
 @freezed
-class TrackerUnreadCounters with _$TrackerUnreadCounters {
+abstract class TrackerUnreadCounters with _$TrackerUnreadCounters {
   const factory TrackerUnreadCounters({
     @Default(0) int publicationComments,
     @Default(0) int publicationCommentsByAuthor,

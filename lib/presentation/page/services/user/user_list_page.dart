@@ -35,7 +35,7 @@ class UserListPage extends StatelessWidget {
             listeners: [
               BlocListener<ScrollCubit, ScrollState>(
                 listenWhen: (_, current) => current.isBottomEdge,
-                listener: (_, __) => usersCubit.fetchAll(),
+                listener: (_, _) => usersCubit.fetchAll(),
               ),
             ],
             child: const UserListPageView(),

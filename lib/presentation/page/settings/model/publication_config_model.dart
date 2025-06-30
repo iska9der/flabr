@@ -1,7 +1,7 @@
 part of 'config_model.dart';
 
 @freezed
-class PublicationConfigModel with _$PublicationConfigModel {
+abstract class PublicationConfigModel with _$PublicationConfigModel {
   const PublicationConfigModel._();
 
   const factory PublicationConfigModel({

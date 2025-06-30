@@ -7,7 +7,7 @@ part 'publication_related_data_model.freezed.dart';
 part 'publication_related_data_model.g.dart';
 
 @freezed
-class PublicationRelatedData extends RelatedDataBase
+abstract class PublicationRelatedData extends RelatedDataBase
     with _$PublicationRelatedData {
   const PublicationRelatedData._();
 

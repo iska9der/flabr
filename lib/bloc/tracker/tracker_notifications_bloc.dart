@@ -20,10 +20,10 @@ class TrackerNotificationsBloc
     required TrackerNotificationCategory category,
   }) : super(TrackerNotificationsState(category: category)) {
     on<TrackerNotificationsEvent>(
-      (event, emit) => event.map(
-        load: (event) => _fetch(event, emit),
-        subscribe: (event) => _subscribe(event, emit),
-      ),
+      (event, emit) => switch (event) {
+        LoadEvent event => _fetch(event, emit),
+        SubscribeEvent event => _subscribe(event, emit),
+      },
     );
   }
 

@@ -17,7 +17,9 @@ class PublicationCountersBloc
   PublicationCountersBloc({required this.repository})
     : super(const PublicationCountersState()) {
     on<PublicationCountersEvent>(
-      (event, emit) => event.map(load: (event) => _fetch(event, emit)),
+      (event, emit) => switch (event) {
+        LoadEvent event => _fetch(event, emit),
+      },
     );
   }
 

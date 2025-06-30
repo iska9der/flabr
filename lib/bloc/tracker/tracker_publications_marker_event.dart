@@ -1,7 +1,8 @@
 part of 'tracker_publications_marker_bloc.dart';
 
 @freezed
-class TrackerPublicationsMarkerEvent with _$TrackerPublicationsMarkerEvent {
+sealed class TrackerPublicationsMarkerEvent
+    with _$TrackerPublicationsMarkerEvent {
   const factory TrackerPublicationsMarkerEvent.mark({
     required String id,
     required bool isMarked,

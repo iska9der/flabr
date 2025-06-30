@@ -60,7 +60,7 @@ class CompanyListPageView extends StatelessWidget {
               (previous, current) =>
                   previous.langUI != current.langUI ||
                   previous.langArticles != current.langArticles,
-          listener: (_, __) => scrollCubit.animateToTop(),
+          listener: (_, _) => scrollCubit.animateToTop(),
         ),
       ],
       child: Scaffold(

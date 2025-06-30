@@ -1,7 +1,7 @@
 part of 'tracker_publications_bloc.dart';
 
 @freezed
-class TrackerPublicationsState with _$TrackerPublicationsState {
+abstract class TrackerPublicationsState with _$TrackerPublicationsState {
   const TrackerPublicationsState._();
 
   const factory TrackerPublicationsState({
