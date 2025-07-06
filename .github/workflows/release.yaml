@@ -40,6 +40,9 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
 
+    - name: Install NDK
+      run: $ANDROID_HOME/tools/bin/sdkmanager "ndk;26.3.11579264"
+
     - name: Gradle cache
       uses: actions/cache@v4
       with:
