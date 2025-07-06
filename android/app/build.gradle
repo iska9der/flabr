@@ -40,7 +40,7 @@ def flutterVersionName = localProperties.getProperty('flutter.versionName') ?: '
 android {
     namespace = "ru.iska9der.flabr"
     compileSdk = 35
-    ndkVersion = flutter.ndkVersion
+    ndkVersion = "27.0.12077973"
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -118,7 +118,13 @@ flutter {
     source = '../..'
 }
 
+// Tip: see the /ruffle-rs/ruffle-android/pull/460/files
+// when migrating to .kts
 
+// Issue: Wont build universal APK, see related PR:
+// https://github.com/flutter/flutter/pull/170343
+// Waiting for the fix to be released, maybe in 3.32.6?
+//
 // F-droid splits APKs by ABI, and requires different versionCode for each ABI.
 // For flutter version X.Y.Z, version code is X0Y0ZA, where A is the ABI code.
 // See:
