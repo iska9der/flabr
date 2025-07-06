@@ -44,7 +44,7 @@ jobs:
       uses: android-actions/setup-android@v3
 
     - name: Install NDK
-      run: sdkmanager "ndk;26.3.11579264"
+      run: sdkmanager --install "ndk;26.3.11579264"
 
     - name: Gradle cache
       uses: actions/cache@v4
@@ -111,7 +111,7 @@ jobs:
           github.rest.git.createRef({
             owner: context.repo.owner,
             repo: context.repo.repo,
-            ref: 'refs/tags/v${{ needs.get_version.outputs.version }}-pre',
+            ref: 'refs/tags/v${{ needs.get_version.outputs.version }}',
             sha: context.sha
           })
 
@@ -121,7 +121,8 @@ jobs:
         prerelease: true
         make_latest: true
         generate_release_notes: true
-        tag_name: v${{ needs.get_version.outputs.version }}-pre
+        name: v${{ needs.get_version.outputs.version }}-pre
+        tag_name: v${{ needs.get_version.outputs.version }}
         files: release/*
 
     - name: Clean up

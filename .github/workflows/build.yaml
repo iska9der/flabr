@@ -26,6 +26,12 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
 
+    - name: Setup Android SDK
+      uses: android-actions/setup-android@v3
+
+    - name: Install NDK
+      run: sdkmanager --install "ndk;26.3.11579264"
+
     - name: Gradle cache
       uses: actions/cache@v4
       with:
