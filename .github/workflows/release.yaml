@@ -38,13 +38,13 @@ jobs:
       uses: actions/setup-java@v4
       with:
         java-version: '17'
-        distribution: 'zulu'
+      distribution: 'temurin'
 
-    - name: Accept Android SDK Licenses
-      run: yes | $ANDROID_HOME/tools/bin/sdkmanager --licenses
+    - name: Setup Android SDK
+      uses: android-actions/setup-android@v3
 
     - name: Install NDK
-      run: $ANDROID_HOME/tools/bin/sdkmanager "ndk;26.3.11579264"
+      run: sdkmanager "ndk;26.3.11579264"
 
     - name: Gradle cache
       uses: actions/cache@v4
