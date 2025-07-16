@@ -100,7 +100,7 @@ class HtmlView extends StatelessWidget {
             if (element.localName == 'img') {
               /// Если пользователь не хочет видеть изображения - не показываем
               if (!isImageVisible) {
-                return const SizedBox();
+                return const SizedBox.shrink();
               }
 
               /// Люди верстают статьи по-разному, и иногда ужасно:

@@ -136,7 +136,7 @@ class _HubArticleListView extends StatelessWidget {
               (previous, current) =>
                   previous.langUI != current.langUI ||
                   previous.langArticles != current.langArticles,
-          listener: (_, __) => context.read<ScrollCubit>().animateToTop(),
+          listener: (_, _) => context.read<ScrollCubit>().animateToTop(),
         ),
       ],
       child:
