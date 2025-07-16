@@ -6,7 +6,7 @@ publish_to: "none"
 version: 1.2.4+10701
 
 environment:
-  flutter: 3.32.5
+  flutter: 3.32.7
   sdk: ^3.7.0
 
 workspace:
