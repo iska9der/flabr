@@ -18,10 +18,10 @@ class TrackerPublicationsBloc
   TrackerPublicationsBloc({required this.repository})
     : super(const TrackerPublicationsState()) {
     on<TrackerPublicationsEvent>(
-      (event, emit) => event.map(
-        load: (event) => _fetch(event, emit),
-        subscribe: (event) => _subscribe(event, emit),
-      ),
+      (event, emit) => switch (event) {
+        SubscribeEvent event => _subscribe(event, emit),
+        LoadEvent event => _fetch(event, emit),
+      },
     );
   }
 

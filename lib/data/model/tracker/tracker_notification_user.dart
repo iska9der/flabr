@@ -6,7 +6,7 @@ part 'tracker_notification_user.freezed.dart';
 part 'tracker_notification_user.g.dart';
 
 @freezed
-class TrackerNotificationUser
+abstract class TrackerNotificationUser
     with _$TrackerNotificationUser
     implements UserBase {
   const factory TrackerNotificationUser({

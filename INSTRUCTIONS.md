@@ -5,7 +5,7 @@
 ## Сборка
 
 apk
-```
+```bash
 sh scripts/build.sh env=prod --no-runner
 ```
 
@@ -17,11 +17,11 @@ sh scripts/build.sh env=prod --no-runner
 ###### Тестирование deeplink через терминал
 
 Android
-```
+```bash
 adb shell am start -a android.intent.action.VIEW -d "<URI>"
 ```
 
 IOS
-```
+```bash
 /usr/bin/xcrun simctl openurl booted "<URI>"
 ```

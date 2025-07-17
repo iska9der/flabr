@@ -11,7 +11,7 @@ part 'scroll_variant.dart';
 part 'theme_config_model.dart';
 
 @freezed
-class Config with _$Config {
+abstract class Config with _$Config {
   const factory Config({
     @Default(ThemeConfigModel.empty) ThemeConfigModel theme,
     @Default(FeedConfigModel.empty) FeedConfigModel feed,

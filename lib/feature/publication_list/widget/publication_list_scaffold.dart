@@ -65,7 +65,7 @@ class PublicationListScaffold<
               (previous, current) =>
                   previous.langUI != current.langUI ||
                   previous.langArticles != current.langArticles,
-          listener: (_, __) => scrollCubit.animateToTop(),
+          listener: (_, _) => scrollCubit.animateToTop(),
         ),
 
         /// Когда скролл достиг предела, получаем следующую страницу

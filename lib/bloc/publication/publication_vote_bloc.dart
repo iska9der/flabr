@@ -29,10 +29,10 @@ class PublicationVoteBloc
          ),
        ) {
     on<PublicationVoteEvent>(
-      (event, emit) => event.map(
-        voteUp: (value) => _voteUp(value, emit),
-        voteDown: (value) => _voteDown(value, emit),
-      ),
+      (event, emit) => switch (event) {
+        _VoteUpEvent event => _voteUp(event, emit),
+        _VoteDownEvent event => _voteDown(event, emit),
+      },
     );
   }
 

@@ -4,7 +4,7 @@ part 'publication_vote_model.freezed.dart';
 part 'publication_vote_model.g.dart';
 
 @freezed
-class PublicationVote with _$PublicationVote {
+abstract class PublicationVote with _$PublicationVote {
   const PublicationVote._();
 
   const factory PublicationVote({
@@ -19,7 +19,7 @@ class PublicationVote with _$PublicationVote {
 }
 
 @freezed
-class PublicationVoteAction with _$PublicationVoteAction {
+abstract class PublicationVoteAction with _$PublicationVoteAction {
   const PublicationVoteAction._();
 
   const factory PublicationVoteAction({

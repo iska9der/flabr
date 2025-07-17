@@ -4,6 +4,13 @@ plugins {
     id "dev.flutter.flutter-gradle-plugin"
 }
 
+// Keystore properties
+def keystoreProperties = new Properties()
+def keystorePropertiesFile = rootProject.file('key.properties')
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+}
+
 // Dart env variables
 def dartEnvironmentVariables = [];
 if (project.hasProperty('dart-defines')) {
@@ -18,37 +25,19 @@ if (project.hasProperty('dart-defines')) {
 def appName = dartEnvironmentVariables.APP_NAME ?: 'Flabr'
 def appIdSuffix = dartEnvironmentVariables.ENV.toString().equalsIgnoreCase('dev') ? '.dev' : ''
 
-// Keystore properties
-def keystoreProperties = new Properties()
-def keystorePropertiesFile = rootProject.file('key.properties')
-if (keystorePropertiesFile.exists()) {
-    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
-}
-
-// Local properties
-def localProperties = new Properties()
-def localPropertiesFile = rootProject.file('local.properties')
-if (localPropertiesFile.exists()) {
-    localPropertiesFile.withReader('UTF-8') { reader ->
-        localProperties.load(reader)
-    }
-}
-
-def flutterVersionCode = localProperties.getProperty('flutter.versionCode') ?: '1'
-def flutterVersionName = localProperties.getProperty('flutter.versionName') ?: '1.0'
 
 android {
     namespace = "ru.iska9der.flabr"
     compileSdk = 35
-    ndkVersion = "26.3.11579264"
+    ndkVersion = "27.0.12077973"
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = '17'
     }
 
     // F-droid
@@ -68,8 +57,8 @@ android {
         applicationIdSuffix = appIdSuffix
         minSdk = Math.max(flutter.minSdkVersion, 21)
         targetSdk = 35
-        versionCode = flutterVersionCode.toInteger()
-        versionName = flutterVersionName
+        versionCode = flutter.versionCode
+        versionName = flutter.versionName
         resValue "string", "app_name", appName
     }
 
@@ -82,7 +71,8 @@ android {
             // Specifies a list of ABIs for Gradle to create APKs for.
             include "armeabi-v7a", "arm64-v8a", "x86_64" // "x86"
             // Specifies that you want to also generate a universal APK that includes all ABIs.
-            universalApk true
+            // search for: Issue (universal)
+            universalApk false
         }
     }
 
@@ -118,7 +108,13 @@ flutter {
     source = '../..'
 }
 
+// Tip: see the /ruffle-rs/ruffle-android/pull/460/files
+// when migrating to .kts
 
+// Issue (universal): Wont build universal APK, see related PR:
+// https://github.com/flutter/flutter/pull/170343
+// Waiting for the fix to be released, maybe in 3.32.6?
+//
 // F-droid splits APKs by ABI, and requires different versionCode for each ABI.
 // For flutter version X.Y.Z, version code is X0Y0ZA, where A is the ABI code.
 // See:

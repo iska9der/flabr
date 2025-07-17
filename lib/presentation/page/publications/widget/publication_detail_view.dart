@@ -183,7 +183,7 @@ class _PublicationDetailViewState extends State<PublicationDetailView> {
                     right: 0,
                     child: ValueListenableBuilder(
                       valueListenable: isStatsVisible,
-                      builder: (_, isVisible, __) {
+                      builder: (_, isVisible, _) {
                         return _AppBar(
                           publication: publication,
                           isVisible: isVisible,
@@ -199,7 +199,7 @@ class _PublicationDetailViewState extends State<PublicationDetailView> {
                     child: ValueListenableBuilder(
                       valueListenable: isStatsVisible,
                       builder:
-                          (_, value, __) => _BottomBar(
+                          (_, value, _) => _BottomBar(
                             publication: publication,
                             isVisible: value,
                           ),

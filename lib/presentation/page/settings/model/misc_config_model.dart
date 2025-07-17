@@ -1,7 +1,7 @@
 part of 'config_model.dart';
 
 @freezed
-class MiscConfigModel with _$MiscConfigModel {
+abstract class MiscConfigModel with _$MiscConfigModel {
   const MiscConfigModel._();
 
   const factory MiscConfigModel({

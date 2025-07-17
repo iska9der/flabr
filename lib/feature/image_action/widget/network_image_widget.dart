@@ -26,7 +26,7 @@ class NetworkImageWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     int? cacheHeight =
         height != null
-            ? (height! * MediaQuery.of(context).devicePixelRatio).round()
+            ? (height! * MediaQuery.devicePixelRatioOf(context)).round()
             : null;
 
     final barrierColor = Theme.of(

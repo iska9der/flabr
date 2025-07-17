@@ -1,7 +1,7 @@
 part of 'config_model.dart';
 
 @freezed
-class ThemeConfigModel with _$ThemeConfigModel {
+abstract class ThemeConfigModel with _$ThemeConfigModel {
   const ThemeConfigModel._();
 
   const factory ThemeConfigModel({
@@ -12,10 +12,10 @@ class ThemeConfigModel with _$ThemeConfigModel {
   static const empty = ThemeConfigModel();
 
   ThemeMode? get modeByBool => switch (isDarkTheme) {
-        true => ThemeMode.dark,
-        false => ThemeMode.light,
-        _ => null,
-      };
+    true => ThemeMode.dark,
+    false => ThemeMode.light,
+    _ => null,
+  };
 
   factory ThemeConfigModel.fromJson(Map<String, dynamic> json) =>
       _$ThemeConfigModelFromJson(json);

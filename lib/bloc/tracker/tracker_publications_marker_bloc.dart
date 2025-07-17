@@ -16,12 +16,12 @@ class TrackerPublicationsMarkerBloc
   TrackerPublicationsMarkerBloc({required this.repository})
     : super(const TrackerPublicationsMarkerState()) {
     on<TrackerPublicationsMarkerEvent>(
-      (event, emit) => event.map(
-        mark: (event) => _mark(event, emit),
-        readMarked: (event) => _readMarked(event, emit),
-        removeMarked: (event) => _removeMarked(event, emit),
-        read: (event) => _read(event, emit),
-      ),
+      (event, emit) => switch (event) {
+        MarkEvent event => _mark(event, emit),
+        ReadMarkedEvent event => _readMarked(event, emit),
+        RemoveMarkedEvent event => _removeMarked(event, emit),
+        ReadEvent event => _read(event, emit),
+      },
     );
   }
 

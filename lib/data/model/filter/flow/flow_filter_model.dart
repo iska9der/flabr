@@ -8,7 +8,7 @@ part 'flow_filter_model.freezed.dart';
 part 'flow_filter_model.g.dart';
 
 @freezed
-class FlowFilter with _$FlowFilter {
+abstract class FlowFilter with _$FlowFilter {
   const factory FlowFilter({
     @Default(Sort.byNew) Sort sort,
     @Default(FilterList.dateDefault) FilterOption period,

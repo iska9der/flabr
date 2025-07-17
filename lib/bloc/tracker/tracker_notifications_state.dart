@@ -1,7 +1,7 @@
 part of 'tracker_notifications_bloc.dart';
 
 @freezed
-class TrackerNotificationsState with _$TrackerNotificationsState {
+abstract class TrackerNotificationsState with _$TrackerNotificationsState {
   const TrackerNotificationsState._();
 
   const factory TrackerNotificationsState({

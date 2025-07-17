@@ -6,7 +6,8 @@ part 'tracker_notification_publication.freezed.dart';
 part 'tracker_notification_publication.g.dart';
 
 @freezed
-class TrackerNotificationPublication with _$TrackerNotificationPublication {
+abstract class TrackerNotificationPublication
+    with _$TrackerNotificationPublication {
   const TrackerNotificationPublication._();
 
   const factory TrackerNotificationPublication({

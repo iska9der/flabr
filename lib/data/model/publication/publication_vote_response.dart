@@ -6,7 +6,7 @@ part 'publication_vote_response.freezed.dart';
 part 'publication_vote_response.g.dart';
 
 @freezed
-class PublicationVoteResponse with _$PublicationVoteResponse {
+abstract class PublicationVoteResponse with _$PublicationVoteResponse {
   const factory PublicationVoteResponse({
     @Default(PublicationVote.empty) PublicationVote vote,
     @Default(false) bool canVote,

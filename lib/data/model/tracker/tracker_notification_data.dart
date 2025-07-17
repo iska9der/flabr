@@ -7,7 +7,7 @@ part 'tracker_notification_data.freezed.dart';
 part 'tracker_notification_data.g.dart';
 
 @freezed
-class TrackerNotificationData with _$TrackerNotificationData {
+abstract class TrackerNotificationData with _$TrackerNotificationData {
   const factory TrackerNotificationData({
     TrackerNotificationUser? user,
     @JsonKey(name: 'publication', readValue: _publicationReader)

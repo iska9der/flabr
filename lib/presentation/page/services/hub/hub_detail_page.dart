@@ -129,14 +129,14 @@ class _HubArticleListView extends StatelessWidget {
       listeners: [
         BlocListener<ScrollCubit, ScrollState>(
           listenWhen: (previous, current) => current.isBottomEdge,
-          listener: (_, __) => context.read<HubPublicationListCubit>().fetch(),
+          listener: (_, _) => context.read<HubPublicationListCubit>().fetch(),
         ),
         BlocListener<SettingsCubit, SettingsState>(
           listenWhen:
               (previous, current) =>
                   previous.langUI != current.langUI ||
                   previous.langArticles != current.langArticles,
-          listener: (_, __) => context.read<ScrollCubit>().animateToTop(),
+          listener: (_, _) => context.read<ScrollCubit>().animateToTop(),
         ),
       ],
       child:

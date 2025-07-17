@@ -105,7 +105,7 @@ Future showSummaryDialog(
                   ),
                 ),
               SummaryAuthStatus.authorized => SizedBox(
-                  width: MediaQuery.of(context).size.width,
+                  width: MediaQuery.sizeOf(context).width,
                   child: SummaryWidget(loaderWidget: loader),
                 ),
               _ => const SizedBox(),

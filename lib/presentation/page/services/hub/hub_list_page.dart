@@ -47,7 +47,7 @@ class HubListPageView extends StatelessWidget {
       listeners: [
         BlocListener<ScrollCubit, ScrollState>(
           listenWhen: (_, current) => current.isBottomEdge,
-          listener: (_, __) => cubit.fetch(),
+          listener: (_, _) => cubit.fetch(),
         ),
       ],
       child: Scaffold(

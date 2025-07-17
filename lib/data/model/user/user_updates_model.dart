@@ -4,7 +4,7 @@ part 'user_updates_model.freezed.dart';
 part 'user_updates_model.g.dart';
 
 @freezed
-class UserUpdates with _$UserUpdates {
+abstract class UserUpdates with _$UserUpdates {
   const factory UserUpdates({
     @Default(UserUpdatesFeeds()) UserUpdatesFeeds feeds,
     @Default(0) int conversationUnreadCount,
@@ -16,7 +16,7 @@ class UserUpdates with _$UserUpdates {
 }
 
 @freezed
-class UserUpdatesFeeds with _$UserUpdatesFeeds {
+abstract class UserUpdatesFeeds with _$UserUpdatesFeeds {
   const factory UserUpdatesFeeds({
     @Default(0) int newPostsCount,
     @Default(0) int newThreadsCount,

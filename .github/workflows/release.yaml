@@ -94,7 +94,8 @@ jobs:
     - name: Move and rename APKs
       run: |
         mkdir release
-        mv build/app/outputs/flutter-apk/app-release.apk release/flabr_v${{ needs.get_version.outputs.version }}.apk
+        # search for: Issue (universal)
+        # mv build/app/outputs/flutter-apk/app-release.apk release/flabr_v${{ needs.get_version.outputs.version }}.apk
         mv build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk release/flabr_v${{ needs.get_version.outputs.version }}_armeabi-v7a.apk
         mv build/app/outputs/flutter-apk/app-arm64-v8a-release.apk release/flabr_v${{ needs.get_version.outputs.version }}_arm64-v8a.apk
         mv build/app/outputs/flutter-apk/app-x86_64-release.apk release/flabr_v${{ needs.get_version.outputs.version }}_x86_64.apk

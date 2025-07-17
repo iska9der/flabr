@@ -4,7 +4,7 @@ part 'publication_statistics_model.freezed.dart';
 part 'publication_statistics_model.g.dart';
 
 @freezed
-class PublicationStatistics with _$PublicationStatistics {
+abstract class PublicationStatistics with _$PublicationStatistics {
   const PublicationStatistics._();
 
   const factory PublicationStatistics({

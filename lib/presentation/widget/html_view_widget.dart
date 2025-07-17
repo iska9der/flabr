@@ -100,7 +100,7 @@ class HtmlView extends StatelessWidget {
             if (element.localName == 'img') {
               /// Если пользователь не хочет видеть изображения - не показываем
               if (!isImageVisible) {
-                return const SizedBox();
+                return const SizedBox.shrink();
               }
 
               /// Люди верстают статьи по-разному, и иногда ужасно:
@@ -392,7 +392,7 @@ abstract class CustomBuildOp {
                     rootNavigator: true,
                     child: ConstrainedBox(
                       constraints: BoxConstraints(
-                        minWidth: MediaQuery.of(context).size.width,
+                        minWidth: Device.getWidth(context),
                       ),
                       child: SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
@@ -415,7 +415,7 @@ abstract class CustomBuildOp {
               children: [
                 ConstrainedBox(
                   constraints: BoxConstraints(
-                    minWidth: MediaQuery.of(context).size.width,
+                    minWidth: Device.getWidth(context),
                   ),
                   child: HighlightBackgroundEnvironment(
                     child: HighlightView(
@@ -447,7 +447,7 @@ abstract class CustomBuildOp {
               color: bgColor,
               child: ConstrainedBox(
                 constraints: BoxConstraints(
-                  minWidth: MediaQuery.of(context).size.width,
+                  minWidth: Device.getWidth(context),
                 ),
                 child: SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
