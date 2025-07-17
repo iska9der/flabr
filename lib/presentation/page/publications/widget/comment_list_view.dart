@@ -182,6 +182,10 @@ class _CommentTreeWidgetState extends State<CommentTreeWidget> {
               return Padding(
                 key: key,
                 padding: EdgeInsets.only(top: topPadding),
+
+                /// TODO: package deprecated
+                /// see: https://pub.dev/packages/flutter_fancy_tree_view
+                /// use: https://pub.dev/packages/two_dimensional_scrollables
                 child: TreeIndentation(
                   entry: entry,
                   guide: const IndentGuide(indent: 0),
