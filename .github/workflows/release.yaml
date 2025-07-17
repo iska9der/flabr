@@ -40,6 +40,14 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
 
+    - name: Setup Android SDK
+      uses: android-actions/setup-android@v3
+      with:
+        log-accepted-android-sdk-licenses: false
+
+    - name: Install NDK
+      run: sdkmanager --install "ndk;26.3.11579264"
+
     - name: Gradle cache
       uses: actions/cache@v4
       with:
@@ -98,7 +106,7 @@ jobs:
         name: apks_archive
         path: release/*.apk
 
-    - name: Create release tag
+    - name: Create pre-release tag
       uses: actions/github-script@v7.0.1
       with:
         github-token: ${{ secrets.PAT_TOKEN }}
@@ -113,10 +121,10 @@ jobs:
     - name: Publish to GitHub releases
       uses: softprops/action-gh-release@v2
       with:
-        make_latest: true
         prerelease: true
+        make_latest: true
         generate_release_notes: true
-        name: v${{ needs.get_version.outputs.version }}
+        name: v${{ needs.get_version.outputs.version }}-pre
         tag_name: v${{ needs.get_version.outputs.version }}
         files: release/*
 
