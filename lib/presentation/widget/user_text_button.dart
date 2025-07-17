@@ -23,7 +23,7 @@ class UserTextButton extends StatelessWidget {
       onPressed:
           () => context.router.push(UserDashboardRoute(alias: user.alias)),
       onLongPress: () {
-        showProfileDialog(context, child: DialogUserProfileWidget(user: user));
+        showProfileDialog(context, child: UserProfileDialog(user: user));
       },
       child: Wrap(
         crossAxisAlignment: WrapCrossAlignment.center,

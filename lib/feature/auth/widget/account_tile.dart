@@ -37,7 +37,7 @@ class AccountTile extends StatelessWidget {
           authState.isAuthorized
               ? () => showProfileDialog(
                 context,
-                child: const DialogMyProfileWidget(),
+                child: const MyProfileDialog(),
               )
               : () => showLoginDialog(context),
     );

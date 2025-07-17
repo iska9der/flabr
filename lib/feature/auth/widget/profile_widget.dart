@@ -6,90 +6,30 @@ import '../../../core/component/router/app_router.dart';
 import '../../../data/model/user_base.dart';
 import '../../../presentation/extension/extension.dart';
 import '../../../presentation/widget/card_avatar_widget.dart';
-import '../../../presentation/widget/enhancement/card.dart';
 import '../../../presentation/widget/enhancement/progress_indicator.dart';
 import '../cubit/auth_cubit.dart';
 
-abstract class DialogUserWidget extends StatelessWidget {
-  const DialogUserWidget({super.key});
+abstract class UserDialog extends StatelessWidget {
+  const UserDialog({super.key});
 }
 
-class DialogUserProfileWidget extends StatelessWidget
-    implements DialogUserWidget {
-  const DialogUserProfileWidget({super.key, required this.user});
+class UserProfileDialog extends StatelessWidget implements UserDialog {
+  const UserProfileDialog({super.key, required this.user});
 
   final UserBase user;
 
   @override
   Widget build(BuildContext context) {
-    return IntrinsicHeight(
-      child: FlabrCard(
-        elevation: 0,
-        padding: EdgeInsets.zero,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: ListTile(
-                leading: CardAvatarWidget(imageUrl: user.avatarUrl),
-                title: Text('@${user.alias}'),
-                subtitle: user.fullname.isNotEmpty ? Text(user.fullname) : null,
-                onTap: () {
-                  context.router.push(UserDashboardRoute(alias: user.alias));
-
-                  Navigator.of(context).pop();
-                },
-              ),
-            ),
-            ListTile(
-              title: const Text('Публикации'),
-              onTap: () {
-                context.router.push(
-                  UserDashboardRoute(
-                    alias: user.alias,
-                    children: [UserPublicationListRoute()],
-                  ),
-                );
-
-                Navigator.of(context).pop();
-              },
-            ),
-            ListTile(
-              title: const Text('Закладки'),
-              onTap: () {
-                context.router.push(
-                  UserDashboardRoute(
-                    alias: user.alias,
-                    children: [UserBookmarkListRoute()],
-                  ),
-                );
-
-                Navigator.of(context).pop();
-              },
-            ),
-            ListTile(
-              title: const Text('Комментарии'),
-              onTap: () {
-                context.router.push(
-                  UserDashboardRoute(
-                    alias: user.alias,
-                    children: [UserCommentListRoute()],
-                  ),
-                );
-
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        ),
-      ),
+    return Dialog(
+      insetPadding: EdgeInsets.zero,
+      backgroundColor: context.theme.colors.card,
+      child: _UserCommonTiles(user: user),
     );
   }
 }
 
-class DialogMyProfileWidget extends StatelessWidget
-    implements DialogUserWidget {
-  const DialogMyProfileWidget({super.key});
+class MyProfileDialog extends StatelessWidget implements UserDialog {
+  const MyProfileDialog({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -108,25 +48,98 @@ class DialogMyProfileWidget extends StatelessWidget
           return const CircleIndicator.medium();
         }
 
-        return IntrinsicHeight(
-          child: FlabrCard(
-            elevation: 0,
-            padding: EdgeInsets.zero,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                DialogUserProfileWidget(user: state.me),
-                const Divider(height: 1),
-                ElevatedButton(
+        return Dialog(
+          insetPadding: EdgeInsets.zero,
+          backgroundColor: context.theme.colors.card,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              _UserCommonTiles(user: state.me),
+              const Divider(height: 1, indent: 0),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 4,
+                  vertical: 8,
+                ),
+                child: ElevatedButton(
                   onPressed: () => context.read<AuthCubit>().logOut(),
                   child: const Text('Выход'),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         );
       },
+    );
+  }
+}
+
+class _UserCommonTiles extends StatelessWidget {
+  const _UserCommonTiles({
+    // ignore: unused_element_parameter
+    super.key,
+    required this.user,
+  });
+
+  final UserBase user;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        ListTile(
+          leading: CardAvatarWidget(imageUrl: user.avatarUrl),
+          title: Text('@${user.alias}'),
+          subtitle: user.fullname.isNotEmpty ? Text(user.fullname) : null,
+          onTap: () {
+            context.router.push(UserDashboardRoute(alias: user.alias));
+
+            Navigator.of(context).pop();
+          },
+        ),
+        ListTile(
+          title: const Text('Публикации'),
+          onTap: () {
+            context.router.push(
+              UserDashboardRoute(
+                alias: user.alias,
+                children: [UserPublicationListRoute()],
+              ),
+            );
+
+            Navigator.of(context).pop();
+          },
+        ),
+        ListTile(
+          title: const Text('Закладки'),
+          onTap: () {
+            context.router.push(
+              UserDashboardRoute(
+                alias: user.alias,
+                children: [UserBookmarkListRoute()],
+              ),
+            );
+
+            Navigator.of(context).pop();
+          },
+        ),
+        ListTile(
+          title: const Text('Комментарии'),
+          onTap: () {
+            context.router.push(
+              UserDashboardRoute(
+                alias: user.alias,
+                children: [UserCommentListRoute()],
+              ),
+            );
+
+            Navigator.of(context).pop();
+          },
+        ),
+      ],
     );
   }
 }

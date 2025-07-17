@@ -9,8 +9,6 @@ abstract class AppDimensions {
   static const double underElevation = 20.0;
   static const double toolBarHeightOnScroll = toolBarHeight - underElevation;
 
-  static const double cardBetweenHeight = 16.0;
-
   static const double avatarHeight = 50.0;
   static const double avatarPublicationHeight = 30.0;
   static const double imageHeight = 200.0;
@@ -44,17 +42,27 @@ abstract class AppInsets {
 }
 
 abstract class AppStyles {
-  static const BorderRadius borderRadius = BorderRadius.all(
-    Radius.circular(8.0),
+  static const BorderRadius cardBorderRadius = BorderRadius.zero;
+
+  static const BorderRadius dialogBorderRadius = BorderRadius.all(
+    Radius.circular(6),
   );
 
-  static const BorderRadius borderRadiusSm = BorderRadius.all(
-    Radius.circular(4.0),
+  static const BorderRadius buttonBorderRadius = BorderRadius.all(
+    Radius.circular(3),
+  );
+
+  static const BorderRadius checkboxBorderRadius = BorderRadius.all(
+    Radius.circular(2),
+  );
+
+  static const BorderRadius avatarBorderRadius = BorderRadius.all(
+    Radius.circular(3),
   );
 }
 
 abstract class AppIcons {
   static const IconData hubPlaceholder = Icons.hub_rounded;
-  static const IconData authorPlaceholder = Icons.account_circle;
+  static const IconData authorPlaceholder = Icons.account_box;
   static const IconData companyPlaceholder = Icons.schedule_rounded;
 }

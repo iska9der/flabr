@@ -5,7 +5,7 @@ import '../../../../../../core/component/router/app_router.dart';
 import '../../../../../../data/model/hub/hub.dart';
 import '../../../../../../data/model/publication/publication.dart';
 import '../../../../../../di/di.dart';
-import '../../../../../extension/context.dart';
+import '../../../../../extension/extension.dart';
 import '../../../../../theme/theme.dart';
 
 class PublicationHubsWidget extends StatelessWidget {
@@ -36,8 +36,8 @@ class _PublicationHub extends StatelessWidget {
   Widget build(BuildContext context) {
     var style = context.theme.textTheme.labelMedium;
 
-    if ((hub.relatedData as HubRelatedData).isSubscribed) {
-      style = style?.copyWith(color: Colors.green.shade300);
+    if (hub.relatedData case HubRelatedData(isSubscribed: true)) {
+      style = style?.copyWith(color: context.theme.colors.highlight);
     }
 
     var title = hub.title;
@@ -54,7 +54,7 @@ class _PublicationHub extends StatelessWidget {
 
     return InkWell(
       onTap: () => getIt<AppRouter>().navigate(route),
-      borderRadius: AppStyles.borderRadius,
+      borderRadius: AppStyles.cardBorderRadius,
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
         child: Text(title, style: style, softWrap: true),

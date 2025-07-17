@@ -96,7 +96,7 @@ class ServiceCard extends StatelessWidget {
                 padding: const EdgeInsets.all(4),
                 margin: const EdgeInsets.only(bottom: 10),
                 decoration: BoxDecoration(
-                  borderRadius: AppStyles.borderRadius,
+                  borderRadius: AppStyles.cardBorderRadius,
                   color:
                       onTap != null
                           ? theme.colorScheme.onSurface.withValues(alpha: .7)

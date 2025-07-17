@@ -19,7 +19,7 @@ class MyProfileIconButton extends StatelessWidget {
           state.isAuthorized
               ? () => showProfileDialog(
                 context,
-                child: const DialogMyProfileWidget(),
+                child: const MyProfileDialog(),
               )
               : () => showLoginDialog(context),
       icon:

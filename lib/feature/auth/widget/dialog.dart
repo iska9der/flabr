@@ -9,18 +9,18 @@ import 'profile_widget.dart';
 
 Future showProfileDialog(
   BuildContext context, {
-  required DialogUserWidget child,
+  required UserDialog child,
 }) async {
   return await showDialog(
     context: context,
     builder:
-        (context) => Padding(
+        (_) => Padding(
           padding: EdgeInsets.only(
             bottom: MediaQuery.viewInsetsOf(context).bottom,
           ),
-          child: Center(
+          child: Align(
             child: SizedBox(
-              width: Device.getWidth(context) * .8,
+              width: Device.getWidth(context) * .7,
               child: child,
             ),
           ),

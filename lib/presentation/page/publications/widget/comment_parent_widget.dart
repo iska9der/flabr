@@ -51,7 +51,7 @@ class _CommentParentState extends State<CommentParent> {
         tag: tag,
         child: DecoratedBox(
           decoration: BoxDecoration(
-            borderRadius: AppStyles.borderRadiusSm,
+            borderRadius: AppStyles.cardBorderRadius,
             color: bgColor,
           ),
           child: Stack(
@@ -116,7 +116,7 @@ class _CommentParentState extends State<CommentParent> {
                 child: IgnorePointer(
                   child: DecoratedBox(
                     decoration: BoxDecoration(
-                      borderRadius: AppStyles.borderRadius,
+                      borderRadius: AppStyles.cardBorderRadius,
                       gradient: LinearGradient(
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
@@ -146,7 +146,7 @@ class _CommentParentState extends State<CommentParent> {
                           tag: tag,
                           child: DecoratedBox(
                             decoration: BoxDecoration(
-                              borderRadius: AppStyles.borderRadius,
+                              borderRadius: AppStyles.cardBorderRadius,
                               color: bgColor,
                             ),
                             child: SingleChildScrollView(

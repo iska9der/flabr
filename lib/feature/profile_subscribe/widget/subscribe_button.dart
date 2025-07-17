@@ -40,12 +40,16 @@ class SubscribeButton extends StatelessWidget {
           context.showSnack(content: Text(state.error));
         },
         builder: (context, state) {
-          var style = const ButtonStyle();
+          var style = OutlinedButton.styleFrom(
+            foregroundColor: context.theme.colors.highlight,
+            side: BorderSide(color: context.theme.colors.highlight),
+          );
 
           if (state.isSubscribed) {
-            style = style.copyWith(
-              foregroundColor: WidgetStateProperty.all(Colors.white),
-              backgroundColor: WidgetStateProperty.all(Colors.green),
+            style = OutlinedButton.styleFrom(
+              backgroundColor: context.theme.colors.highlight,
+              foregroundColor: context.theme.colors.onHighlight,
+              side: BorderSide.none,
             );
           }
 

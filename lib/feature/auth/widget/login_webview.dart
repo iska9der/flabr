@@ -15,7 +15,7 @@ import '../cubit/auth_cubit.dart';
 import '../cubit/login_cubit.dart';
 import 'profile_widget.dart';
 
-class LoginWebView extends StatelessWidget implements DialogUserWidget {
+class LoginWebView extends StatelessWidget implements UserDialog {
   const LoginWebView({super.key});
 
   @override
