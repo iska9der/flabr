@@ -4,6 +4,13 @@ plugins {
     id "dev.flutter.flutter-gradle-plugin"
 }
 
+// Keystore properties
+def keystoreProperties = new Properties()
+def keystorePropertiesFile = rootProject.file('key.properties')
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+}
+
 // Dart env variables
 def dartEnvironmentVariables = [];
 if (project.hasProperty('dart-defines')) {
@@ -18,24 +25,6 @@ if (project.hasProperty('dart-defines')) {
 def appName = dartEnvironmentVariables.APP_NAME ?: 'Flabr'
 def appIdSuffix = dartEnvironmentVariables.ENV.toString().equalsIgnoreCase('dev') ? '.dev' : ''
 
-// Keystore properties
-def keystoreProperties = new Properties()
-def keystorePropertiesFile = rootProject.file('key.properties')
-if (keystorePropertiesFile.exists()) {
-    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
-}
-
-// Local properties
-def localProperties = new Properties()
-def localPropertiesFile = rootProject.file('local.properties')
-if (localPropertiesFile.exists()) {
-    localPropertiesFile.withReader('UTF-8') { reader ->
-        localProperties.load(reader)
-    }
-}
-
-def flutterVersionCode = localProperties.getProperty('flutter.versionCode') ?: '1'
-def flutterVersionName = localProperties.getProperty('flutter.versionName') ?: '1.0'
 
 android {
     namespace = "ru.iska9der.flabr"
@@ -68,8 +57,8 @@ android {
         applicationIdSuffix = appIdSuffix
         minSdk = Math.max(flutter.minSdkVersion, 21)
         targetSdk = 35
-        versionCode = flutterVersionCode.toInteger()
-        versionName = flutterVersionName
+        versionCode = flutter.versionCode
+        versionName = flutter.versionName
         resValue "string", "app_name", appName
     }
 
@@ -82,7 +71,9 @@ android {
             // Specifies a list of ABIs for Gradle to create APKs for.
             include "armeabi-v7a", "arm64-v8a", "x86_64" // "x86"
             // Specifies that you want to also generate a universal APK that includes all ABIs.
-            universalApk true
+            // Issue: Wont build universal APK, see related PR:
+            // https://github.com/flutter/flutter/pull/170343
+            universalApk false
         }
     }
 
