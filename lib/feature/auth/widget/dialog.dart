@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../../../presentation/extension/extension.dart';
+import '../../../presentation/theme/theme.dart';
 import 'connect_sid_widget.dart';
 import 'login_webview.dart';
 import 'profile_widget.dart';
@@ -15,11 +16,11 @@ Future showProfileDialog(
     builder:
         (context) => Padding(
           padding: EdgeInsets.only(
-            bottom: MediaQuery.of(context).viewInsets.bottom,
+            bottom: MediaQuery.viewInsetsOf(context).bottom,
           ),
           child: Center(
             child: SizedBox(
-              width: MediaQuery.of(context).size.width * .8,
+              width: Device.getWidth(context) * .8,
               child: child,
             ),
           ),
@@ -63,7 +64,7 @@ Future showLoginDialog(BuildContext context) async {
                     child: ConnectSidWidget(),
                   )
                   : SizedBox(
-                    width: MediaQuery.of(context).size.width,
+                    width: Device.getWidth(context),
                     child: const LoginWebView(),
                   ),
         ),

@@ -15,10 +15,10 @@ class Device {
       Platform.isMacOS || Platform.isWindows || Platform.isLinux;
 
   static double getHeight(BuildContext context) {
-    return MediaQuery.of(context).size.height;
+    return MediaQuery.sizeOf(context).height;
   }
 
   static double getWidth(BuildContext context) {
-    return MediaQuery.of(context).size.width;
+    return MediaQuery.sizeOf(context).width;
   }
 }

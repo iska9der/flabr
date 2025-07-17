@@ -392,7 +392,7 @@ abstract class CustomBuildOp {
                     rootNavigator: true,
                     child: ConstrainedBox(
                       constraints: BoxConstraints(
-                        minWidth: MediaQuery.of(context).size.width,
+                        minWidth: Device.getWidth(context),
                       ),
                       child: SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
@@ -415,7 +415,7 @@ abstract class CustomBuildOp {
               children: [
                 ConstrainedBox(
                   constraints: BoxConstraints(
-                    minWidth: MediaQuery.of(context).size.width,
+                    minWidth: Device.getWidth(context),
                   ),
                   child: HighlightBackgroundEnvironment(
                     child: HighlightView(
@@ -447,7 +447,7 @@ abstract class CustomBuildOp {
               color: bgColor,
               child: ConstrainedBox(
                 constraints: BoxConstraints(
-                  minWidth: MediaQuery.of(context).size.width,
+                  minWidth: Device.getWidth(context),
                 ),
                 child: SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
