@@ -71,8 +71,7 @@ android {
             // Specifies a list of ABIs for Gradle to create APKs for.
             include "armeabi-v7a", "arm64-v8a", "x86_64" // "x86"
             // Specifies that you want to also generate a universal APK that includes all ABIs.
-            // Issue: Wont build universal APK, see related PR:
-            // https://github.com/flutter/flutter/pull/170343
+            // search for: Issue (universal)
             universalApk false
         }
     }
@@ -112,7 +111,7 @@ flutter {
 // Tip: see the /ruffle-rs/ruffle-android/pull/460/files
 // when migrating to .kts
 
-// Issue: Wont build universal APK, see related PR:
+// Issue (universal): Wont build universal APK, see related PR:
 // https://github.com/flutter/flutter/pull/170343
 // Waiting for the fix to be released, maybe in 3.32.6?
 //
