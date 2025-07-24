@@ -1,32 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import '../../../presentation/extension/extension.dart';
-import '../../../presentation/theme/theme.dart';
-import 'connect_sid_widget.dart';
-import 'login_webview.dart';
-import 'profile_widget.dart';
-
-Future showProfileDialog(
-  BuildContext context, {
-  required UserDialog child,
-}) async {
-  return await showDialog(
-    context: context,
-    builder:
-        (_) => Padding(
-          padding: EdgeInsets.only(
-            bottom: MediaQuery.viewInsetsOf(context).bottom,
-          ),
-          child: Align(
-            child: SizedBox(
-              width: Device.getWidth(context) * .7,
-              child: child,
-            ),
-          ),
-        ),
-  );
-}
+import '../../extension/extension.dart';
+import '../../theme/theme.dart';
+import '../auth/connect_sid_widget.dart';
+import '../auth/login_webview.dart';
 
 void showLoginSnackBar(BuildContext context) async {
   return context.showSnack(

@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 
 import '../../core/component/router/app_router.dart';
 import '../../data/model/user_base.dart';
-import '../../feature/auth/auth.dart';
 import '../theme/theme.dart';
 import 'card_avatar_widget.dart';
+import 'dialog/dialog.dart';
 
 class UserTextButton extends StatelessWidget {
   const UserTextButton(this.user, {super.key});
@@ -20,8 +20,9 @@ class UserTextButton extends StatelessWidget {
         padding: const WidgetStatePropertyAll(EdgeInsets.zero),
         visualDensity: const VisualDensity(vertical: -4, horizontal: -4),
       ),
-      onPressed:
-          () => context.router.push(UserDashboardRoute(alias: user.alias)),
+      onPressed: () {
+        context.router.push(UserDashboardRoute(alias: user.alias));
+      },
       onLongPress: () {
         showProfileDialog(context, child: UserProfileDialog(user: user));
       },

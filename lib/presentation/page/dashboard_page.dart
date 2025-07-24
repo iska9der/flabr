@@ -4,9 +4,11 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
+import '../../bloc/auth/auth_cubit.dart';
+import '../../bloc/profile/profile_bloc.dart';
 import '../../bloc/settings/settings_cubit.dart';
 import '../../core/component/router/app_router.dart';
-import '../../feature/auth/auth.dart';
+import '../../data/model/loading_status_enum.dart';
 import '../extension/extension.dart';
 import '../theme/theme.dart';
 
@@ -54,8 +56,11 @@ class _DashboardPageState extends State<DashboardPage> {
         /// данных о вошедшем юзере. Ошибка возникает, если при логине
         /// пришел некорректный connectSSID и [AuthCubit.fetchMe()]
         /// вернул null
-        BlocListener<AuthCubit, AuthState>(
-          listenWhen: (p, c) => p.isAuthorized && c.isAnomaly,
+        BlocListener<ProfileBloc, ProfileState>(
+          listenWhen:
+              (p, c) =>
+                  p.status == LoadingStatus.loading &&
+                  c.status == LoadingStatus.failure,
           listener: (context, state) {
             context.showAlert(
               title: const Text('Ошибка авторизации'),

@@ -4,10 +4,10 @@ import '../model/user/user.dart';
 import '../service/service.dart';
 
 @Singleton()
-class AuthRepository {
-  AuthRepository(AuthService service) : _service = service;
+class ProfileRepository {
+  ProfileRepository(ProfileService service) : _service = service;
 
-  final AuthService _service;
+  final ProfileService _service;
 
   Future<UserMe?> fetchMe() async {
     final raw = await _service.fetchMe();

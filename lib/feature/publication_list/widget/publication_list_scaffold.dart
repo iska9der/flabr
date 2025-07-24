@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
+import '../../../bloc/auth/auth_cubit.dart';
 import '../../../bloc/settings/settings_cubit.dart';
 import '../../../presentation/theme/theme.dart';
 import '../../../presentation/widget/enhancement/card.dart';
 import '../../../presentation/widget/enhancement/refresh_indicator.dart';
 import '../../../presentation/widget/enhancement/responsive_visibility.dart';
-import '../../auth/auth.dart';
 import '../../most_reading/most_reading.dart';
 import '../../scroll/scroll.dart';
 import '../cubit/publication_list_cubit.dart';

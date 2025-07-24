@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../bloc/profile/profile_bloc.dart';
 import '../../../../../data/model/stat_type_enum.dart';
 import '../../../../../data/model/user/user.dart';
 import '../../../../../data/repository/repository.dart';
 import '../../../../../di/di.dart';
-import '../../../../../feature/auth/auth.dart';
 import '../../../../../feature/profile_subscribe/profile_subscribe.dart';
 import '../../../../extension/extension.dart';
 import '../../../../widget/card_avatar_widget.dart';
@@ -79,7 +79,7 @@ class _UserProfileCardWidgetState extends State<UserProfileCardWidget> {
               ),
             ],
           ),
-          BlocBuilder<AuthCubit, AuthState>(
+          BlocBuilder<ProfileBloc, ProfileState>(
             builder: (context, state) {
               if (state.me.alias == user.alias) {
                 return const SizedBox.shrink();

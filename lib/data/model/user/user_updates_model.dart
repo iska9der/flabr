@@ -13,6 +13,8 @@ abstract class UserUpdates with _$UserUpdates {
 
   factory UserUpdates.fromJson(Map<String, dynamic> json) =>
       _$UserUpdatesFromJson(json);
+
+  static const UserUpdates empty = UserUpdates();
 }
 
 @freezed
