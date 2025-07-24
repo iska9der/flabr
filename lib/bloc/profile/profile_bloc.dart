@@ -61,7 +61,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     try {
       final updates = await _repository.fetchUpdates();
 
-      emit(state.copyWith(updates: updates, status: LoadingStatus.success));
+      emit(state.copyWith(updates: updates));
     } catch (_) {
       rethrow;
     }

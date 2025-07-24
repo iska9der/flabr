@@ -46,11 +46,14 @@ class Application extends StatelessWidget {
       ],
       child: BlocListener<AuthCubit, AuthState>(
         listener: (context, state) {
+          final bloc = context.read<ProfileBloc>();
+
           switch (state.status) {
             case AuthStatus.authorized:
-              context.read<ProfileBloc>().add(const ProfileEvent.fetchMe());
+              bloc.add(const ProfileEvent.fetchMe());
+              bloc.add(const ProfileEvent.fetchUpdates());
             case AuthStatus.unauthorized:
-              context.read<ProfileBloc>().add(const ProfileEvent.reset());
+              bloc.add(const ProfileEvent.reset());
             default:
               break;
           }
