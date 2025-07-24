@@ -45,7 +45,6 @@ class _CommentParentState extends State<CommentParent> {
     }
 
     return Padding(
-      // TODO: bottom padding Для iconbutton?
       padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 6),
       child: Hero(
         tag: tag,
@@ -59,55 +58,64 @@ class _CommentParentState extends State<CommentParent> {
             children: [
               ConstrainedBox(
                 constraints: const BoxConstraints(maxHeight: 100),
-                child: SingleChildScrollView(
-                  padding: const EdgeInsets.fromLTRB(10, 0, 10, 40),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      GestureDetector(
-                        onTap: widget.onParentTapped,
-                        behavior: HitTestBehavior.translucent,
-                        child: Padding(
-                          padding: const EdgeInsets.only(top: 10, bottom: 8),
-                          child: Row(
-                            spacing: 4,
-                            children: [
-                              Icon(
-                                Icons.arrow_upward,
-                                size: 18,
-                                color: context.theme.colors.primary,
-                              ),
-                              SelectableText.rich(
-                                TextSpan(
-                                  text: 'ответил на ',
-                                  style: textStyle,
-                                  children: [
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(10, 0, 10, 2),
+                  child: SingleChildScrollView(
+                    physics: const NeverScrollableScrollPhysics(),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        GestureDetector(
+                          onTap: widget.onParentTapped,
+                          behavior: HitTestBehavior.translucent,
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 10, bottom: 8),
+                            child: Row(
+                              spacing: 4,
+                              children: [
+                                Icon(
+                                  Icons.arrow_upward,
+                                  size: 18,
+                                  color: context.theme.colors.primary,
+                                ),
+                                Expanded(
+                                  child: SelectableText.rich(
                                     TextSpan(
-                                      text: 'сообщение от ',
-                                      style: textStyle.copyWith(
-                                        color: context.theme.colors.primary,
-                                      ),
+                                      text: 'ответил на ',
+                                      style: textStyle,
                                       children: [
                                         TextSpan(
-                                          text: widget.parent.author.alias,
+                                          text: 'сообщение от wew ew ',
                                           style: textStyle.copyWith(
                                             color: context.theme.colors.primary,
-                                            fontWeight: FontWeight.w500,
                                           ),
+                                          children: [
+                                            TextSpan(
+                                              text: widget.parent.author.alias,
+                                              style: textStyle.copyWith(
+                                                color:
+                                                    context
+                                                        .theme
+                                                        .colors
+                                                        .primary,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+                                          ],
                                         ),
+                                        const TextSpan(text: ':'),
                                       ],
                                     ),
-                                    const TextSpan(text: ':'),
-                                  ],
+                                    onTap: widget.onParentTapped,
+                                  ),
                                 ),
-                                onTap: widget.onParentTapped,
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                      parentHtml,
-                    ],
+                        parentHtml,
+                      ],
+                    ),
                   ),
                 ),
               ),
