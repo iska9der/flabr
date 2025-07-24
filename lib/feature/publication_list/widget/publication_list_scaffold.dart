@@ -38,24 +38,12 @@ class PublicationListScaffold<
 
     return MultiBlocListener(
       listeners: [
-        /// Если пользователь вошел, надо переполучить статьи
+        /// Если пользователь вошел или вышел - надо переполучить статьи
         BlocListener<AuthCubit, AuthState>(
-          listenWhen:
-              (previous, current) =>
-                  previous.status == AuthStatus.loading && current.isAuthorized,
           listener: (context, state) {
-            pubCubit.refetch();
-          },
-        ),
-
-        /// Если пользователь вышел, переполучаем статьи напрямую
-        BlocListener<AuthCubit, AuthState>(
-          listenWhen:
-              (previous, current) =>
-                  previous.status == AuthStatus.loading &&
-                  current.isUnauthorized,
-          listener: (context, state) {
-            pubCubit.refetch();
+            if (state.isAuthorized || state.isUnauthorized) {
+              pubCubit.reset();
+            }
           },
         ),
 
@@ -153,7 +141,7 @@ class _PublicationListView<
             SliverPadding(
               padding: const EdgeInsets.only(top: AppDimensions.tabBarHeight),
               sliver: FlabrSliverRefreshIndicator(
-                onRefresh: context.read<ListCubit>().refetch,
+                onRefresh: context.read<ListCubit>().reset,
               ),
             ),
 

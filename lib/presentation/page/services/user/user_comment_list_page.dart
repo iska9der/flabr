@@ -62,7 +62,7 @@ class _UserCommentListView extends StatelessWidget {
             physics: scrollPhysics,
             slivers: [
               FlabrSliverRefreshIndicator(
-                onRefresh: context.read<UserCommentListCubit>().refetch,
+                onRefresh: context.read<UserCommentListCubit>().reset,
               ),
               CommentSliverList(
                 fetch: context.read<UserCommentListCubit>().fetch,

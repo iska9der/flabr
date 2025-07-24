@@ -72,7 +72,7 @@ class UserPublicationListView extends StatelessWidget {
             physics: scrollPhysics,
             slivers: [
               FlabrSliverRefreshIndicator(
-                onRefresh: context.read<UserPublicationListCubit>().refetch,
+                onRefresh: context.read<UserPublicationListCubit>().reset,
               ),
               BlocBuilder<UserPublicationListCubit, UserPublicationListState>(
                 builder: (context, state) {

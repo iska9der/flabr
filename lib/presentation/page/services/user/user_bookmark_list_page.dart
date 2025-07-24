@@ -77,8 +77,8 @@ class UserBookmarkListView extends StatelessWidget {
                 return FlabrSliverRefreshIndicator(
                   onRefresh: switch (state.type) {
                     UserBookmarksType.comments =>
-                      context.read<UserCommentListCubit>().refetch,
-                    _ => context.read<UserBookmarkListCubit>().refetch,
+                      context.read<UserCommentListCubit>().reset,
+                    _ => context.read<UserBookmarkListCubit>().reset,
                   },
                 );
               },

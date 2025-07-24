@@ -105,7 +105,7 @@ class HubDetailPageView extends StatelessWidget {
               physics: scrollPhysics,
               slivers: [
                 FlabrSliverRefreshIndicator(
-                  onRefresh: context.read<HubPublicationListCubit>().refetch,
+                  onRefresh: context.read<HubPublicationListCubit>().reset,
                 ),
                 SliverToBoxAdapter(
                   child: HubProfileCardWidget(profile: state.profile),
