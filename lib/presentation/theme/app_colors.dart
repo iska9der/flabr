@@ -15,6 +15,8 @@ abstract class AppColorsLight {
 
   static const Color highlight = Color.fromARGB(255, 122, 166, 0);
   static const Color onHighlight = Color.fromARGB(255, 255, 255, 255);
+
+  static const Color authorColor = Color.fromARGB(255, 236, 247, 223);
 }
 
 abstract class AppColorsDark {
@@ -32,6 +34,8 @@ abstract class AppColorsDark {
 
   static const Color highlight = Color.fromARGB(255, 132, 179, 0);
   static const Color onHighlight = Color.fromARGB(255, 23, 23, 23);
+
+  static const Color authorColor = Color.fromARGB(255, 34, 46, 20);
 }
 
 class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
@@ -47,6 +51,7 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
     required this.progressTrackColor,
     required this.highlight,
     required this.onHighlight,
+    required this.authorColor,
   });
 
   final Color surface;
@@ -60,6 +65,7 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
   final Color progressTrackColor;
   final Color highlight;
   final Color onHighlight;
+  final Color authorColor;
 
   @override
   ThemeExtension<AppColorsExtension> copyWith({
@@ -74,6 +80,7 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
     Color? progressTrackColor,
     Color? highlight,
     Color? onHighlight,
+    Color? authorColor,
   }) {
     return AppColorsExtension(
       surface: surface ?? this.surface,
@@ -87,6 +94,7 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
       progressTrackColor: progressTrackColor ?? this.progressTrackColor,
       highlight: highlight ?? this.highlight,
       onHighlight: onHighlight ?? this.onHighlight,
+      authorColor: authorColor ?? this.authorColor,
     );
   }
 
@@ -112,6 +120,7 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
           Color.lerp(progressTrackColor, other.progressTrackColor, t)!,
       highlight: Color.lerp(highlight, other.highlight, t)!,
       onHighlight: Color.lerp(onHighlight, other.onHighlight, t)!,
+      authorColor: Color.lerp(authorColor, other.authorColor, t)!,
     );
   }
 }
