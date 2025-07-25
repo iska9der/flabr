@@ -12,7 +12,7 @@ import '../../../../data/model/loading_status_enum.dart';
 import '../../../../data/model/tracker/tracker.dart';
 import '../../../../di/di.dart';
 import '../../../extension/extension.dart';
-import '../../../widget/enhancement/card.dart';
+import '../../../widget/enhancement/enhancement.dart';
 import '../../../widget/user_text_button.dart';
 import 'widget/tracker_skeleton_widget.dart';
 
@@ -44,7 +44,17 @@ class TrackerSubscriptionPage extends StatelessWidget {
               ),
         ),
       ],
-      child: const TrackerSubscriptionView(),
+      child: BlocListener<
+        TrackerNotificationsMarkerBloc,
+        TrackerNotificationsMarkerState
+      >(
+        listener: (context, state) {
+          if (state.status == LoadingStatus.failure && state.error.isNotEmpty) {
+            context.showSnack(content: Text(state.error));
+          }
+        },
+        child: const TrackerSubscriptionView(),
+      ),
     );
   }
 }
@@ -150,15 +160,30 @@ class _NotificationWidget extends StatelessWidget {
                     ? Text(DateFormat.MMMMd().format(model.timeHappened!))
                     : const SizedBox.shrink(),
                 isUnread
-                    ? Tooltip(
-                      message: 'Отметить как прочитанное',
-                      child: GestureDetector(
-                        child: Icon(
-                          Icons.circle,
-                          color: Theme.of(context).colorScheme.primary,
-                          size: 24,
-                        ),
-                        onTap: () => markAsRead(context, model.id),
+                    ? SizedBox.square(
+                      dimension: 24,
+                      child: BlocBuilder<
+                        TrackerNotificationsMarkerBloc,
+                        TrackerNotificationsMarkerState
+                      >(
+                        builder: (context, state) {
+                          if (state.status == LoadingStatus.loading &&
+                              state.handledIds.contains(model.id)) {
+                            return const CircleIndicator.medium();
+                          }
+
+                          return Tooltip(
+                            message: 'Отметить как прочитанное',
+                            child: GestureDetector(
+                              child: Icon(
+                                Icons.circle,
+                                color: Theme.of(context).colorScheme.primary,
+                                size: 24,
+                              ),
+                              onTap: () => markAsRead(context, model.id),
+                            ),
+                          );
+                        },
                       ),
                     )
                     : const SizedBox.square(dimension: 24),

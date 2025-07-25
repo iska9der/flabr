@@ -6,8 +6,15 @@ abstract class TrackerNotificationsMarkerState
   const TrackerNotificationsMarkerState._();
 
   const factory TrackerNotificationsMarkerState({
-    @Default(LoadingStatus.initial) LoadingStatus status,
-    @Default('') String error,
     required TrackerNotificationCategory category,
+    @Default(LoadingStatus.initial) LoadingStatus status,
+
+    /// Список идентификаторов, которые сейчас обрабатываются.
+    /// Например, когда пользователь отмечает уведомления как прочитанные,
+    /// загоняем сюда список идентификаторов этих уведомлений,
+    /// чтобы в ui отобразить только у них индикатор загрузки,
+    /// а не у всех уведомлений
+    @Default([]) List<String> handledIds,
+    @Default('') String error,
   }) = _TrackerNotificationsMarkerState;
 }
