@@ -3,6 +3,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../bloc/publication/publication_bookmarks_bloc.dart';
 import '../../../../bloc/settings/settings_cubit.dart';
 import '../../../../bloc/user/user_publication_list_cubit.dart';
 import '../../../../data/model/user/user.dart';
@@ -33,17 +34,34 @@ class UserPublicationListPage extends StatelessWidget {
       key: ValueKey('user-$alias-publications-$type'),
       providers: [
         BlocProvider(
-          create:
-              (_) => UserPublicationListCubit(
-                repository: getIt(),
-                languageRepository: getIt(),
-                user: alias,
-                type: UserPublicationType.fromString(type),
-              ),
+          create: (_) => UserPublicationListCubit(
+            repository: getIt(),
+            languageRepository: getIt(),
+            user: alias,
+            type: UserPublicationType.fromString(type),
+          ),
+        ),
+        BlocProvider(
+          create: (_) => PublicationBookmarksBloc(repository: getIt()),
         ),
         BlocProvider(create: (_) => ScrollCubit()),
       ],
-      child: const UserPublicationListView(),
+      child: MultiBlocListener(
+        listeners: [
+          BlocListener<UserPublicationListCubit, UserPublicationListState>(
+            listener: (context, state) {
+              if (state.status == PublicationListStatus.success) {
+                context.read<PublicationBookmarksBloc>().add(
+                  PublicationBookmarksEvent.updated(
+                    publications: state.publications,
+                  ),
+                );
+              }
+            },
+          ),
+        ],
+        child: const UserPublicationListView(),
+      ),
     );
   }
 }
@@ -81,21 +99,18 @@ class UserPublicationListView extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: TypeDropdownMenu(
                         type: state.type.name,
-                        onChanged:
-                            (type) => context
-                                .read<UserPublicationListCubit>()
-                                .changeType(
-                                  UserPublicationType.fromString(type),
-                                ),
-                        entries:
-                            UserPublicationType.values
-                                .map(
-                                  (type) => DropdownMenuItem(
-                                    value: type.name,
-                                    child: Text(type.label),
-                                  ),
-                                )
-                                .toList(),
+                        onChanged: (type) =>
+                            context.read<UserPublicationListCubit>().changeType(
+                              UserPublicationType.fromString(type),
+                            ),
+                        entries: UserPublicationType.values
+                            .map(
+                              (type) => DropdownMenuItem(
+                                value: type.name,
+                                child: Text(type.label),
+                              ),
+                            )
+                            .toList(),
                       ),
                     ),
                   );

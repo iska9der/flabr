@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../bloc/publication/flow_publication_list_cubit.dart';
+import '../../../../bloc/publication/publication_bookmarks_bloc.dart';
 import '../../../../data/model/publication/publication.dart';
 import '../../../../di/di.dart';
 import '../../../../feature/publication_list/publication_list.dart';
@@ -32,6 +33,9 @@ class ArticleListPage extends StatelessWidget {
                 storage: getIt(instanceName: 'sharedStorage'),
                 flow: PublicationFlow.fromString(flow),
               ),
+        ),
+        BlocProvider(
+          create: (_) => PublicationBookmarksBloc(repository: getIt()),
         ),
         BlocProvider(create: (_) => ScrollCubit()),
       ],

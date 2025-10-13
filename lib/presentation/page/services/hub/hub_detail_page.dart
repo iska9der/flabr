@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../bloc/hub/hub_cubit.dart';
 import '../../../../bloc/hub/hub_publication_list_cubit.dart';
+import '../../../../bloc/publication/publication_bookmarks_bloc.dart';
 import '../../../../bloc/settings/settings_cubit.dart';
 import '../../../../data/model/filter/filter.dart';
 import '../../../../di/di.dart';
@@ -36,16 +37,33 @@ class HubDetailPage extends StatelessWidget {
       key: ValueKey('hub-$alias-detail'),
       providers: [
         BlocProvider(
-          create:
-              (_) => HubPublicationListCubit(
-                repository: getIt(),
-                languageRepository: getIt(),
-                hub: alias,
-              ),
+          create: (_) => HubPublicationListCubit(
+            repository: getIt(),
+            languageRepository: getIt(),
+            hub: alias,
+          ),
+        ),
+        BlocProvider(
+          create: (_) => PublicationBookmarksBloc(repository: getIt()),
         ),
         BlocProvider(create: (_) => ScrollCubit()),
       ],
-      child: const HubDetailPageView(),
+      child: MultiBlocListener(
+        listeners: [
+          BlocListener<HubPublicationListCubit, HubPublicationListState>(
+            listener: (context, state) {
+              if (state.status == PublicationListStatus.success) {
+                context.read<PublicationBookmarksBloc>().add(
+                  PublicationBookmarksEvent.updated(
+                    publications: state.publications,
+                  ),
+                );
+              }
+            },
+          ),
+        ],
+        child: const HubDetailPageView(),
+      ),
     );
   }
 }
@@ -80,8 +98,9 @@ class HubDetailPageView extends StatelessWidget {
                         Sort.byBest => state.filter.period,
                         Sort.byNew => state.filter.score,
                       },
-                      onSubmit:
-                          context.read<HubPublicationListCubit>().applyFilter,
+                      onSubmit: context
+                          .read<HubPublicationListCubit>()
+                          .applyFilter,
                     );
                   },
                 ),
@@ -132,10 +151,9 @@ class _HubArticleListView extends StatelessWidget {
           listener: (_, _) => context.read<HubPublicationListCubit>().fetch(),
         ),
         BlocListener<SettingsCubit, SettingsState>(
-          listenWhen:
-              (previous, current) =>
-                  previous.langUI != current.langUI ||
-                  previous.langArticles != current.langArticles,
+          listenWhen: (previous, current) =>
+              previous.langUI != current.langUI ||
+              previous.langArticles != current.langArticles,
           listener: (_, _) => context.read<ScrollCubit>().animateToTop(),
         ),
       ],

@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
 import '../../../bloc/auth/auth_cubit.dart';
+import '../../../bloc/publication/publication_bookmarks_bloc.dart';
 import '../../../bloc/settings/settings_cubit.dart';
 import '../../../presentation/theme/theme.dart';
 import '../../../presentation/widget/enhancement/card.dart';
@@ -60,6 +61,18 @@ class PublicationListScaffold<
         BlocListener<ScrollCubit, ScrollState>(
           listenWhen: (_, current) => current.isBottomEdge,
           listener: (_, state) => pubCubit.fetch(),
+        ),
+
+        /// Синхронизация закладок при успешной загрузке публикаций
+        BlocListener<ListCubit, ListState>(
+          listenWhen: (_, current) => current.status == PublicationListStatus.success,
+          listener: (context, state) {
+            context.read<PublicationBookmarksBloc>().add(
+              PublicationBookmarksEvent.updated(
+                publications: state.publications,
+              ),
+            );
+          },
         ),
       ],
       child: Scaffold(

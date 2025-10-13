@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../bloc/publication/feed_publication_list_cubit.dart';
+import '../../../../bloc/publication/publication_bookmarks_bloc.dart';
 import '../../../../di/di.dart';
 import '../../../../feature/publication_list/publication_list.dart';
 import '../../../../feature/scroll/scroll.dart';
@@ -28,6 +29,9 @@ class FeedListPage extends StatelessWidget {
                 languageRepository: getIt(),
                 storage: getIt(instanceName: 'sharedStorage'),
               ),
+        ),
+        BlocProvider(
+          create: (_) => PublicationBookmarksBloc(repository: getIt()),
         ),
         BlocProvider(create: (c) => ScrollCubit()),
       ],
