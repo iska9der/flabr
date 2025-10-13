@@ -47,7 +47,7 @@ class HighlightView extends StatefulWidget {
 
   HighlightView(
     String input, {
-    Key? key,
+    super.key,
     this.language,
     this.theme = const {},
     this.padding = EdgeInsets.zero,
@@ -57,8 +57,7 @@ class HighlightView extends StatefulWidget {
     this.minLines,
     this.maxLines,
     this.onTap,
-  })  : source = input.replaceAll('\t', ' ' * tabSize),
-        super(key: key);
+  }) : source = input.replaceAll('\t', ' ' * tabSize);
 
   static const _rootKey = 'root';
   static const _defaultFontColor = Color(0xff000000);

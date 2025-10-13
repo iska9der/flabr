@@ -26,9 +26,9 @@ class HighlightBackgroundEnvironment extends StatefulWidget {
   final Widget child;
 
   const HighlightBackgroundEnvironment({
-    Key? key,
+    super.key,
     required this.child,
-  }) : super(key: key);
+  });
 
   @override
   State<HighlightBackgroundEnvironment> createState() =>
@@ -134,16 +134,14 @@ class HighlightBackgroundProvider extends InheritedWidget {
   }) parseAndRender;
 
   const HighlightBackgroundProvider._({
-    Key? key,
+    // ignore: unused_element_parameter
+    super.key,
     required this.environmentIdentifier,
     required this.parse,
     required this.render,
     required this.parseAndRender,
-    required Widget child,
-  }) : super(
-          key: key,
-          child: child,
-        );
+    required super.child,
+  });
 
   @override
   bool updateShouldNotify(HighlightBackgroundProvider oldWidget) =>
