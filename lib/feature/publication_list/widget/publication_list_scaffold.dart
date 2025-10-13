@@ -47,14 +47,6 @@ class PublicationListScaffold<
           },
         ),
 
-        // BlocListener<PublicationListCubit, PublicationListState>(
-        //   listener: (context, state) {
-        //     if (state.status == PublicationListStatus.success) {
-        //       context.read<PublicationBookmarksBloc>().load(state.publications);
-        //     }
-        //   },
-        // ),
-
         /// Смена языков
         BlocListener<SettingsCubit, SettingsState>(
           listenWhen:
