@@ -73,6 +73,7 @@ class HubDetailPageView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final listCubit = context.read<HubPublicationListCubit>();
     final scrollCubit = context.read<ScrollCubit>();
     final scrollCtrl = scrollCubit.state.controller;
     final scrollPhysics = context.select<SettingsCubit, ScrollPhysics>(
@@ -84,10 +85,8 @@ class HubDetailPageView extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           const FloatingScrollToTopButton(),
-          FloatingFilterButton<
-            HubPublicationListCubit,
-            HubPublicationListState
-          >(
+          FloatingFilterButton(
+            bloc: listCubit,
             filter:
                 BlocBuilder<HubPublicationListCubit, HubPublicationListState>(
                   builder: (context, state) {
@@ -98,9 +97,7 @@ class HubDetailPageView extends StatelessWidget {
                         Sort.byBest => state.filter.period,
                         Sort.byNew => state.filter.score,
                       },
-                      onSubmit: context
-                          .read<HubPublicationListCubit>()
-                          .applyFilter,
+                      onSubmit: listCubit.applyFilter,
                     );
                   },
                 ),
@@ -123,9 +120,7 @@ class HubDetailPageView extends StatelessWidget {
               controller: scrollCtrl,
               physics: scrollPhysics,
               slivers: [
-                FlabrSliverRefreshIndicator(
-                  onRefresh: context.read<HubPublicationListCubit>().reset,
-                ),
+                FlabrSliverRefreshIndicator(onRefresh: listCubit.reset),
                 SliverToBoxAdapter(
                   child: HubProfileCardWidget(profile: state.profile),
                 ),
@@ -144,11 +139,13 @@ class _HubArticleListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final listCubit = context.read<HubPublicationListCubit>();
+
     return MultiBlocListener(
       listeners: [
         BlocListener<ScrollCubit, ScrollState>(
           listenWhen: (previous, current) => current.isBottomEdge,
-          listener: (_, _) => context.read<HubPublicationListCubit>().fetch(),
+          listener: (_, _) => listCubit.fetch(),
         ),
         BlocListener<SettingsCubit, SettingsState>(
           listenWhen: (previous, current) =>
@@ -157,11 +154,7 @@ class _HubArticleListView extends StatelessWidget {
           listener: (_, _) => context.read<ScrollCubit>().animateToTop(),
         ),
       ],
-      child:
-          const PublicationSliverList<
-            HubPublicationListCubit,
-            HubPublicationListState
-          >(),
+      child: PublicationSliverList(bloc: listCubit),
     );
   }
 }

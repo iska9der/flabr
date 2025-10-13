@@ -19,26 +19,26 @@ class FeedListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cubit = FeedPublicationListCubit(
+      repository: getIt(),
+      languageRepository: getIt(),
+      storage: getIt(instanceName: 'sharedStorage'),
+    );
+
     return MultiBlocProvider(
       key: const ValueKey('feed-list'),
       providers: [
-        BlocProvider(
-          create:
-              (_) => FeedPublicationListCubit(
-                repository: getIt(),
-                languageRepository: getIt(),
-                storage: getIt(instanceName: 'sharedStorage'),
-              ),
-        ),
+        BlocProvider.value(value: cubit),
         BlocProvider(
           create: (_) => PublicationBookmarksBloc(repository: getIt()),
         ),
         BlocProvider(create: (c) => ScrollCubit()),
       ],
-      child: const PublicationListScaffold<
-        FeedPublicationListCubit,
-        FeedPublicationListState
-      >(filter: FeedFiltersWidget(), showPublicationType: true),
+      child: PublicationListScaffold(
+        bloc: cubit,
+        filter: const FeedFiltersWidget(),
+        showPublicationType: true,
+      ),
     );
   }
 }

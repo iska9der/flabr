@@ -16,26 +16,31 @@ class PublicationSliverList<
   ListState extends PublicationListState
 >
     extends StatelessWidget {
-  const PublicationSliverList({super.key, this.showType = false});
+  const PublicationSliverList({
+    super.key,
+    this.bloc,
+    this.showType = false,
+  });
+
+  final ListCubit? bloc;
 
   /// Показывать тип поста в карточках
   final bool showType;
 
   @override
   Widget build(BuildContext context) {
+    final listCubit = bloc ?? context.read<ListCubit>();
     final scrollCubit = context.read<ScrollCubit?>();
     const skeletonLoader = _SkeletonLoader();
 
     return BlocConsumer<ListCubit, ListState>(
-      listenWhen:
-          (previous, current) =>
-              previous.page != 1 &&
-              current.status == PublicationListStatus.failure,
+      listenWhen: (previous, current) =>
+          previous.page != 1 && current.status == PublicationListStatus.failure,
       listener: (_, state) => context.showSnack(content: Text(state.error)),
       builder: (context, state) {
         /// При инициализации запрашиваем публикации
         if (state.status == PublicationListStatus.initial) {
-          context.read<ListCubit>().fetch();
+          listCubit.fetch();
         }
 
         /// Нужно ли отобразить виджет загрузки
@@ -65,8 +70,9 @@ class PublicationSliverList<
           );
         }
 
-        int additional =
-            (state.status == PublicationListStatus.loading ? 1 : 0);
+        int additional = (state.status == PublicationListStatus.loading
+            ? 1
+            : 0);
 
         return SliverList.builder(
           itemCount: publications.length + additional,
@@ -102,16 +108,14 @@ class _SkeletonLoader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Skeletonizer.sliver(
       child: SliverList.list(
-        children:
-            List.generate(
-              2,
-              (i) => SkeletonCardWidget(
-                authorAlias: 'author alias' * (Random().nextInt(2) + 1),
-                title: 'card title' * (Random().nextInt(10) + 1),
-                description:
-                    'random card description' * (Random().nextInt(7) + 5),
-              ),
-            ).toList(),
+        children: List.generate(
+          2,
+          (i) => SkeletonCardWidget(
+            authorAlias: 'author alias' * (Random().nextInt(2) + 1),
+            title: 'card title' * (Random().nextInt(10) + 1),
+            description: 'random card description' * (Random().nextInt(7) + 5),
+          ),
+        ).toList(),
       ),
     );
   }
