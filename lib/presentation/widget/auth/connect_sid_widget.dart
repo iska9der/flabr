@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../bloc/auth/auth_cubit.dart';
+import '../../../bloc/auth/login_cubit.dart';
 import '../../../core/constants/constants.dart';
+import '../../../data/model/loading_status_enum.dart';
 import '../../../di/di.dart';
-import '../../../presentation/extension/extension.dart';
-import '../cubit/auth_cubit.dart';
-import '../cubit/login_cubit.dart';
+import '../../extension/extension.dart';
 
 class ConnectSidWidget extends StatefulWidget {
   const ConnectSidWidget({super.key});
@@ -42,7 +43,7 @@ class _ConnectSidWidgetState extends State<ConnectSidWidget> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               TextFormField(
-                onTapOutside: (event) {
+                onTapOutside: (_) {
                   FocusManager.instance.primaryFocus?.unfocus();
                 },
                 enabled: !state.isAuthorized,
@@ -65,14 +66,21 @@ class _ConnectSidWidgetState extends State<ConnectSidWidget> {
                         },
                         child: const Text('Очистить'),
                       )
-                      : FilledButton(
-                        onPressed: () {
-                          context.read<LoginCubit>().handle(
-                            token: controller.text,
-                            isManual: true,
+                      : BlocBuilder<LoginCubit, LoginState>(
+                        builder: (context, state) {
+                          return FilledButton(
+                            onPressed:
+                                state.status == LoadingStatus.loading
+                                    ? null
+                                    : () {
+                                      context.read<LoginCubit>().handle(
+                                        token: controller.text,
+                                        isManual: true,
+                                      );
+                                    },
+                            child: const Text('Сохранить'),
                           );
                         },
-                        child: const Text('Сохранить'),
                       ),
                   const SizedBox(width: 12),
                   if (state.isAuthorized)

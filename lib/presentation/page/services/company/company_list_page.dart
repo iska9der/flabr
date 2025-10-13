@@ -9,7 +9,6 @@ import '../../../../bloc/settings/settings_cubit.dart';
 import '../../../../di/di.dart';
 import '../../../../feature/scroll/scroll.dart';
 import '../../../extension/extension.dart';
-import '../../../theme/theme.dart';
 import '../../../widget/enhancement/progress_indicator.dart';
 import 'widget/company_card_widget.dart';
 
@@ -95,12 +94,8 @@ class CompanyListPageView extends StatelessWidget {
 
               return Scrollbar(
                 controller: scrollCtrl,
-                child: ListView.separated(
+                child: ListView.builder(
                   controller: scrollCtrl,
-                  separatorBuilder:
-                      (context, index) => const SizedBox(
-                        height: AppDimensions.cardBetweenHeight,
-                      ),
                   itemCount:
                       state.list.refs.length +
                       (state.status == CompanyListStatus.loading ? 1 : 0),

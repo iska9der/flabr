@@ -3,15 +3,15 @@ import 'package:injectable/injectable.dart';
 import '../../core/component/http/http.dart';
 import '../exception/exception.dart';
 
-abstract interface class AuthService {
+abstract interface class ProfileService {
   Future<Map<String, dynamic>?> fetchMe();
 
   Future<Map<String, dynamic>> fetchUpdates();
 }
 
-@Singleton(as: AuthService)
-class AuthServiceImpl implements AuthService {
-  const AuthServiceImpl({
+@Singleton(as: ProfileService)
+class ProfileServiceImpl implements ProfileService {
+  const ProfileServiceImpl({
     @Named('siteClient') required HttpClient siteClient,
     @Named('mobileClient') required HttpClient mobileClient,
   }) : _siteClient = siteClient,

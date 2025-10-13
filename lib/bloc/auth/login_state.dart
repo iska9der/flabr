@@ -1,18 +1,16 @@
 part of 'login_cubit.dart';
 
-enum LoginStatus { initial, loading, success, failure }
-
 class LoginState extends Equatable {
   const LoginState({
-    this.status = LoginStatus.initial,
+    this.status = LoadingStatus.initial,
     this.error = '',
   });
 
-  final LoginStatus status;
+  final LoadingStatus status;
   final String error;
 
   LoginState copyWith({
-    LoginStatus? status,
+    LoadingStatus? status,
     String? error,
   }) {
     return LoginState(
@@ -23,7 +21,7 @@ class LoginState extends Equatable {
 
   @override
   List<Object> get props => [
-        status,
-        error,
-      ];
+    status,
+    error,
+  ];
 }

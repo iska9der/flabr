@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_redundant_argument_values
+
 import 'package:flutter/material.dart';
 
 import 'constants.dart';
@@ -6,7 +8,7 @@ import 'responsive.dart';
 const appCardTheme = CardThemeData(
   elevation: 1,
   margin: AppInsets.cardMargin,
-  shape: RoundedRectangleBorder(borderRadius: AppStyles.borderRadius),
+  shape: LinearBorder(),
 );
 
 const appAppBarTheme = AppBarTheme(
@@ -35,23 +37,43 @@ final appScrollBarThemeData = ScrollbarThemeData(
 
 final appTextButtonThemeData = TextButtonThemeData(
   style: TextButton.styleFrom(
-    shape: const RoundedRectangleBorder(borderRadius: AppStyles.borderRadius),
+    shape: const RoundedRectangleBorder(
+      borderRadius: AppStyles.buttonBorderRadius,
+    ),
   ),
 );
 
 final appIconButtonThemeData = IconButtonThemeData(
   style: IconButton.styleFrom(
-    shape: const RoundedRectangleBorder(borderRadius: AppStyles.borderRadius),
+    shape: const RoundedRectangleBorder(
+      borderRadius: AppStyles.buttonBorderRadius,
+    ),
   ),
 );
 
 final appFilledButtonStyle = FilledButton.styleFrom(
-  shape: const RoundedRectangleBorder(borderRadius: AppStyles.borderRadius),
+  shape: const RoundedRectangleBorder(
+    borderRadius: AppStyles.buttonBorderRadius,
+  ),
+);
+
+final appOutlinedButtonStyle = OutlinedButton.styleFrom(
+  shape: const RoundedRectangleBorder(
+    borderRadius: AppStyles.buttonBorderRadius,
+  ),
+);
+
+final appElevatedButtonStyle = ElevatedButton.styleFrom(
+  shape: const RoundedRectangleBorder(
+    borderRadius: AppStyles.buttonBorderRadius,
+  ),
 );
 
 const appDrawerThemeData = DrawerThemeData(width: 200);
 
-const appCheckboxThemeData = CheckboxThemeData();
+const appCheckboxThemeData = CheckboxThemeData(
+  shape: RoundedRectangleBorder(borderRadius: AppStyles.checkboxBorderRadius),
+);
 
 const appSwitchThemeData = SwitchThemeData();
 
@@ -63,10 +85,12 @@ const appSliderThemeData = SliderThemeData(
   overlayShape: RoundSliderOverlayShape(overlayRadius: 20.0),
 );
 
-const appChipThemeData = ChipThemeData();
+const appChipThemeData = ChipThemeData(
+  shape: RoundedRectangleBorder(borderRadius: AppStyles.buttonBorderRadius),
+);
 
 const dialogTheme = DialogThemeData(
-  shape: RoundedRectangleBorder(borderRadius: AppStyles.borderRadius),
+  shape: RoundedRectangleBorder(borderRadius: AppStyles.dialogBorderRadius),
 );
 
 const navigationBarThemeData = NavigationBarThemeData(
@@ -81,6 +105,6 @@ const proggressIndicatorThemeData = ProgressIndicatorThemeData(
 );
 
 final ListTileThemeData listTileThemeData = ListTileThemeData(
-  shape: const RoundedRectangleBorder(borderRadius: AppStyles.borderRadius),
+  shape: const LinearBorder(),
   controlAffinity: !Device.isMobile ? ListTileControlAffinity.leading : null,
 );

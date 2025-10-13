@@ -15,6 +15,9 @@ abstract class AppSchemeLight {
     card: AppColorsLight.card,
     cardHighlight: AppColorsLight.cardHighlight,
     progressTrackColor: AppColorsLight.progressTrackColor,
+    highlight: AppColorsLight.highlight,
+    onHighlight: AppColorsLight.onHighlight,
+    authorColor: AppColorsLight.authorColor,
   );
 
   static ColorScheme get scheme => ColorScheme.fromSeed(
@@ -62,6 +65,9 @@ class AppSchemeDark {
     card: AppColorsDark.card,
     cardHighlight: AppColorsDark.cardHighlight,
     progressTrackColor: AppColorsDark.progressTrackColor,
+    highlight: AppColorsDark.highlight,
+    onHighlight: AppColorsDark.onHighlight,
+    authorColor: AppColorsDark.authorColor,
   );
 
   static ColorScheme get scheme => ColorScheme.fromSeed(

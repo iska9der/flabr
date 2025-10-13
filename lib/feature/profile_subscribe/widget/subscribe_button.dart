@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../bloc/auth/auth_cubit.dart';
 import '../../../data/model/loading_status_enum.dart';
 import '../../../di/di.dart';
 import '../../../presentation/extension/extension.dart';
-import '../../auth/auth.dart';
+import '../../../presentation/widget/dialog/dialog.dart';
 import '../cubit/subscription_cubit.dart';
 
 class SubscribeButton extends StatelessWidget {
@@ -40,12 +41,16 @@ class SubscribeButton extends StatelessWidget {
           context.showSnack(content: Text(state.error));
         },
         builder: (context, state) {
-          var style = const ButtonStyle();
+          var style = OutlinedButton.styleFrom(
+            foregroundColor: context.theme.colors.highlight,
+            side: BorderSide(color: context.theme.colors.highlight),
+          );
 
           if (state.isSubscribed) {
-            style = style.copyWith(
-              foregroundColor: WidgetStateProperty.all(Colors.white),
-              backgroundColor: WidgetStateProperty.all(Colors.green),
+            style = OutlinedButton.styleFrom(
+              backgroundColor: context.theme.colors.highlight,
+              foregroundColor: context.theme.colors.onHighlight,
+              side: BorderSide.none,
             );
           }
 

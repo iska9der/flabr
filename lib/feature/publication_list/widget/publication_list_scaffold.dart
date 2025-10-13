@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
+import '../../../bloc/auth/auth_cubit.dart';
 import '../../../bloc/settings/settings_cubit.dart';
 import '../../../presentation/theme/theme.dart';
 import '../../../presentation/widget/enhancement/card.dart';
 import '../../../presentation/widget/enhancement/refresh_indicator.dart';
 import '../../../presentation/widget/enhancement/responsive_visibility.dart';
-import '../../auth/auth.dart';
 import '../../most_reading/most_reading.dart';
 import '../../scroll/scroll.dart';
 import '../cubit/publication_list_cubit.dart';
@@ -38,24 +38,12 @@ class PublicationListScaffold<
 
     return MultiBlocListener(
       listeners: [
-        /// Если пользователь вошел, надо переполучить статьи
+        /// Если пользователь вошел или вышел - надо переполучить статьи
         BlocListener<AuthCubit, AuthState>(
-          listenWhen:
-              (previous, current) =>
-                  previous.status == AuthStatus.loading && current.isAuthorized,
           listener: (context, state) {
-            pubCubit.refetch();
-          },
-        ),
-
-        /// Если пользователь вышел, переполучаем статьи напрямую
-        BlocListener<AuthCubit, AuthState>(
-          listenWhen:
-              (previous, current) =>
-                  previous.status == AuthStatus.loading &&
-                  current.isUnauthorized,
-          listener: (context, state) {
-            pubCubit.refetch();
+            if (state.isAuthorized || state.isUnauthorized) {
+              pubCubit.reset();
+            }
           },
         ),
 
@@ -153,7 +141,7 @@ class _PublicationListView<
             SliverPadding(
               padding: const EdgeInsets.only(top: AppDimensions.tabBarHeight),
               sliver: FlabrSliverRefreshIndicator(
-                onRefresh: context.read<ListCubit>().refetch,
+                onRefresh: context.read<ListCubit>().reset,
               ),
             ),
 

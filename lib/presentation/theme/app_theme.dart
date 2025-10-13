@@ -76,9 +76,21 @@ abstract class AppTheme {
       progressIndicatorTheme: proggressIndicatorThemeData,
       textButtonTheme: appTextButtonThemeData,
       iconButtonTheme: appIconButtonThemeData,
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: appOutlinedButtonStyle.merge(
+          OutlinedButton.styleFrom(
+            disabledBackgroundColor: colors.disabled,
+          ),
+        ),
+      ),
       filledButtonTheme: FilledButtonThemeData(
         style: appFilledButtonStyle.merge(
           FilledButton.styleFrom(disabledBackgroundColor: colors.disabled),
+        ),
+      ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: appElevatedButtonStyle.merge(
+          ElevatedButton.styleFrom(disabledBackgroundColor: colors.disabled),
         ),
       ),
       checkboxTheme: appCheckboxThemeData,

@@ -3,17 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../bloc/auth/auth_cubit.dart';
+import '../../../bloc/profile/profile_bloc.dart';
 import '../../../bloc/publication/publication_counters_bloc.dart';
 import '../../../bloc/settings/settings_cubit.dart';
 import '../../../core/component/router/app_router.dart';
 import '../../../data/model/publication/publication.dart';
 import '../../../data/model/user/user.dart';
 import '../../../di/di.dart';
-import '../../../feature/auth/auth.dart';
 import '../../../feature/most_reading/most_reading.dart';
 import '../../extension/extension.dart';
 import '../../theme/theme.dart';
 import '../../widget/dashboard_drawer_link_widget.dart';
+import '../../widget/profile/profile.dart';
 
 @RoutePage(name: PublicationDashboardPage.routeName)
 class PublicationDashboardPage extends StatelessWidget {
@@ -160,7 +162,7 @@ class _DashboardAppBar extends StatelessWidget {
           (cubit) => cubit.state.counters,
         );
 
-    final userUpdates = context.select<AuthCubit, UserUpdates>(
+    final userUpdates = context.select<ProfileBloc, UserUpdates>(
       (cubit) => cubit.state.updates,
     );
 
@@ -216,13 +218,13 @@ class _DashboardAppBar extends StatelessWidget {
                   ),
                   tooltip: 'Трекер',
                   onPressed: () async {
-                    final authCubit = context.read<AuthCubit>();
+                    final userBloc = context.read<ProfileBloc>();
 
                     await getIt<AppRouter>().push(
                       const TrackerDashboardRoute(),
                     );
 
-                    authCubit.fetchUpdates();
+                    userBloc.add(const ProfileEvent.fetchUpdates());
                   },
                 ),
               const MyProfileIconButton(),

@@ -8,7 +8,6 @@ import '../../../../bloc/user/user_list_cubit.dart';
 import '../../../../di/di.dart';
 import '../../../../feature/scroll/scroll.dart';
 import '../../../extension/extension.dart';
-import '../../../theme/theme.dart';
 import '../../../widget/enhancement/progress_indicator.dart';
 import 'widget/user_card_widget.dart';
 
@@ -87,11 +86,8 @@ class UserListPageView extends StatelessWidget {
 
             return Scrollbar(
               controller: scrollCtrl,
-              child: ListView.separated(
+              child: ListView.builder(
                 controller: scrollCtrl,
-                separatorBuilder:
-                    (context, index) =>
-                        const SizedBox(height: AppDimensions.cardBetweenHeight),
                 itemCount:
                     users.length +
                     (state.status == UserListStatus.loading ? 1 : 0),

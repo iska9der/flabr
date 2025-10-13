@@ -1,7 +1,7 @@
-export 'auth_repository.dart';
 export 'company_repository.dart';
 export 'hub_repository.dart';
 export 'language_repository.dart';
+export 'profile_repository.dart';
 export 'publication_repository.dart';
 export 'publication_vote_repository.dart';
 export 'search_repository.dart';

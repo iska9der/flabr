@@ -26,21 +26,22 @@ class HubCardWidget extends StatelessWidget {
     var stats = model.statistics as HubStatistics;
     final tagStyle = Theme.of(context).textTheme.bodySmall;
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        FlabrCard(
-          onTap:
-              () => getIt<AppRouter>().navigate(
-                HubDashboardRoute(alias: model.alias),
-              ),
-          child: Row(
+    return FlabrCard(
+      onTap:
+          () => getIt<AppRouter>().navigate(
+            HubDashboardRoute(alias: model.alias),
+          ),
+      child: Column(
+        spacing: 10,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CardAvatarWidget(
                 imageUrl: model.imageUrl,
                 placeholderIcon: AppIcons.hubPlaceholder,
               ),
-              const SizedBox(width: 16),
+              const SizedBox(width: 12),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -53,7 +54,7 @@ class HubCardWidget extends StatelessWidget {
                       model.descriptionHtml,
                       style: Theme.of(context).textTheme.labelMedium,
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 10),
                     Wrap(
                       children:
                           model.commonTags
@@ -61,9 +62,9 @@ class HubCardWidget extends StatelessWidget {
                                 (tag) => Padding(
                                   padding: const EdgeInsets.fromLTRB(
                                     0,
-                                    4,
-                                    16,
-                                    4,
+                                    3,
+                                    10,
+                                    3,
                                   ),
                                   child: Text(tag, style: tagStyle),
                                 ),
@@ -75,10 +76,8 @@ class HubCardWidget extends StatelessWidget {
               ),
             ],
           ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-          child: Row(
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Expanded(
                 child: ProfileStatCardWidget(
@@ -95,8 +94,8 @@ class HubCardWidget extends StatelessWidget {
               ),
             ],
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

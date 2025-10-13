@@ -51,6 +51,10 @@ class TrackerRepositoryImpl implements TrackerRepository {
   final BehaviorSubject<ListResponse<TrackerPublication>>
   _publicationsController = BehaviorSubject();
 
+  @override
+  Stream<ListResponse<TrackerPublication>> getPublications() =>
+      _publicationsController.asBroadcastStream();
+
   final Map<
     TrackerNotificationCategory,
     BehaviorSubject<ListResponse<TrackerNotification>>
@@ -59,10 +63,6 @@ class TrackerRepositoryImpl implements TrackerRepository {
     for (var category in TrackerNotificationCategory.values)
       category: BehaviorSubject(),
   };
-
-  @override
-  Stream<ListResponse<TrackerPublication>> getPublications() =>
-      _publicationsController.asBroadcastStream();
 
   @override
   Future<ListResponse<TrackerPublication>> fetchPublications({

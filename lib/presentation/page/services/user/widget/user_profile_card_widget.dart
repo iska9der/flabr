@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../bloc/profile/profile_bloc.dart';
 import '../../../../../data/model/stat_type_enum.dart';
 import '../../../../../data/model/user/user.dart';
 import '../../../../../data/repository/repository.dart';
@@ -77,12 +79,20 @@ class _UserProfileCardWidgetState extends State<UserProfileCardWidget> {
               ),
             ],
           ),
-          Padding(
-            padding: const EdgeInsets.only(top: 8.0),
-            child: SubscribeButton(
-              alias: user.alias,
-              isSubscribed: user.relatedData.isSubscribed,
-            ),
+          BlocBuilder<ProfileBloc, ProfileState>(
+            builder: (context, state) {
+              if (state.me.alias == user.alias) {
+                return const SizedBox.shrink();
+              }
+
+              return Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: SubscribeButton(
+                  alias: user.alias,
+                  isSubscribed: user.relatedData.isSubscribed,
+                ),
+              );
+            },
           ),
         ],
       ),

@@ -36,8 +36,10 @@ class TrackerPublicationsBloc
     await emit.forEach(
       repository.getPublications(),
       onData:
-          (data) =>
-              state.copyWith(status: LoadingStatus.success, response: data),
+          (data) => state.copyWith(
+            status: LoadingStatus.success,
+            response: data,
+          ),
     );
   }
 

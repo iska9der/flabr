@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../extension/extension.dart';
+
 class DashboardDrawerLinkWidget extends StatelessWidget {
   const DashboardDrawerLinkWidget({super.key, required this.title, this.count});
 
@@ -19,10 +21,10 @@ class DashboardDrawerLinkWidget extends StatelessWidget {
           if (count != null && count! > 0)
             Text(
               '+$count',
-              style: const TextStyle(
-                color: Colors.green,
+              style: TextStyle(
+                color: context.theme.colors.highlight,
                 fontSize: 11,
-                fontVariations: [FontVariation('wght', 500)],
+                fontVariations: [const FontVariation('wght', 500)],
               ),
             ),
         ],

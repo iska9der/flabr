@@ -19,20 +19,21 @@ class CardTitleWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      borderRadius: AppStyles.borderRadius,
+      borderRadius: AppStyles.cardBorderRadius,
       onTap: onPressed,
-      child: renderType == RenderType.plain
-          ? Text(
-              title,
-              style: Theme.of(context).textTheme.titleLarge,
-            )
-          : HtmlWidget(
-              title,
-              textStyle: TextStyle(
-                color: Theme.of(context).textTheme.titleLarge?.color,
-                fontSize: Theme.of(context).textTheme.titleLarge?.fontSize,
+      child:
+          renderType == RenderType.plain
+              ? Text(
+                title,
+                style: Theme.of(context).textTheme.titleLarge,
+              )
+              : HtmlWidget(
+                title,
+                textStyle: TextStyle(
+                  color: Theme.of(context).textTheme.titleLarge?.color,
+                  fontSize: Theme.of(context).textTheme.titleLarge?.fontSize,
+                ),
               ),
-            ),
     );
   }
 }

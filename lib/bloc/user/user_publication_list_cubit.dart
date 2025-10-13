@@ -53,7 +53,7 @@ class UserPublicationListCubit
   }
 
   @override
-  void refetch() {
+  void reset() {
     emit(
       state.copyWith(
         status: PublicationListStatus.initial,

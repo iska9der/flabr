@@ -9,7 +9,6 @@ import '../../../../data/model/hub/hub.dart';
 import '../../../../di/di.dart';
 import '../../../../feature/scroll/scroll.dart';
 import '../../../extension/extension.dart';
-import '../../../theme/theme.dart';
 import '../../../widget/enhancement/progress_indicator.dart';
 import 'widget/hub_card_widget.dart';
 
@@ -82,12 +81,8 @@ class HubListPageView extends StatelessWidget {
 
               return Scrollbar(
                 controller: scrollCtrl,
-                child: ListView.separated(
+                child: ListView.builder(
                   controller: scrollCtrl,
-                  separatorBuilder:
-                      (context, index) => const SizedBox(
-                        height: AppDimensions.cardBetweenHeight,
-                      ),
                   itemCount:
                       state.list.refs.length +
                       (state.status == HubListStatus.loading ? 1 : 0),

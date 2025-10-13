@@ -6,11 +6,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:ya_summary/ya_summary.dart';
 
+import '../bloc/auth/auth_cubit.dart';
+import '../bloc/profile/profile_bloc.dart';
 import '../bloc/settings/settings_cubit.dart';
 import '../core/component/router/app_router.dart';
 import '../core/constants/constants.dart';
 import '../di/di.dart';
-import '../feature/auth/auth.dart';
 import 'extension/extension.dart';
 import 'theme/theme.dart';
 import 'widget/enhancement/progress_indicator.dart';
@@ -32,17 +33,33 @@ class Application extends StatelessWidget {
         ),
         BlocProvider(
           lazy: false,
-          create:
-              (_) =>
-                  AuthCubit(repository: getIt(), tokenRepository: getIt())
-                    ..init(),
+          create: (_) => AuthCubit(tokenRepository: getIt())..init(),
+        ),
+        BlocProvider(
+          lazy: false,
+          create: (_) => ProfileBloc(repository: getIt()),
         ),
         BlocProvider(
           lazy: false,
           create: (_) => SummaryAuthCubit(tokenRepository: getIt())..init(),
         ),
       ],
-      child: const ApplicationView(),
+      child: BlocListener<AuthCubit, AuthState>(
+        listener: (context, state) {
+          final bloc = context.read<ProfileBloc>();
+
+          switch (state.status) {
+            case AuthStatus.authorized:
+              bloc.add(const ProfileEvent.fetchMe());
+              bloc.add(const ProfileEvent.fetchUpdates());
+            case AuthStatus.unauthorized:
+              bloc.add(const ProfileEvent.reset());
+            default:
+              break;
+          }
+        },
+        child: const ApplicationView(),
+      ),
     );
   }
 }

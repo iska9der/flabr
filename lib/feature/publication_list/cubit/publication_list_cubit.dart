@@ -16,9 +16,9 @@ abstract class PublicationListCubit<State extends PublicationListState>
     required this.repository,
     required this.languageRepository,
   }) {
-    _uiLanguageSub = languageRepository.ui.listen((_) => refetch());
+    _uiLanguageSub = languageRepository.ui.listen((_) => reset());
     _publicationLanguagesSub = languageRepository.publications.listen(
-      (_) => refetch(),
+      (_) => reset(),
     );
   }
 
@@ -44,8 +44,8 @@ abstract class PublicationListCubit<State extends PublicationListState>
   /// Получение списка публикаций
   FutureOr<void> fetch();
 
-  /// Переполучить список с первой страницы
-  FutureOr<void> refetch();
+  /// Сбросить состояние до начального
+  FutureOr<void> reset();
 }
 
 /// Абстрактный класс для стейта списка публикаций

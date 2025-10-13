@@ -16,7 +16,7 @@ class UserCommentListCubit extends Cubit<UserCommentListState> {
 
   final UserRepository _repository;
 
-  void refetch() {
+  void reset() {
     emit(
       state.copyWith(
         status: CommentListStatus.initial,

@@ -68,7 +68,7 @@ class _FontScaleSliderState extends State<FontScaleSlider> {
   double sliderValue = 1;
 
   static const double _min = 0.92;
-  static const double _max = 1.4;
+  static const double _max = 1.7;
 
   @override
   void initState() {

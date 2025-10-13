@@ -31,11 +31,15 @@ class TrackerNotificationsMarkerBloc
     MarkAsReadEvent event,
     Emitter<TrackerNotificationsMarkerState> emit,
   ) async {
-    if (state.status == LoadingStatus.loading) {
-      return;
-    }
+    if (state.status == LoadingStatus.loading) return;
 
-    emit(state.copyWith(status: LoadingStatus.loading));
+    emit(
+      state.copyWith(
+        status: LoadingStatus.loading,
+        error: '',
+        handledIds: event.ids,
+      ),
+    );
 
     try {
       await repository.markAsReadNotifications(
@@ -43,8 +47,13 @@ class TrackerNotificationsMarkerBloc
         ids: event.ids,
       );
 
-      emit(state.copyWith(status: LoadingStatus.success));
-    } catch (e, trace) {
+      emit(
+        state.copyWith(
+          status: LoadingStatus.success,
+          handledIds: event.ids,
+        ),
+      );
+    } catch (e) {
       emit(
         state.copyWith(
           status: LoadingStatus.failure,
@@ -52,7 +61,7 @@ class TrackerNotificationsMarkerBloc
         ),
       );
 
-      super.onError(e, trace);
+      rethrow;
     }
   }
 }

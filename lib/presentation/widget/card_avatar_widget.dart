@@ -31,7 +31,7 @@ class CardAvatarWidget extends StatelessWidget {
 
     return ClipRRect(
       clipBehavior: Clip.hardEdge,
-      borderRadius: AppStyles.borderRadius,
+      borderRadius: AppStyles.avatarBorderRadius,
       child: NetworkImageWidget(
         imageUrl: 'https:$imageUrl',
         height: height,

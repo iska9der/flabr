@@ -5,17 +5,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:webview_cookie_manager/webview_cookie_manager.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
+import '../../../bloc/auth/login_cubit.dart';
 import '../../../core/component/logger/logger.dart';
 import '../../../core/constants/constants.dart';
+import '../../../data/model/loading_status_enum.dart';
 import '../../../data/repository/repository.dart';
 import '../../../di/di.dart';
-import '../../../presentation/extension/extension.dart';
-import '../../../presentation/widget/enhancement/card.dart';
-import '../cubit/auth_cubit.dart';
-import '../cubit/login_cubit.dart';
-import 'profile_widget.dart';
+import '../../extension/extension.dart';
+import '../enhancement/card.dart';
 
-class LoginWebView extends StatelessWidget implements DialogUserWidget {
+class LoginWebView extends StatelessWidget {
   const LoginWebView({super.key});
 
   @override
@@ -23,24 +22,16 @@ class LoginWebView extends StatelessWidget implements DialogUserWidget {
     return Center(
       child: FlabrCard(
         padding: EdgeInsets.zero,
-        child: BlocBuilder<AuthCubit, AuthState>(
-          builder: (context, state) {
-            if (state.isAuthorized) {
-              return Center(child: Text('Вы уже вошли, ${state.me.alias}'));
-            }
-
-            return BlocProvider(
-              create: (_) => LoginCubit(tokenRepository: getIt()),
-              child: BlocListener<LoginCubit, LoginState>(
-                listener: (context, state) {
-                  if (state.status == LoginStatus.success) {
-                    Navigator.of(context).pop();
-                  }
-                },
-                child: const _WebViewLogin(),
-              ),
-            );
-          },
+        child: BlocProvider(
+          create: (_) => LoginCubit(tokenRepository: getIt()),
+          child: BlocListener<LoginCubit, LoginState>(
+            listener: (context, state) {
+              if (state.status == LoadingStatus.success) {
+                Navigator.of(context).pop();
+              }
+            },
+            child: const _WebViewLogin(),
+          ),
         ),
       ),
     );
@@ -121,7 +112,7 @@ class _WebViewLoginState extends State<_WebViewLogin> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocListener<LoginCubit, LoginState>(
-        listenWhen: (_, current) => current.status == LoginStatus.failure,
+        listenWhen: (_, current) => current.status == LoadingStatus.failure,
         listener: (context, state) {
           _clearControllerData();
           context.showSnack(

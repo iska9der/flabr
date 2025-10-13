@@ -7,6 +7,7 @@ import '../../../../../data/model/company/company.dart';
 import '../../../../../data/model/render_type_enum.dart';
 import '../../../../../data/model/stat_type_enum.dart';
 import '../../../../../di/di.dart';
+import '../../../../extension/extension.dart';
 import '../../../../theme/theme.dart';
 import '../../../../widget/card_avatar_widget.dart';
 import '../../../../widget/card_title_widget.dart';
@@ -30,81 +31,75 @@ class CompanyCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final stats = company.statistics as CompanyStatistics;
-    final hubLinkStyle = Theme.of(context).textTheme.bodySmall?.copyWith(
-      color: Theme.of(context).colorScheme.primary,
+    final hubLinkStyle = context.theme.textTheme.bodySmall?.copyWith(
+      color: context.theme.colors.primary,
     );
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        FlabrCard(
-          onTap: () => moveToDetails(context),
-          child: Column(
+    return FlabrCard(
+      onTap: () => moveToDetails(context),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                children: [
-                  CardAvatarWidget(
-                    imageUrl: company.imageUrl,
-                    placeholderIcon: AppIcons.companyPlaceholder,
-                  ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        CardTitleWidget(
-                          title: company.titleHtml,
-                          renderType: renderType,
-                        ),
-                        if (company.descriptionHtml.isNotEmpty)
-                          HtmlWidget(
-                            company.descriptionHtml,
-                            textStyle: Theme.of(context).textTheme.labelMedium,
-                          ),
-                      ],
-                    ),
-                  ),
-                ],
+              CardAvatarWidget(
+                imageUrl: company.imageUrl,
+                placeholderIcon: AppIcons.companyPlaceholder,
               ),
-              if (company.commonHubs.isNotEmpty) ...[
-                const SizedBox(height: 20),
-                const Text('Пишет в хабы:'),
-                Wrap(
-                  spacing: 14,
-                  children:
-                      company.commonHubs.map((hub) {
-                        var title = hub.title;
-                        if (hub.isProfiled) {
-                          title += '*';
-                        }
-
-                        final route =
-                            switch (hub.type.isCorporative) {
-                                  true => CompanyDashboardRoute(
-                                    alias: hub.alias,
-                                  ),
-                                  false => HubDashboardRoute(alias: hub.alias),
-                                }
-                                as PageRouteInfo;
-
-                        return InkWell(
-                          onTap: () => getIt<AppRouter>().navigate(route),
-                          borderRadius: AppStyles.borderRadius,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 8),
-                            child: Text(title, style: hubLinkStyle),
-                          ),
-                        );
-                      }).toList(),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CardTitleWidget(
+                      title: company.titleHtml,
+                      renderType: renderType,
+                    ),
+                    if (company.descriptionHtml.isNotEmpty)
+                      HtmlWidget(
+                        company.descriptionHtml,
+                        textStyle: context.theme.textTheme.labelMedium,
+                      ),
+                  ],
                 ),
-              ],
+              ),
             ],
           ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-          child: Row(
+          if (company.commonHubs.isNotEmpty) ...[
+            const SizedBox(height: 10),
+            const Text('Пишет в хабы:'),
+            Wrap(
+              spacing: 14,
+              children:
+                  company.commonHubs.map((hub) {
+                    var title = hub.title;
+                    if (hub.isProfiled) {
+                      title += '*';
+                    }
+
+                    final route =
+                        switch (hub.type.isCorporative) {
+                              true => CompanyDashboardRoute(
+                                alias: hub.alias,
+                              ),
+                              false => HubDashboardRoute(alias: hub.alias),
+                            }
+                            as PageRouteInfo;
+
+                    return InkWell(
+                      onTap: () => getIt<AppRouter>().navigate(route),
+                      borderRadius: AppStyles.cardBorderRadius,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8),
+                        child: Text(title, style: hubLinkStyle),
+                      ),
+                    );
+                  }).toList(),
+            ),
+          ],
+          const SizedBox(height: 10),
+          Row(
             children: [
               Expanded(
                 child: ProfileStatCardWidget(
@@ -121,8 +116,8 @@ class CompanyCardWidget extends StatelessWidget {
               ),
             ],
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
