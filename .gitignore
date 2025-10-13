@@ -46,9 +46,6 @@ app.*.map.json
 /android/app/release
 /android/app/.cxx
 
-# Custom
-/internal
-
 # Generated
 *.freezed.dart
 *.g.dart
@@ -64,3 +61,9 @@ release
 # Env files
 .env*
 !.env.example
+
+# Custom
+/internal
+
+# AI
+.claude/*.json
