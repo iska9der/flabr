@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../data/exception/exception.dart';
+import '../../data/model/loading_status_enum.dart';
 import '../../data/model/publication/publication.dart';
 import '../../data/repository/repository.dart';
 import '../../presentation/extension/extension.dart';
@@ -28,7 +29,7 @@ class PublicationDetailCubit extends Cubit<PublicationDetailState> {
   void fetch() async {
     if (state.status.isLoading) return;
 
-    emit(state.copyWith(status: PublicationStatus.loading));
+    emit(state.copyWith(status: LoadingStatus.loading));
 
     try {
       final publication = await _repository.fetchPublicationById(
@@ -38,14 +39,14 @@ class PublicationDetailCubit extends Cubit<PublicationDetailState> {
 
       emit(
         state.copyWith(
-          status: PublicationStatus.success,
+          status: LoadingStatus.success,
           publication: publication,
         ),
       );
     } catch (e) {
       emit(
         state.copyWith(
-          status: PublicationStatus.failure,
+          status: LoadingStatus.failure,
           error: e.parseException(),
         ),
       );
