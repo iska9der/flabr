@@ -6,17 +6,23 @@ import '../theme/theme.dart';
 
 extension ContextX on BuildContext {
   ThemeData get theme => Theme.of(this);
+  CardThemeData get cardTheme => CardTheme.of(this);
 
   void showSnack({
     required Widget content,
     SnackBarAction? action,
     Duration duration = const Duration(seconds: 3),
   }) {
-    ScaffoldMessenger.of(this).hideCurrentSnackBar();
-
-    ScaffoldMessenger.of(this).showSnackBar(
-      SnackBar(content: content, action: action, duration: duration),
+    final messenger = ScaffoldMessenger.of(this);
+    final snackbar = SnackBar(
+      content: content,
+      action: action,
+      duration: duration,
     );
+
+    messenger
+      ..hideCurrentSnackBar()
+      ..showSnackBar(snackbar);
   }
 
   Future showAlert({

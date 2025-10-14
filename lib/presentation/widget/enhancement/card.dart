@@ -24,7 +24,7 @@ class FlabrCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = context.theme;
-    final cardTheme = theme.cardTheme;
+    final cardTheme = context.cardTheme;
     final cardMargin = margin ?? cardTheme.margin ?? const EdgeInsets.all(4.0);
     final cardPadding = padding ?? AppInsets.cardPadding;
     final cardElevation = elevation ?? cardTheme.elevation ?? 1.0;
