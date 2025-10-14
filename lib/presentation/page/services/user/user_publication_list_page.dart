@@ -41,9 +41,6 @@ class UserPublicationListPage extends StatelessWidget {
             type: UserPublicationType.fromString(type),
           ),
         ),
-        BlocProvider(
-          create: (_) => PublicationBookmarksBloc(repository: getIt()),
-        ),
         BlocProvider(create: (_) => ScrollCubit()),
       ],
       child: MultiBlocListener(

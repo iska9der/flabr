@@ -6,6 +6,7 @@ import 'package:responsive_framework/responsive_framework.dart';
 import '../../../bloc/auth/auth_cubit.dart';
 import '../../../bloc/publication/publication_bookmarks_bloc.dart';
 import '../../../bloc/settings/settings_cubit.dart';
+import '../../../presentation/extension/extension.dart';
 import '../../../presentation/theme/theme.dart';
 import '../../../presentation/widget/enhancement/card.dart';
 import '../../../presentation/widget/enhancement/refresh_indicator.dart';
@@ -74,6 +75,14 @@ class PublicationListScaffold<
                 publications: state.publications,
               ),
             );
+          },
+        ),
+
+        /// Обработка ошибок закладок
+        BlocListener<PublicationBookmarksBloc, PublicationBookmarksState>(
+          listenWhen: (_, current) => current.error != null,
+          listener: (context, state) {
+            context.showSnack(content: Text(state.error!));
           },
         ),
       ],

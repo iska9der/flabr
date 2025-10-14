@@ -43,9 +43,6 @@ class HubDetailPage extends StatelessWidget {
             hub: alias,
           ),
         ),
-        BlocProvider(
-          create: (_) => PublicationBookmarksBloc(repository: getIt()),
-        ),
         BlocProvider(create: (_) => ScrollCubit()),
       ],
       child: MultiBlocListener(

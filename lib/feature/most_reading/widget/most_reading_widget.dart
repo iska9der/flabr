@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../bloc/publication/publication_bookmarks_bloc.dart';
 import '../../../core/component/router/app_router.dart';
 import '../../../data/model/loading_status_enum.dart';
 import '../../../di/di.dart';

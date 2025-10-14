@@ -8,6 +8,7 @@ import 'package:ya_summary/ya_summary.dart';
 
 import '../bloc/auth/auth_cubit.dart';
 import '../bloc/profile/profile_bloc.dart';
+import '../bloc/publication/publication_bookmarks_bloc.dart';
 import '../bloc/settings/settings_cubit.dart';
 import '../core/component/router/app_router.dart';
 import '../core/constants/constants.dart';
@@ -25,11 +26,10 @@ class Application extends StatelessWidget {
       providers: [
         BlocProvider(
           lazy: false,
-          create:
-              (_) => SettingsCubit(
-                languageRepository: getIt(),
-                storage: getIt(instanceName: 'sharedStorage'),
-              )..init(),
+          create: (_) => SettingsCubit(
+            languageRepository: getIt(),
+            storage: getIt(instanceName: 'sharedStorage'),
+          )..init(),
         ),
         BlocProvider(
           lazy: false,
@@ -43,17 +43,20 @@ class Application extends StatelessWidget {
           lazy: false,
           create: (_) => SummaryAuthCubit(tokenRepository: getIt())..init(),
         ),
+        BlocProvider(
+          create: (_) => PublicationBookmarksBloc(repository: getIt()),
+        ),
       ],
       child: BlocListener<AuthCubit, AuthState>(
         listener: (context, state) {
-          final bloc = context.read<ProfileBloc>();
+          final profileBloc = context.read<ProfileBloc>();
 
           switch (state.status) {
             case AuthStatus.authorized:
-              bloc.add(const ProfileEvent.fetchMe());
-              bloc.add(const ProfileEvent.fetchUpdates());
+              profileBloc.add(const ProfileEvent.fetchMe());
+              profileBloc.add(const ProfileEvent.fetchUpdates());
             case AuthStatus.unauthorized:
-              bloc.add(const ProfileEvent.reset());
+              profileBloc.add(const ProfileEvent.reset());
             default:
               break;
           }
@@ -117,10 +120,9 @@ class ApplicationView extends StatelessWidget {
                 child: MaxWidthBox(
                   maxWidth: AppDimensions.maxWidth,
                   child: AnnotatedRegion(
-                    value:
-                        theme.colorScheme.brightness == Brightness.dark
-                            ? SystemUiOverlayStyle.light
-                            : SystemUiOverlayStyle.dark,
+                    value: theme.colorScheme.brightness == Brightness.dark
+                        ? SystemUiOverlayStyle.light
+                        : SystemUiOverlayStyle.dark,
                     child: child ?? const SizedBox.shrink(),
                   ),
                 ),

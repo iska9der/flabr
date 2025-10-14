@@ -60,17 +60,19 @@ The project follows a clean architecture pattern with clear separation of concer
 
 ## Development Commands
 
+**IMPORTANT**: This project uses FVM (Flutter Version Manager) to manage Flutter versions. All `flutter` and `dart` commands must be executed through the `.fvm/flutter_sdk/bin/` path.
+
 ### Setup
 
 ```bash
 # Get dependencies
-flutter pub get
+.fvm/flutter_sdk/bin/flutter pub get
 
 # Generate code (models, DI, routing)
-flutter pub run build_runner build --delete-conflicting-outputs
+.fvm/flutter_sdk/bin/flutter pub run build_runner build --delete-conflicting-outputs
 
 # Watch mode for code generation during development
-flutter pub run build_runner watch --delete-conflicting-outputs
+.fvm/flutter_sdk/bin/flutter pub run build_runner watch --delete-conflicting-outputs
 ```
 
 ### Environment Configuration
@@ -86,7 +88,7 @@ CONTACT_TG=your_telegram
 
 ```bash
 # Development run
-flutter run
+.fvm/flutter_sdk/bin/flutter run
 
 # Build APK (production)
 sh scripts/build.sh env=prod
@@ -103,10 +105,10 @@ sh scripts/build.sh env=prod --no-runner
 
 ```bash
 # Run linter
-flutter analyze
+.fvm/flutter_sdk/bin/flutter analyze
 
 # Format code (preserves trailing commas)
-dart format .
+.fvm/flutter_sdk/bin/dart format .
 ```
 
 ### Deeplink Testing
@@ -136,12 +138,13 @@ adb shell am start -a android.intent.action.VIEW -d "<URI>"
 - Events use freezed unions for different actions
 - Business logic should never directly access UI layer
 - Use repositories for data access, not services directly
+- **IMPORTANT**: Always use the shared `LoadingStatus` enum from `lib/data/model/loading_status_enum.dart` for operation status tracking instead of creating custom status enums. It provides standard states: `initial`, `loading`, `success`, `failure`
 
 ### Code Generation Requirements
 
 After modifying models, DI annotations, or routes, always run:
 ```bash
-flutter pub run build_runner build --delete-conflicting-outputs
+.fvm/flutter_sdk/bin/flutter pub run build_runner build --delete-conflicting-outputs
 ```
 
 Files requiring code generation have corresponding `.g.dart`, `.freezed.dart`, or `.gr.dart` files.

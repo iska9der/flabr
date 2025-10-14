@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../bloc/publication/flow_publication_list_cubit.dart';
-import '../../../../bloc/publication/publication_bookmarks_bloc.dart';
 import '../../../../data/model/publication/publication.dart';
 import '../../../../data/model/section_enum.dart';
 import '../../../../di/di.dart';
@@ -36,9 +35,6 @@ class NewsListPage extends StatelessWidget {
       key: ValueKey('news-$flow-flow'),
       providers: [
         BlocProvider.value(value: cubit),
-        BlocProvider(
-          create: (_) => PublicationBookmarksBloc(repository: getIt()),
-        ),
         BlocProvider(create: (_) => ScrollCubit()),
         BlocProvider(create: (_) => ScaffoldCubit()),
       ],

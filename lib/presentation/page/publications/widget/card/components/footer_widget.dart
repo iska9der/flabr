@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ya_summary/ya_summary.dart';
 
 import '../../../../../../bloc/auth/auth_cubit.dart';
-import '../../../../../../bloc/publication/publication_bookmark_cubit.dart';
+import '../../../../../../bloc/publication/publication_bookmarks_bloc.dart';
 import '../../../../../../core/component/router/app_router.dart';
 import '../../../../../../core/constants/constants.dart';
 import '../../../../../../data/model/publication/publication.dart';
@@ -50,14 +50,13 @@ class PublicationFooterWidget extends StatelessWidget {
           icon: Icons.chat_bubble_rounded,
           value: publication.statistics.commentsCount.compact(),
           isHighlighted: publication.relatedData.unreadCommentsCount > 0,
-          onTap:
-              () => context.router.push(
-                PublicationFlowRoute(
-                  type: publication.type.name,
-                  id: publication.id,
-                  children: [PublicationCommentRoute()],
-                ),
-              ),
+          onTap: () => context.router.push(
+            PublicationFlowRoute(
+              type: publication.type.name,
+              id: publication.id,
+              children: [PublicationCommentRoute()],
+            ),
+          ),
         ),
         _BookmarkIconButton(publication: publication),
         PublicationStatIconButton(
@@ -91,40 +90,43 @@ class _BookmarkIconButton extends StatelessWidget {
     final isAuthorized = context.select<AuthCubit, bool>(
       (cubit) => cubit.state.isAuthorized,
     );
+    final count = publication.statistics.favoritesCount;
 
     if (!isAuthorized) {
       return PublicationStatIconButton(
         icon: Icons.bookmark_rounded,
-        value: publication.statistics.favoritesCount.compact(),
+        value: count.compact(),
         onTap: () => showLoginSnackBar(context),
       );
     }
 
-    return BlocProvider(
-      create:
-          (_) => PublicationBookmarkCubit(
-            repository: getIt(),
-            publicationId: publication.id,
-            source: PublicationSource.fromType(publication.type),
-            isBookmarked: publication.relatedData.bookmarked,
-            count: publication.statistics.favoritesCount,
-          ),
-      child: BlocConsumer<PublicationBookmarkCubit, PublicationBookmarkState>(
-        listenWhen: (p, c) => c.status.isFailure,
-        listener: (context, state) {
-          context.showSnack(content: Text(state.error));
-        },
-        buildWhen: (p, c) => p.status != c.status,
-        builder: (context, state) {
-          return PublicationStatIconButton(
-            icon: Icons.bookmark_rounded,
-            value: state.count.compact(),
-            isHighlighted: state.isBookmarked,
-            isLoading: state.status.isLoading,
-            onTap: () => context.read<PublicationBookmarkCubit>().toggle(),
-          );
-        },
+    return BlocSelector<
+      PublicationBookmarksBloc,
+      PublicationBookmarksState,
+      ({bool isBookmarked, bool isLoading})
+    >(
+      selector: (state) => (
+        isBookmarked: state.bookmarks[publication.id] ?? false,
+        isLoading: state.loadingIds.contains(publication.id),
       ),
+      builder: (context, data) {
+        final (:isBookmarked, :isLoading) = data;
+
+        return PublicationStatIconButton(
+          icon: Icons.bookmark_rounded,
+          value: count.compact(),
+          isHighlighted: isBookmarked,
+          isLoading: isLoading,
+          onTap: isLoading
+              ? () => context.showSnack(content: const Text('Загрузка...'))
+              : () => context.read<PublicationBookmarksBloc>().add(
+                  PublicationBookmarksEvent.toggled(
+                    publicationId: publication.id,
+                    source: PublicationSource.fromType(publication.type),
+                  ),
+                ),
+        );
+      },
     );
   }
 }

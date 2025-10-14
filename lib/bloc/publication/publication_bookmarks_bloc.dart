@@ -1,3 +1,4 @@
+import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -5,18 +6,18 @@ import '../../data/exception/exception.dart';
 import '../../data/model/publication/publication.dart';
 import '../../data/repository/repository.dart';
 
+part 'publication_bookmarks_bloc.freezed.dart';
 part 'publication_bookmarks_event.dart';
 part 'publication_bookmarks_state.dart';
-part 'publication_bookmarks_bloc.freezed.dart';
 
 class PublicationBookmarksBloc
     extends Bloc<PublicationBookmarksEvent, PublicationBookmarksState> {
   PublicationBookmarksBloc({
     required PublicationRepository repository,
-  })  : _repository = repository,
-        super(const PublicationBookmarksState()) {
-    on<PublicationBookmarksUpdated>(_onUpdated);
-    on<PublicationBookmarkToggled>(_onToggled);
+  }) : _repository = repository,
+       super(const PublicationBookmarksState()) {
+    on<PublicationBookmarksUpdated>(_onUpdated, transformer: sequential());
+    on<PublicationBookmarkToggled>(_onToggled, transformer: concurrent());
   }
 
   final PublicationRepository _repository;
@@ -38,46 +39,54 @@ class PublicationBookmarksBloc
     PublicationBookmarkToggled event,
     Emitter<PublicationBookmarksState> emit,
   ) async {
-    final isCurrentlyBookmarked = state.bookmarks[event.publicationId] ?? false;
+    final isCurrentlyBookmarked = state.bookmarks[event.publicationId];
+    if (isCurrentlyBookmarked == null) {
+      return;
+    }
+
+    final id = event.publicationId;
     final newValue = !isCurrentlyBookmarked;
 
-    // Оптимистичное обновление UI
-    final newBookmarks = Map<String, bool>.from(state.bookmarks);
-    newBookmarks[event.publicationId] = newValue;
-    emit(state.copyWith(
-      bookmarks: newBookmarks,
-      status: BookmarkOperationStatus.loading,
-      operatingPublicationId: event.publicationId,
-    ));
+    if (state.loadingIds.contains(id)) {
+      return;
+    }
+
+    emit(
+      state.copyWith(
+        loadingIds: {...state.loadingIds}..add(id),
+        error: null,
+      ),
+    );
 
     try {
-      if (newValue) {
-        await _repository.addToBookmark(
-          id: event.publicationId,
-          source: event.source,
-        );
-      } else {
-        await _repository.removeFromBookmark(
-          id: event.publicationId,
-          source: event.source,
-        );
+      switch (newValue) {
+        case true:
+          await _repository.addToBookmark(
+            id: id,
+            source: event.source,
+          );
+        case false:
+          await _repository.removeFromBookmark(
+            id: id,
+            source: event.source,
+          );
       }
 
-      emit(state.copyWith(
-        status: BookmarkOperationStatus.success,
-        operatingPublicationId: null,
-      ));
+      final newBookmarks = Map<String, bool>.from(state.bookmarks);
+      newBookmarks[id] = newValue;
+      emit(
+        state.copyWith(
+          bookmarks: newBookmarks,
+          loadingIds: {...state.loadingIds}..remove(id),
+        ),
+      );
     } catch (error, stackTrace) {
-      // Откатываем изменения при ошибке
-      final revertedBookmarks = Map<String, bool>.from(state.bookmarks);
-      revertedBookmarks[event.publicationId] = isCurrentlyBookmarked;
-
-      emit(state.copyWith(
-        bookmarks: revertedBookmarks,
-        status: BookmarkOperationStatus.failure,
-        error: error.parseException(),
-        operatingPublicationId: null,
-      ));
+      emit(
+        state.copyWith(
+          error: error.parseException(),
+          loadingIds: {...state.loadingIds}..remove(id),
+        ),
+      );
 
       addError(error, stackTrace);
     }
