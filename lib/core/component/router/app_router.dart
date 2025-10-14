@@ -274,19 +274,18 @@ List<RedirectRoute> _newsRedirects() {
     '/companies/:companyName/news/:id',
   ];
 
-  List<RedirectRoute> internalRedirectList =
-      externalPathList
-          .map(
-            (path) => [
-              RedirectRoute(path: path, redirectTo: '/publication/news/:id'),
-              RedirectRoute(
-                path: '$path/comments',
-                redirectTo: '/publication/news/:id/comments',
-              ),
-            ],
-          )
-          .flattened
-          .toList();
+  List<RedirectRoute> internalRedirectList = externalPathList
+      .map(
+        (path) => [
+          RedirectRoute(path: path, redirectTo: '/publication/news/:id'),
+          RedirectRoute(
+            path: '$path/comments',
+            redirectTo: '/publication/news/:id/comments',
+          ),
+        ],
+      )
+      .flattened
+      .toList();
 
   return [
     /// Флоу в новостях
@@ -314,19 +313,18 @@ List<RedirectRoute> _articlesRedirects() {
     '/amp/publications/:id',
   ];
 
-  List<RedirectRoute> internalRedirectList =
-      externalPathList
-          .map(
-            (path) => [
-              RedirectRoute(path: path, redirectTo: '/publication/article/:id'),
-              RedirectRoute(
-                path: '$path/comments',
-                redirectTo: '/publication/article/:id/comments',
-              ),
-            ],
-          )
-          .flattened
-          .toList();
+  List<RedirectRoute> internalRedirectList = externalPathList
+      .map(
+        (path) => [
+          RedirectRoute(path: path, redirectTo: '/publication/article/:id'),
+          RedirectRoute(
+            path: '$path/comments',
+            redirectTo: '/publication/article/:id/comments',
+          ),
+        ],
+      )
+      .flattened
+      .toList();
 
   return [
     /// Флоу в статьях
@@ -350,19 +348,18 @@ List<RedirectRoute> _postsRedirects() {
     '/companies/:companyName/posts/:id',
   ];
 
-  List<RedirectRoute> internalRedirectList =
-      externalPathList
-          .map(
-            (path) => [
-              RedirectRoute(path: path, redirectTo: '/publication/post/:id'),
-              RedirectRoute(
-                path: '$path/comments',
-                redirectTo: '/publication/post/:id/comments',
-              ),
-            ],
-          )
-          .flattened
-          .toList();
+  List<RedirectRoute> internalRedirectList = externalPathList
+      .map(
+        (path) => [
+          RedirectRoute(path: path, redirectTo: '/publication/post/:id'),
+          RedirectRoute(
+            path: '$path/comments',
+            redirectTo: '/publication/post/:id/comments',
+          ),
+        ],
+      )
+      .flattened
+      .toList();
 
   return [
     /// Флоу в постах

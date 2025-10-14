@@ -21,6 +21,11 @@ dependencies:
 
   cupertino_icons: ^1.0.8
 
+  ya_summary:
+    path: packages/ya_summary
+  flutter_highlight:
+    path: packages/flutter_highlight
+
   get_it: ^8.0.3
   injectable: ^2.5.0
   freezed_annotation: ^3.1.0
@@ -62,10 +67,7 @@ dependencies:
   html: ^0.15.6
   flutter_fancy_tree_view: ^1.6.0
   skeletonizer: ^2.1.0+1
-  ya_summary:
-    path: packages/ya_summary
-  flutter_highlight:
-    path: packages/flutter_highlight
+  bloc_concurrency: ^0.3.0
 
 dev_dependencies:
   analyzer: ^7.5.9

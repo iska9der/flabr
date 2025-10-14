@@ -21,24 +21,23 @@ class ArticleListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cubit = FlowPublicationListCubit(
+      repository: getIt(),
+      languageRepository: getIt(),
+      storage: getIt(instanceName: 'sharedStorage'),
+      flow: PublicationFlow.fromString(flow),
+    );
+
     return MultiBlocProvider(
       key: ValueKey('articles-$flow-flow'),
       providers: [
-        BlocProvider(
-          create:
-              (_) => FlowPublicationListCubit(
-                repository: getIt(),
-                languageRepository: getIt(),
-                storage: getIt(instanceName: 'sharedStorage'),
-                flow: PublicationFlow.fromString(flow),
-              ),
-        ),
+        BlocProvider.value(value: cubit),
         BlocProvider(create: (_) => ScrollCubit()),
       ],
-      child: const PublicationListScaffold<
-        FlowPublicationListCubit,
-        FlowPublicationListState
-      >(filter: PublicationFiltersWidget()),
+      child: PublicationListScaffold(
+        bloc: cubit,
+        filter: const PublicationFiltersWidget(),
+      ),
     );
   }
 }

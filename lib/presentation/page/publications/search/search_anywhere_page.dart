@@ -4,7 +4,9 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../bloc/publication/publication_bookmarks_bloc.dart';
 import '../../../../bloc/search/search_cubit.dart';
+import '../../../../data/model/publication/publication.dart';
 import '../../../../data/model/render_type_enum.dart';
 import '../../../../data/model/search/search_order_enum.dart';
 import '../../../../data/model/search/search_target_enum.dart';
@@ -82,6 +84,18 @@ class _SearchAnywhereViewState extends State<_SearchAnywhereView> {
           listenWhen: (p, c) => p.page != 1 && c.status.isFailure,
           listener: (c, state) {
             context.showSnack(content: Text(state.error));
+          },
+        ),
+        BlocListener<SearchCubit, SearchState>(
+          listenWhen: (p, c) =>
+              p.status != c.status && c.status == SearchStatus.success,
+          listener: (c, state) {
+            if (state.listResponse.refs.first is PublicationCommon) {
+              final models = List<Publication>.from(state.listResponse.refs);
+              context.read<PublicationBookmarksBloc>().add(
+                PublicationBookmarksEvent.updated(publications: models),
+              );
+            }
           },
         ),
         BlocListener<ScrollCubit, ScrollState>(
@@ -242,19 +256,18 @@ class _OptionsListView<T> extends StatelessWidget {
       child: ListView(
         clipBehavior: Clip.none,
         scrollDirection: Axis.horizontal,
-        children:
-            children
-                .map(
-                  (target) => Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 4),
-                    child: ChoiceChip(
-                      label: Text(buildLabel(target)),
-                      selected: isSelected(target),
-                      onSelected: (value) => onSelected.call(target),
-                    ),
-                  ),
-                )
-                .toList(),
+        children: children
+            .map(
+              (target) => Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 4),
+                child: ChoiceChip(
+                  label: Text(buildLabel(target)),
+                  selected: isSelected(target),
+                  onSelected: (value) => onSelected.call(target),
+                ),
+              ),
+            )
+            .toList(),
       ),
     );
   }

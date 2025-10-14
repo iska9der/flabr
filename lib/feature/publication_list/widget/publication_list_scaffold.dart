@@ -4,7 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
 import '../../../bloc/auth/auth_cubit.dart';
+import '../../../bloc/publication/publication_bookmarks_bloc.dart';
 import '../../../bloc/settings/settings_cubit.dart';
+import '../../../presentation/extension/extension.dart';
 import '../../../presentation/theme/theme.dart';
 import '../../../presentation/widget/enhancement/card.dart';
 import '../../../presentation/widget/enhancement/refresh_indicator.dart';
@@ -22,18 +24,20 @@ class PublicationListScaffold<
     extends StatelessWidget {
   const PublicationListScaffold({
     super.key,
+    this.bloc,
     this.filter,
     this.sidebarEnabled = true,
     this.showPublicationType = false,
   });
 
+  final ListCubit? bloc;
   final Widget? filter;
   final bool sidebarEnabled;
   final bool showPublicationType;
 
   @override
   Widget build(BuildContext context) {
-    final pubCubit = context.read<ListCubit>();
+    final listCubit = bloc ?? context.read<ListCubit>();
     final scrollCubit = context.read<ScrollCubit>();
 
     return MultiBlocListener(
@@ -42,24 +46,31 @@ class PublicationListScaffold<
         BlocListener<AuthCubit, AuthState>(
           listener: (context, state) {
             if (state.isAuthorized || state.isUnauthorized) {
-              pubCubit.reset();
+              listCubit.reset();
             }
           },
         ),
 
         /// Смена языков
         BlocListener<SettingsCubit, SettingsState>(
-          listenWhen:
-              (previous, current) =>
-                  previous.langUI != current.langUI ||
-                  previous.langArticles != current.langArticles,
+          listenWhen: (previous, current) =>
+              previous.langUI != current.langUI ||
+              previous.langArticles != current.langArticles,
           listener: (_, _) => scrollCubit.animateToTop(),
         ),
 
         /// Когда скролл достиг предела, получаем следующую страницу
         BlocListener<ScrollCubit, ScrollState>(
           listenWhen: (_, current) => current.isBottomEdge,
-          listener: (_, state) => pubCubit.fetch(),
+          listener: (_, state) => listCubit.fetch(),
+        ),
+
+        /// Обработка ошибок закладок
+        BlocListener<PublicationBookmarksBloc, PublicationBookmarksState>(
+          listenWhen: (_, current) => current.error != null,
+          listener: (context, state) {
+            context.showSnack(content: Text(state.error!));
+          },
         ),
       ],
       child: Scaffold(
@@ -68,7 +79,7 @@ class PublicationListScaffold<
           children: [
             const FloatingScrollToTopButton(),
             if (filter != null)
-              FloatingFilterButton<ListCubit, ListState>(filter: filter!),
+              FloatingFilterButton(bloc: listCubit, filter: filter!),
           ],
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
@@ -76,7 +87,7 @@ class PublicationListScaffold<
           filter: filter,
           sidebarEnabled: sidebarEnabled,
           showPublicationType: showPublicationType,
-          child: _PublicationListView<ListCubit, ListState>(),
+          child: _PublicationListView(bloc: listCubit),
         ),
       ),
     );
@@ -104,11 +115,8 @@ class PublicationListScaffoldParams extends InheritedWidget {
   }
 
   static PublicationListScaffoldParams of(BuildContext context) {
-    final PublicationListScaffoldParams? result =
-        context
-            .dependOnInheritedWidgetOfExactType<
-              PublicationListScaffoldParams
-            >();
+    final PublicationListScaffoldParams? result = context
+        .dependOnInheritedWidgetOfExactType<PublicationListScaffoldParams>();
     assert(result != null, 'No PublicationListParams found in context');
     return result!;
   }
@@ -120,7 +128,12 @@ class _PublicationListView<
 >
     extends StatelessWidget {
   // ignore: unused_element_parameter
-  const _PublicationListView({super.key});
+  const _PublicationListView({
+    super.key,
+    required this.bloc,
+  });
+
+  final ListCubit bloc;
 
   @override
   Widget build(BuildContext context) {
@@ -138,11 +151,10 @@ class _PublicationListView<
           controller: scrollController,
           physics: scrollPhysics,
           slivers: [
+            /// Обновление списка по свайпу
             SliverPadding(
               padding: const EdgeInsets.only(top: AppDimensions.tabBarHeight),
-              sliver: FlabrSliverRefreshIndicator(
-                onRefresh: context.read<ListCubit>().reset,
-              ),
+              sliver: FlabrSliverRefreshIndicator(onRefresh: bloc.reset),
             ),
 
             /// Кнопка "Читают сейчас"
@@ -160,7 +172,8 @@ class _PublicationListView<
             ),
             SliverCrossAxisGroup(
               slivers: [
-                PublicationSliverList<ListCubit, ListState>(
+                PublicationSliverList(
+                  bloc: bloc,
                   showType: params.showPublicationType,
                 ),
 
@@ -169,15 +182,14 @@ class _PublicationListView<
                 /// и если sidebarEnabled = true
                 ResponsiveVisibilitySliver(
                   visible: false,
-                  visibleConditions:
-                      params.sidebarEnabled
-                          ? const [
-                            Condition.largerThan(
-                              name: ScreenType.mobile,
-                              value: true,
-                            ),
-                          ]
-                          : const [],
+                  visibleConditions: params.sidebarEnabled
+                      ? const [
+                          Condition.largerThan(
+                            name: ScreenType.mobile,
+                            value: true,
+                          ),
+                        ]
+                      : const [],
                   replacementSliver: const SliverConstrainedCrossAxis(
                     maxExtent: 0,
                     sliver: SliverToBoxAdapter(),
@@ -189,17 +201,16 @@ class _PublicationListView<
                           AppDimensions.toolBarHeight;
 
                       return SliverConstrainedCrossAxis(
-                        maxExtent:
-                            ResponsiveValue<double>(
-                              context,
-                              defaultValue: 300,
-                              conditionalValues: [
-                                Condition.smallerThan(
-                                  name: ScreenType.desktop,
-                                  value: Device.getWidth(context) / 3,
-                                ),
-                              ],
-                            ).value,
+                        maxExtent: ResponsiveValue<double>(
+                          context,
+                          defaultValue: 300,
+                          conditionalValues: [
+                            Condition.smallerThan(
+                              name: ScreenType.desktop,
+                              value: Device.getWidth(context) / 3,
+                            ),
+                          ],
+                        ).value,
                         sliver: SliverAppBar(
                           automaticallyImplyLeading: false,
                           backgroundColor: Colors.transparent,
@@ -251,48 +262,45 @@ class _SideWidgetListState extends State<_SideWidgetList> {
 
     return Wrap(
       runSpacing: 12,
-      children:
-          widget.widgets.mapIndexed((index, sideWidget) {
-            final isActiveWidget = showIndex == index;
+      children: widget.widgets.mapIndexed((index, sideWidget) {
+        final isActiveWidget = showIndex == index;
 
-            return FlabrCard(
-              margin: EdgeInsets.zero,
-              padding: EdgeInsets.zero,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  ListTile(
-                    enabled: isEnabled,
-                    contentPadding: AppInsets.cardPadding.copyWith(
-                      top: 0,
-                      bottom: 0,
-                    ),
-                    title: Text(
-                      sideWidget.title,
-                      style: Theme.of(context).textTheme.titleMedium,
-                    ),
-                    trailing:
-                        !isEnabled
-                            ? null
-                            : isActiveWidget
-                            ? const Icon(Icons.keyboard_arrow_up_rounded)
-                            : const Icon(Icons.keyboard_arrow_down_rounded),
-                    onTap:
-                        () => setState(() {
-                          showIndex = index;
-                        }),
-                  ),
-                  if (isActiveWidget) ...[
-                    const Divider(),
-                    ConstrainedBox(
-                      constraints: BoxConstraints(maxHeight: widgetHeight),
-                      child: sideWidget.child,
-                    ),
-                  ],
-                ],
+        return FlabrCard(
+          margin: EdgeInsets.zero,
+          padding: EdgeInsets.zero,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              ListTile(
+                enabled: isEnabled,
+                contentPadding: AppInsets.cardPadding.copyWith(
+                  top: 0,
+                  bottom: 0,
+                ),
+                title: Text(
+                  sideWidget.title,
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+                trailing: !isEnabled
+                    ? null
+                    : isActiveWidget
+                    ? const Icon(Icons.keyboard_arrow_up_rounded)
+                    : const Icon(Icons.keyboard_arrow_down_rounded),
+                onTap: () => setState(() {
+                  showIndex = index;
+                }),
               ),
-            );
-          }).toList(),
+              if (isActiveWidget) ...[
+                const Divider(),
+                ConstrainedBox(
+                  constraints: BoxConstraints(maxHeight: widgetHeight),
+                  child: sideWidget.child,
+                ),
+              ],
+            ],
+          ),
+        );
+      }).toList(),
     );
   }
 }

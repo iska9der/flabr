@@ -1,6 +1,10 @@
 ## Конфигурация
 
 1. Создать файл `.env.prod` в корне проекта. Пример можно посмотреть в `.env.example`
+2. Сгенерировать код
+    ```bash
+    flutter pub run build_runner build --delete-conflicting-outputs
+    ```
 
 ## Сборка
 

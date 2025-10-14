@@ -4,8 +4,10 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:share_plus/share_plus.dart';
 
+import '../../../../bloc/publication/publication_bookmarks_bloc.dart';
 import '../../../../bloc/publication/publication_detail_cubit.dart';
 import '../../../../core/constants/constants.dart';
+import '../../../../data/model/loading_status_enum.dart';
 import '../../../../data/model/publication/publication.dart';
 import '../../../extension/extension.dart';
 import '../../../theme/theme.dart';
@@ -66,149 +68,161 @@ class _PublicationDetailViewState extends State<PublicationDetailView> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: BlocBuilder<PublicationDetailCubit, PublicationDetailState>(
-          builder: (context, state) {
-            if (state.status == PublicationStatus.initial) {
-              fetchPublication();
+        child: BlocListener<PublicationDetailCubit, PublicationDetailState>(
+          listenWhen: (previous, current) =>
+              previous.status != current.status &&
+              current.status == LoadingStatus.success,
+          listener: (context, state) {
+            context.read<PublicationBookmarksBloc>().add(
+              PublicationBookmarksEvent.updated(
+                publications: [state.publication],
+              ),
+            );
+          },
+          child: BlocBuilder<PublicationDetailCubit, PublicationDetailState>(
+            builder: (context, state) {
+              if (state.status == LoadingStatus.initial) {
+                fetchPublication();
 
-              return const CircleIndicator();
-            }
-            if (state.status == PublicationStatus.loading) {
-              return const CircleIndicator();
-            }
-            if (state.status == PublicationStatus.failure) {
-              return Center(
-                child: Column(
-                  spacing: 12,
-                  mainAxisAlignment: MainAxisAlignment.center,
+                return const CircleIndicator();
+              }
+              if (state.status == LoadingStatus.loading) {
+                return const CircleIndicator();
+              }
+              if (state.status == LoadingStatus.failure) {
+                return Center(
+                  child: Column(
+                    spacing: 12,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(state.error),
+                      FilledButton(
+                        onPressed: () => fetchPublication(),
+                        child: const Text('Попробовать снова'),
+                      ),
+                    ],
+                  ),
+                );
+              }
+
+              final publication = state.publication;
+
+              return NotificationListener<UserScrollNotification>(
+                onNotification: (notification) {
+                  final direction = notification.direction;
+                  final axis = notification.metrics.axisDirection;
+
+                  if (axis == AxisDirection.right ||
+                      axis == AxisDirection.left) {
+                    return false;
+                  }
+
+                  /// Если скроллим вверх, или скролл достиг какого-либо края,
+                  /// то показываем статистику
+                  if (direction == ScrollDirection.forward ||
+                      notification.metrics.atEdge &&
+                          notification.metrics.pixels != 0) {
+                    isStatsVisible.value = true;
+                  } else if (direction == ScrollDirection.reverse) {
+                    isStatsVisible.value = false;
+                  }
+
+                  return false;
+                },
+                child: Stack(
                   children: [
-                    Text(state.error),
-                    FilledButton(
-                      onPressed: () => fetchPublication(),
-                      child: const Text('Попробовать снова'),
+                    SelectionArea(
+                      child: CustomScrollView(
+                        controller: controller,
+                        slivers: [
+                          SliverToBoxAdapter(
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                top: _vPadding + _appbarPadding,
+                                left: _hPadding,
+                                right: _hPadding,
+                              ),
+                              child: PublicationHeaderWidget(publication),
+                            ),
+                          ),
+                          SliverToBoxAdapter(
+                            child: PublicationDetailTitle(
+                              publication: publication,
+                              padding: const EdgeInsets.symmetric(
+                                vertical: _vPadding,
+                                horizontal: _hPadding,
+                              ),
+                            ),
+                          ),
+                          SliverToBoxAdapter(
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                vertical: _vPadding,
+                                horizontal: _hPadding,
+                              ),
+                              child: PublicationStatsWidget(publication),
+                            ),
+                          ),
+                          SliverToBoxAdapter(
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                vertical: _vPadding,
+                                horizontal: _hPadding,
+                              ),
+                              child: PublicationHubsWidget(
+                                hubs: publication.hubs,
+                              ),
+                            ),
+                          ),
+                          SliverToBoxAdapter(
+                            child: switch (publication) {
+                              (PublicationCommon c) when c.format != null =>
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: _vPadding,
+                                    horizontal: _hPadding,
+                                  ),
+                                  child: PublicationFormatWidget(c.format!),
+                                ),
+                              _ => const SizedBox(),
+                            },
+                          ),
+                          HtmlView(textHtml: publication.textHtml),
+                        ],
+                      ),
+                    ),
+                    Positioned(
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      child: ValueListenableBuilder(
+                        valueListenable: isStatsVisible,
+                        builder: (_, isVisible, _) {
+                          return _AppBar(
+                            publication: publication,
+                            isVisible: isVisible,
+                            scrollProgress: progressValue,
+                          );
+                        },
+                      ),
+                    ),
+                    Positioned(
+                      bottom: 0,
+                      left: 0,
+                      right: 0,
+                      child: ValueListenableBuilder(
+                        valueListenable: isStatsVisible,
+                        builder: (_, value, _) => _BottomBar(
+                          publication: publication,
+                          isVisible: value,
+                        ),
+                      ),
                     ),
                   ],
                 ),
               );
-            }
-
-            final publication = state.publication;
-
-            return NotificationListener<UserScrollNotification>(
-              onNotification: (notification) {
-                final direction = notification.direction;
-                final axis = notification.metrics.axisDirection;
-
-                if (axis == AxisDirection.right || axis == AxisDirection.left) {
-                  return false;
-                }
-
-                /// Если скроллим вверх, или скролл достиг какого-либо края,
-                /// то показываем статистику
-                if (direction == ScrollDirection.forward ||
-                    notification.metrics.atEdge &&
-                        notification.metrics.pixels != 0) {
-                  isStatsVisible.value = true;
-                } else if (direction == ScrollDirection.reverse) {
-                  isStatsVisible.value = false;
-                }
-
-                return false;
-              },
-              child: Stack(
-                children: [
-                  SelectionArea(
-                    child: CustomScrollView(
-                      controller: controller,
-                      slivers: [
-                        SliverToBoxAdapter(
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                              top: _vPadding + _appbarPadding,
-                              left: _hPadding,
-                              right: _hPadding,
-                            ),
-                            child: PublicationHeaderWidget(publication),
-                          ),
-                        ),
-                        SliverToBoxAdapter(
-                          child: PublicationDetailTitle(
-                            publication: publication,
-                            padding: const EdgeInsets.symmetric(
-                              vertical: _vPadding,
-                              horizontal: _hPadding,
-                            ),
-                          ),
-                        ),
-                        SliverToBoxAdapter(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                              vertical: _vPadding,
-                              horizontal: _hPadding,
-                            ),
-                            child: PublicationStatsWidget(publication),
-                          ),
-                        ),
-                        SliverToBoxAdapter(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                              vertical: _vPadding,
-                              horizontal: _hPadding,
-                            ),
-                            child: PublicationHubsWidget(
-                              hubs: publication.hubs,
-                            ),
-                          ),
-                        ),
-                        SliverToBoxAdapter(
-                          child: switch (publication) {
-                            (PublicationCommon c) when c.format != null =>
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: _vPadding,
-                                  horizontal: _hPadding,
-                                ),
-                                child: PublicationFormatWidget(c.format!),
-                              ),
-                            _ => const SizedBox(),
-                          },
-                        ),
-                        HtmlView(textHtml: publication.textHtml),
-                      ],
-                    ),
-                  ),
-                  Positioned(
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    child: ValueListenableBuilder(
-                      valueListenable: isStatsVisible,
-                      builder: (_, isVisible, _) {
-                        return _AppBar(
-                          publication: publication,
-                          isVisible: isVisible,
-                          scrollProgress: progressValue,
-                        );
-                      },
-                    ),
-                  ),
-                  Positioned(
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
-                    child: ValueListenableBuilder(
-                      valueListenable: isStatsVisible,
-                      builder:
-                          (_, value, _) => _BottomBar(
-                            publication: publication,
-                            isVisible: value,
-                          ),
-                    ),
-                  ),
-                ],
-              ),
-            );
-          },
+            },
+          ),
         ),
       ),
     );
@@ -248,16 +262,15 @@ class _AppBar extends StatelessWidget {
                   icon: const Icon(Icons.tune_rounded),
                   iconSize: 18,
                   tooltip: 'Настроить',
-                  onPressed:
-                      () => showModalBottomSheet(
-                        context: context,
-                        builder: (context) {
-                          return const SizedBox(
-                            height: 240,
-                            child: PublicationSettingsWidget(),
-                          );
-                        },
-                      ),
+                  onPressed: () => showModalBottomSheet(
+                    context: context,
+                    builder: (context) {
+                      return const SizedBox(
+                        height: 240,
+                        child: PublicationSettingsWidget(),
+                      );
+                    },
+                  ),
                 ),
                 IconButton(
                   icon: const Icon(Icons.share),
@@ -328,18 +341,16 @@ class _BottomBar extends StatelessWidget {
               IconButton(
                 icon: const Icon(Icons.more_horiz_rounded),
                 tooltip: 'Дополнительно',
-                onPressed:
-                    () => showModalBottomSheet(
-                      context: context,
-                      builder:
-                          (_) => SizedBox(
-                            width: double.infinity,
-                            height: 120,
-                            child: PublicationMoreButton(
-                              publication: publication,
-                            ),
-                          ),
+                onPressed: () => showModalBottomSheet(
+                  context: context,
+                  builder: (_) => SizedBox(
+                    width: double.infinity,
+                    height: 120,
+                    child: PublicationMoreButton(
+                      publication: publication,
                     ),
+                  ),
+                ),
               ),
             ],
           ),

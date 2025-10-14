@@ -34,13 +34,12 @@ class UserBookmarkListPage extends StatelessWidget {
       key: ValueKey('user-$alias-bookmarks-$type'),
       providers: [
         BlocProvider(
-          create:
-              (_) => UserBookmarkListCubit(
-                repository: getIt(),
-                languageRepository: getIt(),
-                user: alias,
-                type: UserBookmarksType.fromString(type),
-              ),
+          create: (_) => UserBookmarkListCubit(
+            repository: getIt(),
+            languageRepository: getIt(),
+            user: alias,
+            type: UserBookmarksType.fromString(type),
+          ),
         ),
         BlocProvider(
           create: (_) => UserCommentListCubit(repository: getIt(), user: alias),
@@ -57,6 +56,7 @@ class UserBookmarkListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final listCubit = context.read<UserBookmarkListCubit>();
     final scrollCubit = context.read<ScrollCubit>();
     final scrollCtrl = scrollCubit.state.controller;
     final scrollPhysics = context.select<SettingsCubit, ScrollPhysics>(
@@ -78,7 +78,7 @@ class UserBookmarkListView extends StatelessWidget {
                   onRefresh: switch (state.type) {
                     UserBookmarksType.comments =>
                       context.read<UserCommentListCubit>().reset,
-                    _ => context.read<UserBookmarkListCubit>().reset,
+                    _ => listCubit.reset,
                   },
                 );
               },
@@ -90,19 +90,17 @@ class UserBookmarkListView extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: TypeDropdownMenu(
                       type: state.type.name,
-                      onChanged:
-                          (type) => context
-                              .read<UserBookmarkListCubit>()
-                              .changeType(UserBookmarksType.fromString(type)),
-                      entries:
-                          UserBookmarksType.values
-                              .map(
-                                (type) => DropdownMenuItem(
-                                  value: type.name,
-                                  child: Text(type.label),
-                                ),
-                              )
-                              .toList(),
+                      onChanged: (type) => listCubit.changeType(
+                        UserBookmarksType.fromString(type),
+                      ),
+                      entries: UserBookmarksType.values
+                          .map(
+                            (type) => DropdownMenuItem(
+                              value: type.name,
+                              child: Text(type.label),
+                            ),
+                          )
+                          .toList(),
                     ),
                   ),
                 );
@@ -114,26 +112,18 @@ class UserBookmarkListView extends StatelessWidget {
                   UserBookmarksType.comments =>
                     BlocListener<ScrollCubit, ScrollState>(
                       listenWhen: (p, c) => c.isBottomEdge,
-                      listener:
-                          (c, state) =>
-                              context
-                                  .read<UserCommentListCubit>()
-                                  .fetchBookmarks(),
+                      listener: (c, state) =>
+                          context.read<UserCommentListCubit>().fetchBookmarks(),
                       child: CommentSliverList(
-                        fetch:
-                            context.read<UserCommentListCubit>().fetchBookmarks,
+                        fetch: context
+                            .read<UserCommentListCubit>()
+                            .fetchBookmarks,
                       ),
                     ),
                   _ => BlocListener<ScrollCubit, ScrollState>(
                     listenWhen: (p, c) => c.isBottomEdge,
-                    listener:
-                        (c, state) =>
-                            context.read<UserBookmarkListCubit>().fetch(),
-                    child:
-                        const PublicationSliverList<
-                          UserBookmarkListCubit,
-                          UserBookmarkListState
-                        >(),
+                    listener: (c, state) => listCubit.fetch(),
+                    child: PublicationSliverList(bloc: listCubit),
                   ),
                 };
               },

@@ -9,8 +9,13 @@ class FloatingFilterButton<
   ListState extends PublicationListState
 >
     extends StatelessWidget {
-  const FloatingFilterButton({super.key, required this.filter});
+  const FloatingFilterButton({
+    super.key,
+    this.bloc,
+    required this.filter,
+  });
 
+  final ListCubit? bloc;
   final Widget filter;
 
   @override
@@ -18,20 +23,18 @@ class FloatingFilterButton<
     return FloatingActionButton(
       heroTag: null,
       mini: true,
-      onPressed:
-          () => showModalBottomSheet(
-            context: context,
-            isScrollControlled: true,
-            constraints: const BoxConstraints(minWidth: 600),
-            builder:
-                (_) => Padding(
-                  padding: AppInsets.filterSheetPadding,
-                  child: BlocProvider.value(
-                    value: context.read<ListCubit>(),
-                    child: filter,
-                  ),
-                ),
+      onPressed: () => showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        constraints: const BoxConstraints(minWidth: 600),
+        builder: (_) => Padding(
+          padding: AppInsets.filterSheetPadding,
+          child: BlocProvider.value(
+            value: context.read<ListCubit>(),
+            child: filter,
           ),
+        ),
+      ),
       child: const Icon(Icons.filter_list_rounded),
     );
   }

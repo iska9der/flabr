@@ -33,13 +33,12 @@ class UserPublicationListPage extends StatelessWidget {
       key: ValueKey('user-$alias-publications-$type'),
       providers: [
         BlocProvider(
-          create:
-              (_) => UserPublicationListCubit(
-                repository: getIt(),
-                languageRepository: getIt(),
-                user: alias,
-                type: UserPublicationType.fromString(type),
-              ),
+          create: (_) => UserPublicationListCubit(
+            repository: getIt(),
+            languageRepository: getIt(),
+            user: alias,
+            type: UserPublicationType.fromString(type),
+          ),
         ),
         BlocProvider(create: (_) => ScrollCubit()),
       ],
@@ -53,6 +52,7 @@ class UserPublicationListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final listCubit = context.read<UserPublicationListCubit>();
     final scrollCubit = context.read<ScrollCubit>();
     final scrollCtrl = scrollCubit.state.controller;
     final scrollPhysics = context.select<SettingsCubit, ScrollPhysics>(
@@ -61,7 +61,7 @@ class UserPublicationListView extends StatelessWidget {
 
     return BlocListener<ScrollCubit, ScrollState>(
       listenWhen: (p, c) => c.isBottomEdge,
-      listener: (c, state) => context.read<UserPublicationListCubit>().fetch(),
+      listener: (c, state) => listCubit.fetch(),
       child: Scaffold(
         floatingActionButton: const FloatingScrollToTopButton(),
         body: Scrollbar(
@@ -71,9 +71,7 @@ class UserPublicationListView extends StatelessWidget {
             cacheExtent: 2000,
             physics: scrollPhysics,
             slivers: [
-              FlabrSliverRefreshIndicator(
-                onRefresh: context.read<UserPublicationListCubit>().reset,
-              ),
+              FlabrSliverRefreshIndicator(onRefresh: listCubit.reset),
               BlocBuilder<UserPublicationListCubit, UserPublicationListState>(
                 builder: (context, state) {
                   return SliverToBoxAdapter(
@@ -81,30 +79,23 @@ class UserPublicationListView extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: TypeDropdownMenu(
                         type: state.type.name,
-                        onChanged:
-                            (type) => context
-                                .read<UserPublicationListCubit>()
-                                .changeType(
-                                  UserPublicationType.fromString(type),
-                                ),
-                        entries:
-                            UserPublicationType.values
-                                .map(
-                                  (type) => DropdownMenuItem(
-                                    value: type.name,
-                                    child: Text(type.label),
-                                  ),
-                                )
-                                .toList(),
+                        onChanged: (type) => listCubit.changeType(
+                          UserPublicationType.fromString(type),
+                        ),
+                        entries: UserPublicationType.values
+                            .map(
+                              (type) => DropdownMenuItem(
+                                value: type.name,
+                                child: Text(type.label),
+                              ),
+                            )
+                            .toList(),
                       ),
                     ),
                   );
                 },
               ),
-              const PublicationSliverList<
-                UserPublicationListCubit,
-                UserPublicationListState
-              >(),
+              PublicationSliverList(bloc: listCubit),
             ],
           ),
         ),
