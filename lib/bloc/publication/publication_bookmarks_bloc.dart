@@ -11,6 +11,14 @@ part 'publication_bookmarks_bloc.freezed.dart';
 part 'publication_bookmarks_event.dart';
 part 'publication_bookmarks_state.dart';
 
+/// TODO: Всюду лезть приходится, листенерами оборачивать после загрузки
+/// списка публикаций. Можно увидеть, если проследить за вызовом
+/// [PublicationBookmarksEvent.updated].
+///
+/// Можно создать в репозитории `Stream<Map<String, Bookmark> bookmarks>`
+/// и слушать его в этом блоке, пробрасывая в стейт.
+///
+/// Только надо убедиться, что везде используется [PublicationRepository]
 class PublicationBookmarksBloc
     extends Bloc<PublicationBookmarksEvent, PublicationBookmarksState> {
   PublicationBookmarksBloc({
@@ -59,8 +67,6 @@ class PublicationBookmarksBloc
       return;
     }
 
-    final isNeedToBookmark = !bookmark.isBookmarked;
-
     emit(
       state.copyWith(
         loadingIds: {...state.loadingIds}..add(id),
@@ -68,9 +74,10 @@ class PublicationBookmarksBloc
       ),
     );
 
-    try {
-      int count = bookmark.count;
+    final isNeedToBookmark = !bookmark.isBookmarked;
+    int count = bookmark.count;
 
+    try {
       switch (isNeedToBookmark) {
         case true:
           await _repository.addToBookmark(
