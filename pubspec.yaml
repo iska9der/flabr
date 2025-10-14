@@ -26,25 +26,25 @@ dependencies:
   flutter_highlight:
     path: packages/flutter_highlight
 
-  get_it: ^8.0.3
-  injectable: ^2.5.0
+  get_it: ^8.2.0
+  injectable: ^2.5.2
   freezed_annotation: ^3.1.0
   json_annotation: ^4.9.0
   flutter_secure_storage: 9.2.4
   shared_preferences: ^2.5.3
-  dio: ^5.8.0+1
-  dio_cookie_manager: ^3.2.0
+  dio: ^5.9.0
+  dio_cookie_manager: ^3.3.0
   cookie_jar: ^4.0.8
   path: ^1.9.1
   path_provider: ^2.1.5
-  share_plus: ^10.1.4
+  share_plus: ^12.0.0
   url_launcher: ^6.3.2
   rxdart: ^0.28.0
 
   device_preview: ^1.3.1
   responsive_framework: ^1.5.1
 
-  auto_route: ^10.1.0+1
+  auto_route: ^10.1.2
   flutter_bloc: ^9.1.1
   equatable: ^2.0.7
   cached_network_image: ^3.4.1
@@ -53,11 +53,11 @@ dependencies:
     git:
       url: https://github.com/kineapps/flutter_file_dialog.git
       ref: "5e987a6"
-  flutter_displaymode: ^0.6.0
-  flutter_svg: ^2.0.17
+  flutter_displaymode: ^0.7.0
+  flutter_svg: ^2.2.1
   flutter_widget_from_html_core: ^0.17.0
   fwfh_svg: ^0.16.1
-  fwfh_webview: ^0.15.5
+  fwfh_webview: ^0.15.6
   html2md: ^1.3.2
   webview_flutter: ^4.13.0
   webview_cookie_manager:
@@ -72,7 +72,7 @@ dependencies:
 dev_dependencies:
   analyzer: ^7.5.9
   flutter_lints: ^6.0.0
-  dart_code_metrics_presets: ^2.24.0
+  dart_code_metrics_presets: ^2.26.1
   flutter_launcher_icons: ^0.14.4
   build_runner: ^2.5.4
   injectable_generator: ^2.7.0

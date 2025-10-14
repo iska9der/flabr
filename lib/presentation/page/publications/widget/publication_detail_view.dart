@@ -281,7 +281,7 @@ class _AppBar extends StatelessWidget {
                       '${Urls.baseUrl}/articles/${publication.id}',
                     );
 
-                    Share.shareUri(uri);
+                    SharePlus.instance.share(ShareParams(uri: uri));
                   },
                 ),
               ],

@@ -96,13 +96,17 @@ class ImageActionCubit extends Cubit<ImageActionState> {
 
       await _parseImage();
 
-      await Share.shareXFiles([
-        XFile.fromData(
-          state.bytes!,
-          name: state.name,
-          mimeType: state.mimeType,
+      await SharePlus.instance.share(
+        ShareParams(
+          files: [
+            XFile.fromData(
+              state.bytes!,
+              name: state.name,
+              mimeType: state.mimeType,
+            ),
+          ],
         ),
-      ]);
+      );
 
       emit(state.copyWith(status: ImageActionStatus.success));
     } catch (error, stackTrace) {
