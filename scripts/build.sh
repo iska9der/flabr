@@ -49,8 +49,7 @@ flutter build apk --release --split-per-abi --dart-define-from-file .env.$ENV
 rm -rf release
 mkdir release
 
-# search for: Issue (universal)
-# cp build/app/outputs/flutter-apk/app-release.apk release/flabr_v${FLABRVER}.apk
+cp build/app/outputs/flutter-apk/app-release.apk release/flabr_v${FLABRVER}.apk
 cp build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk release/flabr_v${FLABRVER}_armeabi-v7a.apk
 cp build/app/outputs/flutter-apk/app-arm64-v8a-release.apk release/flabr_v${FLABRVER}_arm64-v8a.apk
 cp build/app/outputs/flutter-apk/app-x86_64-release.apk release/flabr_v${FLABRVER}_x86_64.apk

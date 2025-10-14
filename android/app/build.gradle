@@ -71,8 +71,7 @@ android {
             // Specifies a list of ABIs for Gradle to create APKs for.
             include "armeabi-v7a", "arm64-v8a", "x86_64" // "x86"
             // Specifies that you want to also generate a universal APK that includes all ABIs.
-            // search for: Issue (universal)
-            universalApk false
+            universalApk true
         }
     }
 
@@ -111,10 +110,6 @@ flutter {
 // Tip: see the /ruffle-rs/ruffle-android/pull/460/files
 // when migrating to .kts
 
-// Issue (universal): Wont build universal APK, see related PR:
-// https://github.com/flutter/flutter/pull/170343
-// Waiting for the fix to be released, maybe in 3.32.6?
-//
 // F-droid splits APKs by ABI, and requires different versionCode for each ABI.
 // For flutter version X.Y.Z, version code is X0Y0ZA, where A is the ABI code.
 // See:
