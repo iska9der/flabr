@@ -65,19 +65,6 @@ class PublicationListScaffold<
           listener: (_, state) => listCubit.fetch(),
         ),
 
-        /// Синхронизация закладок при успешной загрузке публикаций
-        BlocListener<ListCubit, ListState>(
-          listenWhen: (_, current) =>
-              current.status == PublicationListStatus.success,
-          listener: (context, state) {
-            context.read<PublicationBookmarksBloc>().add(
-              PublicationBookmarksEvent.updated(
-                publications: state.publications,
-              ),
-            );
-          },
-        ),
-
         /// Обработка ошибок закладок
         BlocListener<PublicationBookmarksBloc, PublicationBookmarksState>(
           listenWhen: (_, current) => current.error != null,

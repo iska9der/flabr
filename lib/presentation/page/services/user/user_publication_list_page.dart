@@ -3,7 +3,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../bloc/publication/publication_bookmarks_bloc.dart';
 import '../../../../bloc/settings/settings_cubit.dart';
 import '../../../../bloc/user/user_publication_list_cubit.dart';
 import '../../../../data/model/user/user.dart';
@@ -43,22 +42,7 @@ class UserPublicationListPage extends StatelessWidget {
         ),
         BlocProvider(create: (_) => ScrollCubit()),
       ],
-      child: MultiBlocListener(
-        listeners: [
-          BlocListener<UserPublicationListCubit, UserPublicationListState>(
-            listener: (context, state) {
-              if (state.status == PublicationListStatus.success) {
-                context.read<PublicationBookmarksBloc>().add(
-                  PublicationBookmarksEvent.updated(
-                    publications: state.publications,
-                  ),
-                );
-              }
-            },
-          ),
-        ],
-        child: const UserPublicationListView(),
-      ),
+      child: const UserPublicationListView(),
     );
   }
 }

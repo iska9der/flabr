@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../bloc/hub/hub_cubit.dart';
 import '../../../../bloc/hub/hub_publication_list_cubit.dart';
-import '../../../../bloc/publication/publication_bookmarks_bloc.dart';
 import '../../../../bloc/settings/settings_cubit.dart';
 import '../../../../data/model/filter/filter.dart';
 import '../../../../di/di.dart';
@@ -45,22 +44,7 @@ class HubDetailPage extends StatelessWidget {
         ),
         BlocProvider(create: (_) => ScrollCubit()),
       ],
-      child: MultiBlocListener(
-        listeners: [
-          BlocListener<HubPublicationListCubit, HubPublicationListState>(
-            listener: (context, state) {
-              if (state.status == PublicationListStatus.success) {
-                context.read<PublicationBookmarksBloc>().add(
-                  PublicationBookmarksEvent.updated(
-                    publications: state.publications,
-                  ),
-                );
-              }
-            },
-          ),
-        ],
-        child: const HubDetailPageView(),
-      ),
+      child: const HubDetailPageView(),
     );
   }
 }

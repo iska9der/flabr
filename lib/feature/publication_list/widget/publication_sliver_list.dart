@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
+import '../../../bloc/publication/publication_bookmarks_bloc.dart';
 import '../../../presentation/extension/extension.dart';
 import '../../../presentation/page/publications/widget/card/card.dart';
 import '../../../presentation/widget/enhancement/progress_indicator.dart';
@@ -33,69 +34,93 @@ class PublicationSliverList<
     final scrollCubit = context.read<ScrollCubit?>();
     const skeletonLoader = _SkeletonLoader();
 
-    return BlocConsumer<ListCubit, ListState>(
-      listenWhen: (previous, current) =>
-          previous.page != 1 && current.status == PublicationListStatus.failure,
-      listener: (_, state) => context.showSnack(content: Text(state.error)),
-      builder: (context, state) {
-        /// При инициализации запрашиваем публикации
-        if (state.status == PublicationListStatus.initial) {
-          listCubit.fetch();
-        }
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<ListCubit, ListState>(
+          listenWhen: (previous, current) =>
+              previous.page != 1 &&
+              current.status == PublicationListStatus.failure,
+          listener: (_, state) => context.showSnack(content: Text(state.error)),
+        ),
 
-        /// Нужно ли отобразить виджет загрузки
-        final isLoaderShown = switch (state.status) {
-          PublicationListStatus.initial => true,
-          PublicationListStatus.loading when state.isFirstFetch => true,
-          _ => false,
-        };
-
-        if (isLoaderShown) {
-          return skeletonLoader;
-        }
-
-        /// Ошибка при попытке получить статьи.
-        /// Ошибку показываем вместо карточек только в случае, если
-        /// происходит загрузка первой страницы
-        final isErrorShown =
-            state.isFirstFetch && state.status == PublicationListStatus.failure;
-        if (isErrorShown) {
-          return SliverFillRemaining(child: Center(child: Text(state.error)));
-        }
-
-        var publications = state.publications;
-        if (publications.isEmpty) {
-          return const SliverFillRemaining(
-            child: Center(child: Text('Ничего нет')),
-          );
-        }
-
-        int additional = (state.status == PublicationListStatus.loading
-            ? 1
-            : 0);
-
-        return SliverList.builder(
-          itemCount: publications.length + additional,
-          itemBuilder: (context, index) {
-            if (index < publications.length) {
-              final publication = publications[index];
-
-              return PublicationCardWidget(
-                key: Key('publication_card_${publication.id}'),
-                publication,
-                showType: showType,
-              );
-            }
-
-            Timer(
-              scrollCubit?.duration ?? const Duration(milliseconds: 30),
-              () => scrollCubit?.animateToBottom(),
+        /// Синхронизация закладок при успешной загрузке публикаций
+        BlocListener<ListCubit, ListState>(
+          listenWhen: (_, current) =>
+              current.status == PublicationListStatus.success,
+          listener: (context, state) {
+            context.read<PublicationBookmarksBloc>().add(
+              PublicationBookmarksEvent.updated(
+                publications: state.publications,
+              ),
             );
-
-            return const SizedBox(height: 60, child: CircleIndicator.medium());
           },
-        );
-      },
+        ),
+      ],
+      child: BlocBuilder<ListCubit, ListState>(
+        builder: (context, state) {
+          /// При инициализации запрашиваем публикации
+          if (state.status == PublicationListStatus.initial) {
+            listCubit.fetch();
+          }
+
+          /// Нужно ли отобразить виджет загрузки
+          final isLoaderShown = switch (state.status) {
+            PublicationListStatus.initial => true,
+            PublicationListStatus.loading when state.isFirstFetch => true,
+            _ => false,
+          };
+
+          if (isLoaderShown) {
+            return skeletonLoader;
+          }
+
+          /// Ошибка при попытке получить статьи.
+          /// Ошибку показываем вместо карточек только в случае, если
+          /// происходит загрузка первой страницы
+          final isErrorShown =
+              state.isFirstFetch &&
+              state.status == PublicationListStatus.failure;
+          if (isErrorShown) {
+            return SliverFillRemaining(child: Center(child: Text(state.error)));
+          }
+
+          var publications = state.publications;
+          if (publications.isEmpty) {
+            return const SliverFillRemaining(
+              child: Center(child: Text('Ничего нет')),
+            );
+          }
+
+          int additional = (state.status == PublicationListStatus.loading
+              ? 1
+              : 0);
+
+          return SliverList.builder(
+            itemCount: publications.length + additional,
+            itemBuilder: (context, index) {
+              if (index < publications.length) {
+                final publication = publications[index];
+
+                return PublicationCardWidget(
+                  key: Key('publication_card_//${publication.id}'),
+                  publication,
+                  showType: showType,
+                );
+              }
+
+              Timer(
+                scrollCubit?.duration ?? const Duration(milliseconds: 30),
+                () => scrollCubit?.animateToBottom(),
+              );
+
+              return const SizedBox(
+                height: 60,
+                child: CircleIndicator.medium(),
+              );
+            },
+          );
+        },
+      ),
     );
   }
 }
