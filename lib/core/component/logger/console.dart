@@ -5,6 +5,8 @@ final Logger logger = ConsoleLogger();
 abstract interface class Logger {
   void info(dynamic message, {String? title});
 
+  void warning(dynamic message, {String? title, StackTrace? stackTrace});
+
   void error(Object exception, StackTrace trace);
 }
 
@@ -13,11 +15,20 @@ class ConsoleLogger implements Logger {
   void info(dynamic message, {String? title}) {
     if (title != null) {
       dev.log('$title >', name: 'INFO');
-
       message = '\t $message';
     }
 
     dev.log('$message', name: 'INFO');
+  }
+
+  @override
+  void warning(dynamic message, {String? title, StackTrace? stackTrace}) {
+    if (title != null) {
+      dev.log('$title >', name: 'WARNING');
+      message = '\t $message';
+    }
+
+    dev.log('$message', name: 'WARNING', stackTrace: stackTrace);
   }
 
   @override

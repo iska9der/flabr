@@ -2,6 +2,7 @@ import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import '../../core/component/logger/logger.dart';
 import '../../data/exception/exception.dart';
 import '../../data/model/publication/publication.dart';
 import '../../data/repository/repository.dart';
@@ -26,10 +27,13 @@ class PublicationBookmarksBloc
     PublicationBookmarksUpdated event,
     Emitter<PublicationBookmarksState> emit,
   ) {
-    final newBookmarks = Map<String, bool>.from(state.bookmarks);
+    final newBookmarks = Map<String, Bookmark>.from(state.bookmarks);
 
     for (final publication in event.publications) {
-      newBookmarks[publication.id] = publication.relatedData.bookmarked;
+      newBookmarks[publication.id] = (
+        count: publication.statistics.favoritesCount,
+        isBookmarked: publication.relatedData.bookmarked,
+      );
     }
 
     emit(state.copyWith(bookmarks: newBookmarks));
@@ -39,17 +43,23 @@ class PublicationBookmarksBloc
     PublicationBookmarkToggled event,
     Emitter<PublicationBookmarksState> emit,
   ) async {
-    final isCurrentlyBookmarked = state.bookmarks[event.publicationId];
-    if (isCurrentlyBookmarked == null) {
+    final bookmark = state.bookmarks[event.publicationId];
+
+    if (bookmark == null) {
+      logger.warning(
+        'Закладки: не найдена запись в стейте',
+        stackTrace: StackTrace.current,
+      );
+
       return;
     }
 
     final id = event.publicationId;
-    final newValue = !isCurrentlyBookmarked;
-
     if (state.loadingIds.contains(id)) {
       return;
     }
+
+    final isNeedToBookmark = !bookmark.isBookmarked;
 
     emit(
       state.copyWith(
@@ -59,21 +69,25 @@ class PublicationBookmarksBloc
     );
 
     try {
-      switch (newValue) {
+      int count = bookmark.count;
+
+      switch (isNeedToBookmark) {
         case true:
           await _repository.addToBookmark(
             id: id,
             source: event.source,
           );
+          count++;
         case false:
           await _repository.removeFromBookmark(
             id: id,
             source: event.source,
           );
+          count--;
       }
 
-      final newBookmarks = Map<String, bool>.from(state.bookmarks);
-      newBookmarks[id] = newValue;
+      final newBookmarks = Map<String, Bookmark>.from(state.bookmarks);
+      newBookmarks[id] = (count: count, isBookmarked: isNeedToBookmark);
       emit(
         state.copyWith(
           bookmarks: newBookmarks,

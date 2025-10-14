@@ -90,12 +90,11 @@ class _BookmarkIconButton extends StatelessWidget {
     final isAuthorized = context.select<AuthCubit, bool>(
       (cubit) => cubit.state.isAuthorized,
     );
-    final count = publication.statistics.favoritesCount;
 
     if (!isAuthorized) {
       return PublicationStatIconButton(
         icon: Icons.bookmark_rounded,
-        value: count.compact(),
+        value: publication.statistics.favoritesCount.compact(),
         onTap: () => showLoginSnackBar(context),
       );
     }
@@ -103,14 +102,15 @@ class _BookmarkIconButton extends StatelessWidget {
     return BlocSelector<
       PublicationBookmarksBloc,
       PublicationBookmarksState,
-      ({bool isBookmarked, bool isLoading})
+      ({int count, bool isBookmarked, bool isLoading})
     >(
       selector: (state) => (
-        isBookmarked: state.bookmarks[publication.id] ?? false,
+        count: state.bookmarks[publication.id]?.count ?? 0,
+        isBookmarked: state.bookmarks[publication.id]?.isBookmarked ?? false,
         isLoading: state.loadingIds.contains(publication.id),
       ),
       builder: (context, data) {
-        final (:isBookmarked, :isLoading) = data;
+        final (:count, :isBookmarked, :isLoading) = data;
 
         return PublicationStatIconButton(
           icon: Icons.bookmark_rounded,
@@ -118,7 +118,10 @@ class _BookmarkIconButton extends StatelessWidget {
           isHighlighted: isBookmarked,
           isLoading: isLoading,
           onTap: isLoading
-              ? () => context.showSnack(content: const Text('Загрузка...'))
+              ? () => context.showSnack(
+                  content: const Text('Загрузка...'),
+                  duration: const Duration(seconds: 1),
+                )
               : () => context.read<PublicationBookmarksBloc>().add(
                   PublicationBookmarksEvent.toggled(
                     publicationId: publication.id,
