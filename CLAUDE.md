@@ -140,6 +140,26 @@ sh scripts/build.sh env=prod --no-runner
 #   --no-runner - skip build_runner execution
 ```
 
+### Version Management
+
+```bash
+# Show available commands
+sh scripts/version.sh
+
+# Increment patch version and build number (e.g., 1.2.4+10703 -> 1.2.5+10704)
+sh scripts/version.sh --up
+
+# Increment only build number (e.g., 1.2.4+10703 -> 1.2.4+10704)
+sh scripts/version.sh --build
+
+# Install and update Flutter version from FVM
+# This command:
+# 1. Installs the specified Flutter version via fvm install
+# 2. Updates .fvmrc with the new version
+# 3. Updates pubspec.yaml environment.flutter field
+sh scripts/version.sh flutter=3.35.6
+```
+
 ### Testing & Linting
 
 ```bash
