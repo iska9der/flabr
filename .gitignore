@@ -10,12 +10,6 @@
 .svn/
 migrate_working_dir/
 
-# IntelliJ related
-*.iml
-*.ipr
-*.iws
-.idea/
-
 # The .vscode folder contains launch configuration and tasks you configure in
 # VS Code which you may wish to be included in version control, so this line
 # is commented out by default.
@@ -46,6 +40,13 @@ app.*.map.json
 /android/app/release
 /android/app/.cxx
 
+# IDEA related
+*.iml
+*.ipr
+*.iws
+.idea/
+.zed/
+
 # Generated
 *.freezed.dart
 *.g.dart
@@ -66,4 +67,4 @@ release
 /internal
 
 # AI
-.claude/*.json
+.claude/

@@ -45,7 +45,7 @@
                 "--dart-define-from-file",
                 ".env.prod",
                 "--web-browser-flag",
-                "--disable-web-security",
+                "--disable-web-security"
             ]
         }
     ]
