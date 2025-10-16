@@ -53,6 +53,28 @@ class _WebViewLoginState extends State<_WebViewLogin> {
     '${Urls.siteApiUrl}/v1/auth/habrahabr/?back=/ru/all',
   );
 
+  /// Разрешенные домены OAuth провайдеров для внешней авторизации
+  static const _allowedOAuthDomains = [
+    'github.com',
+    'accounts.google.com',
+    'google.com',
+    'oauth.vk.com',
+    'vk.com',
+    'passport.yandex.ru',
+    'yandex.ru',
+  ];
+
+  bool _isAllowedUrl(String url) {
+    /// Всегда разрешаем домены Habr
+    if (url.startsWith(Urls.baseUrl) ||
+        url.startsWith('https://account.habr.com')) {
+      return true;
+    }
+
+    /// Разрешаем известные OAuth провайдеры
+    return _allowedOAuthDomains.any((domain) => url.contains(domain));
+  }
+
   @override
   void dispose() {
     _clearControllerData();
@@ -64,33 +86,54 @@ class _WebViewLoginState extends State<_WebViewLogin> {
     super.initState();
 
     cookieManager = WebviewCookieManager();
-    wvController =
-        WebViewController()
-          ..setJavaScriptMode(JavaScriptMode.unrestricted)
-          ..setNavigationDelegate(
-            NavigationDelegate(
-              onWebResourceError: (WebResourceError error) {},
-              onNavigationRequest: (NavigationRequest request) async {
-                logger.info(request.url, title: 'URL');
+    wvController = WebViewController()
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..setNavigationDelegate(
+        NavigationDelegate(
+          onWebResourceError: (WebResourceError error) {},
+          onNavigationRequest: (NavigationRequest request) async {
+            final url = request.url;
 
-                if (request.url.startsWith('${Urls.baseUrl}/ru/all')) {
-                  final loginCubit = context.read<LoginCubit>();
-                  final token = await handleCookies(request.url);
-                  await loginCubit.handle(token: token);
+            logger.info(url, title: 'URL');
 
-                  return NavigationDecision.prevent;
-                }
+            final uri = Uri.parse(url);
 
-                if (!request.url.startsWith(Urls.baseUrl) &&
-                    !request.url.startsWith('https://account.habr.com')) {
-                  return NavigationDecision.prevent;
-                }
+            final isFeed = url.startsWith('${Urls.baseUrl}/ru/all');
 
+            if (isFeed) {
+              final loginCubit = context.read<LoginCubit>();
+              final hasCode = uri.queryParameters.containsKey('code');
+              final hasState = uri.queryParameters.containsKey('state');
+
+              /// Форма авторизации (без параметров) - обрабатываем
+              if (!hasCode && !hasState) {
+                final token = await handleCookies(url);
+                loginCubit.handle(token: token);
                 return NavigationDecision.navigate;
-              },
-            ),
-          )
-          ..loadRequest(_authUri);
+              }
+
+              /// OAuth:
+              /// - только с code (промежуточный редирект) - пускаем дальше
+              /// - с code и state - обрабатываем
+              if (hasCode) {
+                if (hasState) {
+                  final token = await handleCookies(url);
+                  loginCubit.handle(token: token);
+                }
+                return NavigationDecision.navigate;
+              }
+            }
+
+            /// Разрешаем навигацию только на домены Habr и известные OAuth провайдеры
+            if (!_isAllowedUrl(url)) {
+              return NavigationDecision.prevent;
+            }
+
+            return NavigationDecision.navigate;
+          },
+        ),
+      )
+      ..loadRequest(_authUri);
   }
 
   Future<String> handleCookies(String url) async {

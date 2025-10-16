@@ -58,6 +58,45 @@ The project follows a clean architecture pattern with clear separation of concer
    - `ya_summary` - YandexGPT integration for article summaries
    - `flutter_highlight` - Custom syntax highlighting
 
+### Authentication Flow
+
+The app implements a WebView-based authentication system (`lib/presentation/widget/auth/login_webview.dart`) that supports both direct login and OAuth providers.
+
+**Authentication Methods:**
+1. **Direct Form Login** - User logs in via Habr's login form at `${Urls.siteApiUrl}/v1/auth/habrahabr/?back=/ru/all`
+2. **OAuth Providers** - Third-party authentication via GitHub, Google, VK, Yandex
+
+**Login Flow Logic:**
+
+The `LoginWebView` widget uses `WebViewController` with `NavigationDelegate` to intercept URLs and handle authentication:
+
+- **Direct Login** (`/ru/all` with no parameters):
+  - Extract cookies via `WebviewCookieManager`
+  - Save cookies to `TokenRepository.cookieJar`
+  - Extract `sid` token and pass to `LoginCubit.handle()`
+
+- **OAuth with intermediate redirect** (`/ru/all?code=X`):
+  - Allow navigation to continue (intermediate OAuth step)
+  - Do NOT process cookies yet
+
+- **OAuth complete** (`/ru/all?code=X&state=Y`):
+  - Both `code` and `state` parameters present
+  - Extract cookies and process authentication
+  - Pass token to `LoginCubit.handle()`
+
+**Security:**
+- Navigation restricted to whitelisted domains via `_allowedOAuthDomains` constant
+- Habr domains (`habr.com`, `account.habr.com`) always allowed
+- OAuth providers: GitHub, Google, VK, Yandex
+
+**State Management:**
+- `LoginCubit` manages authentication state with `LoadingStatus` enum
+- UI reacts to state changes via `BlocListener`
+- Successful login triggers `Navigator.pop()` to close the WebView
+
+**Important Notes:**
+- Cookies are saved to both `Urls.baseUrl` and `Urls.mobileBaseUrl` for API compatibility
+
 ## Development Commands
 
 **IMPORTANT**: This project uses FVM (Flutter Version Manager) to manage Flutter versions. All `flutter` and `dart` commands must be executed through the `.fvm/flutter_sdk/bin/` path.
@@ -132,13 +171,22 @@ adb shell am start -a android.intent.action.VIEW -d "<URI>"
 - Use super parameters
 - Generated files (*.g.dart, *.gr.dart, *.freezed.dart, *.config.dart) are excluded from analysis
 
+### Documentation Comments
+
+- Use triple-slash `///` for documentation comments (Dart convention)
+- Write comments in Russian, but keep technical terms and service names (OAuth, GitHub, etc.) in their original language
+
 ### BLoC/Cubit Conventions
 
 - States use freezed for immutability
 - Events use freezed unions for different actions
 - Business logic should never directly access UI layer
 - Use repositories for data access, not services directly
-- **IMPORTANT**: Always use the shared `LoadingStatus` enum from `lib/data/model/loading_status_enum.dart` for operation status tracking instead of creating custom status enums. It provides standard states: `initial`, `loading`, `success`, `failure`
+
+**Important Notes:**
+- Always use the shared `LoadingStatus` enum from `lib/data/model/loading_status_enum.dart` for operation status tracking instead of creating custom status enums. It provides standard states: `initial`, `loading`, `success`, `failure`
+- Never use `await` when calling Cubit/Bloc methods from UI. Call methods without await (fire-and-forget), and use `BlocListener` or `BlocBuilder` to react to state changes. This prevents race conditions where the Cubit might be closed before the awaited method completes.
+- UI components should react to state changes via `BlocListener` or `BlocBuilder`
 
 ### Code Generation Requirements
 
