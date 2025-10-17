@@ -2,40 +2,45 @@ import 'package:flutter/material.dart';
 
 import '../../data/model/publication/publication.dart';
 import '../../data/model/stat_type_enum.dart';
+import '../theme/app_colors.dart';
 
-extension StateStatusX on Enum {
+extension StateStatusExtension on Enum {
   bool get isInitial => name == 'initial';
   bool get isLoading => name == 'loading';
   bool get isSuccess => name == 'success';
   bool get isFailure => name == 'failure';
 }
 
-extension StatTypeX on StatType {
-  Color? get color => switch (this) {
-    StatType.rating => Colors.purple,
-    StatType.score => Colors.green,
+extension StatTypeExtension on StatType {
+  Color? getColorByScore(num score, AppColorsExtension colors) =>
+      switch (score) {
+        >= 0 => _getPositiveColor(colors),
+        _ => _getNegaviteColor(colors),
+      };
+
+  Color? _getPositiveColor(AppColorsExtension colors) => switch (this) {
+    StatType.score => colors.highlight,
+    StatType.rating => colors.mulberry,
     _ => null,
   };
 
-  Color? get negativeColor => switch (this) {
-    StatType.score => Colors.red,
+  Color? _getNegaviteColor(AppColorsExtension colors) => switch (this) {
+    StatType.score => colors.carnation,
     _ => null,
   };
 }
 
-extension PublicationFormatX on PublicationFormat {
-  Color get color => switch (this) {
+extension PublicationFormatExtension on PublicationFormat {
+  Color getColor(AppColorsExtension colors) => switch (this) {
     PublicationFormat.example ||
     PublicationFormat.digest ||
     PublicationFormat.opinion ||
-    PublicationFormat.review => const Color(0xff2385e7),
+    PublicationFormat.review => colors.portage,
     PublicationFormat.faq ||
     PublicationFormat.roadmap ||
-    PublicationFormat.tutorial => const Color(0xffd5700b),
-    PublicationFormat.interview || PublicationFormat.reportage => const Color(
-      0xff1da53d,
-    ).withValues(alpha: .7),
+    PublicationFormat.tutorial => colors.sorbus,
+    PublicationFormat.interview || PublicationFormat.reportage => colors.apple,
     PublicationFormat.analytics ||
-    PublicationFormat.retrospective => const Color(0xffc23d96),
+    PublicationFormat.retrospective => colors.mulberry,
   };
 }

@@ -11,20 +11,20 @@ class PublicationFormatWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final actualColor = format.color;
+    final formatColor = format.getColor(context.theme.colors);
 
     return Align(
       alignment: Alignment.centerLeft,
       child: DecoratedBox(
         decoration: BoxDecoration(
-          border: Border.all(color: actualColor),
+          border: Border.all(color: formatColor),
           borderRadius: AppStyles.buttonBorderRadius,
         ),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
           child: Text(
             format.label,
-            style: TextStyle(fontWeight: FontWeight.w500, color: actualColor),
+            style: TextStyle(fontWeight: FontWeight.w500, color: formatColor),
           ),
         ),
       ),

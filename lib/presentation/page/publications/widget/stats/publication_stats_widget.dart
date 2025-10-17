@@ -66,9 +66,12 @@ class _ComplexityStat extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Color color = switch (complexity) {
-      PublicationComplexity.low => Colors.green.shade400,
-      PublicationComplexity.medium => Colors.blueAccent,
-      PublicationComplexity.high => Colors.redAccent,
+      PublicationComplexity.low =>
+        context.theme.colors.publicationComplexityLow,
+      PublicationComplexity.medium =>
+        context.theme.colors.publicationComplexityMedium,
+      PublicationComplexity.high =>
+        context.theme.colors.publicationComplexityHight,
     };
 
     final IconData icon = switch (complexity) {

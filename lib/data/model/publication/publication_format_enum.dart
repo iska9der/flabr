@@ -1,5 +1,6 @@
 import 'package:collection/collection.dart';
-import 'package:flutter/foundation.dart';
+
+import '../../../core/component/logger/logger.dart';
 
 enum PublicationFormat {
   example,
@@ -16,17 +17,14 @@ enum PublicationFormat {
 
   static PublicationFormat? fromString(String value) {
     /// а все потому, что "case" зарезервировано языком!
-    if (value == 'case') {
-      return PublicationFormat.example;
-    }
+    if (value == 'case') return PublicationFormat.example;
 
     final format = PublicationFormat.values.firstWhereOrNull(
       (e) => e.name == value,
     );
 
     if (format == null) {
-      debugPrint('Неизвестное значение для [ArticleFormat]');
-
+      logger.warning('Неизвестное значение для [ArticleFormat]');
       return null;
     }
 

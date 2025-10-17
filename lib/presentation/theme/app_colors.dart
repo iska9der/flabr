@@ -17,6 +17,33 @@ abstract class AppColorsLight {
   static const Color onHighlight = Color.fromARGB(255, 255, 255, 255);
 
   static const Color authorColor = Color.fromARGB(255, 236, 247, 223);
+
+  static const Color publicationComplexityLow = Color.fromARGB(
+    255,
+    71,
+    194,
+    112,
+  );
+  static const Color publicationComplexityMedium = Color.fromARGB(
+    255,
+    73,
+    173,
+    223,
+  );
+  static const Color publicationComplexityHight = Color.fromARGB(
+    255,
+    239,
+    108,
+    130,
+  );
+
+  static const Color sorbus = Color.fromARGB(255, 247, 125, 5);
+  static const Color portage = Color.fromARGB(255, 35, 133, 231);
+  static const Color mulberry = Color.fromARGB(255, 194, 61, 150);
+  static const Color apple = Color.fromARGB(255, 29, 165, 61);
+  static const Color deluge = Color.fromARGB(255, 102, 103, 163);
+  static const Color scarlet = Color.fromARGB(255, 219, 0, 0);
+  static const Color carnation = Color.fromARGB(255, 208, 78, 78);
 }
 
 abstract class AppColorsDark {
@@ -36,6 +63,33 @@ abstract class AppColorsDark {
   static const Color onHighlight = Color.fromARGB(255, 23, 23, 23);
 
   static const Color authorColor = Color.fromARGB(255, 34, 46, 20);
+
+  static const Color publicationComplexityLow = Color.fromARGB(
+    255,
+    59,
+    155,
+    91,
+  );
+  static const Color publicationComplexityMedium = Color.fromARGB(
+    255,
+    49,
+    147,
+    196,
+  );
+  static const Color publicationComplexityHight = Color.fromARGB(
+    255,
+    201,
+    94,
+    112,
+  );
+
+  static const Color sorbus = Color.fromARGB(255, 255, 159, 64);
+  static const Color portage = Color.fromARGB(255, 90, 172, 255);
+  static const Color mulberry = Color.fromARGB(255, 224, 100, 183);
+  static const Color apple = Color.fromARGB(255, 126, 236, 151);
+  static const Color deluge = Color.fromARGB(255, 160, 161, 215);
+  static const Color scarlet = Color.fromARGB(255, 244, 118, 118);
+  static const Color carnation = Color.fromARGB(255, 255, 115, 115);
 }
 
 class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
@@ -52,6 +106,16 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
     required this.highlight,
     required this.onHighlight,
     required this.authorColor,
+    required this.publicationComplexityLow,
+    required this.publicationComplexityMedium,
+    required this.publicationComplexityHight,
+    required this.sorbus,
+    required this.portage,
+    required this.mulberry,
+    required this.apple,
+    required this.deluge,
+    required this.scarlet,
+    required this.carnation,
   });
 
   final Color surface;
@@ -66,6 +130,16 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
   final Color highlight;
   final Color onHighlight;
   final Color authorColor;
+  final Color publicationComplexityLow;
+  final Color publicationComplexityMedium;
+  final Color publicationComplexityHight;
+  final Color sorbus;
+  final Color portage;
+  final Color mulberry;
+  final Color apple;
+  final Color deluge;
+  final Color scarlet;
+  final Color carnation;
 
   @override
   ThemeExtension<AppColorsExtension> copyWith({
@@ -81,6 +155,17 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
     Color? highlight,
     Color? onHighlight,
     Color? authorColor,
+    Color? publicationTypePost,
+    Color? publicationComplexityLow,
+    Color? publicationComplexityMedium,
+    Color? publicationComplexityHight,
+    Color? sorbus,
+    Color? portage,
+    Color? mulberry,
+    Color? apple,
+    Color? deluge,
+    Color? scarlet,
+    Color? carnation,
   }) {
     return AppColorsExtension(
       surface: surface ?? this.surface,
@@ -95,6 +180,19 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
       highlight: highlight ?? this.highlight,
       onHighlight: onHighlight ?? this.onHighlight,
       authorColor: authorColor ?? this.authorColor,
+      publicationComplexityLow:
+          publicationComplexityLow ?? this.publicationComplexityLow,
+      publicationComplexityMedium:
+          publicationComplexityMedium ?? this.publicationComplexityMedium,
+      publicationComplexityHight:
+          publicationComplexityHight ?? this.publicationComplexityHight,
+      sorbus: sorbus ?? this.sorbus,
+      portage: portage ?? this.portage,
+      mulberry: mulberry ?? this.mulberry,
+      apple: apple ?? this.apple,
+      deluge: deluge ?? this.deluge,
+      scarlet: scarlet ?? this.scarlet,
+      carnation: carnation ?? this.carnation,
     );
   }
 
@@ -116,11 +214,36 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
       disabled: Color.lerp(disabled, other.disabled, t)!,
       card: Color.lerp(card, other.card, t)!,
       cardHighlight: Color.lerp(cardHighlight, other.cardHighlight, t)!,
-      progressTrackColor:
-          Color.lerp(progressTrackColor, other.progressTrackColor, t)!,
+      progressTrackColor: Color.lerp(
+        progressTrackColor,
+        other.progressTrackColor,
+        t,
+      )!,
       highlight: Color.lerp(highlight, other.highlight, t)!,
       onHighlight: Color.lerp(onHighlight, other.onHighlight, t)!,
       authorColor: Color.lerp(authorColor, other.authorColor, t)!,
+      publicationComplexityLow: Color.lerp(
+        publicationComplexityLow,
+        other.publicationComplexityLow,
+        t,
+      )!,
+      publicationComplexityMedium: Color.lerp(
+        publicationComplexityMedium,
+        other.publicationComplexityMedium,
+        t,
+      )!,
+      publicationComplexityHight: Color.lerp(
+        publicationComplexityHight,
+        other.publicationComplexityHight,
+        t,
+      )!,
+      sorbus: Color.lerp(sorbus, other.sorbus, t)!,
+      portage: Color.lerp(portage, other.portage, t)!,
+      mulberry: Color.lerp(mulberry, other.mulberry, t)!,
+      apple: Color.lerp(apple, other.apple, t)!,
+      deluge: Color.lerp(deluge, other.deluge, t)!,
+      scarlet: Color.lerp(scarlet, other.scarlet, t)!,
+      carnation: Color.lerp(carnation, other.carnation, t)!,
     );
   }
 }

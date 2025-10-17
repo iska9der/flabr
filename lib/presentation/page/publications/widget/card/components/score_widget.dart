@@ -39,10 +39,10 @@ class ScoreWidget extends StatelessWidget {
             != null && < 0 => Icons.arrow_downward,
             _ => Icons.insert_chart_rounded,
           };
-          final color = switch (score) {
-            >= 0 => StatType.score.color,
-            _ => StatType.score.negativeColor,
-          };
+          final color = StatType.score.getColorByScore(
+            score,
+            context.theme.colors,
+          );
 
           return _ScoreTooltip(
             votesCount: publication.statistics.votesCount,
@@ -118,11 +118,10 @@ class _VoteButtons extends StatelessWidget {
     );
 
     return BlocProvider(
-      create:
-          (_) => PublicationVoteBloc(
-            publication: publication,
-            repository: getIt(),
-          ),
+      create: (_) => PublicationVoteBloc(
+        publication: publication,
+        repository: getIt(),
+      ),
       child: BlocConsumer<PublicationVoteBloc, PublicationVoteState>(
         listener: (context, state) {
           if (state.status == LoadingStatus.failure && state.error != null) {
@@ -132,10 +131,10 @@ class _VoteButtons extends StatelessWidget {
         builder: (context, state) {
           final isLoading = state.status == LoadingStatus.loading;
           final score = state.score;
-          final color = switch (score) {
-            >= 0 => StatType.score.color,
-            _ => StatType.score.negativeColor,
-          };
+          final color = StatType.score.getColorByScore(
+            score,
+            context.theme.colors,
+          );
 
           return Row(
             mainAxisSize: MainAxisSize.min,
@@ -144,12 +143,11 @@ class _VoteButtons extends StatelessWidget {
                 style: iconStyle,
                 tooltip: 'Повысить рейтинг',
                 icon: const Icon(Icons.arrow_upward, size: 18),
-                onPressed:
-                    isLoading
-                        ? null
-                        : () => context.read<PublicationVoteBloc>().add(
-                          const PublicationVoteEvent.voteUp(),
-                        ),
+                onPressed: isLoading
+                    ? null
+                    : () => context.read<PublicationVoteBloc>().add(
+                        const PublicationVoteEvent.voteUp(),
+                      ),
               ),
               _ScoreTooltip(
                 votesCount: state.votesCount,
@@ -175,12 +173,11 @@ class _VoteButtons extends StatelessWidget {
                   size: 18,
                   color: Theme.of(context).disabledColor,
                 ),
-                onPressed:
-                    isLoading
-                        ? null
-                        : () => context.read<PublicationVoteBloc>().add(
-                          const PublicationVoteEvent.voteDown(),
-                        ),
+                onPressed: isLoading
+                    ? null
+                    : () => context.read<PublicationVoteBloc>().add(
+                        const PublicationVoteEvent.voteDown(),
+                      ),
               ),
             ],
           );

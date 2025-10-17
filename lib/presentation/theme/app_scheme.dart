@@ -18,6 +18,16 @@ abstract class AppSchemeLight {
     highlight: AppColorsLight.highlight,
     onHighlight: AppColorsLight.onHighlight,
     authorColor: AppColorsLight.authorColor,
+    publicationComplexityLow: AppColorsLight.publicationComplexityLow,
+    publicationComplexityMedium: AppColorsLight.publicationComplexityMedium,
+    publicationComplexityHight: AppColorsLight.publicationComplexityHight,
+    sorbus: AppColorsLight.sorbus,
+    portage: AppColorsLight.portage,
+    mulberry: AppColorsLight.mulberry,
+    apple: AppColorsLight.apple,
+    deluge: AppColorsLight.deluge,
+    scarlet: AppColorsLight.scarlet,
+    carnation: AppColorsLight.carnation,
   );
 
   static ColorScheme get scheme => ColorScheme.fromSeed(
@@ -68,6 +78,16 @@ class AppSchemeDark {
     highlight: AppColorsDark.highlight,
     onHighlight: AppColorsDark.onHighlight,
     authorColor: AppColorsDark.authorColor,
+    publicationComplexityLow: AppColorsDark.publicationComplexityLow,
+    publicationComplexityMedium: AppColorsDark.publicationComplexityMedium,
+    publicationComplexityHight: AppColorsDark.publicationComplexityHight,
+    sorbus: AppColorsDark.sorbus,
+    portage: AppColorsDark.portage,
+    mulberry: AppColorsDark.mulberry,
+    apple: AppColorsDark.apple,
+    deluge: AppColorsDark.deluge,
+    scarlet: AppColorsDark.scarlet,
+    carnation: AppColorsDark.carnation,
   );
 
   static ColorScheme get scheme => ColorScheme.fromSeed(
