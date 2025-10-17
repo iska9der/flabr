@@ -15,7 +15,7 @@ class ConsoleLogger implements Logger {
   void info(dynamic message, {String? title}) {
     if (title != null) {
       dev.log('$title >', name: 'INFO');
-      message = '\t $message';
+      message = '$message';
     }
 
     dev.log('$message', name: 'INFO');
@@ -25,7 +25,7 @@ class ConsoleLogger implements Logger {
   void warning(dynamic message, {String? title, StackTrace? stackTrace}) {
     if (title != null) {
       dev.log('$title >', name: 'WARNING');
-      message = '\t $message';
+      message = '$message';
     }
 
     dev.log('$message', name: 'WARNING', stackTrace: stackTrace);

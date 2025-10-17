@@ -56,12 +56,12 @@ class _WebViewLoginState extends State<_WebViewLogin> {
   /// Разрешенные домены OAuth провайдеров для внешней авторизации
   static const _allowedOAuthDomains = [
     'github.com',
-    'accounts.google.com',
     'google.com',
-    'oauth.vk.com',
     'vk.com',
-    'passport.yandex.ru',
     'yandex.ru',
+    'facebook.com',
+    'x.com',
+    'twitter.com',
   ];
 
   bool _isAllowedUrl(String url) {
@@ -71,8 +71,13 @@ class _WebViewLoginState extends State<_WebViewLogin> {
       return true;
     }
 
+    final uri = Uri.parse(url);
+
     /// Разрешаем известные OAuth провайдеры
-    return _allowedOAuthDomains.any((domain) => url.contains(domain));
+    /// Проверяем хост, чтобы избежать обхода через параметры (например, ?q=google.com)
+    return _allowedOAuthDomains.any(
+      (domain) => uri.host == domain || uri.host.endsWith('.$domain'),
+    );
   }
 
   @override
@@ -126,6 +131,8 @@ class _WebViewLoginState extends State<_WebViewLogin> {
 
             /// Разрешаем навигацию только на домены Habr и известные OAuth провайдеры
             if (!_isAllowedUrl(url)) {
+              logger.info('URL не разрешен');
+
               return NavigationDecision.prevent;
             }
 
