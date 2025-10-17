@@ -2,6 +2,7 @@ import 'dart:collection';
 
 import 'package:equatable/equatable.dart';
 
+import 'post_label_model.dart';
 import 'publication_author_model.dart';
 import 'publication_complexity_enum.dart';
 import 'publication_format_enum.dart';
@@ -88,6 +89,7 @@ class PublicationCommon extends Publication {
     this.complexity,
     this.readingTime = 0,
     this.format,
+    this.postLabels = const [],
   });
 
   final String titleHtml;
@@ -95,10 +97,12 @@ class PublicationCommon extends Publication {
   final PublicationComplexity? complexity;
   final int readingTime;
   final PublicationFormat? format;
+  final List<PostLabel> postLabels;
 
   factory PublicationCommon.fromMap(Map<String, dynamic> map) {
     final hubsList = List<Map<String, dynamic>>.from(map['hubs'] ?? []);
     final tagsList = List<Map<String, dynamic>>.from(map['tags'] ?? []);
+    final postLabelsList = List<Map<String, dynamic>>.from(map['postLabels'] ?? []);
 
     return PublicationCommon(
       id: map['id'],
@@ -142,6 +146,9 @@ class PublicationCommon extends Publication {
           map['format'] != null
               ? PublicationFormat.fromString(map['format'])
               : null,
+      postLabels: UnmodifiableListView(
+        postLabelsList.map((e) => PostLabel.fromJson(e)),
+      ),
     );
   }
 
@@ -155,6 +162,7 @@ class PublicationCommon extends Publication {
     complexity,
     readingTime,
     format,
+    postLabels,
   ];
 }
 

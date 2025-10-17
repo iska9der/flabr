@@ -1,6 +1,6 @@
 part of 'app_router.dart';
 
-extension UrlLauncherX on AppRouter {
+extension UrlLauncherExtension on AppRouter {
   /// Открыть внешнюю ссылку во внешнем приложении
   Future<bool> launchUrl(String url) =>
       launchUrlString(url, mode: LaunchMode.externalApplication);

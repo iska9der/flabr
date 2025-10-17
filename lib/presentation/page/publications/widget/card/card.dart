@@ -1,9 +1,11 @@
 export 'card_html_widget.dart';
 export 'common_card_widget.dart';
 export 'components/footer_widget.dart';
-export 'components/format_widget.dart';
 export 'components/header_widget.dart';
 export 'components/hubs_widget.dart';
+export 'components/post_labels_data_list.dart';
+export 'components/publication_label_list.dart';
+export 'components/publication_label_widget.dart';
 export 'components/publication_type_widget.dart';
 export 'components/score_widget.dart';
 export 'post_card_widget.dart';

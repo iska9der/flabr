@@ -1,6 +1,8 @@
 export 'feed_list_params.dart';
 export 'feed_list_response.dart';
 export 'most_reading_response.dart';
+export 'post_label_model.dart';
+export 'post_label_type_enum.dart';
 export 'publication_author_model.dart';
 export 'publication_common_list_response.dart';
 export 'publication_complexity_enum.dart';

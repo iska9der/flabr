@@ -13,9 +13,9 @@ import '../../../../widget/enhancement/enhancement.dart';
 import '../stats/publication_stats_widget.dart';
 import 'card_html_widget.dart';
 import 'components/footer_widget.dart';
-import 'components/format_widget.dart';
 import 'components/header_widget.dart';
 import 'components/hubs_widget.dart';
+import 'components/publication_label_list.dart';
 import 'components/publication_type_widget.dart';
 
 class CommonCardWidget extends StatelessWidget {
@@ -33,13 +33,12 @@ class CommonCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FlabrCard(
-      onTap:
-          () => getIt<AppRouter>().push(
-            PublicationFlowRoute(
-              type: publication.type.name,
-              id: publication.id,
-            ),
-          ),
+      onTap: () => getIt<AppRouter>().push(
+        PublicationFlowRoute(
+          type: publication.type.name,
+          id: publication.id,
+        ),
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
@@ -58,8 +57,10 @@ class CommonCardWidget extends StatelessWidget {
                 ),
                 PublicationStatsWidget(publication),
                 PublicationHubsWidget(hubs: publication.hubs),
-                if (publication.format != null)
-                  PublicationFormatWidget(publication.format!),
+                PublicationLabelList(
+                  postLabels: publication.postLabels,
+                  format: publication.format,
+                ),
                 const SizedBox(),
               ],
             ),
@@ -70,8 +71,8 @@ class CommonCardWidget extends StatelessWidget {
             children: [
               if (!publication.leadData.image.isEmpty)
                 BlocBuilder<SettingsCubit, SettingsState>(
-                  buildWhen:
-                      (p, c) => p.feed.isImageVisible != c.feed.isImageVisible,
+                  buildWhen: (p, c) =>
+                      p.feed.isImageVisible != c.feed.isImageVisible,
                   builder: (context, state) {
                     if (!state.feed.isImageVisible) {
                       return const SizedBox();
@@ -88,12 +89,10 @@ class CommonCardWidget extends StatelessWidget {
                   },
                 ),
               BlocBuilder<SettingsCubit, SettingsState>(
-                buildWhen:
-                    (previous, current) =>
-                        previous.feed.isDescriptionVisible !=
-                            current.feed.isDescriptionVisible ||
-                        previous.feed.isImageVisible !=
-                            current.feed.isImageVisible,
+                buildWhen: (previous, current) =>
+                    previous.feed.isDescriptionVisible !=
+                        current.feed.isDescriptionVisible ||
+                    previous.feed.isImageVisible != current.feed.isImageVisible,
                 builder: (context, state) {
                   if (!state.feed.isDescriptionVisible) {
                     return const SizedBox();

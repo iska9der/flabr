@@ -176,17 +176,33 @@ class _PublicationDetailViewState extends State<PublicationDetailView> {
                           ),
                           SliverToBoxAdapter(
                             child: switch (publication) {
-                              (PublicationCommon c) when c.format != null =>
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: _vPadding,
-                                    horizontal: _hPadding,
-                                  ),
-                                  child: PublicationFormatWidget(c.format!),
+                              (PublicationCommon common) => Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: _vPadding,
+                                  horizontal: _hPadding,
                                 ),
+                                child: PublicationLabelList(
+                                  postLabels: common.postLabels,
+                                  format: common.format!,
+                                ),
+                              ),
                               _ => const SizedBox(),
                             },
                           ),
+                          if (publication case PublicationCommon(
+                            :var postLabels,
+                          ) when postLabels.isNotEmpty)
+                            SliverToBoxAdapter(
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: _vPadding,
+                                  horizontal: _hPadding,
+                                ),
+                                child: PostLabelsDataList(
+                                  postLabels: postLabels,
+                                ),
+                              ),
+                            ),
                           HtmlView(textHtml: publication.textHtml),
                         ],
                       ),
