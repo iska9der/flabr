@@ -76,14 +76,12 @@ class _FilterViewState extends State<_FilterView> {
         Text('Тип публикации', style: Theme.of(context).textTheme.labelLarge),
         FilterChipList(
           isEnabled: !widget.isLoading,
-          options:
-              FeedFilterPublication.values
-                  .map((e) => FilterOption(label: e.label, value: e.name))
-                  .toList(),
-          isSelected:
-              (option) => typesValue.contains(
-                FeedFilterPublication.fromString(option.value),
-              ),
+          options: FeedFilterPublication.values
+              .map((e) => FilterOption(label: e.label, value: e.name))
+              .toList(),
+          isSelected: (option) => typesValue.contains(
+            FeedFilterPublication.fromString(option.value),
+          ),
           onSelected: (isSelected, newOption) {
             final newType = FeedFilterPublication.fromString(newOption.value);
 
@@ -110,19 +108,17 @@ class _FilterViewState extends State<_FilterView> {
           isEnabled: !widget.isLoading,
           options: FilterList.scoreOptions,
           isSelected: (option) => option == scoreValue,
-          onSelected:
-              (isSelected, option) => setState(() {
-                scoreValue = option;
-              }),
+          onSelected: (isSelected, option) => setState(() {
+            scoreValue = option;
+          }),
         ),
         Padding(
           padding: const EdgeInsets.only(top: 8.0),
           child: PublicationFilterSubmitButton(
             isEnabled: !widget.isLoading,
-            onSubmit:
-                () => widget.onSubmit(
-                  FeedFilter(score: scoreValue, types: typesValue),
-                ),
+            onSubmit: () => widget.onSubmit(
+              FeedFilter(score: scoreValue, types: typesValue),
+            ),
           ),
         ),
       ],

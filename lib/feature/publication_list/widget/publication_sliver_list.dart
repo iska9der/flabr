@@ -37,6 +37,7 @@ class PublicationSliverList<
     return MultiBlocListener(
       listeners: [
         BlocListener<ListCubit, ListState>(
+          bloc: listCubit,
           listenWhen: (previous, current) =>
               previous.page != 1 &&
               current.status == PublicationListStatus.failure,
@@ -45,6 +46,7 @@ class PublicationSliverList<
 
         /// Синхронизация закладок при успешной загрузке публикаций
         BlocListener<ListCubit, ListState>(
+          bloc: listCubit,
           listenWhen: (_, current) =>
               current.status == PublicationListStatus.success,
           listener: (context, state) {
@@ -57,6 +59,7 @@ class PublicationSliverList<
         ),
       ],
       child: BlocBuilder<ListCubit, ListState>(
+        bloc: listCubit,
         builder: (context, state) {
           /// При инициализации запрашиваем публикации
           if (state.status == PublicationListStatus.initial) {
