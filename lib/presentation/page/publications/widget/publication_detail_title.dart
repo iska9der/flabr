@@ -15,13 +15,13 @@ class PublicationDetailTitle extends StatelessWidget {
     return switch (publication.type) {
       PublicationType.post => const SizedBox(),
       _ => Padding(
-          padding: padding,
-          child: SelectableText(
-            (publication as PublicationCommon).titleHtml,
-            textAlign: TextAlign.left,
-            style: Theme.of(context).textTheme.titleLarge,
-          ),
+        padding: padding,
+        child: SelectableText(
+          (publication as PublicationCommon).titleHtml,
+          textAlign: TextAlign.left,
+          style: Theme.of(context).textTheme.titleLarge,
         ),
+      ),
     };
   }
 }

@@ -27,13 +27,12 @@ class PublicationDetailPage extends StatelessWidget {
       key: ValueKey('publication-$id-detail'),
       providers: [
         BlocProvider(
-          create:
-              (_) => PublicationDetailCubit(
-                id,
-                source: PublicationSource.fromType(type),
-                repository: getIt(),
-                languageRepository: getIt(),
-              ),
+          create: (_) => PublicationDetailCubit(
+            id,
+            source: PublicationSource.fromType(type),
+            repository: getIt(),
+            languageRepository: getIt(),
+          ),
         ),
       ],
       child: const PublicationDetailView(),
