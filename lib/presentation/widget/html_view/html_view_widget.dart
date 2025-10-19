@@ -12,14 +12,15 @@ import 'package:fwfh_svg/fwfh_svg.dart';
 import 'package:fwfh_webview/fwfh_webview.dart';
 import 'package:path/path.dart' as p;
 
-import '../../bloc/settings/settings_cubit.dart';
-import '../../core/component/router/app_router.dart';
-import '../../di/di.dart';
-import '../../feature/image_action/image_action.dart';
-import '../extension/extension.dart';
-import '../theme/theme.dart';
-import 'enhancement/progress_indicator.dart';
+import '../../../bloc/settings/settings_cubit.dart';
+import '../../../core/component/router/app_router.dart';
+import '../../../di/di.dart';
+import '../../../feature/image_action/image_action.dart';
+import '../../extension/extension.dart';
+import '../../theme/theme.dart';
+import '../enhancement/progress_indicator.dart';
 import 'lazy_code_block.dart';
+import 'lazy_webview_block.dart';
 
 class HtmlView extends StatelessWidget {
   const HtmlView({
@@ -344,18 +345,30 @@ abstract class CustomBuildOp {
         final attrs = meta.element.attributes;
         final sandboxAttrs = attrs['sanbox'] ?? attrs['sandbox'];
         final canShow = isWebViewEnabled && !isBanned;
-        final widget = switch (canShow) {
-          true => factory.buildWebView(
-            meta,
-            src,
-            height: tryParseDoubleFromMap(attrs, 'height'),
-            width: tryParseDoubleFromMap(attrs, 'width'),
-            sandbox: sandboxAttrs?.split(RegExp(r'\s+')),
-          ),
-          false => factory.buildWebViewLinkOnly(meta, src),
-        };
 
-        return widget ?? widgets;
+        // Если WebView отключен или источник забанен, показываем только ссылку
+        if (!canShow) {
+          return factory.buildWebViewLinkOnly(meta, src) ?? widgets;
+        }
+
+        // Используем LazyWebViewBlock для ленивой загрузки WebView
+        final widget = LazyWebViewBlock(
+          src: src,
+          buildWebView: () =>
+              factory.buildWebView(
+                meta,
+                src,
+                height: tryParseDoubleFromMap(attrs, 'height'),
+                width: tryParseDoubleFromMap(attrs, 'width'),
+                sandbox: sandboxAttrs?.split(RegExp(r'\s+')),
+              ) ??
+              const SizedBox.shrink(),
+          placeholder: () =>
+              factory.buildWebViewLinkOnly(meta, src) ??
+              const SizedBox.shrink(),
+        );
+
+        return widget;
       },
     );
   }

@@ -6,7 +6,7 @@ import '../../../../../bloc/user/user_cubit.dart';
 import '../../../../../data/model/user/user.dart';
 import '../../../../widget/detail/section_container_widget.dart';
 import '../../../../widget/enhancement/card.dart';
-import '../../../../widget/html_view_widget.dart';
+import '../../../../widget/html_view/html_view_widget.dart';
 
 class UserWhoisWidget extends StatelessWidget {
   const UserWhoisWidget({super.key});
@@ -61,19 +61,18 @@ class _BadgetsWidget extends StatelessWidget {
         thickness: 1,
         child: ListView(
           scrollDirection: Axis.horizontal,
-          children:
-              badgets
-                  .map(
-                    (badge) => Align(
-                      alignment: Alignment.topCenter,
-                      child: Tooltip(
-                        message: badge.description,
-                        triggerMode: TooltipTriggerMode.tap,
-                        child: FlabrCard(child: Text(badge.title)),
-                      ),
-                    ),
-                  )
-                  .toList(),
+          children: badgets
+              .map(
+                (badge) => Align(
+                  alignment: Alignment.topCenter,
+                  child: Tooltip(
+                    message: badge.description,
+                    triggerMode: TooltipTriggerMode.tap,
+                    child: FlabrCard(child: Text(badge.title)),
+                  ),
+                ),
+              )
+              .toList(),
         ),
       ),
     );

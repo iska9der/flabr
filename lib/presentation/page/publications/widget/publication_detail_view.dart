@@ -13,7 +13,7 @@ import '../../../../feature/publication_detail_ui/publication_detail_ui_cubit.da
 import '../../../extension/extension.dart';
 import '../../../theme/theme.dart';
 import '../../../widget/enhancement/progress_indicator.dart';
-import '../../../widget/html_view_widget.dart';
+import '../../../widget/html_view/html_view_widget.dart';
 import '../../../widget/publication_settings_widget.dart';
 import 'card/card.dart';
 import 'publication_more_button.dart';
