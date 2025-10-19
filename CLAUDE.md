@@ -220,7 +220,8 @@ Files requiring code generation have corresponding `.g.dart`, `.freezed.dart`, o
 ## Git Workflow
 
 - **Main branch**: `master`
-- Commit messages are in Russian (follow existing pattern)
+- Commit messages are in Russian and in lowercase (follow existing pattern)
+- Make commit only if explicitly requested by a user
 
 ## Common Tasks
 

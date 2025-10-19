@@ -26,6 +26,12 @@ const double _hPadding = 12.0;
 const double _vPadding = 6.0;
 const double _appbarPadding = 40.0;
 
+// TODO(new-detail):
+// 1. RepaintBoundary вокруг _PublicationContent для изоляции перерисовок
+// 2. Hysteresis в скролл-логике (задержка перед скрытием баров)
+// 3. Velocity-aware логика (быстрый скролл → скрываем быстрее)
+// 4. Accessibility improvements (Semantics для screen readers)
+
 class PublicationDetailView extends StatefulWidget {
   const PublicationDetailView({super.key});
 

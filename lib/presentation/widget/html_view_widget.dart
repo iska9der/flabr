@@ -19,6 +19,7 @@ import '../../feature/image_action/image_action.dart';
 import '../extension/extension.dart';
 import '../theme/theme.dart';
 import 'enhancement/progress_indicator.dart';
+import 'lazy_code_block.dart';
 
 class HtmlView extends StatelessWidget {
   const HtmlView({
@@ -46,119 +47,125 @@ class HtmlView extends StatelessWidget {
             (theme.textTheme.bodyMedium?.fontSize ?? 14) * fontScale;
         final isWebViewEnabled = publicationConfig.webViewEnabled;
 
-        return HtmlWidget(
-          textHtml,
-          renderMode: renderMode,
-          textStyle: textStyle,
-          rebuildTriggers: [
-            theme.brightness,
-            fontSize,
-            isImageVisible,
-            isWebViewEnabled,
-          ],
-          onErrorBuilder: (_, element, error) => Text('$element error: $error'),
-          onLoadingBuilder: (ctx, el, prgrs) => const CircleIndicator.medium(),
-          factoryBuilder:
-              () => CustomFactory(
-                context,
-                textStyle: textStyle,
-                fontScale: fontScale,
-              ),
-          customStylesBuilder: (element) {
-            if (element.localName == 'div' && element.parent == null) {
-              return {
-                'margin-left': '${padding.left}px',
-                'margin-right': '${padding.right}px',
-                'padding-bottom': '${padding.bottom}px',
-                'font-size': '${fontSize}px',
+        return HighlightBackgroundEnvironment(
+          child: HtmlWidget(
+            textHtml,
+            renderMode: renderMode,
+            textStyle: textStyle,
+            rebuildTriggers: [
+              theme.brightness,
+              fontSize,
+              isImageVisible,
+              isWebViewEnabled,
+            ],
+            onErrorBuilder: (_, element, error) =>
+                Text('$element error: $error'),
+            onLoadingBuilder: (ctx, el, prgrs) =>
+                const CircleIndicator.medium(),
+            factoryBuilder: () => CustomFactory(
+              context,
+              textStyle: textStyle,
+              fontScale: fontScale,
+            ),
+            customStylesBuilder: (element) {
+              if (element.localName == 'div' && element.parent == null) {
+                return {
+                  'margin-left': '${padding.left}px',
+                  'margin-right': '${padding.right}px',
+                  'padding-bottom': '${padding.bottom}px',
+                  'font-size': '${fontSize}px',
+                };
+              }
+
+              if (element.localName == 'code' &&
+                  element.parent?.localName != 'pre') {
+                return {
+                  'background-color': theme.colors.cardHighlight.toHex,
+                  'font-weight': '500',
+                };
+              }
+
+              final headerWeight = switch (element.localName) {
+                'h1' || 'h2' || 'h3' || 'h4' || 'h5' || 'h6' => '700',
+                _ => '',
               };
-            }
-
-            if (element.localName == 'code' &&
-                element.parent?.localName != 'pre') {
-              return {
-                'background-color': theme.colors.cardHighlight.toHex,
-                'font-weight': '500',
-              };
-            }
-
-            final headerWeight = switch (element.localName) {
-              'h1' || 'h2' || 'h3' || 'h4' || 'h5' || 'h6' => '700',
-              _ => '',
-            };
-            if (headerWeight.isNotEmpty) {
-              return {'font-family': 'Geologica', 'font-weight': headerWeight};
-            }
-
-            if (element.localName == 'li') {
-              return {'margin-bottom': '6px'};
-            }
-
-            return null;
-          },
-          customWidgetBuilder: (element) {
-            if (element.localName == 'img') {
-              /// Если пользователь не хочет видеть изображения - не показываем
-              if (!isImageVisible) {
-                return const SizedBox.shrink();
+              if (headerWeight.isNotEmpty) {
+                return {
+                  'font-family': 'Geologica',
+                  'font-weight': headerWeight,
+                };
               }
 
-              /// Люди верстают статьи по-разному, и иногда ужасно:
-              /// https://habr.com/ru/articles/599753/
-              /// почти все элементы находятся под одним родителем,
-              /// и поэтому, если мы уберем это условие, иконки подзаголовков
-              /// будут рендериться на отдельной строке, а по факту нужно инлайн.
-              /// Пусть библиотека сама разбирается с такими случаями.
-              if (element.parent != null &&
-                  element.parent!.children.length > 1 &&
-                  element.parent!.localName != 'figure' &&
-                  element.nextElementSibling?.localName != 'br') {
-                return null;
+              if (element.localName == 'li') {
+                return {'margin-bottom': '6px'};
               }
 
-              final imgSrc =
-                  element.attributes['data-src'] ??
-                  element.attributes['src'] ??
-                  '';
-              if (imgSrc.isEmpty) {
-                return null;
-              }
+              return null;
+            },
+            customWidgetBuilder: (element) {
+              if (element.localName == 'img') {
+                /// Если пользователь не хочет видеть изображения - не показываем
+                if (!isImageVisible) {
+                  return const SizedBox.shrink();
+                }
 
-              String imgExt = p.extension(imgSrc);
+                /// Люди верстают статьи по-разному, и иногда ужасно:
+                /// https://habr.com/ru/articles/599753/
+                /// почти все элементы находятся под одним родителем,
+                /// и поэтому, если мы уберем это условие, иконки подзаголовков
+                /// будут рендериться на отдельной строке, а по факту нужно инлайн.
+                /// Пусть библиотека сама разбирается с такими случаями.
+                if (element.parent != null &&
+                    element.parent!.children.length > 1 &&
+                    element.parent!.localName != 'figure' &&
+                    element.nextElementSibling?.localName != 'br') {
+                  return null;
+                }
 
-              /// svg обрабатывется с помощью `SvgFactory`
-              if (imgExt == '.svg') {
-                return null;
-              }
+                final imgSrc =
+                    element.attributes['data-src'] ??
+                    element.attributes['src'] ??
+                    '';
+                if (imgSrc.isEmpty) {
+                  return null;
+                }
 
-              Widget widget = NetworkImageWidget(
-                imageUrl: imgSrc,
-                height: AppDimensions.imageHeight,
-                isTapable: true,
-              );
+                String imgExt = p.extension(imgSrc);
 
-              final semanticLabel =
-                  element.attributes['alt'] ?? element.attributes['title'];
-              if (semanticLabel != null) {
-                widget = Semantics(
-                  label: semanticLabel,
-                  image: true,
-                  child: widget,
+                /// svg обрабатывется с помощью `SvgFactory`
+                if (imgExt == '.svg') {
+                  return null;
+                }
+
+                Widget widget = NetworkImageWidget(
+                  imageUrl: imgSrc,
+                  height: AppDimensions.imageHeight,
+                  isTapable: true,
                 );
+
+                final semanticLabel =
+                    element.attributes['alt'] ?? element.attributes['title'];
+                if (semanticLabel != null) {
+                  widget = Semantics(
+                    label: semanticLabel,
+                    image: true,
+                    child: widget,
+                  );
+                }
+
+                final tooltip = element.attributes['title'];
+                if (tooltip != null) {
+                  widget = Tooltip(message: tooltip, child: widget);
+                }
+
+                widget = Align(child: widget);
+
+                return widget;
               }
 
-              final tooltip = element.attributes['title'];
-              if (tooltip != null) {
-                widget = Tooltip(message: tooltip, child: widget);
-              }
-
-              widget = Align(child: widget);
-
-              return widget;
-            }
-
-            return null;
-          },
+              return null;
+            },
+          ),
         );
       },
     );
@@ -286,26 +293,25 @@ abstract class CustomBuildOp {
                 style: Theme.of(context).textTheme.titleSmall,
               ),
               content: Text(href),
-              actionsBuilder:
-                  (context) => [
-                    TextButton(
-                      onPressed: () {
-                        Clipboard.setData(ClipboardData(text: href));
+              actionsBuilder: (context) => [
+                TextButton(
+                  onPressed: () {
+                    Clipboard.setData(ClipboardData(text: href));
 
-                        context.showSnack(
-                          content: const Text('Скопировано в буфер обмена'),
-                        );
-                      },
-                      child: const Text('Копировать в буфер'),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                        go();
-                      },
-                      child: const Text('Перейти'),
-                    ),
-                  ],
+                    context.showSnack(
+                      content: const Text('Скопировано в буфер обмена'),
+                    );
+                  },
+                  child: const Text('Копировать в буфер'),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    go();
+                  },
+                  child: const Text('Перейти'),
+                ),
+              ],
             );
           },
         );
@@ -325,27 +331,29 @@ abstract class CustomBuildOp {
     /// список кривых iframe-источников
     List<String> banFrameSources = const [],
   }) {
-    final isWebViewEnabled =
-        context.read<SettingsCubit>().state.publication.webViewEnabled;
+    final isWebViewEnabled = context
+        .read<SettingsCubit>()
+        .state
+        .publication
+        .webViewEnabled;
 
     return BuildOp(
       onRenderBlock: (meta, widgets) {
         String src = attributes['data-src'] ?? attributes['src'] ?? '';
-        final isBanned = banFrameSources.any(
-          (element) => src.contains(element),
-        );
+        final isBanned = banFrameSources.any((b) => src.contains(b));
         final attrs = meta.element.attributes;
         final sandboxAttrs = attrs['sanbox'] ?? attrs['sandbox'];
-        final widget =
-            isWebViewEnabled && !isBanned
-                ? factory.buildWebView(
-                  meta,
-                  src,
-                  height: tryParseDoubleFromMap(attrs, 'height'),
-                  width: tryParseDoubleFromMap(attrs, 'width'),
-                  sandbox: sandboxAttrs?.split(RegExp(r'\s+')),
-                )
-                : factory.buildWebViewLinkOnly(meta, src);
+        final canShow = isWebViewEnabled && !isBanned;
+        final widget = switch (canShow) {
+          true => factory.buildWebView(
+            meta,
+            src,
+            height: tryParseDoubleFromMap(attrs, 'height'),
+            width: tryParseDoubleFromMap(attrs, 'width'),
+            sandbox: sandboxAttrs?.split(RegExp(r'\s+')),
+          ),
+          false => factory.buildWebViewLinkOnly(meta, src),
+        };
 
         return widget ?? widgets;
       },
@@ -361,7 +369,7 @@ abstract class CustomBuildOp {
     final String? lang = attributes['class'];
     final codeTextStyle = DefaultTextStyle.of(
       context,
-    ).style.copyWith(fontVariations: [const FontVariation.weight(300)]);
+    ).style.copyWith(fontFamily: 'monospace');
     EdgeInsets padding = const EdgeInsets.all(12);
 
     final codeTheme = switch (context.theme.brightness) {
@@ -379,65 +387,61 @@ abstract class CustomBuildOp {
           final maxRows = 5;
           final splittedText = text.split('\n');
           final isLong = splittedText.length > maxRows;
-          final previewText =
-              isLong ? splittedText.getRange(0, 5).join('\n') : text;
+          final previewText = isLong
+              ? splittedText.getRange(0, 5).join('\n')
+              : text;
           final tabSize = 4;
 
           padding = isLong ? padding.copyWith(bottom: 28) : padding;
 
-          VoidCallback? onTap =
-              !isLong
-                  ? null
-                  : () => context.buildModalRoute(
-                    rootNavigator: true,
-                    child: ConstrainedBox(
-                      constraints: BoxConstraints(
-                        minWidth: Device.getWidth(context),
-                      ),
-                      child: SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: HighlightView(
-                          text,
-                          language: lang,
-                          tabSize: tabSize,
-                          textStyle: codeTextStyle,
-                          theme: codeTheme,
-                          padding: padding,
-                        ),
+          VoidCallback? onTap = !isLong
+              ? null
+              : () => context.buildModalRoute(
+                  rootNavigator: true,
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      minWidth: Device.getWidth(context),
+                    ),
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: HighlightView(
+                        text,
+                        language: lang,
+                        tabSize: tabSize,
+                        textStyle: codeTextStyle,
+                        theme: codeTheme,
+                        padding: padding,
                       ),
                     ),
-                  );
+                  ),
+                );
 
-          return GestureDetector(
-            onTap: onTap,
-            child: Stack(
-              alignment: Alignment.bottomLeft,
-              children: [
-                ConstrainedBox(
-                  constraints: BoxConstraints(
-                    minWidth: Device.getWidth(context),
-                  ),
-                  child: HighlightBackgroundEnvironment(
-                    child: HighlightView(
-                      previewText,
-                      language: lang,
-                      tabSize: tabSize,
-                      textStyle: codeTextStyle,
-                      maxLines: maxRows,
-                      theme: codeTheme,
-                      padding: padding,
-                      onTap: onTap,
-                      progressIndicator: const CircleIndicator.small(),
-                    ),
-                  ),
+          return Stack(
+            alignment: Alignment.bottomLeft,
+            children: [
+              ConstrainedBox(
+                constraints: BoxConstraints(
+                  minWidth: Device.getWidth(context),
                 ),
-                if (isLong)
-                  const Padding(
+                child: LazyCodeBlock(
+                  text: previewText,
+                  language: lang,
+                  textStyle: codeTextStyle,
+                  maxRows: maxRows,
+                  theme: codeTheme,
+                  padding: padding,
+                  onTap: onTap,
+                ),
+              ),
+              if (isLong)
+                GestureDetector(
+                  onTap: onTap,
+                  child: const Padding(
                     padding: EdgeInsets.only(left: 12, bottom: 6),
                     child: Text('Показать полностью...'),
                   ),
-              ],
-            ),
+                ),
+            ],
           );
         }
 

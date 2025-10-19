@@ -68,6 +68,7 @@ dependencies:
   flutter_fancy_tree_view: ^1.6.0
   skeletonizer: ^2.1.0+1
   bloc_concurrency: ^0.3.0
+  visibility_detector: ^0.4.0+2
 
 dev_dependencies:
   analyzer: ^7.7.0
