@@ -47,12 +47,13 @@ class HtmlView extends StatelessWidget {
         final fontSize =
             (theme.textTheme.bodyMedium?.fontSize ?? 14) * fontScale;
         final isWebViewEnabled = publicationConfig.webViewEnabled;
+        final resultTextStyle = textStyle.copyWith(fontSize: fontSize);
 
         return HighlightBackgroundEnvironment(
           child: HtmlWidget(
             textHtml,
             renderMode: renderMode,
-            textStyle: textStyle,
+            textStyle: resultTextStyle,
             rebuildTriggers: [
               theme.brightness,
               fontSize,
@@ -63,11 +64,7 @@ class HtmlView extends StatelessWidget {
                 Text('$element error: $error'),
             onLoadingBuilder: (ctx, el, prgrs) =>
                 const CircleIndicator.medium(),
-            factoryBuilder: () => CustomFactory(
-              context,
-              textStyle: textStyle,
-              fontScale: fontScale,
-            ),
+            factoryBuilder: () => CustomFactory(context),
             customStylesBuilder: (element) {
               if (element.localName == 'div' && element.parent == null) {
                 return {
@@ -174,17 +171,17 @@ class HtmlView extends StatelessWidget {
 }
 
 class CustomFactory extends WidgetFactory with SvgFactory, WebViewFactory {
-  CustomFactory(this.context, {required this.textStyle, this.fontScale = 1.0});
+  CustomFactory(this.context);
 
   final BuildContext context;
-  final TextStyle textStyle;
-  final double fontScale;
 
   @override
   bool get webView => true;
 
   @override
   bool get webViewMediaPlaybackAlwaysAllow => true;
+
+  ThemeData get theme => context.theme;
 
   @override
   Widget? buildImageWidget(BuildTree meta, ImageSource src) {
@@ -197,7 +194,7 @@ class CustomFactory extends WidgetFactory with SvgFactory, WebViewFactory {
     /// обычно это математические символы/формулы
     widget = widget.copyWith(
       colorFilter: ColorFilter.mode(
-        Theme.of(context).textTheme.bodyMedium!.color!,
+        theme.textTheme.bodyMedium!.color!,
         BlendMode.srcIn,
       ),
     );
@@ -209,9 +206,6 @@ class CustomFactory extends WidgetFactory with SvgFactory, WebViewFactory {
   void parse(BuildTree meta) {
     final element = meta.element;
     final attributes = element.attributes;
-    final finalTextStyle = textStyle.copyWith(
-      fontSize: (textStyle.fontSize ?? 14) * fontScale,
-    );
 
     switch (element.localName) {
       case 'a':
@@ -243,7 +237,6 @@ class CustomFactory extends WidgetFactory with SvgFactory, WebViewFactory {
           context,
           attributes,
           text: element.text,
-          textStyle: finalTextStyle,
         );
 
         meta.register(op);
@@ -377,12 +370,16 @@ abstract class CustomBuildOp {
     BuildContext context,
     LinkedHashMap<Object, String> attributes, {
     required String text,
-    TextStyle? textStyle,
   }) {
     final String? lang = attributes['class'];
-    final codeTextStyle = DefaultTextStyle.of(
-      context,
-    ).style.copyWith(fontFamily: 'monospace');
+
+    final fontSize =
+        (context.theme.textTheme.bodyMedium?.fontSize ?? 14) *
+        context.read<SettingsCubit>().state.publication.fontScale;
+    final codeTextStyle = context.theme.textTheme.bodyMedium!.copyWith(
+      fontSize: fontSize,
+      fontFamily: HighlightView.defaultFontFamily,
+    );
     EdgeInsets padding = const EdgeInsets.all(12);
 
     final codeTheme = switch (context.theme.brightness) {
@@ -407,73 +404,73 @@ abstract class CustomBuildOp {
 
           padding = isLong ? padding.copyWith(bottom: 28) : padding;
 
-          VoidCallback? onTap = !isLong
-              ? null
-              : () => context.buildModalRoute(
-                  rootNavigator: true,
-                  child: ConstrainedBox(
-                    constraints: BoxConstraints(
-                      minWidth: Device.getWidth(context),
-                    ),
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: HighlightView(
-                        text,
-                        language: lang,
-                        tabSize: tabSize,
-                        textStyle: codeTextStyle,
-                        theme: codeTheme,
-                        padding: padding,
-                      ),
-                    ),
-                  ),
-                );
-
-          return Stack(
-            alignment: Alignment.bottomLeft,
-            children: [
-              ConstrainedBox(
-                constraints: BoxConstraints(
-                  minWidth: Device.getWidth(context),
-                ),
-                child: LazyCodeBlock(
-                  text: previewText,
-                  language: lang,
-                  textStyle: codeTextStyle,
-                  maxRows: maxRows,
-                  theme: codeTheme,
-                  padding: padding,
-                  onTap: onTap,
-                ),
-              ),
-              if (isLong)
-                GestureDetector(
-                  onTap: onTap,
-                  child: const Padding(
-                    padding: EdgeInsets.only(left: 12, bottom: 6),
-                    child: Text('Показать полностью...'),
-                  ),
-                ),
-            ],
-          );
-        }
-
-        return Stack(
-          children: [
-            ColoredBox(
-              color: bgColor,
+          VoidCallback? onTap = switch (isLong) {
+            false => null,
+            true => () => context.buildModalRoute(
+              rootNavigator: true,
               child: ConstrainedBox(
                 constraints: BoxConstraints(
                   minWidth: Device.getWidth(context),
                 ),
                 child: SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
-                  padding: const EdgeInsets.all(12),
-                  child: Text(text, style: codeTextStyle),
+                  child: HighlightView(
+                    text,
+                    language: lang,
+                    tabSize: tabSize,
+                    textStyle: codeTextStyle,
+                    theme: codeTheme,
+                    padding: padding,
+                  ),
                 ),
               ),
             ),
-          ],
+          };
+
+          return ColoredBox(
+            color: bgColor,
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                minWidth: Device.getWidth(context),
+              ),
+              child: Stack(
+                alignment: Alignment.bottomLeft,
+                children: [
+                  LazyCodeBlock(
+                    text: previewText,
+                    language: lang,
+                    textStyle: codeTextStyle,
+                    maxRows: maxRows,
+                    theme: codeTheme,
+                    padding: padding,
+                    onTap: onTap,
+                  ),
+                  if (isLong)
+                    GestureDetector(
+                      onTap: onTap,
+                      child: const Padding(
+                        padding: EdgeInsets.only(left: 12, bottom: 6),
+                        child: Text('Показать полностью...'),
+                      ),
+                    ),
+                ],
+              ),
+            ),
+          );
+        }
+
+        return ColoredBox(
+          color: bgColor,
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              minWidth: Device.getWidth(context),
+            ),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              padding: const EdgeInsets.all(12),
+              child: Text(text, style: codeTextStyle),
+            ),
+          ),
         );
       },
     );

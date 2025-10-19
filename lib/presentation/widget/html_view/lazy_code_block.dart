@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_highlight/flutter_highlight.dart';
-import 'package:flutter_highlight/themes/darcula.dart';
-import 'package:flutter_highlight/themes/github_gist.dart';
 
-import '../../extension/context.dart';
 import 'lazy_visibility_widget.dart';
 
 /// Ленивый рендеринг блока кода с подсветкой синтаксиса
@@ -19,6 +16,7 @@ class LazyCodeBlock extends StatefulWidget {
     required this.theme,
     required this.padding,
     required this.maxRows,
+    this.backgroundColor,
     this.onTap,
   });
 
@@ -28,6 +26,7 @@ class LazyCodeBlock extends StatefulWidget {
   final Map<String, TextStyle> theme;
   final EdgeInsets padding;
   final int maxRows;
+  final Color? backgroundColor;
   final VoidCallback? onTap;
 
   @override
@@ -43,7 +42,8 @@ class _LazyCodeBlockState extends State<LazyCodeBlock> {
     // Сбрасываем кэш если изменились ключевые параметры
     if (oldWidget.text != widget.text ||
         oldWidget.maxRows != widget.maxRows ||
-        oldWidget.padding != widget.padding) {
+        oldWidget.padding != widget.padding ||
+        oldWidget.textStyle != widget.textStyle) {
       _cachedPlaceholder = null;
     }
   }
@@ -70,26 +70,17 @@ class _LazyCodeBlockState extends State<LazyCodeBlock> {
 
   /// Получить или создать закэшированный placeholder
   Widget _getPlaceholder(BuildContext context) {
-    final currentBrightness = context.theme.brightness;
-
-    _cachedPlaceholder ??= _buildPlaceholder(currentBrightness);
+    _cachedPlaceholder ??= _buildPlaceholder();
 
     return _cachedPlaceholder!;
   }
 
   /// Обычный текст без подсветки (показывается до попадания в viewport)
-  Widget _buildPlaceholder(Brightness brightness) {
-    final codeTheme = switch (brightness) {
-      Brightness.dark => darculaTheme,
-      Brightness.light => githubGistTheme,
-    };
-    final bgColor =
-        codeTheme['root']?.backgroundColor ?? context.theme.colorScheme.surface;
-
+  Widget _buildPlaceholder() {
     final displayText = widget.text.split('\n').take(widget.maxRows).join('\n');
 
-    return ColoredBox(
-      color: bgColor,
+    return GestureDetector(
+      onTap: widget.onTap,
       child: Padding(
         padding: widget.padding,
         child: Text(
