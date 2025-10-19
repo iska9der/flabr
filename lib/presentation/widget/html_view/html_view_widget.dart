@@ -19,6 +19,7 @@ import '../../../feature/image_action/image_action.dart';
 import '../../extension/extension.dart';
 import '../../theme/theme.dart';
 import '../enhancement/progress_indicator.dart';
+import 'html_dimension_parser.dart';
 import 'lazy_code_block.dart';
 import 'lazy_webview_block.dart';
 
@@ -335,14 +336,22 @@ abstract class CustomBuildOp {
       onRenderBlock: (meta, widgets) {
         String src = attributes['data-src'] ?? attributes['src'] ?? '';
         final isBanned = banFrameSources.any((b) => src.contains(b));
-        final attrs = meta.element.attributes;
-        final sandboxAttrs = attrs['sanbox'] ?? attrs['sandbox'];
         final canShow = isWebViewEnabled && !isBanned;
 
         // Если WebView отключен или источник забанен, показываем только ссылку
         if (!canShow) {
           return factory.buildWebViewLinkOnly(meta, src) ?? widgets;
         }
+
+        // Извлекаем высоту с учетом CSS стилей и родительских элементов
+        // Ширина всегда 100% (на всю ширину экрана)
+        final element = meta.element;
+        final height = HtmlDimensionParser.extractHeight(
+          element,
+          defaultValue: 300,
+        );
+        final sandboxAttrs =
+            element.attributes['sandbox'] ?? element.attributes['sanbox'];
 
         // Используем LazyWebViewBlock для ленивой загрузки WebView
         final widget = LazyWebViewBlock(
@@ -351,8 +360,7 @@ abstract class CustomBuildOp {
               factory.buildWebView(
                 meta,
                 src,
-                height: tryParseDoubleFromMap(attrs, 'height'),
-                width: tryParseDoubleFromMap(attrs, 'width'),
+                height: height,
                 sandbox: sandboxAttrs?.split(RegExp(r'\s+')),
               ) ??
               const SizedBox.shrink(),
@@ -374,7 +382,7 @@ abstract class CustomBuildOp {
     final String? lang = attributes['class'];
 
     final fontSize =
-        (context.theme.textTheme.bodyMedium?.fontSize ?? 14) *
+        (context.theme.textTheme.bodySmall?.fontSize ?? 12) *
         context.read<SettingsCubit>().state.publication.fontScale;
     final codeTextStyle = context.theme.textTheme.bodyMedium!.copyWith(
       fontSize: fontSize,

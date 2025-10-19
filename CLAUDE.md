@@ -193,7 +193,7 @@ adb shell am start -a android.intent.action.VIEW -d "<URI>"
 
 ### Documentation Comments
 
-- Use triple-slash `///` for documentation comments (Dart convention)
+- **Important**: Use triple-slash `///` for documentation comments (Dart convention)
 - Write comments in Russian, but keep technical terms and service names (OAuth, GitHub, etc.) in their original language
 
 ### BLoC/Cubit Conventions

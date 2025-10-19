@@ -26,7 +26,7 @@ class LazyWebViewBlock extends StatelessWidget {
       // Сбрасываем состояние если URL изменился
       resetKey: src,
       placeholder: placeholder,
-      content: (onReady) => buildWebView(),
+      content: () => buildWebView(),
     );
   }
 }
