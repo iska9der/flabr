@@ -144,6 +144,7 @@ class _LazyVisibilityWidgetState extends State<LazyVisibilityWidget>
             opacity: isContentReady ? 1.0 : 0.0,
             duration: widget.animationDuration,
             child: _ContentWrapper(
+              resetKey: widget.resetKey,
               isReady: _isContentReady,
               child: widget.content(),
             ),
@@ -211,9 +212,13 @@ class _LazyVisibilityWidgetState extends State<LazyVisibilityWidget>
 /// не создаются в памяти до того момента, когда они действительно нужны.
 class _ContentWrapper extends StatefulWidget {
   const _ContentWrapper({
+    required this.resetKey,
     required this.isReady,
     required this.child,
   });
+
+  /// Ключ для отслеживания сброса состояния родителем
+  final Object? resetKey;
 
   /// Функция для проверки готовности [child] к отображению
   final ValueGetter<bool> isReady;
@@ -225,6 +230,9 @@ class _ContentWrapper extends StatefulWidget {
 }
 
 class _ContentWrapperState extends State<_ContentWrapper> {
+  /// Последний resetKey для отслеживания сброса состояния родителем
+  Object? _lastResetKey;
+
   /// Локальный флаг готовности - управляет что показывать в build()
   ///
   /// Это НЕ состояние готовности само по себе, а просто отражение
@@ -235,11 +243,20 @@ class _ContentWrapperState extends State<_ContentWrapper> {
   void didUpdateWidget(_ContentWrapper oldWidget) {
     super.didUpdateWidget(oldWidget);
 
+    /// Если родитель сбросил состояние (resetKey изменился),
+    /// сбрасываем _isReady и отслеживаем новый ключ.
+    /// Это предотвращает бесконечный цикл вызванный
+    /// setState в _isContentReady()
+    if (widget.resetKey != _lastResetKey && _isReady) {
+      setState(() => _isReady = false);
+      _lastResetKey = widget.resetKey;
+    }
+
+    // Только проверяем готовность если состояние не было сброшено
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted && !_isReady) {
         final isParentReady = widget.isReady();
 
-        // Если готов родитель - то и мы готовы!
         if (isParentReady) {
           setState(() => _isReady = true);
         }
