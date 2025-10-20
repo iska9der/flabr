@@ -66,7 +66,7 @@ class HighlightView extends StatefulWidget {
   // dart:io is not available at web platform currently
   // See: https://github.com/flutter/flutter/issues/39998
   // So we just use monospace here for now
-  static const _defaultFontFamily = 'monospace';
+  static const defaultFontFamily = 'monospace';
 
   @override
   State<HighlightView> createState() => _HighlightViewState();
@@ -195,7 +195,7 @@ class _HighlightViewState extends State<HighlightView> {
   @override
   Widget build(BuildContext context) {
     var textStyle = TextStyle(
-      fontFamily: HighlightView._defaultFontFamily,
+      fontFamily: HighlightView.defaultFontFamily,
       color: widget.theme[HighlightView._rootKey]?.color ??
           HighlightView._defaultFontColor,
     );

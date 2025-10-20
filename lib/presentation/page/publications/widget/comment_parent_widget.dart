@@ -5,7 +5,7 @@ import 'package:html/parser.dart';
 import '../../../../data/model/comment_base.dart';
 import '../../../extension/extension.dart';
 import '../../../theme/theme.dart';
-import '../../../widget/html_view_widget.dart';
+import '../../../widget/html_view/html_view_widget.dart';
 
 class CommentParent extends StatefulWidget {
   const CommentParent({super.key, required this.parent, this.onParentTapped});
@@ -93,11 +93,10 @@ class _CommentParentState extends State<CommentParent> {
                                             TextSpan(
                                               text: widget.parent.author.alias,
                                               style: textStyle.copyWith(
-                                                color:
-                                                    context
-                                                        .theme
-                                                        .colors
-                                                        .primary,
+                                                color: context
+                                                    .theme
+                                                    .colors
+                                                    .primary,
                                                 fontWeight: FontWeight.w500,
                                               ),
                                             ),
@@ -147,23 +146,22 @@ class _CommentParentState extends State<CommentParent> {
                   visualDensity: VisualDensity.compact,
                   icon: const Icon(Icons.remove_red_eye_sharp, size: 16),
                   tooltip: 'Показать полностью',
-                  onPressed:
-                      () => context.buildModalRoute(
-                        rootNavigator: true,
-                        child: Hero(
-                          tag: tag,
-                          child: DecoratedBox(
-                            decoration: BoxDecoration(
-                              borderRadius: AppStyles.cardBorderRadius,
-                              color: bgColor,
-                            ),
-                            child: SingleChildScrollView(
-                              padding: const EdgeInsets.all(16),
-                              child: parentHtml,
-                            ),
-                          ),
+                  onPressed: () => context.buildModalRoute(
+                    rootNavigator: true,
+                    child: Hero(
+                      tag: tag,
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(
+                          borderRadius: AppStyles.cardBorderRadius,
+                          color: bgColor,
+                        ),
+                        child: SingleChildScrollView(
+                          padding: const EdgeInsets.all(16),
+                          child: parentHtml,
                         ),
                       ),
+                    ),
+                  ),
                 ),
               ),
             ],

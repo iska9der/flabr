@@ -193,7 +193,7 @@ adb shell am start -a android.intent.action.VIEW -d "<URI>"
 
 ### Documentation Comments
 
-- Use triple-slash `///` for documentation comments (Dart convention)
+- **Important**: Use triple-slash `///` for documentation comments (Dart convention)
 - Write comments in Russian, but keep technical terms and service names (OAuth, GitHub, etc.) in their original language
 
 ### BLoC/Cubit Conventions
@@ -220,7 +220,8 @@ Files requiring code generation have corresponding `.g.dart`, `.freezed.dart`, o
 ## Git Workflow
 
 - **Main branch**: `master`
-- Commit messages are in Russian (follow existing pattern)
+- Commit messages are in Russian and in lowercase (follow existing pattern)
+- Make commit only if explicitly requested by a user
 
 ## Common Tasks
 

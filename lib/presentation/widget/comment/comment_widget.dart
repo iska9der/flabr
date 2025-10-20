@@ -3,7 +3,7 @@ import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart
 import 'package:intl/intl.dart';
 
 import '../../../data/model/comment_base.dart';
-import '../html_view_widget.dart';
+import '../html_view/html_view_widget.dart';
 import 'comment_rating_widget.dart';
 
 class CommentWidget extends StatelessWidget {
