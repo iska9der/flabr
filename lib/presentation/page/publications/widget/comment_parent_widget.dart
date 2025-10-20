@@ -85,7 +85,7 @@ class _CommentParentState extends State<CommentParent> {
                                       style: textStyle,
                                       children: [
                                         TextSpan(
-                                          text: 'сообщение от wew ew ',
+                                          text: 'сообщение от ',
                                           style: textStyle.copyWith(
                                             color: context.theme.colors.primary,
                                           ),
