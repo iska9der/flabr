@@ -346,24 +346,34 @@ abstract class CustomBuildOp {
         // Извлекаем высоту с учетом CSS стилей и родительских элементов
         // Ширина всегда 100% (на всю ширину экрана)
         final element = meta.element;
-        final height = HtmlDimensionParser.extractHeight(
-          element,
-          defaultValue: 300,
-        );
+        final width = Device.getWidth(context);
+        final height = HtmlDimensionParser.extractHeight(element);
+        final aspect = height != null ? width / height : 16 / 9;
         final sandboxAttrs =
             element.attributes['sandbox'] ?? element.attributes['sanbox'];
 
         // Используем LazyWebViewBlock для ленивой загрузки WebView
         final widget = LazyWebViewBlock(
           src: src,
-          buildWebView: () =>
-              factory.buildWebView(
-                meta,
-                src,
-                height: height,
-                sandbox: sandboxAttrs?.split(RegExp(r'\s+')),
-              ) ??
-              const SizedBox.shrink(),
+          buildWebView: () {
+            Widget? webView = factory.buildWebView(
+              meta,
+              src,
+              height: height,
+              sandbox: sandboxAttrs?.split(RegExp(r'\s+')),
+            );
+
+            if (webView != null) {
+              /// Залочиваем аспект соотношения чтобы при выходе из полноэкрана
+              /// (например, YouTube видео) высота WebView не расла бесконечно.
+              /// AspectRatio поддерживает стабильное соотношение сторон.
+              webView = AspectRatio(aspectRatio: aspect, child: webView);
+            } else {
+              webView = const SizedBox.shrink();
+            }
+
+            return webView;
+          },
           placeholder: () =>
               factory.buildWebViewLinkOnly(meta, src) ??
               const SizedBox.shrink(),
