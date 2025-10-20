@@ -102,6 +102,12 @@ class _LazyVisibilityWidgetState extends State<LazyVisibilityWidget>
   bool get wantKeepAlive => !isLoading;
 
   @override
+  void initState() {
+    super.initState();
+    _lastResetKey = widget.resetKey;
+  }
+
+  @override
   void dispose() {
     _loadTimer?.cancel();
     super.dispose();
@@ -238,6 +244,12 @@ class _ContentWrapperState extends State<_ContentWrapper> {
   /// Это НЕ состояние готовности само по себе, а просто отражение
   /// текущего результата функции `widget.isReady()`.
   bool _isReady = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _lastResetKey = widget.resetKey;
+  }
 
   @override
   void didUpdateWidget(_ContentWrapper oldWidget) {

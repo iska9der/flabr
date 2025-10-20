@@ -338,11 +338,6 @@ abstract class CustomBuildOp {
         final isBanned = banFrameSources.any((b) => src.contains(b));
         final canShow = isWebViewEnabled && !isBanned;
 
-        // Если WebView отключен или источник забанен, показываем только ссылку
-        if (!canShow) {
-          return factory.buildWebViewLinkOnly(meta, src) ?? widgets;
-        }
-
         // Извлекаем высоту с учетом CSS стилей и родительских элементов
         // Ширина всегда 100% (на всю ширину экрана)
         final element = meta.element;
@@ -352,31 +347,19 @@ abstract class CustomBuildOp {
         final sandboxAttrs =
             element.attributes['sandbox'] ?? element.attributes['sanbox'];
 
-        // Используем LazyWebViewBlock для ленивой загрузки WebView
         final widget = LazyWebViewBlock(
           src: src,
+          aspectRatio: aspect,
+          canShow: canShow,
           buildWebView: () {
-            Widget? webView = factory.buildWebView(
+            final webView = factory.buildWebView(
               meta,
               src,
-              height: height,
               sandbox: sandboxAttrs?.split(RegExp(r'\s+')),
             );
 
-            if (webView != null) {
-              /// Залочиваем аспект соотношения чтобы при выходе из полноэкрана
-              /// (например, YouTube видео) высота WebView не расла бесконечно.
-              /// AspectRatio поддерживает стабильное соотношение сторон.
-              webView = AspectRatio(aspectRatio: aspect, child: webView);
-            } else {
-              webView = const SizedBox.shrink();
-            }
-
-            return webView;
+            return webView ?? const SizedBox.shrink();
           },
-          placeholder: () =>
-              factory.buildWebViewLinkOnly(meta, src) ??
-              const SizedBox.shrink(),
         );
 
         return widget;

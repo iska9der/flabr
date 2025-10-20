@@ -51,7 +51,7 @@ class _LazyCodeBlockState extends State<LazyCodeBlock> {
   @override
   Widget build(BuildContext context) {
     return LazyVisibilityWidget(
-      uniqueKey: 'code-${widget.text.hashCode}',
+      uniqueKey: 'code-${widget.text}',
       // Сбрасываем загрузку при изменении критичных параметров
       resetKey: (widget.text, widget.maxRows, widget.padding, widget.textStyle),
       placeholder: () => _getPlaceholder(context),
