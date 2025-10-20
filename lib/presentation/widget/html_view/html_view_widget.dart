@@ -10,16 +10,15 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:fwfh_svg/fwfh_svg.dart';
 import 'package:fwfh_webview/fwfh_webview.dart';
-import 'package:path/path.dart' as p;
 
 import '../../../bloc/settings/settings_cubit.dart';
 import '../../../core/component/router/app_router.dart';
 import '../../../di/di.dart';
-import '../../../feature/image_action/image_action.dart';
 import '../../extension/extension.dart';
 import '../../theme/theme.dart';
 import '../enhancement/progress_indicator.dart';
-import 'html_dimension_parser.dart';
+import 'html_custom_builder.dart';
+import 'html_custom_parser.dart';
 import 'lazy_code_block.dart';
 import 'lazy_webview_block.dart';
 
@@ -41,7 +40,7 @@ class HtmlView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<SettingsCubit, SettingsState>(
       builder: (context, state) {
-        final theme = Theme.of(context);
+        final theme = context.theme;
         final publicationConfig = state.publication;
         final isImageVisible = publicationConfig.isImagesVisible;
         final fontScale = publicationConfig.fontScale;
@@ -66,104 +65,16 @@ class HtmlView extends StatelessWidget {
             onLoadingBuilder: (ctx, el, prgrs) =>
                 const CircleIndicator.medium(),
             factoryBuilder: () => CustomFactory(context),
-            customStylesBuilder: (element) {
-              if (element.localName == 'div' && element.parent == null) {
-                return {
-                  'margin-left': '${padding.left}px',
-                  'margin-right': '${padding.right}px',
-                  'padding-bottom': '${padding.bottom}px',
-                  'font-size': '${fontSize}px',
-                };
-              }
-
-              if (element.localName == 'code' &&
-                  element.parent?.localName != 'pre') {
-                return {
-                  'background-color': theme.colors.cardHighlight.toHex,
-                  'font-weight': '500',
-                };
-              }
-
-              final headerWeight = switch (element.localName) {
-                'h1' || 'h2' || 'h3' || 'h4' || 'h5' || 'h6' => '700',
-                _ => '',
-              };
-              if (headerWeight.isNotEmpty) {
-                return {
-                  'font-family': 'Geologica',
-                  'font-weight': headerWeight,
-                };
-              }
-
-              if (element.localName == 'li') {
-                return {'margin-bottom': '6px'};
-              }
-
-              return null;
-            },
-            customWidgetBuilder: (element) {
-              if (element.localName == 'img') {
-                /// Если пользователь не хочет видеть изображения - не показываем
-                if (!isImageVisible) {
-                  return const SizedBox.shrink();
-                }
-
-                /// Люди верстают статьи по-разному, и иногда ужасно:
-                /// https://habr.com/ru/articles/599753/
-                /// почти все элементы находятся под одним родителем,
-                /// и поэтому, если мы уберем это условие, иконки подзаголовков
-                /// будут рендериться на отдельной строке, а по факту нужно инлайн.
-                /// Пусть библиотека сама разбирается с такими случаями.
-                if (element.parent != null &&
-                    element.parent!.children.length > 1 &&
-                    element.parent!.localName != 'figure' &&
-                    element.nextElementSibling?.localName != 'br') {
-                  return null;
-                }
-
-                final imgSrc =
-                    element.attributes['data-src'] ??
-                    element.attributes['src'] ??
-                    '';
-                if (imgSrc.isEmpty) {
-                  return null;
-                }
-
-                String imgExt = p.extension(imgSrc);
-
-                /// svg обрабатывется с помощью `SvgFactory`
-                if (imgExt == '.svg') {
-                  return null;
-                }
-
-                Widget widget = NetworkImageWidget(
-                  imageUrl: imgSrc,
-                  height: AppDimensions.imageHeight,
-                  isTapable: true,
-                );
-
-                final semanticLabel =
-                    element.attributes['alt'] ?? element.attributes['title'];
-                if (semanticLabel != null) {
-                  widget = Semantics(
-                    label: semanticLabel,
-                    image: true,
-                    child: widget,
-                  );
-                }
-
-                final tooltip = element.attributes['title'];
-                if (tooltip != null) {
-                  widget = Tooltip(message: tooltip, child: widget);
-                }
-
-                widget = Align(child: widget);
-
-                return widget;
-              }
-
-              return null;
-            },
+            customStylesBuilder: (element) => HtmlCustomStyles.builder(
+              element,
+              theme,
+              padding,
+              fontSize,
+            ),
+            customWidgetBuilder: (element) => HtmlCustomWidget.builder(
+              element,
+              isImageVisible,
+            ),
           ),
         );
       },
@@ -184,12 +95,11 @@ class CustomFactory extends WidgetFactory with SvgFactory, WebViewFactory {
 
   ThemeData get theme => context.theme;
 
+  /// Переопределяем метод построения SVG изображения
   @override
   Widget? buildImageWidget(BuildTree meta, ImageSource src) {
     Widget? widget = super.buildImageWidget(meta, src);
-    if (widget is! SvgPicture) {
-      return widget;
-    }
+    if (widget is! SvgPicture) return widget;
 
     /// переопределяем цвета svg изображений в публикации -
     /// обычно это математические символы/формулы
@@ -211,35 +121,30 @@ class CustomFactory extends WidgetFactory with SvgFactory, WebViewFactory {
     switch (element.localName) {
       case 'a':
         final op = CustomBuildOp.buildLinkOp(context, attributes);
-
         meta.register(op);
         break;
       case 'div':
-        if (element.className.contains('tm-iframe_temp')) {
-          final op = CustomBuildOp.buildWebViewOp(
-            context,
-            this,
-            attributes,
-            banFrameSources: ['video.yandex.ru/iframe'],
-          );
+        if (!element.className.contains('tm-iframe_temp')) break;
 
-          meta.register(op);
-        }
+        final op = CustomBuildOp.buildWebViewOp(
+          context,
+          this,
+          attributes,
+          banFrameSources: ['video.yandex.ru/iframe'],
+        );
+        meta.register(op);
         break;
       case 'code':
 
         /// если родитель не "pre", то это инлайновый фрагмент кода
         /// добавляем стиль с помощью customStylesBuilder
-        if (element.parent?.localName != 'pre') {
-          break;
-        }
+        if (element.parent?.localName != 'pre') break;
 
         final op = CustomBuildOp.buildCodeOp(
           context,
           attributes,
           text: element.text,
         );
-
         meta.register(op);
         break;
     }
@@ -257,42 +162,36 @@ abstract class CustomBuildOp {
     return BuildOp.v2(
       onParsed: (tree) {
         final href = attributes['href'];
-        if (href == null) {
-          return tree;
-        }
+        if (href == null) return tree;
 
         /// anchor links обрабатываются самой библиотекой
-        if (href.startsWith('#')) {
-          return tree;
-        }
+        if (href.startsWith('#')) return tree;
 
         /// проверяем необходимость открытия модалки
         /// для того чтобы показать полную ссылку на ресурс
         ///
         /// если текст не совпадает со ссылкой - показываем
         final isNeedPopup = tree.element.text != href;
-        Future<void> go() =>
-            getIt<AppRouter>().navigateOrLaunchUrl(Uri.parse(href));
+        Future<void> go() => getIt<AppRouter>().navigateOrLaunchUrl(
+          Uri.parse(href),
+        );
 
         final widget = GestureDetector(
           child: tree.build(),
           onTap: () async {
-            if (!isNeedPopup) {
-              return go();
-            }
+            if (!isNeedPopup) return go();
 
             context.showAlert(
               compact: true,
               title: Text(
                 tree.element.text,
-                style: Theme.of(context).textTheme.titleSmall,
+                style: context.theme.textTheme.titleSmall,
               ),
               content: Text(href),
               actionsBuilder: (context) => [
                 TextButton(
                   onPressed: () {
                     Clipboard.setData(ClipboardData(text: href));
-
                     context.showSnack(
                       content: const Text('Скопировано в буфер обмена'),
                     );
@@ -312,8 +211,12 @@ abstract class CustomBuildOp {
         );
 
         final parent = tree.parent;
-        return parent.sub()
-          ..prepend(WidgetBit.inline(parent, WidgetPlaceholder(child: widget)));
+        return parent.sub()..prepend(
+          WidgetBit.inline(
+            parent,
+            WidgetPlaceholder(child: widget),
+          ),
+        );
       },
     );
   }
@@ -334,28 +237,27 @@ abstract class CustomBuildOp {
 
     return BuildOp(
       onRenderBlock: (meta, widgets) {
-        String src = attributes['data-src'] ?? attributes['src'] ?? '';
-        final isBanned = banFrameSources.any((b) => src.contains(b));
-        final canShow = isWebViewEnabled && !isBanned;
-
         // Извлекаем высоту с учетом CSS стилей и родительских элементов
         // Ширина всегда 100% (на всю ширину экрана)
         final element = meta.element;
+        final src = HtmlCustomParser.extractSource(element);
+        final isBanned = banFrameSources.any((b) => src.contains(b));
+        final canShow = isWebViewEnabled && !isBanned;
+
         final width = Device.getWidth(context);
-        final height = HtmlDimensionParser.extractHeight(element);
-        final aspect = height != null ? width / height : 16 / 9;
-        final sandboxAttrs =
-            element.attributes['sandbox'] ?? element.attributes['sanbox'];
+        final height = HtmlCustomParser.extractHeight(element);
+        final aspectRatio = height != null ? width / height : 16 / 9;
+        final sandbox = element.attributes['sandbox'];
 
         final widget = LazyWebViewBlock(
           src: src,
-          aspectRatio: aspect,
+          aspectRatio: aspectRatio,
           canShow: canShow,
           buildWebView: () {
             final webView = factory.buildWebView(
               meta,
               src,
-              sandbox: sandboxAttrs?.split(RegExp(r'\s+')),
+              sandbox: sandbox?.split(RegExp(r'\s+')),
             );
 
             return webView ?? const SizedBox.shrink();

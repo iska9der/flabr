@@ -1,8 +1,18 @@
 import 'package:html/dom.dart' as dom;
+import 'package:path/path.dart' as p;
 
-/// Утилита для извлечения размеров элементов из HTML/CSS с fallback стратегией
-class HtmlDimensionParser {
-  HtmlDimensionParser._();
+/// Утилита для HtmlWidget
+class HtmlCustomParser {
+  HtmlCustomParser._();
+
+  /// Извлечь источник изображения из атрибутов элемента
+  static String extractSource(dom.Element element) {
+    return element.attributes['data-src'] ?? element.attributes['src'] ?? '';
+  }
+
+  static bool checkSrcExtension(String src, String extension) {
+    return p.extension(src).toLowerCase() == '.$extension';
+  }
 
   /// Извлекает высоту элемента с fallback стратегией:
   /// 1. Атрибут height
