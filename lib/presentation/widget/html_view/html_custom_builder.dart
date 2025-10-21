@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:html/dom.dart' as dom;
 
-import '../../../feature/image_action/image_action.dart';
 import '../../extension/extension.dart';
-import '../../theme/theme.dart';
 import 'html_custom_parser.dart';
+import 'lazy_image_widget.dart';
 
 abstract class HtmlCustomWidget {
   static Widget? builder(dom.Element element, bool isImageVisible) {
@@ -28,27 +27,28 @@ abstract class HtmlCustomWidget {
     dom.Element element,
     bool isImageVisible,
   ) {
-    /// Если пользователь не хочет видеть изображения - не показываем
-    if (!isImageVisible) return const SizedBox.shrink();
+    final imgSrc = HtmlCustomParser.extractSource(element);
+    if (imgSrc.isEmpty) {
+      return null;
+    }
 
     /// Не обрабатываем иконки и символы которые должны быть инлайн
     final shouldSkipInlineImage = _shouldSkipInlineImage(element);
-    if (shouldSkipInlineImage) return null;
-
-    final imgSrc = HtmlCustomParser.extractSource(element);
-    if (imgSrc.isEmpty) return null;
+    if (shouldSkipInlineImage) {
+      return null;
+    }
 
     /// svg обрабатывается с помощью `SvgFactory`
     final isSvgImage = HtmlCustomParser.checkSrcExtension(imgSrc, 'svg');
-    if (isSvgImage) return null;
+    if (isSvgImage) {
+      return null;
+    }
 
-    return _wrapImageWithMetadata(
-      NetworkImageWidget(
-        imageUrl: imgSrc,
-        height: AppDimensions.imageHeight,
-        isTapable: true,
-      ),
-      element,
+    return LazyImageWidget(
+      imageUrl: imgSrc,
+      canShow: isImageVisible,
+      semanticLabel: HtmlCustomParser.extractImgLabel(element),
+      tooltip: HtmlCustomParser.extractImgTooltip(element),
     );
   }
 
@@ -65,36 +65,6 @@ abstract class HtmlCustomWidget {
         element.parent!.children.length > 1 &&
         element.parent!.localName != 'figure' &&
         element.nextElementSibling?.localName != 'br';
-  }
-
-  /// Обернуть изображение в семантику и подсказки
-  static Widget _wrapImageWithMetadata(
-    Widget imageWidget,
-    dom.Element element,
-  ) {
-    Widget result = imageWidget;
-
-    /// Добавить семантическую метку если доступна
-    final semanticLabel =
-        element.attributes['alt'] ?? element.attributes['title'];
-    if (semanticLabel != null) {
-      result = Semantics(
-        label: semanticLabel,
-        image: true,
-        child: result,
-      );
-    }
-
-    /// Добавить подсказку (tooltip) если доступна
-    final tooltip = element.attributes['title'];
-    if (tooltip != null) {
-      result = Tooltip(message: tooltip, child: result);
-    }
-
-    /// Выравнять изображение по центру
-    result = Align(child: result);
-
-    return result;
   }
 }
 

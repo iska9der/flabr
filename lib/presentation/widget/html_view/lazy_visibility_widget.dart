@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 /// Базовый виджет для ленивого рендеринга контента при попадании в viewport
@@ -75,8 +76,7 @@ class LazyVisibilityWidget extends StatefulWidget {
   State<LazyVisibilityWidget> createState() => _LazyVisibilityWidgetState();
 }
 
-class _LazyVisibilityWidgetState extends State<LazyVisibilityWidget>
-    with AutomaticKeepAliveClientMixin {
+class _LazyVisibilityWidgetState extends State<LazyVisibilityWidget> {
   /// Флаг загрузки контента (управляет началом рендеринга)
   ///
   /// `true` - контент еще не в области видимости
@@ -98,8 +98,10 @@ class _LazyVisibilityWidgetState extends State<LazyVisibilityWidget>
   /// контента (текст, максимум строк, размеры и т.д.)
   Object? _lastResetKey;
 
-  @override
-  bool get wantKeepAlive => !isLoading;
+  /// Текущий уровень видимости (0.0 - 1.0)
+  ///
+  /// Сохраняется для проверки что элемент все еще видим к моменту загрузки
+  double _currentVisibility = 0.0;
 
   @override
   void initState() {
@@ -135,26 +137,21 @@ class _LazyVisibilityWidgetState extends State<LazyVisibilityWidget>
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
-
     return VisibilityDetector(
       key: ValueKey('lazy-${widget.uniqueKey}'),
       onVisibilityChanged: _onVisibilityChanged,
       child: Stack(
         fit: StackFit.passthrough,
         children: [
-          // Placeholder всегда рендерится - это фиксирует размер Stack
-          // Предотвращает layout shift когда контент появляется поверх
+          /// Placeholder всегда рендерится - это фиксирует размер Stack
+          /// Предотвращает layout shift когда контент появляется поверх
           widget.placeholder(),
-          AnimatedOpacity(
-            opacity: isContentReady ? 1.0 : 0.0,
-            duration: widget.animationDuration,
-            child: _ContentWrapper(
-              resetKey: widget.resetKey,
-              isReady: _isContentReady,
+          if (!isLoading)
+            AnimatedOpacity(
+              opacity: isContentReady ? 1.0 : 0.0,
+              duration: widget.animationDuration,
               child: widget.content(),
             ),
-          ),
         ],
       ),
     );
@@ -170,116 +167,54 @@ class _LazyVisibilityWidgetState extends State<LazyVisibilityWidget>
   /// Это предотвращает загрузку контента для элементов которые пользователь быстро скроллит,
   /// экономя память, GPU и улучшая производительность при скролле списка.
   void _onVisibilityChanged(VisibilityInfo info) {
-    final isVisible = info.visibleFraction > widget.visibilityThreshold;
+    _currentVisibility = info.visibleFraction;
+    final isVisible = _currentVisibility > widget.visibilityThreshold;
 
-    if (isVisible && isLoading) {
+    /// Если уже загружен - игнорируем
+    if (!isLoading) {
+      return;
+    }
+
+    if (!isVisible) {
+      /// Элемент ушел из viewport - отменяем загрузку
       _loadTimer?.cancel();
-
-      // Загружаем контент через debounce delay
-      _loadTimer = Timer(widget.debounceDelay, () {
-        if (mounted && isLoading) {
-          setState(() => isLoading = false); // Контент начинает рендериться
-        }
-      });
-    } else if (!isVisible) {
-      // Отменяем загрузку если элемент ушел из видимости до истечения debounce
-      _loadTimer?.cancel();
+      return;
     }
+
+    /// Элемент видим - запускаем/перезапускаем таймер
+    _loadTimer?.cancel();
+    _loadTimer = Timer(widget.debounceDelay, _handleLoadContent);
   }
 
-  /// Две задачи:
-  /// - управление прозрачностью
-  /// - проверка на готовность виджета для отображения в [_ContentWrapper]
+  /// Обработчик загрузки контента после истечения debounce
   ///
-  /// [_ContentWrapper] вызывает эту функцию при каждом обновлении виджета
-  /// и переключается с SizedBox на реальный контент, если функция вернула `true`
-  bool _isContentReady() {
-    final isReady = mounted && !isLoading && !isContentReady;
-
-    if (isContentReady != isReady) {
-      setState(() => isContentReady = isReady);
-    }
-
-    return isReady;
-  }
-}
-
-/// Реактивная обертка для ленивого рендеринга контента
-///
-/// Это "умная" обертка, которая не управляет состоянием сама по себе,
-/// а реактивно следит за функцией `isReady()` из parent виджета.
-///
-/// При каждом обновлении `didUpdateWidget`:
-/// 1. Вызывает функцию `widget.isReady()` через addPostFrameCallback
-/// 2. Если функция вернула `true` → переключается на рендеринг реального контента
-/// 3. Если функция вернула `false` → показывает SizedBox (контент не создается)
-///
-/// Это гарантирует, что тяжелые виджеты (HighlightView, WebView и т.д.)
-/// не создаются в памяти до того момента, когда они действительно нужны.
-class _ContentWrapper extends StatefulWidget {
-  const _ContentWrapper({
-    required this.resetKey,
-    required this.isReady,
-    required this.child,
-  });
-
-  /// Ключ для отслеживания сброса состояния родителем
-  final Object? resetKey;
-
-  /// Функция для проверки готовности [child] к отображению
-  final ValueGetter<bool> isReady;
-
-  final Widget child;
-
-  @override
-  State<_ContentWrapper> createState() => _ContentWrapperState();
-}
-
-class _ContentWrapperState extends State<_ContentWrapper> {
-  /// Последний resetKey для отслеживания сброса состояния родителем
-  Object? _lastResetKey;
-
-  /// Локальный флаг готовности - управляет что показывать в build()
+  /// Выполняет финальные проверки перед началом рендеринга контента:
+  /// - Проверяет что виджет все еще mounted
+  /// - Проверяет что контент еще не загружен
+  /// - Проверяет что элемент все еще видим
   ///
-  /// Это НЕ состояние готовности само по себе, а просто отражение
-  /// текущего результата функции `widget.isReady()`.
-  bool _isReady = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _lastResetKey = widget.resetKey;
-  }
-
-  @override
-  void didUpdateWidget(_ContentWrapper oldWidget) {
-    super.didUpdateWidget(oldWidget);
-
-    /// Если родитель сбросил состояние (resetKey изменился),
-    /// сбрасываем _isReady и отслеживаем новый ключ.
-    /// Это предотвращает бесконечный цикл вызванный
-    /// setState в _isContentReady()
-    if (widget.resetKey != _lastResetKey && _isReady) {
-      setState(() => _isReady = false);
-      _lastResetKey = widget.resetKey;
+  /// Если все проверки пройдены, запускает двухфазную загрузку:
+  /// 1. `isLoading = false` - контент рендерится с opacity 0
+  /// 2. `isContentReady = true` - запускается анимация opacity 0→1
+  void _handleLoadContent() {
+    if (!mounted) {
+      return;
+    }
+    if (!isLoading) {
+      return;
+    }
+    if (_currentVisibility <= widget.visibilityThreshold) {
+      return;
     }
 
-    // Только проверяем готовность если состояние не было сброшено
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted && !_isReady) {
-        final isParentReady = widget.isReady();
+    /// Начинаем загрузку
+    setState(() => isLoading = false);
 
-        if (isParentReady) {
-          setState(() => _isReady = true);
-        }
+    /// Запускаем анимацию в следующем фрейме
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        setState(() => isContentReady = true);
       }
     });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    // Рендерим контент только когда isReady = true
-    // Когда false - показываем SizedBox, так что тяжелые виджеты не создаются
-    return _isReady ? widget.child : const SizedBox();
   }
 }

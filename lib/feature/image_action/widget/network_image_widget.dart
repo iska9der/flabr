@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
+import '../../../presentation/extension/context.dart';
 import '../../../presentation/theme/theme.dart';
 import 'full_image_widget.dart';
 
@@ -24,60 +25,55 @@ class NetworkImageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    int? cacheHeight =
-        height != null
-            ? (height! * MediaQuery.devicePixelRatioOf(context)).round()
-            : null;
+    int? cacheHeight = height != null
+        ? (height! * MediaQuery.devicePixelRatioOf(context)).round()
+        : null;
 
-    final barrierColor = Theme.of(
-      context,
-    ).colorScheme.surface.withValues(alpha: .9);
+    final barrierColor = context.theme.colorScheme.surface.withValues(
+      alpha: .9,
+    );
 
     return GestureDetector(
-      onTap:
-          isTapable
-              ? () => showDialog(
-                context: context,
-                barrierColor: barrierColor,
-                builder: (_) => FullImageNetworkModal(imageUrl: imageUrl),
-              )
-              : null,
-      child:
-          imageUrl.contains('.svg')
-              ? SvgPicture.network(imageUrl, height: height)
-              : SizedBox(
+      onTap: switch (isTapable) {
+        true => () => showDialog(
+          context: context,
+          barrierColor: barrierColor,
+          builder: (_) => FullImageNetworkModal(imageUrl: imageUrl),
+        ),
+        false => null,
+      },
+      child: switch (imageUrl.contains('.svg')) {
+        true => SvgPicture.network(imageUrl, height: height),
+        false => SizedBox(
+          height: height,
+          child: Image(
+            height: height,
+            errorBuilder: errorBuilder ?? (_, _, _) => const _ImageError(),
+            frameBuilder: (_, child, frame, wasSyncLoaded) {
+              final isLoading = frame == null && !wasSyncLoaded;
+              if (!isLoading) return child;
+
+              if (loadingPlaceholder != null) return loadingPlaceholder!;
+
+              return SizedBox(
                 height: height,
-                child: Image(
-                  height: height,
-                  errorBuilder:
-                      errorBuilder ?? (_, _, _) => const _ImageError(),
-                  frameBuilder: (
-                    context,
-                    child,
-                    frame,
-                    wasSynchronouslyLoaded,
-                  ) {
-                    final isLoading = frame == null && !wasSynchronouslyLoaded;
-                    if (!isLoading) {
-                      return child;
-                    }
-
-                    if (loadingPlaceholder != null) {
-                      return loadingPlaceholder!;
-                    }
-
-                    return Skeletonizer(
-                      enabled: isLoading,
-                      child: const ColoredBox(color: Colors.white),
-                    );
-                  },
-                  image: ResizeImage.resizeIfNeeded(
-                    null,
-                    cacheHeight,
-                    CachedNetworkImageProvider(imageUrl, cacheKey: imageUrl),
+                width: double.infinity,
+                child: Skeletonizer(
+                  enabled: isLoading,
+                  child: ColoredBox(
+                    color: context.theme.colorScheme.surfaceContainer,
                   ),
                 ),
-              ),
+              );
+            },
+            image: ResizeImage.resizeIfNeeded(
+              null,
+              cacheHeight,
+              CachedNetworkImageProvider(imageUrl, cacheKey: imageUrl),
+            ),
+          ),
+        ),
+      },
     );
   }
 }

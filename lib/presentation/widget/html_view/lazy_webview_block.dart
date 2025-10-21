@@ -11,8 +11,8 @@ import 'lazy_visibility_widget.dart';
 /// Показывает placeholder до попадания в viewport.
 /// После видимости инициализирует полноценный WebView.
 ///
-/// Если [canShow] == false (WebView отключен в настройках), показывает
-/// интерактивную карточку с кнопкой для временного включения WebView.
+/// Если [canShow] == false, показывает интерактивную карточку
+/// с кнопкой для временного включения WebView.
 class LazyWebViewBlock extends StatefulWidget {
   const LazyWebViewBlock({
     super.key,
@@ -41,14 +41,7 @@ class LazyWebViewBlock extends StatefulWidget {
 
 class _LazyWebViewBlockState extends State<LazyWebViewBlock> {
   /// Локальное состояние: пользователь явно включил WebView для этого элемента
-  /// По умолчанию == canShow (значение из настроек)
-  late bool _isEnabled;
-
-  @override
-  void initState() {
-    super.initState();
-    _isEnabled = widget.canShow;
-  }
+  late bool _isEnabled = widget.canShow;
 
   @override
   void didUpdateWidget(LazyWebViewBlock oldWidget) {

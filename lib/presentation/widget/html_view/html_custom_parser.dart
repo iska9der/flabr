@@ -14,6 +14,14 @@ class HtmlCustomParser {
     return p.extension(src).toLowerCase() == '.$extension';
   }
 
+  static String? extractImgLabel(dom.Element element) {
+    return element.attributes['alt'];
+  }
+
+  static String? extractImgTooltip(dom.Element element) {
+    return element.attributes['title'];
+  }
+
   /// Извлекает высоту элемента с fallback стратегией:
   /// 1. Атрибут height
   /// 2. CSS style height текущего элемента
