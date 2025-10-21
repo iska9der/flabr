@@ -9,9 +9,6 @@ environment:
   flutter: 3.35.6
   sdk: ^3.9.0
 
-workspace:
-  - packages/ya_summary
-
 dependencies:
   flutter:
     sdk: flutter
