@@ -22,6 +22,8 @@ dependencies:
     path: packages/ya_summary
   flutter_highlight:
     path: packages/flutter_highlight
+  quick_shortcuts:
+    path: packages/quick_shortcuts
 
   get_it: ^8.2.0
   injectable: ^2.5.2

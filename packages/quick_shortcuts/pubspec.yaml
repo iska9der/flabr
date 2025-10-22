@@ -1,0 +1,19 @@
+name: quick_shortcuts
+description: "Обертка для работы с ярлыками быстрого доступа (quick actions)"
+version: 0.0.1
+homepage:
+
+environment:
+  flutter: ">=3.22.0"
+  sdk: ">=3.5.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  quick_actions: 1.1.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
