@@ -2,6 +2,7 @@ name: quick_shortcuts
 description: "Обертка для работы с ярлыками быстрого доступа (quick actions)"
 version: 0.0.1
 homepage:
+resolution: workspace
 
 environment:
   flutter: ">=3.22.0"

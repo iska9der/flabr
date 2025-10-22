@@ -2,6 +2,7 @@ name: ya_summary
 description: "Пересказ статей с помощью YandexGPT"
 version: 0.0.1
 homepage:
+resolution: workspace
 
 environment:
   flutter: ">=3.22.0"
