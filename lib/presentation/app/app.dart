@@ -2,14 +2,13 @@ import 'package:device_preview/device_preview.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import '../theme/theme.dart';
-import '../widget/enhancement/progress_indicator.dart';
 import 'bootstrap/app_bootstrap.dart';
 import 'config/app_config.dart';
 import 'config/app_config_provider.dart';
 import 'coordinator/global_bloc_listener.dart';
 import 'provider/global_bloc_provider.dart';
 import 'view/application_view.dart';
+import 'view/splash_screen.dart';
 
 export 'config/app_config.dart';
 export 'view/application_view.dart';
@@ -44,11 +43,7 @@ class Application extends StatelessWidget {
         child: GlobalBlocListener(
           child: AppBootstrap(
             minimumDuration: appConfig.splashMinDuration,
-            splash: MaterialApp(
-              themeMode: ThemeMode.dark,
-              darkTheme: AppTheme.dark,
-              builder: (_, _) => const CircleIndicator(),
-            ),
+            splash: const SplashScreen(),
             child: const ApplicationView(),
           ),
         ),

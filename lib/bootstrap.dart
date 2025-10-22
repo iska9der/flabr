@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -10,6 +10,8 @@ import 'package:intl/intl.dart';
 import 'bloc/observer.dart';
 import 'core/constants/constants.dart';
 import 'di/di.dart';
+import 'presentation/constants/constants.dart';
+import 'presentation/helper/helper.dart';
 
 abstract class Bootstrap {
   static Future<void> init() async {
@@ -17,7 +19,9 @@ abstract class Bootstrap {
 
     await loadIntl();
 
-    loadLicense();
+    AssetHelper.loadLicense();
+
+    await AssetHelper.preloadAssets([const AssetImage(IconsAssets.logo)]);
 
     if (kDebugMode) {
       Bloc.observer = MyBlocObserver();
@@ -34,9 +38,4 @@ abstract class Bootstrap {
     Intl.defaultLocale = defaultLocale;
     await initializeDateFormatting(defaultLocale);
   }
-
-  static void loadLicense() => LicenseRegistry.addLicense(() async* {
-    final geologica = await rootBundle.loadString(LicenseAssets.fontGeologica);
-    yield LicenseEntryWithLineBreaks(['flabr'], geologica);
-  });
 }

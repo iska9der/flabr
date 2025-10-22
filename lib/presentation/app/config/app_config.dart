@@ -38,6 +38,6 @@ abstract class AppConfig with _$AppConfig {
 
   /// Конфигурация для production
   static const prod = AppConfig(
-    splashMinDuration: Duration(seconds: 2),
+    splashMinDuration: Duration(seconds: 3),
   );
 }
