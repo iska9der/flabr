@@ -1,7 +1,5 @@
 import 'dart:async';
 
-import 'package:device_preview/device_preview.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'bootstrap.dart';
@@ -14,13 +12,7 @@ void main() => runZonedGuarded(
 
     await Bootstrap.init();
 
-    runApp(
-      DevicePreview(
-        // ignore: avoid_redundant_argument_values
-        enabled: !kReleaseMode,
-        builder: (_) => const Application(),
-      ),
-    );
+    runApp(const Application());
   },
   (error, stack) {
     logger.error(error, stack);
