@@ -15,6 +15,6 @@ void main() => runZonedGuarded(
     runApp(const Application());
   },
   (error, stack) {
-    logger.error(error, stack);
+    logger.error('Ошибка', error, stack);
   },
 );

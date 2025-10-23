@@ -68,7 +68,7 @@ class HabraClient extends DioClient {
       final csrf = rawHtml.substring(indexOfFirstQuote, indexOfLastQuote);
       tokenRepository.setCsrf(csrf);
     } catch (e, stack) {
-      logger.error(e, stack);
+      logger.error('Не удалось обновить csrf', e, stack);
     } finally {
       _csrfCompleter?.complete();
       _csrfCompleter = null;

@@ -7,7 +7,11 @@ abstract interface class Logger {
 
   void warning(dynamic message, {String? title, StackTrace? stackTrace});
 
-  void error(Object exception, StackTrace? trace);
+  void error(
+    dynamic message,
+    Object exception,
+    StackTrace? trace,
+  );
 }
 
 class ConsoleLogger implements Logger {
@@ -32,7 +36,7 @@ class ConsoleLogger implements Logger {
   }
 
   @override
-  void error(Object exception, StackTrace? trace) {
+  void error(dynamic message, Object exception, StackTrace? trace) {
     dev.log(
       '${exception.toString()} >',
       name: 'ERROR',

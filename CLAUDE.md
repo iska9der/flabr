@@ -34,7 +34,7 @@ The project follows a clean architecture pattern with clear separation of concer
   - Features: image_action, most_reading, profile_subscribe, publication_download, publication_list, scaffold, scroll
 
 - **`lib/core/`** - Core utilities and infrastructure
-  - `component/` - Shared components (http, storage, router, logger)
+  - `component/` - Shared components (http, storage, router, logger, shortcuts)
   - `constants/` - App-wide constants
   - `helper/` - Utility functions
 
@@ -135,6 +135,7 @@ The `lib/presentation/app/` directory contains the application initialization an
   - Listens to `AuthCubit` state changes
   - On `AuthStatus.authorized`: triggers `ProfileBloc` to fetch user profile and updates
   - On `AuthStatus.unauthorized`: resets `ProfileBloc` state
+  - Initializes `ShortcutsManager` after changing `ProfileState` `UserMe` model
   - All cross-BLoC coordination should be added here
 
 **`app/view/`** - Core application views
@@ -151,6 +152,44 @@ Application
             └── AppBootstrap (manages initialization & splash)
                 └── ApplicationView (MaterialApp with routing)
 ```
+
+### Quick Shortcuts Component
+
+The `lib/core/component/shortcuts/` directory provides infrastructure for home screen quick actions (shortcuts).
+
+**`shortcuts/shortcuts_manager.dart`** - Singleton service managing quick actions
+- Registered in DI with `@singleton`
+- Depends on `AppRouter` for navigation and `UserMe` for user-specific shortcuts
+- `init(UserMe user)` - initializes shortcuts with current user context
+- Handles shortcut tap events and routes to appropriate screens via `_getRouteForAction()`
+- Filters user-specific shortcuts (bookmarks) for unauthorized users using `isUserSpecific` list
+- Error handling with logging through `logger` component
+
+**`shortcuts/shortcut_action.dart`** - Enum defining available shortcuts
+- `ShortcutAction.bookmarks` → `UserDashboardRoute` (requires authorization)
+- `ShortcutAction.articles` → `ArticlesFlowRoute`
+- `ShortcutAction.posts` → `PostsFlowRoute`
+- `ShortcutAction.news` → `NewsFlowRoute`
+- `ShortcutAction.search` → `SearchAnywhereRoute`
+- Pure value object - stores only metadata (id, title)
+- Type-safe ID parsing via `fromId(String id)` method
+
+**Integration:**
+- Initialized in `GlobalBlocListener` when `ProfileBloc.state.me` changes
+- Reactive: automatically updates shortcuts on login/logout via `listenWhen: (prev, curr) => prev.me != curr.me || curr.me.isEmpty`
+- Uses `quick_shortcuts` package (located in `packages/quick_shortcuts`)
+- Follows same pattern as other core components (router, logger, storage)
+
+**Architecture:**
+- Enum stores only metadata (follows value object pattern)
+- All navigation logic in `ShortcutsManager` (access to dependencies)
+- User context passed as parameter, not injected (clean dependency flow)
+
+**Why `core/component/`?**
+- Infrastructure service without UI or business logic
+- Singleton managing platform capabilities (like `AppRouter`)
+- Stateless service initialized at app level
+- Not a feature module (no Cubit/UI components)
 
 ## Development Commands
 

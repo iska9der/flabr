@@ -49,6 +49,7 @@ abstract class AssetHelper {
         completer.complete();
         stream.removeListener(listener);
         logger.error(
+          'Ошибка при предзагрузке картинки',
           exception,
           stackTrace,
         );
