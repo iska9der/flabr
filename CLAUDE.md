@@ -23,11 +23,11 @@ The project follows a clean architecture pattern with clear separation of concer
   - `exception/` - Custom exception definitions
 
 - **`lib/presentation/`** - Presentation layer
+  - `app/` - Application initialization and configuration (see detailed structure below)
   - `page/` - Screen implementations organized by feature
   - `widget/` - Reusable widgets
   - `theme/` - Theme configuration and styling
   - `extension/` - Dart/Flutter extensions
-  - `app.dart` - Main application widget
 
 - **`lib/feature/`** - Self-contained feature modules
   - Each feature contains its own cubit, widgets, and models
@@ -57,6 +57,7 @@ The project follows a clean architecture pattern with clear separation of concer
 6. **Workspace**: Monorepo structure with workspace packages in `packages/`:
    - `ya_summary` - YandexGPT integration for article summaries
    - `flutter_highlight` - Custom syntax highlighting
+   - `quick_shortcuts` - Wrapper for quick_actions library (home screen shortcuts)
 
 ### Authentication Flow
 
@@ -96,6 +97,60 @@ The `LoginWebView` widget uses `WebViewController` with `NavigationDelegate` to 
 
 **Important Notes:**
 - Cookies are saved to both `Urls.baseUrl` and `Urls.mobileBaseUrl` for API compatibility
+
+### Application Initialization Structure
+
+The `lib/presentation/app/` directory contains the application initialization and configuration system with the following structure:
+
+**`app/app.dart`** - Main entry point widget
+- `Application` class orchestrates the complete app widget hierarchy
+- Builds layers in strict order: DevicePreview → AppConfigProvider → GlobalBlocProvider → GlobalBlocListener → AppBootstrap → ApplicationView
+- Uses `AppConfig.dev` for debug mode, `AppConfig.prod` for release
+
+**`app/config/`** - Application configuration
+- `app_config.dart` - Centralized configuration using freezed
+  - `AppConfig.dev` - Development config (enables DevicePreview)
+  - `AppConfig.prod` - Production config (3 second splash screen)
+  - Properties: `enableDevicePreview`, `textScaleFactor`, `responsiveBreakpoints`, `maxWidth`, `splashMinDuration`
+- `app_config_provider.dart` - InheritedWidget для доступа к конфигурации через `AppConfigProvider.of(context)`
+
+**`app/bootstrap/`** - Application initialization management
+- `app_bootstrap.dart` - Controls app initialization and splash screen display
+  - Monitors critical BLoCs: `SettingsCubit`, `AuthCubit`
+  - Displays splash screen until all critical BLoCs complete initialization
+  - Enforces minimum splash duration if configured in `AppConfig`
+  - Shows error screen with retry button if initialization fails
+  - Hides splash when: (1) initialization complete AND (2) minimum duration passed
+
+**`app/provider/`** - Global BLoC providers
+- `global_bloc_provider.dart` - Creates all global app-level BLoCs
+  - `SettingsCubit` (lazy: false) - App settings, initialized immediately
+  - `AuthCubit` (lazy: false) - Authentication state, initialized immediately
+  - `SummaryAuthCubit` (lazy: false) - YandexGPT auth, initialized immediately
+  - `ProfileBloc` (lazy: false) - User profile
+  - `PublicationBookmarksBloc` (lazy: true) - Publication bookmarks, loaded on demand
+
+**`app/coordinator/`** - Inter-BLoC coordination logic
+- `global_bloc_listener.dart` - Centralizes coordination between global BLoCs
+  - Listens to `AuthCubit` state changes
+  - On `AuthStatus.authorized`: triggers `ProfileBloc` to fetch user profile and updates
+  - On `AuthStatus.unauthorized`: resets `ProfileBloc` state
+  - All cross-BLoC coordination should be added here
+
+**`app/view/`** - Core application views
+- `application_view.dart` - Main MaterialApp widget with routing and theming
+- `splash_screen.dart` - Splash screen displayed during initialization
+
+**Widget Hierarchy:**
+```
+Application
+├── DevicePreview (dev only)
+└── AppConfigProvider (provides AppConfig via InheritedWidget)
+    └── GlobalBlocProvider (creates all global BLoCs)
+        └── GlobalBlocListener (coordinates BLoC interactions)
+            └── AppBootstrap (manages initialization & splash)
+                └── ApplicationView (MaterialApp with routing)
+```
 
 ## Development Commands
 
