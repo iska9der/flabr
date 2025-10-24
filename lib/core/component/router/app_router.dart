@@ -203,6 +203,11 @@ class AppRouter extends RootStackRouter {
       ],
     ),
 
+    AutoRoute(
+      page: ProfileDashboardRoute.page,
+      path: ProfileDashboardPage.routePath,
+      children: _userChildren,
+    ),
     _userDashboard(isRoot: true),
     _companyDashboard(isRoot: true),
     _hubDashboard(isRoot: true),
@@ -219,28 +224,30 @@ class AppRouter extends RootStackRouter {
   ];
 }
 
+List<AutoRoute> get _userChildren => [
+  AutoRoute(
+    initial: true,
+    page: UserDetailRoute.page,
+    path: UserDetailPage.routePath,
+  ),
+  AutoRoute(
+    page: UserPublicationListRoute.page,
+    path: UserPublicationListPage.routePath,
+  ),
+  AutoRoute(
+    page: UserCommentListRoute.page,
+    path: UserCommentListPage.routePath,
+  ),
+  AutoRoute(
+    page: UserBookmarkListRoute.page,
+    path: UserBookmarkListPage.routePath,
+  ),
+];
+
 AutoRoute _userDashboard({bool isRoot = false}) => AutoRoute(
   page: UserDashboardRoute.page,
   path: "${isRoot == true ? '/' : ''}${UserDashboardPage.routePath}",
-  children: [
-    AutoRoute(
-      initial: true,
-      page: UserDetailRoute.page,
-      path: UserDetailPage.routePath,
-    ),
-    AutoRoute(
-      page: UserPublicationListRoute.page,
-      path: UserPublicationListPage.routePath,
-    ),
-    AutoRoute(
-      page: UserCommentListRoute.page,
-      path: UserCommentListPage.routePath,
-    ),
-    AutoRoute(
-      page: UserBookmarkListRoute.page,
-      path: UserBookmarkListPage.routePath,
-    ),
-  ],
+  children: _userChildren,
 );
 
 AutoRoute _hubDashboard({bool isRoot = false}) => AutoRoute(

@@ -1,17 +1,75 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../bloc/profile/profile_bloc.dart';
 import '../../../../bloc/user/user_cubit.dart';
 import '../../../../core/component/router/app_router.dart';
+import '../../../../data/model/loading_status_enum.dart';
 import '../../../../di/di.dart';
 import '../../../../feature/scaffold/scaffold.dart';
 import '../../../theme/theme.dart';
 import '../../../widget/dashboard_drawer_link_widget.dart';
+import '../../../widget/enhancement/enhancement.dart';
 import 'user_bookmark_list_page.dart';
 import 'user_comment_list_page.dart';
 import 'user_detail_page.dart';
 import 'user_publication_list_page.dart';
+
+/// Роут используется, когда нам нужно отобразить собственный профиль,
+/// но нам пока неизвестен alias пользователя.
+/// Поэтому для начала мы грузим информацию, и затем редиректим
+/// на [UserDashboardPage]
+@RoutePage()
+class ProfileDashboardPage extends StatelessWidget {
+  const ProfileDashboardPage({super.key});
+
+  static const String routePath = '/profile';
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: BlocBuilder<ProfileBloc, ProfileState>(
+        builder: (context, state) {
+          if (state.status == LoadingStatus.initial) {
+            context.read<ProfileBloc>().add(const ProfileEvent.fetchMe());
+          }
+
+          /// Успешно загрузились, пора редиректить
+          if (state.status == LoadingStatus.success && !state.me.isEmpty) {
+            /// Вытаскиваем путь, по которому мы его кидали
+            final newRoutes = context.router.current.pendingChildren
+                .map((e) => e.toPageRouteInfo())
+                .toList();
+
+            SchedulerBinding.instance.addPostFrameCallback(
+              (_) {
+                /// Закрываем этот экран и отдаем новый
+                context.router
+                  ..pop()
+                  ..push(
+                    UserDashboardRoute(
+                      alias: state.me.alias,
+                      children: newRoutes,
+                    ),
+                  );
+              },
+            );
+          }
+
+          if (state.status == LoadingStatus.failure) {
+            return const Center(
+              child: Text('Не удалось загрузить ваш профиль'),
+            );
+          }
+
+          return const CircleIndicator();
+        },
+      ),
+    );
+  }
+}
 
 @RoutePage()
 class UserDashboardPage extends StatelessWidget {

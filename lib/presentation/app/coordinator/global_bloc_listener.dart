@@ -39,13 +39,15 @@ class GlobalBlocListener extends StatelessWidget {
           },
         ),
 
-        /// Инициализируем и обновляем ярлыки быстрого доступа.
+        /// Задаем ярлыки быстрого доступа.
         /// Срабатывает при старте (current.me.isEmpty) и при изменении профиля.
         BlocListener<ProfileBloc, ProfileState>(
           listenWhen: (previous, current) =>
               previous.me != current.me || current.me.isEmpty,
           listener: (context, state) {
-            getIt<ShortcutsManager>().init(state.me);
+            getIt<ShortcutsManager>().createShortcuts(
+              isAuthorized: !state.me.isEmpty,
+            );
           },
         ),
       ],

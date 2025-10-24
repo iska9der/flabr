@@ -8,6 +8,7 @@ import '../../../bloc/profile/profile_bloc.dart';
 import '../../../bloc/publication/publication_counters_bloc.dart';
 import '../../../bloc/settings/settings_cubit.dart';
 import '../../../core/component/router/app_router.dart';
+import '../../../core/component/shortcuts/shortcuts_manager.dart';
 import '../../../data/model/publication/publication.dart';
 import '../../../data/model/user/user.dart';
 import '../../../di/di.dart';
@@ -53,10 +54,15 @@ class _PublicationDashboardViewState extends State<PublicationDashboardView> {
 
   @override
   void initState() {
-    visibleOnScroll =
-        context.read<SettingsCubit>().state.misc.navigationOnScrollVisible;
-
     super.initState();
+
+    visibleOnScroll = context
+        .read<SettingsCubit>()
+        .state
+        .misc
+        .navigationOnScrollVisible;
+
+    getIt<ShortcutsManager>().handleShortcuts();
   }
 
   @override
@@ -65,10 +71,9 @@ class _PublicationDashboardViewState extends State<PublicationDashboardView> {
       listeners: [
         /// Слушаем изменение настройки видимости панели навигации
         BlocListener<SettingsCubit, SettingsState>(
-          listenWhen:
-              (previous, current) =>
-                  previous.misc.navigationOnScrollVisible !=
-                  current.misc.navigationOnScrollVisible,
+          listenWhen: (previous, current) =>
+              previous.misc.navigationOnScrollVisible !=
+              current.misc.navigationOnScrollVisible,
           listener: (context, state) {
             visibleOnScroll = state.misc.navigationOnScrollVisible;
             if (visibleOnScroll) {
@@ -206,8 +211,8 @@ class _DashboardAppBar extends StatelessWidget {
               IconButton(
                 icon: const Icon(Icons.search_rounded),
                 tooltip: 'Поиск',
-                onPressed:
-                    () => getIt<AppRouter>().push(const SearchAnywhereRoute()),
+                onPressed: () =>
+                    getIt<AppRouter>().push(const SearchAnywhereRoute()),
               ),
               if (context.read<AuthCubit>().state.isAuthorized)
                 IconButton(

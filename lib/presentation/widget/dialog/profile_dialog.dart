@@ -16,18 +16,17 @@ Future showProfileDialog(
 }) async {
   return await showDialog(
     context: context,
-    builder:
-        (_) => Padding(
-          padding: EdgeInsets.only(
-            bottom: MediaQuery.viewInsetsOf(context).bottom,
-          ),
-          child: Align(
-            child: SizedBox(
-              width: Device.getWidth(context) * .7,
-              child: child,
-            ),
-          ),
+    builder: (_) => Padding(
+      padding: EdgeInsets.only(
+        bottom: MediaQuery.viewInsetsOf(context).bottom,
+      ),
+      child: Align(
+        child: SizedBox(
+          width: Device.getWidth(context) * .7,
+          child: child,
         ),
+      ),
+    ),
   );
 }
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:ya_summary/ya_summary.dart';
 
 import '../../../bloc/auth/auth_cubit.dart';
 import '../../../bloc/settings/settings_cubit.dart';
@@ -57,27 +58,32 @@ class _AppBootstrapState extends State<AppBootstrap> {
   void initState() {
     super.initState();
 
+    _initBlocs();
+
     if (widget.minimumDuration == null) {
       _minimumDurationPassed = true;
     } else {
       _minimumDurationPassed = false;
       _startMinimumDurationTimer();
     }
+
+    /// Убираем нативный экран загрузки
+    FlutterNativeSplash.remove();
   }
 
   void _startMinimumDurationTimer() {
     Future.delayed(widget.minimumDuration!, () {
-      if (mounted) {
-        setState(() {
-          _minimumDurationPassed = true;
-        });
+      if (!mounted) {
+        return;
       }
+      setState(() => _minimumDurationPassed = true);
     });
   }
 
-  void _retry(BuildContext context) {
+  void _initBlocs() {
     context.read<SettingsCubit>().init();
     context.read<AuthCubit>().init();
+    context.read<SummaryAuthCubit>().init();
   }
 
   @override
@@ -99,9 +105,9 @@ class _AppBootstrapState extends State<AppBootstrap> {
         /// Проверка на ошибки инициализации
         if (status.settingsError) {
           return switch (widget.errorBuilder) {
-            ErrorBuilder builder => builder(context, () => _retry(context)),
+            ErrorBuilder builder => builder(context, () => _initBlocs()),
             null => _DefaultErrorWidget(
-              onRetry: () => _retry(context),
+              onRetry: () => _initBlocs(),
             ),
           };
         }
@@ -111,14 +117,8 @@ class _AppBootstrapState extends State<AppBootstrap> {
             status.settingsReady && authStatus != AuthStatus.loading;
 
         /// Инициализация завершена
-        if (initializationComplete) {
-          /// Убираем нативный экран загрузки
-          FlutterNativeSplash.remove();
-
-          /// Прошло минимальное заданное время подгрузки
-          if (_minimumDurationPassed) {
-            return widget.child;
-          }
+        if (initializationComplete && _minimumDurationPassed) {
+          return widget.child;
         }
 
         /// Виджет загрузки приложения

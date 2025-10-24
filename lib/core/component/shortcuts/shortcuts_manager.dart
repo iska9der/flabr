@@ -1,8 +1,9 @@
+import 'dart:async';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:injectable/injectable.dart';
 import 'package:quick_shortcuts/quick_shortcuts.dart';
 
-import '../../../data/model/user/user_me_model.dart';
 import '../logger/logger.dart';
 import '../router/app_router.dart';
 import 'shortcut_action.dart';
@@ -20,26 +21,23 @@ class ShortcutsManager {
 
   final AppRouter _router;
   final QuickShortcuts _quickShortcuts = QuickShortcuts();
-
-  /// Текущий пользователь для формирования ярлыка закладок
-  UserMe _currentUser = UserMe.empty;
+  final String icon = 'ic_launcher';
 
   /// Инициализирует ярлыки быстрого доступа.
   ///
   /// Устанавливает обработчик нажатий и создает список доступных ярлыков.
   /// Если [user] не авторизован (isEmpty), ярлык закладок не отображается.
-  Future<void> init(UserMe user) async {
-    _currentUser = user;
-
+  Future<void> createShortcuts({bool isAuthorized = false}) async {
     try {
-      await _quickShortcuts.onStart(_handleShortcutTap);
-
-      final shortcuts = _getShortcuts();
+      final shortcuts = _getShortcuts(isAuthorized);
       await _quickShortcuts.setShortcuts(shortcuts);
     } catch (e, stackTrace) {
       logger.error('Не удалось инициализировать ярлыки', e, stackTrace);
     }
   }
+
+  /// Обработка нажатия на ярлык быстрого доступа
+  Future<void> handleShortcuts() => _quickShortcuts.onStart(_handleShortcutTap);
 
   /// Обрабатывает нажатие на ярлык.
   ///
@@ -52,34 +50,39 @@ class ShortcutsManager {
     }
 
     final route = _getRouteForAction(action);
-    _router.push(route);
+    _router.navigate(route);
   }
 
   /// Получить route для действия с учетом текущего пользователя
   PageRouteInfo _getRouteForAction(ShortcutAction action) {
     return switch (action) {
-      ShortcutAction.bookmarks => UserDashboardRoute(
-        alias: _currentUser.alias,
+      ShortcutAction.bookmarks => ProfileDashboardRoute(
         children: [UserBookmarkListRoute()],
       ),
-      ShortcutAction.articles => const ArticlesFlowRoute(),
-      ShortcutAction.news => const NewsFlowRoute(),
-      ShortcutAction.posts => const PostsFlowRoute(),
+      ShortcutAction.articles => const PublicationDashboardRoute(
+        children: [ArticlesFlowRoute()],
+      ),
+      ShortcutAction.news => const PublicationDashboardRoute(
+        children: [NewsFlowRoute()],
+      ),
+      ShortcutAction.posts => const PublicationDashboardRoute(
+        children: [PostsFlowRoute()],
+      ),
       ShortcutAction.search => const SearchAnywhereRoute(),
     };
   }
 
   /// Список доступных ярлыков приложения.
   /// Фильтрует закладки для неавторизованных пользователей.
-  List<Shortcut> _getShortcuts() {
+  List<Shortcut> _getShortcuts(bool isAuthorized) {
     final isUserSpecific = [ShortcutAction.bookmarks];
 
-    final actions = switch (_currentUser.isEmpty) {
-      true =>
+    final actions = switch (isAuthorized) {
+      true => ShortcutAction.values,
+      false =>
         ShortcutAction.values
             .where((action) => !isUserSpecific.any((a) => a == action))
             .toList(),
-      false => ShortcutAction.values,
     };
 
     return actions
@@ -87,7 +90,7 @@ class ShortcutsManager {
           (action) => Shortcut(
             id: action.id,
             title: action.title,
-            // icon: можно добавить в enum при необходимости
+            icon: icon,
           ),
         )
         .toList();

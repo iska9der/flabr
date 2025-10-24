@@ -34,19 +34,19 @@ class GlobalBlocProvider extends StatelessWidget {
           create: (_) => SettingsCubit(
             languageRepository: getIt(),
             storage: getIt(instanceName: 'sharedStorage'),
-          )..init(),
+          ),
         ),
 
         /// Авторизация
         BlocProvider(
           lazy: false,
-          create: (_) => AuthCubit(tokenRepository: getIt())..init(),
+          create: (_) => AuthCubit(tokenRepository: getIt()),
         ),
 
         /// Генерация коротких пересказов
         BlocProvider(
           lazy: false,
-          create: (_) => SummaryAuthCubit(tokenRepository: getIt())..init(),
+          create: (_) => SummaryAuthCubit(tokenRepository: getIt()),
         ),
 
         /// Профиль пользователя
