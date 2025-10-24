@@ -34,7 +34,10 @@ abstract class AppConfig with _$AppConfig {
   }) = _AppConfig;
 
   /// Конфигурация для разработки
-  static const dev = AppConfig(enableDevicePreview: true);
+  static const dev = AppConfig(
+    enableDevicePreview: true,
+    // splashMinDuration: Duration(seconds: 3),
+  );
 
   /// Конфигурация для production
   static const prod = AppConfig(

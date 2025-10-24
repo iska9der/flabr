@@ -21,7 +21,9 @@ abstract class Bootstrap {
 
     AssetHelper.loadLicense();
 
-    await AssetHelper.preloadAssets([const AssetImage(IconsAssets.logo)]);
+    await AssetHelper.preloadAssets([
+      const AssetImage(IconsAssets.logo),
+    ]);
 
     if (kDebugMode) {
       Bloc.observer = MyBlocObserver();

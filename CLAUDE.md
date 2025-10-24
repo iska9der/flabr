@@ -208,6 +208,22 @@ The `lib/core/component/shortcuts/` directory provides infrastructure for home s
 .fvm/flutter_sdk/bin/flutter pub run build_runner watch --delete-conflicting-outputs
 ```
 
+### Code Generation Utilities
+
+```bash
+# Show available commands
+sh scripts/runner.sh
+
+# Generate code (models, DI, routing)
+sh scripts/runner.sh --runner
+
+# Generate app icons
+sh scripts/runner.sh --icons
+
+# Generate splash screen
+sh scripts/runner.sh --splash
+```
+
 ### Environment Configuration
 
 Create `.env.prod` file based on `.env.example` before building:

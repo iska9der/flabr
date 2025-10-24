@@ -1,0 +1,15 @@
+flutter_native_splash:
+  image: assets/logo.png
+  color: "#385a9d"
+  image_dark: assets/logo.png
+  color_dark: "#385a9d"
+  fullscreen: true
+
+  #========================================================================
+  # what we did above won't affect Android 12 and newer at all. they have different
+  # handling concept. visit https://developer.android.com/guide/topics/ui/splash-screen
+  
+  #! ANDROID 12+ configuration:
+  android_12:
+    color: "#385a9d"
+    image: assets/logo.png

@@ -33,8 +33,8 @@ class _SplashScreenState extends State<SplashScreen>
     );
 
     _scaleAnimation = Tween<double>(
-      begin: 1,
-      end: 1.2,
+      begin: 1.0,
+      end: 0.90,
     ).animate(animation);
 
     // Запускаем бесконечную анимацию пульсации
@@ -62,8 +62,8 @@ class _SplashScreenState extends State<SplashScreen>
           },
           child: Image.asset(
             IconsAssets.logo,
-            width: 120,
-            height: 120,
+            width: 260,
+            height: 260,
           ),
         ),
       ),

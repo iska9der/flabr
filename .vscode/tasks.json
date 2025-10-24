@@ -21,7 +21,7 @@
       "type": "shell",
       "command": "bash",
       "args": [
-        "'./scripts/runner.sh'"
+        "'./scripts/runner.sh --runner'"
       ],
       "problemMatcher": [
         "$dart-build_runner"

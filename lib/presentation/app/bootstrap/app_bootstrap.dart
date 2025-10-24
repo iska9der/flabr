@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 import '../../../bloc/auth/auth_cubit.dart';
 import '../../../bloc/settings/settings_cubit.dart';
@@ -55,6 +56,8 @@ class _AppBootstrapState extends State<AppBootstrap> {
   @override
   void initState() {
     super.initState();
+
+    FlutterNativeSplash.remove();
 
     if (widget.minimumDuration == null) {
       _minimumDurationPassed = true;

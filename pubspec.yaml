@@ -74,6 +74,7 @@ dependencies:
   skeletonizer: ^2.1.0+1
   bloc_concurrency: ^0.3.0
   visibility_detector: ^0.4.0+2
+  flutter_native_splash: ^2.4.7
 
 dev_dependencies:
   analyzer: ^7.7.0
@@ -98,16 +99,3 @@ flutter:
       fonts:
         - asset: assets/fonts/Geologica/Geologica-VF.ttf
           weight: 700
-
-flutter_launcher_icons:
-  image_path: assets/logo.png
-  android: true
-  min_sdk_android: 19
-  adaptive_icon_background: "#385a9d"
-  adaptive_icon_foreground: assets/logo.png
-  ios: true
-  remove_alpha_ios: true
-  background_color_ios: "#385a9d"
-  web:
-    generate: true
-    image_path: "assets/logo.png"
