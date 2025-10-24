@@ -50,7 +50,7 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: IconsAssets.logoBackground,
+      color: IconsAssets.logoBackgroundColor,
       child: Center(
         child: AnimatedBuilder(
           animation: _scaleAnimation,
@@ -61,7 +61,7 @@ class _SplashScreenState extends State<SplashScreen>
             );
           },
           child: Image.asset(
-            IconsAssets.logo,
+            IconsAssets.logoWithBackground,
             width: 260,
             height: 260,
           ),

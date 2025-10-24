@@ -22,7 +22,7 @@ abstract class Bootstrap {
     AssetHelper.loadLicense();
 
     await AssetHelper.preloadAssets([
-      const AssetImage(IconsAssets.logo),
+      const AssetImage(IconsAssets.logoWithBackground),
     ]);
 
     if (kDebugMode) {
