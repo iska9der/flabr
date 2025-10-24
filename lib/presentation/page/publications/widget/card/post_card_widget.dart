@@ -29,23 +29,21 @@ class PostCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FlabrCard(
-      onTap:
-          () => getIt<AppRouter>().navigate(
-            PublicationFlowRoute(type: PublicationType.post.name, id: post.id),
-          ),
+      onTap: () => getIt<AppRouter>().navigate(
+        PublicationFlowRoute(type: PublicationType.post.name, id: post.id),
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.min,
-        spacing: 6,
+        spacing: 12,
         children: [
           if (showType) PublicationTypeWidget(type: post.type),
           PublicationHeaderWidget(post),
           PublicationStatsWidget(post),
           PublicationHubsWidget(hubs: post.hubs),
           BlocBuilder<SettingsCubit, SettingsState>(
-            buildWhen:
-                (previous, current) =>
-                    previous.feed.isImageVisible != current.feed.isImageVisible,
+            buildWhen: (previous, current) =>
+                previous.feed.isImageVisible != current.feed.isImageVisible,
             builder: (context, state) {
               return Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -64,12 +62,11 @@ class PostCardWidget extends StatelessWidget {
               Wrap(
                 spacing: 8,
                 runSpacing: 8,
-                children:
-                    post.tags.map((tag) {
-                      final style = Theme.of(context).textTheme.bodySmall;
+                children: post.tags.map((tag) {
+                  final style = Theme.of(context).textTheme.bodySmall;
 
-                      return Text(tag, style: style);
-                    }).toList(),
+                  return Text(tag, style: style);
+                }).toList(),
               ),
             ],
           ),

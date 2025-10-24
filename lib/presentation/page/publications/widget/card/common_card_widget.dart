@@ -47,7 +47,7 @@ class CommonCardWidget extends StatelessWidget {
             padding: const EdgeInsets.only(bottom: 8),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              spacing: 6,
+              spacing: 12,
               children: [
                 if (showType) PublicationTypeWidget(type: publication.type),
                 PublicationHeaderWidget(publication),

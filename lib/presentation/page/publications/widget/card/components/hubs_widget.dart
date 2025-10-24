@@ -15,10 +15,13 @@ class PublicationHubsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Wrap(
-      spacing: 4,
-      runSpacing: 6,
-      children: hubs.map((hub) => _PublicationHub(hub: hub)).toList(),
+    return Transform.translate(
+      offset: const Offset(-8, 0),
+      child: Wrap(
+        spacing: 2,
+        runSpacing: 4,
+        children: hubs.map((hub) => _PublicationHub(hub: hub)).toList(),
+      ),
     );
   }
 }
