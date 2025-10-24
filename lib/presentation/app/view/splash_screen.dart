@@ -17,6 +17,7 @@ class _SplashScreenState extends State<SplashScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _scaleAnimation;
+  double _scale = 1.0;
 
   @override
   void initState() {
@@ -27,14 +28,16 @@ class _SplashScreenState extends State<SplashScreen>
       vsync: this,
     );
 
+    _calculate();
+
     final animation = CurvedAnimation(
       parent: _controller,
       curve: Curves.easeInOut,
     );
 
     _scaleAnimation = Tween<double>(
-      begin: 1.0,
-      end: 0.90,
+      begin: _scale,
+      end: _scale * .90,
     ).animate(animation);
 
     // Запускаем бесконечную анимацию пульсации
@@ -47,23 +50,28 @@ class _SplashScreenState extends State<SplashScreen>
     super.dispose();
   }
 
+  void _calculate() {
+    _scale = .75;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: IconsAssets.logoBackgroundColor,
-      child: Center(
-        child: AnimatedBuilder(
-          animation: _scaleAnimation,
-          builder: (context, child) {
-            return Transform.scale(
-              scale: _scaleAnimation.value,
-              child: child,
-            );
-          },
-          child: Image.asset(
-            IconsAssets.logoWithBackground,
-            width: 260,
-            height: 260,
+    return MaterialApp(
+      builder: (_, _) => Scaffold(
+        backgroundColor: IconsAssets.logoBackgroundColor,
+        body: Center(
+          child: AnimatedBuilder(
+            animation: _scaleAnimation,
+            builder: (context, child) {
+              return Transform.scale(
+                scale: _scaleAnimation.value,
+                child: child,
+              );
+            },
+            child: Image.asset(
+              IconsAssets.logo,
+              fit: BoxFit.fitWidth,
+            ),
           ),
         ),
       ),

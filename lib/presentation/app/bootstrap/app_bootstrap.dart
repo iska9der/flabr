@@ -110,19 +110,15 @@ class _AppBootstrapState extends State<AppBootstrap> {
         final initializationComplete =
             status.settingsReady && authStatus != AuthStatus.loading;
 
-        if (initializationComplete) {}
-
-        /// Инициализация завершена и минимальное время подгрузки прошло:
-        /// показываем приложение
-        if (initializationComplete && _minimumDurationPassed) {
-          return widget.child;
-        }
-
-        /// Если инициализация настроек завершена, но не прошло
-        /// минимальное время подгрузки из конфигурации:
-        /// убираем нативный экран загрузки, чтобы показать виджет загрузки приложения.
+        /// Инициализация завершена
         if (initializationComplete) {
+          /// Убираем нативный экран загрузки
           FlutterNativeSplash.remove();
+
+          /// Прошло минимальное заданное время подгрузки
+          if (_minimumDurationPassed) {
+            return widget.child;
+          }
         }
 
         /// Виджет загрузки приложения
