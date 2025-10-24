@@ -23,24 +23,26 @@ class PostListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cubit = FlowPublicationListCubit(
-      repository: getIt(),
-      languageRepository: getIt(),
-      storage: getIt(instanceName: 'sharedStorage'),
-      section: Section.post,
-      flow: PublicationFlow.fromString(flow),
-    );
-
     return MultiBlocProvider(
       key: ValueKey('posts-$flow-flow'),
       providers: [
-        BlocProvider.value(value: cubit),
+        BlocProvider(
+          create: (_) => FlowPublicationListCubit(
+            repository: getIt(),
+            languageRepository: getIt(),
+            storage: getIt(instanceName: 'sharedStorage'),
+            section: Section.post,
+            flow: PublicationFlow.fromString(flow),
+          ),
+        ),
         BlocProvider(create: (_) => ScrollCubit()),
         BlocProvider(create: (_) => ScaffoldCubit()),
       ],
-      child: PublicationListScaffold(
-        bloc: cubit,
-        filter: const PublicationFiltersWidget(),
+      child: Builder(
+        builder: (context) => PublicationListScaffold(
+          bloc: context.read<FlowPublicationListCubit>(),
+          filter: const PublicationFiltersWidget(),
+        ),
       ),
     );
   }
