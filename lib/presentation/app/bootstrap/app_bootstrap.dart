@@ -57,8 +57,6 @@ class _AppBootstrapState extends State<AppBootstrap> {
   void initState() {
     super.initState();
 
-    FlutterNativeSplash.remove();
-
     if (widget.minimumDuration == null) {
       _minimumDurationPassed = true;
     } else {
@@ -112,13 +110,22 @@ class _AppBootstrapState extends State<AppBootstrap> {
         final initializationComplete =
             status.settingsReady && authStatus != AuthStatus.loading;
 
-        /// Скрываем splash только когда:
-        /// 1. Инициализация завершена
-        /// 2. Прошло минимальное время отображения
+        if (initializationComplete) {}
+
+        /// Инициализация завершена и минимальное время подгрузки прошло:
+        /// показываем приложение
         if (initializationComplete && _minimumDurationPassed) {
           return widget.child;
         }
 
+        /// Если инициализация настроек завершена, но не прошло
+        /// минимальное время подгрузки из конфигурации:
+        /// убираем нативный экран загрузки, чтобы показать виджет загрузки приложения.
+        if (initializationComplete) {
+          FlutterNativeSplash.remove();
+        }
+
+        /// Виджет загрузки приложения
         return widget.splash!;
       },
     );
