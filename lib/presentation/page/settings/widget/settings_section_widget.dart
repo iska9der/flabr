@@ -19,10 +19,10 @@ class SettingsSectionWidget extends StatelessWidget {
       children: [
         if (title != null)
           Padding(
-            padding: const EdgeInsets.only(top: 18, bottom: 10),
-            child: Text(title!, style: textTheme.headlineMedium),
+            padding: const EdgeInsets.only(top: 28, bottom: 4),
+            child: Text(title!, style: textTheme.headlineLarge),
           ),
-        Wrap(runSpacing: 14, children: children),
+        Wrap(runSpacing: 4, children: children),
       ],
     );
   }

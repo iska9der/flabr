@@ -44,6 +44,7 @@ abstract class AppColorsLight {
   static const Color deluge = Color.fromARGB(255, 102, 103, 163);
   static const Color scarlet = Color.fromARGB(255, 219, 0, 0);
   static const Color carnation = Color.fromARGB(255, 208, 78, 78);
+  static const Color shady = Color.fromARGB(255, 170, 170, 170);
 }
 
 abstract class AppColorsDark {
@@ -90,6 +91,7 @@ abstract class AppColorsDark {
   static const Color deluge = Color.fromARGB(255, 160, 161, 215);
   static const Color scarlet = Color.fromARGB(255, 244, 118, 118);
   static const Color carnation = Color.fromARGB(255, 255, 115, 115);
+  static const Color shady = Color.fromARGB(255, 170, 170, 170);
 }
 
 class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
@@ -116,6 +118,7 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
     required this.deluge,
     required this.scarlet,
     required this.carnation,
+    required this.shady,
   });
 
   final Color surface;
@@ -140,6 +143,7 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
   final Color deluge;
   final Color scarlet;
   final Color carnation;
+  final Color shady;
 
   @override
   ThemeExtension<AppColorsExtension> copyWith({
@@ -166,6 +170,7 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
     Color? deluge,
     Color? scarlet,
     Color? carnation,
+    Color? shady,
   }) {
     return AppColorsExtension(
       surface: surface ?? this.surface,
@@ -193,6 +198,7 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
       deluge: deluge ?? this.deluge,
       scarlet: scarlet ?? this.scarlet,
       carnation: carnation ?? this.carnation,
+      shady: shady ?? this.shady,
     );
   }
 
@@ -244,6 +250,7 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
       deluge: Color.lerp(deluge, other.deluge, t)!,
       scarlet: Color.lerp(scarlet, other.scarlet, t)!,
       carnation: Color.lerp(carnation, other.carnation, t)!,
+      shady: Color.lerp(shady, other.shady, t)!,
     );
   }
 }

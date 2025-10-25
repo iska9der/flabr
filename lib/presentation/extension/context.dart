@@ -25,7 +25,7 @@ extension ContextX on BuildContext {
       ..showSnackBar(snackbar);
   }
 
-  Future showAlert({
+  Future<T?> showAlert<T>({
     Text? title,
     required Widget content,
     required List<Widget>? Function(BuildContext context)? actionsBuilder,
@@ -42,7 +42,7 @@ extension ContextX on BuildContext {
       actionsPadding = const EdgeInsets.fromLTRB(0, 0, 12, 12);
     }
 
-    return await showDialog(
+    return await showDialog<T>(
       context: this,
       barrierDismissible: isDismissible,
       builder: (alertContext) {

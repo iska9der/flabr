@@ -29,6 +29,7 @@ class AccountTile extends StatelessWidget {
           enabled: state.status == LoadingStatus.loading,
           child: ListTile(
             tileColor: theme.colors.card,
+            contentPadding: const EdgeInsets.symmetric(horizontal: 12),
             title: Text(titleText),
             subtitle: Text(subtitleText),
             leading: switch (profile.isEmpty) {
@@ -43,11 +44,10 @@ class AccountTile extends StatelessWidget {
             },
             onTap: switch (profile.isEmpty) {
               true => () => showLoginDialog(context),
-              false =>
-                () => showProfileDialog(
-                  context,
-                  child: const MyProfileDialog(),
-                ),
+              false => () => showProfileDialog(
+                context,
+                child: const MyProfileDialog(),
+              ),
             },
           ),
         );

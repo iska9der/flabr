@@ -5,7 +5,7 @@
     ```bash
     flutter pub run build_runner build --delete-conflicting-outputs
     # или
-    sh scripts/runner.sh --runner
+    sh scripts/runner.sh --build
     ```
 
 ## Сборка

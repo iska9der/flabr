@@ -6,8 +6,9 @@ import '../../../../../core/component/router/app_router.dart';
 import '../../../../../data/model/publication/publication.dart';
 import '../../../../../data/model/render_type_enum.dart';
 import '../../../../../di/di.dart';
+import '../../../../extension/extension.dart';
 import '../../../../widget/enhancement/enhancement.dart';
-import '../stats/publication_stats_widget.dart';
+import '../stats/publication_stat_widget.dart';
 import 'card_html_widget.dart';
 import 'components/footer_widget.dart';
 import 'components/header_widget.dart';
@@ -28,6 +29,8 @@ class PostCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = context.theme.textTheme;
+
     return FlabrCard(
       onTap: () => getIt<AppRouter>().navigate(
         PublicationFlowRoute(type: PublicationType.post.name, id: post.id),
@@ -35,41 +38,61 @@ class PostCardWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.min,
-        spacing: 12,
         children: [
-          if (showType) PublicationTypeWidget(type: post.type),
-          PublicationHeaderWidget(post),
-          PublicationStatsWidget(post),
-          PublicationHubsWidget(hubs: post.hubs),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            spacing: 12,
+            children: [
+              if (showType) PublicationTypeWidget(type: post.type),
+              Row(
+                spacing: 12,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  PublicationHeaderWidget(post),
+                  PublicationStat(
+                    icon: Icons.remove_red_eye_rounded,
+                    text: post.statistics.readingCount.compact(),
+                  ),
+                ],
+              ),
+              PublicationHubsWidget(hubs: post.hubs),
+            ],
+          ),
+          const SizedBox(height: 16),
           BlocBuilder<SettingsCubit, SettingsState>(
             buildWhen: (previous, current) =>
                 previous.feed.isImageVisible != current.feed.isImageVisible,
             builder: (context, state) {
-              return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                child: CardHtmlWidget(
-                  textHtml: post.textHtml,
-                  rebuildTriggers: [state.feed],
-                  isImageVisible: state.feed.isImageVisible,
-                ),
+              return CardHtmlWidget(
+                textHtml: post.textHtml,
+                rebuildTriggers: [state.feed],
+                isImageVisible: state.feed.isImageVisible,
               );
             },
           ),
+          const SizedBox(height: 16),
           Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Text('Теги', style: Theme.of(context).textTheme.labelLarge),
               Wrap(
                 spacing: 8,
-                runSpacing: 8,
-                children: post.tags.map((tag) {
-                  final style = Theme.of(context).textTheme.bodySmall;
-
-                  return Text(tag, style: style);
-                }).toList(),
+                runSpacing: 6,
+                crossAxisAlignment: WrapCrossAlignment.end,
+                children: [
+                  Text(
+                    'Теги:',
+                    style: textTheme.bodyMedium!.copyWith(
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  ...post.tags.map(
+                    (tag) => Text(tag, style: textTheme.bodyMedium),
+                  ),
+                ],
               ),
             ],
           ),
+          const SizedBox(height: 8),
           PublicationFooterWidget(publication: post),
         ],
       ),

@@ -215,7 +215,7 @@ The `lib/core/component/shortcuts/` directory provides infrastructure for home s
 sh scripts/runner.sh
 
 # Generate code (models, DI, routing)
-sh scripts/runner.sh --runner
+sh scripts/runner.sh --build
 
 # Generate app icons
 sh scripts/runner.sh --icons

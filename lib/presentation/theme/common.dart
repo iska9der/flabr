@@ -71,11 +71,24 @@ final appElevatedButtonStyle = ElevatedButton.styleFrom(
 
 const appDrawerThemeData = DrawerThemeData(width: 200);
 
+final ListTileThemeData listTileThemeData = ListTileThemeData(
+  shape: const LinearBorder(),
+  visualDensity: VisualDensity.compact,
+  minVerticalPadding: 0,
+  contentPadding: AppInsets.tileContentPadding,
+  controlAffinity: !Device.isMobile ? ListTileControlAffinity.leading : null,
+);
+
 const appCheckboxThemeData = CheckboxThemeData(
+  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+  visualDensity: VisualDensity.compact,
   shape: RoundedRectangleBorder(borderRadius: AppStyles.checkboxBorderRadius),
 );
 
-const appSwitchThemeData = SwitchThemeData();
+const appSwitchThemeData = SwitchThemeData(
+  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+  padding: EdgeInsets.zero,
+);
 
 const appSliderThemeData = SliderThemeData(
   // ignore: deprecated_member_use
@@ -102,9 +115,4 @@ const bottomSheetThemeData = BottomSheetThemeData(showDragHandle: true);
 const proggressIndicatorThemeData = ProgressIndicatorThemeData(
   // ignore: deprecated_member_use
   year2023: false,
-);
-
-final ListTileThemeData listTileThemeData = ListTileThemeData(
-  shape: const LinearBorder(),
-  controlAffinity: !Device.isMobile ? ListTileControlAffinity.leading : null,
 );
