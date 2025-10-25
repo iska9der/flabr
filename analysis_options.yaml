@@ -20,6 +20,8 @@ linter:
     eol_at_end_of_file: true
     prefer_const_constructors: true
     always_declare_return_types: true
+    switch_on_type: true
+    unnecessary_unawaited: true
 
 analyzer:
   exclude:
