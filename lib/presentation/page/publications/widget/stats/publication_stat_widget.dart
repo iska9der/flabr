@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../../../../extension/context.dart';
+import '../../../../extension/theme.dart';
+
 class PublicationStat extends StatelessWidget {
   const PublicationStat({
     super.key,
@@ -14,7 +17,7 @@ class PublicationStat extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final actualColor = color ?? Colors.grey;
+    final actualColor = color ?? context.theme.colors.shady;
 
     return Row(
       mainAxisSize: MainAxisSize.min,
