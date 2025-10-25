@@ -498,9 +498,16 @@ class _SettingsButton extends StatelessWidget {
   void _showSettingsSheet(BuildContext context) {
     showModalBottomSheet(
       context: context,
-      builder: (context) => const SizedBox(
-        height: 240,
-        child: PublicationSettingsWidget(),
+      builder: (context) => Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 14.0,
+            ).copyWith(bottom: 18),
+            child: const PublicationSettingsWidget(),
+          ),
+        ],
       ),
     );
   }

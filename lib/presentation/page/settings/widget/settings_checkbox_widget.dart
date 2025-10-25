@@ -58,14 +58,12 @@ class _SettingsCheckboxWidgetState extends State<SettingsCheckboxWidget> {
       SettingsCheckboxType.checkboxTile => CheckboxListTile(
         title: widget.title,
         subtitle: widget.subtitle,
-        contentPadding: EdgeInsets.zero,
         value: isChecked,
         onChanged: onChanged,
       ),
       SettingsCheckboxType.switchTile => SwitchListTile(
         title: widget.title,
         subtitle: widget.subtitle,
-        contentPadding: EdgeInsets.zero,
         value: isChecked,
         onChanged: onChanged,
       ),

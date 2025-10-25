@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../extension/context.dart';
 import '../../../widget/enhancement/card.dart';
 
 class SettingsCardWidget extends StatelessWidget {
@@ -7,7 +8,7 @@ class SettingsCardWidget extends StatelessWidget {
     super.key,
     this.title,
     this.subtitle,
-    this.padding = const EdgeInsets.all(20),
+    this.padding = const EdgeInsets.all(12),
     required this.child,
   });
 
@@ -28,17 +29,16 @@ class SettingsCardWidget extends StatelessWidget {
           if (title != null)
             Text(
               title!,
-              style: Theme.of(context).textTheme.titleLarge,
+              style: context.theme.textTheme.titleLarge!.copyWith(
+                fontVariations: [const FontVariation.weight(400)],
+              ),
             ),
           if (subtitle != null)
             Text(
               subtitle!,
-              style: Theme.of(context).textTheme.bodySmall,
+              style: Theme.of(context).textTheme.bodyMedium,
             ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12.0),
-            child: child,
-          ),
+          child,
         ],
       ),
     );

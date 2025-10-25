@@ -67,7 +67,11 @@ class SettingsView extends StatelessWidget {
             ),
             const SettingsSectionWidget(
               title: 'Интерфейс',
-              children: [UIThemeWidget(), UILangWidget(), ArticlesLangWidget()],
+              children: [
+                UIThemeWidget(),
+                UILangWidget(),
+                ArticlesLangWidget(),
+              ],
             ),
             const SettingsSectionWidget(
               title: 'Лента',
@@ -80,10 +84,7 @@ class SettingsView extends StatelessWidget {
             const SettingsSectionWidget(
               title: 'Публикации',
               children: [
-                SettingsCardWidget(
-                  padding: EdgeInsets.symmetric(vertical: 20),
-                  child: PublicationSettingsWidget(),
-                ),
+                SettingsCardWidget(child: PublicationSettingsWidget()),
               ],
             ),
           ],
