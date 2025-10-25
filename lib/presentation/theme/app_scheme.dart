@@ -28,6 +28,7 @@ abstract class AppSchemeLight {
     deluge: AppColorsLight.deluge,
     scarlet: AppColorsLight.scarlet,
     carnation: AppColorsLight.carnation,
+    shady: AppColorsLight.shady,
   );
 
   static ColorScheme get scheme => ColorScheme.fromSeed(
@@ -88,6 +89,7 @@ class AppSchemeDark {
     deluge: AppColorsDark.deluge,
     scarlet: AppColorsDark.scarlet,
     carnation: AppColorsDark.carnation,
+    shady: AppColorsDark.shady,
   );
 
   static ColorScheme get scheme => ColorScheme.fromSeed(

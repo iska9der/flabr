@@ -8,9 +8,14 @@ import 'card_avatar_widget.dart';
 import 'dialog/dialog.dart';
 
 class UserTextButton extends StatelessWidget {
-  const UserTextButton(this.user, {super.key});
+  const UserTextButton(
+    this.user, {
+    super.key,
+    this.subtitle,
+  });
 
   final UserBase user;
+  final Widget? subtitle;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +39,14 @@ class UserTextButton extends StatelessWidget {
             height: AppDimensions.avatarPublicationHeight,
           ),
           const SizedBox(width: 8),
-          Text(user.alias),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(user.alias),
+              if (subtitle != null) subtitle!,
+            ],
+          ),
         ],
       ),
     );
