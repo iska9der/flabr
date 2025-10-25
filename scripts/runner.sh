@@ -4,18 +4,18 @@ show_help() {
   echo "Использование: sh scripts/runner.sh [ОПЦИЯ]"
   echo ""
   echo "Доступные опции:"
-  echo "  --runner    Запустить build_runner для генерации кода"
+  echo "  --build     Запустить build_runner для генерации кода"
   echo "  --icons     Сгенерировать иконки приложения"
   echo "  --splash    Сгенерировать splash screen"
   echo ""
   echo "Примеры:"
-  echo "  sh scripts/runner.sh --runner"
+  echo "  sh scripts/runner.sh --build"
   echo "  sh scripts/runner.sh --icons"
   echo "  sh scripts/runner.sh --splash"
 }
 
 case "$1" in
-  --runner)
+  --build)
     dart run build_runner build --delete-conflicting-outputs
     ;;
   --icons)

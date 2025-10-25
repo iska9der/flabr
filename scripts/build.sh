@@ -1,3 +1,5 @@
+#!/bin/sh
+
 FLABRVER=$(yq -r '.version' 'pubspec.yaml' | cut -d '+' -f 1)
 ENV="prod"
 SKIP_RUNNER=false
