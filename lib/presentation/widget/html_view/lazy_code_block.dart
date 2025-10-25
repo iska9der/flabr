@@ -44,14 +44,16 @@ class _LazyCodeBlockState extends State<LazyCodeBlock> {
         oldWidget.maxRows != widget.maxRows ||
         oldWidget.padding != widget.padding ||
         oldWidget.textStyle != widget.textStyle) {
-      _cachedPlaceholder = null;
+      _cachedPlaceholder = _getPlaceholder(context);
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final key = widget.text;
+
     return LazyVisibilityWidget(
-      uniqueKey: 'code-${widget.text}',
+      uniqueKey: 'code-$key',
       // Сбрасываем загрузку при изменении критичных параметров
       resetKey: (widget.text, widget.maxRows, widget.padding, widget.textStyle),
       placeholder: () => _getPlaceholder(context),

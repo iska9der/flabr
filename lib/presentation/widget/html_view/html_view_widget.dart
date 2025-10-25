@@ -1,5 +1,6 @@
 import 'dart:collection';
 
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -120,7 +121,7 @@ class CustomFactory extends WidgetFactory with SvgFactory, WebViewFactory {
 
     switch (element.localName) {
       case 'a':
-        final op = CustomBuildOp.buildLinkOp(context, attributes);
+        final op = CustomBuildOp.buildLinkOp(context, this, attributes);
         meta.register(op);
         break;
       case 'div':
@@ -154,12 +155,62 @@ class CustomFactory extends WidgetFactory with SvgFactory, WebViewFactory {
 }
 
 abstract class CustomBuildOp {
+  static Future<void> onTap(
+    BuildContext context, {
+    required String href,
+    required String text,
+  }) async {
+    Future<void> go() =>
+        getIt<AppRouter>().navigateOrLaunchUrl(Uri.parse(href));
+
+    /// Проверяем необходимость открытия модалки
+    /// для того чтобы показать полную ссылку на ресурс.
+    /// Если текст не совпадает со ссылкой - показываем
+    final isNeedPopup = text != href;
+    if (!isNeedPopup) {
+      return go();
+    }
+
+    return context.showAlert(
+      compact: true,
+      title: Text(
+        text,
+        maxLines: 1,
+        style: context.theme.textTheme.titleSmall?.copyWith(
+          overflow: TextOverflow.ellipsis,
+        ),
+      ),
+      content: SelectableText(href),
+      actionsBuilder: (context) => [
+        TextButton(
+          onPressed: () {
+            Clipboard.setData(ClipboardData(text: href));
+            context.showSnack(
+              content: const Text('Скопировано в буфер обмена'),
+            );
+          },
+          child: const Text('Копировать в буфер'),
+        ),
+        TextButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+            go();
+          },
+          child: const Text('Перейти'),
+        ),
+      ],
+    );
+  }
+
   static BuildOp buildLinkOp(
     BuildContext context,
+    WidgetFactory factory,
     Map<Object, String> attributes,
   ) {
-    /// TODO: перенести в customWidgetBuilder с использованием InlineCustomWidget
     return BuildOp.v2(
+      alwaysRenderBlock: false,
+      debugLabel: 'a-custom[href]',
+      priority: 9007199254740991,
       onParsed: (tree) {
         final href = attributes['href'];
         if (href == null) return tree;
@@ -167,56 +218,46 @@ abstract class CustomBuildOp {
         /// anchor links обрабатываются самой библиотекой
         if (href.startsWith('#')) return tree;
 
-        /// проверяем необходимость открытия модалки
-        /// для того чтобы показать полную ссылку на ресурс
-        ///
-        /// если текст не совпадает со ссылкой - показываем
-        final isNeedPopup = tree.element.text != href;
-        Future<void> go() => getIt<AppRouter>().navigateOrLaunchUrl(
-          Uri.parse(href),
-        );
+        final recognizer = factory.buildGestureRecognizer(
+          tree,
+          onTap: () => onTap(context, href: href, text: tree.element.text),
+        )!;
 
-        final widget = GestureDetector(
-          child: tree.build(),
-          onTap: () async {
-            if (!isNeedPopup) return go();
-
-            context.showAlert(
-              compact: true,
-              title: Text(
-                tree.element.text,
-                style: context.theme.textTheme.titleSmall,
-              ),
-              content: Text(href),
-              actionsBuilder: (context) => [
-                TextButton(
-                  onPressed: () {
-                    Clipboard.setData(ClipboardData(text: href));
-                    context.showSnack(
-                      content: const Text('Скопировано в буфер обмена'),
-                    );
-                  },
-                  child: const Text('Копировать в буфер'),
+        if (tree.isInline == true) {
+          for (final bit in tree.bits) {
+            if (bit is WidgetBit && bit.isInline == false) {
+              bit.child.wrapWith(
+                (_, child) => factory.buildGestureDetector(
+                  tree,
+                  child,
+                  recognizer,
                 ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                    go();
-                  },
-                  child: const Text('Перейти'),
-                ),
-              ],
-            );
-          },
-        );
+              );
+            }
+          }
+        }
 
-        final parent = tree.parent;
-        return parent.sub()..prepend(
-          WidgetBit.inline(
-            parent,
-            WidgetPlaceholder(child: widget),
-          ),
-        );
+        return tree
+          ..inherit(
+            (resolving, input) =>
+                resolving.copyWith<GestureRecognizer>(value: input),
+            recognizer,
+          )
+          ..setNonInherited<GestureRecognizer>(recognizer);
+      },
+      onRenderBlock: (tree, placeholder) {
+        final recognizer = tree.getNonInherited<GestureRecognizer>();
+        if (recognizer != null) {
+          placeholder.wrapWith((context, child) {
+            if (child == widget0) {
+              return null;
+            }
+
+            // for block A tag: wrap itself in a gesture detector
+            return factory.buildGestureDetector(tree, child, recognizer);
+          });
+        }
+        return placeholder;
       },
     );
   }

@@ -85,7 +85,7 @@ class _LazyImageWidgetState extends State<LazyImageWidget> {
 
     /// Изображения включены - показываем ленивый виджет
     return LazyVisibilityWidget(
-      uniqueKey: key.toString(),
+      uniqueKey: 'image-$key',
       resetKey: (_isEnabled, widget.imageUrl),
       debounceDelay: const Duration(milliseconds: 400),
       placeholder: () => SizedBox(
