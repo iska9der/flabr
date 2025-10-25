@@ -75,10 +75,12 @@ abstract class HtmlCustomStyles {
     EdgeInsets padding,
     double fontSize,
   ) {
-    if (element.localName == 'div' && element.parent == null) {
+    if (element.parentNode is dom.DocumentFragment ||
+        element.localName == 'div' && element.parent == null) {
       return {
         'margin-left': '${padding.left}px',
         'margin-right': '${padding.right}px',
+        'padding-top': '${padding.top}px',
         'padding-bottom': '${padding.bottom}px',
         'font-size': '${fontSize}px',
       };

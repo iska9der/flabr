@@ -43,27 +43,40 @@ class CommonCardWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          Padding(
-            padding: const EdgeInsets.only(bottom: 8),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              spacing: 12,
-              children: [
-                if (showType) PublicationTypeWidget(type: publication.type),
-                PublicationHeaderWidget(publication),
-                _ArticleTitleWidget(
-                  title: publication.titleHtml,
-                  renderType: renderType,
-                ),
-                PublicationStatsWidget(publication),
-                PublicationHubsWidget(hubs: publication.hubs),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            spacing: 12,
+            children: [
+              if (showType) PublicationTypeWidget(type: publication.type),
+              PublicationHeaderWidget(publication),
+              _ArticleTitleWidget(
+                title: publication.titleHtml,
+                renderType: renderType,
+              ),
+              PublicationStatsWidget(publication),
+              PublicationHubsWidget(hubs: publication.hubs),
+              if (publication.postLabels.isNotEmpty ||
+                  publication.format != null)
                 PublicationLabelList(
                   postLabels: publication.postLabels,
                   format: publication.format,
                 ),
-                const SizedBox(),
-              ],
-            ),
+            ],
+          ),
+
+          /// Расстояние между данными о публикации и previewHtml.
+          /// Если не нужно отображать ни картинку, ни текст, то надо расстояние
+          /// между элементами делать меньше, а то футер уходит слишком далеко
+          BlocBuilder<SettingsCubit, SettingsState>(
+            buildWhen: (previous, current) => previous.feed != current.feed,
+            builder: (context, state) {
+              if (!state.feed.isDescriptionVisible &&
+                  !state.feed.isImageVisible) {
+                return const SizedBox(height: 8);
+              }
+
+              return const SizedBox(height: 16);
+            },
           ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -89,20 +102,14 @@ class CommonCardWidget extends StatelessWidget {
                   },
                 ),
               BlocBuilder<SettingsCubit, SettingsState>(
-                buildWhen: (previous, current) =>
-                    previous.feed.isDescriptionVisible !=
-                        current.feed.isDescriptionVisible ||
-                    previous.feed.isImageVisible != current.feed.isImageVisible,
+                buildWhen: (previous, current) => previous.feed != current.feed,
                 builder: (context, state) {
-                  if (!state.feed.isDescriptionVisible) {
-                    return const SizedBox();
-                  }
-
                   return Padding(
-                    padding: const EdgeInsets.all(8),
+                    padding: const EdgeInsets.only(bottom: 8),
                     child: CardHtmlWidget(
                       textHtml: publication.leadData.textHtml,
                       rebuildTriggers: [state.feed],
+                      isTextVisible: state.feed.isDescriptionVisible,
                       isImageVisible: state.feed.isImageVisible,
                     ),
                   );

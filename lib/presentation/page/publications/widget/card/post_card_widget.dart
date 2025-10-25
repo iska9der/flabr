@@ -35,33 +35,37 @@ class PostCardWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.min,
-        spacing: 12,
         children: [
-          if (showType) PublicationTypeWidget(type: post.type),
-          PublicationHeaderWidget(post),
-          PublicationStatsWidget(post),
-          PublicationHubsWidget(hubs: post.hubs),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            spacing: 12,
+            children: [
+              if (showType) PublicationTypeWidget(type: post.type),
+              PublicationHeaderWidget(post),
+              PublicationStatsWidget(post),
+              PublicationHubsWidget(hubs: post.hubs),
+            ],
+          ),
+          const SizedBox(height: 16),
           BlocBuilder<SettingsCubit, SettingsState>(
             buildWhen: (previous, current) =>
                 previous.feed.isImageVisible != current.feed.isImageVisible,
             builder: (context, state) {
-              return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                child: CardHtmlWidget(
-                  textHtml: post.textHtml,
-                  rebuildTriggers: [state.feed],
-                  isImageVisible: state.feed.isImageVisible,
-                ),
+              return CardHtmlWidget(
+                textHtml: post.textHtml,
+                rebuildTriggers: [state.feed],
+                isImageVisible: state.feed.isImageVisible,
               );
             },
           ),
+          const SizedBox(height: 16),
           Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Text('Теги', style: Theme.of(context).textTheme.labelLarge),
               Wrap(
                 spacing: 8,
-                runSpacing: 8,
+                runSpacing: 6,
                 children: post.tags.map((tag) {
                   final style = Theme.of(context).textTheme.bodySmall;
 
@@ -70,6 +74,7 @@ class PostCardWidget extends StatelessWidget {
               ),
             ],
           ),
+          const SizedBox(height: 8),
           PublicationFooterWidget(publication: post),
         ],
       ),

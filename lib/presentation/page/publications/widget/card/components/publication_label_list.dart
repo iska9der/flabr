@@ -18,6 +18,10 @@ class PublicationLabelList extends StatelessWidget {
   Widget build(BuildContext context) {
     final postLabelColor = context.theme.colors.deluge;
 
+    if (format == null && postLabels.isEmpty) {
+      return const SizedBox.shrink();
+    }
+
     return Wrap(
       spacing: 6,
       runSpacing: 6,

@@ -370,19 +370,27 @@ class _PublicationContent extends StatelessWidget {
   }
 
   Widget _buildLabels() {
-    return switch (publication) {
-      PublicationCommon(:final postLabels, :final format) => _SliverPaddedBox(
-        padding: const EdgeInsets.symmetric(
-          vertical: _vPadding,
-          horizontal: _hPadding,
-        ),
-        child: PublicationLabelList(
-          postLabels: postLabels,
-          format: format,
-        ),
+    final empty = const SliverToBoxAdapter(child: SizedBox.shrink());
+
+    if (publication is! PublicationCommon) {
+      return empty;
+    }
+
+    final common = publication as PublicationCommon;
+    if (common.postLabels.isEmpty || common.format == null) {
+      return empty;
+    }
+
+    return _SliverPaddedBox(
+      padding: const EdgeInsets.symmetric(
+        vertical: _vPadding,
+        horizontal: _hPadding,
       ),
-      _ => const SliverToBoxAdapter(child: SizedBox.shrink()),
-    };
+      child: PublicationLabelList(
+        postLabels: common.postLabels,
+        format: common.format,
+      ),
+    );
   }
 
   Widget _buildLabelsData() {
