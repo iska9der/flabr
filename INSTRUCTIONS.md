@@ -1,16 +1,18 @@
 ## Конфигурация
 
 1. Создать файл `.env.prod` в корне проекта. Пример можно посмотреть в `.env.example`
-2. Сгенерировать код
-    ```bash
-    flutter pub run build_runner build --delete-conflicting-outputs
-    # или
-    sh scripts/runner.sh --build
-    ```
+2. Сгенерировать код:
+
+```bash
+flutter pub run build_runner build --delete-conflicting-outputs
+# или
+sh scripts/runner.sh --build
+```
 
 ## Сборка
 
 **apk**
+
 ```bash
 sh scripts/build.sh env=prod --no-runner
 
@@ -42,11 +44,13 @@ sh scripts/version.sh flutter=3.35.6
 ##### Тестирование deeplink через терминал
 
 Android
+
 ```bash
 adb shell am start -a android.intent.action.VIEW -d "<URI>"
 ```
 
 IOS
+
 ```bash
 /usr/bin/xcrun simctl openurl booted "<URI>"
 ```
