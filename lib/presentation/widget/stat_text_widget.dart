@@ -22,7 +22,7 @@ class StatTextWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = context.theme;
-    final AppColorsExtension colors = theme.colors;
+    final AppColors colors = theme.colors;
 
     TextStyle? statStyle = theme.textTheme.bodyLarge;
     statStyle = statStyle?.merge(style);

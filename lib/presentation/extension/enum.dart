@@ -12,26 +12,25 @@ extension StateStatusExtension on Enum {
 }
 
 extension StatTypeExtension on StatType {
-  Color? getColorByScore(num score, AppColorsExtension colors) =>
-      switch (score) {
-        >= 0 => _getPositiveColor(colors),
-        _ => _getNegaviteColor(colors),
-      };
+  Color? getColorByScore(num score, AppColors colors) => switch (score) {
+    >= 0 => _getPositiveColor(colors),
+    _ => _getNegaviteColor(colors),
+  };
 
-  Color? _getPositiveColor(AppColorsExtension colors) => switch (this) {
+  Color? _getPositiveColor(AppColors colors) => switch (this) {
     StatType.score => colors.highlight,
     StatType.rating => colors.mulberry,
     _ => null,
   };
 
-  Color? _getNegaviteColor(AppColorsExtension colors) => switch (this) {
+  Color? _getNegaviteColor(AppColors colors) => switch (this) {
     StatType.score => colors.carnation,
     _ => null,
   };
 }
 
 extension PublicationFormatExtension on PublicationFormat {
-  Color getColor(AppColorsExtension colors) => switch (this) {
+  Color getColor(AppColors colors) => switch (this) {
     PublicationFormat.example ||
     PublicationFormat.digest ||
     PublicationFormat.opinion ||

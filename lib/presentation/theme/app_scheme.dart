@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'app_colors.dart';
 
 abstract class AppSchemeLight {
-  static final AppColorsExtension colors = AppColorsExtension(
+  static final AppColors colors = AppColors(
     surface: AppColorsLight.surface,
     primary: AppColorsLight.primary,
     secondary: AppColorsLight.secondary,
@@ -66,7 +66,7 @@ abstract class AppSchemeLight {
 }
 
 class AppSchemeDark {
-  static final AppColorsExtension colors = AppColorsExtension(
+  static final AppColors colors = AppColors(
     surface: AppColorsDark.surface,
     primary: AppColorsDark.primary,
     secondary: AppColorsDark.secondary,

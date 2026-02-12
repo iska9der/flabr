@@ -17,7 +17,7 @@ abstract class AppTheme {
 
   static ThemeData createThemeData({
     required ColorScheme scheme,
-    required AppColorsExtension colors,
+    required AppColors colors,
   }) {
     var typography = Typography.material2021(colorScheme: scheme);
 

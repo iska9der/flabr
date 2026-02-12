@@ -1,4 +1,83 @@
 import 'package:flutter/material.dart';
+import 'package:theme_tailor_annotation/theme_tailor_annotation.dart';
+
+part 'app_colors.tailor.dart';
+
+@TailorMixin()
+class AppColors extends ThemeExtension<AppColors> with _$AppColorsTailorMixin {
+  AppColors({
+    required this.surface,
+    required this.primary,
+    required this.secondary,
+    required this.tertiary,
+    required this.error,
+    required this.disabled,
+    required this.card,
+    required this.cardHighlight,
+    required this.progressTrackColor,
+    required this.highlight,
+    required this.onHighlight,
+    required this.authorColor,
+    required this.publicationComplexityLow,
+    required this.publicationComplexityMedium,
+    required this.publicationComplexityHight,
+    required this.sorbus,
+    required this.portage,
+    required this.mulberry,
+    required this.apple,
+    required this.deluge,
+    required this.scarlet,
+    required this.carnation,
+    required this.shady,
+  });
+
+  @override
+  final Color surface;
+  @override
+  final Color primary;
+  @override
+  final Color secondary;
+  @override
+  final Color tertiary;
+  @override
+  final Color error;
+  @override
+  final Color disabled;
+  @override
+  final Color card;
+  @override
+  final Color cardHighlight;
+  @override
+  final Color progressTrackColor;
+  @override
+  final Color highlight;
+  @override
+  final Color onHighlight;
+  @override
+  final Color authorColor;
+  @override
+  final Color publicationComplexityLow;
+  @override
+  final Color publicationComplexityMedium;
+  @override
+  final Color publicationComplexityHight;
+  @override
+  final Color sorbus;
+  @override
+  final Color portage;
+  @override
+  final Color mulberry;
+  @override
+  final Color apple;
+  @override
+  final Color deluge;
+  @override
+  final Color scarlet;
+  @override
+  final Color carnation;
+  @override
+  final Color shady;
+}
 
 abstract class AppColorsLight {
   static const Color surface = Color.fromARGB(255, 240, 240, 240);
@@ -92,165 +171,4 @@ abstract class AppColorsDark {
   static const Color scarlet = Color.fromARGB(255, 244, 118, 118);
   static const Color carnation = Color.fromARGB(255, 255, 115, 115);
   static const Color shady = Color.fromARGB(255, 170, 170, 170);
-}
-
-class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
-  AppColorsExtension({
-    required this.surface,
-    required this.primary,
-    required this.secondary,
-    required this.tertiary,
-    required this.error,
-    required this.disabled,
-    required this.card,
-    required this.cardHighlight,
-    required this.progressTrackColor,
-    required this.highlight,
-    required this.onHighlight,
-    required this.authorColor,
-    required this.publicationComplexityLow,
-    required this.publicationComplexityMedium,
-    required this.publicationComplexityHight,
-    required this.sorbus,
-    required this.portage,
-    required this.mulberry,
-    required this.apple,
-    required this.deluge,
-    required this.scarlet,
-    required this.carnation,
-    required this.shady,
-  });
-
-  final Color surface;
-  final Color primary;
-  final Color secondary;
-  final Color tertiary;
-  final Color error;
-  final Color disabled;
-  final Color card;
-  final Color cardHighlight;
-  final Color progressTrackColor;
-  final Color highlight;
-  final Color onHighlight;
-  final Color authorColor;
-  final Color publicationComplexityLow;
-  final Color publicationComplexityMedium;
-  final Color publicationComplexityHight;
-  final Color sorbus;
-  final Color portage;
-  final Color mulberry;
-  final Color apple;
-  final Color deluge;
-  final Color scarlet;
-  final Color carnation;
-  final Color shady;
-
-  @override
-  ThemeExtension<AppColorsExtension> copyWith({
-    Color? surface,
-    Color? primary,
-    Color? secondary,
-    Color? tertiary,
-    Color? error,
-    Color? disabled,
-    Color? card,
-    Color? cardHighlight,
-    Color? progressTrackColor,
-    Color? highlight,
-    Color? onHighlight,
-    Color? authorColor,
-    Color? publicationTypePost,
-    Color? publicationComplexityLow,
-    Color? publicationComplexityMedium,
-    Color? publicationComplexityHight,
-    Color? sorbus,
-    Color? portage,
-    Color? mulberry,
-    Color? apple,
-    Color? deluge,
-    Color? scarlet,
-    Color? carnation,
-    Color? shady,
-  }) {
-    return AppColorsExtension(
-      surface: surface ?? this.surface,
-      primary: primary ?? this.primary,
-      secondary: secondary ?? this.secondary,
-      tertiary: tertiary ?? this.tertiary,
-      error: error ?? this.error,
-      disabled: disabled ?? this.disabled,
-      card: card ?? this.card,
-      cardHighlight: cardHighlight ?? this.cardHighlight,
-      progressTrackColor: progressTrackColor ?? this.progressTrackColor,
-      highlight: highlight ?? this.highlight,
-      onHighlight: onHighlight ?? this.onHighlight,
-      authorColor: authorColor ?? this.authorColor,
-      publicationComplexityLow:
-          publicationComplexityLow ?? this.publicationComplexityLow,
-      publicationComplexityMedium:
-          publicationComplexityMedium ?? this.publicationComplexityMedium,
-      publicationComplexityHight:
-          publicationComplexityHight ?? this.publicationComplexityHight,
-      sorbus: sorbus ?? this.sorbus,
-      portage: portage ?? this.portage,
-      mulberry: mulberry ?? this.mulberry,
-      apple: apple ?? this.apple,
-      deluge: deluge ?? this.deluge,
-      scarlet: scarlet ?? this.scarlet,
-      carnation: carnation ?? this.carnation,
-      shady: shady ?? this.shady,
-    );
-  }
-
-  @override
-  ThemeExtension<AppColorsExtension> lerp(
-    covariant ThemeExtension<AppColorsExtension>? other,
-    double t,
-  ) {
-    if (other is! AppColorsExtension) {
-      return this;
-    }
-
-    return AppColorsExtension(
-      surface: Color.lerp(surface, other.surface, t)!,
-      primary: Color.lerp(primary, other.primary, t)!,
-      secondary: Color.lerp(secondary, other.secondary, t)!,
-      tertiary: Color.lerp(tertiary, other.tertiary, t)!,
-      error: Color.lerp(error, other.error, t)!,
-      disabled: Color.lerp(disabled, other.disabled, t)!,
-      card: Color.lerp(card, other.card, t)!,
-      cardHighlight: Color.lerp(cardHighlight, other.cardHighlight, t)!,
-      progressTrackColor: Color.lerp(
-        progressTrackColor,
-        other.progressTrackColor,
-        t,
-      )!,
-      highlight: Color.lerp(highlight, other.highlight, t)!,
-      onHighlight: Color.lerp(onHighlight, other.onHighlight, t)!,
-      authorColor: Color.lerp(authorColor, other.authorColor, t)!,
-      publicationComplexityLow: Color.lerp(
-        publicationComplexityLow,
-        other.publicationComplexityLow,
-        t,
-      )!,
-      publicationComplexityMedium: Color.lerp(
-        publicationComplexityMedium,
-        other.publicationComplexityMedium,
-        t,
-      )!,
-      publicationComplexityHight: Color.lerp(
-        publicationComplexityHight,
-        other.publicationComplexityHight,
-        t,
-      )!,
-      sorbus: Color.lerp(sorbus, other.sorbus, t)!,
-      portage: Color.lerp(portage, other.portage, t)!,
-      mulberry: Color.lerp(mulberry, other.mulberry, t)!,
-      apple: Color.lerp(apple, other.apple, t)!,
-      deluge: Color.lerp(deluge, other.deluge, t)!,
-      scarlet: Color.lerp(scarlet, other.scarlet, t)!,
-      carnation: Color.lerp(carnation, other.carnation, t)!,
-      shady: Color.lerp(shady, other.shady, t)!,
-    );
-  }
 }
