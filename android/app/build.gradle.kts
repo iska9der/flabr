@@ -40,7 +40,7 @@ val abiCodes = mapOf(
 
 android {
     namespace = "ru.iska9der.flabr"
-    compileSdk = 35
+    compileSdk = 36
     ndkVersion = "27.0.12077973"
 
     compileOptions {
@@ -72,7 +72,7 @@ android {
         applicationId = "ru.iska9der.flabr"
         applicationIdSuffix = appIdSuffix
         minSdk = flutter.minSdkVersion.coerceAtLeast(21)
-        targetSdk = 35
+        targetSdk = 36
         versionCode = flutter.versionCode
         versionName = flutter.versionName
         resValue("string", "app_name", appName)
