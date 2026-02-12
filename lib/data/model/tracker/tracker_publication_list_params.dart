@@ -1,4 +1,4 @@
-import '../query_params_model.dart';
+part of 'tracker.dart';
 
 class TrackerPublicationListParams extends QueryParams {
   const TrackerPublicationListParams({

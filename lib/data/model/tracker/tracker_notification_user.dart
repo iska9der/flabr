@@ -1,9 +1,4 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
-
-import '../user_base.dart';
-
-part 'tracker_notification_user.freezed.dart';
-part 'tracker_notification_user.g.dart';
+part of 'tracker.dart';
 
 @freezed
 abstract class TrackerNotificationUser

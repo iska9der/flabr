@@ -1,9 +1,4 @@
-import 'dart:collection';
-
-import 'package:equatable/equatable.dart';
-
-import '../list_response_model.dart';
-import 'tracker_notification_model.dart';
+part of 'tracker.dart';
 
 class TrackerNotificationListResponse extends ListResponse<TrackerNotification>
     with EquatableMixin {

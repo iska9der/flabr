@@ -1,3 +1,5 @@
+part of 'tracker.dart';
+
 enum TrackerNotificationType {
   unknown,
   postAdd,
@@ -18,7 +20,7 @@ enum TrackerNotificationType {
     TrackerNotificationType.postAdd ||
     TrackerNotificationType.threadAdd => 'Опубликовал новую публикацию',
     TrackerNotificationType.postAddToFavorite ||
-    TrackerNotificationType
-        .threadAddToFavorite => 'Добавил в закладки новую публикацию',
+    TrackerNotificationType.threadAddToFavorite =>
+      'Добавил в закладки новую публикацию',
   };
 }
