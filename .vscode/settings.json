@@ -5,5 +5,5 @@
   "files.watcherExclude": {
     "**/.fvm": true
   },
-  "dart.flutterSdkPath": ".fvm/versions/3.35.6"
+  "dart.flutterSdkPath": ".fvm/versions/3.41.0"
 }
