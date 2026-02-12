@@ -25,7 +25,7 @@ class TrackerPublicationsMarkerBloc
     );
   }
 
-  final TrackerRepository repository;
+  final TrackerPublicationRepository repository;
 
   FutureOr<void> _mark(
     MarkEvent event,

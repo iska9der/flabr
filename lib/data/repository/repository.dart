@@ -9,5 +9,6 @@ export 'subscription_repository.dart';
 export 'summary_repository.dart';
 export 'summary_token_repository.dart';
 export 'token_repository.dart';
-export 'tracker_repository.dart';
+export 'tracker_notification_repository.dart';
+export 'tracker_publication_repository.dart';
 export 'user_repository.dart';

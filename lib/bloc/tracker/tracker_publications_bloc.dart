@@ -25,7 +25,7 @@ class TrackerPublicationsBloc
     );
   }
 
-  final TrackerRepository repository;
+  final TrackerPublicationRepository repository;
 
   Future<void> _subscribe(
     SubscribeEvent event,
@@ -35,11 +35,10 @@ class TrackerPublicationsBloc
 
     await emit.forEach(
       repository.getPublications(),
-      onData:
-          (data) => state.copyWith(
-            status: LoadingStatus.success,
-            response: data,
-          ),
+      onData: (data) => state.copyWith(
+        status: LoadingStatus.success,
+        response: data,
+      ),
     );
   }
 

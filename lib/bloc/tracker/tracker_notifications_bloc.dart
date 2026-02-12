@@ -27,7 +27,7 @@ class TrackerNotificationsBloc
     );
   }
 
-  final TrackerRepository repository;
+  final TrackerNotificationRepository repository;
 
   Future<void> _subscribe(
     SubscribeEvent event,
@@ -36,10 +36,9 @@ class TrackerNotificationsBloc
     emit(state.copyWith(status: LoadingStatus.loading));
 
     await emit.forEach(
-      repository.getNotifications(category: state.category),
-      onData:
-          (data) =>
-              state.copyWith(status: LoadingStatus.success, response: data),
+      repository.onChange(category: state.category),
+      onData: (data) =>
+          state.copyWith(status: LoadingStatus.success, response: data),
     );
   }
 

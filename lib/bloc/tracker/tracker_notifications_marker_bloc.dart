@@ -25,7 +25,7 @@ class TrackerNotificationsMarkerBloc
     );
   }
 
-  final TrackerRepository repository;
+  final TrackerNotificationRepository repository;
 
   FutureOr<void> _read(
     MarkAsReadEvent event,
