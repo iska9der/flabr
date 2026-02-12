@@ -5,32 +5,6 @@ import 'package:flutter/material.dart';
 import 'app_colors.dart';
 
 abstract class AppSchemeLight {
-  static final AppColors colors = AppColors(
-    surface: AppColorsLight.surface,
-    primary: AppColorsLight.primary,
-    secondary: AppColorsLight.secondary,
-    tertiary: AppColorsLight.tertiary,
-    error: AppColorsLight.error,
-    disabled: AppColorsLight.disabled,
-    card: AppColorsLight.card,
-    cardHighlight: AppColorsLight.cardHighlight,
-    progressTrackColor: AppColorsLight.progressTrackColor,
-    highlight: AppColorsLight.highlight,
-    onHighlight: AppColorsLight.onHighlight,
-    authorColor: AppColorsLight.authorColor,
-    publicationComplexityLow: AppColorsLight.publicationComplexityLow,
-    publicationComplexityMedium: AppColorsLight.publicationComplexityMedium,
-    publicationComplexityHight: AppColorsLight.publicationComplexityHight,
-    sorbus: AppColorsLight.sorbus,
-    portage: AppColorsLight.portage,
-    mulberry: AppColorsLight.mulberry,
-    apple: AppColorsLight.apple,
-    deluge: AppColorsLight.deluge,
-    scarlet: AppColorsLight.scarlet,
-    carnation: AppColorsLight.carnation,
-    shady: AppColorsLight.shady,
-  );
-
   static ColorScheme get scheme => ColorScheme.fromSeed(
     dynamicSchemeVariant: DynamicSchemeVariant.fidelity,
     contrastLevel: .2,
@@ -63,9 +37,59 @@ abstract class AppSchemeLight {
     onError: const Color(0xFFFFFFFF),
     outline: const Color(0xFF71787E),
   );
+
+  static final AppColors colors = AppColors(
+    surface: AppColorsLight.surface,
+    primary: AppColorsLight.primary,
+    secondary: AppColorsLight.secondary,
+    tertiary: AppColorsLight.tertiary,
+    error: AppColorsLight.error,
+    disabled: AppColorsLight.disabled,
+    card: AppColorsLight.card,
+    cardHighlight: AppColorsLight.cardHighlight,
+    progressTrackColor: AppColorsLight.progressTrackColor,
+    highlight: AppColorsLight.highlight,
+    onHighlight: AppColorsLight.onHighlight,
+    authorColor: AppColorsLight.authorColor,
+    publicationComplexityLow: AppColorsLight.publicationComplexityLow,
+    publicationComplexityMedium: AppColorsLight.publicationComplexityMedium,
+    publicationComplexityHight: AppColorsLight.publicationComplexityHight,
+    sorbus: AppColorsLight.sorbus,
+    portage: AppColorsLight.portage,
+    mulberry: AppColorsLight.mulberry,
+    apple: AppColorsLight.apple,
+    deluge: AppColorsLight.deluge,
+    scarlet: AppColorsLight.scarlet,
+    carnation: AppColorsLight.carnation,
+    shady: AppColorsLight.shady,
+  );
 }
 
 class AppSchemeDark {
+  static ColorScheme get scheme => ColorScheme.fromSeed(
+    brightness: Brightness.dark,
+    dynamicSchemeVariant: DynamicSchemeVariant.fidelity,
+    contrastLevel: .2,
+    seedColor: colors.primary,
+    primary: colors.primary,
+    secondary: colors.secondary,
+    secondaryContainer: colors.primary,
+    tertiary: colors.tertiary,
+    error: colors.error,
+    background: colors.surface,
+    surface: colors.surface,
+    surfaceContainerLow: colors.card,
+    surfaceContainerHighest: colors.cardHighlight,
+    onPrimary: const Color(0xFF21323E),
+    onPrimaryContainer: const Color.fromARGB(255, 67, 74, 78),
+    onSecondary: const Color(0xFF21323E),
+    onSecondaryContainer: const Color.fromARGB(255, 67, 74, 78),
+    onTertiary: const Color(0xFFFFFFFF),
+    onTertiaryContainer: const Color(0xFFFFFFFF),
+    onError: const Color(0xFF690005),
+    outline: const Color(0xFF8B9198),
+  );
+
   static final AppColors colors = AppColors(
     surface: AppColorsDark.surface,
     primary: AppColorsDark.primary,
@@ -90,29 +114,5 @@ class AppSchemeDark {
     scarlet: AppColorsDark.scarlet,
     carnation: AppColorsDark.carnation,
     shady: AppColorsDark.shady,
-  );
-
-  static ColorScheme get scheme => ColorScheme.fromSeed(
-    brightness: Brightness.dark,
-    dynamicSchemeVariant: DynamicSchemeVariant.fidelity,
-    contrastLevel: .2,
-    seedColor: colors.primary,
-    primary: colors.primary,
-    secondary: colors.secondary,
-    secondaryContainer: colors.primary,
-    tertiary: colors.tertiary,
-    error: colors.error,
-    background: colors.surface,
-    surface: colors.surface,
-    surfaceContainerLow: colors.card,
-    surfaceContainerHighest: colors.cardHighlight,
-    onPrimary: const Color(0xFF21323E),
-    onPrimaryContainer: const Color.fromARGB(255, 67, 74, 78),
-    onSecondary: const Color(0xFF21323E),
-    onSecondaryContainer: const Color.fromARGB(255, 67, 74, 78),
-    onTertiary: const Color(0xFFFFFFFF),
-    onTertiaryContainer: const Color(0xFFFFFFFF),
-    onError: const Color(0xFF690005),
-    outline: const Color(0xFF8B9198),
   );
 }

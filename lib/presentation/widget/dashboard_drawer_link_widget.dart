@@ -24,7 +24,7 @@ class DashboardDrawerLinkWidget extends StatelessWidget {
               style: TextStyle(
                 color: context.theme.colors.highlight,
                 fontSize: 11,
-                fontVariations: [const FontVariation('wght', 500)],
+                fontWeight: .w500,
               ),
             ),
         ],
