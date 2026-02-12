@@ -1,51 +1,19 @@
-import 'dart:convert';
+part of 'publication.dart';
 
-import 'package:equatable/equatable.dart';
+@freezed
+abstract class PublicationAuthor with _$PublicationAuthor implements UserBase {
+  const PublicationAuthor._();
 
-import '../user_base.dart';
+  const factory PublicationAuthor({
+    required String id,
+    @Default('') String alias,
+    @Default('') String fullname,
+    @Default('') String avatarUrl,
+    @Default('') String speciality,
+  }) = _PublicationAuthor;
 
-class PublicationAuthor extends UserBase with EquatableMixin {
-  const PublicationAuthor({
-    required super.id,
-    super.alias = '',
-    super.fullname = '',
-    super.avatarUrl = '',
-    this.speciality = '',
-  });
-
-  final String speciality;
-
-  factory PublicationAuthor.fromMap(Map<String, dynamic> map) {
-    return PublicationAuthor(
-      id: map['id'],
-      alias: map['alias'],
-      fullname: map['fullname'] ?? '',
-      avatarUrl: map['avatarUrl'] ?? '',
-      speciality: map['speciality'] ?? '',
-    );
-  }
-
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'id': id,
-      'speciality': speciality,
-      'alias': alias,
-      'fullname': fullname,
-      'avatarUrl': avatarUrl,
-    };
-  }
-
-  String toJson() => json.encode(toMap());
+  factory PublicationAuthor.fromJson(Map<String, dynamic> json) =>
+      _$PublicationAuthorFromJson(json);
 
   static const empty = PublicationAuthor(id: '0');
-  bool get isEmpty => this == empty;
-
-  @override
-  List<Object> get props => [
-        id,
-        alias,
-        fullname,
-        avatarUrl,
-        speciality,
-      ];
 }

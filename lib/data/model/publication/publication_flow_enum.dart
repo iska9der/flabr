@@ -1,4 +1,4 @@
-import '../../exception/exception.dart';
+part of 'publication.dart';
 
 enum PublicationFlow {
   all,
@@ -23,7 +23,7 @@ enum PublicationFlow {
     return PublicationFlow.values.firstWhere(
       (e) => e.name == value,
       orElse: () {
-        throw const ValueException('Неизвестное значение');
+        throw ValueException('Неизвестное значение PublicationFlow: $value');
       },
     );
   }

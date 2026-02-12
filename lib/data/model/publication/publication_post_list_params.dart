@@ -1,4 +1,5 @@
-import '../query_params_model.dart';
+
+part of 'publication.dart';
 
 class PublicationPostListParams extends QueryParams {
   const PublicationPostListParams({

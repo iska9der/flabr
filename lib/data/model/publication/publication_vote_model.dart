@@ -1,7 +1,5 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'publication_vote_model.freezed.dart';
-part 'publication_vote_model.g.dart';
+part of 'publication.dart';
 
 @freezed
 abstract class PublicationVote with _$PublicationVote {

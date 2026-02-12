@@ -1,3 +1,5 @@
+part of 'publication.dart';
+
 /// Типы меток для постов
 enum PostLabelType {
   translation,

@@ -1,10 +1,4 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
-
-import '../related_data_base.dart';
-import 'publication_vote_model.dart';
-
-part 'publication_related_data_model.freezed.dart';
-part 'publication_related_data_model.g.dart';
+part of 'publication.dart';
 
 @freezed
 abstract class PublicationRelatedData extends RelatedDataBase

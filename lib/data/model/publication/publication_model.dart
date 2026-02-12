@@ -1,16 +1,4 @@
-import 'dart:collection';
-
-import 'package:equatable/equatable.dart';
-
-import 'post_label_model.dart';
-import 'publication_author_model.dart';
-import 'publication_complexity_enum.dart';
-import 'publication_format_enum.dart';
-import 'publication_hub_model.dart';
-import 'publication_lead_data_model.dart';
-import 'publication_related_data_model.dart';
-import 'publication_statistics_model.dart';
-import 'publication_type_enum.dart';
+part of 'publication.dart';
 
 /// Базовый класс с общими свойствами
 sealed class Publication extends Equatable {
@@ -58,10 +46,9 @@ sealed class Publication extends Equatable {
   ];
 
   factory Publication.fromMap(Map<String, dynamic> map) {
-    final type =
-        map.containsKey('publicationType')
-            ? PublicationType.fromString(map['publicationType'])
-            : PublicationType.unknown;
+    final type = map.containsKey('publicationType')
+        ? PublicationType.fromString(map['publicationType'])
+        : PublicationType.unknown;
 
     return switch (type) {
       PublicationType.article => PublicationCommon.fromMap(map),
@@ -102,30 +89,28 @@ class PublicationCommon extends Publication {
   factory PublicationCommon.fromMap(Map<String, dynamic> map) {
     final hubsList = List<Map<String, dynamic>>.from(map['hubs'] ?? []);
     final tagsList = List<Map<String, dynamic>>.from(map['tags'] ?? []);
-    final postLabelsList = List<Map<String, dynamic>>.from(map['postLabels'] ?? []);
+    final postLabelsList = List<Map<String, dynamic>>.from(
+      map['postLabels'] ?? [],
+    );
 
     return PublicationCommon(
       id: map['id'],
-      type:
-          map.containsKey('publicationType')
-              ? PublicationType.fromString(map['publicationType'])
-              : map.containsKey('postType')
-              ? PublicationType.fromString(map['postType'])
-              : PublicationType.unknown,
+      type: map.containsKey('publicationType')
+          ? PublicationType.fromString(map['publicationType'])
+          : map.containsKey('postType')
+          ? PublicationType.fromString(map['postType'])
+          : PublicationType.unknown,
       timePublished: map['timePublished'],
       textHtml: map['textHtml'] ?? '',
-      author:
-          map['author'] != null
-              ? PublicationAuthor.fromMap(map['author'])
-              : PublicationAuthor.empty,
-      statistics:
-          map['statistics'] != null
-              ? PublicationStatistics.fromJson(map['statistics'])
-              : PublicationStatistics.empty,
-      relatedData:
-          map['relatedData'] != null
-              ? PublicationRelatedData.fromJson(map['relatedData'])
-              : PublicationRelatedData.empty,
+      author: map['author'] != null
+          ? PublicationAuthor.fromJson(map['author'])
+          : PublicationAuthor.empty,
+      statistics: map['statistics'] != null
+          ? PublicationStatistics.fromJson(map['statistics'])
+          : PublicationStatistics.empty,
+      relatedData: map['relatedData'] != null
+          ? PublicationRelatedData.fromJson(map['relatedData'])
+          : PublicationRelatedData.empty,
       hubs: UnmodifiableListView(
         hubsList.map((e) => PublicationHub.fromMap(e)),
       ),
@@ -133,19 +118,16 @@ class PublicationCommon extends Publication {
 
       /// добавленные поля
       titleHtml: map['titleHtml'] ?? '',
-      leadData:
-          map['leadData'] != null
-              ? PublicationLeadData.fromMap(map['leadData'])
-              : PublicationLeadData.empty,
-      complexity:
-          map['complexity'] != null
-              ? PublicationComplexity.fromString(map['complexity'])
-              : null,
+      leadData: map['leadData'] != null
+          ? PublicationLeadData.fromMap(map['leadData'])
+          : PublicationLeadData.empty,
+      complexity: map['complexity'] != null
+          ? PublicationComplexity.fromString(map['complexity'])
+          : null,
       readingTime: map['readingTime'] ?? 0,
-      format:
-          map['format'] != null
-              ? PublicationFormat.fromString(map['format'])
-              : null,
+      format: map['format'] != null
+          ? PublicationFormat.fromString(map['format'])
+          : null,
       postLabels: UnmodifiableListView(
         postLabelsList.map((e) => PostLabel.fromJson(e)),
       ),
@@ -189,18 +171,15 @@ class PublicationPost extends Publication {
       type: PublicationType.post,
       timePublished: map['timePublished'],
       textHtml: map['textHtml'] ?? '',
-      author:
-          map['author'] != null
-              ? PublicationAuthor.fromMap(map['author'])
-              : PublicationAuthor.empty,
-      statistics:
-          map['statistics'] != null
-              ? PublicationStatistics.fromJson(map['statistics'])
-              : PublicationStatistics.empty,
-      relatedData:
-          map['relatedData'] != null
-              ? PublicationRelatedData.fromJson(map['relatedData'])
-              : PublicationRelatedData.empty,
+      author: map['author'] != null
+          ? PublicationAuthor.fromJson(map['author'])
+          : PublicationAuthor.empty,
+      statistics: map['statistics'] != null
+          ? PublicationStatistics.fromJson(map['statistics'])
+          : PublicationStatistics.empty,
+      relatedData: map['relatedData'] != null
+          ? PublicationRelatedData.fromJson(map['relatedData'])
+          : PublicationRelatedData.empty,
       hubs: UnmodifiableListView(
         hubsList.map((e) => PublicationHub.fromMap(e)),
       ),

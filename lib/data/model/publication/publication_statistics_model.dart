@@ -1,7 +1,4 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
-
-part 'publication_statistics_model.freezed.dart';
-part 'publication_statistics_model.g.dart';
+part of 'publication.dart';
 
 @freezed
 abstract class PublicationStatistics with _$PublicationStatistics {

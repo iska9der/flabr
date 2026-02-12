@@ -8,7 +8,7 @@ abstract class TrackerPublication with _$TrackerPublication {
     required String id,
     required String publicationType,
     required String title,
-    @JsonKey(fromJson: PublicationAuthor.fromMap)
+    @JsonKey(fromJson: PublicationAuthor.fromJson)
     @Default(PublicationAuthor.empty)
     PublicationAuthor author,
     @Default(0) int commentsCount,

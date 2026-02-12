@@ -1,6 +1,5 @@
-import 'package:equatable/equatable.dart';
 
-import 'publication_lead_image_model.dart';
+part of 'publication.dart';
 
 class PublicationLeadData extends Equatable {
   const PublicationLeadData({

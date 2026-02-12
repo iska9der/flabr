@@ -1,6 +1,4 @@
-import 'package:collection/collection.dart';
-
-import '../../../core/component/logger/logger.dart';
+part of 'publication.dart';
 
 enum PublicationFormat {
   example,
@@ -24,8 +22,7 @@ enum PublicationFormat {
     );
 
     if (format == null) {
-      logger.warning('Неизвестное значение для [ArticleFormat]');
-      return null;
+      logger.warning('Неизвестное значение ArticleFormat: $value');
     }
 
     return format;

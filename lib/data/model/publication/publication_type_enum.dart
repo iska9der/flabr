@@ -1,3 +1,5 @@
+part of 'publication.dart';
+
 enum PublicationType {
   /// для всех неопознанных типов
   unknown(label: 'Неизвестно'),

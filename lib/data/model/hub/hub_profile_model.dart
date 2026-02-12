@@ -3,7 +3,7 @@ import 'dart:collection';
 import 'package:equatable/equatable.dart';
 
 import '../hub_base.dart';
-import '../publication/publication_flow_enum.dart';
+import '../publication/publication.dart';
 import 'hub_related_data_model.dart';
 import 'hub_statistics_model.dart';
 
@@ -63,14 +63,12 @@ class HubProfile extends HubBase with EquatableMixin {
       descriptionHtml: map['descriptionHtml'] as String,
       fullDescriptionHtml: map['fullDescriptionHtml'] as String,
       imageUrl: map['imageUrl'] as String,
-      relatedData:
-          map['relatedData'] != null
-              ? HubRelatedData.fromMap(map['relatedData'])
-              : HubRelatedData.empty,
-      statistics:
-          map['statistics'] != null
-              ? HubStatistics.fromMap(map['statistics'])
-              : HubStatistics.empty,
+      relatedData: map['relatedData'] != null
+          ? HubRelatedData.fromMap(map['relatedData'])
+          : HubRelatedData.empty,
+      statistics: map['statistics'] != null
+          ? HubStatistics.fromMap(map['statistics'])
+          : HubStatistics.empty,
       keywords: UnmodifiableListView(List<String>.from(map['keywords'] ?? [])),
       isProfiled: map['isProfiled'] as bool,
     );

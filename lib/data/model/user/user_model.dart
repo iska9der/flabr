@@ -2,7 +2,7 @@ import 'dart:collection';
 
 import 'package:equatable/equatable.dart';
 
-import '../publication/publication_model.dart';
+import '../publication/publication.dart';
 import 'user_location_model.dart';
 import 'user_related_data_model.dart';
 import 'user_workplace_model.dart';
@@ -108,25 +108,24 @@ class User extends Equatable {
       speciality: map['speciality'] ?? '',
       score: map['scoreStats']['score'],
       votesCount: map['scoreStats']['votesCount'],
-      rating:
-          map['rating'] != null ? double.parse(map['rating'].toString()) : 0.00,
-      ratingPosition:
-          map['ratingPos'] != null ? int.parse(map['ratingPos'].toString()) : 0,
-      relatedData:
-          map['relatedData'] != null
-              ? UserRelatedData.fromMap(map['relatedData'])
-              : UserRelatedData.empty,
-      location:
-          map['location'] != null
-              ? UserLocation.fromMap(map['location'])
-              : UserLocation.empty,
+      rating: map['rating'] != null
+          ? double.parse(map['rating'].toString())
+          : 0.00,
+      ratingPosition: map['ratingPos'] != null
+          ? int.parse(map['ratingPos'].toString())
+          : 0,
+      relatedData: map['relatedData'] != null
+          ? UserRelatedData.fromMap(map['relatedData'])
+          : UserRelatedData.empty,
+      location: map['location'] != null
+          ? UserLocation.fromMap(map['location'])
+          : UserLocation.empty,
       workplace: UnmodifiableListView(
         workplacesList.map((e) => UserWorkplace.fromMap(e)),
       ),
-      lastPost:
-          map['lastPost'] != null
-              ? PublicationCommon.fromMap(map['lastPost'])
-              : PublicationCommon.empty,
+      lastPost: map['lastPost'] != null
+          ? PublicationCommon.fromMap(map['lastPost'])
+          : PublicationCommon.empty,
     );
   }
 

@@ -5,7 +5,7 @@ import 'dart:collection';
 import 'package:equatable/equatable.dart';
 
 import '../comment_base.dart';
-import '../publication/publication_author_model.dart';
+import '../publication/publication.dart';
 
 class Comment extends CommentBase with EquatableMixin {
   const Comment({
@@ -92,10 +92,9 @@ class Comment extends CommentBase with EquatableMixin {
     return Comment(
       id: map['id'],
       parentId: map['parentId'] ?? '',
-      author:
-          map['author'] != null && map['author'].isNotEmpty
-              ? PublicationAuthor.fromMap(map['author'])
-              : PublicationAuthor.empty,
+      author: map['author'] != null && map['author'].isNotEmpty
+          ? PublicationAuthor.fromJson(map['author'])
+          : PublicationAuthor.empty,
       isPostAuthor: map['isPostAuthor'] as bool,
       isAuthor: map['isAuthor'] as bool,
       isFavorite: map['isFavorite'] as bool,

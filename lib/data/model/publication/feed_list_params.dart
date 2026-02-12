@@ -1,4 +1,4 @@
-import '../query_params_model.dart';
+part of 'publication.dart';
 
 class FeedListParams extends QueryParams {
   const FeedListParams({

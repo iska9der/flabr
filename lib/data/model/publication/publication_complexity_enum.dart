@@ -1,17 +1,20 @@
-import '../../exception/exception.dart';
+part of 'publication.dart';
 
 enum PublicationComplexity {
   low,
   medium,
   high;
 
-  factory PublicationComplexity.fromString(String value) {
-    return PublicationComplexity.values.firstWhere(
+  static PublicationComplexity? fromString(String value) {
+    final result = PublicationComplexity.values.firstWhereOrNull(
       (e) => e.name == value,
-      orElse: () {
-        throw const ValueException('Неизвестное значение');
-      },
     );
+
+    if (result == null) {
+      logger.warning('Неизвестное значение PublicationComplexity: $value');
+    }
+
+    return result;
   }
 
   String get label => switch (this) {

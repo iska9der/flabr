@@ -1,9 +1,4 @@
-import 'dart:collection';
-
-import 'package:equatable/equatable.dart';
-
-import '../list_response_model.dart';
-import 'publication_model.dart';
+part of 'publication.dart';
 
 class PublicationCommonListResponse extends ListResponse<Publication>
     with EquatableMixin {

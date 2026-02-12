@@ -1,4 +1,5 @@
-import 'package:equatable/equatable.dart';
+
+part of 'publication.dart';
 
 class PublicationLeadImage extends Equatable {
   final String url;

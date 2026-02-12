@@ -1,4 +1,4 @@
-import 'publication_type_enum.dart';
+part of 'publication.dart';
 
 enum PublicationSource {
   article,

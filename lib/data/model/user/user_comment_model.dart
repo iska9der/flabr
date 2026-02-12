@@ -3,7 +3,7 @@ import 'dart:collection';
 import 'package:equatable/equatable.dart';
 
 import '../comment_base.dart';
-import '../publication/publication_author_model.dart';
+import '../publication/publication.dart';
 import 'user_comment_publication_model.dart';
 
 class UserComment extends CommentBase with EquatableMixin {
@@ -86,10 +86,9 @@ class UserComment extends CommentBase with EquatableMixin {
     return UserComment(
       id: map['id'],
       parentId: map['parentId'] ?? '',
-      author:
-          map['author'] != null && map['author'].isNotEmpty
-              ? PublicationAuthor.fromMap(map['author'])
-              : PublicationAuthor.empty,
+      author: map['author'] != null && map['author'].isNotEmpty
+          ? PublicationAuthor.fromJson(map['author'])
+          : PublicationAuthor.empty,
       isPostAuthor: map['isPostAuthor'] as bool,
       isAuthor: map['isAuthor'] as bool,
       isFavorite: map['isFavorite'] as bool,
@@ -108,10 +107,9 @@ class UserComment extends CommentBase with EquatableMixin {
       childrenRaw: UnmodifiableListView(
         List<String>.from(map['children'] ?? []),
       ),
-      publication:
-          map['publication'] != null
-              ? UserCommentPublication.fromMap(map['publication'])
-              : UserCommentPublication.empty,
+      publication: map['publication'] != null
+          ? UserCommentPublication.fromMap(map['publication'])
+          : UserCommentPublication.empty,
     );
   }
 
