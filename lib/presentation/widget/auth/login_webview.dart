@@ -110,20 +110,20 @@ class _WebViewLoginState extends State<_WebViewLogin> {
               final hasCode = uri.queryParameters.containsKey('code');
               final hasState = uri.queryParameters.containsKey('state');
 
-              /// Форма авторизации (без параметров) - обрабатываем
+              /// Форма авторизации (без параметров) - сохраняем токен
               if (!hasCode && !hasState) {
                 final token = await handleCookies(url);
-                loginCubit.handle(token: token);
+                loginCubit.submit(token: token);
                 return NavigationDecision.navigate;
               }
 
               /// OAuth:
               /// - только с code (промежуточный редирект) - пускаем дальше
-              /// - с code и state - обрабатываем
+              /// - с code и state - сохраняем токен
               if (hasCode) {
                 if (hasState) {
                   final token = await handleCookies(url);
-                  loginCubit.handle(token: token);
+                  loginCubit.submit(token: token);
                 }
                 return NavigationDecision.navigate;
               }

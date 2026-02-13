@@ -35,20 +35,21 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     _FetchMeEvent event,
     Emitter<ProfileState> emit,
   ) async {
-    if (state.status == LoadingStatus.loading) return;
+    if (state.status == .loading) {
+      return;
+    }
 
-    emit(state.copyWith(status: LoadingStatus.loading));
+    emit(state.copyWith(status: .loading));
 
     try {
       final me = await _repository.fetchMe();
-
       if (me == null) {
         throw const NotFoundException();
       }
 
-      emit(state.copyWith(me: me, status: LoadingStatus.success));
+      emit(state.copyWith(me: me, status: .success));
     } catch (_) {
-      emit(state.copyWith(me: UserMe.empty, status: LoadingStatus.failure));
+      emit(state.copyWith(me: .empty, status: .failure));
 
       rethrow;
     }
