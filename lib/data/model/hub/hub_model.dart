@@ -52,14 +52,12 @@ class Hub extends HubBase with EquatableMixin {
       descriptionHtml: map['descriptionHtml'] as String,
       isProfiled: map['isProfiled'] as bool,
       isOfftop: map['isOfftop'] as bool,
-      relatedData:
-          map['relatedData'] != null
-              ? HubRelatedData.fromMap(map['relatedData'])
-              : HubRelatedData.empty,
-      statistics:
-          map['statistics'] != null
-              ? HubStatistics.fromMap(map['statistics'])
-              : HubStatistics.empty,
+      relatedData: map['relatedData'] != null
+          ? HubRelatedData.fromJson(map['relatedData'])
+          : HubRelatedData.empty,
+      statistics: map['statistics'] != null
+          ? HubStatistics.fromJson(map['statistics'])
+          : HubStatistics.empty,
       commonTags: UnmodifiableListView(
         List<String>.from(map['commonTags'] ?? []),
       ),

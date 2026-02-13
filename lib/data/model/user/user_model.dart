@@ -23,7 +23,7 @@ class User extends Equatable {
     this.relatedData = UserRelatedData.empty,
     this.location = UserLocation.empty,
     this.workplace = const [],
-    this.lastPost = PublicationCommon.empty,
+    this.lastPost = Publication.empty,
   });
 
   final String id;
@@ -115,7 +115,7 @@ class User extends Equatable {
           ? int.parse(map['ratingPos'].toString())
           : 0,
       relatedData: map['relatedData'] != null
-          ? UserRelatedData.fromMap(map['relatedData'])
+          ? UserRelatedData.fromJson(map['relatedData'])
           : UserRelatedData.empty,
       location: map['location'] != null
           ? UserLocation.fromMap(map['location'])
@@ -124,8 +124,8 @@ class User extends Equatable {
         workplacesList.map((e) => UserWorkplace.fromMap(e)),
       ),
       lastPost: map['lastPost'] != null
-          ? PublicationCommon.fromMap(map['lastPost'])
-          : PublicationCommon.empty,
+          ? PublicationCommon.fromJson(map['lastPost'])
+          : Publication.empty,
     );
   }
 

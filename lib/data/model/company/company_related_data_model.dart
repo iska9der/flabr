@@ -10,7 +10,8 @@ class CompanyRelatedData extends RelatedDataBase with EquatableMixin {
   static const empty = CompanyRelatedData();
   bool get isEmpty => this == empty;
 
-  Map<String, dynamic> toMap() {
+  @override
+  Map<String, dynamic> toJson() {
     return <String, dynamic>{'isSubscribed': isSubscribed};
   }
 

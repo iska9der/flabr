@@ -13,7 +13,7 @@ class HubStatistics extends Equatable {
   final int authorsCount;
   final int postsCount;
 
-  factory HubStatistics.fromMap(Map<String, dynamic> map) {
+  factory HubStatistics.fromJson(Map<String, dynamic> map) {
     return HubStatistics(
       subscribersCount: map['subscribersCount'] as int,
       rating: double.parse(map['rating'].toString()),
@@ -30,9 +30,9 @@ class HubStatistics extends Equatable {
 
   @override
   List<Object> get props => [
-        subscribersCount,
-        rating,
-        authorsCount,
-        postsCount,
-      ];
+    subscribersCount,
+    rating,
+    authorsCount,
+    postsCount,
+  ];
 }

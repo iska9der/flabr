@@ -1,4 +1,3 @@
-
 part of 'publication.dart';
 
 class PublicationLeadData extends Equatable {
@@ -14,16 +13,23 @@ class PublicationLeadData extends Equatable {
   final String imageUrl;
   final String buttonTextHtml;
 
-  factory PublicationLeadData.fromMap(Map<String, dynamic> map) {
+  factory PublicationLeadData.fromJson(Map<String, dynamic> map) {
     return PublicationLeadData(
       textHtml: map['textHtml'],
       imageUrl: map['imageUrl'] ?? '',
       image: map['image'] != null
-          ? PublicationLeadImage.fromMap(map['image'])
+          ? PublicationLeadImage.fromJson(map['image'])
           : PublicationLeadImage.empty,
       buttonTextHtml: map['buttonTextHtml'] ?? '',
     );
   }
+
+  Map<String, dynamic> toJson() => {
+    'textHtml': textHtml,
+    'imageUrl': imageUrl,
+    'image': image.toJson(),
+    'buttonTextHtml': buttonTextHtml,
+  };
 
   static const empty = PublicationLeadData(textHtml: '');
 

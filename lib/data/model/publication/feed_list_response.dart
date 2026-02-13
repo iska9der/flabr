@@ -15,7 +15,7 @@ class FeedListResponse extends ListResponse<Publication> with EquatableMixin {
       pagesCount: map['pagesCount'] ?? 0,
       ids: UnmodifiableListView(idsMap),
       refs: UnmodifiableListView(
-        refsMap.entries.map((e) => Publication.fromMap(e.value)),
+        refsMap.entries.map((e) => Publication.fromJson(e.value)),
       ),
     );
   }

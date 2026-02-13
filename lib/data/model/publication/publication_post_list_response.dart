@@ -16,7 +16,7 @@ class PublicationPostListResponse extends ListResponse<Publication>
       pagesCount: map['pagesCount'] ?? 0,
       ids: UnmodifiableListView(idsMap),
       refs: UnmodifiableListView(
-        refsMap.entries.map((e) => PublicationPost.fromMap(e.value)),
+        refsMap.entries.map((e) => PublicationPost.fromJson(e.value)),
       ),
     );
   }
