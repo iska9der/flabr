@@ -15,7 +15,7 @@ class PublicationHub extends HubBase with EquatableMixin {
   final HubType type;
 
   @override
-  factory PublicationHub.fromMap(Map<String, dynamic> map) {
+  factory PublicationHub.fromJson(Map<String, dynamic> map) {
     return PublicationHub(
       id: map['id'],
       alias: map['alias'] as String,
@@ -23,10 +23,19 @@ class PublicationHub extends HubBase with EquatableMixin {
       type: HubType.fromString((map['type'] ?? 'collective')),
       isProfiled: map['isProfiled'] as bool,
       relatedData: map['relatedData'] != null
-          ? HubRelatedData.fromMap(map['relatedData'])
+          ? HubRelatedData.fromJson(map['relatedData'])
           : HubRelatedData.empty,
     );
   }
+
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'alias': alias,
+    'title': title,
+    'type': type.name,
+    'isProfiled': isProfiled,
+    'relatedData': relatedData.toJson(),
+  };
 
   static const empty = PublicationHub(id: '0', title: 'Empty Hub');
 

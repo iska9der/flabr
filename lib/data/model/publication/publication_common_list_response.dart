@@ -16,7 +16,7 @@ class PublicationCommonListResponse extends ListResponse<Publication>
       pagesCount: map['pagesCount'] ?? 0,
       ids: UnmodifiableListView(idsMap),
       refs: UnmodifiableListView(
-        refsMap.entries.map((e) => PublicationCommon.fromMap(e.value)),
+        refsMap.entries.map((e) => PublicationCommon.fromJson(e.value)),
       ),
     );
   }

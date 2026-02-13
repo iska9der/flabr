@@ -4,6 +4,7 @@ part of 'publication.dart';
 abstract class PublicationAuthor with _$PublicationAuthor implements UserBase {
   const PublicationAuthor._();
 
+  @Implements<UserBase>()
   const factory PublicationAuthor({
     required String id,
     @Default('') String alias,

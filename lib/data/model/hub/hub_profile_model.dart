@@ -64,10 +64,10 @@ class HubProfile extends HubBase with EquatableMixin {
       fullDescriptionHtml: map['fullDescriptionHtml'] as String,
       imageUrl: map['imageUrl'] as String,
       relatedData: map['relatedData'] != null
-          ? HubRelatedData.fromMap(map['relatedData'])
+          ? HubRelatedData.fromJson(map['relatedData'])
           : HubRelatedData.empty,
       statistics: map['statistics'] != null
-          ? HubStatistics.fromMap(map['statistics'])
+          ? HubStatistics.fromJson(map['statistics'])
           : HubStatistics.empty,
       keywords: UnmodifiableListView(List<String>.from(map['keywords'] ?? [])),
       isProfiled: map['isProfiled'] as bool,

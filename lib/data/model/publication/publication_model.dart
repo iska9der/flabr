@@ -1,194 +1,98 @@
 part of 'publication.dart';
 
-/// Базовый класс с общими свойствами
-sealed class Publication extends Equatable {
-  const Publication({
-    required this.id,
-    this.type = PublicationType.unknown,
-    this.timePublished = '2022-12-22T10:10:00+00:00',
-    this.textHtml = '',
-    this.author = PublicationAuthor.empty,
-    this.statistics = PublicationStatistics.empty,
-    this.relatedData = PublicationRelatedData.empty,
-    this.hubs = const [],
-    this.tags = const [],
-  });
+abstract interface class Publication {
+  String get id;
+  PublicationType get type;
+  String get timePublished;
+  String get textHtml;
+  PublicationAuthor get author;
+  PublicationStatistics get statistics;
+  PublicationRelatedData get relatedData;
+  List<PublicationHub> get hubs;
+  List<String> get tags;
 
-  final String id;
-  final PublicationType type;
-
-  final String timePublished;
   DateTime get publishedAt => DateTime.parse(timePublished).toLocal();
-
-  final String textHtml;
-
-  final PublicationAuthor author;
-  final PublicationStatistics statistics;
-  final PublicationRelatedData relatedData;
-
-  final List<PublicationHub> hubs;
-  final List<String> tags;
 
   static const empty = PublicationCommon(id: '0');
   bool get isEmpty => this == empty;
 
+  factory Publication.fromJson(Map<String, dynamic> json) =>
+      PublicationSealed.fromJson(json);
+}
+
+/// Базовый класс с общими свойствами
+@freezed
+sealed class PublicationSealed with _$PublicationSealed implements Publication {
+  const PublicationSealed._();
+
+  const factory PublicationSealed(
+    @PublicationResponseConverter() PublicationSealed myResponse,
+  ) = PublicationData;
+
+  /// Статья/новость
+  @Implements<Publication>()
+  const factory PublicationSealed.common({
+    required String id,
+    @Default(PublicationType.unknown) PublicationType type,
+    @Default('2022-12-22T10:10:00+00:00') String timePublished,
+    @Default('') String textHtml,
+    @Default(PublicationAuthor.empty) PublicationAuthor author,
+    @Default(PublicationStatistics.empty) PublicationStatistics statistics,
+    @Default(PublicationRelatedData.empty) PublicationRelatedData relatedData,
+    @Default([]) List<PublicationHub> hubs,
+    @Default([]) List<String> tags,
+    @Default('') String titleHtml,
+    @Default(PublicationLeadData.empty) PublicationLeadData leadData,
+    PublicationComplexity? complexity,
+    @Default(0) int readingTime,
+    PublicationFormat? format,
+    @Default([]) List<PostLabel> postLabels,
+  }) = PublicationCommon;
+
+  /// Пост
+  @Implements<Publication>()
+  const factory PublicationSealed.post({
+    required String id,
+    @Default(PublicationType.post) PublicationType type,
+    @Default('2022-12-22T10:10:00+00:00') String timePublished,
+    @Default('') String textHtml,
+    @Default(PublicationAuthor.empty) PublicationAuthor author,
+    @Default(PublicationStatistics.empty) PublicationStatistics statistics,
+    @Default(PublicationRelatedData.empty) PublicationRelatedData relatedData,
+    @Default([]) List<PublicationHub> hubs,
+    @Default([]) List<String> tags,
+  }) = PublicationPost;
+
+  factory PublicationSealed.fromJson(Map<String, dynamic> json) =>
+      _$PublicationSealedFromJson(json);
+}
+
+class PublicationResponseConverter
+    implements JsonConverter<PublicationSealed, Map<String, dynamic>> {
+  const PublicationResponseConverter();
+
   @override
-  List<Object?> get props => [
-    id,
-    type,
-    timePublished,
-    textHtml,
-    author,
-    statistics,
-    relatedData,
-    hubs,
-    tags,
-  ];
+  PublicationSealed fromJson(Map<String, dynamic> json) {
+    // type data was already set (e.g. because we serialized it ourselves)
+    if (json['runtimeType'] != null) {
+      return PublicationSealed.fromJson(json);
+    }
 
-  factory Publication.fromMap(Map<String, dynamic> map) {
-    final type = map.containsKey('publicationType')
-        ? PublicationType.fromString(map['publicationType'])
-        : PublicationType.unknown;
+    final String? typeValue = json['publicationType'] ?? json['postType'];
 
-    return switch (type) {
-      PublicationType.article => PublicationCommon.fromMap(map),
-      PublicationType.news => PublicationCommon.fromMap(map),
-      PublicationType.post => PublicationPost.fromMap(map),
-      _ => const PublicationCommon(id: '0'),
+    final resolvedType = switch (typeValue != null) {
+      true => PublicationType.fromString(typeValue!),
+      false => PublicationType.unknown,
+    };
+
+    return switch (resolvedType) {
+      PublicationType.article ||
+      PublicationType.news => PublicationCommon.fromJson(json),
+      PublicationType.post => PublicationPost.fromJson(json),
+      _ => PublicationCommon.fromJson(json),
     };
   }
-}
-
-/// Общий класс для статей и новостей, так как у них идентичные свойства
-class PublicationCommon extends Publication {
-  const PublicationCommon({
-    required super.id,
-    super.type,
-    super.timePublished,
-    super.textHtml,
-    super.author,
-    super.statistics,
-    super.relatedData,
-    super.hubs,
-    super.tags,
-    this.titleHtml = '',
-    this.leadData = PublicationLeadData.empty,
-    this.complexity,
-    this.readingTime = 0,
-    this.format,
-    this.postLabels = const [],
-  });
-
-  final String titleHtml;
-  final PublicationLeadData leadData;
-  final PublicationComplexity? complexity;
-  final int readingTime;
-  final PublicationFormat? format;
-  final List<PostLabel> postLabels;
-
-  factory PublicationCommon.fromMap(Map<String, dynamic> map) {
-    final hubsList = List<Map<String, dynamic>>.from(map['hubs'] ?? []);
-    final tagsList = List<Map<String, dynamic>>.from(map['tags'] ?? []);
-    final postLabelsList = List<Map<String, dynamic>>.from(
-      map['postLabels'] ?? [],
-    );
-
-    return PublicationCommon(
-      id: map['id'],
-      type: map.containsKey('publicationType')
-          ? PublicationType.fromString(map['publicationType'])
-          : map.containsKey('postType')
-          ? PublicationType.fromString(map['postType'])
-          : PublicationType.unknown,
-      timePublished: map['timePublished'],
-      textHtml: map['textHtml'] ?? '',
-      author: map['author'] != null
-          ? PublicationAuthor.fromJson(map['author'])
-          : PublicationAuthor.empty,
-      statistics: map['statistics'] != null
-          ? PublicationStatistics.fromJson(map['statistics'])
-          : PublicationStatistics.empty,
-      relatedData: map['relatedData'] != null
-          ? PublicationRelatedData.fromJson(map['relatedData'])
-          : PublicationRelatedData.empty,
-      hubs: UnmodifiableListView(
-        hubsList.map((e) => PublicationHub.fromMap(e)),
-      ),
-      tags: UnmodifiableListView(tagsList.map((tag) => tag['titleHtml'])),
-
-      /// добавленные поля
-      titleHtml: map['titleHtml'] ?? '',
-      leadData: map['leadData'] != null
-          ? PublicationLeadData.fromMap(map['leadData'])
-          : PublicationLeadData.empty,
-      complexity: map['complexity'] != null
-          ? PublicationComplexity.fromString(map['complexity'])
-          : null,
-      readingTime: map['readingTime'] ?? 0,
-      format: map['format'] != null
-          ? PublicationFormat.fromString(map['format'])
-          : null,
-      postLabels: UnmodifiableListView(
-        postLabelsList.map((e) => PostLabel.fromJson(e)),
-      ),
-    );
-  }
-
-  static const empty = PublicationCommon(id: '0');
 
   @override
-  List<Object?> get props => [
-    ...super.props,
-    titleHtml,
-    leadData,
-    complexity,
-    readingTime,
-    format,
-    postLabels,
-  ];
-}
-
-/// Класс для публикации с типом "Пост"
-class PublicationPost extends Publication {
-  const PublicationPost({
-    required super.id,
-    super.type,
-    super.timePublished,
-    super.textHtml,
-    super.author,
-    super.statistics,
-    super.relatedData,
-    super.hubs,
-    super.tags,
-  });
-
-  factory PublicationPost.fromMap(Map<String, dynamic> map) {
-    final hubsList = List<Map<String, dynamic>>.from(map['hubs'] ?? []);
-    final tagsList = List<Map<String, dynamic>>.from(map['tags'] ?? []);
-
-    return PublicationPost(
-      id: map['id'],
-      type: PublicationType.post,
-      timePublished: map['timePublished'],
-      textHtml: map['textHtml'] ?? '',
-      author: map['author'] != null
-          ? PublicationAuthor.fromJson(map['author'])
-          : PublicationAuthor.empty,
-      statistics: map['statistics'] != null
-          ? PublicationStatistics.fromJson(map['statistics'])
-          : PublicationStatistics.empty,
-      relatedData: map['relatedData'] != null
-          ? PublicationRelatedData.fromJson(map['relatedData'])
-          : PublicationRelatedData.empty,
-      hubs: UnmodifiableListView(
-        hubsList.map((e) => PublicationHub.fromMap(e)),
-      ),
-      tags: UnmodifiableListView(tagsList.map((tag) => tag['titleHtml'])),
-    );
-  }
-
-  static const empty = PublicationPost(id: '0');
-
-  @override
-  List<Object?> get props => [...super.props];
+  Map<String, dynamic> toJson(PublicationSealed data) => data.toJson();
 }

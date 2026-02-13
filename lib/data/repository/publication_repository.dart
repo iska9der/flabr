@@ -37,7 +37,7 @@ class PublicationRepository {
   Future<PublicationCommon> _fetchCommonById(String id) async {
     final rawData = await service.fetchArticleById(id);
 
-    final publication = PublicationCommon.fromMap(rawData);
+    final publication = PublicationCommon.fromJson(rawData);
 
     return publication;
   }
@@ -45,7 +45,7 @@ class PublicationRepository {
   Future<PublicationPost> _fetchPostById(String id) async {
     final rawData = await service.fetchPostById(id);
 
-    final post = PublicationPost.fromMap(rawData);
+    final post = PublicationPost.fromJson(rawData);
 
     return post;
   }
@@ -157,10 +157,9 @@ class PublicationRepository {
     );
 
     var newResponse = response.copyWith(
-      refs:
-          response.ids
-              .map((id) => response.refs.firstWhere((ref) => id == ref.id))
-              .toList(),
+      refs: response.ids
+          .map((id) => response.refs.firstWhere((ref) => id == ref.id))
+          .toList(),
     );
 
     return newResponse;
@@ -198,13 +197,11 @@ class PublicationRepository {
   Future<List<PublicationCommon>> fetchMostReading() async {
     final raw = await service.fetchMostReading();
 
-    List<PublicationCommon> publications =
-        [...raw.refs]
-          ..sort(
-            (a, b) =>
-                a.statistics.readingCount > b.statistics.readingCount ? 0 : 1,
-          )
-          ..take(8).toList();
+    List<PublicationCommon> publications = [...raw.refs]
+      ..sort(
+        (a, b) => a.statistics.readingCount > b.statistics.readingCount ? 0 : 1,
+      )
+      ..take(8).toList();
 
     return publications;
   }
