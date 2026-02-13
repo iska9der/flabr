@@ -1,6 +1,8 @@
 part of 'publication.dart';
 
+@JsonEnum()
 enum PublicationFormat {
+  @JsonValue('case')
   example,
   tutorial,
   faq,
@@ -11,22 +13,8 @@ enum PublicationFormat {
   roadmap,
   reportage,
   interview,
-  retrospective;
-
-  static PublicationFormat? fromString(String value) {
-    /// а все потому, что "case" зарезервировано языком!
-    if (value == 'case') return PublicationFormat.example;
-
-    final format = PublicationFormat.values.firstWhereOrNull(
-      (e) => e.name == value,
-    );
-
-    if (format == null) {
-      logger.warning('Неизвестное значение ArticleFormat: $value');
-    }
-
-    return format;
-  }
+  retrospective
+  ;
 
   String get label => switch (this) {
     example => 'Кейс',

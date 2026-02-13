@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../bloc/auth/auth_cubit.dart';
 import '../../../bloc/auth/login_cubit.dart';
 import '../../../core/constants/constants.dart';
-import '../../../data/model/loading_status_enum.dart';
 import '../../../di/di.dart';
 import '../../extension/extension.dart';
 
@@ -17,13 +16,12 @@ class ConnectSidWidget extends StatefulWidget {
 }
 
 class _ConnectSidWidgetState extends State<ConnectSidWidget> {
-  late final TextEditingController controller;
+  late final TextEditingController controller = .new();
 
   @override
-  void initState() {
-    controller = TextEditingController();
-
-    super.initState();
+  void dispose() {
+    controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -32,15 +30,14 @@ class _ConnectSidWidgetState extends State<ConnectSidWidget> {
       create: (_) => LoginCubit(tokenRepository: getIt()),
       child: BlocBuilder<AuthCubit, AuthState>(
         builder: (context, state) {
-          if (state.status == AuthStatus.unauthorized) {
-            controller.text = '';
-          } else {
-            controller.text = state.token;
-          }
+          controller.text = switch (state.status == .unauthorized) {
+            true => '',
+            false => state.token,
+          };
 
           return Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisSize: .min,
+            crossAxisAlignment: .stretch,
             children: [
               TextFormField(
                 onTapOutside: (_) {
@@ -48,9 +45,9 @@ class _ConnectSidWidgetState extends State<ConnectSidWidget> {
                 },
                 enabled: !state.isAuthorized,
                 controller: controller,
-                keyboardType: TextInputType.text,
-                decoration: const InputDecoration(
-                  floatingLabelBehavior: FloatingLabelBehavior.always,
+                keyboardType: .text,
+                decoration: const .new(
+                  floatingLabelBehavior: .always,
                   labelText: 'Токен ${Keys.sidToken}',
                   hintText: 'Можно найти в cookies',
                   border: OutlineInputBorder(),
@@ -59,34 +56,34 @@ class _ConnectSidWidgetState extends State<ConnectSidWidget> {
               const SizedBox(height: 8),
               Row(
                 children: [
-                  state.isAuthorized
-                      ? ElevatedButton(
-                        onPressed: () {
-                          context.read<AuthCubit>().logOut();
-                        },
-                        child: const Text('Очистить'),
-                      )
-                      : BlocBuilder<LoginCubit, LoginState>(
-                        builder: (context, state) {
-                          return FilledButton(
-                            onPressed:
-                                state.status == LoadingStatus.loading
-                                    ? null
-                                    : () {
-                                      context.read<LoginCubit>().handle(
-                                        token: controller.text,
-                                        isManual: true,
-                                      );
-                                    },
-                            child: const Text('Сохранить'),
-                          );
-                        },
-                      ),
+                  if (state.isAuthorized)
+                    ElevatedButton(
+                      onPressed: () => context.read<AuthCubit>().logOut(),
+                      child: const Text('Очистить'),
+                    )
+                  else
+                    BlocBuilder<LoginCubit, LoginState>(
+                      builder: (context, state) {
+                        return FilledButton(
+                          onPressed: switch (state.status == .loading) {
+                            true => null,
+                            false => () {
+                              context.read<LoginCubit>().submit(
+                                token: controller.text,
+                                isManual: true,
+                              );
+                            },
+                          },
+                          child: const Text('Сохранить'),
+                        );
+                      },
+                    ),
                   const SizedBox(width: 12),
                   if (state.isAuthorized)
                     ElevatedButton(
                       onPressed: () {
-                        Clipboard.setData(ClipboardData(text: controller.text));
+                        Clipboard.setData(.new(text: controller.text));
+
                         context.showSnack(
                           content: const Text('Скопировано в буфер обмена'),
                         );
