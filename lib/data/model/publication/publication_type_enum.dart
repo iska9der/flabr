@@ -1,5 +1,6 @@
 part of 'publication.dart';
 
+@JsonEnum()
 enum PublicationType {
   /// для всех неопознанных типов
   unknown(label: 'Неизвестно'),
@@ -39,7 +40,8 @@ enum PublicationType {
   /// },
   /// ```
   ///
-  voice(label: 'Голос');
+  voice(label: 'Голос')
+  ;
 
   const PublicationType({required this.label});
 

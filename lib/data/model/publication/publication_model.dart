@@ -11,13 +11,15 @@ abstract interface class Publication {
   List<PublicationHub> get hubs;
   List<String> get tags;
 
-  DateTime get publishedAt => DateTime.parse(timePublished).toLocal();
+  DateTime get publishedAt;
 
-  static const empty = PublicationCommon(id: '0');
-  bool get isEmpty => this == empty;
+  static const PublicationCommon empty = .new(id: '0');
+  bool get isEmpty;
 
   factory Publication.fromJson(Map<String, dynamic> json) =>
       PublicationSealed.fromJson(json);
+
+  Map<String, dynamic> toJson();
 }
 
 /// Базовый класс с общими свойствами
@@ -25,26 +27,25 @@ abstract interface class Publication {
 sealed class PublicationSealed with _$PublicationSealed implements Publication {
   const PublicationSealed._();
 
-  const factory PublicationSealed(
-    @PublicationResponseConverter() PublicationSealed myResponse,
-  ) = PublicationData;
-
   /// Статья/новость
   @Implements<Publication>()
   const factory PublicationSealed.common({
     required String id,
-    @Default(PublicationType.unknown) PublicationType type,
+    @JsonKey(readValue: _typeReader, unknownEnumValue: PublicationType.unknown)
+    @Default(PublicationType.unknown)
+    PublicationType type,
     @Default('2022-12-22T10:10:00+00:00') String timePublished,
     @Default('') String textHtml,
     @Default(PublicationAuthor.empty) PublicationAuthor author,
     @Default(PublicationStatistics.empty) PublicationStatistics statistics,
     @Default(PublicationRelatedData.empty) PublicationRelatedData relatedData,
     @Default([]) List<PublicationHub> hubs,
-    @Default([]) List<String> tags,
+    @JsonKey(readValue: _tagsReader) @Default([]) List<String> tags,
     @Default('') String titleHtml,
     @Default(PublicationLeadData.empty) PublicationLeadData leadData,
     PublicationComplexity? complexity,
     @Default(0) int readingTime,
+    @JsonKey(unknownEnumValue: JsonKey.nullForUndefinedEnumValue)
     PublicationFormat? format,
     @Default([]) List<PostLabel> postLabels,
   }) = PublicationCommon;
@@ -53,18 +54,26 @@ sealed class PublicationSealed with _$PublicationSealed implements Publication {
   @Implements<Publication>()
   const factory PublicationSealed.post({
     required String id,
-    @Default(PublicationType.post) PublicationType type,
+    @JsonKey(readValue: _typeReader, unknownEnumValue: PublicationType.unknown)
+    @Default(PublicationType.post)
+    PublicationType type,
     @Default('2022-12-22T10:10:00+00:00') String timePublished,
     @Default('') String textHtml,
     @Default(PublicationAuthor.empty) PublicationAuthor author,
     @Default(PublicationStatistics.empty) PublicationStatistics statistics,
     @Default(PublicationRelatedData.empty) PublicationRelatedData relatedData,
     @Default([]) List<PublicationHub> hubs,
-    @Default([]) List<String> tags,
+    @JsonKey(readValue: _tagsReader) @Default([]) List<String> tags,
   }) = PublicationPost;
 
   factory PublicationSealed.fromJson(Map<String, dynamic> json) =>
-      _$PublicationSealedFromJson(json);
+      const PublicationResponseConverter().fromJson(json);
+
+  @override
+  DateTime get publishedAt => .parse(timePublished).toLocal();
+
+  @override
+  bool get isEmpty => this == Publication.empty;
 }
 
 class PublicationResponseConverter
@@ -73,26 +82,38 @@ class PublicationResponseConverter
 
   @override
   PublicationSealed fromJson(Map<String, dynamic> json) {
-    // type data was already set (e.g. because we serialized it ourselves)
-    if (json['runtimeType'] != null) {
-      return PublicationSealed.fromJson(json);
-    }
-
     final String? typeValue = json['publicationType'] ?? json['postType'];
 
-    final resolvedType = switch (typeValue != null) {
-      true => PublicationType.fromString(typeValue!),
-      false => PublicationType.unknown,
+    final PublicationType resolvedType = switch (typeValue != null) {
+      true => .fromString(typeValue!),
+      false => .unknown,
     };
 
     return switch (resolvedType) {
-      PublicationType.article ||
-      PublicationType.news => PublicationCommon.fromJson(json),
-      PublicationType.post => PublicationPost.fromJson(json),
+      .article || .news => PublicationCommon.fromJson(json),
+      .post => PublicationPost.fromJson(json),
       _ => PublicationCommon.fromJson(json),
     };
   }
 
   @override
   Map<String, dynamic> toJson(PublicationSealed data) => data.toJson();
+}
+
+Object? _tagsReader(Map<dynamic, dynamic> json, String key) {
+  if (key == 'tags') {
+    return List<Map<String, dynamic>>.from(
+      json['tags'] ?? [],
+    ).map((tag) => tag['titleHtml']).toList();
+  }
+
+  return json[key];
+}
+
+Object? _typeReader(Map<dynamic, dynamic> json, String key) {
+  if (key == 'type') {
+    return json['postType'] ?? json['publicationType'];
+  }
+
+  return json[key];
 }
