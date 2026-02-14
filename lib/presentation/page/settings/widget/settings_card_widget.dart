@@ -19,6 +19,8 @@ class SettingsCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = context.theme;
+
     return FlabrCard(
       margin: EdgeInsets.zero,
       padding: padding,
@@ -29,15 +31,12 @@ class SettingsCardWidget extends StatelessWidget {
           if (title != null)
             Text(
               title!,
-              style: context.theme.textTheme.titleLarge!.copyWith(
-                fontVariations: [const FontVariation.weight(400)],
+              style: theme.textTheme.titleLarge!.copyWith(
+                fontWeight: .w400,
               ),
             ),
           if (subtitle != null)
-            Text(
-              subtitle!,
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
+            Text(subtitle!, style: theme.textTheme.bodyMedium),
           child,
         ],
       ),

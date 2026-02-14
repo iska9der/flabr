@@ -10,7 +10,6 @@ linter:
     prefer_relative_imports: true
     avoid_relative_lib_imports: true
     avoid_init_to_null: true
-    avoid_null_checks_in_equality_operators: true
     avoid_redundant_argument_values: true
     avoid_renaming_method_parameters: true
     avoid_return_types_on_setters: true

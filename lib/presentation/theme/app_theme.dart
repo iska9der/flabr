@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'app_colors.dart';
 import 'app_scheme.dart';
+import 'app_typography.dart';
 import 'common.dart';
 
 abstract class AppTheme {
@@ -19,39 +20,7 @@ abstract class AppTheme {
     required ColorScheme scheme,
     required AppColors colors,
   }) {
-    var typography = Typography.material2021(colorScheme: scheme);
-
-    var textTheme = switch (scheme.brightness) {
-      Brightness.light => typography.black,
-      Brightness.dark => typography.white,
-    };
-
-    textTheme = textTheme.copyWith(
-      titleSmall: textTheme.titleSmall?.copyWith(
-        fontFamily: 'Geologica',
-        fontVariations: [const FontVariation.weight(400)],
-      ),
-      titleMedium: textTheme.titleMedium?.copyWith(
-        fontFamily: 'Geologica',
-        fontVariations: [const FontVariation.weight(500)],
-      ),
-      titleLarge: textTheme.titleLarge?.copyWith(
-        fontFamily: 'Geologica',
-        fontVariations: [const FontVariation.weight(600)],
-      ),
-      headlineSmall: textTheme.headlineSmall?.copyWith(
-        fontFamily: 'Geologica',
-        fontVariations: [const FontVariation.weight(400)],
-      ),
-      headlineMedium: textTheme.headlineMedium?.copyWith(
-        fontFamily: 'Geologica',
-        fontVariations: [const FontVariation.weight(500)],
-      ),
-      headlineLarge: textTheme.headlineLarge?.copyWith(
-        fontFamily: 'Geologica',
-        fontVariations: [const FontVariation.weight(600)],
-      ),
-    );
+    var textTheme = AppTypography.textTheme(scheme: scheme);
 
     var data = ThemeData(
       useMaterial3: true,
