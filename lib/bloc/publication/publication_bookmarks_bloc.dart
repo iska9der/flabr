@@ -22,13 +22,16 @@ part 'publication_bookmarks_state.dart';
 class PublicationBookmarksBloc
     extends Bloc<PublicationBookmarksEvent, PublicationBookmarksState> {
   PublicationBookmarksBloc({
+    required Logger logger,
     required PublicationRepository repository,
-  }) : _repository = repository,
+  }) : _logger = logger,
+       _repository = repository,
        super(const PublicationBookmarksState()) {
     on<PublicationBookmarksUpdated>(_onUpdated, transformer: sequential());
     on<PublicationBookmarkToggled>(_onToggled, transformer: concurrent());
   }
 
+  final Logger _logger;
   final PublicationRepository _repository;
 
   void _onUpdated(
@@ -54,9 +57,9 @@ class PublicationBookmarksBloc
     final bookmark = state.bookmarks[event.publicationId];
 
     if (bookmark == null) {
-      logger.warning(
+      _logger.warning(
         'Закладки: не найдена запись в стейте',
-        stackTrace: StackTrace.current,
+        stackTrace: .current,
       );
 
       return;
@@ -109,7 +112,7 @@ class PublicationBookmarksBloc
         ),
       );
 
-      addError(error, stackTrace);
+      super.onError(error, stackTrace);
     }
   }
 }

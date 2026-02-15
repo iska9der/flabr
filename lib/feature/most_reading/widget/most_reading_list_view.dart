@@ -13,28 +13,27 @@ class _ListViewState extends State<_ListView> {
   @override
   Widget build(BuildContext context) {
     final appRouter = getIt<AppRouter>();
+    final theme = context.theme;
 
     return BlocListener<MostReadingCubit, MostReadingState>(
       listener: (context, state) {
-        if (state.status == LoadingStatus.success) {
+        if (state.status == .success) {
           context.read<PublicationBookmarksBloc>().add(
-            PublicationBookmarksEvent.updated(
-              publications: state.publications,
-            ),
+            .updated(publications: state.publications),
           );
         }
       },
       child: BlocBuilder<MostReadingCubit, MostReadingState>(
         builder: (context, state) {
-          if (state.status == LoadingStatus.initial) {
+          if (state.status == .initial) {
             context.read<MostReadingCubit>().fetch();
           }
 
-          if (state.status == LoadingStatus.initial ||
-              state.status == LoadingStatus.loading ||
-              state.status == LoadingStatus.failure) {
+          if (state.status == .initial ||
+              state.status == .loading ||
+              state.status == .failure) {
             return const Padding(
-              padding: EdgeInsets.symmetric(vertical: 24),
+              padding: .symmetric(vertical: 24),
               child: CircleIndicator.medium(),
             );
           }
@@ -53,8 +52,8 @@ class _ListViewState extends State<_ListView> {
                   final model = state.publications[index];
 
                   return FlabrCard(
-                    margin: EdgeInsets.zero,
-                    padding: EdgeInsets.symmetric(
+                    margin: .zero,
+                    padding: .symmetric(
                       horizontal: AppInsets.screenPadding.left,
                     ),
                     color: Colors.transparent,
@@ -66,19 +65,19 @@ class _ListViewState extends State<_ListView> {
                       ),
                     ),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: .start,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.only(bottom: 4),
+                          padding: const .only(bottom: 4),
                           child: Text(
                             model.titleHtml,
-                            style: Theme.of(context).textTheme.titleSmall,
+                            style: theme.textTheme.titleSmall,
                           ),
                         ),
                         Row(
                           children: [
                             PublicationStatIconButton(
-                              padding: EdgeInsets.zero,
+                              padding: .zero,
                               icon: Icons.remove_red_eye_rounded,
                               value: model.statistics.readingCount.compact(),
                             ),

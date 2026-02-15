@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../core/component/router/app_router.dart';
+import '../../../../../core/component/router/router.dart';
 import '../../../../../data/model/hub/hub.dart';
 import '../../../../../data/model/render_type_enum.dart';
 import '../../../../../data/model/stat_type_enum.dart';
@@ -27,10 +27,9 @@ class HubCardWidget extends StatelessWidget {
     final tagStyle = Theme.of(context).textTheme.bodySmall;
 
     return FlabrCard(
-      onTap:
-          () => getIt<AppRouter>().navigate(
-            HubDashboardRoute(alias: model.alias),
-          ),
+      onTap: () => getIt<AppRouter>().navigate(
+        HubDashboardRoute(alias: model.alias),
+      ),
       child: Column(
         spacing: 10,
         children: [
@@ -56,20 +55,19 @@ class HubCardWidget extends StatelessWidget {
                     ),
                     const SizedBox(height: 10),
                     Wrap(
-                      children:
-                          model.commonTags
-                              .map(
-                                (tag) => Padding(
-                                  padding: const EdgeInsets.fromLTRB(
-                                    0,
-                                    3,
-                                    10,
-                                    3,
-                                  ),
-                                  child: Text(tag, style: tagStyle),
-                                ),
-                              )
-                              .toList(),
+                      children: model.commonTags
+                          .map(
+                            (tag) => Padding(
+                              padding: const EdgeInsets.fromLTRB(
+                                0,
+                                3,
+                                10,
+                                3,
+                              ),
+                              child: Text(tag, style: tagStyle),
+                            ),
+                          )
+                          .toList(),
                     ),
                   ],
                 ),

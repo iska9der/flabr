@@ -2,7 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import '../../../../../core/component/router/app_router.dart';
+import '../../../../../core/component/router/router.dart';
 import '../../../../../data/model/company/company.dart';
 import '../../../../../di/di.dart';
 import '../../../../../feature/image_action/image_action.dart';
@@ -24,38 +24,34 @@ class CompanyDetailsWidget extends StatelessWidget {
             title: 'Контакты',
             child: Wrap(
               spacing: 4,
-              children:
-                  card.contacts
-                      .map(
-                        (contact) => FlabrCard(
-                          onTap:
-                              contact.url.isNotEmpty
-                                  ? () =>
-                                      getIt<AppRouter>().launchUrl(contact.url)
-                                  : null,
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            spacing: 10,
-                            children: [
-                              NetworkImageWidget(
-                                imageUrl: contact.favicon,
-                                height: 20,
-                                loadingPlaceholder: const Icon(
-                                  Icons.link_outlined,
-                                  size: 20,
-                                ),
-                                errorBuilder:
-                                    (_, _, _) => const Icon(
-                                      Icons.link_outlined,
-                                      size: 20,
-                                    ),
-                              ),
-                              Text(contact.title),
-                            ],
+              children: card.contacts
+                  .map(
+                    (contact) => FlabrCard(
+                      onTap: contact.url.isNotEmpty
+                          ? () => getIt<AppRouter>().launchUrl(contact.url)
+                          : null,
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        spacing: 10,
+                        children: [
+                          NetworkImageWidget(
+                            imageUrl: contact.favicon,
+                            height: 20,
+                            loadingPlaceholder: const Icon(
+                              Icons.link_outlined,
+                              size: 20,
+                            ),
+                            errorBuilder: (_, _, _) => const Icon(
+                              Icons.link_outlined,
+                              size: 20,
+                            ),
                           ),
-                        ),
-                      )
-                      .toList(),
+                          Text(contact.title),
+                        ],
+                      ),
+                    ),
+                  )
+                  .toList(),
             ),
           ),
         SectionContainerWidget(
@@ -67,10 +63,9 @@ class CompanyDetailsWidget extends StatelessWidget {
                 ListTile(
                   title: const Text('Сайт'),
                   subtitle: Text(card.information.siteUrl),
-                  onTap:
-                      () => getIt.get<AppRouter>().launchUrl(
-                        card.information.siteUrl,
-                      ),
+                  onTap: () => getIt.get<AppRouter>().launchUrl(
+                    card.information.siteUrl,
+                  ),
                 ),
               ListTile(
                 title: const Text('Дата регистрации'),
@@ -94,17 +89,16 @@ class CompanyDetailsWidget extends StatelessWidget {
                 ListTile(
                   title: const Text('Представитель'),
                   subtitle: Text(card.information.representativeUser.name),
-                  onTap:
-                      () => context.router.navigate(
-                        ServicesFlowRoute(
-                          children: [
-                            UserDashboardRoute(
-                              alias: card.information.representativeUser.alias,
-                              children: [UserDetailRoute()],
-                            ),
-                          ],
+                  onTap: () => context.router.navigate(
+                    ServicesFlowRoute(
+                      children: [
+                        UserDashboardRoute(
+                          alias: card.information.representativeUser.alias,
+                          children: [UserDetailRoute()],
                         ),
-                      ),
+                      ],
+                    ),
+                  ),
                 ),
             ],
           ),

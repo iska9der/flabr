@@ -1,14 +1,14 @@
 import 'package:device_preview/device_preview.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 
-import 'bootstrap/app_bootstrap.dart';
+import '../../di/di.dart';
 import 'config/app_config.dart';
 import 'config/app_config_provider.dart';
+import 'config/app_config_repository.dart';
 import 'coordinator/global_bloc_listener.dart';
 import 'provider/global_bloc_provider.dart';
 import 'view/application_view.dart';
-import 'view/splash_screen.dart';
 
 export 'config/app_config.dart';
 export 'view/application_view.dart';
@@ -23,35 +23,30 @@ export 'view/application_view.dart';
 /// [AppBootstrap] - управляет инициализацией и splash screen
 /// [ApplicationView] - основной MaterialApp виджет
 class Application extends StatelessWidget {
-  const Application({
-    super.key,
-    this.config,
-  });
+  const Application({super.key, this.config = .prod});
 
   /// Конфигурация приложения.
   /// По умолчанию использует production конфигурацию.
   /// Для разработки передайте [AppConfig.dev].
-  final AppConfig? config;
+  final AppConfig config;
 
   @override
   Widget build(BuildContext context) {
-    final appConfig = config ?? (kDebugMode ? AppConfig.dev : AppConfig.prod);
+    /// Убираем нативный экран загрузки
+    FlutterNativeSplash.remove();
 
     final app = AppConfigProvider(
-      config: appConfig,
-      child: GlobalBlocProvider(
+      config: config,
+      repository: getIt<AppConfigRepository>(),
+      child: const GlobalBlocProvider(
         child: GlobalBlocListener(
-          child: AppBootstrap(
-            minimumDuration: appConfig.splashMinDuration,
-            splash: const SplashScreen(),
-            child: const ApplicationView(),
-          ),
+          child: ApplicationView(),
         ),
       ),
     );
 
     // Оборачиваем в DevicePreview только для dev окружения
-    if (appConfig.enableDevicePreview) {
+    if (config.enableDevicePreview) {
       return DevicePreview(builder: (_) => app);
     }
 

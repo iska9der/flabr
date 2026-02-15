@@ -2,7 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 
-import '../../../../../core/component/router/app_router.dart';
+import '../../../../../core/component/router/router.dart';
 import '../../../../../data/model/company/company.dart';
 import '../../../../../data/model/render_type_enum.dart';
 import '../../../../../data/model/stat_type_enum.dart';
@@ -71,31 +71,30 @@ class CompanyCardWidget extends StatelessWidget {
             const Text('Пишет в хабы:'),
             Wrap(
               spacing: 14,
-              children:
-                  company.commonHubs.map((hub) {
-                    var title = hub.title;
-                    if (hub.isProfiled) {
-                      title += '*';
-                    }
+              children: company.commonHubs.map((hub) {
+                var title = hub.title;
+                if (hub.isProfiled) {
+                  title += '*';
+                }
 
-                    final route =
-                        switch (hub.type.isCorporative) {
-                              true => CompanyDashboardRoute(
-                                alias: hub.alias,
-                              ),
-                              false => HubDashboardRoute(alias: hub.alias),
-                            }
-                            as PageRouteInfo;
+                final route =
+                    switch (hub.type.isCorporative) {
+                          true => CompanyDashboardRoute(
+                            alias: hub.alias,
+                          ),
+                          false => HubDashboardRoute(alias: hub.alias),
+                        }
+                        as PageRouteInfo;
 
-                    return InkWell(
-                      onTap: () => getIt<AppRouter>().navigate(route),
-                      borderRadius: AppStyles.cardBorderRadius,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8),
-                        child: Text(title, style: hubLinkStyle),
-                      ),
-                    );
-                  }).toList(),
+                return InkWell(
+                  onTap: () => getIt<AppRouter>().navigate(route),
+                  borderRadius: AppStyles.cardBorderRadius,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    child: Text(title, style: hubLinkStyle),
+                  ),
+                );
+              }).toList(),
             ),
           ],
           const SizedBox(height: 10),

@@ -1,61 +1,27 @@
-import 'package:auto_route/auto_route.dart';
-import 'package:collection/collection.dart';
-import 'package:flutter/material.dart';
-import 'package:injectable/injectable.dart';
-import 'package:url_launcher/url_launcher_string.dart';
-
-import '../../../data/model/publication/publication.dart';
-import '../../../presentation/page/dashboard_page.dart';
-import '../../../presentation/page/publications/articles/article_flow.dart';
-import '../../../presentation/page/publications/articles/article_list_page.dart';
-import '../../../presentation/page/publications/feed/feed_flow.dart';
-import '../../../presentation/page/publications/feed/feed_list_page.dart';
-import '../../../presentation/page/publications/news/news_flow.dart';
-import '../../../presentation/page/publications/news/news_list_page.dart';
-import '../../../presentation/page/publications/posts/post_list_page.dart';
-import '../../../presentation/page/publications/posts/posts_flow.dart';
-import '../../../presentation/page/publications/publication_comment_page.dart';
-import '../../../presentation/page/publications/publication_dashboard_page.dart';
-import '../../../presentation/page/publications/publication_detail_page.dart';
-import '../../../presentation/page/publications/publication_flow.dart';
-import '../../../presentation/page/publications/search/search_anywhere_page.dart';
-import '../../../presentation/page/publications/tracker/tracker_dashboard_page.dart';
-import '../../../presentation/page/publications/tracker/tracker_flow.dart';
-import '../../../presentation/page/publications/tracker/tracker_publications_page.dart';
-import '../../../presentation/page/publications/tracker/tracker_subscription_page.dart';
-import '../../../presentation/page/publications/tracker/tracker_system_page.dart';
-import '../../../presentation/page/services/company/company_dashboard_page.dart';
-import '../../../presentation/page/services/company/company_detail_page.dart';
-import '../../../presentation/page/services/company/company_list_page.dart';
-import '../../../presentation/page/services/hub/hub_dashboard_page.dart';
-import '../../../presentation/page/services/hub/hub_detail_page.dart';
-import '../../../presentation/page/services/hub/hub_list_page.dart';
-import '../../../presentation/page/services/services_flow.dart';
-import '../../../presentation/page/services/services_page.dart';
-import '../../../presentation/page/services/user/user_bookmark_list_page.dart';
-import '../../../presentation/page/services/user/user_comment_list_page.dart';
-import '../../../presentation/page/services/user/user_dashboard_page.dart';
-import '../../../presentation/page/services/user/user_detail_page.dart';
-import '../../../presentation/page/services/user/user_list_page.dart';
-import '../../../presentation/page/services/user/user_publication_list_page.dart';
-import '../../../presentation/page/settings/settings_page.dart';
-
-part 'app_router.gr.dart';
-part 'url_launcher.dart';
+part of 'router.dart';
 
 @Singleton()
-@AutoRouterConfig(replaceInRouteName: 'Page,Route')
+// ignore: avoid_redundant_argument_values
+@AutoRouterConfig(replaceInRouteName: 'Page|Screen,Route')
 // extend the generated private router
 class AppRouter extends RootStackRouter {
+  AppRouter();
+
   @override
   RouteType get defaultRouteType => const RouteType.material();
 
   @override
   final List<AutoRoute> routes = [
+    CustomRoute(
+      page: SplashRoute.page,
+      transitionsBuilder: TransitionsBuilders.noTransition,
+    ),
+
     AutoRoute(
       page: DashboardRoute.page,
-      path: '/',
       initial: true,
+      guards: [SplashGuard()],
+      path: '/',
       children: [
         /////////////////////////
         /// Таб "Публикации"

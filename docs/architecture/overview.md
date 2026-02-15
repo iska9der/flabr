@@ -115,7 +115,7 @@ BLoC pattern throughout the application.
 
 Uses `auto_route` for type-safe routing.
 
-- Router defined in `lib/core/component/router/app_router.dart`
+- Router defined in `lib/core/component/router/router.dart`
 - Routes generated via code generation
 - Type-safe navigation with compile-time checking
 

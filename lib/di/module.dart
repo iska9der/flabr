@@ -8,6 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ya_summary/ya_summary.dart';
 
 import '../core/component/http/http.dart';
+import '../core/component/logger/logger.dart';
 import '../core/component/storage/storage.dart';
 import '../core/constants/constants.dart';
 import '../data/repository/repository.dart';
@@ -55,10 +56,12 @@ abstract class RegisterModule {
   @Singleton()
   HttpClient mobileClient(
     Dio dio,
+    Logger logger,
     TokenRepository repository,
     LanguageRepository languageRepository,
   ) => HabraClient(
     dio..options = dio.options.copyWith(baseUrl: Urls.mobileApiUrl),
+    logger: logger,
     tokenRepository: repository,
     languageRepository: languageRepository,
   )..init();
@@ -67,10 +70,12 @@ abstract class RegisterModule {
   @Singleton()
   HttpClient siteClient(
     Dio dio,
+    Logger logger,
     TokenRepository repository,
     LanguageRepository languageRepository,
   ) => HabraClient(
     dio..options = dio.options.copyWith(baseUrl: Urls.siteApiUrl),
+    logger: logger,
     tokenRepository: repository,
     languageRepository: languageRepository,
   )..init();

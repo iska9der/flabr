@@ -5,7 +5,7 @@ import 'package:ya_summary/ya_summary.dart';
 
 import '../../../../../../bloc/auth/auth_cubit.dart';
 import '../../../../../../bloc/publication/publication_bookmarks_bloc.dart';
-import '../../../../../../core/component/router/app_router.dart';
+import '../../../../../../core/component/router/router.dart';
 import '../../../../../../core/constants/constants.dart';
 import '../../../../../../data/model/publication/publication.dart';
 import '../../../../../../di/di.dart';

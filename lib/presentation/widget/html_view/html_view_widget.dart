@@ -13,7 +13,7 @@ import 'package:fwfh_svg/fwfh_svg.dart';
 import 'package:fwfh_webview/fwfh_webview.dart';
 
 import '../../../bloc/settings/settings_cubit.dart';
-import '../../../core/component/router/app_router.dart';
+import '../../../core/component/router/router.dart';
 import '../../../di/di.dart';
 import '../../extension/extension.dart';
 import '../../theme/theme.dart';

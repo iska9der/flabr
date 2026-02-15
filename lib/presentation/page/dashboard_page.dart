@@ -1,14 +1,12 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
 import '../../bloc/auth/auth_cubit.dart';
 import '../../bloc/profile/profile_bloc.dart';
 import '../../bloc/settings/settings_cubit.dart';
-import '../../core/component/router/app_router.dart';
-import '../../data/model/loading_status_enum.dart';
+import '../../core/component/router/router.dart';
 import '../extension/extension.dart';
 import '../theme/theme.dart';
 
@@ -22,9 +20,23 @@ class DashboardPage extends StatefulWidget {
 
 class _DashboardPageState extends State<DashboardPage> {
   late final double themeHeight = context.theme.navigationBarTheme.height!;
-  late final ValueNotifier<double> barHeight = ValueNotifier(themeHeight);
-  late bool visibleOnScroll =
-      context.read<SettingsCubit>().state.misc.navigationOnScrollVisible;
+  late final ValueNotifier<double> barHeight = .new(themeHeight);
+  late bool visibleOnScroll = context
+      .read<SettingsCubit>()
+      .state
+      .misc
+      .navigationOnScrollVisible;
+
+  @override
+  void initState() {
+    super.initState();
+
+    if (context.read<ProfileBloc>().state.status == .failure) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        showProfileCorruptedAlert();
+      });
+    }
+  }
 
   @override
   void dispose() {
@@ -33,16 +45,39 @@ class _DashboardPageState extends State<DashboardPage> {
     super.dispose();
   }
 
+  /// Если при загрузке профиля возникла ошибка, показываем уведомление
+  /// об ошибке авторизации. Это может произойти, если при логине пришел
+  /// некорректный connectSSID и [ProfileEvent.fetchMe] вернул null
+  void showProfileCorruptedAlert() {
+    context.showAlert(
+      title: const Text('Ошибка авторизации'),
+      content: const Text(
+        'Возникли проблемы с полученым токеном\n\n'
+        'Попробуйте перезайти в аккаунт, или игнорируйте '
+        'это назойливое окно\n\n'
+        'Может само пройдет? 🤔',
+      ),
+      actionsBuilder: (context) => [
+        TextButton(
+          onPressed: () {
+            context.read<AuthCubit>().logOut();
+            Navigator.of(context).pop();
+          },
+          child: const Text('Выйти из аккаунта'),
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return MultiBlocListener(
       listeners: [
         /// Слушаем изменение настройки видимости панели навигации
         BlocListener<SettingsCubit, SettingsState>(
-          listenWhen:
-              (previous, current) =>
-                  previous.misc.navigationOnScrollVisible !=
-                  current.misc.navigationOnScrollVisible,
+          listenWhen: (previous, current) =>
+              previous.misc.navigationOnScrollVisible !=
+              current.misc.navigationOnScrollVisible,
           listener: (context, state) {
             visibleOnScroll = state.misc.navigationOnScrollVisible;
             if (visibleOnScroll) {
@@ -52,35 +87,10 @@ class _DashboardPageState extends State<DashboardPage> {
           },
         ),
 
-        /// Выводим уведомление об ошибке, если возникла ошибка при получении
-        /// данных о вошедшем юзере. Ошибка возникает, если при логине
-        /// пришел некорректный connectSSID и [AuthCubit.fetchMe()]
-        /// вернул null
         BlocListener<ProfileBloc, ProfileState>(
-          listenWhen:
-              (p, c) =>
-                  p.status == LoadingStatus.loading &&
-                  c.status == LoadingStatus.failure,
+          listenWhen: (p, c) => p.status == .loading && c.status == .failure,
           listener: (context, state) {
-            context.showAlert(
-              title: const Text('Ошибка авторизации'),
-              content: const Text(
-                'Возникли проблемы с полученым токеном\n\n'
-                'Попробуйте перезайти в аккаунт, или игнорируйте '
-                'это назойливое окно\n\n'
-                'Может само пройдет? 🤔',
-              ),
-              actionsBuilder:
-                  (context) => [
-                    TextButton(
-                      child: const Text('Выйти из аккаунта'),
-                      onPressed: () {
-                        context.read<AuthCubit>().logOut();
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                  ],
-            );
+            showProfileCorruptedAlert();
           },
         ),
       ],
@@ -95,14 +105,14 @@ class _DashboardPageState extends State<DashboardPage> {
           final direction = notification.direction;
           final axis = notification.metrics.axisDirection;
 
-          if (axis == AxisDirection.right || axis == AxisDirection.left) {
+          if (axis == .right || axis == .left) {
             return false;
           }
 
           double? newHeight = barHeight.value;
-          if (direction == ScrollDirection.forward) {
+          if (direction == .forward) {
             newHeight = themeHeight;
-          } else if (direction == ScrollDirection.reverse) {
+          } else if (direction == .reverse) {
             newHeight = 0;
           }
           barHeight.value = newHeight;
@@ -126,10 +136,7 @@ class _DashboardPageState extends State<DashboardPage> {
                     ResponsiveVisibility(
                       visible: false,
                       visibleConditions: const [
-                        Condition.largerThan(
-                          name: ScreenType.mobile,
-                          value: true,
-                        ),
+                        .largerThan(name: ScreenType.mobile, value: true),
                       ],
                       child: _Drawer(router: tabsRouter),
                     ),
@@ -139,7 +146,7 @@ class _DashboardPageState extends State<DashboardPage> {
               ),
               bottomNavigationBar: ResponsiveVisibility(
                 hiddenConditions: const [
-                  Condition.largerThan(name: ScreenType.mobile, value: false),
+                  .largerThan(name: ScreenType.mobile, value: false),
                 ],
                 child: ValueListenableBuilder<double>(
                   valueListenable: barHeight,
@@ -168,11 +175,11 @@ class _Drawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const padding = EdgeInsets.symmetric(vertical: 10);
+    const EdgeInsets padding = .symmetric(vertical: 10);
 
     return NavigationRail(
       elevation: 5,
-      labelType: NavigationRailLabelType.all,
+      labelType: .all,
       selectedIndex: router.activeIndex,
       onDestinationSelected: (i) {
         /// при нажатию на таб, в котором
@@ -213,7 +220,7 @@ class _BottomNavigation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return NavigationBar(
-      labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
+      labelBehavior: .alwaysShow,
       selectedIndex: router.activeIndex,
       onDestinationSelected: (i) {
         /// при нажатию на таб, в котором

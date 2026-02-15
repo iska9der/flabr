@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
-import '../../../core/component/router/app_router.dart';
+import '../../../core/component/router/router.dart';
 import '../../../di/di.dart';
 import '../../extension/context.dart';
 import 'lazy_visibility_widget.dart';

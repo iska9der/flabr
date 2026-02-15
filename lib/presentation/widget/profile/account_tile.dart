@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 import '../../../bloc/profile/profile_bloc.dart';
-import '../../../data/model/loading_status_enum.dart';
 import '../../extension/extension.dart';
 import '../../theme/theme.dart';
 import '../card_avatar_widget.dart';
@@ -26,10 +25,10 @@ class AccountTile extends StatelessWidget {
         final subtitleText = profile.isEmpty ? 'Вы не вошли' : profile.fullname;
 
         return Skeletonizer(
-          enabled: state.status == LoadingStatus.loading,
+          enabled: state.status == .loading,
           child: ListTile(
             tileColor: theme.colors.card,
-            contentPadding: const EdgeInsets.symmetric(horizontal: 12),
+            contentPadding: const .symmetric(horizontal: 12),
             title: Text(titleText),
             subtitle: Text(subtitleText),
             leading: switch (profile.isEmpty) {

@@ -47,7 +47,7 @@ class SettingsView extends StatelessWidget {
                   title: Keys.sidToken,
                   subtitle: 'Если не удается войти через форму логина',
                   child: Padding(
-                    padding: EdgeInsets.only(top: 12.0),
+                    padding: .only(top: 12.0),
                     child: ConnectSidWidget(),
                   ),
                 ),
@@ -55,7 +55,7 @@ class SettingsView extends StatelessWidget {
                   title: 'YandexGPT',
                   subtitle: 'Для генерации пересказов статей',
                   child: Padding(
-                    padding: const EdgeInsets.only(top: 12.0),
+                    padding: const .only(top: 12.0),
                     child: SummaryTokenWidget(
                       onShowSnack: (text) {
                         context.showSnack(content: Text(text));
@@ -107,9 +107,9 @@ class _UIThemeWidgetState extends State<UIThemeWidget> {
 
   @override
   void initState() {
-    themeMode = context.read<SettingsCubit>().state.theme.mode;
-
     super.initState();
+
+    themeMode = context.read<SettingsCubit>().state.theme.mode;
   }
 
   @override
@@ -117,15 +117,15 @@ class _UIThemeWidgetState extends State<UIThemeWidget> {
     return SettingsCardWidget(
       title: 'Цветовая тема',
       child: Padding(
-        padding: const EdgeInsets.only(top: 8.0),
+        padding: const .only(top: 8.0),
         child: FilterChipList(
           options: ThemeMode.values
               .map(
                 (e) => FilterOption(
                   label: switch (e) {
-                    ThemeMode.system => 'Системная',
-                    ThemeMode.light => 'Светлая',
-                    ThemeMode.dark => 'Темная',
+                    .system => 'Системная',
+                    .light => 'Светлая',
+                    .dark => 'Темная',
                   },
                   value: e.name,
                 ),
@@ -139,9 +139,7 @@ class _UIThemeWidgetState extends State<UIThemeWidget> {
             final settingsCubit = context.read<SettingsCubit>();
 
             setState(() {
-              themeMode = ThemeMode.values.firstWhere(
-                (e) => e.name == option.value,
-              );
+              themeMode = .values.firstWhere((e) => e.name == option.value);
               isLoading = true;
             });
 
@@ -166,7 +164,7 @@ class UILangWidget extends StatelessWidget {
     return SettingsCardWidget(
       title: 'Язык интерфейса',
       child: Padding(
-        padding: const EdgeInsets.only(top: 8.0),
+        padding: const .only(top: 8.0),
         child: BlocBuilder<SettingsCubit, SettingsState>(
           buildWhen: (previous, current) => previous.langUI != current.langUI,
           builder: (context, state) {
@@ -176,8 +174,8 @@ class UILangWidget extends StatelessWidget {
                     (lang) => FilterOption(
                       value: lang.name,
                       label: switch (lang) {
-                        Language.ru => 'Русский',
-                        Language.en => 'Английский',
+                        .ru => 'Русский',
+                        .en => 'Английский',
                       },
                     ),
                   )
@@ -200,6 +198,8 @@ class ArticlesLangWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final settingsCubit = context.read<SettingsCubit>();
+
     return SettingsCardWidget(
       title: 'Язык публикаций',
       subtitle: 'должен быть выбран хотя бы один',
@@ -207,23 +207,17 @@ class ArticlesLangWidget extends StatelessWidget {
         buildWhen: (p, c) => p.langArticles != c.langArticles,
         builder: (context, state) {
           return Column(
-            mainAxisSize: MainAxisSize.min,
+            mainAxisSize: .min,
             children: Language.values
                 .map(
                   (lang) => SettingsCheckboxWidget(
-                    type: SettingsCheckboxType.checkboxTile,
+                    type: .checkboxTile,
                     title: Text(lang.label),
                     initialValue: state.langArticles.contains(lang),
-                    validate: (bool val) => context
-                        .read<SettingsCubit>()
-                        .validateChangeArticlesLang(
-                          lang,
-                          isEnabled: val,
-                        )
-                        .$1,
-                    onChanged: (bool? val) => context
-                        .read<SettingsCubit>()
-                        .changeArticleLang(lang, isEnabled: val),
+                    validate: (bool val) =>
+                        settingsCubit.validateLang(lang, isEnabled: val).$1,
+                    onChanged: (bool? val) =>
+                        settingsCubit.changeArticleLang(lang, isEnabled: val),
                   ),
                 )
                 .toList(),
@@ -244,8 +238,8 @@ class SettingsFeedWidget extends StatelessWidget {
     return SettingsCardWidget(
       title: 'Карточки статей',
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: .start,
+        mainAxisSize: .min,
         children: [
           SettingsCheckboxWidget(
             initialValue: settingsCubit.state.feed.isImageVisible,
@@ -303,7 +297,7 @@ class SettingScrollVariantWidget extends StatelessWidget {
             previous.misc.scrollVariant != current.misc.scrollVariant,
         builder: (context, state) {
           return Padding(
-            padding: const EdgeInsets.only(top: 8.0),
+            padding: const .only(top: 8.0),
             child: FilterChipList(
               options: ScrollVariant.values
                   .map((e) => FilterOption(label: e.label, value: e.label))

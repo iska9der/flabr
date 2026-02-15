@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../bloc/company/company_cubit.dart';
-import '../../../../core/component/router/app_router.dart';
+import '../../../../core/component/router/router.dart';
 import '../../../../di/di.dart';
 import '../../../../feature/scaffold/scaffold.dart';
 import '../../../theme/theme.dart';

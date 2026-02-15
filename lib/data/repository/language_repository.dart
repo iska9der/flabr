@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:injectable/injectable.dart';
+import 'package:rxdart/rxdart.dart';
 
 import '../../core/component/storage/storage.dart';
 import '../../core/constants/constants.dart';
@@ -16,29 +17,30 @@ class LanguageRepository {
 
   final CacheStorage _storage;
 
-  final _uiCtrl = StreamController<Language>.broadcast();
-  Stream<Language> get ui => _uiCtrl.stream;
+  final _uiCtrl = BehaviorSubject<Language>();
+  Stream<Language> get onUIChange => _uiCtrl.asBroadcastStream();
 
-  final _publicationsCtrl = StreamController<List<Language>>.broadcast();
-  Stream<List<Language>> get publications => _publicationsCtrl.stream;
+  final _pubUICtrl = BehaviorSubject<List<Language>>();
+  Stream<List<Language>> get onPubUIChange => _pubUICtrl.asBroadcastStream();
 
   /// Последние значения из стрима
-  Language _ui = Language.ru;
-  Language get lastUI => _ui;
-  List<Language> _publications = [Language.ru];
-  List<Language> get lastPublications => _publications;
+  Language get lastUI => _uiCtrl.valueOrNull ?? Language.ru;
+  List<Language> get lastPublications =>
+      _pubUICtrl.valueOrNull ?? [Language.ru];
 
   /// Получаем кэшированные значения из хранилища
   /// и сохраняем как последния значения, а так же
   /// пушим значения в стрим
   Future<void> _init() async {
     final lang = await _getCachedUILanguage();
-    _ui = lang ?? _ui;
-    _uiCtrl.add(_ui);
+    if (lang != null) {
+      _uiCtrl.add(lang);
+    }
 
-    final publication = await _getCachedPublicationLanguages();
-    _publications = publication ?? _publications;
-    _publicationsCtrl.add(_publications);
+    final pubLang = await _getCachedPublicationLanguages();
+    if (pubLang != null) {
+      _pubUICtrl.add(pubLang);
+    }
   }
 
   Future<Language?> _getCachedUILanguage() async {
@@ -57,7 +59,6 @@ class LanguageRepository {
   }
 
   void changeUILanguage(Language lang) {
-    _ui = lang;
     _uiCtrl.add(lang);
     _storage.write(CacheKeys.langUI, lang.name);
   }
@@ -76,8 +77,7 @@ class LanguageRepository {
   }
 
   void changePublicationsLanguages(List<Language> langs) async {
-    _publications = langs;
-    _publicationsCtrl.add(langs);
+    _pubUICtrl.add(langs);
     String langsAsString = LanguageEncoder.encodeLangs(langs);
     _storage.write(CacheKeys.langPublications, langsAsString);
   }

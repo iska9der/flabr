@@ -1,4 +1,4 @@
-part of 'app_router.dart';
+part of 'router.dart';
 
 extension UrlLauncherExtension on AppRouter {
   /// Открыть внешнюю ссылку во внешнем приложении
@@ -46,9 +46,9 @@ extension UrlLauncherExtension on AppRouter {
       uri.host.contains('habr.com') || uri.host.contains('habrahabr.ru');
 
   static final Map<PublicationType, Set<String>> _publicationMatcher = {
-    PublicationType.article: {'article/', 'articles/', 'blog/', 'blogs/'},
-    PublicationType.post: {'posts/'},
-    PublicationType.news: {'news/'},
+    .article: {'article/', 'articles/', 'blog/', 'blogs/'},
+    .post: {'posts/'},
+    .news: {'news/'},
   };
 
   PublicationType? _publicationTypeHandler(Uri uri) {

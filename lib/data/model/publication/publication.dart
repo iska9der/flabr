@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../../core/component/logger/logger.dart';
+import '../../../di/di.dart';
 import '../../exception/value_exception.dart';
 import '../hub/hub_related_data_model.dart';
 import '../hub_base.dart';

@@ -6,9 +6,8 @@ import 'package:intl/intl.dart';
 
 import '../../../../bloc/tracker/tracker_notifications_bloc.dart';
 import '../../../../bloc/tracker/tracker_notifications_marker_bloc.dart';
-import '../../../../core/component/router/app_router.dart';
+import '../../../../core/component/router/router.dart';
 import '../../../../core/constants/constants.dart';
-import '../../../../data/model/loading_status_enum.dart';
 import '../../../../data/model/tracker/tracker.dart';
 import '../../../../di/di.dart';
 import '../../../extension/extension.dart';
@@ -27,34 +26,33 @@ class TrackerSubscriptionPage extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create:
-              (_) =>
-                  TrackerNotificationsBloc(
-                      repository: getIt(),
-                      category: TrackerNotificationCategory.subscribers,
-                    )
-                    ..add(const TrackerNotificationsEvent.load())
-                    ..add(const TrackerNotificationsEvent.subscribe()),
+          create: (_) =>
+              TrackerNotificationsBloc(
+                  repository: getIt(),
+                  category: .subscribers,
+                )
+                ..add(const .load())
+                ..add(const .subscribe()),
         ),
         BlocProvider(
-          create:
-              (_) => TrackerNotificationsMarkerBloc(
-                repository: getIt(),
-                category: TrackerNotificationCategory.subscribers,
-              ),
+          create: (_) => TrackerNotificationsMarkerBloc(
+            repository: getIt(),
+            category: .subscribers,
+          ),
         ),
       ],
-      child: BlocListener<
-        TrackerNotificationsMarkerBloc,
-        TrackerNotificationsMarkerState
-      >(
-        listener: (context, state) {
-          if (state.status == LoadingStatus.failure && state.error.isNotEmpty) {
-            context.showSnack(content: Text(state.error));
-          }
-        },
-        child: const TrackerSubscriptionView(),
-      ),
+      child:
+          BlocListener<
+            TrackerNotificationsMarkerBloc,
+            TrackerNotificationsMarkerState
+          >(
+            listener: (context, state) {
+              if (state.status == .failure && state.error.isNotEmpty) {
+                context.showSnack(content: Text(state.error));
+              }
+            },
+            child: const TrackerSubscriptionView(),
+          ),
     );
   }
 }
@@ -66,28 +64,24 @@ class TrackerSubscriptionView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocBuilder<TrackerNotificationsBloc, TrackerNotificationsState>(
-        builder:
-            (context, state) => switch (state.status) {
-              LoadingStatus.failure => Center(child: Text(state.error)),
-              LoadingStatus.success => ListView.builder(
-                itemCount: state.response.refs.length,
-                itemExtent: 150,
-                itemBuilder: (context, index) {
-                  final model = state.response.refs[index];
+        builder: (context, state) => switch (state.status) {
+          .failure => Center(child: Text(state.error)),
+          .success => ListView.builder(
+            itemCount: state.response.refs.length,
+            itemExtent: 150,
+            itemBuilder: (context, index) {
+              final model = state.response.refs[index];
 
-                  final key = ValueKey('tracker-subscription-${model.id}');
+              final key = ValueKey('tracker-subscription-${model.id}');
 
-                  if (model.typeEnum == TrackerNotificationType.unknown) {
-                    return _UnknownWidget(key: key, model: model);
-                  }
-
-                  return _NotificationWidget(key: key, model: model);
-                },
-              ),
-              _ => ListView(
-                children: List.filled(6, const TrackerSkeletonWidget()),
-              ),
+              return switch (model.typeEnum) {
+                .unknown => _UnknownWidget(key: key, model: model),
+                _ => _NotificationWidget(key: key, model: model),
+              };
             },
+          ),
+          _ => ListView(children: .filled(6, const TrackerSkeletonWidget())),
+        },
       ),
     );
   }
@@ -100,9 +94,7 @@ class _NotificationWidget extends StatelessWidget {
   final TrackerNotification model;
 
   void markAsRead(BuildContext context, String id) {
-    context.read<TrackerNotificationsMarkerBloc>().add(
-      TrackerNotificationsMarkerEvent.read(ids: [id]),
-    );
+    context.read<TrackerNotificationsMarkerBloc>().add(.read(ids: [id]));
   }
 
   @override
@@ -115,12 +107,12 @@ class _NotificationWidget extends StatelessWidget {
     return FlabrCard(
       color: isUnread ? theme.colors.cardHighlight : null,
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: .start,
         children: [
           if (user != null) UserTextButton(user),
           const Spacer(),
           RichText(
-            overflow: TextOverflow.ellipsis,
+            overflow: .ellipsis,
             maxLines: 3,
             text: TextSpan(
               style: theme.textTheme.bodyMedium,
@@ -131,18 +123,17 @@ class _NotificationWidget extends StatelessWidget {
                   TextSpan(
                     text: publication.text.trim(),
                     style: TextStyle(color: theme.colorScheme.primary),
-                    recognizer:
-                        TapGestureRecognizer()
-                          ..onTap = () {
-                            markAsRead(context, model.id);
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = () {
+                        markAsRead(context, model.id);
 
-                            context.router.push(
-                              PublicationFlowRoute(
-                                id: publication.id,
-                                type: publication.type,
-                              ),
-                            );
-                          },
+                        context.router.push(
+                          PublicationFlowRoute(
+                            id: publication.id,
+                            type: publication.type,
+                          ),
+                        );
+                      },
                   ),
                   const TextSpan(text: '"'),
                 ],
@@ -151,42 +142,49 @@ class _NotificationWidget extends StatelessWidget {
           ),
           const Spacer(),
           Padding(
-            padding: const EdgeInsets.only(right: 8.0),
+            padding: const .only(right: 8.0),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.end,
+              mainAxisAlignment: .spaceBetween,
+              crossAxisAlignment: .end,
               children: [
-                model.timeHappened != null
-                    ? Text(DateFormat.MMMMd().format(model.timeHappened!))
-                    : const SizedBox.shrink(),
-                isUnread
-                    ? SizedBox.square(
-                      dimension: 24,
-                      child: BlocBuilder<
-                        TrackerNotificationsMarkerBloc,
-                        TrackerNotificationsMarkerState
-                      >(
-                        builder: (context, state) {
-                          if (state.status == LoadingStatus.loading &&
-                              state.handledIds.contains(model.id)) {
-                            return const CircleIndicator.medium();
-                          }
+                switch (model.timeHappened != null) {
+                  true => Text(DateFormat.MMMMd().format(model.timeHappened!)),
+                  false => const SizedBox.shrink(),
+                },
+                switch (isUnread) {
+                  true => SizedBox.square(
+                    dimension: 24,
+                    child:
+                        BlocBuilder<
+                          TrackerNotificationsMarkerBloc,
+                          TrackerNotificationsMarkerState
+                        >(
+                          builder: (context, state) {
+                            final isLoading =
+                                state.status == .loading &&
+                                state.handledIds.contains(model.id);
+                            if (isLoading) {
+                              return const CircleIndicator.medium();
+                            }
 
-                          return Tooltip(
-                            message: 'Отметить как прочитанное',
-                            child: GestureDetector(
-                              child: Icon(
-                                Icons.circle,
-                                color: Theme.of(context).colorScheme.primary,
-                                size: 24,
+                            return Tooltip(
+                              message: 'Отметить как прочитанное',
+                              child: GestureDetector(
+                                child: Icon(
+                                  Icons.circle,
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.primary,
+                                  size: 24,
+                                ),
+                                onTap: () => markAsRead(context, model.id),
                               ),
-                              onTap: () => markAsRead(context, model.id),
-                            ),
-                          );
-                        },
-                      ),
-                    )
-                    : const SizedBox.square(dimension: 24),
+                            );
+                          },
+                        ),
+                  ),
+                  false => const SizedBox.square(dimension: 24),
+                },
               ],
             ),
           ),
@@ -204,36 +202,37 @@ class _UnknownWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = context.theme;
+
     return FlabrCard(
-      color: Theme.of(context).colorScheme.primaryContainer,
+      color: theme.colorScheme.primaryContainer,
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: .start,
         children: [
           Text(
             'ALLO?! KTO ETA???',
-            style: Theme.of(context).textTheme.titleSmall,
+            style: theme.textTheme.titleSmall,
           ),
           const Text('Этот тип уведомления разыскивается разработчиком!'),
           Row(
             children: [
               FilledButton.icon(
-                style: const ButtonStyle(visualDensity: VisualDensity.compact),
+                style: const ButtonStyle(visualDensity: .compact),
                 icon: const Icon(Icons.question_mark_outlined),
                 label: const Text('Подробнее'),
                 onPressed: () {
                   showDialog(
                     context: context,
-                    builder:
-                        (context) => const AlertDialog(
-                          content: Text(
-                            'Чтобы отобразить данные - нужно знать, как они выглядят.\n'
-                            'Уведомления такого типа ко мне не приходили, поэтому '
-                            'мне нужна твоя небольшая помощь:\n'
-                            'по нажатию на иконку почты или телеги скопируется структура '
-                            'этого уведомления и тебя перенаправит в приложение.\n'
-                            'Отправь сообщение, и никто не пострадает. Спасибо!',
-                          ),
-                        ),
+                    builder: (context) => const AlertDialog(
+                      content: Text(
+                        'Чтобы отобразить данные - нужно знать, как они выглядят.\n'
+                        'Уведомления такого типа ко мне не приходили, поэтому '
+                        'мне нужна твоя небольшая помощь:\n'
+                        'по нажатию на иконку почты или телеги скопируется структура '
+                        'этого уведомления и тебя перенаправит в приложение.\n'
+                        'Отправь сообщение, и никто не пострадает. Спасибо!',
+                      ),
+                    ),
                   );
                 },
               ),

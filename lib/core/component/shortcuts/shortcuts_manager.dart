@@ -5,7 +5,7 @@ import 'package:injectable/injectable.dart';
 import 'package:quick_shortcuts/quick_shortcuts.dart';
 
 import '../logger/logger.dart';
-import '../router/app_router.dart';
+import '../router/router.dart';
 import 'shortcut_action.dart';
 
 /// Менеджер для управления ярлыками быстрого доступа приложения.
@@ -17,8 +17,9 @@ import 'shortcut_action.dart';
 /// - Посты
 @singleton
 class ShortcutsManager {
-  ShortcutsManager(this._router);
+  ShortcutsManager(this._logger, this._router);
 
+  final Logger _logger;
   final AppRouter _router;
   final QuickShortcuts _quickShortcuts = QuickShortcuts();
   final String icon = 'ic_launcher';
@@ -32,7 +33,7 @@ class ShortcutsManager {
       final shortcuts = _getShortcuts(isAuthorized);
       await _quickShortcuts.setShortcuts(shortcuts);
     } catch (e, stackTrace) {
-      logger.error('Не удалось инициализировать ярлыки', e, stackTrace);
+      _logger.error('Не удалось инициализировать ярлыки', e, stackTrace);
     }
   }
 
@@ -45,7 +46,7 @@ class ShortcutsManager {
   void _handleShortcutTap(String id) {
     final action = ShortcutAction.fromId(id);
     if (action == null) {
-      logger.warning('Неизвестный action ярлыка: $id');
+      _logger.warning('Неизвестный action ярлыка: $id');
       return;
     }
 
@@ -56,19 +57,19 @@ class ShortcutsManager {
   /// Получить route для действия с учетом текущего пользователя
   PageRouteInfo _getRouteForAction(ShortcutAction action) {
     return switch (action) {
-      ShortcutAction.bookmarks => ProfileDashboardRoute(
+      .bookmarks => ProfileDashboardRoute(
         children: [UserBookmarkListRoute()],
       ),
-      ShortcutAction.articles => const PublicationDashboardRoute(
+      .articles => const PublicationDashboardRoute(
         children: [ArticlesFlowRoute()],
       ),
-      ShortcutAction.news => const PublicationDashboardRoute(
+      .news => const PublicationDashboardRoute(
         children: [NewsFlowRoute()],
       ),
-      ShortcutAction.posts => const PublicationDashboardRoute(
+      .posts => const PublicationDashboardRoute(
         children: [PostsFlowRoute()],
       ),
-      ShortcutAction.search => const SearchAnywhereRoute(),
+      .search => const SearchAnywhereRoute(),
     };
   }
 

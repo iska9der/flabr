@@ -29,13 +29,7 @@ class GlobalBlocProvider extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         /// Основные настройки и конфигурация
-        BlocProvider(
-          lazy: false,
-          create: (_) => SettingsCubit(
-            languageRepository: getIt(),
-            storage: getIt(instanceName: 'sharedStorage'),
-          ),
-        ),
+        BlocProvider.value(value: getIt<SettingsCubit>()),
 
         /// Авторизация
         BlocProvider(
@@ -57,7 +51,8 @@ class GlobalBlocProvider extends StatelessWidget {
 
         /// Функции публикаций (загружаются по требованию)
         BlocProvider(
-          create: (_) => PublicationBookmarksBloc(repository: getIt()),
+          create: (_) =>
+              PublicationBookmarksBloc(logger: getIt(), repository: getIt()),
         ),
       ],
       child: child,

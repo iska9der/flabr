@@ -12,16 +12,16 @@ class _ButtonState extends State<_Button> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = context.theme;
+
     return RepaintBoundary(
       child: FlabrCard(
-        margin: EdgeInsets.zero,
-        padding: EdgeInsets.zero,
+        margin: .zero,
+        padding: .zero,
         child: AppExpansionPanelList(
           elevation: 0,
-          expansionCallback: (panelIndex, isExpanded) {
-            setState(() {
-              isShow = !isExpanded;
-            });
+          expansionCallback: (_, isExpanded) {
+            setState(() => isShow = !isExpanded);
           },
           children: [
             AppExpansionPanel(
@@ -30,12 +30,12 @@ class _ButtonState extends State<_Button> {
               backgroundColor: Colors.transparent,
               headerBuilder: (context, isExpanded) {
                 return Align(
-                  alignment: Alignment.centerLeft,
+                  alignment: .centerLeft,
                   child: Padding(
-                    padding: const EdgeInsets.only(left: 12),
+                    padding: const .only(left: 12),
                     child: Text(
                       'Читают сейчас',
-                      style: Theme.of(context).textTheme.titleSmall,
+                      style: theme.textTheme.titleSmall,
                     ),
                   ),
                 );

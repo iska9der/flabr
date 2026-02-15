@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
 import '../../core/component/logger/logger.dart';
+import '../../di/di.dart';
 import '../constants/constants.dart';
 
 abstract class AssetHelper {
@@ -13,8 +14,10 @@ abstract class AssetHelper {
     yield LicenseEntryWithLineBreaks(['flabr'], geologica);
   });
 
+  static Logger get _logger => getIt<Logger>();
+
   static Future<void> preloadAssets(List<ImageProvider> providers) async {
-    logger.info('Предзагрузка изображений...');
+    _logger.info('Предзагрузка изображений...');
 
     await Future.wait([
       for (final provider in providers) _preloadAsset(provider),
@@ -41,14 +44,14 @@ abstract class AssetHelper {
 
     listener = ImageStreamListener(
       (ImageInfo image, bool sync) {
-        logger.info('Картинка ${image.debugLabel} предзагружена');
+        _logger.info('Картинка ${image.debugLabel} предзагружена');
         completer.complete();
         stream.removeListener(listener);
       },
       onError: (Object exception, StackTrace? stackTrace) {
         completer.complete();
         stream.removeListener(listener);
-        logger.error(
+        _logger.error(
           'Ошибка при предзагрузке картинки',
           exception,
           stackTrace,

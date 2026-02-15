@@ -3,7 +3,8 @@ part of 'publication.dart';
 enum PublicationComplexity {
   low,
   medium,
-  high;
+  high
+  ;
 
   static PublicationComplexity? fromString(String value) {
     final result = PublicationComplexity.values.firstWhereOrNull(
@@ -11,7 +12,9 @@ enum PublicationComplexity {
     );
 
     if (result == null) {
-      logger.warning('Неизвестное значение PublicationComplexity: $value');
+      getIt<Logger>().warning(
+        'Неизвестное значение PublicationComplexity: $value',
+      );
     }
 
     return result;

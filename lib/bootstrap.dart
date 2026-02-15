@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:bloc_concurrency/bloc_concurrency.dart' as concurrency;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,14 +9,15 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 
 import 'bloc/observer.dart';
+import 'core/component/logger/logger.dart';
 import 'core/constants/constants.dart';
 import 'di/di.dart';
 import 'presentation/constants/constants.dart';
 import 'presentation/helper/helper.dart';
 
 abstract class Bootstrap {
-  static Future<void> init() async {
-    await configureDependencies(env: AppEnvironment.env);
+  static Future<void> init({required Logger logger}) async {
+    await configureDependencies(env: AppEnvironment.env, logger: logger);
 
     await loadIntl();
 
@@ -26,7 +28,8 @@ abstract class Bootstrap {
     ]);
 
     if (kDebugMode) {
-      Bloc.observer = MyBlocObserver();
+      Bloc.observer = AppBlocObserver();
+      Bloc.transformer = concurrency.sequential();
     }
 
     if (!kIsWeb && Platform.isAndroid) {

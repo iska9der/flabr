@@ -16,8 +16,8 @@ abstract class PublicationListCubit<State extends PublicationListState>
     required this.repository,
     required this.languageRepository,
   }) {
-    _uiLanguageSub = languageRepository.ui.listen((_) => reset());
-    _publicationLanguagesSub = languageRepository.publications.listen(
+    _uiLanguageSub = languageRepository.onUIChange.listen((_) => reset());
+    _publicationLanguagesSub = languageRepository.onPubUIChange.listen(
       (_) => reset(),
     );
   }

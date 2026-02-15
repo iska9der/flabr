@@ -15,10 +15,12 @@ import 'dio_client.dart';
 class HabraClient extends DioClient {
   HabraClient(
     super.dio, {
+    required this.logger,
     required this.tokenRepository,
     required this.languageRepository,
   });
 
+  final Logger logger;
   final TokenRepository tokenRepository;
   final LanguageRepository languageRepository;
 

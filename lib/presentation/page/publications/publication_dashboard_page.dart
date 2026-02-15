@@ -1,16 +1,13 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../bloc/auth/auth_cubit.dart';
 import '../../../bloc/profile/profile_bloc.dart';
 import '../../../bloc/publication/publication_counters_bloc.dart';
 import '../../../bloc/settings/settings_cubit.dart';
-import '../../../core/component/router/app_router.dart';
+import '../../../core/component/router/router.dart';
 import '../../../core/component/shortcuts/shortcuts_manager.dart';
-import '../../../data/model/publication/publication.dart';
-import '../../../data/model/user/user.dart';
 import '../../../di/di.dart';
 import '../../../feature/most_reading/most_reading.dart';
 import '../../extension/extension.dart';
@@ -85,9 +82,7 @@ class _PublicationDashboardViewState extends State<PublicationDashboardView> {
         BlocListener<AuthCubit, AuthState>(
           listener: (context, state) {
             if (state.isAuthorized || state.isUnauthorized) {
-              context.read<PublicationCountersBloc>().add(
-                const PublicationCountersEvent.load(),
-              );
+              context.read<PublicationCountersBloc>().add(const .load());
             }
           },
         ),
@@ -103,14 +98,14 @@ class _PublicationDashboardViewState extends State<PublicationDashboardView> {
           final direction = notification.direction;
           final axis = notification.metrics.axisDirection;
 
-          if (axis == AxisDirection.right || axis == AxisDirection.left) {
+          if (axis == .right || axis == .left) {
             return false;
           }
 
           double? newHeight = barHeight.value;
-          if (direction == ScrollDirection.forward) {
+          if (direction == .forward) {
             newHeight = themeHeight;
-          } else if (direction == ScrollDirection.reverse) {
+          } else if (direction == .reverse) {
             newHeight = 0;
           }
           barHeight.value = newHeight;
@@ -126,7 +121,7 @@ class _PublicationDashboardViewState extends State<PublicationDashboardView> {
           ],
           builder: (context, child, controller) {
             return Stack(
-              alignment: Alignment.topCenter,
+              alignment: .topCenter,
               children: [
                 child,
                 ValueListenableBuilder<double>(
@@ -141,7 +136,7 @@ class _PublicationDashboardViewState extends State<PublicationDashboardView> {
 
                   /// Без клипа иконки остаются на виду, когда шапка скрыта
                   child: ClipRRect(
-                    clipBehavior: Clip.hardEdge,
+                    clipBehavior: .hardEdge,
                     child: _DashboardAppBar(tabController: controller),
                   ),
                 ),
@@ -162,33 +157,30 @@ class _DashboardAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final counters = context
-        .select<PublicationCountersBloc, PublicationCounters>(
-          (cubit) => cubit.state.counters,
-        );
-
-    final userUpdates = context.select<ProfileBloc, UserUpdates>(
-      (cubit) => cubit.state.updates,
+    final counters = context.select(
+      (PublicationCountersBloc bloc) => bloc.state.counters,
     );
+
+    final updates = context.select((ProfileBloc bloc) => bloc.state.updates);
 
     return ColoredBox(
       color: context.theme.colorScheme.surfaceContainer,
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+        crossAxisAlignment: .stretch,
         children: [
           Expanded(
             child: Align(
-              alignment: Alignment.centerLeft,
+              alignment: .centerLeft,
               child: TabBar(
                 controller: tabController,
                 isScrollable: true,
-                tabAlignment: TabAlignment.center,
-                labelPadding: const EdgeInsets.symmetric(horizontal: 8),
+                tabAlignment: .center,
+                labelPadding: const .symmetric(horizontal: 8),
                 dividerColor: Colors.transparent,
                 tabs: [
                   DashboardDrawerLinkWidget(
                     title: 'Моя лента',
-                    count: userUpdates.feeds.newCount,
+                    count: updates.feeds.newCount,
                   ),
                   DashboardDrawerLinkWidget(
                     title: 'Статьи',
@@ -217,8 +209,8 @@ class _DashboardAppBar extends StatelessWidget {
               if (context.read<AuthCubit>().state.isAuthorized)
                 IconButton(
                   icon: Badge.count(
-                    count: userUpdates.trackerUnreadCount,
-                    isLabelVisible: userUpdates.trackerUnreadCount > 0,
+                    count: updates.trackerUnreadCount,
+                    isLabelVisible: updates.trackerUnreadCount > 0,
                     child: const Icon(Icons.notifications_outlined),
                   ),
                   tooltip: 'Трекер',
@@ -229,7 +221,7 @@ class _DashboardAppBar extends StatelessWidget {
                       const TrackerDashboardRoute(),
                     );
 
-                    userBloc.add(const ProfileEvent.fetchUpdates());
+                    userBloc.add(const .fetchUpdates());
                   },
                 ),
               const MyProfileIconButton(),

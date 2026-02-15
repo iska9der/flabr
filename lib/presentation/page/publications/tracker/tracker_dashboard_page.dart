@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../core/component/router/app_router.dart';
+import '../../../../core/component/router/router.dart';
 import '../../../theme/theme.dart';
 import '../../../widget/dashboard_drawer_link_widget.dart';
 
@@ -26,12 +26,12 @@ class TrackerDashboardPage extends StatelessWidget {
             title: const Text('Трекер'),
             toolbarHeight: AppDimensions.toolBarHeight,
             bottom: PreferredSize(
-              preferredSize: const Size.fromHeight(AppDimensions.tabBarHeight),
+              preferredSize: const .fromHeight(AppDimensions.tabBarHeight),
               child: TabBar(
                 controller: controller,
                 isScrollable: true,
-                padding: EdgeInsets.zero,
-                labelPadding: const EdgeInsets.symmetric(horizontal: 12),
+                padding: .zero,
+                labelPadding: const .symmetric(horizontal: 12),
                 dividerColor: Colors.transparent,
                 tabs: const [
                   DashboardDrawerLinkWidget(title: 'Публикации'),

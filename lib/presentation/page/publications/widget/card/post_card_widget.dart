@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../bloc/settings/settings_cubit.dart';
-import '../../../../../core/component/router/app_router.dart';
+import '../../../../../core/component/router/router.dart';
 import '../../../../../data/model/publication/publication.dart';
 import '../../../../../data/model/render_type_enum.dart';
 import '../../../../../di/di.dart';

@@ -1,4 +1,4 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../bloc/auth/auth_cubit.dart';
@@ -25,14 +25,13 @@ class GlobalBlocListener extends StatelessWidget {
         /// При выходе сбрасываем состояние профиля.
         BlocListener<AuthCubit, AuthState>(
           listener: (context, state) {
-            final profileBloc = context.read<ProfileBloc>();
-
             switch (state.status) {
               case AuthStatus.authorized:
-                profileBloc.add(const ProfileEvent.fetchMe());
-                profileBloc.add(const ProfileEvent.fetchUpdates());
+                context.read<ProfileBloc>()
+                  ..add(const .fetchMe())
+                  ..add(const .fetchUpdates());
               case AuthStatus.unauthorized:
-                profileBloc.add(const ProfileEvent.reset());
+                context.read<ProfileBloc>().add(const .reset());
               default:
                 break;
             }

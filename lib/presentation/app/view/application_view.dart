@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
 import '../../../bloc/settings/settings_cubit.dart';
-import '../../../core/component/router/app_router.dart';
+import '../../../core/component/router/router.dart';
 import '../../../core/constants/constants.dart';
 import '../../../di/di.dart';
 import '../../extension/extension.dart';
@@ -26,27 +26,29 @@ class ApplicationView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeConfig = context.select(
-      (SettingsCubit cubit) => cubit.state.theme,
+    final config = AppConfigProvider.of(context);
+    final locale = switch (config.enableDevicePreview) {
+      true => DevicePreview.locale(context),
+      false => null,
+    };
+
+    final themeMode = context.select<SettingsCubit, ThemeMode>(
+      (cubit) => cubit.state.theme.modeByBool ?? cubit.state.theme.mode,
     );
 
-    final scroll = context.select(
-      (SettingsCubit cubit) => cubit.state.misc.scrollVariant,
-    );
-
-    final appConfig = AppConfigProvider.of(context);
+    final scrollBehavior = context
+        .select((SettingsCubit cubit) => cubit.state.misc.scrollVariant)
+        .behavior;
 
     return MaterialApp.router(
       title: AppEnvironment.appName,
       // ignore: deprecated_member_use
       useInheritedMediaQuery: true,
-      locale: appConfig.enableDevicePreview
-          ? DevicePreview.locale(context)
-          : null,
-      themeMode: themeConfig.modeByBool ?? themeConfig.mode,
+      locale: locale,
+      themeMode: themeMode,
       theme: AppTheme.light,
       darkTheme: AppTheme.dark,
-      scrollBehavior: scroll.behavior,
+      scrollBehavior: scrollBehavior,
       routerConfig: getIt<AppRouter>().config(
         deepLinkTransformer: (uri) {
           if (uri.path.startsWith('/ru')) {
@@ -58,27 +60,28 @@ class ApplicationView extends StatelessWidget {
       ),
       builder: (context, child) => _buildAppWrapper(
         context,
+        config,
         child,
-        appConfig,
       ),
     );
   }
 
   Widget _buildAppWrapper(
     BuildContext context,
+    AppConfig config,
     Widget? child,
-    AppConfig appConfig,
   ) {
     final theme = context.theme;
 
     Widget result = ColoredBox(
       color: theme.colors.surface,
       child: MaxWidthBox(
-        maxWidth: appConfig.maxWidth,
+        maxWidth: config.maxWidth,
         child: AnnotatedRegion(
-          value: theme.colorScheme.brightness == Brightness.dark
-              ? SystemUiOverlayStyle.light
-              : SystemUiOverlayStyle.dark,
+          value: switch (theme.colorScheme.brightness) {
+            Brightness.light => SystemUiOverlayStyle.light,
+            Brightness.dark => SystemUiOverlayStyle.dark,
+          },
           child: child ?? const SizedBox.shrink(),
         ),
       ),
@@ -86,16 +89,16 @@ class ApplicationView extends StatelessWidget {
 
     result = ResponsiveBreakpoints.builder(
       child: result,
-      breakpoints: appConfig.responsiveBreakpoints,
+      breakpoints: config.responsiveBreakpoints,
     );
 
-    if (appConfig.enableDevicePreview) {
+    if (config.enableDevicePreview) {
       result = DevicePreview.appBuilder(context, result);
     }
 
     return MediaQuery(
       data: MediaQuery.of(context).copyWith(
-        textScaler: TextScaler.linear(appConfig.textScaleFactor),
+        textScaler: .linear(config.textScaleFactor),
       ),
       child: result,
     );

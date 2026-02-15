@@ -1,19 +1,20 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 
+import '../../core/component/router/router.dart';
+import '../../di/di.dart';
 import '../theme/theme.dart';
 
-extension ContextX on BuildContext {
+extension ContextExtension on BuildContext {
   ThemeData get theme => Theme.of(this);
   CardThemeData get cardTheme => CardTheme.of(this);
 
   void showSnack({
     required Widget content,
     SnackBarAction? action,
-    Duration duration = const Duration(seconds: 3),
+    Duration duration = const .new(seconds: 3),
   }) {
-    final messenger = ScaffoldMessenger.of(this);
+    final ctx = getIt<AppRouter>().navigatorKey.currentContext ?? this;
+    final messenger = ScaffoldMessenger.of(ctx);
     final snackbar = SnackBar(
       content: content,
       action: action,
@@ -32,18 +33,20 @@ extension ContextX on BuildContext {
     bool isDismissible = true,
     bool compact = false,
   }) async {
+    final ctx = getIt<AppRouter>().navigatorKey.currentContext ?? this;
+
     EdgeInsets? titlePadding;
     EdgeInsets? contentPadding;
     EdgeInsets? actionsPadding;
 
     if (compact) {
-      titlePadding = const EdgeInsets.fromLTRB(24, 12, 12, 12);
-      contentPadding = const EdgeInsets.fromLTRB(24, 0, 24, 12);
-      actionsPadding = const EdgeInsets.fromLTRB(0, 0, 12, 12);
+      titlePadding = const .fromLTRB(24, 12, 12, 12);
+      contentPadding = const .fromLTRB(24, 0, 24, 12);
+      actionsPadding = const .fromLTRB(0, 0, 12, 12);
     }
 
     return await showDialog<T>(
-      context: this,
+      context: ctx,
       barrierDismissible: isDismissible,
       builder: (alertContext) {
         final actions = actionsBuilder?.call(alertContext);
@@ -61,7 +64,7 @@ extension ContextX on BuildContext {
                 if (isDismissible)
                   IconButton(
                     onPressed: () => Navigator.of(alertContext).pop(),
-                    visualDensity: VisualDensity.compact,
+                    visualDensity: .compact,
                     icon: const Icon(Icons.close),
                   ),
               ],
@@ -75,14 +78,14 @@ extension ContextX on BuildContext {
   }
 }
 
-extension ModalX on BuildContext {
+extension ModalExtension on BuildContext {
   Future<T?> buildModalRoute<T>({
     bool rootNavigator = false,
     required Widget child,
   }) {
     Widget body = Center(
       child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
+        filter: .blur(sigmaX: 6, sigmaY: 6),
         child: ConstrainedBox(
           constraints: BoxConstraints(
             maxWidth: Device.getWidth(this) * .9,

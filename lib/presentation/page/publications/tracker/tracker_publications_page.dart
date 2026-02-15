@@ -4,8 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../bloc/tracker/tracker_publications_bloc.dart';
 import '../../../../bloc/tracker/tracker_publications_marker_bloc.dart';
-import '../../../../core/component/router/app_router.dart';
-import '../../../../data/model/loading_status_enum.dart';
+import '../../../../core/component/router/router.dart';
 import '../../../../data/model/tracker/tracker.dart';
 import '../../../../di/di.dart';
 import '../../../extension/extension.dart';
@@ -27,11 +26,9 @@ class TrackerPublicationsPage extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create:
-              (_) =>
-                  TrackerPublicationsBloc(repository: getIt())
-                    ..add(const TrackerPublicationsEvent.load())
-                    ..add(const TrackerPublicationsEvent.subscribe()),
+          create: (_) => TrackerPublicationsBloc(repository: getIt())
+            ..add(const .load())
+            ..add(const .subscribe()),
         ),
         BlocProvider(
           create: (_) => TrackerPublicationsMarkerBloc(repository: getIt()),
@@ -50,25 +47,24 @@ class TrackerPublicationsView extends StatelessWidget {
     return Scaffold(
       floatingActionButton: const _TrackerFloatingButton(),
       body: BlocBuilder<TrackerPublicationsBloc, TrackerPublicationsState>(
-        builder:
-            (context, state) => switch (state.status) {
-              LoadingStatus.failure => Center(child: Text(state.error)),
-              LoadingStatus.success => ListView.builder(
-                itemCount: state.response.refs.length,
-                itemExtent: 150,
-                itemBuilder: (context, index) {
-                  final model = state.response.refs[index];
+        builder: (context, state) => switch (state.status) {
+          .failure => Center(child: Text(state.error)),
+          .success => ListView.builder(
+            itemCount: state.response.refs.length,
+            itemExtent: 150,
+            itemBuilder: (context, index) {
+              final model = state.response.refs[index];
 
-                  return TrackerPublicationWidget(
-                    key: ValueKey('tracker-publication-${model.id}'),
-                    model: model,
-                  );
-                },
-              ),
-              _ => ListView(
-                children: List.filled(6, const TrackerSkeletonWidget()),
-              ),
+              return TrackerPublicationWidget(
+                key: ValueKey('tracker-publication-${model.id}'),
+                model: model,
+              );
             },
+          ),
+          _ => ListView(
+            children: List.filled(6, const TrackerSkeletonWidget()),
+          ),
+        },
       ),
     );
   }
@@ -86,22 +82,21 @@ class TrackerPublicationWidget extends StatelessWidget {
 
     return FlabrCard(
       color: isUnread ? theme.colors.cardHighlight : null,
-      onTap:
-          () => context.router.push(
-            PublicationFlowRoute(type: model.publicationType, id: model.id),
-          ),
+      onTap: () => context.router.push(
+        PublicationFlowRoute(type: model.publicationType, id: model.id),
+      ),
       child: Row(
         children: [
           Expanded(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: .start,
               children: [
                 UserTextButton(model.author),
                 const Spacer(),
                 Text(
                   model.title.trim(),
                   style: theme.textTheme.titleMedium,
-                  overflow: TextOverflow.ellipsis,
+                  overflow: .ellipsis,
                   maxLines: 2,
                 ),
                 const Spacer(),
@@ -121,7 +116,7 @@ class TrackerPublicationWidget extends StatelessWidget {
                         );
 
                         context.read<TrackerPublicationsMarkerBloc>().add(
-                          TrackerPublicationsMarkerEvent.read(id: model.id),
+                          .read(id: model.id),
                         );
                       },
                     ),
@@ -148,7 +143,7 @@ class TrackerPublicationWidget extends StatelessWidget {
                 value: state.markedIds.keys.contains(model.id),
                 onChanged: (isChecked) {
                   context.read<TrackerPublicationsMarkerBloc>().add(
-                    TrackerPublicationsMarkerEvent.mark(
+                    .mark(
                       id: model.id,
                       isMarked: isChecked ?? false,
                       isUnreaded: isUnread,
@@ -182,37 +177,33 @@ class _TrackerFloatingButton extends StatelessWidget {
           return const SizedBox.shrink();
         }
 
-        final isLoading = state.status == LoadingStatus.loading;
+        final isLoading = state.status == .loading;
 
         return Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: .end,
+          mainAxisSize: .min,
           children: [
             if (state.isAnyUnreaded)
               FilledButton.icon(
                 label: const Text('Пометить как прочитанное'),
-                icon:
-                    isLoading
-                        ? fabLoader
-                        : Icon(Icons.mark_chat_read, size: iconSize),
-                onPressed:
-                    isLoading
-                        ? null
-                        : () =>
-                            context.read<TrackerPublicationsMarkerBloc>().add(
-                              const TrackerPublicationsMarkerEvent.readMarked(),
-                            ),
+                icon: isLoading
+                    ? fabLoader
+                    : Icon(Icons.mark_chat_read, size: iconSize),
+                onPressed: isLoading
+                    ? null
+                    : () => context.read<TrackerPublicationsMarkerBloc>().add(
+                        const .readMarked(),
+                      ),
               ),
 
             FilledButton.icon(
               label: const Text('Удалить из трекера'),
               icon: isLoading ? fabLoader : Icon(Icons.delete, size: iconSize),
-              onPressed:
-                  isLoading
-                      ? null
-                      : () => context.read<TrackerPublicationsMarkerBloc>().add(
-                        const TrackerPublicationsMarkerEvent.removeMarked(),
-                      ),
+              onPressed: isLoading
+                  ? null
+                  : () => context.read<TrackerPublicationsMarkerBloc>().add(
+                      const .removeMarked(),
+                    ),
             ),
           ],
         );

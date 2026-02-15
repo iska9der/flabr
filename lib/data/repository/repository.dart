@@ -5,6 +5,7 @@ export 'profile_repository.dart';
 export 'publication_repository.dart';
 export 'publication_vote_repository.dart';
 export 'search_repository.dart';
+export 'settings_repository.dart';
 export 'subscription_repository.dart';
 export 'summary_repository.dart';
 export 'summary_token_repository.dart';

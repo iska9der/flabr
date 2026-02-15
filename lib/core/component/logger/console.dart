@@ -1,18 +1,4 @@
-import 'dart:developer' as dev;
-
-final Logger logger = ConsoleLogger();
-
-abstract interface class Logger {
-  void info(Object message, {String? title});
-
-  void warning(Object message, {String? title, StackTrace? stackTrace});
-
-  void error(
-    Object message,
-    Object exception,
-    StackTrace? trace,
-  );
-}
+part of 'logger.dart';
 
 class ConsoleLogger implements Logger {
   @override

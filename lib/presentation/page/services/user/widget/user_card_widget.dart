@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../core/component/router/app_router.dart';
+import '../../../../../core/component/router/router.dart';
 import '../../../../../data/model/stat_type_enum.dart';
 import '../../../../../data/model/user/user.dart';
 import '../../../../../di/di.dart';
@@ -84,13 +84,12 @@ class _UserCard extends StatelessWidget {
                   padding: const EdgeInsets.only(top: 10),
                   child: TextButton(
                     style: TextButton.styleFrom(padding: EdgeInsets.zero),
-                    onPressed:
-                        () => getIt<AppRouter>().pushWidget(
-                          PublicationDetailPage(
-                            id: model.lastPost.id,
-                            type: model.lastPost.type.name,
-                          ),
-                        ),
+                    onPressed: () => getIt<AppRouter>().pushWidget(
+                      PublicationDetailPage(
+                        id: model.lastPost.id,
+                        type: model.lastPost.type.name,
+                      ),
+                    ),
                     child: Text(model.lastPost.titleHtml),
                   ),
                 ),

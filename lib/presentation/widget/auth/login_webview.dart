@@ -90,6 +90,8 @@ class _WebViewLoginState extends State<_WebViewLogin> {
   void initState() {
     super.initState();
 
+    final logger = getIt<Logger>();
+
     cookieManager = WebviewCookieManager();
     wvController = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
@@ -131,7 +133,7 @@ class _WebViewLoginState extends State<_WebViewLogin> {
 
             /// Разрешаем навигацию только на домены Habr и известные OAuth провайдеры
             if (!_isAllowedUrl(url)) {
-              logger.info('URL не разрешен');
+              logger.info('URL не разрешен: $url');
 
               return NavigationDecision.prevent;
             }
@@ -162,7 +164,7 @@ class _WebViewLoginState extends State<_WebViewLogin> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocListener<LoginCubit, LoginState>(
-        listenWhen: (_, current) => current.status == LoadingStatus.failure,
+        listenWhen: (_, current) => current.status == .failure,
         listener: (context, state) {
           _clearControllerData();
           context.showSnack(

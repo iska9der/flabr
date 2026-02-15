@@ -226,7 +226,7 @@ class MyFeatureView extends StatelessWidget {
 ### 8. Register Routes (if needed)
 
 ```dart
-// lib/core/component/router/app_router.dart
+// lib/core/component/router/router.dart
 @AutoRouterConfig()
 class AppRouter extends _$AppRouter {
   @override

@@ -1,36 +1,35 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injectable/injectable.dart';
 
-import '../../core/component/storage/storage.dart';
-import '../../core/constants/constants.dart';
 import '../../data/model/language/language.dart';
 import '../../data/repository/repository.dart';
 import '../../presentation/page/settings/model/config_model.dart';
 
 part 'settings_state.dart';
 
+@Singleton()
 class SettingsCubit extends Cubit<SettingsState> {
   SettingsCubit({
+    required SettingsRepository repository,
     required LanguageRepository languageRepository,
-    required CacheStorage storage,
-  }) : _storage = storage,
+  }) : _repository = repository,
        _langRepository = languageRepository,
        super(const SettingsState()) {
-    _uiLangSub = _langRepository.ui.listen((lang) {
+    _uiLangSub = _langRepository.onUIChange.listen((lang) {
       emit(state.copyWith(langUI: lang));
     });
 
-    _publicationsLangsSub = _langRepository.publications.listen((langs) {
+    _publicationsLangsSub = _langRepository.onPubUIChange.listen((langs) {
       emit(state.copyWith(langArticles: langs));
     });
   }
 
+  final SettingsRepository _repository;
   final LanguageRepository _langRepository;
-  final CacheStorage _storage;
 
   late final StreamSubscription<Language> _uiLangSub;
   late final StreamSubscription<List<Language>> _publicationsLangsSub;
@@ -43,22 +42,32 @@ class SettingsCubit extends Cubit<SettingsState> {
   }
 
   Future<void> init() async {
-    emit(state.copyWith(status: SettingsStatus.loading));
+    if (state.status == .loading) {
+      return;
+    }
 
-    final (uiLang, publicationsLangs) = _initLanguages();
-    final config = await _initConfig();
+    emit(state.copyWith(status: .loading));
 
-    emit(
-      state.copyWith(
-        status: SettingsStatus.success,
-        langUI: uiLang,
-        langArticles: publicationsLangs,
-        theme: config.theme,
-        feed: config.feed,
-        publication: config.publication,
-        misc: config.misc,
-      ),
-    );
+    try {
+      final (uiLang, publicationsLangs) = _initLanguages();
+      final config = await _repository.initConfig();
+
+      emit(
+        state.copyWith(
+          status: .success,
+          langUI: uiLang,
+          langArticles: publicationsLangs,
+          theme: config.theme,
+          feed: config.feed,
+          publication: config.publication,
+          misc: config.misc,
+        ),
+      );
+    } catch (error, stackTrace) {
+      emit(state.copyWith(status: SettingsStatus.failure));
+
+      super.onError(error, stackTrace);
+    }
   }
 
   (Language, List<Language>) _initLanguages() => (
@@ -71,28 +80,23 @@ class SettingsCubit extends Cubit<SettingsState> {
       return;
     }
 
-    emit(state.copyWith(langUI: uiLang));
-
     _langRepository.changeUILanguage(uiLang);
   }
 
-  (bool, List<Language>) validateChangeArticlesLang(
+  (bool, List<Language>) validateLang(
     Language lang, {
     required bool isEnabled,
   }) {
-    var newLangs = [...state.langArticles];
+    final newLangs = [...state.langArticles];
 
-    if (isEnabled) {
-      newLangs.add(lang);
-    } else {
-      newLangs.remove(lang);
+    switch (isEnabled) {
+      case true:
+        newLangs.add(lang);
+      case false:
+        newLangs.remove(lang);
     }
 
-    if (newLangs.isEmpty) {
-      return (false, []);
-    }
-
-    return (true, newLangs);
+    return (newLangs.isNotEmpty, newLangs);
   }
 
   Future<void> changeArticleLang(Language lang, {bool? isEnabled}) async {
@@ -100,58 +104,11 @@ class SettingsCubit extends Cubit<SettingsState> {
       return;
     }
 
-    var (isValid, newLangs) = validateChangeArticlesLang(
-      lang,
-      isEnabled: isEnabled,
-    );
+    final (isValid, newLangs) = validateLang(lang, isEnabled: isEnabled);
     if (!isValid) {
       return;
     }
-
-    emit(state.copyWith(langArticles: newLangs));
-
     _langRepository.changePublicationsLanguages(newLangs);
-  }
-
-  /// Инициализация конфигурации
-  Future<Config> _initConfig() async {
-    Config config = const Config();
-
-    String? raw = await _storage.read(CacheKeys.themeConfig);
-    if (raw != null) {
-      var cachedTheme = ThemeConfigModel.fromJson(jsonDecode(raw));
-
-      /// Костыль для плавного перехода на новую структуру конфигурации.
-      /// Удалить блок вместе с isDarkTheme
-      if (cachedTheme.modeByBool != null) {
-        cachedTheme = cachedTheme.copyWith(
-          mode: cachedTheme.modeByBool!,
-          isDarkTheme: null,
-        );
-        _storage.write(CacheKeys.themeConfig, jsonEncode(cachedTheme.toJson()));
-      }
-
-      config = config.copyWith(theme: cachedTheme);
-    }
-
-    raw = await _storage.read(CacheKeys.feedConfig);
-    if (raw != null) {
-      config = config.copyWith(feed: FeedConfigModel.fromJson(jsonDecode(raw)));
-    }
-
-    raw = await _storage.read(CacheKeys.publicationConfig);
-    if (raw != null) {
-      config = config.copyWith(
-        publication: PublicationConfigModel.fromJson(jsonDecode(raw)),
-      );
-    }
-
-    raw = await _storage.read(CacheKeys.miscConfig);
-    if (raw != null) {
-      config = config.copyWith(misc: MiscConfigModel.fromJson(jsonDecode(raw)));
-    }
-
-    return config;
   }
 
   void changeTheme(ThemeMode mode) {
@@ -160,10 +117,8 @@ class SettingsCubit extends Cubit<SettingsState> {
     }
 
     final newConfig = state.theme.copyWith(mode: mode, isDarkTheme: null);
-
+    _repository.saveTheme(newConfig);
     emit(state.copyWith(theme: newConfig));
-
-    _storage.write(CacheKeys.themeConfig, jsonEncode(newConfig.toJson()));
   }
 
   void changeFeedImageVisibility({bool? isVisible}) {
@@ -172,10 +127,8 @@ class SettingsCubit extends Cubit<SettingsState> {
     }
 
     final newConfig = state.feed.copyWith(isImageVisible: isVisible);
-
+    _repository.saveFeed(newConfig);
     emit(state.copyWith(feed: newConfig));
-
-    _storage.write(CacheKeys.feedConfig, jsonEncode(newConfig.toJson()));
   }
 
   void changeFeedDescVisibility({bool? isVisible}) {
@@ -184,10 +137,8 @@ class SettingsCubit extends Cubit<SettingsState> {
     }
 
     final newConfig = state.feed.copyWith(isDescriptionVisible: isVisible);
-
+    _repository.saveFeed(newConfig);
     emit(state.copyWith(feed: newConfig));
-
-    _storage.write(CacheKeys.feedConfig, jsonEncode(newConfig.toJson()));
   }
 
   void changeArticleFontScale(double newScale) {
@@ -195,11 +146,9 @@ class SettingsCubit extends Cubit<SettingsState> {
       return;
     }
 
-    var newConfig = state.publication.copyWith(fontScale: newScale);
-
+    final newConfig = state.publication.copyWith(fontScale: newScale);
+    _repository.savePublication(newConfig);
     emit(state.copyWith(publication: newConfig));
-
-    _storage.write(CacheKeys.publicationConfig, jsonEncode(newConfig.toJson()));
   }
 
   void changeArticleImageVisibility({bool? isVisible}) {
@@ -207,11 +156,9 @@ class SettingsCubit extends Cubit<SettingsState> {
       return;
     }
 
-    var newConfig = state.publication.copyWith(isImagesVisible: isVisible);
-
+    final newConfig = state.publication.copyWith(isImagesVisible: isVisible);
+    _repository.savePublication(newConfig);
     emit(state.copyWith(publication: newConfig));
-
-    _storage.write(CacheKeys.publicationConfig, jsonEncode(newConfig.toJson()));
   }
 
   void changeWebViewVisibility({bool? isVisible}) {
@@ -219,11 +166,9 @@ class SettingsCubit extends Cubit<SettingsState> {
       return;
     }
 
-    var newConfig = state.publication.copyWith(webViewEnabled: isVisible);
-
+    final newConfig = state.publication.copyWith(webViewEnabled: isVisible);
+    _repository.savePublication(newConfig);
     emit(state.copyWith(publication: newConfig));
-
-    _storage.write(CacheKeys.publicationConfig, jsonEncode(newConfig.toJson()));
   }
 
   void changeNavigationOnScrollVisibility({bool? isVisible}) {
@@ -232,10 +177,9 @@ class SettingsCubit extends Cubit<SettingsState> {
       return;
     }
 
-    var newConfig = state.misc.copyWith(navigationOnScrollVisible: isVisible);
+    final newConfig = state.misc.copyWith(navigationOnScrollVisible: isVisible);
+    _repository.saveMisc(newConfig);
     emit(state.copyWith(misc: newConfig));
-
-    _storage.write(CacheKeys.miscConfig, jsonEncode(newConfig.toJson()));
   }
 
   void changeScrollVariant(ScrollVariant variant) {
@@ -243,9 +187,8 @@ class SettingsCubit extends Cubit<SettingsState> {
       return;
     }
 
-    var newConfig = state.misc.copyWith(scrollVariant: variant);
+    final newConfig = state.misc.copyWith(scrollVariant: variant);
+    _repository.saveMisc(newConfig);
     emit(state.copyWith(misc: newConfig));
-
-    _storage.write(CacheKeys.miscConfig, jsonEncode(newConfig.toJson()));
   }
 }
