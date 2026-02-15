@@ -1,6 +1,6 @@
 part of 'publication.dart';
 
-class PublicationLeadImage extends Equatable {
+class PublicationLeadImage with EquatableMixin {
   const PublicationLeadImage({
     required this.url,
     this.fit = '',

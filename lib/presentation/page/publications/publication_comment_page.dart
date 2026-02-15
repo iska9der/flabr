@@ -13,7 +13,7 @@ class PublicationCommentPage extends StatelessWidget {
     super.key,
     @PathParam.inherit() required String type,
     @PathParam.inherit() required this.id,
-  }) : type = PublicationType.fromString(type);
+  }) : type = .fromString(type);
 
   final PublicationType type;
   final String id;
@@ -27,13 +27,12 @@ class PublicationCommentPage extends StatelessWidget {
       key: ValueKey('publication-$id-comments'),
       providers: [
         BlocProvider(
-          create:
-              (_) => CommentListCubit(
-                id,
-                source: PublicationSource.fromType(type),
-                repository: getIt(),
-                languageRepository: getIt(),
-              ),
+          create: (_) => CommentListCubit(
+            id,
+            source: .fromType(type),
+            repository: getIt(),
+            languageRepository: getIt(),
+          ),
         ),
       ],
       child: const CommentListView(),

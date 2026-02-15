@@ -1,5 +1,4 @@
-import 'package:injectable/injectable.dart';
-import 'package:rxdart/rxdart.dart';
+part of 'config.dart';
 
 @Singleton()
 class AppConfigRepository {

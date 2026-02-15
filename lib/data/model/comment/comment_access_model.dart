@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-class CommentAccess extends Equatable {
+class CommentAccess with EquatableMixin {
   const CommentAccess({
     this.isCanComment = false,
     this.cantCommentReason = '',
@@ -36,8 +36,8 @@ class CommentAccess extends Equatable {
 
   @override
   List<Object> get props => [
-        isCanComment,
-        cantCommentReason,
-        cantCommentReasonKey,
-      ];
+    isCanComment,
+    cantCommentReason,
+    cantCommentReasonKey,
+  ];
 }

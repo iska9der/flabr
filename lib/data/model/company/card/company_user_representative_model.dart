@@ -1,6 +1,6 @@
 part of 'company_card_model.dart';
 
-class CompanyUserRepresentative extends Equatable {
+class CompanyUserRepresentative with EquatableMixin {
   const CompanyUserRepresentative({this.alias = '', this.fullname = ''});
 
   final String alias;

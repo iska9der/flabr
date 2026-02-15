@@ -16,12 +16,16 @@ class FeedPublicationListCubit
   FeedPublicationListCubit({
     required super.repository,
     required super.languageRepository,
-    required this.storage,
-  }) : super(const FeedPublicationListState()) {
+
+    /// TODO: удалить зависимость
+    /// создать метод восстановления фильтра в репозитории [PublicationRepository]
+    required CacheStorage storage,
+  }) : _storage = storage,
+       super(const FeedPublicationListState()) {
     _restoreFilter();
   }
 
-  final CacheStorage storage;
+  final CacheStorage _storage;
 
   Future<void> _restoreFilter() async {
     emit(state.copyWith(status: PublicationListStatus.loading));
@@ -30,7 +34,7 @@ class FeedPublicationListCubit
     FeedPublicationListState newState = state;
     try {
       /// вспоминаем последний примененный фильтр в моей ленте
-      final str = await storage.read(key);
+      final str = await _storage.read(key);
       if (str == null) {
         throw const NotFoundException();
       }
@@ -38,7 +42,7 @@ class FeedPublicationListCubit
       final lastFilter = FeedFilter.fromJson(jsonDecode(str));
       newState = newState.copyWith(filter: lastFilter);
     } catch (_) {
-      storage.delete(key);
+      _storage.delete(key);
     } finally {
       emit(newState.copyWith(status: PublicationListStatus.initial));
     }
@@ -95,7 +99,7 @@ class FeedPublicationListCubit
       return;
     }
 
-    storage.write(CacheKeys.feedFilter, jsonEncode(newFilter));
+    _storage.write(CacheKeys.feedFilter, jsonEncode(newFilter));
 
     emit(FeedPublicationListState(filter: newFilter));
   }

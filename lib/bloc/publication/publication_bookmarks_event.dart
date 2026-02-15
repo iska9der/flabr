@@ -1,7 +1,7 @@
 part of 'publication_bookmarks_bloc.dart';
 
 @freezed
-class PublicationBookmarksEvent with _$PublicationBookmarksEvent {
+sealed class PublicationBookmarksEvent with _$PublicationBookmarksEvent {
   /// Обновить состояние закладок из списка публикаций
   const factory PublicationBookmarksEvent.updated({
     required List<Publication> publications,

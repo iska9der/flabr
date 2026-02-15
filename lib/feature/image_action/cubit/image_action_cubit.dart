@@ -19,7 +19,6 @@ class ImageActionCubit extends Cubit<ImageActionState> {
   }
 
   final HttpClient _client;
-  final String additionalPath = 'images';
 
   Future<void> _init() async {
     if (state.url.isEmpty) {

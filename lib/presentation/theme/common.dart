@@ -16,22 +16,22 @@ const appAppBarTheme = AppBarTheme(
   elevation: 0,
   scrolledUnderElevation: AppDimensions.underElevation,
   toolbarHeight: AppDimensions.toolBarHeight,
-  titleTextStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+  titleTextStyle: TextStyle(fontSize: 18, fontWeight: .w500),
 );
 
 const appPageTransitionsTheme = PageTransitionsTheme(
   builders: {
-    TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
-    TargetPlatform.android: FadeUpwardsPageTransitionsBuilder(),
+    .iOS: CupertinoPageTransitionsBuilder(),
+    .android: FadeUpwardsPageTransitionsBuilder(),
     // не корректно работает, возможно проблема с auto_route
     // TargetPlatform.android: FadeForwardsPageTransitionsBuilder(),
   },
 );
 
 final appScrollBarThemeData = ScrollbarThemeData(
-  thumbVisibility: WidgetStateProperty.all(false),
+  thumbVisibility: .all(false),
   interactive: true,
-  thickness: WidgetStateProperty.all(6),
+  thickness: .all(6),
   minThumbLength: AppDimensions.toolBarHeightOnScroll,
 );
 
@@ -73,21 +73,21 @@ const appDrawerThemeData = DrawerThemeData(width: 200);
 
 final ListTileThemeData listTileThemeData = ListTileThemeData(
   shape: const LinearBorder(),
-  visualDensity: VisualDensity.compact,
+  visualDensity: .compact,
   minVerticalPadding: 0,
   contentPadding: AppInsets.tileContentPadding,
-  controlAffinity: !Device.isMobile ? ListTileControlAffinity.leading : null,
+  controlAffinity: !Device.isMobile ? .leading : null,
 );
 
 const appCheckboxThemeData = CheckboxThemeData(
-  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-  visualDensity: VisualDensity.compact,
+  materialTapTargetSize: .shrinkWrap,
+  visualDensity: .compact,
   shape: RoundedRectangleBorder(borderRadius: AppStyles.checkboxBorderRadius),
 );
 
 const appSwitchThemeData = SwitchThemeData(
-  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-  padding: EdgeInsets.zero,
+  materialTapTargetSize: .shrinkWrap,
+  padding: .zero,
 );
 
 const appSliderThemeData = SliderThemeData(

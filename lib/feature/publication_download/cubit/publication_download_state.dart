@@ -5,10 +5,10 @@ enum PublicationDownloadStatus {
   notSupported,
   loading,
   success,
-  failure
+  failure,
 }
 
-class PublicationDownloadState extends Equatable {
+class PublicationDownloadState with EquatableMixin {
   const PublicationDownloadState({
     this.id = '',
     this.htmlText = '',
@@ -40,10 +40,10 @@ class PublicationDownloadState extends Equatable {
 
   @override
   List<Object> get props => [
-        id,
-        htmlText,
-        format,
-        status,
-        error,
-      ];
+    id,
+    htmlText,
+    format,
+    status,
+    error,
+  ];
 }

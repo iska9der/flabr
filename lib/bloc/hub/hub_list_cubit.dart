@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../data/exception/exception.dart';
 import '../../data/model/hub/hub.dart';
 import '../../data/model/list_response_model.dart';
+import '../../data/model/loading_status_enum.dart';
 import '../../data/repository/repository.dart';
 
 part 'hub_list_state.dart';
@@ -16,12 +17,11 @@ class HubListCubit extends Cubit<HubListState> {
   final HubRepository _repository;
 
   void fetch() async {
-    if (state.status == HubListStatus.loading ||
-        !state.isFirstFetch && state.isLastPage) {
+    if (state.status == .loading || !state.isFirstFetch && state.isLastPage) {
       return;
     }
 
-    emit(state.copyWith(status: HubListStatus.loading));
+    emit(state.copyWith(status: .loading));
 
     try {
       final response = await _repository.fetchAll(page: state.page);
@@ -34,7 +34,7 @@ class HubListCubit extends Cubit<HubListState> {
 
       emit(
         state.copyWith(
-          status: HubListStatus.success,
+          status: .success,
           list: newList,
           page: state.page + 1,
         ),
@@ -43,7 +43,7 @@ class HubListCubit extends Cubit<HubListState> {
       const fallbackMessage = 'Не удалось получить список хабов';
       emit(
         state.copyWith(
-          status: HubListStatus.failure,
+          status: .failure,
           error: error.parseException(fallbackMessage),
         ),
       );

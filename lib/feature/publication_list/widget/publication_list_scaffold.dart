@@ -138,7 +138,7 @@ class _PublicationListView<
   @override
   Widget build(BuildContext context) {
     final params = PublicationListScaffoldParams.of(context);
-    final scrollController = context.read<ScrollCubit>().state.controller;
+    final scrollController = context.read<ScrollCubit>().controller;
     final scrollPhysics = context.select<SettingsCubit, ScrollPhysics>(
       (cubit) => cubit.state.misc.scrollVariant.physics(context),
     );

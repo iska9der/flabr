@@ -7,7 +7,7 @@ import 'package:intl/intl.dart';
 
 import 'user_badget_model.dart';
 
-class UserWhois extends Equatable {
+class UserWhois with EquatableMixin {
   const UserWhois({
     this.badgets = const [],
     this.aboutHtml = '',
@@ -43,10 +43,9 @@ class UserWhois extends Equatable {
       ),
       aboutHtml: map['aboutHtml'] ?? '',
       contacts: map['contacts'] != null ? List.from(map['contacts']) : const [],
-      invitedBy:
-          map['invitedBy'] != null
-              ? UserInvitedByModel.fromMap(map['invitedBy'])
-              : UserInvitedByModel.empty,
+      invitedBy: map['invitedBy'] != null
+          ? UserInvitedByModel.fromMap(map['invitedBy'])
+          : UserInvitedByModel.empty,
     );
   }
 
@@ -63,7 +62,7 @@ class UserWhois extends Equatable {
   List<Object> get props => [badgets, aboutHtml, contacts, invitedBy];
 }
 
-class UserInvitedByModel extends Equatable {
+class UserInvitedByModel with EquatableMixin {
   /// если поле пустое, значит пользователь зарегался без инвайта
   final String issuerLogin;
 

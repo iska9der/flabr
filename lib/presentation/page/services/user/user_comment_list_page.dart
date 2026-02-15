@@ -44,7 +44,7 @@ class _UserCommentListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final scrollCubit = context.read<ScrollCubit>();
-    final scrollCtrl = scrollCubit.state.controller;
+    final scrollCtrl = scrollCubit.controller;
     final scrollPhysics = context.select<SettingsCubit, ScrollPhysics>(
       (value) => value.state.misc.scrollVariant.physics(context),
     );

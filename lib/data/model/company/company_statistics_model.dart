@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-class CompanyStatistics extends Equatable {
+class CompanyStatistics with EquatableMixin {
   const CompanyStatistics({
     this.subscribersCount = 0,
     this.rating = 0.0,

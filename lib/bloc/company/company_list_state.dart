@@ -1,16 +1,14 @@
 part of 'company_list_cubit.dart';
 
-enum CompanyListStatus { initial, loading, success, failure }
-
-class CompanyListState extends Equatable {
+class CompanyListState with EquatableMixin {
   const CompanyListState({
-    this.status = CompanyListStatus.initial,
+    this.status = .initial,
     this.error = '',
     this.list = CompanyListResponse.empty,
     this.page = 1,
   });
 
-  final CompanyListStatus status;
+  final LoadingStatus status;
   final String error;
   final ListResponse<Company> list;
   final int page;
@@ -19,7 +17,7 @@ class CompanyListState extends Equatable {
   bool get isLastPage => page >= list.pagesCount;
 
   CompanyListState copyWith({
-    CompanyListStatus? status,
+    LoadingStatus? status,
     String? error,
     ListResponse<Company>? list,
     int? page,

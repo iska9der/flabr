@@ -1,6 +1,6 @@
 part of 'company_card_model.dart';
 
-class CompanyContact extends Equatable {
+class CompanyContact with EquatableMixin {
   const CompanyContact({
     this.title = '',
     this.url = '',

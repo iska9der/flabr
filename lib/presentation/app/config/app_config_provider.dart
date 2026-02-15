@@ -1,7 +1,4 @@
-import 'package:flutter/widgets.dart';
-
-import 'app_config.dart';
-import 'app_config_repository.dart';
+part of 'config.dart';
 
 /// InheritedWidget для предоставления [AppConfig] вниз по дереву виджетов.
 class AppConfigProvider extends InheritedWidget {

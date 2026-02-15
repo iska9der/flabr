@@ -1,6 +1,6 @@
 part of 'publication.dart';
 
-class PublicationLeadData extends Equatable {
+class PublicationLeadData with EquatableMixin {
   const PublicationLeadData({
     required this.textHtml,
     this.image = PublicationLeadImage.empty,

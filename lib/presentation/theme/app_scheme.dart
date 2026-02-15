@@ -6,7 +6,7 @@ import 'app_colors.dart';
 
 abstract class AppSchemeLight {
   static ColorScheme get scheme => ColorScheme.fromSeed(
-    dynamicSchemeVariant: DynamicSchemeVariant.fidelity,
+    dynamicSchemeVariant: .fidelity,
     contrastLevel: .2,
     seedColor: colors.primary,
     primary: colors.primary,
@@ -24,7 +24,7 @@ abstract class AppSchemeLight {
     surfaceContainerHighest: colors.cardHighlight,
 
     /// цвет нижней навигации
-    surfaceContainer: const Color.fromARGB(255, 234, 236, 239),
+    surfaceContainer: const .fromARGB(255, 234, 236, 239),
     onPrimary: const Color(0xFFFFFFFF),
 
     /// цвет иконки в FAB
@@ -67,8 +67,8 @@ abstract class AppSchemeLight {
 
 class AppSchemeDark {
   static ColorScheme get scheme => ColorScheme.fromSeed(
-    brightness: Brightness.dark,
-    dynamicSchemeVariant: DynamicSchemeVariant.fidelity,
+    brightness: .dark,
+    dynamicSchemeVariant: .fidelity,
     contrastLevel: .2,
     seedColor: colors.primary,
     primary: colors.primary,
@@ -81,9 +81,9 @@ class AppSchemeDark {
     surfaceContainerLow: colors.card,
     surfaceContainerHighest: colors.cardHighlight,
     onPrimary: const Color(0xFF21323E),
-    onPrimaryContainer: const Color.fromARGB(255, 67, 74, 78),
+    onPrimaryContainer: const .fromARGB(255, 67, 74, 78),
     onSecondary: const Color(0xFF21323E),
-    onSecondaryContainer: const Color.fromARGB(255, 67, 74, 78),
+    onSecondaryContainer: const .fromARGB(255, 67, 74, 78),
     onTertiary: const Color(0xFFFFFFFF),
     onTertiaryContainer: const Color(0xFFFFFFFF),
     onError: const Color(0xFF690005),

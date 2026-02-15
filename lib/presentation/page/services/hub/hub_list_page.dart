@@ -40,7 +40,7 @@ class HubListPageView extends StatelessWidget {
   Widget build(BuildContext context) {
     final cubit = context.read<HubListCubit>();
     final scrollCubit = context.read<ScrollCubit>();
-    final scrollCtrl = scrollCubit.state.controller;
+    final scrollCtrl = scrollCubit.controller;
 
     return MultiBlocListener(
       listeners: [
@@ -57,24 +57,23 @@ class HubListPageView extends StatelessWidget {
         floatingActionButton: const FloatingScrollToTopButton(),
         body: SafeArea(
           child: BlocConsumer<HubListCubit, HubListState>(
-            listenWhen:
-                (p, c) => p.page != 1 && c.status == HubListStatus.failure,
+            listenWhen: (p, c) => p.page != 1 && c.status == .failure,
             listener: (c, state) {
               context.showSnack(content: Text(state.error));
             },
             builder: (context, state) {
-              if (state.status == HubListStatus.initial) {
+              if (state.status == .initial) {
                 cubit.fetch();
 
                 return const CircleIndicator();
               }
 
               if (state.isFirstFetch) {
-                if (state.status == HubListStatus.loading) {
+                if (state.status == .loading) {
                   return const CircleIndicator();
                 }
 
-                if (state.status == HubListStatus.failure) {
+                if (state.status == .failure) {
                   return Center(child: Text(state.error));
                 }
               }
@@ -85,7 +84,7 @@ class HubListPageView extends StatelessWidget {
                   controller: scrollCtrl,
                   itemCount:
                       state.list.refs.length +
-                      (state.status == HubListStatus.loading ? 1 : 0),
+                      (state.status == .loading ? 1 : 0),
                   itemBuilder: (context, index) {
                     if (index < state.list.refs.length) {
                       Hub item = state.list.refs[index];

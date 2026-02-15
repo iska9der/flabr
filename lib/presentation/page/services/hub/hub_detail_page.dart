@@ -56,7 +56,7 @@ class HubDetailPageView extends StatelessWidget {
   Widget build(BuildContext context) {
     final listCubit = context.read<HubPublicationListCubit>();
     final scrollCubit = context.read<ScrollCubit>();
-    final scrollCtrl = scrollCubit.state.controller;
+    final scrollCtrl = scrollCubit.controller;
     final scrollPhysics = context.select<SettingsCubit, ScrollPhysics>(
       (cubit) => cubit.state.misc.scrollVariant.physics(context),
     );

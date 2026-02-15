@@ -1,27 +1,33 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'scroll_state.dart';
 
 class ScrollCubit extends Cubit<ScrollState> {
   ScrollCubit({
-    this.duration = const Duration(milliseconds: 200),
-    this.curve = Curves.linear,
-    this.edgeTolerance = 20.0,
-  }) : super(ScrollState(controller: ScrollController())) {
+    Duration duration = const Duration(milliseconds: 200),
+    Curve curve = Curves.linear,
+    double edgeTolerance = 20.0,
+  }) : _edgeTolerance = edgeTolerance,
+       _curve = curve,
+       _duration = duration,
+       super(const ScrollState()) {
     _initListeners();
   }
 
-  final Duration duration;
-  final Curve curve;
-  final double edgeTolerance;
+  final ScrollController _controller = .new();
+  final Duration _duration;
+  final Curve _curve;
+  final double _edgeTolerance;
+
+  ScrollController get controller => _controller;
+  Duration get duration => _duration;
 
   @override
   Future<void> close() {
-    state.controller.removeListener(_onScroll);
-    state.controller.dispose();
+    _controller.removeListener(_onScroll);
+    _controller.dispose();
 
     return super.close();
   }
@@ -29,20 +35,18 @@ class ScrollCubit extends Cubit<ScrollState> {
   void _initListeners() {
     emit(state.copyWith(isTopEdge: true));
 
-    state.controller.addListener(_onScroll);
+    _controller.addListener(_onScroll);
   }
 
   void _onScroll() {
-    final controller = state.controller;
-    final position = controller.position;
+    final position = _controller.position;
 
     final isTopEdge =
-        position.pixels <= position.minScrollExtent + edgeTolerance;
+        position.pixels <= position.minScrollExtent + _edgeTolerance;
     final isBottomEdge =
-        position.pixels >= position.maxScrollExtent - edgeTolerance;
+        position.pixels >= position.maxScrollExtent - _edgeTolerance;
     final direction = position.userScrollDirection;
-    final isScrollToTopVisible =
-        !isTopEdge && direction == ScrollDirection.forward;
+    final isScrollToTopVisible = !isTopEdge && direction == .forward;
 
     if (isTopEdge != state.isTopEdge ||
         isBottomEdge != state.isBottomEdge ||
@@ -57,25 +61,25 @@ class ScrollCubit extends Cubit<ScrollState> {
     }
   }
 
-  Future<void> animateTo(
+  Future<void> _animateTo(
     double offset, {
     Duration? duration,
     Curve? curve,
   }) async {
-    await state.controller.animateTo(
+    await _controller.animateTo(
       offset,
       duration: duration ?? this.duration,
-      curve: curve ?? this.curve,
+      curve: curve ?? _curve,
     );
   }
 
   Future<void> animateToTop({Duration? duration, Curve? curve}) async {
-    await animateTo(0.00, duration: duration, curve: curve);
+    await _animateTo(0.00, duration: duration, curve: curve);
   }
 
   Future<void> animateToBottom({Duration? duration, Curve? curve}) async {
-    await animateTo(
-      state.controller.position.maxScrollExtent,
+    await _animateTo(
+      _controller.position.maxScrollExtent,
       duration: duration,
       curve: curve,
     );

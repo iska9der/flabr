@@ -2,7 +2,7 @@ part of 'summary_auth_cubit.dart';
 
 enum SummaryAuthStatus { initial, loading, authorized, unauthorized }
 
-class SummaryAuthState extends Equatable {
+class SummaryAuthState with EquatableMixin {
   const SummaryAuthState({
     this.error = '',
     this.status = SummaryAuthStatus.initial,

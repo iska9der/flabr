@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-class HubStatistics extends Equatable {
+class HubStatistics with EquatableMixin {
   const HubStatistics({
     this.subscribersCount = 0,
     this.rating = 0.0,

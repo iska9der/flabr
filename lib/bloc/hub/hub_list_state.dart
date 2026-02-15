@@ -1,16 +1,14 @@
 part of 'hub_list_cubit.dart';
 
-enum HubListStatus { initial, loading, success, failure }
-
-class HubListState extends Equatable {
+class HubListState with EquatableMixin {
   const HubListState({
-    this.status = HubListStatus.initial,
+    this.status = .initial,
     this.error = '',
     this.list = HubListResponse.empty,
     this.page = 1,
   });
 
-  final HubListStatus status;
+  final LoadingStatus status;
   final String error;
   final ListResponse<Hub> list;
   final int page;
@@ -19,7 +17,7 @@ class HubListState extends Equatable {
   bool get isLastPage => page >= list.pagesCount;
 
   HubListState copyWith({
-    HubListStatus? status,
+    LoadingStatus? status,
     String? error,
     ListResponse<Hub>? list,
     int? page,

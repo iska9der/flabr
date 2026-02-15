@@ -2,7 +2,7 @@ part of 'comment_list_cubit.dart';
 
 enum CommentListStatus { initial, loading, success, failure }
 
-class CommentListState extends Equatable {
+class CommentListState with EquatableMixin {
   const CommentListState({
     this.status = CommentListStatus.initial,
     this.error = '',
@@ -36,10 +36,10 @@ class CommentListState extends Equatable {
 
   @override
   List<Object> get props => [
-        status,
-        error,
-        publicationId,
-        source,
-        list,
-      ];
+    status,
+    error,
+    publicationId,
+    source,
+    list,
+  ];
 }

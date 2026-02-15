@@ -15,8 +15,9 @@ part 'tracker_publications_state.dart';
 
 class TrackerPublicationsBloc
     extends Bloc<TrackerPublicationsEvent, TrackerPublicationsState> {
-  TrackerPublicationsBloc({required this.repository})
-    : super(const TrackerPublicationsState()) {
+  TrackerPublicationsBloc({required TrackerPublicationRepository repository})
+    : _repository = repository,
+      super(const TrackerPublicationsState()) {
     on<TrackerPublicationsEvent>(
       (event, emit) => switch (event) {
         SubscribeEvent event => _subscribe(event, emit),
@@ -25,20 +26,17 @@ class TrackerPublicationsBloc
     );
   }
 
-  final TrackerPublicationRepository repository;
+  final TrackerPublicationRepository _repository;
 
   Future<void> _subscribe(
     SubscribeEvent event,
     Emitter<TrackerPublicationsState> emit,
   ) async {
-    emit(state.copyWith(status: LoadingStatus.loading));
+    emit(state.copyWith(status: .loading));
 
     await emit.forEach(
-      repository.getPublications(),
-      onData: (data) => state.copyWith(
-        status: LoadingStatus.success,
-        response: data,
-      ),
+      _repository.getPublications(),
+      onData: (data) => state.copyWith(status: .success, response: data),
     );
   }
 
@@ -47,11 +45,11 @@ class TrackerPublicationsBloc
     Emitter<TrackerPublicationsState> emit,
   ) async {
     try {
-      await repository.fetchPublications(page: state.page.toString());
+      await _repository.fetchPublications(page: state.page.toString());
     } catch (error, stackTrace) {
       emit(
         state.copyWith(
-          status: LoadingStatus.failure,
+          status: .failure,
           error: error.parseException('Не удалось получить публикации'),
         ),
       );

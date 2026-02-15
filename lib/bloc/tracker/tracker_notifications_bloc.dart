@@ -16,9 +16,10 @@ part 'tracker_notifications_state.dart';
 class TrackerNotificationsBloc
     extends Bloc<TrackerNotificationsEvent, TrackerNotificationsState> {
   TrackerNotificationsBloc({
-    required this.repository,
+    required TrackerNotificationRepository repository,
     required TrackerNotificationCategory category,
-  }) : super(TrackerNotificationsState(category: category)) {
+  }) : _repository = repository,
+       super(TrackerNotificationsState(category: category)) {
     on<TrackerNotificationsEvent>(
       (event, emit) => switch (event) {
         LoadEvent event => _fetch(event, emit),
@@ -27,18 +28,17 @@ class TrackerNotificationsBloc
     );
   }
 
-  final TrackerNotificationRepository repository;
+  final TrackerNotificationRepository _repository;
 
   Future<void> _subscribe(
     SubscribeEvent event,
     Emitter<TrackerNotificationsState> emit,
   ) async {
-    emit(state.copyWith(status: LoadingStatus.loading));
+    emit(state.copyWith(status: .loading));
 
     await emit.forEach(
-      repository.onChange(category: state.category),
-      onData: (data) =>
-          state.copyWith(status: LoadingStatus.success, response: data),
+      _repository.onChange(category: state.category),
+      onData: (data) => state.copyWith(status: .success, response: data),
     );
   }
 
@@ -47,14 +47,14 @@ class TrackerNotificationsBloc
     Emitter<TrackerNotificationsState> emit,
   ) async {
     try {
-      await repository.fetchNotifications(
+      await _repository.fetchNotifications(
         page: state.page.toString(),
         category: state.category,
       );
     } catch (error, trace) {
       emit(
         state.copyWith(
-          status: LoadingStatus.failure,
+          status: .failure,
           error: error.parseException('Не удалось получить уведомления'),
         ),
       );

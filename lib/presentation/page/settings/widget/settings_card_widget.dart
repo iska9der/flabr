@@ -8,7 +8,7 @@ class SettingsCardWidget extends StatelessWidget {
     super.key,
     this.title,
     this.subtitle,
-    this.padding = const EdgeInsets.all(12),
+    this.padding = const .all(12),
     required this.child,
   });
 
@@ -22,11 +22,11 @@ class SettingsCardWidget extends StatelessWidget {
     final theme = context.theme;
 
     return FlabrCard(
-      margin: EdgeInsets.zero,
+      margin: .zero,
       padding: padding,
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: .stretch,
+        mainAxisSize: .min,
         children: [
           if (title != null)
             Text(

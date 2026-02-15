@@ -11,8 +11,7 @@ import '../../../core/constants/constants.dart';
 import '../../../di/di.dart';
 import '../../extension/extension.dart';
 import '../../theme/theme.dart';
-import '../config/app_config.dart';
-import '../config/app_config_provider.dart';
+import '../config/config.dart';
 
 /// Основной view приложения с конфигурацией MaterialApp.
 ///

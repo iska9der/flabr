@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../data/exception/exception.dart';
+import '../../data/model/loading_status_enum.dart';
 import '../../data/model/user/user.dart';
 import '../../data/repository/repository.dart';
 
@@ -19,7 +20,7 @@ class UserCommentListCubit extends Cubit<UserCommentListState> {
   void reset() {
     emit(
       state.copyWith(
-        status: CommentListStatus.initial,
+        status: .initial,
         page: 1,
         comments: [],
         pages: 0,
@@ -28,12 +29,11 @@ class UserCommentListCubit extends Cubit<UserCommentListState> {
   }
 
   Future<void> fetch() async {
-    if (state.status == CommentListStatus.loading ||
-        !state.isFirstFetch && state.isLastPage) {
+    if (state.status == .loading || !state.isFirstFetch && state.isLastPage) {
       return;
     }
 
-    emit(state.copyWith(status: CommentListStatus.loading));
+    emit(state.copyWith(status: .loading));
 
     try {
       final response = await _repository.fetchComments(
@@ -43,7 +43,7 @@ class UserCommentListCubit extends Cubit<UserCommentListState> {
 
       emit(
         state.copyWith(
-          status: CommentListStatus.success,
+          status: .success,
           comments: [...state.comments, ...response.refs],
           page: state.page + 1,
           pages: response.pagesCount,
@@ -52,7 +52,7 @@ class UserCommentListCubit extends Cubit<UserCommentListState> {
     } catch (error, stackTrace) {
       emit(
         state.copyWith(
-          status: CommentListStatus.failure,
+          status: .failure,
           error: error.parseException('Не удалось получить комментарии'),
         ),
       );
@@ -62,12 +62,11 @@ class UserCommentListCubit extends Cubit<UserCommentListState> {
   }
 
   Future<void> fetchBookmarks() async {
-    if (state.status == CommentListStatus.loading ||
-        !state.isFirstFetch && state.isLastPage) {
+    if (state.status == .loading || !state.isFirstFetch && state.isLastPage) {
       return;
     }
 
-    emit(state.copyWith(status: CommentListStatus.loading));
+    emit(state.copyWith(status: .loading));
 
     try {
       final response = await _repository.fetchCommentsInBookmarks(
@@ -77,16 +76,16 @@ class UserCommentListCubit extends Cubit<UserCommentListState> {
 
       emit(
         state.copyWith(
-          status: CommentListStatus.success,
+          status: .success,
           comments: [...state.comments, ...response.refs],
           page: state.page + 1,
           pages: response.pagesCount,
         ),
       );
-    } catch (e) {
-      emit(
-        state.copyWith(status: CommentListStatus.failure, error: e.toString()),
-      );
+    } catch (error, stackTrace) {
+      emit(state.copyWith(status: .failure, error: error.toString()));
+
+      super.onError(error, stackTrace);
     }
   }
 }

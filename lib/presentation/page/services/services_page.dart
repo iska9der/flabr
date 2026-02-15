@@ -31,7 +31,7 @@ class ServicesPageView extends StatelessWidget {
           crossAxisCount: 3,
           mainAxisSpacing: 8,
           crossAxisSpacing: 8,
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+          padding: const .symmetric(horizontal: 12, vertical: 12),
           children: [
             ServiceCard(
               title: HubListPage.name,
@@ -69,16 +69,16 @@ class ServiceCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final theme = context.theme;
 
     return Card(
       elevation: onTap != null ? 6 : 0,
-      clipBehavior: Clip.hardEdge,
+      clipBehavior: .hardEdge,
       color: onTap != null ? context.cardTheme.color : theme.disabledColor,
       child: InkWell(
         onTap: onTap,
         child: Stack(
-          fit: StackFit.expand,
+          fit: .expand,
           children: [
             Icon(
               icon,
@@ -88,10 +88,10 @@ class ServiceCard extends StatelessWidget {
                   : theme.iconTheme.color?.withValues(alpha: 0.2),
             ),
             Align(
-              alignment: Alignment.bottomCenter,
+              alignment: .bottomCenter,
               child: Container(
-                padding: const EdgeInsets.all(4),
-                margin: const EdgeInsets.only(bottom: 10),
+                padding: const .all(4),
+                margin: const .only(bottom: 10),
                 decoration: BoxDecoration(
                   borderRadius: AppStyles.cardBorderRadius,
                   color: onTap != null
@@ -102,7 +102,7 @@ class ServiceCard extends StatelessWidget {
                 ),
                 child: Text(
                   title,
-                  textAlign: TextAlign.center,
+                  textAlign: .center,
                   maxLines: 1,
                   style: TextStyle(
                     color: onTap != null

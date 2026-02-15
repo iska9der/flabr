@@ -5,7 +5,7 @@ import 'package:ya_summary/ya_summary.dart';
 
 import '../../../bloc/auth/auth_cubit.dart';
 import '../../../bloc/settings/settings_cubit.dart';
-import '../../app/config/app_config_provider.dart';
+import '../../app/config/config.dart';
 import '../../constants/constants.dart';
 
 part 'splash_page.dart';

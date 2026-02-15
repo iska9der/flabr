@@ -17,51 +17,38 @@ abstract class AppDimensions {
 }
 
 abstract class AppInsets {
-  static const EdgeInsets screenPadding = EdgeInsets.all(8.0);
+  static const EdgeInsets screenPadding = .all(8.0);
 
-  static const EdgeInsets cardMargin = EdgeInsets.all(4.0);
-  static const EdgeInsets cardPadding = EdgeInsets.all(8.0);
-  static const EdgeInsets tileContentPadding = EdgeInsets.symmetric(
-    horizontal: 8.0,
-  );
+  static const EdgeInsets cardMargin = .all(4.0);
+  static const EdgeInsets cardPadding = .all(8.0);
+  static const EdgeInsets tileContentPadding = .symmetric(horizontal: 8.0);
 
-  static const EdgeInsets mostReadingDesktop = EdgeInsets.fromLTRB(8, 8, 8, 8);
-  static const EdgeInsets mostReadingMobile = EdgeInsets.symmetric(
+  static const EdgeInsets mostReadingDesktop = .fromLTRB(8, 8, 8, 8);
+  static const EdgeInsets mostReadingMobile = .symmetric(
     horizontal: 4.0,
     vertical: 8.0,
   );
 
-  static const EdgeInsets profileCardPadding = EdgeInsets.symmetric(
+  static const EdgeInsets profileCardPadding = .symmetric(
     horizontal: 8.0,
     vertical: 16.0,
   );
 
-  static const EdgeInsets filterSheetPadding = EdgeInsets.fromLTRB(
-    12,
-    0,
-    12,
-    24,
-  );
+  static const EdgeInsets filterSheetPadding = .fromLTRB(12, 0, 12, 24);
 }
 
 abstract class AppStyles {
   static const BorderRadius cardBorderRadius = BorderRadius.zero;
 
-  static const BorderRadius dialogBorderRadius = BorderRadius.all(
-    Radius.circular(6),
-  );
+  static const BorderRadius dialogBorderRadius = BorderRadius.all(.circular(6));
 
-  static const BorderRadius buttonBorderRadius = BorderRadius.all(
-    Radius.circular(3),
-  );
+  static const BorderRadius buttonBorderRadius = BorderRadius.all(.circular(3));
 
   static const BorderRadius checkboxBorderRadius = BorderRadius.all(
-    Radius.circular(2),
+    .circular(2),
   );
 
-  static const BorderRadius avatarBorderRadius = BorderRadius.all(
-    Radius.circular(3),
-  );
+  static const BorderRadius avatarBorderRadius = BorderRadius.all(.circular(3));
 }
 
 abstract class AppIcons {

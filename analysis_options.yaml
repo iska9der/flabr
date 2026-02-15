@@ -46,9 +46,13 @@ dart_code_metrics:
     - package:dart_code_metrics_presets/equatable.yaml
   rules:
     - avoid-cubits: false
-    - prefer-number-format: false
+    - avoid-empty-build-when: false
     - avoid-read-inside-build: false
     - check-is-not-closed-after-async-gap: false
+    - prefer-number-format: false
+    - prefer-immutable-bloc-state: false
+    - prefer-sealed-bloc-state: false
   pubspec-rules:
     - avoid-any-version: false
+    - dependencies-ordering: false
     - prefer-caret-version-syntax: false

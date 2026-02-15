@@ -8,7 +8,7 @@ class SettingsCheckboxWidget extends StatefulWidget {
     required this.initialValue,
     required this.title,
     this.subtitle,
-    this.type = SettingsCheckboxType.switchTile,
+    this.type = .switchTile,
     this.validate,
     required this.onChanged,
   });
@@ -29,9 +29,9 @@ class _SettingsCheckboxWidgetState extends State<SettingsCheckboxWidget> {
 
   @override
   void initState() {
-    isChecked = widget.initialValue;
-
     super.initState();
+
+    isChecked = widget.initialValue;
   }
 
   void onChanged(bool? value) {
@@ -55,13 +55,13 @@ class _SettingsCheckboxWidgetState extends State<SettingsCheckboxWidget> {
   @override
   Widget build(BuildContext context) {
     return switch (widget.type) {
-      SettingsCheckboxType.checkboxTile => CheckboxListTile(
+      .checkboxTile => CheckboxListTile(
         title: widget.title,
         subtitle: widget.subtitle,
         value: isChecked,
         onChanged: onChanged,
       ),
-      SettingsCheckboxType.switchTile => SwitchListTile(
+      .switchTile => SwitchListTile(
         title: widget.title,
         subtitle: widget.subtitle,
         value: isChecked,

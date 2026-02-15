@@ -2,7 +2,7 @@ part of 'company_card_model.dart';
 
 const _placeholderDate = '2000-01-01T10:10:00+00:00';
 
-class CompanyCardInformation extends Equatable {
+class CompanyCardInformation with EquatableMixin {
   const CompanyCardInformation({
     this.foundationDate = '',
     this.registrationDate = _placeholderDate,

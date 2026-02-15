@@ -14,8 +14,9 @@ part 'publication_counters_state.dart';
 
 class PublicationCountersBloc
     extends Bloc<PublicationCountersEvent, PublicationCountersState> {
-  PublicationCountersBloc({required this.repository})
-    : super(const PublicationCountersState()) {
+  PublicationCountersBloc({required PublicationRepository repository})
+    : _repository = repository,
+      super(const PublicationCountersState()) {
     on<PublicationCountersEvent>(
       (event, emit) => switch (event) {
         LoadEvent event => _fetch(event, emit),
@@ -23,7 +24,7 @@ class PublicationCountersBloc
     );
   }
 
-  final PublicationRepository repository;
+  final PublicationRepository _repository;
 
   FutureOr<void> _fetch(
     LoadEvent event,
@@ -36,7 +37,7 @@ class PublicationCountersBloc
     emit(state.copyWith(status: LoadingStatus.loading));
 
     try {
-      final result = await repository.fetchCounters();
+      final result = await _repository.fetchCounters();
 
       emit(state.copyWith(status: LoadingStatus.success, counters: result));
     } catch (e) {

@@ -26,11 +26,10 @@ class CompanyListPage extends StatelessWidget {
       key: const ValueKey('company-list'),
       providers: [
         BlocProvider(
-          create:
-              (_) => CompanyListCubit(
-                repository: getIt(),
-                languageRepository: getIt(),
-              ),
+          create: (_) => CompanyListCubit(
+            repository: getIt(),
+            languageRepository: getIt(),
+          ),
         ),
         BlocProvider(create: (_) => ScrollCubit()),
       ],
@@ -46,7 +45,7 @@ class CompanyListPageView extends StatelessWidget {
   Widget build(BuildContext context) {
     final cubit = context.read<CompanyListCubit>();
     final scrollCubit = context.read<ScrollCubit>();
-    final scrollCtrl = scrollCubit.state.controller;
+    final scrollCtrl = scrollCubit.controller;
 
     return MultiBlocListener(
       listeners: [
@@ -55,10 +54,9 @@ class CompanyListPageView extends StatelessWidget {
           listener: (context, state) => cubit.fetch(),
         ),
         BlocListener<SettingsCubit, SettingsState>(
-          listenWhen:
-              (previous, current) =>
-                  previous.langUI != current.langUI ||
-                  previous.langArticles != current.langArticles,
+          listenWhen: (previous, current) =>
+              previous.langUI != current.langUI ||
+              previous.langArticles != current.langArticles,
           listener: (_, _) => scrollCubit.animateToTop(),
         ),
       ],
@@ -70,24 +68,23 @@ class CompanyListPageView extends StatelessWidget {
         floatingActionButton: const FloatingScrollToTopButton(),
         body: SafeArea(
           child: BlocConsumer<CompanyListCubit, CompanyListState>(
-            listenWhen:
-                (p, c) => p.page != 1 && c.status == CompanyListStatus.failure,
+            listenWhen: (p, c) => p.page != 1 && c.status == .failure,
             listener: (c, state) {
               context.showSnack(content: Text(state.error));
             },
             builder: (context, state) {
-              if (state.status == CompanyListStatus.initial) {
+              if (state.status == .initial) {
                 cubit.fetch();
 
                 return const CircleIndicator();
               }
 
               if (state.isFirstFetch) {
-                if (state.status == CompanyListStatus.loading) {
+                if (state.status == .loading) {
                   return const CircleIndicator();
                 }
 
-                if (state.status == CompanyListStatus.failure) {
+                if (state.status == .failure) {
                   return Center(child: Text(state.error));
                 }
               }
@@ -98,7 +95,7 @@ class CompanyListPageView extends StatelessWidget {
                   controller: scrollCtrl,
                   itemCount:
                       state.list.refs.length +
-                      (state.status == CompanyListStatus.loading ? 1 : 0),
+                      (state.status == .loading ? 1 : 0),
                   itemBuilder: (context, index) {
                     if (index < state.list.refs.length) {
                       final company = state.list.refs[index];

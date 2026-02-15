@@ -1,7 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 part of 'most_reading_cubit.dart';
 
-class MostReadingState extends Equatable {
+class MostReadingState with EquatableMixin {
   const MostReadingState({
     this.status = LoadingStatus.initial,
     this.error = '',

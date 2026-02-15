@@ -16,7 +16,7 @@ class PublicationDownloadCubit extends Cubit<PublicationDownloadState> {
     required String publicationId,
     required String publicationText,
     required PublicationDownloadFormat format,
-  }) : converter = PublicationTextConverter(
+  }) : _converter = PublicationTextConverter(
          text: publicationText,
          desiredFormat: format,
        ),
@@ -30,7 +30,7 @@ class PublicationDownloadCubit extends Cubit<PublicationDownloadState> {
     _init();
   }
 
-  final PublicationTextConverter converter;
+  final PublicationTextConverter _converter;
 
   Future<void> _init() async {
     if (kIsWeb || !await FlutterFileDialog.isPickDirectorySupported()) {
@@ -54,7 +54,7 @@ class PublicationDownloadCubit extends Cubit<PublicationDownloadState> {
         return emit(state.copyWith(status: PublicationDownloadStatus.initial));
       }
 
-      final text = converter.convert();
+      final text = _converter.convert();
       final data = utf8.encode(text);
 
       await FlutterFileDialog.saveFileToDirectory(

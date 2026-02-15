@@ -76,7 +76,7 @@ class _SearchAnywhereViewState extends State<_SearchAnywhereView> {
     final ThemeData theme = appBarTheme(context);
     _focusNode.requestFocus();
     final scrollCubit = context.read<ScrollCubit>();
-    final scrollCtrl = scrollCubit.state.controller;
+    final scrollCtrl = scrollCubit.controller;
 
     return MultiBlocListener(
       listeners: [

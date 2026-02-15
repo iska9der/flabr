@@ -13,7 +13,7 @@ class PublicationDetailPage extends StatelessWidget {
     super.key,
     @PathParam.inherit() required String type,
     @PathParam.inherit() required this.id,
-  }) : type = PublicationType.fromString(type);
+  }) : type = .fromString(type);
 
   final PublicationType type;
   final String id;
@@ -29,7 +29,7 @@ class PublicationDetailPage extends StatelessWidget {
         BlocProvider(
           create: (_) => PublicationDetailCubit(
             id,
-            source: PublicationSource.fromType(type),
+            source: .fromType(type),
             repository: getIt(),
             languageRepository: getIt(),
           ),

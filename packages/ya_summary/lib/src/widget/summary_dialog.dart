@@ -18,19 +18,15 @@ Future showSummaryDialog(
 }) async {
   final theme = Theme.of(context);
   final barrierColor = theme.colorScheme.surface.withValues(alpha: .8);
-  final loader = loaderWidget ??
-      const Center(
-        child: CircularProgressIndicator(),
-      );
+  final loader =
+      loaderWidget ?? const Center(child: CircularProgressIndicator());
 
   return await showDialog(
     context: context,
     barrierColor: barrierColor,
     builder: (context) => MultiBlocProvider(
       providers: [
-        BlocProvider.value(
-          value: BlocProvider.of<SummaryAuthCubit>(context),
-        ),
+        BlocProvider.value(value: context.read<SummaryAuthCubit>()),
         BlocProvider(
           create: (_) => SummaryCubit(
             url: url,

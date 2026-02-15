@@ -83,6 +83,7 @@ class SettingsCubit extends Cubit<SettingsState> {
     _langRepository.changeUILanguage(uiLang);
   }
 
+  // ignore: avoid-returning-value-from-cubit-methods
   (bool, List<Language>) validateLang(
     Language lang, {
     required bool isEnabled,

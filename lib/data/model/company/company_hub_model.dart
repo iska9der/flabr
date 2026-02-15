@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 
 import '../hub_type_enum.dart';
 
-class CompanyHub extends Equatable {
+class CompanyHub with EquatableMixin {
   const CompanyHub({
     required this.alias,
     this.title = '',

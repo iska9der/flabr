@@ -37,6 +37,7 @@ class _ListViewState extends State<_ListView> {
               child: CircleIndicator.medium(),
             );
           }
+
           return Padding(
             padding: AppInsets.screenPadding,
             child: Scrollbar(

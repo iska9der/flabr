@@ -5,8 +5,8 @@ abstract final class AppTypography {
     final typography = Typography.material2021(colorScheme: scheme);
 
     var textTheme = switch (scheme.brightness) {
-      Brightness.light => typography.black,
-      Brightness.dark => typography.white,
+      .light => typography.black,
+      .dark => typography.white,
     };
 
     textTheme = textTheme.copyWith(

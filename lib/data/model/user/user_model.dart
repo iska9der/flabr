@@ -7,7 +7,7 @@ import 'user_location_model.dart';
 import 'user_related_data_model.dart';
 import 'user_workplace_model.dart';
 
-class User extends Equatable {
+class User with EquatableMixin {
   const User({
     required this.id,
     this.alias = '',

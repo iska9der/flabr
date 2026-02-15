@@ -1,6 +1,6 @@
 part of 'subscription_cubit.dart';
 
-class SubscriptionState extends Equatable {
+class SubscriptionState with EquatableMixin {
   const SubscriptionState({
     this.status = LoadingStatus.success,
     this.error = '',

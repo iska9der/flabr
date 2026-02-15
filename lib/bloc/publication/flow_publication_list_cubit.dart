@@ -18,14 +18,15 @@ class FlowPublicationListCubit
   FlowPublicationListCubit({
     required super.repository,
     required super.languageRepository,
-    required this.storage,
-    PublicationFlow flow = PublicationFlow.all,
-    Section section = Section.article,
-  }) : super(FlowPublicationListState(flow: flow, section: section)) {
+    required CacheStorage storage,
+    PublicationFlow flow = .all,
+    Section section = .article,
+  }) : _storage = storage,
+       super(FlowPublicationListState(flow: flow, section: section)) {
     _restoreFilter();
   }
 
-  final CacheStorage storage;
+  final CacheStorage _storage;
 
   Future<void> _restoreFilter() async {
     emit(state.copyWith(status: PublicationListStatus.loading));
@@ -34,7 +35,7 @@ class FlowPublicationListCubit
     FlowPublicationListState newState = state;
     try {
       /// вспоминаем последний примененный фильтр во флоу
-      final str = await storage.read(key);
+      final str = await _storage.read(key);
       if (str == null) {
         throw const NotFoundException();
       }
@@ -42,7 +43,7 @@ class FlowPublicationListCubit
       final lastFilter = FlowFilter.fromJson(jsonDecode(str));
       newState = newState.copyWith(filter: lastFilter);
     } catch (_) {
-      storage.delete(key);
+      _storage.delete(key);
     } finally {
       emit(newState.copyWith(status: PublicationListStatus.initial));
     }
@@ -97,7 +98,7 @@ class FlowPublicationListCubit
   }
 
   void applyFilter(PublicationFlow newFlow, FlowFilter newFilter) {
-    storage.write(
+    _storage.write(
       CacheKeys.flowFilter(state.section.name),
       jsonEncode(newFilter),
     );

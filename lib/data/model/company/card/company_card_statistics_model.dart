@@ -1,6 +1,6 @@
 part of 'company_card_model.dart';
 
-class CompanyCardStatistics extends Equatable {
+class CompanyCardStatistics with EquatableMixin {
   const CompanyCardStatistics({
     this.subscribersCount = 0,
     this.rating = 0.0,
@@ -42,13 +42,13 @@ class CompanyCardStatistics extends Equatable {
 
   @override
   List<Object?> get props => [
-        subscribersCount,
-        rating,
-        invest,
-        postsCount,
-        newsCount,
-        vacanciesCount,
-        employeesCount,
-        careerRating,
-      ];
+    subscribersCount,
+    rating,
+    invest,
+    postsCount,
+    newsCount,
+    vacanciesCount,
+    employeesCount,
+    careerRating,
+  ];
 }

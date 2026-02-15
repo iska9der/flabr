@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../extension/extension.dart';
+
 class SettingsSectionWidget extends StatelessWidget {
   const SettingsSectionWidget({
     super.key,
@@ -12,14 +14,14 @@ class SettingsSectionWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
+    final textTheme = context.theme.textTheme;
 
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
+      crossAxisAlignment: .stretch,
       children: [
         if (title != null)
           Padding(
-            padding: const EdgeInsets.only(top: 28, bottom: 4),
+            padding: const .only(top: 28, bottom: 4),
             child: Text(title!, style: textTheme.headlineLarge),
           ),
         Wrap(runSpacing: 4, children: children),

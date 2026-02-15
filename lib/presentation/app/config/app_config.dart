@@ -1,9 +1,4 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:responsive_framework/responsive_framework.dart';
-
-import '../../theme/theme.dart';
-
-part 'app_config.freezed.dart';
+part of 'config.dart';
 
 /// Конфигурация приложения.
 ///

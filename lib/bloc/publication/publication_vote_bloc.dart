@@ -15,8 +15,8 @@ class PublicationVoteBloc
     extends Bloc<PublicationVoteEvent, PublicationVoteState> {
   PublicationVoteBloc({
     required Publication publication,
-    required this.repository,
-  }) : super(
+    required PublicationVoteRepository repository,
+  }) : _repository = repository, super(
          PublicationVoteState(
            id: publication.id,
            score: publication.statistics.score,
@@ -36,7 +36,7 @@ class PublicationVoteBloc
     );
   }
 
-  final PublicationVoteRepository repository;
+  final PublicationVoteRepository _repository;
 
   String? _commonValidation(PublicationVoteAction action) {
     if (action.isVotingOver) {
@@ -66,7 +66,7 @@ class PublicationVoteBloc
     }
 
     try {
-      final result = await repository.voteUp(state.id);
+      final result = await _repository.voteUp(state.id);
       final newAction = state.actionPlus.copyWith(canVote: result.canVote);
 
       emit(

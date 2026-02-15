@@ -52,7 +52,7 @@ class UserListPageView extends StatelessWidget {
   Widget build(BuildContext context) {
     var usersCubit = context.read<UserListCubit>();
     var scrollCubit = context.read<ScrollCubit>();
-    var scrollCtrl = scrollCubit.state.controller;
+    var scrollCtrl = scrollCubit.controller;
 
     return Scaffold(
       appBar: AppBar(
@@ -62,22 +62,21 @@ class UserListPageView extends StatelessWidget {
       floatingActionButton: const FloatingScrollToTopButton(),
       body: SafeArea(
         child: BlocConsumer<UserListCubit, UserListState>(
-          listenWhen:
-              (p, c) => p.page != 1 && c.status == UserListStatus.failure,
-          listener:
-              (context, state) => context.showSnack(content: Text(state.error)),
+          listenWhen: (p, c) => p.page != 1 && c.status == .failure,
+          listener: (context, state) =>
+              context.showSnack(content: Text(state.error)),
           builder: (context, state) {
-            if (state.status == UserListStatus.initial) {
+            if (state.status == .initial) {
               usersCubit.fetchAll();
 
               return const CircleIndicator();
             }
 
             if (usersCubit.isFirstFetch) {
-              if (state.status == UserListStatus.loading) {
+              if (state.status == .loading) {
                 return const CircleIndicator();
               }
-              if (state.status == UserListStatus.failure) {
+              if (state.status == .failure) {
                 return Center(child: Text(state.error));
               }
             }
@@ -88,9 +87,7 @@ class UserListPageView extends StatelessWidget {
               controller: scrollCtrl,
               child: ListView.builder(
                 controller: scrollCtrl,
-                itemCount:
-                    users.length +
-                    (state.status == UserListStatus.loading ? 1 : 0),
+                itemCount: users.length + (state.status == .loading ? 1 : 0),
                 itemBuilder: (context, i) {
                   if (i < users.length) {
                     return UserCardWidget(model: state.users[i]);

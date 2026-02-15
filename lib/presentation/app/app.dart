@@ -1,16 +1,13 @@
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 import '../../di/di.dart';
-import 'config/app_config.dart';
-import 'config/app_config_provider.dart';
-import 'config/app_config_repository.dart';
+import 'config/config.dart';
 import 'coordinator/global_bloc_listener.dart';
 import 'provider/global_bloc_provider.dart';
 import 'view/application_view.dart';
 
-export 'config/app_config.dart';
+export 'config/config.dart';
 export 'view/application_view.dart';
 
 /// Точка входа в приложение.
@@ -32,9 +29,6 @@ class Application extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    /// Убираем нативный экран загрузки
-    FlutterNativeSplash.remove();
-
     final app = AppConfigProvider(
       config: config,
       repository: getIt<AppConfigRepository>(),

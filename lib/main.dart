@@ -18,8 +18,9 @@ void main() {
 
       await Bootstrap.init(logger: logger);
 
-      const AppConfig config = kDebugMode ? .dev : .prod;
+      FlutterNativeSplash.remove();
 
+      const AppConfig config = kDebugMode ? .dev : .prod;
       runApp(const Application(config: config));
     },
     (error, stack) {

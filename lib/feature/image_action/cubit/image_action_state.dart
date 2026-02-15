@@ -2,7 +2,7 @@ part of 'image_action_cubit.dart';
 
 enum ImageActionStatus { initial, loading, success, failure }
 
-class ImageActionState extends Equatable {
+class ImageActionState with EquatableMixin {
   const ImageActionState({
     this.status = ImageActionStatus.initial,
     this.error = '',
@@ -50,13 +50,13 @@ class ImageActionState extends Equatable {
 
   @override
   List<Object?> get props => [
-        status,
-        error,
-        isSaveEnabled,
-        isShareEnabled,
-        url,
-        name,
-        mimeType,
-        bytes,
-      ];
+    status,
+    error,
+    isSaveEnabled,
+    isShareEnabled,
+    url,
+    name,
+    mimeType,
+    bytes,
+  ];
 }

@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-class QueryParams extends Equatable {
+class QueryParams with EquatableMixin {
   const QueryParams({this.page = ''});
 
   final String page;

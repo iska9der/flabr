@@ -2,7 +2,7 @@ part of 'company_cubit.dart';
 
 enum CompanyStatus { initial, loading, success, failure }
 
-class CompanyState extends Equatable {
+class CompanyState with EquatableMixin {
   const CompanyState({
     this.status = CompanyStatus.initial,
     this.error = '',
@@ -37,10 +37,10 @@ class CompanyState extends Equatable {
 
   @override
   List<Object> get props => [
-        status,
-        error,
-        alias,
-        model,
-        card,
-      ];
+    status,
+    error,
+    alias,
+    model,
+    card,
+  ];
 }

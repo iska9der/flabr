@@ -7,7 +7,7 @@ abstract class LicenseAssets {
 abstract class IconsAssets {
   static const String logo = 'assets/logo.png';
   static const String logoWithBackground = 'assets/logo_bg.png';
-  static const Color logoBackgroundColor = Color.from(
+  static const Color logoBackgroundColor = .from(
     alpha: 1.0000,
     red: 0.2196,
     green: 0.3529,

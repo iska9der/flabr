@@ -2,7 +2,7 @@ part of 'user_cubit.dart';
 
 enum UserStatus { initial, loading, success, failure }
 
-class UserState extends Equatable {
+class UserState with EquatableMixin {
   const UserState({
     required this.login,
     this.status = UserStatus.initial,

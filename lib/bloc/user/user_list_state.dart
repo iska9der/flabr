@@ -1,24 +1,22 @@
 part of 'user_list_cubit.dart';
 
-enum UserListStatus { initial, loading, success, failure }
-
-class UserListState extends Equatable {
+class UserListState with EquatableMixin {
   const UserListState({
-    this.status = UserListStatus.initial,
+    this.status = LoadingStatus.initial,
     this.error = '',
     this.page = 1,
     this.pagesCount = 0,
     this.users = const [],
   });
 
-  final UserListStatus status;
+  final LoadingStatus status;
   final String error;
   final int page;
   final int pagesCount;
   final List<User> users;
 
   UserListState copyWith({
-    UserListStatus? status,
+    LoadingStatus? status,
     String? error,
     int? page,
     int? pagesCount,

@@ -15,9 +15,10 @@ class TrackerNotificationsMarkerBloc
     extends
         Bloc<TrackerNotificationsMarkerEvent, TrackerNotificationsMarkerState> {
   TrackerNotificationsMarkerBloc({
-    required this.repository,
+    required TrackerNotificationRepository repository,
     required TrackerNotificationCategory category,
-  }) : super(TrackerNotificationsMarkerState(category: category)) {
+  }) : _repository = repository,
+       super(TrackerNotificationsMarkerState(category: category)) {
     on<TrackerNotificationsMarkerEvent>(
       (event, emit) => switch (event) {
         MarkAsReadEvent event => _read(event, emit),
@@ -25,43 +26,43 @@ class TrackerNotificationsMarkerBloc
     );
   }
 
-  final TrackerNotificationRepository repository;
+  final TrackerNotificationRepository _repository;
 
   FutureOr<void> _read(
     MarkAsReadEvent event,
     Emitter<TrackerNotificationsMarkerState> emit,
   ) async {
-    if (state.status == LoadingStatus.loading) return;
+    if (state.status == .loading) return;
 
     emit(
       state.copyWith(
-        status: LoadingStatus.loading,
+        status: .loading,
         error: '',
         handledIds: event.ids,
       ),
     );
 
     try {
-      await repository.markAsReadNotifications(
+      await _repository.markAsReadNotifications(
         category: state.category,
         ids: event.ids,
       );
 
       emit(
         state.copyWith(
-          status: LoadingStatus.success,
+          status: .success,
           handledIds: event.ids,
         ),
       );
-    } catch (e) {
+    } catch (error, stackTrace) {
       emit(
         state.copyWith(
-          status: LoadingStatus.failure,
+          status: .failure,
           error: 'Не удалось отметить уведомления как прочитанные',
         ),
       );
 
-      rethrow;
+      super.onError(error, stackTrace);
     }
   }
 }

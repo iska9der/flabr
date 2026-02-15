@@ -8,7 +8,7 @@ import 'package:url_launcher/url_launcher_string.dart';
 
 import '../../../data/model/publication/publication.dart';
 import '../../../di/di.dart';
-import '../../../presentation/app/config/app_config_repository.dart';
+import '../../../presentation/app/config/config.dart';
 import '../../../presentation/page/dashboard_page.dart';
 import '../../../presentation/page/publications/articles/article_flow.dart';
 import '../../../presentation/page/publications/articles/article_list_page.dart';

@@ -5,7 +5,7 @@ import 'package:equatable/equatable.dart';
 import 'comment_access_model.dart';
 import 'comment_model.dart';
 
-class CommentListResponse extends Equatable {
+class CommentListResponse with EquatableMixin {
   const CommentListResponse({
     this.commentAccess = CommentAccess.empty,
     this.comments = const [],
@@ -35,10 +35,9 @@ class CommentListResponse extends Equatable {
     final commentsMap = Map<String, dynamic>.from(map['comments'] ?? {});
 
     return CommentListResponse(
-      commentAccess:
-          map['commentAccess'] != null
-              ? CommentAccess.fromMap(map['commentAccess'])
-              : CommentAccess.empty,
+      commentAccess: map['commentAccess'] != null
+          ? CommentAccess.fromMap(map['commentAccess'])
+          : CommentAccess.empty,
       comments: UnmodifiableListView(
         commentsMap.entries.map((e) => Comment.fromMap(e.value)),
       ),
@@ -85,10 +84,9 @@ Comment _recursive(List<Comment> comments, Comment parent) {
   }
 
   /// ищем детей
-  var childs =
-      parent.childrenRaw
-          .map((id) => comments.firstWhere((element) => element.id == id))
-          .toList();
+  var childs = parent.childrenRaw
+      .map((id) => comments.firstWhere((element) => element.id == id))
+      .toList();
 
   List<Comment> newChilds = [];
 

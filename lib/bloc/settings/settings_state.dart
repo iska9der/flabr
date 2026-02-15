@@ -2,7 +2,7 @@ part of 'settings_cubit.dart';
 
 enum SettingsStatus { initial, loading, success, failure }
 
-class SettingsState extends Equatable {
+class SettingsState with EquatableMixin {
   const SettingsState({
     this.status = SettingsStatus.initial,
     this.langUI = Language.ru,
@@ -52,12 +52,12 @@ class SettingsState extends Equatable {
 
   @override
   List<Object> get props => [
-        status,
-        langUI,
-        langArticles,
-        theme,
-        publication,
-        feed,
-        misc,
-      ];
+    status,
+    langUI,
+    langArticles,
+    theme,
+    publication,
+    feed,
+    misc,
+  ];
 }

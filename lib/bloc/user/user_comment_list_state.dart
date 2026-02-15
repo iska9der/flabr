@@ -1,11 +1,9 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 part of 'user_comment_list_cubit.dart';
 
-enum CommentListStatus { initial, loading, success, failure }
-
-class UserCommentListState extends Equatable {
+class UserCommentListState with EquatableMixin {
   const UserCommentListState({
-    this.status = CommentListStatus.initial,
+    this.status = .initial,
     this.error = '',
     this.user = '',
     this.page = 1,
@@ -13,7 +11,7 @@ class UserCommentListState extends Equatable {
     this.comments = const [],
   });
 
-  final CommentListStatus status;
+  final LoadingStatus status;
   final String error;
   final String user;
   final int page;
@@ -24,7 +22,7 @@ class UserCommentListState extends Equatable {
   bool get isLastPage => page >= pages;
 
   UserCommentListState copyWith({
-    CommentListStatus? status,
+    LoadingStatus? status,
     String? error,
     String? user,
     int? page,

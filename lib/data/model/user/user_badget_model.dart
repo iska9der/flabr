@@ -3,7 +3,7 @@ import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
 
-class UserBadget extends Equatable {
+class UserBadget with EquatableMixin {
   const UserBadget({
     this.title = '',
     this.description = '',
@@ -49,9 +49,9 @@ class UserBadget extends Equatable {
 
   @override
   List<Object> get props => [
-        title,
-        description,
-        url,
-        isRemovable,
-      ];
+    title,
+    description,
+    url,
+    isRemovable,
+  ];
 }

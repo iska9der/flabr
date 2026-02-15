@@ -24,18 +24,18 @@ class CommentSliverList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = context.theme;
     final scrollCubit = context.read<ScrollCubit?>();
     const skeleton = _SkeletonLoader();
 
     return BlocConsumer<UserCommentListCubit, UserCommentListState>(
-      listenWhen: (p, c) =>
-          p.page != 1 && c.status == CommentListStatus.failure,
+      listenWhen: (p, c) => p.page != 1 && c.status == .failure,
       listener: (c, state) {
         context.showSnack(content: Text(state.error));
       },
       builder: (context, state) {
         /// Инициализация
-        if (state.status == CommentListStatus.initial) {
+        if (state.status == .initial) {
           fetch();
 
           return skeleton;
@@ -43,12 +43,12 @@ class CommentSliverList extends StatelessWidget {
 
         /// Если происходит загрузка первой страницы
         if (state.isFirstFetch) {
-          if (state.status == CommentListStatus.loading) {
+          if (state.status == .loading) {
             return skeleton;
           }
 
           /// Ошибка при попытке получить статьи
-          if (state.status == CommentListStatus.failure) {
+          if (state.status == .failure) {
             return SliverFillRemaining(child: Center(child: Text(state.error)));
           }
         }
@@ -68,7 +68,7 @@ class CommentSliverList extends StatelessWidget {
 
                 return FlabrCard(
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: .start,
                     children: [
                       TextButton(
                         onPressed: () => getIt<AppRouter>().pushWidget(
@@ -79,7 +79,7 @@ class CommentSliverList extends StatelessWidget {
                         ),
                         child: Text(
                           model.publication.title,
-                          style: Theme.of(context).textTheme.titleLarge,
+                          style: theme.textTheme.titleLarge,
                         ),
                       ),
                       const Divider(thickness: 1),
@@ -100,9 +100,7 @@ class CommentSliverList extends StatelessWidget {
                 child: CircleIndicator.medium(),
               );
             },
-            childCount:
-                comments.length +
-                (state.status == CommentListStatus.loading ? 1 : 0),
+            childCount: comments.length + (state.status == .loading ? 1 : 0),
           ),
         );
       },
@@ -116,17 +114,19 @@ class _SkeletonLoader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = context.theme;
+
     return Skeletonizer.sliver(
       child: SliverList.list(
-        children: List.generate(
+        children: .generate(
           4,
           (i) => FlabrCard(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
+              crossAxisAlignment: .stretch,
               children: [
                 Text(
                   'Some random title',
-                  style: Theme.of(context).textTheme.titleLarge,
+                  style: theme.textTheme.titleLarge,
                 ),
                 const Divider(thickness: 1),
                 const UserTextButton(

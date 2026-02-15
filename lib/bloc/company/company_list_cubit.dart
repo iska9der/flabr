@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../data/exception/exception.dart';
 import '../../data/model/company/company.dart';
 import '../../data/model/list_response_model.dart';
+import '../../data/model/loading_status_enum.dart';
 import '../../data/repository/repository.dart';
 
 part 'company_list_state.dart';
@@ -18,12 +19,11 @@ class CompanyListCubit extends Cubit<CompanyListState> {
   final CompanyRepository _repository;
 
   void fetch() async {
-    if (state.status == CompanyListStatus.loading ||
-        !state.isFirstFetch && state.isLastPage) {
+    if (state.status == .loading || !state.isFirstFetch && state.isLastPage) {
       return;
     }
 
-    emit(state.copyWith(status: CompanyListStatus.loading));
+    emit(state.copyWith(status: .loading));
 
     try {
       final response = await _repository.fetchAll(page: state.page);
@@ -36,7 +36,7 @@ class CompanyListCubit extends Cubit<CompanyListState> {
 
       emit(
         state.copyWith(
-          status: CompanyListStatus.success,
+          status: .success,
           list: newList,
           page: state.page + 1,
         ),
@@ -44,7 +44,7 @@ class CompanyListCubit extends Cubit<CompanyListState> {
     } catch (error, stackTrace) {
       emit(
         state.copyWith(
-          status: CompanyListStatus.failure,
+          status: .failure,
           error: error.parseException('Не удалось получить список компаний'),
         ),
       );

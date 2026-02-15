@@ -2,7 +2,7 @@ part of 'search_cubit.dart';
 
 enum SearchStatus { initial, loading, success, failure }
 
-class SearchState extends Equatable {
+class SearchState with EquatableMixin {
   const SearchState({
     this.status = SearchStatus.initial,
     this.error = '',

@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../data/exception/exception.dart';
 import '../../../data/model/loading_status_enum.dart';
 import '../../../data/repository/repository.dart';
-import '../../../presentation/extension/extension.dart';
 
 part 'subscription_state.dart';
 
@@ -13,29 +12,31 @@ class SubscriptionCubit extends Cubit<SubscriptionState> {
     required SubscriptionRepository repository,
     required String alias,
     required bool isSubscribed,
-  }) : repo = repository,
+  }) : _repository = repository,
        super(SubscriptionState(alias: alias, isSubscribed: isSubscribed));
 
-  final SubscriptionRepository repo;
+  final SubscriptionRepository _repository;
 
   void toggleSubscription() async {
-    if (state.status.isLoading) return;
+    if (state.status == .loading) {
+      return;
+    }
 
-    emit(state.copyWith(status: LoadingStatus.loading, error: ''));
+    emit(state.copyWith(status: .loading, error: ''));
 
     try {
-      await repo.toggleSubscription(alias: state.alias);
+      await _repository.toggleSubscription(alias: state.alias);
 
       emit(
         state.copyWith(
-          status: LoadingStatus.success,
+          status: .success,
           isSubscribed: !state.isSubscribed,
         ),
       );
     } catch (error, stackTrace) {
       emit(
         state.copyWith(
-          status: LoadingStatus.failure,
+          status: .failure,
           error: error.parseException(),
         ),
       );

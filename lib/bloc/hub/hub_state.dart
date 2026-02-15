@@ -2,7 +2,7 @@ part of 'hub_cubit.dart';
 
 enum HubStatus { initial, loading, success, failure }
 
-class HubState extends Equatable {
+class HubState with EquatableMixin {
   const HubState({
     this.status = HubStatus.initial,
     this.error = '',
@@ -35,10 +35,10 @@ class HubState extends Equatable {
 
   @override
   List<Object> get props => [
-        status,
-        error,
-        alias,
-        model,
-        profile,
-      ];
+    status,
+    error,
+    alias,
+    model,
+    profile,
+  ];
 }
