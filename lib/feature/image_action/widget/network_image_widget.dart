@@ -25,11 +25,13 @@ class NetworkImageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = context.theme;
+
     int? cacheHeight = height != null
         ? (height! * MediaQuery.devicePixelRatioOf(context)).round()
         : null;
 
-    final barrierColor = context.theme.colorScheme.surface.withValues(
+    final barrierColor = theme.colorScheme.surface.withValues(
       alpha: .9,
     );
 
@@ -43,12 +45,18 @@ class NetworkImageWidget extends StatelessWidget {
         false => null,
       },
       child: switch (imageUrl.contains('.svg')) {
-        true => SvgPicture.network(imageUrl, height: height),
+        true => SvgPicture.network(
+          imageUrl,
+          height: height,
+          errorBuilder:
+              errorBuilder ?? (_, _, _) => _ImageError(height: height),
+        ),
         false => SizedBox(
           height: height,
           child: Image(
             height: height,
-            errorBuilder: errorBuilder ?? (_, _, _) => const _ImageError(),
+            errorBuilder:
+                errorBuilder ?? (_, _, _) => _ImageError(height: height),
             frameBuilder: (_, child, frame, wasSyncLoaded) {
               final isLoading = frame == null && !wasSyncLoaded;
               if (!isLoading) return child;
@@ -61,7 +69,7 @@ class NetworkImageWidget extends StatelessWidget {
                 child: Skeletonizer(
                   enabled: isLoading,
                   child: ColoredBox(
-                    color: context.theme.colorScheme.surfaceContainer,
+                    color: theme.colorScheme.surfaceContainer,
                   ),
                 ),
               );
@@ -80,13 +88,16 @@ class NetworkImageWidget extends StatelessWidget {
 
 class _ImageError extends StatelessWidget {
   // ignore: unused_element_parameter
-  const _ImageError({super.key});
+  const _ImageError({super.key, double? height})
+    : height = height ?? AppDimensions.imageHeight;
+
+  final double height;
 
   @override
   Widget build(BuildContext context) {
-    return const SizedBox(
-      height: AppDimensions.imageHeight,
-      child: Icon(Icons.image_not_supported_outlined, color: Colors.red),
+    return SizedBox(
+      height: height,
+      child: const Icon(Icons.image_not_supported_outlined, color: Colors.red),
     );
   }
 }

@@ -148,6 +148,12 @@ class AppRouter extends RootStackRouter {
       ],
     ),
 
+    /// Оффлайн
+    AutoRoute(
+      page: AirplaneRoute.page,
+      path: '/${AirplanePage.routePath}',
+    ),
+
     /// Поиск
     AutoRoute(
       page: SearchAnywhereRoute.page,

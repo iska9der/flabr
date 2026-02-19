@@ -12,16 +12,15 @@ class PublicationTextConverter {
   final PublicationDownloadFormat desiredFormat;
 
   String convert() {
-    switch (desiredFormat) {
-      case PublicationDownloadFormat.html:
-        return _foldHtml(text);
-      case PublicationDownloadFormat.markdown:
-        return html2md.convert(text);
-    }
+    return switch (desiredFormat) {
+      .html => _foldHtml(text),
+      .markdown => html2md.convert(text),
+    };
   }
 
   String _foldHtml(String body) {
-    final String html = '''
+    final String html =
+        '''
       <html>
         <head>
           <meta charset="utf-8">
