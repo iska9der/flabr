@@ -17,7 +17,7 @@ class PublicationDownload extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ExpansionTile(
-      title: const Text('Сохранить статью'),
+      title: const Text('Сохранить на устройстве'),
       tilePadding: EdgeInsets.zero,
       childrenPadding: EdgeInsets.zero,
       shape: const RoundedRectangleBorder(),
@@ -45,9 +45,9 @@ class PublicationDownload extends StatelessWidget {
               child: const Expanded(
                 child: _SaveButton(label: 'HTML'),
               ),
-            )
+            ),
           ],
-        )
+        ),
       ],
     );
   }
@@ -72,8 +72,7 @@ class _SaveButton extends StatelessWidget {
           onPressed: switch (state.status) {
             PublicationDownloadStatus.notSupported ||
             PublicationDownloadStatus.loading ||
-            PublicationDownloadStatus.success =>
-              null,
+            PublicationDownloadStatus.success => null,
             _ => () => context.read<PublicationDownloadCubit>().pickAndSave(),
           },
         );

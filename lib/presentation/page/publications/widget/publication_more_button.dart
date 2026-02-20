@@ -15,6 +15,10 @@ class PublicationMoreButton extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          FilledButton(
+            onPressed: () {},
+            child: const Text('Сохранить оффлайн'),
+          ),
           PublicationDownload(
             publicationId: publication.id,
             publicationText: publication.textHtml,
