@@ -11,6 +11,15 @@ import 'presentation/app.dart';
 void main() {
   final logger = ConsoleLogger();
 
+  FlutterError.onError = (details) {
+    logger.error('FlutterError', details.exception, details.stack);
+  };
+
+  PlatformDispatcher.instance.onError = (error, stack) {
+    logger.error('PlatformError', error, stack);
+    return true;
+  };
+
   runZonedGuarded(
     () async {
       final binding = WidgetsFlutterBinding.ensureInitialized();
@@ -24,7 +33,7 @@ void main() {
       runApp(const Application(config: config));
     },
     (error, stack) {
-      logger.error('Ошибка', error, stack);
+      logger.error('ZoneError', error, stack);
     },
   );
 }
