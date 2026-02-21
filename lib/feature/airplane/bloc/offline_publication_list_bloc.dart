@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:injectable/injectable.dart';
 
 import '../../../data/exception/exception.dart';
 import '../../../data/model/publication/publication.dart';
@@ -10,16 +9,15 @@ part 'offline_publication_list_bloc.freezed.dart';
 part 'offline_publication_list_event.dart';
 part 'offline_publication_list_state.dart';
 
-@injectable
 class OfflinePublicationListBloc
     extends Bloc<OfflinePublicationListEvent, OfflinePublicationListState> {
-  OfflinePublicationListBloc({required PublicationDao repository})
+  OfflinePublicationListBloc({required OfflinePublicationRepository repository})
     : _repository = repository,
       super(const OfflinePublicationListState.initial()) {
     on<_LoadEvent>(_onLoad);
   }
 
-  final PublicationDao _repository;
+  final OfflinePublicationRepository _repository;
 
   Future<void> _onLoad(
     _LoadEvent event,

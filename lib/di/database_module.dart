@@ -4,7 +4,6 @@ import 'package:injectable/injectable.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../core/database/database.dart';
-import '../feature/airplane/database/database.dart';
 
 QueryExecutor _openConnection() {
   return driftDatabase(
@@ -25,7 +24,4 @@ abstract class DatabaseModule {
 
   @lazySingleton
   AppDatabase appDatabase(QueryExecutor executor) => AppDatabase(executor);
-
-  @lazySingleton
-  PublicationDao publicationDao(AppDatabase db) => PublicationDao(db);
 }

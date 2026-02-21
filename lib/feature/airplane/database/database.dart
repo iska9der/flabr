@@ -2,7 +2,6 @@ import 'package:drift/drift.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../core/database/database.dart';
-import '../../../data/exception/exception.dart';
 import '../../../data/model/publication/publication.dart';
 
 part 'database.g.dart';

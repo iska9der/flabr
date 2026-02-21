@@ -1,8 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import '../../../data/exception/exception.dart';
 import '../../../data/model/publication/publication.dart';
-import '../database/database.dart';
+import '../airplane.dart';
 
 part 'offline_publication_bloc.freezed.dart';
 part 'offline_publication_event.dart';
@@ -10,44 +11,64 @@ part 'offline_publication_state.dart';
 
 class OfflinePublicationBloc
     extends Bloc<OfflinePublicationEvent, OfflinePublicationState> {
-  OfflinePublicationBloc({required PublicationDao repository})
+  OfflinePublicationBloc({required OfflinePublicationRepository repository})
     : _repository = repository,
-      super(const OfflinePublicationState.initial()) {
-    on<_CreateEvent>(_onCreate);
-    on<_DeleteEvent>(_onDelete);
+      super(const OfflinePublicationState()) {
+    on<_LoadEvent>(_onLoad);
+    on<_ToggleEvent>(_onToggle);
   }
 
-  PublicationDao _repository;
+  final OfflinePublicationRepository _repository;
 
-  Future<void> _onCreate(
-    _CreateEvent event,
+  Future<void> _onLoad(
+    _LoadEvent event,
     Emitter<OfflinePublicationState> emit,
   ) async {
-    emit(const OfflinePublicationState.loading());
+    await emit.forEach(
+      _repository.watchAll(),
+      onData: (data) {
+        final ids = data.map((e) => e.id).toSet();
 
-    try {
-      await _repository.insertPublication(event.publication);
+        return state.copyWith(idsInDb: ids, error: null);
+      },
+      onError: (error, stackTrace) {
+        super.onError(error, stackTrace);
 
-      emit(const OfflinePublicationState.success());
-    } catch (error, stackTrace) {
-      emit(OfflinePublicationState.failure(error: error.toString()));
-
-      super.onError(error, stackTrace);
-    }
+        return state.copyWith(error: error);
+      },
+    );
   }
 
-  Future<void> _onDelete(
-    _DeleteEvent event,
+  Future<void> _onToggle(
+    _ToggleEvent event,
     Emitter<OfflinePublicationState> emit,
   ) async {
-    emit(const OfflinePublicationState.loading());
+    final id = event.publication.id;
+    final exists = state.idsInDb.contains(id);
+
+    emit(state.copyWith(loadingIds: {...state.loadingIds, id}));
 
     try {
-      await _repository.deletePublication(event.id);
+      switch (exists) {
+        case true:
+          await _repository.delete(id);
+        case false:
+          await _repository.create(event.publication);
+      }
 
-      emit(const OfflinePublicationState.success());
+      emit(
+        state.copyWith(
+          loadingIds: {...state.loadingIds}..remove(id),
+          error: null,
+        ),
+      );
     } catch (error, stackTrace) {
-      emit(OfflinePublicationState.failure(error: error.toString()));
+      emit(
+        state.copyWith(
+          loadingIds: {...state.loadingIds}..remove(id),
+          error: error.parseException(),
+        ),
+      );
 
       super.onError(error, stackTrace);
     }

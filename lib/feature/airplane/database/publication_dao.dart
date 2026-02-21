@@ -1,5 +1,6 @@
 part of 'database.dart';
 
+@lazySingleton
 @DriftAccessor(tables: [PublicationTable])
 class PublicationDao extends DatabaseAccessor<AppDatabase>
     with _$PublicationDaoMixin {
@@ -11,15 +12,18 @@ class PublicationDao extends DatabaseAccessor<AppDatabase>
   }
 
   Stream<List<Publication>> watchAll() {
-    return select(publicationTable)
-        .watch()
-        .handleError((e, s) => throw const DatabaseException())
-        .map((rows) => rows.map((e) => e.toPublication()).toList());
+    return select(
+      publicationTable,
+    ).watch().map((rows) => rows.map((e) => e.toPublication()).toList());
   }
 
   Future<void> insertPublication(Publication entry) =>
       into(publicationTable).insert(entry.toCompanion());
 
-  /// TODO: delete publication from db
-  Future<void> deletePublication(String id) => throw UnimplementedError();
+  Future<void> deletePublication(String id) {
+    final statement = delete(publicationTable)
+      ..where((tbl) => tbl.id.equals(id));
+
+    return statement.go();
+  }
 }

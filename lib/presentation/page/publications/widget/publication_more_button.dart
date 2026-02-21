@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../data/model/publication/publication.dart';
+import '../../../../feature/airplane/airplane.dart';
 import '../../../../feature/publication_download/publication_download.dart';
 
 class PublicationMoreButton extends StatelessWidget {
@@ -15,9 +16,9 @@ class PublicationMoreButton extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          FilledButton(
-            onPressed: () {},
-            child: const Text('Сохранить оффлайн'),
+          PublicationSaveOfflineButton(
+            label: 'Сохранить в оффлайн',
+            publication: publication,
           ),
           PublicationDownload(
             publicationId: publication.id,
