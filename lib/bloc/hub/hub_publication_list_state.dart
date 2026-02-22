@@ -7,19 +7,16 @@ class HubPublicationListState extends PublicationListState with Equatable {
     super.page = 1,
     super.response = const ListResponse<Publication>(),
     this.hub = '',
-    this.type = PublicationType.article,
     this.filter = const FlowFilter(),
   });
 
   final String hub;
-  final PublicationType type;
   final FlowFilter filter;
 
   HubPublicationListState copyWith({
     LoadingStatus? status,
     String? error,
     String? hub,
-    PublicationType? type,
     FlowFilter? filter,
     int? page,
     ListResponse<Publication>? response,
@@ -28,7 +25,6 @@ class HubPublicationListState extends PublicationListState with Equatable {
       status: status ?? this.status,
       error: error ?? this.error,
       hub: hub ?? this.hub,
-      type: type ?? this.type,
       filter: filter ?? this.filter,
       page: page ?? this.page,
       response: response ?? this.response,
@@ -43,7 +39,6 @@ class HubPublicationListState extends PublicationListState with Equatable {
     status,
     error,
     hub,
-    type,
     filter,
     page,
     response,

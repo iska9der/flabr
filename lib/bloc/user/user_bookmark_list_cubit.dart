@@ -17,7 +17,7 @@ class UserBookmarkListCubit
     required super.repository,
     required super.languageRepository,
     String user = '',
-    UserBookmarksType type = UserBookmarksType.articles,
+    UserBookmarksType type = .articles,
   }) : super(UserBookmarkListState(user: user, type: type));
 
   @override
@@ -45,8 +45,8 @@ class UserBookmarkListCubit
     } catch (e) {
       emit(
         state.copyWith(
-          error: e.parseException('Не удалось получить закладки'),
           status: .failure,
+          error: e.parseException('Не удалось получить закладки'),
         ),
       );
 
@@ -60,7 +60,9 @@ class UserBookmarkListCubit
   }
 
   void changeType(UserBookmarksType type) {
-    if (type == state.type) return;
+    if (type == state.type) {
+      return;
+    }
 
     emit(.new(user: state.user, type: type));
   }

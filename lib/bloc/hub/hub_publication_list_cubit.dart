@@ -17,8 +17,7 @@ class HubPublicationListCubit
     required super.repository,
     required super.languageRepository,
     String hub = '',
-    PublicationType type = PublicationType.article,
-  }) : super(HubPublicationListState(hub: hub, type: type));
+  }) : super(HubPublicationListState(hub: hub));
 
   @override
   Future<void> fetch() async {
@@ -56,18 +55,10 @@ class HubPublicationListCubit
 
   @override
   void reset() {
-    emit(
-      HubPublicationListState(
-        hub: state.hub,
-        type: state.type,
-        filter: state.filter,
-      ),
-    );
+    emit(.new(hub: state.hub, filter: state.filter));
   }
 
   void applyFilter(FlowFilter filter) {
-    emit(
-      HubPublicationListState(hub: state.hub, type: state.type, filter: filter),
-    );
+    emit(.new(hub: state.hub, filter: filter));
   }
 }

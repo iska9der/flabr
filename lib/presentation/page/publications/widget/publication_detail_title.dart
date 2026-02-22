@@ -13,7 +13,7 @@ class PublicationDetailTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return switch (publication.type) {
-      PublicationType.post => const SizedBox(),
+      .post => const SizedBox(),
       _ => Padding(
         padding: padding,
         child: SelectableText(

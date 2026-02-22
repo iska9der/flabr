@@ -8,7 +8,7 @@ class PublicationDetailAppBarTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final title = switch (publication.type) {
-      PublicationType.post => 'Пост',
+      .post => 'Пост',
       _ => (publication as PublicationCommon).titleHtml,
     };
 

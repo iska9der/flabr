@@ -42,9 +42,7 @@ class _PublicationFiltersWidgetState extends State<PublicationFiltersWidget> {
               onSelected: (isSelected, option) {
                 final newFlow = PublicationFlow.fromString(option.value);
 
-                setState(() {
-                  selectedFlow = newFlow;
-                });
+                setState(() => selectedFlow = newFlow);
               },
             );
           },

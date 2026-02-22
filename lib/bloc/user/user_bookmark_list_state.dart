@@ -7,7 +7,7 @@ class UserBookmarkListState extends PublicationListState with Equatable {
     super.page = 1,
     super.response = const ListResponse<Publication>(),
     this.user = '',
-    this.type = UserBookmarksType.articles,
+    this.type = .articles,
   });
 
   final String user;

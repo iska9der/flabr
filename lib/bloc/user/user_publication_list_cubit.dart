@@ -43,8 +43,8 @@ class UserPublicationListCubit
     } catch (e) {
       emit(
         state.copyWith(
-          error: e.parseException('Не удалось получить статьи'),
           status: .failure,
+          error: e.parseException('Не удалось получить статьи'),
         ),
       );
 

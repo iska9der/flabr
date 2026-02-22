@@ -26,14 +26,16 @@ class HubCubit extends Cubit<HubState> {
       }
 
       emit(state.copyWith(status: .success, profile: profile));
-    } catch (e) {
+    } catch (error, stackTrace) {
       const fallbackMessage = 'Не удалось получить профиль хаба';
       emit(
         state.copyWith(
           status: .failure,
-          error: e.parseException(fallbackMessage),
+          error: error.parseException(fallbackMessage),
         ),
       );
+
+      super.onError(error, stackTrace);
     }
   }
 }

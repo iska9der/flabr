@@ -65,7 +65,7 @@ class FeedPublicationListCubit
 
   @override
   void reset() {
-    emit(FeedPublicationListState(filter: state.filter));
+    emit(.new(filter: state.filter));
   }
 
   void applyFilter(FeedFilter newFilter) {
@@ -75,6 +75,6 @@ class FeedPublicationListCubit
 
     repository.saveFeedFilter(newFilter);
 
-    emit(FeedPublicationListState(filter: newFilter));
+    emit(.new(filter: newFilter));
   }
 }
