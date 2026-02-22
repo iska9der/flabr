@@ -27,7 +27,7 @@ class ArticleListPage extends StatelessWidget {
         BlocProvider(
           create: (_) => FlowPublicationListCubit(
             repository: getIt(),
-            languageRepository: getIt(),
+            langRepository: getIt(),
             storage: getIt(instanceName: 'sharedStorage'),
             flow: PublicationFlow.fromString(flow),
           ),

@@ -6,8 +6,8 @@ class FlowPublicationListState extends PublicationListState with Equatable {
     super.error = '',
     super.page = 1,
     super.response = const ListResponse<Publication>(),
-    this.flow = PublicationFlow.all,
-    this.section = Section.article,
+    this.flow = .all,
+    this.section = .article,
     this.filter = const FlowFilter(),
   });
 

@@ -30,7 +30,7 @@ class HubServiceImpl implements HubService {
       var params = QueryParams(page: page.toString()).toMap();
       final response = await _mobileClient.get('/hubs', queryParams: params);
 
-      return HubListResponse.fromMap(response.data);
+      return .fromMap(response.data);
     } on AppException {
       rethrow;
     } catch (_, stackTrace) {

@@ -13,7 +13,7 @@ class UserPublicationListCubit
     extends PublicationListCubit<UserPublicationListState> {
   UserPublicationListCubit({
     required super.repository,
-    required super.languageRepository,
+    required super.langRepository,
     String user = '',
     UserPublicationType type = UserPublicationType.articles,
   }) : super(UserPublicationListState(alias: user, type: type));

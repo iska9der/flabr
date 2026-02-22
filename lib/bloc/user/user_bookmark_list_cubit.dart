@@ -15,7 +15,7 @@ class UserBookmarkListCubit
     extends PublicationListCubit<UserBookmarkListState> {
   UserBookmarkListCubit({
     required super.repository,
-    required super.languageRepository,
+    required super.langRepository,
     String user = '',
     UserBookmarksType type = .articles,
   }) : super(UserBookmarkListState(user: user, type: type));

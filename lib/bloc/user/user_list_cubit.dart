@@ -15,8 +15,9 @@ class UserListCubit extends Cubit<UserListState> {
 
   final UserRepository _repository;
 
-  bool get isFirstFetch => state.page == 1;
-  bool get isLastPage => state.page >= state.pagesCount;
+  int get page => state.page;
+  bool get isFirstFetch => page == 1;
+  bool get isLastPage => page >= state.pagesCount;
 
   void fetchAll() async {
     if (state.status == .loading || !isFirstFetch && isLastPage) {
@@ -26,13 +27,13 @@ class UserListCubit extends Cubit<UserListState> {
     emit(state.copyWith(status: .loading));
 
     try {
-      var response = await _repository.fetchAll(page: state.page.toString());
+      var response = await _repository.fetchAll(page: page.toString());
 
       emit(
         state.copyWith(
           status: .success,
           users: [...state.users, ...response.refs],
-          page: state.page + 1,
+          page: page + 1,
           pagesCount: response.pagesCount,
         ),
       );
@@ -41,8 +42,8 @@ class UserListCubit extends Cubit<UserListState> {
 
       emit(
         state.copyWith(
-          error: e.parseException(fallbackMessage),
           status: .failure,
+          error: e.parseException(fallbackMessage),
         ),
       );
     }

@@ -41,7 +41,7 @@ class HubDetailPage extends StatelessWidget {
         BlocProvider(
           create: (_) => HubPublicationListCubit(
             repository: getIt(),
-            languageRepository: getIt(),
+            langRepository: getIt(),
             hub: alias,
           ),
         ),

@@ -29,7 +29,7 @@ class NewsListPage extends StatelessWidget {
         BlocProvider(
           create: (_) => FlowPublicationListCubit(
             repository: getIt(),
-            languageRepository: getIt(),
+            langRepository: getIt(),
             storage: getIt(instanceName: 'sharedStorage'),
             section: Section.news,
             flow: PublicationFlow.fromString(flow),

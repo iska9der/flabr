@@ -19,7 +19,7 @@ class FlowPublicationListCubit
     extends PublicationListCubit<FlowPublicationListState> {
   FlowPublicationListCubit({
     required super.repository,
-    required super.languageRepository,
+    required super.langRepository,
     required CacheStorage storage,
     PublicationFlow flow = .all,
     Section section = .article,

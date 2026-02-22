@@ -13,7 +13,7 @@ class FeedPublicationListCubit
     extends PublicationListCubit<FeedPublicationListState> {
   FeedPublicationListCubit({
     required super.repository,
-    required super.languageRepository,
+    required super.langRepository,
   }) : super(const FeedPublicationListState()) {
     _restoreFilter();
   }

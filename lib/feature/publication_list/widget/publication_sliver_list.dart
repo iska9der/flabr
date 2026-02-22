@@ -107,7 +107,7 @@ class PublicationSliverList<
                 final publication = publications[index];
 
                 return PublicationCardWidget(
-                  key: Key('publication_card_//${publication.id}'),
+                  key: Key('publication_card_${publication.id}'),
                   publication,
                   showType: showType,
                 );
@@ -138,7 +138,7 @@ class _SkeletonLoader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Skeletonizer.sliver(
       child: SliverList.list(
-        children: List.generate(
+        children: .generate(
           2,
           (i) => SkeletonCardWidget(
             authorAlias: 'author alias' * (Random().nextInt(2) + 1),

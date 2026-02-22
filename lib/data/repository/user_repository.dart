@@ -25,7 +25,7 @@ class UserRepository {
   Future<User> fetchCard({required String login}) async {
     final raw = await _service.fetchCard(alias: login);
 
-    User model = User.fromMap(raw);
+    final model = User.fromMap(raw);
 
     return model;
   }
@@ -33,7 +33,7 @@ class UserRepository {
   Future<UserWhois> fetchWhois({required String login}) async {
     final raw = await _service.fetchWhois(alias: login);
 
-    UserWhois model = UserWhois.fromMap(raw);
+    final model = UserWhois.fromMap(raw);
 
     return model;
   }

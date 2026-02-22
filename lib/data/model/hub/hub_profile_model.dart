@@ -15,7 +15,7 @@ class HubProfile extends HubBase with Equatable {
     super.descriptionHtml = '',
     this.fullDescriptionHtml = '',
     super.imageUrl = '',
-    HubRelatedData super.relatedData = HubRelatedData.empty,
+    HubRelatedData super.relatedData = .empty,
     super.statistics = HubStatistics.empty,
     this.keywords = const [],
     super.isProfiled = false,
@@ -58,14 +58,14 @@ class HubProfile extends HubBase with Equatable {
   factory HubProfile.fromMap(Map<String, dynamic> map) {
     return HubProfile(
       alias: map['alias'] as String,
-      flow: PublicationFlow.fromString(map['flow']['alias']),
+      flow: .fromString(map['flow']['alias']),
       titleHtml: map['titleHtml'] as String,
       descriptionHtml: map['descriptionHtml'] as String,
       fullDescriptionHtml: map['fullDescriptionHtml'] as String,
       imageUrl: map['imageUrl'] as String,
       relatedData: map['relatedData'] != null
-          ? HubRelatedData.fromJson(map['relatedData'])
-          : HubRelatedData.empty,
+          ? .fromJson(map['relatedData'])
+          : .empty,
       statistics: map['statistics'] != null
           ? HubStatistics.fromJson(map['statistics'])
           : HubStatistics.empty,
@@ -74,7 +74,7 @@ class HubProfile extends HubBase with Equatable {
     );
   }
 
-  static const empty = HubProfile(alias: '-', flow: PublicationFlow.all);
+  static const empty = HubProfile(alias: '-', flow: .all);
   bool get isEmpty => this == empty;
 
   @override

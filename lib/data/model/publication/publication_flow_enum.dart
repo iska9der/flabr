@@ -7,20 +7,21 @@ enum PublicationFlow {
   design,
   management,
   marketing,
-  popsci;
+  popsci
+  ;
 
   String get label => switch (this) {
-    PublicationFlow.all => 'Все',
-    PublicationFlow.develop => 'Разработка',
-    PublicationFlow.admin => 'Администрирование',
-    PublicationFlow.design => 'Дизайн',
-    PublicationFlow.management => 'Менеджмент',
-    PublicationFlow.marketing => 'Маркетинг',
-    PublicationFlow.popsci => 'Научпоп',
+    .all => 'Все',
+    .develop => 'Разработка',
+    .admin => 'Администрирование',
+    .design => 'Дизайн',
+    .management => 'Менеджмент',
+    .marketing => 'Маркетинг',
+    .popsci => 'Научпоп',
   };
 
   static PublicationFlow fromString(String value) {
-    return PublicationFlow.values.firstWhere(
+    return .values.firstWhere(
       (e) => e.name == value,
       orElse: () {
         throw ValueException('Неизвестное значение PublicationFlow: $value');

@@ -15,7 +15,7 @@ class HubPublicationListCubit
     extends PublicationListCubit<HubPublicationListState> {
   HubPublicationListCubit({
     required super.repository,
-    required super.languageRepository,
+    required super.langRepository,
     String hub = '',
   }) : super(HubPublicationListState(hub: hub));
 

@@ -154,25 +154,25 @@ class PublicationServiceImpl implements PublicationService {
     required String page,
   }) async {
     try {
-      final flowStr = (flow == PublicationFlow.all) ? null : flow.name;
+      final flowStr = (flow == .all) ? null : flow.name;
 
       final params = switch (section) {
-        Section.post => PublicationPostListParams(
+        .post => PublicationPostListParams(
           page: page,
           flow: flowStr,
           sort: sort.postValue,
-          period: sort == Sort.byBest ? period.value : null,
+          period: sort == .byBest ? period.value : null,
           score: score.value,
         ),
         _ => PublicationListParams(
           page: page,
           flow: flowStr,
-          news: section == Section.news,
+          news: section == .news,
 
           /// если мы находимся не во "Все потоки", в значение sort, по завету
           /// костыльного api хабра, нужно передавать значение 'all'
-          sort: flow == PublicationFlow.all ? sort.value : 'all',
-          period: sort == Sort.byBest ? period.value : null,
+          sort: flow == .all ? sort.value : 'all',
+          period: sort == .byBest ? period.value : null,
           score: score.value,
         ),
       }.toMap();
@@ -183,7 +183,7 @@ class PublicationServiceImpl implements PublicationService {
       );
 
       return switch (section) {
-        Section.post => PublicationPostListResponse.fromMap(response.data),
+        .post => PublicationPostListResponse.fromMap(response.data),
         _ => PublicationCommonListResponse.fromMap(response.data),
       };
     } on AppException {
@@ -234,9 +234,9 @@ class PublicationServiceImpl implements PublicationService {
       final params = PublicationListParams(page: page).toMap();
 
       final typeQuery = switch (type) {
-        UserPublicationType.articles => null,
-        UserPublicationType.posts => {'posts': 'true'},
-        UserPublicationType.news => {'news': 'true'},
+        .articles => null,
+        .posts => {'posts': 'true'},
+        .news => {'news': 'true'},
       };
 
       params.addAll({'user': user});
@@ -250,9 +250,7 @@ class PublicationServiceImpl implements PublicationService {
       );
 
       return switch (type) {
-        UserPublicationType.posts => PublicationPostListResponse.fromMap(
-          response.data,
-        ),
+        .posts => PublicationPostListResponse.fromMap(response.data),
         _ => PublicationCommonListResponse.fromMap(response.data),
       };
     } on AppException {
@@ -288,9 +286,7 @@ class PublicationServiceImpl implements PublicationService {
       );
 
       return switch (type) {
-        UserBookmarksType.posts => PublicationPostListResponse.fromMap(
-          response.data,
-        ),
+        .posts => PublicationPostListResponse.fromMap(response.data),
         _ => PublicationCommonListResponse.fromMap(response.data),
       };
     } on AppException {
@@ -307,7 +303,7 @@ class PublicationServiceImpl implements PublicationService {
   }) async {
     try {
       final firstPathPart = switch (source) {
-        PublicationSource.post => 'threads',
+        .post => 'threads',
         _ => 'articles',
       };
 
@@ -315,7 +311,7 @@ class PublicationServiceImpl implements PublicationService {
         '/$firstPathPart/$articleId/comments/',
       );
 
-      return CommentListResponse.fromMap(response.data);
+      return .fromMap(response.data);
     } on AppException {
       rethrow;
     } on DioException catch (e, trace) {
@@ -335,14 +331,14 @@ class PublicationServiceImpl implements PublicationService {
   }) async {
     try {
       final sourcePath = switch (source) {
-        PublicationSource.post => 'threads',
-        PublicationSource.news => 'news',
+        .post => 'threads',
+        .news => 'news',
         _ => 'articles',
       };
 
       /// для постов в конце пути добавляется слово "add"
       final append = switch (source) {
-        PublicationSource.post => 'add/',
+        .post => 'add/',
         _ => '',
       };
 
@@ -370,14 +366,14 @@ class PublicationServiceImpl implements PublicationService {
   }) async {
     try {
       final sourcePath = switch (source) {
-        PublicationSource.post => 'threads',
-        PublicationSource.news => 'news',
+        .post => 'threads',
+        .news => 'news',
         _ => 'articles',
       };
 
       /// для постов в конце пути добавляется слово "remove"
       final append = switch (source) {
-        PublicationSource.post => 'remove/',
+        .post => 'remove/',
         _ => '',
       };
 
@@ -385,7 +381,7 @@ class PublicationServiceImpl implements PublicationService {
 
       /// для новостей и статей используется DELETE, а для постов используется POST
       final response = await switch (source) {
-        PublicationSource.post => _siteClient.post(path),
+        .post => _siteClient.post(path),
         _ => _siteClient.delete(path),
       };
 
@@ -406,7 +402,7 @@ class PublicationServiceImpl implements PublicationService {
     try {
       final response = await _mobileClient.get('/articles/most-reading');
 
-      return MostReadingResponse.fromMap(response.data);
+      return .fromMap(response.data);
     } on AppException {
       rethrow;
     } catch (_, trace) {
@@ -422,7 +418,7 @@ class PublicationServiceImpl implements PublicationService {
         body: {},
       );
 
-      return PublicationVoteResponse.fromJson(response.data);
+      return .fromJson(response.data);
     } catch (_, trace) {
       Error.throwWithStackTrace(const FetchException(), trace);
     }
@@ -436,7 +432,7 @@ class PublicationServiceImpl implements PublicationService {
         body: {},
       );
 
-      return PublicationVoteResponse.fromJson(response.data);
+      return .fromJson(response.data);
     } catch (_, trace) {
       Error.throwWithStackTrace(const FetchException(), trace);
     }

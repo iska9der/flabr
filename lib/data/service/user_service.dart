@@ -44,7 +44,7 @@ class UserServiceImpl implements UserService {
 
       final response = await _mobileClient.get('/users', queryParams: params);
 
-      return UserListResponse.fromMap(response.data);
+      return .fromMap(response.data);
     } on AppException {
       rethrow;
     }
@@ -93,7 +93,7 @@ class UserServiceImpl implements UserService {
         '/v2/users/$alias/bookmarks/comments?page=$page',
       );
 
-      return UserCommentListResponse.fromMap(response.data);
+      return .fromMap(response.data);
     } on AppException {
       rethrow;
     } catch (_, trace) {

@@ -38,9 +38,9 @@ class UserBookmarkListPage extends StatelessWidget {
         BlocProvider(
           create: (_) => UserBookmarkListCubit(
             repository: getIt(),
-            languageRepository: getIt(),
+            langRepository: getIt(),
             user: alias,
-            type: UserBookmarksType.fromString(type),
+            type: .fromString(type),
           ),
         ),
         BlocProvider(
@@ -80,8 +80,7 @@ class UserBookmarkListView extends StatelessWidget {
               builder: (context, state) {
                 return FlabrSliverRefreshIndicator(
                   onRefresh: switch (state.type) {
-                    UserBookmarksType.comments =>
-                      context.read<UserCommentListCubit>().reset,
+                    .comments => context.read<UserCommentListCubit>().reset,
                     _ => listCubit.reset,
                   },
                 );
@@ -95,12 +94,11 @@ class UserBookmarkListView extends StatelessWidget {
                     builder: (context, state) {
                       return SliverToBoxAdapter(
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          padding: const .symmetric(horizontal: 16),
                           child: TypeDropdownMenu(
                             type: state.type.name,
-                            onChanged: (type) => listCubit.changeType(
-                              UserBookmarksType.fromString(type),
-                            ),
+                            onChanged: (t) =>
+                                listCubit.changeType(.fromString(t)),
                             entries: UserBookmarksType.values
                                 .map(
                                   (type) => DropdownMenuItem(
@@ -117,18 +115,17 @@ class UserBookmarkListView extends StatelessWidget {
                   BlocBuilder<UserBookmarkListCubit, UserBookmarkListState>(
                     builder: (context, state) {
                       return switch (state.type) {
-                        UserBookmarksType.comments =>
-                          BlocListener<ScrollCubit, ScrollState>(
-                            listenWhen: (p, c) => c.isBottomEdge,
-                            listener: (c, state) => context
+                        .comments => BlocListener<ScrollCubit, ScrollState>(
+                          listenWhen: (_, c) => c.isBottomEdge,
+                          listener: (_, state) => context
+                              .read<UserCommentListCubit>()
+                              .fetchBookmarks(),
+                          child: CommentSliverList(
+                            fetch: context
                                 .read<UserCommentListCubit>()
-                                .fetchBookmarks(),
-                            child: CommentSliverList(
-                              fetch: context
-                                  .read<UserCommentListCubit>()
-                                  .fetchBookmarks,
-                            ),
+                                .fetchBookmarks,
                           ),
+                        ),
                         _ => BlocListener<ScrollCubit, ScrollState>(
                           listenWhen: (p, c) => c.isBottomEdge,
                           listener: (c, state) => listCubit.fetch(),

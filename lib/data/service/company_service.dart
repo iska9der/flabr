@@ -33,7 +33,7 @@ class CompanyServiceImpl implements CompanyService {
         queryParams: params,
       );
 
-      return CompanyListResponse.fromMap(response.data);
+      return .fromMap(response.data);
     } on AppException {
       rethrow;
     } catch (_, stackTrace) {

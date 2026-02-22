@@ -29,7 +29,7 @@ class PostListPage extends StatelessWidget {
         BlocProvider(
           create: (_) => FlowPublicationListCubit(
             repository: getIt(),
-            languageRepository: getIt(),
+            langRepository: getIt(),
             storage: getIt(instanceName: 'sharedStorage'),
             section: Section.post,
             flow: PublicationFlow.fromString(flow),

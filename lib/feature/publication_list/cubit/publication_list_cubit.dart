@@ -14,24 +14,22 @@ abstract class PublicationListCubit<State extends PublicationListState>
   PublicationListCubit(
     super.initialState, {
     required this.repository,
-    required this.languageRepository,
+    required this.langRepository,
   }) {
-    _uiLanguageSub = languageRepository.onUIChange.listen((_) => reset());
-    _publicationLanguagesSub = languageRepository.onPubUIChange.listen(
-      (_) => reset(),
-    );
+    _uiLanguageSub = langRepository.onUIChange.listen((_) => reset());
+    _publicationLangSub = langRepository.onPubUIChange.listen((_) => reset());
   }
 
   final PublicationRepository repository;
-  final LanguageRepository languageRepository;
+  final LanguageRepository langRepository;
 
   late final StreamSubscription<Language> _uiLanguageSub;
-  late final StreamSubscription<List<Language>> _publicationLanguagesSub;
+  late final StreamSubscription<List<Language>> _publicationLangSub;
 
   @override
   Future<void> close() {
     _uiLanguageSub.cancel();
-    _publicationLanguagesSub.cancel();
+    _publicationLangSub.cancel();
 
     return super.close();
   }

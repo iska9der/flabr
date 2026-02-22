@@ -37,7 +37,7 @@ class UserPublicationListPage extends StatelessWidget {
         BlocProvider(
           create: (_) => UserPublicationListCubit(
             repository: getIt(),
-            languageRepository: getIt(),
+            langRepository: getIt(),
             user: alias,
             type: UserPublicationType.fromString(type),
           ),
