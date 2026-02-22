@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../presentation/page/publications/widget/publication_detail_view.dart';
 import '../../../presentation/widget/enhancement/enhancement.dart';
 import '../bloc/bloc.dart';
 
@@ -29,12 +30,20 @@ class AirplanePage extends StatelessWidget {
                     return ListTile(
                       title: Text(model.id),
                       subtitle: Text(model.type.label),
+                      onTap: () => context.router.pushWidget(
+                        Scaffold(
+                          body: SafeArea(
+                            child: PublicationDetailView(
+                              publication: model,
+                              type: .airplane,
+                            ),
+                          ),
+                        ),
+                      ),
                     );
                   },
                 ),
-                orElse: () => const Center(
-                  child: CircleIndicator(),
-                ),
+                orElse: () => const Center(child: CircleIndicator()),
               );
             },
           ),

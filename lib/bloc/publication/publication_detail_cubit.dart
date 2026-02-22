@@ -13,7 +13,6 @@ class PublicationDetailCubit extends Cubit<PublicationDetailState> {
     String id, {
     required PublicationSource source,
     required PublicationRepository repository,
-    required LanguageRepository languageRepository,
   }) : _repository = repository,
        super(
          PublicationDetailState(
@@ -26,7 +25,9 @@ class PublicationDetailCubit extends Cubit<PublicationDetailState> {
   final PublicationRepository _repository;
 
   void fetch() async {
-    if (state.status == .loading) return;
+    if (state.status == .loading) {
+      return;
+    }
 
     emit(state.copyWith(status: .loading));
 
@@ -37,10 +38,10 @@ class PublicationDetailCubit extends Cubit<PublicationDetailState> {
       );
 
       emit(state.copyWith(status: .success, publication: publication));
-    } catch (e) {
-      emit(state.copyWith(status: .failure, error: e.parseException()));
+    } catch (error, stackTrace) {
+      emit(state.copyWith(status: .failure, error: error.parseException()));
 
-      rethrow;
+      super.onError(error, stackTrace);
     }
   }
 }

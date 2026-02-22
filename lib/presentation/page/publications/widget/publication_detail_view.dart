@@ -29,14 +29,15 @@ const double _hPadding = 12.0;
 const double _vPadding = 6.0;
 const double _appbarPadding = 40.0;
 
+enum DetailType { remote, airplane }
+
 // TODO(new-detail):
 // 1. RepaintBoundary вокруг _PublicationContent для изоляции перерисовок
 // 2. Hysteresis в скролл-логике (задержка перед скрытием баров)
 // 3. Velocity-aware логика (быстрый скролл → скрываем быстрее)
 // 4. Accessibility improvements (Semantics для screen readers)
-
-class PublicationDetailView extends StatelessWidget {
-  const PublicationDetailView({super.key});
+class PublicationDetailRemoteBuilder extends StatelessWidget {
+  const PublicationDetailRemoteBuilder({super.key});
 
   void _fetch(BuildContext context) {
     context.read<PublicationDetailCubit>().fetch();
@@ -51,14 +52,14 @@ class PublicationDetailView extends StatelessWidget {
               previous.status != current.status && current.status == .success,
           listener: (context, state) {
             context.read<PublicationBookmarksBloc>().add(
-              PublicationBookmarksEvent.updated(
-                publications: [state.publication],
-              ),
+              .updated(publications: [state.publication]),
             );
           },
           child: BlocBuilder<PublicationDetailCubit, PublicationDetailState>(
             builder: (context, state) => switch (state.status) {
-              .initial => _InitialView(onRetry: () => _fetch(context)),
+              .initial => _InitialView(
+                onRetry: () => _fetch(context),
+              ),
               .loading => const _LoadingView(),
               .failure => Center(
                 child: AppError(
@@ -66,11 +67,48 @@ class PublicationDetailView extends StatelessWidget {
                   onRetry: () => _fetch(context),
                 ),
               ),
-              .success => _SuccessView(publication: state.publication),
+              .success => PublicationDetailView(
+                publication: state.publication,
+                type: .remote,
+              ),
             },
           ),
         ),
       ),
+    );
+  }
+}
+
+/// Основное содержимое (после успешной загрузки)
+class PublicationDetailView extends StatelessWidget {
+  const PublicationDetailView({
+    super.key,
+    required this.publication,
+    required this.type,
+  });
+
+  final Publication publication;
+  final DetailType type;
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        _PublicationContent(publication: publication),
+        const Positioned(
+          top: 0,
+          left: 0,
+          right: 0,
+          child: _AppBarContainer(),
+        ),
+        if (type == .remote)
+          const Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: _BottomBarContainer(),
+          ),
+      ],
     );
   }
 }
@@ -98,34 +136,6 @@ class _LoadingView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => const CircleIndicator();
-}
-
-/// Основное содержимое (после успешной загрузки)
-class _SuccessView extends StatelessWidget {
-  const _SuccessView({required this.publication});
-
-  final Publication publication;
-
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        _PublicationContent(publication: publication),
-        const Positioned(
-          top: 0,
-          left: 0,
-          right: 0,
-          child: _AppBarContainer(),
-        ),
-        const Positioned(
-          bottom: 0,
-          left: 0,
-          right: 0,
-          child: _BottomBarContainer(),
-        ),
-      ],
-    );
-  }
 }
 
 /// Контейнер для AppBar с управлением видимостью
@@ -305,10 +315,7 @@ class _PublicationContent extends StatelessWidget {
     }
 
     return _SliverPaddedBox(
-      padding: const .symmetric(
-        vertical: _vPadding,
-        horizontal: _hPadding,
-      ),
+      padding: const .symmetric(vertical: _vPadding, horizontal: _hPadding),
       child: PublicationLabelList(
         postLabels: common.postLabels,
         format: common.format,
@@ -320,10 +327,7 @@ class _PublicationContent extends StatelessWidget {
     return switch (publication) {
       PublicationCommon(:final postLabels) when postLabels.isNotEmpty =>
         _SliverPaddedBox(
-          padding: const .symmetric(
-            vertical: _vPadding,
-            horizontal: _hPadding,
-          ),
+          padding: const .symmetric(vertical: _vPadding, horizontal: _hPadding),
           child: PostLabelsDataList(postLabels: postLabels),
         ),
       _ => const SliverToBoxAdapter(child: SizedBox.shrink()),
@@ -385,10 +389,7 @@ class _SliverPaddedBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SliverToBoxAdapter(
-      child: Padding(
-        padding: padding,
-        child: child,
-      ),
+      child: Padding(padding: padding, child: child),
     );
   }
 }

@@ -31,12 +31,15 @@ class NetworkImageWidget extends StatelessWidget {
         ? (height! * MediaQuery.devicePixelRatioOf(context)).round()
         : null;
 
-    final barrierColor = theme.colorScheme.surface.withValues(
-      alpha: .9,
-    );
+    final barrierColor = theme.colorScheme.surface.withValues(alpha: .9);
+
+    bool canOpenInModal = isTapable && !imageUrl.contains('.svg');
+
+    final errorBuilderResolved =
+        errorBuilder ?? (_, _, _) => _ImageError(height: height);
 
     return GestureDetector(
-      onTap: switch (isTapable) {
+      onTap: switch (canOpenInModal) {
         true => () => showDialog(
           context: context,
           barrierColor: barrierColor,
@@ -48,20 +51,22 @@ class NetworkImageWidget extends StatelessWidget {
         true => SvgPicture.network(
           imageUrl,
           height: height,
-          errorBuilder:
-              errorBuilder ?? (_, _, _) => _ImageError(height: height),
+          errorBuilder: errorBuilderResolved,
         ),
         false => SizedBox(
           height: height,
           child: Image(
             height: height,
-            errorBuilder:
-                errorBuilder ?? (_, _, _) => _ImageError(height: height),
+            errorBuilder: errorBuilderResolved,
             frameBuilder: (_, child, frame, wasSyncLoaded) {
               final isLoading = frame == null && !wasSyncLoaded;
-              if (!isLoading) return child;
+              if (!isLoading) {
+                return child;
+              }
 
-              if (loadingPlaceholder != null) return loadingPlaceholder!;
+              if (loadingPlaceholder != null) {
+                return loadingPlaceholder!;
+              }
 
               return SizedBox(
                 height: height,

@@ -34,7 +34,6 @@ class PublicationDetailPage extends StatelessWidget {
               id,
               source: .fromType(type),
               repository: getIt(),
-              languageRepository: getIt(),
             ),
           ),
           BlocProvider(create: (_) => ScrollCubit()..listenProgress()),
@@ -45,7 +44,7 @@ class PublicationDetailPage extends StatelessWidget {
           listener: (context, state) {
             context.read<NavigationCubit>().show();
           },
-          child: const PublicationDetailView(),
+          child: const PublicationDetailRemoteBuilder(),
         ),
       ),
     );
