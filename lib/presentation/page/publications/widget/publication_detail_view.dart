@@ -13,6 +13,7 @@ import '../../../../feature/publication_detail_ui/publication_detail_ui_cubit.da
 import '../../../extension/extension.dart';
 import '../../../theme/theme.dart';
 import '../../../widget/enhancement/progress_indicator.dart';
+import '../../../widget/error_widget.dart';
 import '../../../widget/html_view/html_view_widget.dart';
 import '../../../widget/publication_settings_widget.dart';
 import 'card/card.dart';
@@ -97,9 +98,11 @@ class _PublicationDetailViewState extends State<PublicationDetailView> {
                   onRetry: _fetchPublication,
                 ),
                 LoadingStatus.loading => const _LoadingView(),
-                LoadingStatus.failure => _ErrorView(
-                  error: state.error,
-                  onRetry: _fetchPublication,
+                LoadingStatus.failure => Center(
+                  child: AppError(
+                    message: state.error,
+                    onRetry: _fetchPublication,
+                  ),
                 ),
                 LoadingStatus.success => _SuccessView(
                   publication: state.publication,
@@ -138,34 +141,6 @@ class _LoadingView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => const CircleIndicator();
-}
-
-/// Состояние ошибки
-class _ErrorView extends StatelessWidget {
-  const _ErrorView({
-    required this.error,
-    required this.onRetry,
-  });
-
-  final String error;
-  final VoidCallback onRetry;
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        spacing: 12,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(error),
-          FilledButton(
-            onPressed: onRetry,
-            child: const Text('Попробовать снова'),
-          ),
-        ],
-      ),
-    );
-  }
 }
 
 /// Основное содержимое (после успешной загрузки)

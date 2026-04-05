@@ -5,8 +5,7 @@ class HubPublicationListState extends PublicationListState with EquatableMixin {
     super.status = PublicationListStatus.initial,
     super.error = '',
     super.page = 1,
-    super.pagesCount = 0,
-    super.publications = const [],
+    super.response = const ListResponse<Publication>(),
     this.hub = '',
     this.type = PublicationType.article,
     this.filter = const FlowFilter(),
@@ -23,8 +22,7 @@ class HubPublicationListState extends PublicationListState with EquatableMixin {
     PublicationType? type,
     FlowFilter? filter,
     int? page,
-    int? pagesCount,
-    List<Publication>? publications,
+    ListResponse<Publication>? response,
   }) {
     return HubPublicationListState(
       status: status ?? this.status,
@@ -33,8 +31,7 @@ class HubPublicationListState extends PublicationListState with EquatableMixin {
       type: type ?? this.type,
       filter: filter ?? this.filter,
       page: page ?? this.page,
-      pagesCount: pagesCount ?? this.pagesCount,
-      publications: publications ?? this.publications,
+      response: response ?? this.response,
     );
   }
 
@@ -43,13 +40,12 @@ class HubPublicationListState extends PublicationListState with EquatableMixin {
 
   @override
   List<Object> get props => [
-        status,
-        error,
-        hub,
-        type,
-        filter,
-        page,
-        pagesCount,
-        publications,
-      ];
+    status,
+    error,
+    hub,
+    type,
+    filter,
+    page,
+    response,
+  ];
 }

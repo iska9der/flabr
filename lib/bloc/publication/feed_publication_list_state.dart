@@ -6,8 +6,7 @@ class FeedPublicationListState extends PublicationListState
     super.status = PublicationListStatus.initial,
     super.error = '',
     super.page = 1,
-    super.pagesCount = 0,
-    super.publications = const [],
+    super.response = const ListResponse<Publication>(),
     this.filter = const FeedFilter(),
   });
 
@@ -17,16 +16,14 @@ class FeedPublicationListState extends PublicationListState
     PublicationListStatus? status,
     String? error,
     int? page,
-    int? pagesCount,
-    List<Publication>? publications,
+    ListResponse<Publication>? response,
     FeedFilter? filter,
   }) {
     return FeedPublicationListState(
       status: status ?? this.status,
       error: error ?? this.error,
       page: page ?? this.page,
-      pagesCount: pagesCount ?? this.pagesCount,
-      publications: publications ?? this.publications,
+      response: response ?? this.response,
       filter: filter ?? this.filter,
     );
   }
@@ -36,11 +33,10 @@ class FeedPublicationListState extends PublicationListState
 
   @override
   List<Object> get props => [
-        status,
-        error,
-        page,
-        pagesCount,
-        publications,
-        filter,
-      ];
+    status,
+    error,
+    page,
+    response,
+    filter,
+  ];
 }

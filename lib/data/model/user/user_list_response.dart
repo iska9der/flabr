@@ -1,5 +1,3 @@
-import 'dart:collection';
-
 import 'package:equatable/equatable.dart';
 
 import '../list_response_model.dart';
@@ -25,8 +23,8 @@ class UserListResponse extends ListResponse<User> with EquatableMixin {
       //     (user) => UserModel.fromMap(user as Map<String, dynamic>),
       //   ),
       // ),
-      ids: UnmodifiableListView(idsMap),
-      refs: UnmodifiableListView(
+      ids: idsMap,
+      refs: List.from(
         refsMap.entries.map((e) => User.fromMap({'alias': e.key, ...e.value})),
       ),
     );

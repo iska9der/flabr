@@ -26,6 +26,10 @@ class CompanyCard extends CompanyBase {
   final List<CompanyContact> contacts;
 
   @override
+  CompanyCardStatistics get statistics =>
+      super.statistics as CompanyCardStatistics;
+
+  @override
   CompanyCard copyWith({
     String? alias,
     String? imageUrl,
@@ -57,18 +61,16 @@ class CompanyCard extends CompanyBase {
       imageUrl: (map['imageUrl'] ?? '') as String,
       titleHtml: (map['titleHtml'] ?? '') as String,
       descriptionHtml: (map['descriptionHtml'] ?? '') as String,
-      relatedData:
-          map['relatedData'] != null
-              ? CompanyRelatedData.fromMap(
-                map['relatedData'] as Map<String, dynamic>,
-              )
-              : CompanyRelatedData.empty,
-      statistics:
-          map['statistics'] != null
-              ? CompanyCardStatistics.fromMap(
-                map['statistics'] as Map<String, dynamic>,
-              )
-              : CompanyCardStatistics.empty,
+      relatedData: map['relatedData'] != null
+          ? CompanyRelatedData.fromMap(
+              map['relatedData'] as Map<String, dynamic>,
+            )
+          : CompanyRelatedData.empty,
+      statistics: map['statistics'] != null
+          ? CompanyCardStatistics.fromMap(
+              map['statistics'] as Map<String, dynamic>,
+            )
+          : CompanyCardStatistics.empty,
       information: information,
       contacts: UnmodifiableListView(
         contactsList.map((e) => CompanyContact.fromMap(e)),

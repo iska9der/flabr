@@ -94,11 +94,11 @@ class CompanyListPageView extends StatelessWidget {
                 child: ListView.builder(
                   controller: scrollCtrl,
                   itemCount:
-                      state.list.refs.length +
+                      state.response.refs.length +
                       (state.status == .loading ? 1 : 0),
                   itemBuilder: (context, index) {
-                    if (index < state.list.refs.length) {
-                      final company = state.list.refs[index];
+                    if (index < state.response.refs.length) {
+                      final company = state.response.refs[index];
 
                       return CompanyCardWidget(company: company);
                     }

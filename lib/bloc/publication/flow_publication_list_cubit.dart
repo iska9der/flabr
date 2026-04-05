@@ -7,6 +7,7 @@ import '../../core/component/storage/storage.dart';
 import '../../core/constants/constants.dart';
 import '../../data/exception/exception.dart';
 import '../../data/model/filter/filter.dart';
+import '../../data/model/list_response_model.dart';
 import '../../data/model/publication/publication.dart';
 import '../../data/model/section_enum.dart';
 import '../../feature/publication_list/publication_list.dart';
@@ -68,9 +69,8 @@ class FlowPublicationListCubit
       emit(
         state.copyWith(
           status: PublicationListStatus.success,
-          publications: [...state.publications, ...response.refs],
+          response: state.response.merge(response, getId: (ref) => ref.id),
           page: state.page + 1,
-          pagesCount: response.pagesCount,
         ),
       );
     } catch (e) {
@@ -87,14 +87,7 @@ class FlowPublicationListCubit
 
   @override
   void reset() {
-    emit(
-      state.copyWith(
-        status: PublicationListStatus.initial,
-        page: 1,
-        publications: [],
-        pagesCount: 0,
-      ),
-    );
+    emit(.new(flow: state.flow, section: state.section, filter: state.filter));
   }
 
   void applyFilter(PublicationFlow newFlow, FlowFilter newFilter) {
@@ -103,12 +96,6 @@ class FlowPublicationListCubit
       jsonEncode(newFilter),
     );
 
-    emit(
-      FlowPublicationListState(
-        section: state.section,
-        flow: newFlow,
-        filter: newFilter,
-      ),
-    );
+    emit(.new(flow: newFlow, section: state.section, filter: newFilter));
   }
 }

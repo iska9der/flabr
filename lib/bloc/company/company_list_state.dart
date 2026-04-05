@@ -4,32 +4,32 @@ class CompanyListState with EquatableMixin {
   const CompanyListState({
     this.status = .initial,
     this.error = '',
-    this.list = CompanyListResponse.empty,
+    this.response = CompanyListResponse.empty,
     this.page = 1,
   });
 
   final LoadingStatus status;
   final String error;
-  final ListResponse<Company> list;
+  final ListResponse<Company> response;
   final int page;
 
   bool get isFirstFetch => page == 1;
-  bool get isLastPage => page >= list.pagesCount;
+  bool get isLastPage => page >= response.pagesCount;
 
   CompanyListState copyWith({
     LoadingStatus? status,
     String? error,
-    ListResponse<Company>? list,
+    ListResponse<Company>? response,
     int? page,
   }) {
     return CompanyListState(
       status: status ?? this.status,
       error: error ?? this.error,
-      list: list ?? this.list,
+      response: response ?? this.response,
       page: page ?? this.page,
     );
   }
 
   @override
-  List<Object> get props => [status, error, list, page];
+  List<Object> get props => [status, error, response, page];
 }

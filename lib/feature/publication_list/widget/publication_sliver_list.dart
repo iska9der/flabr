@@ -52,7 +52,7 @@ class PublicationSliverList<
           listener: (context, state) {
             context.read<PublicationBookmarksBloc>().add(
               PublicationBookmarksEvent.updated(
-                publications: state.publications,
+                publications: state.response.refs,
               ),
             );
           },
@@ -87,7 +87,7 @@ class PublicationSliverList<
             return SliverFillRemaining(child: Center(child: Text(state.error)));
           }
 
-          var publications = state.publications;
+          var publications = state.response.refs;
           if (publications.isEmpty) {
             return const SliverFillRemaining(
               child: Center(child: Text('Ничего нет')),

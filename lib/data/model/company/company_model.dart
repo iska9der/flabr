@@ -1,6 +1,4 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:collection';
-
 import 'package:equatable/equatable.dart';
 
 import '../company_base.dart';
@@ -22,6 +20,9 @@ class Company extends CompanyBase with EquatableMixin {
   final List<CompanyHub> commonHubs;
 
   @override
+  CompanyStatistics get statistics => super.statistics as CompanyStatistics;
+
+  @override
   Company copyWith({
     String? alias,
     String? imageUrl,
@@ -38,7 +39,7 @@ class Company extends CompanyBase with EquatableMixin {
       descriptionHtml: descriptionHtml ?? this.descriptionHtml,
       relatedData: relatedData ?? this.relatedData,
       statistics: statistics ?? this.statistics,
-      commonHubs: UnmodifiableListView(commonHubs ?? this.commonHubs),
+      commonHubs: commonHubs ?? this.commonHubs,
     );
   }
 
@@ -50,20 +51,18 @@ class Company extends CompanyBase with EquatableMixin {
       imageUrl: (map['imageUrl'] ?? '') as String,
       titleHtml: (map['titleHtml'] ?? '') as String,
       descriptionHtml: (map['descriptionHtml'] ?? '') as String,
-      relatedData:
-          map['relatedData'] != null
-              ? CompanyRelatedData.fromMap(
-                map['relatedData'] as Map<String, dynamic>,
-              )
-              : CompanyRelatedData.empty,
-      statistics:
-          map['statistics'] != null
-              ? CompanyStatistics.fromMap(
-                map['statistics'] as Map<String, dynamic>,
-              )
-              : CompanyStatistics.empty,
-      commonHubs: UnmodifiableListView(
-        hubsList.map((hub) => CompanyHub.fromMap(hub)),
+      relatedData: map['relatedData'] != null
+          ? CompanyRelatedData.fromMap(
+              map['relatedData'] as Map<String, dynamic>,
+            )
+          : CompanyRelatedData.empty,
+      statistics: map['statistics'] != null
+          ? CompanyStatistics.fromMap(
+              map['statistics'] as Map<String, dynamic>,
+            )
+          : CompanyStatistics.empty,
+      commonHubs: List.from(
+        hubsList.map((hubMap) => CompanyHub.fromMap(hubMap)),
       ),
     );
   }
