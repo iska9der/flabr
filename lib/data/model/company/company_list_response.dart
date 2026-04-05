@@ -1,5 +1,3 @@
-import 'dart:collection';
-
 import 'package:equatable/equatable.dart';
 
 import '../list_response_model.dart';
@@ -18,10 +16,8 @@ class CompanyListResponse extends ListResponse<Company> with EquatableMixin {
 
     return CompanyListResponse(
       pagesCount: map['pagesCount'] ?? 1,
-      ids: UnmodifiableListView(idsMap),
-      refs: UnmodifiableListView(
-        refsMap.entries.map((e) => Company.fromMap(e.value)),
-      ),
+      ids: idsMap,
+      refs: List.from(refsMap.entries.map((e) => Company.fromMap(e.value))),
     );
   }
 

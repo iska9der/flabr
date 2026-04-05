@@ -30,7 +30,7 @@ class CompanyCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final stats = company.statistics as CompanyStatistics;
+    final stats = company.statistics;
     final hubLinkStyle = context.theme.textTheme.bodySmall?.copyWith(
       color: context.theme.colors.primary,
     );

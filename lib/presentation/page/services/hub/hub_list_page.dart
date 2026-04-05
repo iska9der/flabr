@@ -10,6 +10,7 @@ import '../../../../di/di.dart';
 import '../../../../feature/scroll/scroll.dart';
 import '../../../extension/extension.dart';
 import '../../../widget/enhancement/progress_indicator.dart';
+import '../../../widget/error_widget.dart';
 import 'widget/hub_card_widget.dart';
 
 @RoutePage(name: HubListPage.routeName)
@@ -74,7 +75,12 @@ class HubListPageView extends StatelessWidget {
                 }
 
                 if (state.status == .failure) {
-                  return Center(child: Text(state.error));
+                  return Center(
+                    child: AppError(
+                      message: state.error,
+                      onRetry: () => cubit.fetch(),
+                    ),
+                  );
                 }
               }
 

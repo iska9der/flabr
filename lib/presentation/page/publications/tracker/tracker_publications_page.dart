@@ -10,6 +10,7 @@ import '../../../../di/di.dart';
 import '../../../extension/extension.dart';
 import '../../../widget/enhancement/card.dart';
 import '../../../widget/enhancement/progress_indicator.dart';
+import '../../../widget/error_widget.dart';
 import '../../../widget/user_text_button.dart';
 import '../widget/stats/stats.dart';
 import 'widget/tracker_skeleton_widget.dart';
@@ -34,7 +35,20 @@ class TrackerPublicationsPage extends StatelessWidget {
           create: (_) => TrackerPublicationsMarkerBloc(repository: getIt()),
         ),
       ],
-      child: const TrackerPublicationsView(),
+      child:
+          BlocListener<
+            TrackerPublicationsMarkerBloc,
+            TrackerPublicationsMarkerState
+          >(
+            listenWhen: (previous, current) =>
+                previous.status != current.status &&
+                current.status == .failure &&
+                current.error.isNotEmpty,
+            listener: (context, state) {
+              context.showSnack(content: Text(state.error));
+            },
+            child: const TrackerPublicationsView(),
+          ),
     );
   }
 }
@@ -48,10 +62,16 @@ class TrackerPublicationsView extends StatelessWidget {
       floatingActionButton: const _TrackerFloatingButton(),
       body: BlocBuilder<TrackerPublicationsBloc, TrackerPublicationsState>(
         builder: (context, state) => switch (state.status) {
-          .failure => Center(child: Text(state.error)),
+          .failure when state.isFirstFetch => Center(
+            child: AppError(
+              message: state.error,
+              onRetry: () =>
+                  context.read<TrackerPublicationsBloc>().add(const .load()),
+            ),
+          ),
           .success => ListView.builder(
-            itemCount: state.response.refs.length,
             itemExtent: 150,
+            itemCount: state.response.refs.length,
             itemBuilder: (context, index) {
               final model = state.response.refs[index];
 

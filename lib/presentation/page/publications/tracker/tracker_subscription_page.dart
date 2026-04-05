@@ -12,6 +12,7 @@ import '../../../../data/model/tracker/tracker.dart';
 import '../../../../di/di.dart';
 import '../../../extension/extension.dart';
 import '../../../widget/enhancement/enhancement.dart';
+import '../../../widget/error_widget.dart';
 import '../../../widget/user_text_button.dart';
 import 'widget/tracker_skeleton_widget.dart';
 
@@ -46,10 +47,12 @@ class TrackerSubscriptionPage extends StatelessWidget {
             TrackerNotificationsMarkerBloc,
             TrackerNotificationsMarkerState
           >(
+            listenWhen: (previous, current) =>
+                previous.status != current.status &&
+                current.status == .failure &&
+                current.error.isNotEmpty,
             listener: (context, state) {
-              if (state.status == .failure && state.error.isNotEmpty) {
-                context.showSnack(content: Text(state.error));
-              }
+              context.showSnack(content: Text(state.error));
             },
             child: const TrackerSubscriptionView(),
           ),
@@ -65,7 +68,11 @@ class TrackerSubscriptionView extends StatelessWidget {
     return Scaffold(
       body: BlocBuilder<TrackerNotificationsBloc, TrackerNotificationsState>(
         builder: (context, state) => switch (state.status) {
-          .failure => Center(child: Text(state.error)),
+          .failure when state.isFirstFetch => AppError(
+            message: state.error,
+            onRetry: () =>
+                context.read<TrackerNotificationsBloc>().add(const .load()),
+          ),
           .success => ListView.builder(
             itemCount: state.response.refs.length,
             itemExtent: 150,
@@ -93,8 +100,14 @@ class _NotificationWidget extends StatelessWidget {
 
   final TrackerNotification model;
 
-  void markAsRead(BuildContext context, String id) {
-    context.read<TrackerNotificationsMarkerBloc>().add(.read(ids: [id]));
+  void markAsRead(
+    BuildContext context,
+    String id, {
+    bool isErrorEnabled = true,
+  }) {
+    context.read<TrackerNotificationsMarkerBloc>().add(
+      .read(ids: [id], isErrorEnabled: isErrorEnabled),
+    );
   }
 
   @override
@@ -125,7 +138,7 @@ class _NotificationWidget extends StatelessWidget {
                     style: TextStyle(color: theme.colorScheme.primary),
                     recognizer: TapGestureRecognizer()
                       ..onTap = () {
-                        markAsRead(context, model.id);
+                        markAsRead(context, model.id, isErrorEnabled: false);
 
                         context.router.push(
                           PublicationFlowRoute(

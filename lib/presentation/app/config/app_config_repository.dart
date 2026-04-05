@@ -6,7 +6,7 @@ class AppConfigRepository {
 
   final BehaviorSubject<bool> _initCtrl = .seeded(false);
 
-  Stream<bool> get onInitialized => _initCtrl.asBroadcastStream();
+  Stream<bool> get onInitialized => _initCtrl.stream;
 
   bool get isInitialized => _initCtrl.valueOrNull ?? false;
 

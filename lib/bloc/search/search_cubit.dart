@@ -70,24 +70,18 @@ class SearchCubit extends Cubit<SearchState> {
     emit(state.copyWith(status: SearchStatus.loading));
 
     try {
-      final list = await _repository.fetch(
+      final response = await _repository.fetch(
         query: state.query,
         target: state.target,
         order: state.order,
         page: state.page,
       );
 
-      var newList = state.listResponse.copyWith(
-        pagesCount: list.pagesCount,
-        ids: [...state.listResponse.ids, ...list.ids],
-        refs: [...state.listResponse.refs, ...list.refs],
-      );
-
       emit(
         state.copyWith(
           status: SearchStatus.success,
-          listResponse: newList,
           page: state.page + 1,
+          listResponse: state.listResponse.merge(response),
         ),
       );
     } catch (error, stackTrace) {

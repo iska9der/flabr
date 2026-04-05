@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../data/model/language/language.dart';
+import '../../../data/model/list_response_model.dart';
 import '../../../data/model/publication/publication.dart';
 import '../../../data/repository/repository.dart';
 
@@ -38,8 +39,7 @@ abstract class PublicationListCubit<State extends PublicationListState>
 
   bool get fetchDisabled =>
       state.status == PublicationListStatus.loading ||
-      !state.isFirstFetch && state.isLastPage ||
-      state.isFirstFetch && state.status == PublicationListStatus.failure;
+      !state.isFirstFetch && state.isLastPage;
 
   /// Получение списка публикаций
   FutureOr<void> fetch();
@@ -54,16 +54,14 @@ abstract class PublicationListState {
     required this.status,
     required this.error,
     required this.page,
-    required this.pagesCount,
-    required this.publications,
+    required this.response,
   });
 
   final PublicationListStatus status;
   final String error;
   final int page;
-  final int pagesCount;
-  final List<Publication> publications;
+  final ListResponse<Publication> response;
 
   bool get isFirstFetch => page == 1;
-  bool get isLastPage => page >= pagesCount;
+  bool get isLastPage => page >= response.pagesCount;
 }

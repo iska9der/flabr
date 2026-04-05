@@ -117,7 +117,7 @@ class UserServiceImpl implements UserService {
       return UserCommentListResponse.fromMap(response.data);
     } on AppException {
       rethrow;
-    } catch (_, trace) {
+    } catch (e, trace) {
       Error.throwWithStackTrace(
         const FetchException('Не удалось получить комментарии пользователя'),
         trace,

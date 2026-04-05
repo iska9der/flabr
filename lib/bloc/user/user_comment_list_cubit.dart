@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../data/exception/exception.dart';
+import '../../data/model/list_response_model.dart';
 import '../../data/model/loading_status_enum.dart';
 import '../../data/model/user/user.dart';
 import '../../data/repository/repository.dart';
@@ -18,14 +19,7 @@ class UserCommentListCubit extends Cubit<UserCommentListState> {
   final UserRepository _repository;
 
   void reset() {
-    emit(
-      state.copyWith(
-        status: .initial,
-        page: 1,
-        comments: [],
-        pages: 0,
-      ),
-    );
+    emit(.new(user: state.user));
   }
 
   Future<void> fetch() async {
@@ -44,9 +38,8 @@ class UserCommentListCubit extends Cubit<UserCommentListState> {
       emit(
         state.copyWith(
           status: .success,
-          comments: [...state.comments, ...response.refs],
+          response: state.response.merge(response, getId: (ref) => ref.id),
           page: state.page + 1,
-          pages: response.pagesCount,
         ),
       );
     } catch (error, stackTrace) {
@@ -77,9 +70,8 @@ class UserCommentListCubit extends Cubit<UserCommentListState> {
       emit(
         state.copyWith(
           status: .success,
-          comments: [...state.comments, ...response.refs],
+          response: state.response.merge(response, getId: (ref) => ref.id),
           page: state.page + 1,
-          pages: response.pagesCount,
         ),
       );
     } catch (error, stackTrace) {

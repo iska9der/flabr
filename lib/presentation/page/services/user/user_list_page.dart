@@ -9,6 +9,7 @@ import '../../../../di/di.dart';
 import '../../../../feature/scroll/scroll.dart';
 import '../../../extension/extension.dart';
 import '../../../widget/enhancement/progress_indicator.dart';
+import '../../../widget/error_widget.dart';
 import 'widget/user_card_widget.dart';
 
 @RoutePage(name: UserListPage.routeName)
@@ -77,7 +78,12 @@ class UserListPageView extends StatelessWidget {
                 return const CircleIndicator();
               }
               if (state.status == .failure) {
-                return Center(child: Text(state.error));
+                return Center(
+                  child: AppError(
+                    message: state.error,
+                    onRetry: () => usersCubit.fetchAll(),
+                  ),
+                );
               }
             }
 

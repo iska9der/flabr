@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:equatable/equatable.dart';
 
 import '../../data/exception/exception.dart';
+import '../../data/model/list_response_model.dart';
 import '../../data/model/publication/publication.dart';
 import '../../data/model/user/user.dart';
 import '../../feature/publication_list/publication_list.dart';
@@ -36,9 +37,8 @@ class UserBookmarkListCubit
       emit(
         state.copyWith(
           status: PublicationListStatus.success,
-          publications: [...state.publications, ...response.refs],
+          response: state.response.merge(response, getId: (ref) => ref.id),
           page: state.page + 1,
-          pagesCount: response.pagesCount,
         ),
       );
     } catch (e) {
@@ -55,19 +55,12 @@ class UserBookmarkListCubit
 
   @override
   void reset() {
-    emit(
-      state.copyWith(
-        status: PublicationListStatus.initial,
-        page: 1,
-        publications: [],
-        pagesCount: 0,
-      ),
-    );
+    emit(.new(user: state.user, type: state.type));
   }
 
   void changeType(UserBookmarksType type) {
     if (type == state.type) return;
 
-    emit(UserBookmarkListState(user: state.user, type: type));
+    emit(.new(user: state.user, type: type));
   }
 }

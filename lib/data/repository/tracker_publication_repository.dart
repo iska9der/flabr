@@ -37,7 +37,7 @@ class TrackerPublicationRepositoryImpl implements TrackerPublicationRepository {
 
   @override
   Stream<ListResponse<TrackerPublication>> getPublications() =>
-      _publicationsController.asBroadcastStream();
+      _publicationsController.stream;
 
   @override
   Future<ListResponse<TrackerPublication>> fetchPublications({
@@ -49,19 +49,29 @@ class TrackerPublicationRepositoryImpl implements TrackerPublicationRepository {
       byAuthor: byAuthor,
     );
 
+    if (page == '1') {
+      /// при загрузки первой страницы очищаем стрим, чтобы не показывать старые данные
+      _publicationsController.drain();
+    }
+
     /// TODO: реализовать стрим для счетчиков
     // final unread = TrackerUnreadCounters.fromJson(map['unreadCounters']);
 
-    ListResponse<TrackerPublication> listResponse =
+    ListResponse<TrackerPublication> response =
         TrackerPublicationListResponse.fromMap(map);
 
-    /// сортируем по количеству непрочитанных комментариев
-    final sortedRefs = [...listResponse.refs]
-      ..sort((a, b) => b.unreadCommentsCount.compareTo(a.unreadCommentsCount));
-    listResponse = listResponse.copyWith(refs: sortedRefs);
-    _publicationsController.add(listResponse);
+    /// при загрузки новых данных объединяем их со старыми, чтобы не терять уже загруженные страницы
+    response = (_publicationsController.valueOrNull ?? const ListResponse())
+        .merge(response, getId: (ref) => ref.id);
 
-    return listResponse;
+    /// сортируем по количеству непрочитанных комментариев
+    final sortedRefs = [...response.refs]
+      ..sort((a, b) => b.unreadCommentsCount.compareTo(a.unreadCommentsCount));
+    response = response.copyWith(refs: sortedRefs);
+
+    _publicationsController.add(response);
+
+    return response;
   }
 
   @override

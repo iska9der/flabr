@@ -6,8 +6,7 @@ class FlowPublicationListState extends PublicationListState
     super.status = PublicationListStatus.initial,
     super.error = '',
     super.page = 1,
-    super.pagesCount = 0,
-    super.publications = const [],
+    super.response = const ListResponse<Publication>(),
     this.flow = PublicationFlow.all,
     this.section = Section.article,
     this.filter = const FlowFilter(),
@@ -20,22 +19,20 @@ class FlowPublicationListState extends PublicationListState
   FlowPublicationListState copyWith({
     PublicationListStatus? status,
     String? error,
+    int? page,
+    ListResponse<Publication>? response,
     PublicationFlow? flow,
     Section? section,
     FlowFilter? filter,
-    int? page,
-    int? pagesCount,
-    List<Publication>? publications,
   }) {
     return FlowPublicationListState(
       status: status ?? this.status,
       error: error ?? this.error,
+      page: page ?? this.page,
+      response: response ?? this.response,
       flow: flow ?? this.flow,
       section: section ?? this.section,
       filter: filter ?? this.filter,
-      page: page ?? this.page,
-      pagesCount: pagesCount ?? this.pagesCount,
-      publications: publications ?? this.publications,
     );
   }
 
@@ -44,13 +41,12 @@ class FlowPublicationListState extends PublicationListState
 
   @override
   List<Object> get props => [
-        status,
-        error,
-        flow,
-        section,
-        filter,
-        page,
-        pagesCount,
-        publications,
-      ];
+    status,
+    error,
+    flow,
+    section,
+    filter,
+    page,
+    response,
+  ];
 }

@@ -20,30 +20,39 @@ class TrackerPublicationsBloc
       super(const TrackerPublicationsState()) {
     on<TrackerPublicationsEvent>(
       (event, emit) => switch (event) {
-        SubscribeEvent event => _subscribe(event, emit),
-        LoadEvent event => _fetch(event, emit),
+        _SubscribeEvent event => _onSubscribe(event, emit),
+        _LoadEvent event => _onLoad(event, emit),
+        _LoadedEvent event => _onLoaded(event, emit),
       },
     );
   }
 
   final TrackerPublicationRepository _repository;
+  StreamSubscription<ListResponse<TrackerPublication>>? _subscription;
 
-  Future<void> _subscribe(
-    SubscribeEvent event,
+  @override
+  Future<void> close() {
+    _subscription?.cancel();
+    return super.close();
+  }
+
+  FutureOr<void> _onSubscribe(
+    _SubscribeEvent event,
+    Emitter<TrackerPublicationsState> emit,
+  ) async {
+    await _subscription?.cancel();
+
+    _subscription = _repository.getPublications().listen(
+      (response) => add(.loaded(response)),
+    );
+  }
+
+  FutureOr<void> _onLoad(
+    _LoadEvent event,
     Emitter<TrackerPublicationsState> emit,
   ) async {
     emit(state.copyWith(status: .loading));
 
-    await emit.forEach(
-      _repository.getPublications(),
-      onData: (data) => state.copyWith(status: .success, response: data),
-    );
-  }
-
-  FutureOr<void> _fetch(
-    LoadEvent event,
-    Emitter<TrackerPublicationsState> emit,
-  ) async {
     try {
       await _repository.fetchPublications(page: state.page.toString());
     } catch (error, stackTrace) {
@@ -56,5 +65,12 @@ class TrackerPublicationsBloc
 
       super.onError(error, stackTrace);
     }
+  }
+
+  FutureOr<void> _onLoaded(
+    _LoadedEvent event,
+    Emitter<TrackerPublicationsState> emit,
+  ) {
+    emit(state.copyWith(status: .success, response: event.response));
   }
 }

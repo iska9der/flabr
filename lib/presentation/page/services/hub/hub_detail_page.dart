@@ -12,6 +12,7 @@ import '../../../../feature/publication_list/publication_list.dart';
 import '../../../../feature/scroll/scroll.dart';
 import '../../../widget/enhancement/progress_indicator.dart';
 import '../../../widget/enhancement/refresh_indicator.dart';
+import '../../../widget/error_widget.dart';
 import '../../../widget/filter/common_filters_widget.dart';
 import 'widget/hub_profile_card_widget.dart';
 
@@ -92,7 +93,12 @@ class HubDetailPageView extends StatelessWidget {
           }
 
           if (state.status == HubStatus.failure) {
-            return Center(child: Text(state.error));
+            return Center(
+              child: AppError(
+                message: state.error,
+                onRetry: () => listCubit.fetch(),
+              ),
+            );
           }
 
           return Scrollbar(

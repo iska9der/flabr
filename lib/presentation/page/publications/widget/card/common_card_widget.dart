@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
@@ -12,6 +13,7 @@ import '../../../../theme/theme.dart';
 import '../../../../widget/enhancement/enhancement.dart';
 import '../stats/publication_stats_widget.dart';
 import 'card_html_widget.dart';
+import 'components/dbg_info_widget.dart';
 import 'components/footer_widget.dart';
 import 'components/header_widget.dart';
 import 'components/hubs_widget.dart';
@@ -48,6 +50,7 @@ class CommonCardWidget extends StatelessWidget {
             spacing: 12,
             children: [
               if (showType) PublicationTypeWidget(type: publication.type),
+              if (kDebugMode) DbgInfoWidget(publication),
               PublicationHeaderWidget(publication),
               _ArticleTitleWidget(
                 title: publication.titleHtml,

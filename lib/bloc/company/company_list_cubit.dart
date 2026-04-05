@@ -28,16 +28,12 @@ class CompanyListCubit extends Cubit<CompanyListState> {
     try {
       final response = await _repository.fetchAll(page: state.page);
 
-      var newList = state.list.copyWith(
-        pagesCount: response.pagesCount,
-        ids: [...state.list.ids, ...response.ids],
-        refs: [...state.list.refs, ...response.refs],
-      );
+      var newList = state.response.merge(response, getId: (ref) => ref.alias);
 
       emit(
         state.copyWith(
           status: .success,
-          list: newList,
+          response: newList,
           page: state.page + 1,
         ),
       );

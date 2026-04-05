@@ -17,11 +17,7 @@ class UserRepository {
   Future<UserListResponse> fetchAll({required String page}) async {
     final response = await _service.fetchAll(page: page);
 
-    cached = cached.copyWith(
-      pagesCount: response.pagesCount,
-      ids: [...cached.ids, ...response.ids],
-      refs: [...cached.refs, ...response.refs],
-    );
+    cached = cached.merge(response, getId: (ref) => ref.alias);
 
     return response;
   }

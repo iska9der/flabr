@@ -14,7 +14,7 @@ class TokenRepository {
   final CookieJar cookieJar;
 
   final _tokenController = BehaviorSubject<String>.seeded('');
-  Stream<String> get onTokenChanged => _tokenController.asBroadcastStream();
+  Stream<String> get onTokenChanged => _tokenController.stream;
   String get token => _tokenController.value;
 
   String? _csrf;

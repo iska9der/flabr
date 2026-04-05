@@ -78,8 +78,8 @@ class ApplicationView extends StatelessWidget {
         maxWidth: config.maxWidth,
         child: AnnotatedRegion(
           value: switch (theme.colorScheme.brightness) {
-            Brightness.light => SystemUiOverlayStyle.light,
-            Brightness.dark => SystemUiOverlayStyle.dark,
+            Brightness.light => SystemUiOverlayStyle.dark,
+            Brightness.dark => SystemUiOverlayStyle.light,
           },
           child: child ?? const SizedBox.shrink(),
         ),

@@ -26,16 +26,10 @@ class HubListCubit extends Cubit<HubListState> {
     try {
       final response = await _repository.fetchAll(page: state.page);
 
-      var newList = state.list.copyWith(
-        ids: [...state.list.ids, ...response.ids],
-        pagesCount: response.pagesCount,
-        refs: [...state.list.refs, ...response.refs],
-      );
-
       emit(
         state.copyWith(
           status: .success,
-          list: newList,
+          list: state.list.merge(response, getId: (ref) => ref.alias),
           page: state.page + 1,
         ),
       );

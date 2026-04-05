@@ -14,6 +14,7 @@ import '../../../../extension/extension.dart';
 import '../../../../widget/comment/comment.dart';
 import '../../../../widget/enhancement/card.dart';
 import '../../../../widget/enhancement/progress_indicator.dart';
+import '../../../../widget/error_widget.dart';
 import '../../../../widget/user_text_button.dart';
 import '../../../publications/publication_detail_page.dart';
 
@@ -49,11 +50,13 @@ class CommentSliverList extends StatelessWidget {
 
           /// Ошибка при попытке получить статьи
           if (state.status == .failure) {
-            return SliverFillRemaining(child: Center(child: Text(state.error)));
+            return SliverFillRemaining(
+              child: AppError(message: state.error, onRetry: fetch),
+            );
           }
         }
 
-        var comments = state.comments;
+        var comments = state.response.refs;
         if (comments.isEmpty) {
           return const SliverFillRemaining(
             child: Center(child: Text('Ничего нет')),

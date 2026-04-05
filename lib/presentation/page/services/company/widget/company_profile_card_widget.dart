@@ -47,7 +47,7 @@ class _CompanyProfileCardWidgetState extends State<CompanyProfileCardWidget> {
   @override
   Widget build(BuildContext context) {
     var card = widget.card;
-    var stats = card.statistics as CompanyCardStatistics;
+    var stats = card.statistics;
 
     return FlabrCard(
       padding: AppInsets.profileCardPadding,

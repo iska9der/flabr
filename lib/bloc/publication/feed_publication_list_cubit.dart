@@ -6,6 +6,7 @@ import '../../core/component/storage/storage.dart';
 import '../../core/constants/constants.dart';
 import '../../data/exception/exception.dart';
 import '../../data/model/filter/filter.dart';
+import '../../data/model/list_response_model.dart';
 import '../../data/model/publication/publication.dart';
 import '../../feature/publication_list/publication_list.dart';
 
@@ -65,9 +66,8 @@ class FeedPublicationListCubit
       emit(
         state.copyWith(
           status: PublicationListStatus.success,
-          publications: [...state.publications, ...response.refs],
+          response: state.response.merge(response, getId: (ref) => ref.id),
           page: state.page + 1,
-          pagesCount: response.pagesCount,
         ),
       );
     } catch (e) {
@@ -84,14 +84,7 @@ class FeedPublicationListCubit
 
   @override
   void reset() {
-    emit(
-      state.copyWith(
-        status: PublicationListStatus.initial,
-        page: 1,
-        publications: [],
-        pagesCount: 0,
-      ),
-    );
+    emit(FeedPublicationListState(filter: state.filter));
   }
 
   void applyFilter(FeedFilter newFilter) {

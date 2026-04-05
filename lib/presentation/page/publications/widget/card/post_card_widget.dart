@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -10,6 +11,7 @@ import '../../../../extension/extension.dart';
 import '../../../../widget/enhancement/enhancement.dart';
 import '../stats/publication_stat_widget.dart';
 import 'card_html_widget.dart';
+import 'components/dbg_info_widget.dart';
 import 'components/footer_widget.dart';
 import 'components/header_widget.dart';
 import 'components/hubs_widget.dart';
@@ -44,6 +46,7 @@ class PostCardWidget extends StatelessWidget {
             spacing: 12,
             children: [
               if (showType) PublicationTypeWidget(type: post.type),
+              if (kDebugMode) DbgInfoWidget(post),
               Row(
                 spacing: 12,
                 crossAxisAlignment: CrossAxisAlignment.end,

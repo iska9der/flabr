@@ -6,6 +6,7 @@ import '../../../../bloc/company/company_cubit.dart';
 import '../../../extension/extension.dart';
 import '../../../theme/theme.dart';
 import '../../../widget/enhancement/progress_indicator.dart';
+import '../../../widget/error_widget.dart';
 import 'widget/company_details_widget.dart';
 import 'widget/company_profile_card_widget.dart';
 
@@ -22,9 +23,11 @@ class CompanyDetailPage extends StatelessWidget {
   static const String routePath = 'profile';
   static const String routeName = 'CompanyDetailRoute';
 
+  void fetch(BuildContext context) => context.read<CompanyCubit>().fetchCard();
+
   @override
   Widget build(BuildContext context) {
-    context.read<CompanyCubit>().fetchCard();
+    fetch(context);
 
     return BlocBuilder<CompanyCubit, CompanyState>(
       builder: (context, state) {
@@ -33,7 +36,12 @@ class CompanyDetailPage extends StatelessWidget {
         }
 
         if (state.status.isFailure) {
-          return Center(child: Text(state.error));
+          return Center(
+            child: AppError(
+              message: state.error,
+              onRetry: () => fetch(context),
+            ),
+          );
         }
 
         return ListView(

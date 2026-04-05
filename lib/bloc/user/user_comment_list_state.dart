@@ -7,38 +7,34 @@ class UserCommentListState with EquatableMixin {
     this.error = '',
     this.user = '',
     this.page = 1,
-    this.pages = 1,
-    this.comments = const [],
+    this.response = const ListResponse<UserComment>(),
   });
 
   final LoadingStatus status;
   final String error;
   final String user;
   final int page;
-  final int pages;
-  final List<UserComment> comments;
+  final ListResponse<UserComment> response;
 
   bool get isFirstFetch => page == 1;
-  bool get isLastPage => page >= pages;
+  bool get isLastPage => page >= response.pagesCount;
 
   UserCommentListState copyWith({
     LoadingStatus? status,
     String? error,
     String? user,
     int? page,
-    int? pages,
-    List<UserComment>? comments,
+    ListResponse<UserComment>? response,
   }) {
     return UserCommentListState(
       status: status ?? this.status,
       error: error ?? this.error,
       user: user ?? this.user,
       page: page ?? this.page,
-      pages: pages ?? this.pages,
-      comments: comments ?? this.comments,
+      response: response ?? this.response,
     );
   }
 
   @override
-  List<Object> get props => [status, error, user, page, pages, comments];
+  List<Object> get props => [status, error, user, page, response];
 }

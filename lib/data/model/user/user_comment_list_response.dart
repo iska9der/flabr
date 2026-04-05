@@ -1,5 +1,3 @@
-import 'dart:collection';
-
 import '../list_response_model.dart';
 import 'user_comment_model.dart';
 
@@ -11,7 +9,8 @@ class UserCommentListResponse extends ListResponse<UserComment> {
 
     return UserCommentListResponse(
       pagesCount: map['pages'] ?? 0,
-      refs: UnmodifiableListView(
+      ids: List<String>.from(map['threads'] ?? []),
+      refs: List.from(
         commentsMap.entries.map((e) => UserComment.fromMap(e.value)),
       ),
     );

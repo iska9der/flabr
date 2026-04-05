@@ -18,10 +18,10 @@ class LanguageRepository {
   final CacheStorage _storage;
 
   final _uiCtrl = BehaviorSubject<Language>();
-  Stream<Language> get onUIChange => _uiCtrl.asBroadcastStream();
+  Stream<Language> get onUIChange => _uiCtrl.stream;
 
   final _pubUICtrl = BehaviorSubject<List<Language>>();
-  Stream<List<Language>> get onPubUIChange => _pubUICtrl.asBroadcastStream();
+  Stream<List<Language>> get onPubUIChange => _pubUICtrl.stream;
 
   /// Последние значения из стрима
   Language get lastUI => _uiCtrl.valueOrNull ?? Language.ru;

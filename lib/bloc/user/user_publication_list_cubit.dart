@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 import '../../data/exception/exception.dart';
-import '../../data/model/filter/filter.dart';
+import '../../data/model/list_response_model.dart';
 import '../../data/model/publication/publication.dart';
 import '../../data/model/user/user.dart';
 import '../../feature/publication_list/publication_list.dart';
@@ -15,7 +15,7 @@ class UserPublicationListCubit
     required super.languageRepository,
     String user = '',
     UserPublicationType type = UserPublicationType.articles,
-  }) : super(UserPublicationListState(user: user, type: type));
+  }) : super(UserPublicationListState(alias: user, type: type));
 
   @override
   Future<void> fetch() async {
@@ -27,7 +27,7 @@ class UserPublicationListCubit
 
     try {
       final response = await repository.fetchUserPublications(
-        user: state.user,
+        user: state.alias,
         page: state.page.toString(),
         type: state.type,
       );
@@ -35,9 +35,8 @@ class UserPublicationListCubit
       emit(
         state.copyWith(
           status: PublicationListStatus.success,
-          publications: [...state.publications, ...response.refs],
+          response: state.response.merge(response, getId: (ref) => ref.id),
           page: state.page + 1,
-          pagesCount: response.pagesCount,
         ),
       );
     } catch (e) {
@@ -54,19 +53,12 @@ class UserPublicationListCubit
 
   @override
   void reset() {
-    emit(
-      state.copyWith(
-        status: PublicationListStatus.initial,
-        page: 1,
-        publications: [],
-        pagesCount: 0,
-      ),
-    );
+    emit(.new(alias: state.alias, type: state.type));
   }
 
   void changeType(UserPublicationType type) {
     if (state.type == type) return;
 
-    emit(UserPublicationListState(user: state.user, type: type));
+    emit(.new(alias: state.alias, type: type));
   }
 }
