@@ -22,30 +22,39 @@ class TrackerNotificationsBloc
        super(TrackerNotificationsState(category: category)) {
     on<TrackerNotificationsEvent>(
       (event, emit) => switch (event) {
-        LoadEvent event => _fetch(event, emit),
-        SubscribeEvent event => _subscribe(event, emit),
+        _LoadEvent event => _onLoad(event, emit),
+        _SubscribeEvent event => _onSubscribe(event, emit),
+        _LoadedEvent event => _onLoaded(event, emit),
       },
     );
   }
 
   final TrackerNotificationRepository _repository;
+  StreamSubscription<ListResponse<TrackerNotification>>? _subscription;
 
-  Future<void> _subscribe(
-    SubscribeEvent event,
+  @override
+  Future<void> close() {
+    _subscription?.cancel();
+    return super.close();
+  }
+
+  FutureOr<void> _onSubscribe(
+    _SubscribeEvent event,
+    Emitter<TrackerNotificationsState> emit,
+  ) async {
+    await _subscription?.cancel();
+
+    _subscription = _repository
+        .onChange(category: state.category)
+        .listen((response) => add(.loaded(response)));
+  }
+
+  FutureOr<void> _onLoad(
+    _LoadEvent event,
     Emitter<TrackerNotificationsState> emit,
   ) async {
     emit(state.copyWith(status: .loading));
 
-    await emit.forEach(
-      _repository.onChange(category: state.category),
-      onData: (data) => state.copyWith(status: .success, response: data),
-    );
-  }
-
-  FutureOr<void> _fetch(
-    LoadEvent event,
-    Emitter<TrackerNotificationsState> emit,
-  ) async {
     try {
       await _repository.fetchNotifications(
         page: state.page.toString(),
@@ -61,5 +70,12 @@ class TrackerNotificationsBloc
 
       super.onError(error, trace);
     }
+  }
+
+  FutureOr<void> _onLoaded(
+    _LoadedEvent event,
+    Emitter<TrackerNotificationsState> emit,
+  ) {
+    emit(state.copyWith(status: .success, response: event.response));
   }
 }

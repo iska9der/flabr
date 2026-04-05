@@ -51,6 +51,10 @@ class TrackerPublicationsMarkerBloc
     ReadMarkedEvent event,
     Emitter<TrackerPublicationsMarkerState> emit,
   ) async {
+    if (state.status == .loading) {
+      return;
+    }
+
     emit(state.copyWith(status: .loading));
 
     try {
@@ -79,6 +83,10 @@ class TrackerPublicationsMarkerBloc
     RemoveMarkedEvent event,
     Emitter<TrackerPublicationsMarkerState> emit,
   ) async {
+    if (state.status == .loading) {
+      return;
+    }
+
     emit(state.copyWith(status: .loading));
 
     try {

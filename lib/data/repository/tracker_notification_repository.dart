@@ -51,19 +51,34 @@ class TrackerNotificationRepositoryImpl
       category: category.name,
     );
 
+    final categoryController = _notificationsControllers[category]!;
+
+    if (page == '1') {
+      /// при загрузки первой страницы очищаем стрим, чтобы не показывать старые данные
+      categoryController.drain();
+    }
+
     /// TODO: реализовать стрим для счетчиков
     // final unread = TrackerUnreadCounters.fromJson(raw['unreadCounters']);
 
-    final listResponse = TrackerNotificationListResponse.fromMap(raw);
-    _notificationsControllers[category]!.add(listResponse);
+    ListResponse<TrackerNotification> response =
+        TrackerNotificationListResponse.fromMap(raw);
 
-    return listResponse;
+    /// при загрузки новых данных, объединяем их со старыми, чтобы не терять уже загруженные страницы
+    response = (categoryController.valueOrNull ?? const ListResponse()).merge(
+      response,
+      getId: (ref) => ref.id,
+    );
+
+    categoryController.add(response);
+
+    return response;
   }
 
   @override
   Stream<ListResponse<TrackerNotification>> onChange({
     required TrackerNotificationCategory category,
-  }) => _notificationsControllers[category]!.asBroadcastStream();
+  }) => _notificationsControllers[category]!.stream;
 
   @override
   Future<void> markAsReadNotifications({
@@ -73,11 +88,13 @@ class TrackerNotificationRepositoryImpl
     // ignore: unused_local_variable
     final raw = await _service.readNotifications(ids);
 
+    final categoryController = _notificationsControllers[category]!;
+
     /// TODO: реализовать стрим для счетчиков
     // final unread = TrackerUnreadCounters.fromJson(raw['unreadCounters']);
 
     /// отмечаем уведомления как прочитанные и обновляем стрим
-    final last = _notificationsControllers[category]!.value;
+    final last = categoryController.value;
     final newModels = [...last.refs];
     for (int i = 0; i < newModels.length; i++) {
       final model = newModels[i];
@@ -86,6 +103,6 @@ class TrackerNotificationRepositoryImpl
       }
     }
     final result = last.copyWith(refs: newModels);
-    _notificationsControllers[category]!.add(result);
+    categoryController.add(result);
   }
 }

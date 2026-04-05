@@ -34,13 +34,7 @@ class TrackerNotificationsMarkerBloc
   ) async {
     if (state.status == .loading) return;
 
-    emit(
-      state.copyWith(
-        status: .loading,
-        error: '',
-        handledIds: event.ids,
-      ),
-    );
+    emit(state.copyWith(status: .loading, error: '', handledIds: event.ids));
 
     try {
       await _repository.markAsReadNotifications(
@@ -48,19 +42,14 @@ class TrackerNotificationsMarkerBloc
         ids: event.ids,
       );
 
-      emit(
-        state.copyWith(
-          status: .success,
-          handledIds: event.ids,
-        ),
-      );
+      emit(state.copyWith(status: .success, handledIds: event.ids));
     } catch (error, stackTrace) {
-      emit(
-        state.copyWith(
-          status: .failure,
-          error: 'Не удалось отметить уведомления как прочитанные',
-        ),
-      );
+      final message = switch (event.isErrorEnabled) {
+        true => 'Не удалось отметить уведомления как прочитанные',
+        false => '',
+      };
+
+      emit(state.copyWith(status: .failure, error: message));
 
       super.onError(error, stackTrace);
     }
