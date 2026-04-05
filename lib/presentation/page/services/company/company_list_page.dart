@@ -10,6 +10,7 @@ import '../../../../di/di.dart';
 import '../../../../feature/scroll/scroll.dart';
 import '../../../extension/extension.dart';
 import '../../../widget/enhancement/progress_indicator.dart';
+import '../../../widget/error_widget.dart';
 import 'widget/company_card_widget.dart';
 
 @RoutePage(name: CompanyListPage.routeName)
@@ -41,9 +42,10 @@ class CompanyListPage extends StatelessWidget {
 class CompanyListPageView extends StatelessWidget {
   const CompanyListPageView({super.key});
 
+  void fetch(BuildContext context) => context.read<CompanyListCubit>().fetch();
+
   @override
   Widget build(BuildContext context) {
-    final cubit = context.read<CompanyListCubit>();
     final scrollCubit = context.read<ScrollCubit>();
     final scrollCtrl = scrollCubit.controller;
 
@@ -51,7 +53,7 @@ class CompanyListPageView extends StatelessWidget {
       listeners: [
         BlocListener<ScrollCubit, ScrollState>(
           listenWhen: (previous, current) => current.isBottomEdge,
-          listener: (context, state) => cubit.fetch(),
+          listener: (context, state) => fetch(context),
         ),
         BlocListener<SettingsCubit, SettingsState>(
           listenWhen: (previous, current) =>
@@ -74,7 +76,7 @@ class CompanyListPageView extends StatelessWidget {
             },
             builder: (context, state) {
               if (state.status == .initial) {
-                cubit.fetch();
+                fetch(context);
 
                 return const CircleIndicator();
               }
@@ -85,7 +87,12 @@ class CompanyListPageView extends StatelessWidget {
                 }
 
                 if (state.status == .failure) {
-                  return Center(child: Text(state.error));
+                  return Center(
+                    child: AppError(
+                      message: state.error,
+                      onRetry: () => fetch(context),
+                    ),
+                  );
                 }
               }
 

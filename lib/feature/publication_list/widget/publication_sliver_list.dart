@@ -9,6 +9,7 @@ import '../../../bloc/publication/publication_bookmarks_bloc.dart';
 import '../../../presentation/extension/extension.dart';
 import '../../../presentation/page/publications/widget/card/card.dart';
 import '../../../presentation/widget/enhancement/progress_indicator.dart';
+import '../../../presentation/widget/error_widget.dart';
 import '../../scroll/scroll.dart';
 import '../cubit/publication_list_cubit.dart';
 
@@ -84,7 +85,14 @@ class PublicationSliverList<
               state.isFirstFetch &&
               state.status == PublicationListStatus.failure;
           if (isErrorShown) {
-            return SliverFillRemaining(child: Center(child: Text(state.error)));
+            return SliverFillRemaining(
+              child: Center(
+                child: AppError(
+                  message: state.error,
+                  onRetry: () => listCubit.fetch(),
+                ),
+              ),
+            );
           }
 
           var publications = state.response.refs;

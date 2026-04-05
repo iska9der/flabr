@@ -12,6 +12,7 @@ import '../../../../feature/scaffold/scaffold.dart';
 import '../../../theme/theme.dart';
 import '../../../widget/dashboard_drawer_link_widget.dart';
 import '../../../widget/enhancement/enhancement.dart';
+import '../../../widget/error_widget.dart';
 import 'user_bookmark_list_page.dart';
 import 'user_comment_list_page.dart';
 import 'user_detail_page.dart';
@@ -27,13 +28,17 @@ class ProfileDashboardPage extends StatelessWidget {
 
   static const String routePath = '/profile';
 
+  void fetch(BuildContext context) {
+    context.read<ProfileBloc>().add(const ProfileEvent.fetchMe());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocBuilder<ProfileBloc, ProfileState>(
         builder: (context, state) {
           if (state.status == LoadingStatus.initial) {
-            context.read<ProfileBloc>().add(const ProfileEvent.fetchMe());
+            fetch(context);
           }
 
           /// Успешно загрузились, пора редиректить
@@ -59,8 +64,11 @@ class ProfileDashboardPage extends StatelessWidget {
           }
 
           if (state.status == LoadingStatus.failure) {
-            return const Center(
-              child: Text('Не удалось загрузить ваш профиль'),
+            return Center(
+              child: AppError(
+                message: 'Не удалось загрузить ваш профиль',
+                onRetry: () => fetch(context),
+              ),
             );
           }
 

@@ -8,8 +8,11 @@ import '../../../extension/extension.dart';
 import '../../../theme/theme.dart';
 import '../../../widget/detail/section_container_widget.dart';
 import '../../../widget/enhancement/progress_indicator.dart';
+import '../../../widget/error_widget.dart';
 import 'widget/user_profile_card_widget.dart';
 import 'widget/user_whois_widget.dart';
+
+void _fetch(BuildContext context) => context.read<UserCubit>().fetchCard();
 
 @RoutePage(name: UserDetailPage.routeName)
 class UserDetailPage extends StatelessWidget {
@@ -26,7 +29,7 @@ class UserDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    context.read<UserCubit>().fetchCard();
+    _fetch(context);
 
     return UserDetailPageView(key: ValueKey('user-$alias-detail'));
   }
@@ -45,7 +48,12 @@ class UserDetailPageView extends StatelessWidget {
           }
 
           if (state.status.isFailure) {
-            return Center(child: Text(state.error));
+            return Center(
+              child: AppError(
+                message: state.error,
+                onRetry: () => _fetch(context),
+              ),
+            );
           }
 
           var user = state.model;
@@ -95,18 +103,16 @@ class UserDetailPageView extends StatelessWidget {
                         title: 'Работает в',
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children:
-                              user.workplace.map((e) {
-                                return TextButton(
-                                  onPressed:
-                                      () => context.showSnack(
-                                        content: const Text(
-                                          'Здесь так тихо...',
-                                        ),
-                                      ),
-                                  child: Text(e.title),
-                                );
-                              }).toList(),
+                          children: user.workplace.map((e) {
+                            return TextButton(
+                              onPressed: () => context.showSnack(
+                                content: const Text(
+                                  'Здесь так тихо...',
+                                ),
+                              ),
+                              child: Text(e.title),
+                            );
+                          }).toList(),
                         ),
                       ),
                     ],

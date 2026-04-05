@@ -16,7 +16,10 @@ class AppError extends StatelessWidget {
       spacing: 12,
       mainAxisAlignment: .center,
       children: [
-        Text(message),
+        Text(
+          message,
+          textAlign: .center,
+        ),
         if (onRetry != null)
           FilledButton(
             onPressed: onRetry,
