@@ -29,8 +29,9 @@ abstract class Bootstrap {
 
     if (kDebugMode) {
       Bloc.observer = AppBlocObserver();
-      Bloc.transformer = concurrency.sequential();
     }
+
+    Bloc.transformer = concurrency.sequential();
 
     if (!kIsWeb && Platform.isAndroid) {
       /// максимальная герцовка
