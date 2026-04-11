@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../data/exception/exception.dart';
 import '../../data/model/company/company.dart';
 import '../../data/model/language/language.dart';
+import '../../data/model/loading_status_enum.dart';
 import '../../data/repository/repository.dart';
 
 part 'company_state.dart';
@@ -20,16 +21,16 @@ class CompanyCubit extends Cubit<CompanyState> {
 
     try {
       if (card.isEmpty) {
-        emit(state.copyWith(status: CompanyStatus.loading));
+        emit(state.copyWith(status: .loading));
 
         card = await _repository.fetchCard(state.alias);
       }
 
-      emit(state.copyWith(status: CompanyStatus.success, card: card));
+      emit(state.copyWith(status: .success, card: card));
     } catch (error, stackTrace) {
       emit(
         state.copyWith(
-          status: CompanyStatus.failure,
+          status: .failure,
           error: error.parseException('Не удалось получить профиль компании'),
         ),
       );

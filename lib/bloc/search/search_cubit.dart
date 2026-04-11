@@ -3,10 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../data/exception/exception.dart';
 import '../../data/model/list_response_model.dart';
+import '../../data/model/loading_status_enum.dart';
 import '../../data/model/search/search_order_enum.dart';
 import '../../data/model/search/search_target_enum.dart';
 import '../../data/repository/repository.dart';
-import '../../presentation/extension/extension.dart';
 
 part 'search_state.dart';
 
@@ -49,25 +49,22 @@ class SearchCubit extends Cubit<SearchState> {
   }
 
   Future<void> changeQuery(String newQuery) async {
-    if (state.query == newQuery || state.status.isLoading) return;
+    if (state.query == newQuery && state.status != .failure ||
+        state.status == .loading) {
+      return;
+    }
 
-    emit(
-      state.copyWith(
-        query: newQuery,
-        page: 1,
-        listResponse: ListResponse.empty,
-      ),
-    );
+    emit(state.copyWith(query: newQuery, page: 1, listResponse: .empty));
 
     await fetch();
   }
 
   Future<void> fetch() async {
-    if (state.status.isLoading || !state.isFirstFetch && state.isLastPage) {
+    if (state.status == .loading || !state.isFirstFetch && state.isLastPage) {
       return;
     }
 
-    emit(state.copyWith(status: SearchStatus.loading));
+    emit(state.copyWith(status: .loading));
 
     try {
       final response = await _repository.fetch(
@@ -79,7 +76,7 @@ class SearchCubit extends Cubit<SearchState> {
 
       emit(
         state.copyWith(
-          status: SearchStatus.success,
+          status: .success,
           page: state.page + 1,
           listResponse: state.listResponse.merge(response),
         ),
@@ -87,7 +84,7 @@ class SearchCubit extends Cubit<SearchState> {
     } catch (error, stackTrace) {
       emit(
         state.copyWith(
-          status: SearchStatus.failure,
+          status: .failure,
           error: error.parseException(),
         ),
       );

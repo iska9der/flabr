@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../data/exception/exception.dart';
+import '../../data/model/loading_status_enum.dart';
 import '../../data/model/user/user.dart';
 import '../../data/repository/repository.dart';
 
@@ -10,12 +11,12 @@ part 'user_state.dart';
 class UserCubit extends Cubit<UserState> {
   UserCubit(String login, {required UserRepository repository})
     : _repository = repository,
-      super(UserState(login: login, model: User.empty));
+      super(UserState(login: login, model: .empty));
 
   final UserRepository _repository;
 
   void fetchCard() async {
-    emit(state.copyWith(status: UserStatus.loading));
+    emit(state.copyWith(status: .loading));
 
     try {
       User model = state.model;
@@ -24,11 +25,11 @@ class UserCubit extends Cubit<UserState> {
         model = await _repository.fetchCard(login: state.login);
       }
 
-      emit(state.copyWith(status: UserStatus.success, model: model));
+      emit(state.copyWith(status: .success, model: model));
     } catch (error, stackTrace) {
       emit(
         state.copyWith(
-          status: UserStatus.failure,
+          status: .failure,
           error: error.parseException(
             'Не удалось получить карточку пользователя',
           ),

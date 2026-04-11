@@ -11,11 +11,14 @@ import '../../../extension/extension.dart';
 import '../../../widget/comment/comment.dart';
 import '../../../widget/enhancement/card.dart';
 import '../../../widget/enhancement/progress_indicator.dart';
+import '../../../widget/error_widget.dart';
 import '../../../widget/user_text_button.dart';
 import 'comment_parent_widget.dart';
 
 class CommentListView extends StatelessWidget {
   const CommentListView({super.key});
+
+  void fetch(BuildContext context) => context.read<CommentListCubit>().fetch();
 
   @override
   Widget build(BuildContext context) {
@@ -27,17 +30,23 @@ class CommentListView extends StatelessWidget {
       body: SafeArea(
         child: BlocBuilder<CommentListCubit, CommentListState>(
           builder: (context, state) {
-            if (state.status.isInitial) {
-              context.read<CommentListCubit>().fetch();
+            if (state.status == .initial) {
+              fetch(context);
+
               return const CircleIndicator();
             }
 
-            if (state.status.isLoading) {
+            if (state.status == .loading) {
               return const CircleIndicator();
             }
 
-            if (state.status.isFailure) {
-              return Center(child: Text(state.error));
+            if (state.status == .failure) {
+              return Center(
+                child: AppError(
+                  message: state.error,
+                  onRetry: () => fetch(context),
+                ),
+              );
             }
 
             final comments = state.list.comments;

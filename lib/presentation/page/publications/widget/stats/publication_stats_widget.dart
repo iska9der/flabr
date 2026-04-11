@@ -12,7 +12,7 @@ class PublicationStatsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return switch (publication.type) {
-      PublicationType.article || PublicationType.news => ArticleStatsWidget(
+      PublicationType.article || PublicationType.news => CommonStatsWidget(
         complexity: (publication as PublicationCommon).complexity,
         readingTime: (publication as PublicationCommon).readingTime,
         readingCount: publication.statistics.readingCount,
@@ -25,8 +25,8 @@ class PublicationStatsWidget extends StatelessWidget {
   }
 }
 
-class ArticleStatsWidget extends StatelessWidget {
-  const ArticleStatsWidget({
+class CommonStatsWidget extends StatelessWidget {
+  const CommonStatsWidget({
     super.key,
     this.complexity,
     this.readingCount = 0,

@@ -1,17 +1,15 @@
 part of 'comment_list_cubit.dart';
 
-enum CommentListStatus { initial, loading, success, failure }
-
 class CommentListState with EquatableMixin {
   const CommentListState({
-    this.status = CommentListStatus.initial,
+    this.status = .initial,
     this.error = '',
     required this.publicationId,
     required this.source,
     this.list = CommentListResponse.empty,
   });
 
-  final CommentListStatus status;
+  final LoadingStatus status;
   final String error;
 
   final String publicationId;
@@ -19,7 +17,7 @@ class CommentListState with EquatableMixin {
   final CommentListResponse list;
 
   CommentListState copyWith({
-    CommentListStatus? status,
+    LoadingStatus? status,
     String? error,
     Language? langUI,
     List<Language>? langArticles,

@@ -1,19 +1,17 @@
 part of 'search_cubit.dart';
 
-enum SearchStatus { initial, loading, success, failure }
-
 class SearchState with EquatableMixin {
   const SearchState({
-    this.status = SearchStatus.initial,
+    this.status = .initial,
     this.error = '',
     this.query = '',
-    this.target = SearchTarget.posts,
-    this.order = SearchOrder.relevance,
-    this.listResponse = ListResponse.empty,
+    this.target = .posts,
+    this.order = .relevance,
+    this.listResponse = .empty,
     this.page = 1,
   });
 
-  final SearchStatus status;
+  final LoadingStatus status;
   final String error;
 
   final String query;
@@ -26,7 +24,7 @@ class SearchState with EquatableMixin {
   bool get isLastPage => page >= listResponse.pagesCount;
 
   SearchState copyWith({
-    SearchStatus? status,
+    LoadingStatus? status,
     String? error,
     String? query,
     SearchOrder? order,

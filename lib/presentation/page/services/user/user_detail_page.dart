@@ -43,11 +43,11 @@ class UserDetailPageView extends StatelessWidget {
     return SafeArea(
       child: BlocBuilder<UserCubit, UserState>(
         builder: (context, state) {
-          if (state.status.isLoading) {
+          if (state.status == .loading) {
             return const CircleIndicator();
           }
 
-          if (state.status.isFailure) {
+          if (state.status == .failure) {
             return Center(
               child: AppError(
                 message: state.error,

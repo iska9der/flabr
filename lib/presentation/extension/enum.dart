@@ -4,14 +4,6 @@ import '../../data/model/publication/publication.dart';
 import '../../data/model/stat_type_enum.dart';
 import '../theme/app_colors.dart';
 
-/// TODO: избавиться
-extension StateStatusExtension on Enum {
-  bool get isInitial => name == 'initial';
-  bool get isLoading => name == 'loading';
-  bool get isSuccess => name == 'success';
-  bool get isFailure => name == 'failure';
-}
-
 extension StatTypeExtension on StatType {
   Color? getColorByScore(num score, AppColors colors) {
     if (score >= 0) {

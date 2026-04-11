@@ -1,17 +1,15 @@
 part of 'company_cubit.dart';
 
-enum CompanyStatus { initial, loading, success, failure }
-
 class CompanyState with EquatableMixin {
   const CompanyState({
-    this.status = CompanyStatus.initial,
+    this.status = .initial,
     this.error = '',
     required this.alias,
     this.model = Company.empty,
     this.card = CompanyCard.empty,
   });
 
-  final CompanyStatus status;
+  final LoadingStatus status;
   final String error;
 
   final String alias;
@@ -19,7 +17,7 @@ class CompanyState with EquatableMixin {
   final CompanyCard card;
 
   CompanyState copyWith({
-    CompanyStatus? status,
+    LoadingStatus? status,
     String? error,
     Language? langUI,
     List<Language>? langArticles,

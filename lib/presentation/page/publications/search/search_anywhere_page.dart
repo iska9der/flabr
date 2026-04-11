@@ -14,6 +14,7 @@ import '../../../../di/di.dart';
 import '../../../../feature/scroll/scroll.dart';
 import '../../../extension/extension.dart';
 import '../../../widget/enhancement/progress_indicator.dart';
+import '../../../widget/error_widget.dart';
 import '../../services/company/widget/company_card_widget.dart';
 import '../../services/hub/widget/hub_card_widget.dart';
 import '../../services/user/widget/user_card_widget.dart';
@@ -81,14 +82,13 @@ class _SearchAnywhereViewState extends State<_SearchAnywhereView> {
     return MultiBlocListener(
       listeners: [
         BlocListener<SearchCubit, SearchState>(
-          listenWhen: (p, c) => p.page != 1 && c.status.isFailure,
+          listenWhen: (p, c) => p.page != 1 && c.status == .failure,
           listener: (c, state) {
             context.showSnack(content: Text(state.error));
           },
         ),
         BlocListener<SearchCubit, SearchState>(
-          listenWhen: (p, c) =>
-              p.status != c.status && c.status == SearchStatus.success,
+          listenWhen: (p, c) => p.status != c.status && c.status == .success,
           listener: (c, state) {
             if (state.listResponse.refs.first is PublicationCommon) {
               final models = List<Publication>.from(state.listResponse.refs);
@@ -167,29 +167,36 @@ class _SearchAnywhereViewState extends State<_SearchAnywhereView> {
                 BlocBuilder<SearchCubit, SearchState>(
                   builder: (context, state) {
                     if (state.isFirstFetch) {
-                      if (state.status.isLoading) {
+                      if (state.status == .loading) {
                         return const SliverFillRemaining(
                           child: CircleIndicator(),
                         );
                       }
-                      if (state.status.isFailure) {
+
+                      if (state.status == .failure) {
                         return SliverFillRemaining(
-                          child: Align(child: Text(state.error)),
+                          child: Center(
+                            child: AppError(
+                              message: state.error,
+                              onRetry: () => showResults(context, state.query),
+                            ),
+                          ),
                         );
                       }
                     }
 
                     var models = state.listResponse.refs;
-
                     if (models.isEmpty) {
                       return const SliverFillRemaining(
                         child: Align(child: Text('Поиск не дал результатов')),
                       );
                     }
 
+                    final itemCount =
+                        models.length + (state.status == .loading ? 1 : 0);
+
                     return SliverList.builder(
-                      itemCount:
-                          models.length + (state.status.isLoading ? 1 : 0),
+                      itemCount: itemCount,
                       itemBuilder: (context, index) {
                         if (index < models.length) {
                           var model = models[index];
