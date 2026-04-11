@@ -17,11 +17,11 @@ class PublicationCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return switch (publication.type) {
-      PublicationType.post => PostCardWidget(
+      .post => PostCardWidget(
         post: publication as PublicationPost,
         showType: showType,
       ),
-      PublicationType.news || PublicationType.article => CommonCardWidget(
+      .news || .article => CommonCardWidget(
         publication: publication as PublicationCommon,
         showType: showType,
       ),

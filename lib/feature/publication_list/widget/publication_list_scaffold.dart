@@ -74,15 +74,15 @@ class PublicationListScaffold<
         ),
       ],
       child: Scaffold(
+        floatingActionButtonLocation: .miniEndFloat,
         floatingActionButton: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisAlignment: .end,
           children: [
             const FloatingScrollToTopButton(),
             if (filter != null)
               FloatingFilterButton(bloc: listCubit, filter: filter!),
           ],
         ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
         body: PublicationListScaffoldParams(
           filter: filter,
           sidebarEnabled: sidebarEnabled,

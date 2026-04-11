@@ -47,13 +47,13 @@ class PublicationDashboardView extends StatefulWidget {
 class _PublicationDashboardViewState extends State<PublicationDashboardView> {
   final double themeHeight = AppDimensions.tabBarHeight;
   ValueNotifier<double> barHeight = ValueNotifier(AppDimensions.tabBarHeight);
-  late bool visibleOnScroll;
+  late bool navigationVisible;
 
   @override
   void initState() {
     super.initState();
 
-    visibleOnScroll = context
+    navigationVisible = context
         .read<SettingsCubit>()
         .state
         .misc
@@ -72,8 +72,8 @@ class _PublicationDashboardViewState extends State<PublicationDashboardView> {
               previous.misc.navigationOnScrollVisible !=
               current.misc.navigationOnScrollVisible,
           listener: (context, state) {
-            visibleOnScroll = state.misc.navigationOnScrollVisible;
-            if (visibleOnScroll) {
+            navigationVisible = state.misc.navigationOnScrollVisible;
+            if (navigationVisible) {
               /// сброс высоты навигации
               barHeight.value = themeHeight;
             }
@@ -89,7 +89,7 @@ class _PublicationDashboardViewState extends State<PublicationDashboardView> {
       ],
       child: NotificationListener<UserScrollNotification>(
         onNotification: (notification) {
-          if (visibleOnScroll) {
+          if (navigationVisible) {
             return false;
           }
 

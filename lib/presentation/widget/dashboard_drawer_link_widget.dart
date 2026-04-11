@@ -11,10 +11,10 @@ class DashboardDrawerLinkWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8),
+      padding: const .all(8),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: .end,
+        crossAxisAlignment: .start,
         spacing: 3,
         children: [
           Text(title),
@@ -22,7 +22,7 @@ class DashboardDrawerLinkWidget extends StatelessWidget {
             Text(
               '+$count',
               style: TextStyle(
-                color: context.theme.colors.highlight,
+                color: context.theme.colors.accentPositive,
                 fontSize: 11,
                 fontWeight: .w500,
               ),

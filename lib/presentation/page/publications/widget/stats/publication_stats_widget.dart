@@ -68,17 +68,22 @@ class _ComplexityStat extends StatelessWidget {
     final theme = context.theme;
 
     final Color color = switch (complexity) {
-      PublicationComplexity.low => theme.colors.publicationComplexityLow,
-      PublicationComplexity.medium => theme.colors.publicationComplexityMedium,
-      PublicationComplexity.high => theme.colors.publicationComplexityHight,
+      .low => theme.colors.complexityLow,
+      .medium => theme.colors.complexityMedium,
+      .high => theme.colors.complexityHigh,
     };
 
     final IconData icon = switch (complexity) {
-      PublicationComplexity.low => Icons.light_mode_rounded,
-      PublicationComplexity.medium => Icons.filter_drama_rounded,
-      PublicationComplexity.high => Icons.thunderstorm_rounded,
+      .low => Icons.light_mode_rounded,
+      .medium => Icons.filter_drama_rounded,
+      .high => Icons.thunderstorm_rounded,
     };
 
-    return PublicationStat(text: complexity.label, icon: icon, color: color);
+    return PublicationStat(
+      text: complexity.label,
+      textColor: color,
+      icon: icon,
+      iconColor: color,
+    );
   }
 }

@@ -130,6 +130,26 @@ class _DashboardPageState extends State<DashboardPage> {
             final tabsRouter = context.tabsRouter;
 
             return Scaffold(
+              floatingActionButtonLocation: .miniStartFloat,
+              floatingActionButton: ResponsiveVisibility(
+                hiddenConditions: const [
+                  .largerThan(name: ScreenType.mobile, value: false),
+                ],
+                child: ValueListenableBuilder<double>(
+                  valueListenable: barHeight,
+                  builder: (context, value, child) {
+                    return AnimatedContainer(
+                      duration: const Duration(milliseconds: 200),
+                      height: value,
+                      width: Device.getWidth(context) * .75,
+                      clipBehavior: .hardEdge,
+                      color: Colors.transparent,
+                      child: child,
+                    );
+                  },
+                  child: _BottomNavigation(router: tabsRouter),
+                ),
+              ),
               body: SafeArea(
                 child: Row(
                   children: [
@@ -142,22 +162,6 @@ class _DashboardPageState extends State<DashboardPage> {
                     ),
                     Expanded(child: child),
                   ],
-                ),
-              ),
-              bottomNavigationBar: ResponsiveVisibility(
-                hiddenConditions: const [
-                  .largerThan(name: ScreenType.mobile, value: false),
-                ],
-                child: ValueListenableBuilder<double>(
-                  valueListenable: barHeight,
-                  builder: (context, value, child) {
-                    return AnimatedContainer(
-                      duration: const Duration(milliseconds: 200),
-                      height: value,
-                      child: child,
-                    );
-                  },
-                  child: _BottomNavigation(router: tabsRouter),
                 ),
               ),
             );
@@ -219,33 +223,46 @@ class _BottomNavigation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return NavigationBar(
-      labelBehavior: .alwaysShow,
-      selectedIndex: router.activeIndex,
-      onDestinationSelected: (i) {
-        /// при нажатию на таб, в котором
-        /// мы уже находимся - выходим в корень
-        if (router.activeIndex == i) {
-          var rootOfIndex = router.stackRouterOfIndex(i);
-          rootOfIndex?.popUntilRoot();
-        } else {
-          router.setActiveIndex(i);
-        }
-      },
-      destinations: const [
-        NavigationDestination(
-          label: 'Публикации',
-          icon: Icon(Icons.article_rounded),
+    return ClipRRect(
+      clipBehavior: .hardEdge,
+      borderRadius: .circular(100),
+      child: NavigationBar(
+        labelBehavior: .alwaysShow,
+        selectedIndex: router.activeIndex,
+        // backgroundColor: Colors.transparent,
+        // surfaceTintColor: Colors.transparent,
+        // overlayColor: .all(Colors.transparent),
+        // shadowColor: Colors.transparent,
+        elevation: 0,
+        labelPadding: .zero,
+        labelTextStyle: .all(
+          context.theme.textTheme.labelSmall!.copyWith(fontSize: 10),
         ),
-        NavigationDestination(
-          label: 'Сервисы',
-          icon: Icon(Icons.widgets_rounded),
-        ),
-        NavigationDestination(
-          label: 'Настройки',
-          icon: Icon(Icons.settings_rounded),
-        ),
-      ],
+        onDestinationSelected: (i) {
+          /// при нажатию на таб, в котором
+          /// мы уже находимся - выходим в корень
+          if (router.activeIndex == i) {
+            var rootOfIndex = router.stackRouterOfIndex(i);
+            rootOfIndex?.popUntilRoot();
+          } else {
+            router.setActiveIndex(i);
+          }
+        },
+        destinations: const [
+          NavigationDestination(
+            label: 'Публикации',
+            icon: Icon(Icons.article_rounded),
+          ),
+          NavigationDestination(
+            label: 'Сервисы',
+            icon: Icon(Icons.widgets_rounded),
+          ),
+          NavigationDestination(
+            label: 'Настройки',
+            icon: Icon(Icons.settings_rounded),
+          ),
+        ],
+      ),
     );
   }
 }

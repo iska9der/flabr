@@ -7,30 +7,32 @@ class PublicationStat extends StatelessWidget {
   const PublicationStat({
     super.key,
     required this.text,
+    this.textColor,
     required this.icon,
-    this.color,
+    this.iconColor,
   });
 
   final String text;
+  final Color? textColor;
   final IconData icon;
-  final Color? color;
+  final Color? iconColor;
 
   @override
   Widget build(BuildContext context) {
-    final actualColor = color ?? context.theme.colors.shady;
+    final theme = context.theme;
+    final iconColorResolved = iconColor ?? theme.colors.iconColor;
+    final textColorResolved = textColor ?? theme.colors.iconTextColor;
 
     return Row(
-      mainAxisSize: MainAxisSize.min,
+      mainAxisSize: .min,
+      spacing: 4,
       children: [
-        Icon(icon, color: actualColor),
-        Padding(
-          padding: const EdgeInsets.only(left: 4),
-          child: Text(
-            text,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: actualColor,
-              fontWeight: FontWeight.w600,
-            ),
+        Icon(icon, color: iconColorResolved),
+        Text(
+          text,
+          style: theme.textTheme.bodyMedium?.copyWith(
+            color: textColorResolved,
+            fontWeight: .w600,
           ),
         ),
       ],

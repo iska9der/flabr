@@ -8,6 +8,7 @@ import '../../core/constants/constants.dart';
 import '../../data/exception/exception.dart';
 import '../../data/model/filter/filter.dart';
 import '../../data/model/list_response_model.dart';
+import '../../data/model/loading_status_enum.dart';
 import '../../data/model/publication/publication.dart';
 import '../../data/model/section_enum.dart';
 import '../../feature/publication_list/publication_list.dart';
@@ -30,7 +31,7 @@ class FlowPublicationListCubit
   final CacheStorage _storage;
 
   Future<void> _restoreFilter() async {
-    emit(state.copyWith(status: PublicationListStatus.loading));
+    emit(state.copyWith(status: .loading));
 
     final key = CacheKeys.flowFilter(state.section.name);
     FlowPublicationListState newState = state;
@@ -46,7 +47,7 @@ class FlowPublicationListCubit
     } catch (_) {
       _storage.delete(key);
     } finally {
-      emit(newState.copyWith(status: PublicationListStatus.initial));
+      emit(newState.copyWith(status: .initial));
     }
   }
 
@@ -56,7 +57,7 @@ class FlowPublicationListCubit
       return;
     }
 
-    emit(state.copyWith(status: PublicationListStatus.loading));
+    emit(state.copyWith(status: .loading));
 
     try {
       final response = await repository.fetchFlowArticles(
@@ -68,7 +69,7 @@ class FlowPublicationListCubit
 
       emit(
         state.copyWith(
-          status: PublicationListStatus.success,
+          status: .success,
           response: state.response.merge(response, getId: (ref) => ref.id),
           page: state.page + 1,
         ),
@@ -77,7 +78,7 @@ class FlowPublicationListCubit
       emit(
         state.copyWith(
           error: e.parseException('Не удалось получить статьи'),
-          status: PublicationListStatus.failure,
+          status: .failure,
         ),
       );
 

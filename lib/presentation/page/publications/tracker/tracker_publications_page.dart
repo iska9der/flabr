@@ -145,7 +145,7 @@ class TrackerPublicationWidget extends StatelessWidget {
                         icon: Icons.add,
                         value: model.unreadCommentsCount.compact(),
                         isHighlighted: true,
-                        color: context.theme.colors.highlight,
+                        color: context.theme.colors.accentPositive,
 
                         /// TODO: onTap с навигацией до первого непрочитанного комментария
                       ),

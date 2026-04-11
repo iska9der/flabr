@@ -73,7 +73,7 @@ class HubDetailPageView extends StatelessWidget {
                 BlocBuilder<HubPublicationListCubit, HubPublicationListState>(
                   builder: (context, state) {
                     return CommonFiltersWidget(
-                      isLoading: state.status == PublicationListStatus.loading,
+                      isLoading: state.status == .loading,
                       sort: state.filter.sort,
                       filterOption: switch (state.filter.sort) {
                         Sort.byBest => state.filter.period,

@@ -125,8 +125,9 @@ class _CommentTreeWidgetState extends State<CommentTreeWidget> {
     /// если не найден контекст - значит необходимый элемент отлетел в мусорку,
     /// поэтому мы скроллимся вверх пока он снова не создатся
     if (context == null) {
-      final shift =
-          scrollController.offset < 400 ? scrollController.offset : 400;
+      final shift = scrollController.offset < 400
+          ? scrollController.offset
+          : 400;
       await scrollController.animateTo(
         scrollController.offset - shift,
         duration: const Duration(milliseconds: 50),
@@ -161,23 +162,23 @@ class _CommentTreeWidgetState extends State<CommentTreeWidget> {
             controller: scrollController,
             padding: const EdgeInsets.fromLTRB(4, 4, 4, 16),
             nodeBuilder: (BuildContext context, TreeEntry<Comment> entry) {
-              final key =
-                  entry.node.childrenRaw.isNotEmpty ? GlobalKey() : null;
+              final key = entry.node.childrenRaw.isNotEmpty
+                  ? GlobalKey()
+                  : null;
               if (key != null) {
                 _parentKeys[entry.node.id] = key;
               }
 
               final authorColor = switch (entry.node.isPostAuthor) {
-                true => context.theme.colors.authorColor,
+                true => context.theme.colors.author,
                 false => null,
               };
 
-              double topPadding =
-                  entry.index == 0
-                      ? 0
-                      : entry.node.parentId.isNotEmpty
-                      ? 2
-                      : 8;
+              double topPadding = entry.index == 0
+                  ? 0
+                  : entry.node.parentId.isNotEmpty
+                  ? 2
+                  : 8;
 
               return Padding(
                 key: key,
@@ -206,10 +207,9 @@ class _CommentTreeWidgetState extends State<CommentTreeWidget> {
                             ExpandIcon(
                               key: GlobalObjectKey(entry.node),
                               isExpanded: entry.isExpanded,
-                              onPressed:
-                                  (_) => treeController.toggleExpansion(
-                                    entry.node,
-                                  ),
+                              onPressed: (_) => treeController.toggleExpansion(
+                                entry.node,
+                              ),
                             ),
                           ],
                         ),
@@ -261,12 +261,11 @@ class _CommentTreeWidgetState extends State<CommentTreeWidget> {
                       child: FloatingActionButton(
                         heroTag: null,
                         mini: true,
-                        onPressed:
-                            () => scrollController.animateTo(
-                              history.pop(),
-                              duration: scrollDuration,
-                              curve: scrollCurve,
-                            ),
+                        onPressed: () => scrollController.animateTo(
+                          history.pop(),
+                          duration: scrollDuration,
+                          curve: scrollCurve,
+                        ),
                         child: const Icon(Icons.history_rounded),
                       ),
                     ),

@@ -2,7 +2,7 @@ part of 'hub_publication_list_cubit.dart';
 
 class HubPublicationListState extends PublicationListState with EquatableMixin {
   const HubPublicationListState({
-    super.status = PublicationListStatus.initial,
+    super.status = .initial,
     super.error = '',
     super.page = 1,
     super.response = const ListResponse<Publication>(),
@@ -16,7 +16,7 @@ class HubPublicationListState extends PublicationListState with EquatableMixin {
   final FlowFilter filter;
 
   HubPublicationListState copyWith({
-    PublicationListStatus? status,
+    LoadingStatus? status,
     String? error,
     String? hub,
     PublicationType? type,

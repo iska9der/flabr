@@ -3,7 +3,7 @@ part of 'user_publication_list_cubit.dart';
 class UserPublicationListState extends PublicationListState
     with EquatableMixin {
   const UserPublicationListState({
-    super.status = PublicationListStatus.initial,
+    super.status = .initial,
     super.error = '',
     super.page = 1,
     super.response = const ListResponse<Publication>(),
@@ -15,7 +15,7 @@ class UserPublicationListState extends PublicationListState
   final UserPublicationType type;
 
   UserPublicationListState copyWith({
-    PublicationListStatus? status,
+    LoadingStatus? status,
     String? error,
     int? page,
     ListResponse<Publication>? response,

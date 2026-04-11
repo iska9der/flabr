@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 abstract class AppDimensions {
   static const double maxWidth = 1200;
 
-  static const double navBarHeight = 68.0;
+  static const double navBarHeight = 60.0;
   static const double tabBarHeight = 40.0;
   static const double toolBarHeight = 60.0;
   static const double underElevation = 20.0;

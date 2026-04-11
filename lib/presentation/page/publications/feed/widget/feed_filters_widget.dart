@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../bloc/auth/auth_cubit.dart';
 import '../../../../../bloc/publication/feed_publication_list_cubit.dart';
 import '../../../../../data/model/filter/filter.dart';
-import '../../../../../feature/publication_list/publication_list.dart';
 import '../../../../widget/dialog/dialog.dart';
 import '../../../../widget/filter/filter_chip_list.dart';
 import '../../../../widget/filter/publication_filter_submit_button.dart';
@@ -21,7 +20,7 @@ class FeedFiltersWidget extends StatelessWidget {
         BlocBuilder<FeedPublicationListCubit, FeedPublicationListState>(
           builder: (context, state) {
             return _FilterView(
-              isLoading: state.status == PublicationListStatus.loading,
+              isLoading: state.status == .loading,
               currentScore: state.filter.score,
               currentTypes: state.filter.types,
               onSubmit: (newFilter) {

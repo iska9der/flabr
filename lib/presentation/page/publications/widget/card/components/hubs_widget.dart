@@ -38,11 +38,11 @@ class _PublicationHub extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var style = context.theme.textTheme.labelMedium!.copyWith(
-      color: context.theme.colors.shady,
+      color: context.theme.colors.textInactive,
     );
 
     if (hub.relatedData case HubRelatedData(isSubscribed: true)) {
-      style = style.copyWith(color: context.theme.colors.highlight);
+      style = style.copyWith(color: context.theme.colors.accentPositive);
     }
 
     var title = hub.title;

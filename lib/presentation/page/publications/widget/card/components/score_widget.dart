@@ -14,8 +14,8 @@ class ScoreWidget extends StatelessWidget {
   const ScoreWidget({
     required this.publication,
     this.isBlocked = true,
-    this.crossAxisAlignment = CrossAxisAlignment.center,
-    this.mainAxisAlignment = MainAxisAlignment.spaceAround,
+    this.crossAxisAlignment = .center,
+    this.mainAxisAlignment = .spaceAround,
     super.key,
   });
 

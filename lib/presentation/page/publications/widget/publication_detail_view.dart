@@ -277,42 +277,42 @@ class _PublicationContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SelectionArea(
-      child: CustomScrollView(
-        controller: scrollController,
-        slivers: [
-          _buildTopPadding(),
-          _buildHeader(),
-          _buildTitle(),
-          _buildStats(),
-          _buildHubs(),
-          _buildLabels(),
-          _buildLabelsData(),
-          _buildHtmlContent(),
-        ],
+    return ColoredBox(
+      color: context.theme.colors.card,
+      child: SelectionArea(
+        child: CustomScrollView(
+          controller: scrollController,
+          slivers: [
+            _buildTopPadding(),
+            _buildHeader(),
+            _buildTitle(),
+            _buildStats(),
+            _buildHubs(),
+            _buildLabels(),
+            _buildLabelsData(),
+            _buildHtmlContent(),
+          ],
+        ),
       ),
     );
   }
 
   Widget _buildTopPadding() {
     return const SliverPadding(
-      padding: EdgeInsets.only(top: _appbarPadding),
+      padding: .only(top: _appbarPadding),
     );
   }
 
   Widget _buildHeader() {
     return _SliverPaddedBox(
-      padding: const EdgeInsets.symmetric(
-        vertical: _vPadding,
-        horizontal: _hPadding,
-      ),
+      padding: const .symmetric(vertical: _vPadding, horizontal: _hPadding),
       child: PublicationHeaderWidget(publication),
     );
   }
 
   Widget _buildTitle() {
     return _SliverPaddedBox(
-      padding: const EdgeInsets.symmetric(
+      padding: const .symmetric(
         vertical: _vPadding,
         horizontal: _hPadding,
       ),
@@ -322,7 +322,7 @@ class _PublicationContent extends StatelessWidget {
 
   Widget _buildStats() {
     return _SliverPaddedBox(
-      padding: const EdgeInsets.symmetric(
+      padding: const .symmetric(
         vertical: _vPadding,
         horizontal: _hPadding,
       ),
@@ -332,7 +332,7 @@ class _PublicationContent extends StatelessWidget {
 
   Widget _buildHubs() {
     return _SliverPaddedBox(
-      padding: const EdgeInsets.symmetric(
+      padding: const .symmetric(
         vertical: _vPadding,
         horizontal: _hPadding,
       ),
@@ -353,7 +353,7 @@ class _PublicationContent extends StatelessWidget {
     }
 
     return _SliverPaddedBox(
-      padding: const EdgeInsets.symmetric(
+      padding: const .symmetric(
         vertical: _vPadding,
         horizontal: _hPadding,
       ),
@@ -368,7 +368,7 @@ class _PublicationContent extends StatelessWidget {
     return switch (publication) {
       PublicationCommon(:final postLabels) when postLabels.isNotEmpty =>
         _SliverPaddedBox(
-          padding: const EdgeInsets.symmetric(
+          padding: const .symmetric(
             vertical: _vPadding,
             horizontal: _hPadding,
           ),
@@ -391,7 +391,7 @@ class _SliverPaddedBox extends StatelessWidget {
   });
 
   final Widget child;
-  final EdgeInsets padding;
+  final EdgeInsetsGeometry padding;
 
   @override
   Widget build(BuildContext context) {
@@ -469,14 +469,12 @@ class _SettingsButton extends StatelessWidget {
   void _showSettingsSheet(BuildContext context) {
     showModalBottomSheet(
       context: context,
-      builder: (context) => Column(
-        mainAxisSize: MainAxisSize.min,
+      builder: (context) => const Column(
+        mainAxisSize: .min,
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 14.0,
-            ).copyWith(bottom: 18),
-            child: const PublicationSettingsWidget(),
+            padding: .fromLTRB(14, 0, 14, 18),
+            child: PublicationSettingsWidget(),
           ),
         ],
       ),

@@ -26,6 +26,7 @@ class FloatingFilterButton<
       onPressed: () => showModalBottomSheet(
         context: context,
         isScrollControlled: true,
+        useRootNavigator: true,
         constraints: const BoxConstraints(minWidth: 600),
         builder: (_) => Padding(
           padding: AppInsets.filterSheetPadding,

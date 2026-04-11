@@ -4,10 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../data/model/language/language.dart';
 import '../../../data/model/list_response_model.dart';
+import '../../../data/model/loading_status_enum.dart';
 import '../../../data/model/publication/publication.dart';
 import '../../../data/repository/repository.dart';
-
-enum PublicationListStatus { initial, loading, success, failure }
 
 /// Абстрактный класс для кубита списка публикаций
 abstract class PublicationListCubit<State extends PublicationListState>
@@ -38,8 +37,7 @@ abstract class PublicationListCubit<State extends PublicationListState>
   }
 
   bool get fetchDisabled =>
-      state.status == PublicationListStatus.loading ||
-      !state.isFirstFetch && state.isLastPage;
+      state.status == .loading || !state.isFirstFetch && state.isLastPage;
 
   /// Получение списка публикаций
   FutureOr<void> fetch();
@@ -57,7 +55,7 @@ abstract class PublicationListState {
     required this.response,
   });
 
-  final PublicationListStatus status;
+  final LoadingStatus status;
   final String error;
   final int page;
   final ListResponse<Publication> response;
