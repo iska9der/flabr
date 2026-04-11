@@ -55,32 +55,28 @@ class HtmlView extends StatelessWidget {
 
         final isWebViewEnabled = publicationConfig.webViewEnabled;
 
-        return HighlightBackgroundEnvironment(
-          child: HtmlWidget(
-            textHtml,
-            renderMode: renderMode,
-            textStyle: resultTextStyle,
-            rebuildTriggers: [
-              theme.brightness,
-              fontSize,
-              isImageVisible,
-              isWebViewEnabled,
-            ],
-            onErrorBuilder: (_, element, error) =>
-                Text('$element error: $error'),
-            onLoadingBuilder: (ctx, el, prgrs) =>
-                const CircleIndicator.medium(),
-            factoryBuilder: () => CustomFactory(context),
-            customStylesBuilder: (element) => HtmlCustomStyles.builder(
-              element,
-              theme,
-              padding,
-              fontSize,
-            ),
-            customWidgetBuilder: (element) => HtmlCustomWidget.builder(
-              element,
-              isImageVisible,
-            ),
+        return HtmlWidget(
+          textHtml,
+          renderMode: renderMode,
+          textStyle: resultTextStyle,
+          rebuildTriggers: [
+            theme.brightness,
+            fontSize,
+            isImageVisible,
+            isWebViewEnabled,
+          ],
+          onErrorBuilder: (_, element, error) => Text('$element error: $error'),
+          onLoadingBuilder: (ctx, el, prgrs) => const CircleIndicator.medium(),
+          factoryBuilder: () => CustomFactory(context),
+          customStylesBuilder: (element) => HtmlCustomStyles.builder(
+            element,
+            theme,
+            padding,
+            fontSize,
+          ),
+          customWidgetBuilder: (element) => HtmlCustomWidget.builder(
+            element,
+            isImageVisible,
           ),
         );
       },

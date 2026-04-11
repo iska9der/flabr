@@ -58,7 +58,11 @@ class _HighlightBackgroundEnvironmentState
       }
     });
 
-    Isolate.spawn(_isolateEntrypoint, receivePort.sendPort);
+    Isolate.spawn(
+      _isolateEntrypoint,
+      receivePort.sendPort,
+      debugName: 'highlight_background_isolate',
+    );
   }
 
   @override

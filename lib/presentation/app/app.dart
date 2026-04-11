@@ -1,5 +1,6 @@
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_highlight/flutter_highlight.dart';
 
 import '../../di/di.dart';
 import 'config/config.dart';
@@ -34,7 +35,9 @@ class Application extends StatelessWidget {
       repository: getIt<AppConfigRepository>(),
       child: const GlobalBlocProvider(
         child: GlobalBlocListener(
-          child: ApplicationView(),
+          child: HighlightBackgroundEnvironment(
+            child: ApplicationView(),
+          ),
         ),
       ),
     );
