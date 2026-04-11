@@ -31,11 +31,11 @@ abstract class AppConfig with _$AppConfig {
   /// Конфигурация для разработки
   static const dev = AppConfig(
     enableDevicePreview: true,
-    splashMinDuration: Duration(milliseconds: 600),
+    splashMinDuration: Duration(milliseconds: 300),
   );
 
   /// Конфигурация для production
   static const prod = AppConfig(
-    splashMinDuration: Duration(milliseconds: 1200),
+    splashMinDuration: Duration(milliseconds: 800),
   );
 }

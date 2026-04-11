@@ -18,8 +18,19 @@ class _SplashViewState extends State<_SplashView>
   void initState() {
     super.initState();
 
+    _initAnimation();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+
+    super.dispose();
+  }
+
+  void _initAnimation() {
     _controller = AnimationController(
-      duration: const Duration(milliseconds: 1000),
+      duration: const .new(milliseconds: 600),
       vsync: this,
     );
 
@@ -30,17 +41,11 @@ class _SplashViewState extends State<_SplashView>
 
     _scaleAnimation = Tween<double>(
       begin: _scale,
-      end: _scale * .90,
+      end: _scale * .9,
     ).animate(animation);
 
-    // Запускаем бесконечную анимацию пульсации
+    // Запускаем бесконечную анимацию
     _controller.repeat(reverse: true);
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
   }
 
   @override

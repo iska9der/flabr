@@ -68,14 +68,16 @@ class TrackerSubscriptionView extends StatelessWidget {
     return Scaffold(
       body: BlocBuilder<TrackerNotificationsBloc, TrackerNotificationsState>(
         builder: (context, state) => switch (state.status) {
-          .failure when state.isFirstFetch => AppError(
-            message: state.error,
-            onRetry: () =>
-                context.read<TrackerNotificationsBloc>().add(const .load()),
+          .failure when state.isFirstFetch => Center(
+            child: AppError(
+              message: state.error,
+              onRetry: () =>
+                  context.read<TrackerNotificationsBloc>().add(const .load()),
+            ),
           ),
           .success => ListView.builder(
-            itemCount: state.response.refs.length,
             itemExtent: 150,
+            itemCount: state.response.refs.length,
             itemBuilder: (context, index) {
               final model = state.response.refs[index];
 
