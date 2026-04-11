@@ -21,6 +21,7 @@ abstract class AppInsets {
 
   static const EdgeInsets cardMargin = .all(4.0);
   static const EdgeInsets cardPadding = .all(8.0);
+  static const EdgeInsets iconPadding = .all(8.0);
   static const EdgeInsets tileContentPadding = .symmetric(horizontal: 8.0);
 
   static const EdgeInsets mostReadingDesktop = .fromLTRB(8, 8, 8, 8);

@@ -30,7 +30,7 @@ class CardAvatarWidget extends StatelessWidget {
     }
 
     return ClipRRect(
-      clipBehavior: Clip.hardEdge,
+      clipBehavior: .hardEdge,
       borderRadius: AppStyles.avatarBorderRadius,
       child: NetworkImageWidget(
         imageUrl: 'https:$imageUrl',
@@ -54,7 +54,7 @@ class _PlaceholderAvatar extends StatelessWidget {
     return SizedBox(
       child: Icon(
         icon ?? AppIcons.authorPlaceholder,
-        color: color ?? Theme.of(context).colorScheme.onSurface,
+        color: color,
         size: height,
       ),
     );

@@ -43,11 +43,9 @@ final appTextButtonThemeData = TextButtonThemeData(
   ),
 );
 
-final appIconButtonThemeData = IconButtonThemeData(
-  style: IconButton.styleFrom(
-    shape: const RoundedRectangleBorder(
-      borderRadius: AppStyles.buttonBorderRadius,
-    ),
+final appIconButtonThemeData = IconButton.styleFrom(
+  shape: const RoundedRectangleBorder(
+    borderRadius: AppStyles.buttonBorderRadius,
   ),
 );
 

@@ -36,10 +36,7 @@ class AccountTile extends StatelessWidget {
                 Icons.no_accounts_rounded,
                 size: AppDimensions.avatarHeight,
               ),
-              false => CardAvatarWidget(
-                imageUrl: profile.avatarUrl,
-                placeholderColor: theme.colorScheme.primary,
-              ),
+              false => CardAvatarWidget(imageUrl: profile.avatarUrl),
             },
             onTap: switch (profile.isEmpty) {
               true => () => showLoginDialog(context),

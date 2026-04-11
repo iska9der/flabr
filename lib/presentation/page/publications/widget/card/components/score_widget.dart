@@ -51,7 +51,6 @@ class ScoreWidget extends StatelessWidget {
             child: PublicationStatIconButton(
               icon: icon,
               value: score.compact(),
-              isHighlighted: true,
               color: color,
             ),
           );

@@ -7,19 +7,19 @@ import '../../../../widget/enhancement/enhancement.dart';
 class PublicationStatIconButton extends StatelessWidget {
   const PublicationStatIconButton({
     super.key,
-    required this.icon,
+    this.icon,
     this.value = '',
-    this.padding,
     this.color,
+    this.highlightColor,
     this.isHighlighted = false,
     this.isLoading = false,
     this.onTap,
   });
 
-  final IconData icon;
+  final IconData? icon;
   final String value;
-  final EdgeInsetsGeometry? padding;
   final Color? color;
+  final Color? highlightColor;
   final bool isHighlighted;
   final bool isLoading;
   final void Function()? onTap;
@@ -29,41 +29,50 @@ class PublicationStatIconButton extends StatelessWidget {
     final theme = context.theme;
     const iconSize = 18.0;
 
-    var iconColor = switch (color) {
-      == null => theme.iconTheme.color,
-      _ => color,
+    final colorResolved = switch (isHighlighted) {
+      true => highlightColor ?? theme.colors.accentPrimary,
+      false => color ?? theme.colors.iconColor,
     };
 
-    iconColor = iconColor?.withValues(alpha: isHighlighted ? .7 : .3);
+    final iconResolved = switch (isLoading) {
+      true => const SizedBox(
+        width: iconSize,
+        height: iconSize,
+        child: CircleIndicator.small(),
+      ),
+      false when icon != null => Icon(
+        icon,
+        size: iconSize,
+        color: colorResolved,
+      ),
+      _ => null,
+    };
+
+    final paddingResolved = switch (onTap == null) {
+      true => EdgeInsets.zero,
+      false => AppInsets.iconPadding,
+    };
 
     return Material(
-      color: Colors.transparent,
-      type: MaterialType.transparency,
+      type: .transparency,
       child: InkWell(
         onTap: onTap,
         borderRadius: AppStyles.cardBorderRadius,
         child: Padding(
-          padding: padding ?? AppInsets.screenPadding,
+          padding: paddingResolved,
           child: Row(
             children: [
-              isLoading
-                  ? const SizedBox(
-                    width: iconSize,
-                    height: iconSize,
-                    child: CircleIndicator.small(),
-                  )
-                  : Icon(icon, size: iconSize, color: iconColor),
-              if (value.isNotEmpty)
-                Padding(
-                  padding: const EdgeInsets.only(left: 6),
-                  child: Text(
-                    value,
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      color: color,
-                      fontWeight: FontWeight.w600,
-                    ),
+              ?iconResolved,
+              if (value.isNotEmpty) ...[
+                if (iconResolved != null) const SizedBox(width: 6),
+                Text(
+                  value,
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: colorResolved,
+                    fontWeight: .w600,
                   ),
                 ),
+              ],
             ],
           ),
         ),

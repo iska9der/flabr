@@ -7,7 +7,7 @@ import 'app_colors.dart';
 abstract class AppSchemeLight {
   static ColorScheme get scheme => ColorScheme.fromSeed(
     // brightness: .light,
-    dynamicSchemeVariant: .fidelity,
+    dynamicSchemeVariant: .content,
     contrastLevel: .2,
     seedColor: colors.primary,
     primary: colors.primary,
@@ -79,8 +79,8 @@ abstract class AppSchemeLight {
 class AppSchemeDark {
   static ColorScheme get scheme => ColorScheme.fromSeed(
     brightness: .dark,
-    dynamicSchemeVariant: .fidelity,
-    contrastLevel: .2,
+    dynamicSchemeVariant: .content,
+    contrastLevel: .3,
     seedColor: colors.primary,
     primary: colors.primary,
     secondary: colors.secondary,

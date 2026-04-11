@@ -51,6 +51,7 @@ class _ListViewState extends State<_ListView> {
                 itemCount: state.publications.length,
                 itemBuilder: (itemContext, index) {
                   final model = state.publications[index];
+                  final anyUnread = model.relatedData.unreadCommentsCount > 0;
 
                   return FlabrCard(
                     margin: .zero,
@@ -78,15 +79,13 @@ class _ListViewState extends State<_ListView> {
                         Row(
                           children: [
                             PublicationStatIconButton(
-                              padding: .zero,
                               icon: Icons.remove_red_eye_rounded,
                               value: model.statistics.readingCount.compact(),
                             ),
+                            const SizedBox(width: 6),
                             PublicationStatIconButton(
                               icon: Icons.chat_bubble_rounded,
                               value: model.statistics.commentsCount.compact(),
-                              isHighlighted:
-                                  model.relatedData.unreadCommentsCount > 0,
                               onTap: () => context.router.push(
                                 PublicationFlowRoute(
                                   type: model.type.name,
@@ -95,6 +94,15 @@ class _ListViewState extends State<_ListView> {
                                 ),
                               ),
                             ),
+                            if (anyUnread)
+                              PublicationStatIconButton(
+                                value:
+                                    '+${model.relatedData.unreadCommentsCount.compact()}',
+                                color: theme.colors.accentPositive,
+
+                                /// TODO: onTap с навигацией до первого непрочитанного комментария
+                                // onTap: () {},
+                              ),
                           ],
                         ),
                       ],

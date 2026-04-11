@@ -44,7 +44,9 @@ abstract class AppTheme {
       scrollbarTheme: appScrollBarThemeData,
       progressIndicatorTheme: proggressIndicatorThemeData,
       textButtonTheme: appTextButtonThemeData,
-      iconButtonTheme: appIconButtonThemeData,
+      iconButtonTheme: IconButtonThemeData(
+        style: appIconButtonThemeData,
+      ),
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: appOutlinedButtonStyle.merge(
           OutlinedButton.styleFrom(
