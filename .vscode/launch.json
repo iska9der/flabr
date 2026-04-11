@@ -10,7 +10,8 @@
             "type": "dart",
             "args": [
                 "--dart-define-from-file",
-                ".env.prod"
+                ".env.prod",
+                "--no-enable-impeller"
             ]
         },
         {
