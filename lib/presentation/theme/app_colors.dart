@@ -10,7 +10,6 @@ class AppColors extends ThemeExtension<AppColors> with _$AppColorsTailorMixin {
     required this.tertiary,
     required this.error,
     required this.disabled,
-    required this.cardHighlight,
     required this.progressTrackColor,
     required this.sorbus,
     required this.portage,
@@ -19,8 +18,10 @@ class AppColors extends ThemeExtension<AppColors> with _$AppColorsTailorMixin {
     required this.deluge,
     required this.scarlet,
     required this.primary,
-    required this.surface,
+    required this.background,
+    required this.backgroundSecondary,
     required this.card,
+    required this.cardHighlight,
     required this.textMain,
     required this.textInactive,
     required this.textSecondary,
@@ -30,6 +31,7 @@ class AppColors extends ThemeExtension<AppColors> with _$AppColorsTailorMixin {
     required this.complexityHigh,
     required this.iconColor,
     required this.iconTextColor,
+    required this.accentPrimary,
     required this.accentPositive,
     required this.onAccentPositive,
     required this.accentDanger,
@@ -43,8 +45,6 @@ class AppColors extends ThemeExtension<AppColors> with _$AppColorsTailorMixin {
   final Color error;
   @override
   final Color disabled;
-  @override
-  final Color cardHighlight;
   @override
   final Color progressTrackColor;
   @override
@@ -63,9 +63,13 @@ class AppColors extends ThemeExtension<AppColors> with _$AppColorsTailorMixin {
   @override
   final Color primary;
   @override
-  final Color surface;
+  final Color background;
+  @override
+  final Color backgroundSecondary;
   @override
   final Color card;
+  @override
+  final Color cardHighlight;
   @override
   final Color textMain;
   @override
@@ -84,6 +88,8 @@ class AppColors extends ThemeExtension<AppColors> with _$AppColorsTailorMixin {
   final Color iconColor;
   @override
   final Color iconTextColor;
+  @override
+  final Color accentPrimary;
   @override
   final Color accentPositive;
   @override

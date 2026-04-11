@@ -27,9 +27,9 @@ class HtmlView extends StatelessWidget {
   const HtmlView({
     super.key,
     required this.textHtml,
-    this.renderMode = RenderMode.sliverList,
-    this.padding = const EdgeInsets.only(left: 20, right: 20, bottom: 40),
-    this.textStyle = const TextStyle(),
+    this.renderMode = .sliverList,
+    this.padding = const .only(left: 20, right: 20, bottom: 40),
+    this.textStyle = const .new(),
   });
 
   final String textHtml;
@@ -42,13 +42,18 @@ class HtmlView extends StatelessWidget {
     return BlocBuilder<SettingsCubit, SettingsState>(
       builder: (context, state) {
         final theme = context.theme;
+
+        /// user config
         final publicationConfig = state.publication;
-        final isImageVisible = publicationConfig.isImagesVisible;
+
         final fontScale = publicationConfig.fontScale;
         final fontSize =
             (theme.textTheme.bodyMedium?.fontSize ?? 14) * fontScale;
-        final isWebViewEnabled = publicationConfig.webViewEnabled;
         final resultTextStyle = textStyle.copyWith(fontSize: fontSize);
+
+        final isImageVisible = publicationConfig.isImagesVisible;
+
+        final isWebViewEnabled = publicationConfig.webViewEnabled;
 
         return HighlightBackgroundEnvironment(
           child: HtmlWidget(
@@ -315,25 +320,32 @@ abstract class CustomBuildOp {
     LinkedHashMap<Object, String> attributes, {
     required String text,
   }) {
+    final theme = context.theme;
     final String? lang = attributes['class'];
 
     final fontSize =
-        (context.theme.textTheme.bodySmall?.fontSize ?? 12) *
+        (theme.textTheme.bodySmall?.fontSize ?? 12) *
         context.read<SettingsCubit>().state.publication.fontScale;
-    final codeTextStyle = context.theme.textTheme.bodyMedium!.copyWith(
+    final codeTextStyle = theme.textTheme.bodyMedium!.copyWith(
       fontSize: fontSize,
       fontFamily: HighlightView.defaultFontFamily,
     );
-    EdgeInsets padding = const EdgeInsets.all(12);
+    EdgeInsets padding = const .all(12);
 
-    final codeTheme = switch (context.theme.brightness) {
-      Brightness.dark => darculaTheme,
-      Brightness.light => githubGistTheme,
+    final codeTheme = {
+      ...switch (theme.brightness) {
+        .dark => darculaTheme,
+        .light => githubGistTheme,
+      },
     };
 
-    final bgColor =
-        codeTheme['root']?.backgroundColor ??
-        context.theme.colors.cardHighlight;
+    final bgColor = theme.colors.backgroundSecondary;
+    codeTheme['root'] = codeTheme['root']!.copyWith(backgroundColor: bgColor);
+    final decoration = BoxDecoration(
+      color: bgColor,
+      border: .all(color: theme.colors.background),
+      borderRadius: .circular(4),
+    );
 
     return BuildOp(
       onRenderBlock: (tree, placeholder) {
@@ -353,11 +365,9 @@ abstract class CustomBuildOp {
             true => () => context.buildModalRoute(
               rootNavigator: true,
               child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  minWidth: Device.getWidth(context),
-                ),
+                constraints: .new(minWidth: Device.getWidth(context)),
                 child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
+                  scrollDirection: .horizontal,
                   child: HighlightView(
                     text,
                     language: lang,
@@ -371,47 +381,41 @@ abstract class CustomBuildOp {
             ),
           };
 
-          return ColoredBox(
-            color: bgColor,
-            child: ConstrainedBox(
-              constraints: BoxConstraints(
-                minWidth: Device.getWidth(context),
-              ),
-              child: Stack(
-                alignment: Alignment.bottomLeft,
-                children: [
-                  LazyCodeBlock(
-                    text: previewText,
-                    language: lang,
-                    textStyle: codeTextStyle,
-                    maxRows: maxRows,
-                    theme: codeTheme,
-                    padding: padding,
+          return ConstrainedBox(
+            constraints: .new(minWidth: Device.getWidth(context)),
+            child: Stack(
+              alignment: .bottomLeft,
+              children: [
+                LazyCodeBlock(
+                  text: previewText,
+                  language: lang,
+                  theme: codeTheme,
+                  decoration: decoration,
+                  textStyle: codeTextStyle,
+                  maxRows: maxRows,
+                  padding: padding,
+                  onTap: onTap,
+                ),
+                if (isLong)
+                  GestureDetector(
                     onTap: onTap,
-                  ),
-                  if (isLong)
-                    GestureDetector(
-                      onTap: onTap,
-                      child: const Padding(
-                        padding: EdgeInsets.only(left: 12, bottom: 6),
-                        child: Text('Показать полностью...'),
-                      ),
+                    child: const Padding(
+                      padding: .only(left: 12, bottom: 6),
+                      child: Text('Показать полностью...'),
                     ),
-                ],
-              ),
+                  ),
+              ],
             ),
           );
         }
 
-        return ColoredBox(
-          color: bgColor,
-          child: ConstrainedBox(
-            constraints: BoxConstraints(
-              minWidth: Device.getWidth(context),
-            ),
+        return ConstrainedBox(
+          constraints: .new(minWidth: Device.getWidth(context)),
+          child: DecoratedBox(
+            decoration: decoration,
             child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.all(12),
+              scrollDirection: .horizontal,
+              padding: const .all(12),
               child: Text(text, style: codeTextStyle),
             ),
           ),

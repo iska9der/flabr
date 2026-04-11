@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
-import 'package:intl/intl.dart';
 
 import '../../../data/model/comment_base.dart';
 import '../html_view/html_view_widget.dart';
@@ -19,31 +17,25 @@ class CommentWidget extends StatelessWidget {
     final paddingLeft = basePadding + additional;
 
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
+      crossAxisAlignment: .stretch,
       children: [
         /// Текст
         Padding(
-          padding: EdgeInsets.only(left: paddingLeft, right: basePadding),
+          padding: .only(left: paddingLeft, right: basePadding),
           child: HtmlView(
             textHtml: comment.message,
-            renderMode: RenderMode.column,
-            padding: EdgeInsets.zero,
+            renderMode: .column,
+            padding: .zero,
           ),
         ),
 
         /// Футер
         Padding(
-          padding: const EdgeInsets.all(basePadding),
+          padding: const .all(basePadding),
           child: Row(
             children: [
               CommentRatingWidget(comment),
               const Spacer(),
-              Text(
-                DateFormat.yMd().add_jm().format(comment.publishedAt),
-                style: Theme.of(
-                  context,
-                ).textTheme.bodySmall?.copyWith(fontWeight: FontWeight.w600),
-              ),
             ],
           ),
         ),

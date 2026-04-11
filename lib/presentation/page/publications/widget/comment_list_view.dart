@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_fancy_tree_view/flutter_fancy_tree_view.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../bloc/publication/comment_list_cubit.dart';
 import '../../../../data/model/comment/comment.dart';
@@ -78,10 +79,11 @@ class _CommentTreeWidgetState extends State<CommentTreeWidget> {
     super.initState();
 
     scrollController = ScrollController();
+
     root = Comment(id: '0', children: widget.comments);
     treeController = TreeController<Comment>(
       roots: root.children,
-      childrenProvider: (Comment comment) => comment.children,
+      childrenProvider: (comment) => comment.children,
     )..expandAll();
   }
 
@@ -90,6 +92,7 @@ class _CommentTreeWidgetState extends State<CommentTreeWidget> {
     _history.close();
     scrollController.dispose();
     treeController.dispose();
+
     super.dispose();
   }
 
@@ -102,7 +105,7 @@ class _CommentTreeWidgetState extends State<CommentTreeWidget> {
     final key = _parentKeys[parentId];
     final box = key?.currentContext?.findRenderObject();
     if (box != null) {
-      final double yPosition = (box as RenderBox).localToGlobal(Offset.zero).dy;
+      final double yPosition = (box as RenderBox).localToGlobal(.zero).dy;
 
       /// если родительский комментарий не очень далеко - не сохраняем в историю
       if (yPosition > -400) {
@@ -130,7 +133,7 @@ class _CommentTreeWidgetState extends State<CommentTreeWidget> {
           : 400;
       await scrollController.animateTo(
         scrollController.offset - shift,
-        duration: const Duration(milliseconds: 50),
+        duration: const .new(milliseconds: 50),
         curve: scrollCurve,
       );
       return _moveToParent(parentId);
@@ -145,6 +148,8 @@ class _CommentTreeWidgetState extends State<CommentTreeWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = context.theme;
+
     return NotificationListener<UserScrollNotification>(
       onNotification: (notification) {
         /// удаляем из истории оффсет, если мы его проскроллили
@@ -160,29 +165,29 @@ class _CommentTreeWidgetState extends State<CommentTreeWidget> {
           TreeView<Comment>(
             treeController: treeController,
             controller: scrollController,
-            padding: const EdgeInsets.fromLTRB(4, 4, 4, 16),
+            padding: const .fromLTRB(4, 4, 4, 16),
             nodeBuilder: (BuildContext context, TreeEntry<Comment> entry) {
-              final key = entry.node.childrenRaw.isNotEmpty
-                  ? GlobalKey()
-                  : null;
+              final comment = entry.node;
+
+              final key = comment.childrenRaw.isNotEmpty ? GlobalKey() : null;
               if (key != null) {
-                _parentKeys[entry.node.id] = key;
+                _parentKeys[comment.id] = key;
               }
 
-              final authorColor = switch (entry.node.isPostAuthor) {
-                true => context.theme.colors.author,
+              final authorColor = switch (comment.isPostAuthor) {
+                true => theme.colors.author,
                 false => null,
               };
 
               double topPadding = entry.index == 0
                   ? 0
-                  : entry.node.parentId.isNotEmpty
+                  : comment.parentId.isNotEmpty
                   ? 2
                   : 8;
 
               return Padding(
                 key: key,
-                padding: EdgeInsets.only(top: topPadding),
+                padding: .only(top: topPadding),
 
                 /// TODO: package deprecated
                 /// see: https://pub.dev/packages/flutter_fancy_tree_view
@@ -191,46 +196,56 @@ class _CommentTreeWidgetState extends State<CommentTreeWidget> {
                   entry: entry,
                   guide: const IndentGuide(indent: 0),
                   child: FlabrCard(
-                    margin: EdgeInsets.zero,
-                    padding: EdgeInsets.zero,
+                    margin: .zero,
+                    padding: .zero,
                     color: authorColor,
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      crossAxisAlignment: .stretch,
                       children: [
                         Row(
                           children: [
                             Padding(
-                              padding: const EdgeInsets.only(left: 8),
-                              child: UserTextButton(entry.node.author),
+                              padding: const .only(left: 8),
+                              child: UserTextButton(
+                                comment.author,
+                                subtitle: Text(
+                                  DateFormat.yMd().add_jm().format(
+                                    comment.publishedAt,
+                                  ),
+                                  style: theme.textTheme.bodySmall?.copyWith(
+                                    color: theme.colors.textSecondary,
+                                  ),
+                                ),
+                              ),
                             ),
                             const Spacer(),
                             ExpandIcon(
-                              key: GlobalObjectKey(entry.node),
+                              key: GlobalObjectKey(comment),
                               isExpanded: entry.isExpanded,
                               onPressed: (_) => treeController.toggleExpansion(
-                                entry.node,
+                                comment,
                               ),
                             ),
                           ],
                         ),
                         if (entry.isExpanded)
                           Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            crossAxisAlignment: .stretch,
                             children: [
-                              if (entry.node.parent != null)
+                              if (comment.parent != null)
                                 CommentParent(
-                                  parent: entry.node.parent!,
+                                  parent: comment.parent!,
                                   onParentTapped: () {
                                     _saveToHistory(
-                                      id: entry.node.id,
+                                      id: comment.id,
                                       offset: scrollController.offset,
-                                      parentId: entry.node.parent!.id,
+                                      parentId: comment.parent!.id,
                                     );
 
-                                    _moveToParent(entry.node.parentId);
+                                    _moveToParent(comment.parentId);
                                   },
                                 ),
-                              CommentWidget(entry.node),
+                              CommentWidget(comment),
                             ],
                           ),
                       ],
@@ -243,7 +258,7 @@ class _CommentTreeWidgetState extends State<CommentTreeWidget> {
           Align(
             alignment: Alignment.bottomRight,
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const .all(8.0),
               child: StreamBuilder(
                 stream: _history.stream,
                 builder: (context, snapshot) {

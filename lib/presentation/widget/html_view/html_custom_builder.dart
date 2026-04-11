@@ -75,8 +75,10 @@ abstract class HtmlCustomStyles {
     EdgeInsets padding,
     double fontSize,
   ) {
+    final attrName = element.localName;
+
     if (element.parentNode is dom.DocumentFragment ||
-        element.localName == 'div' && element.parent == null) {
+        attrName == 'div' && element.parent == null) {
       return {
         'margin-left': '${padding.left}px',
         'margin-right': '${padding.right}px',
@@ -86,14 +88,16 @@ abstract class HtmlCustomStyles {
       };
     }
 
-    if (element.localName == 'code' && element.parent?.localName != 'pre') {
+    if (attrName == 'code' && element.parent?.localName != 'pre') {
       return {
-        'background-color': theme.colors.cardHighlight.toHex,
+        'background-color': '#${theme.colors.backgroundSecondary.toHex}',
+        'border-radius': '4px',
+        'padding': '3px 6px',
         'font-weight': '500',
       };
     }
 
-    final headerWeight = switch (element.localName) {
+    final headerWeight = switch (attrName) {
       'h1' || 'h2' || 'h3' || 'h4' || 'h5' || 'h6' => '700',
       _ => '',
     };
@@ -104,8 +108,49 @@ abstract class HtmlCustomStyles {
       };
     }
 
-    if (element.localName == 'li') {
-      return {'margin-bottom': '6px'};
+    if (attrName == 'ul') {
+      if (element.parent?.localName == 'li') {
+        return {
+          'margin-left': '12px',
+          'padding-left': '12px',
+          'margin-top': '2px',
+          'padding-top': '2px',
+        };
+      }
+      return {
+        'margin-left': '12px',
+        'padding-left': '12px',
+      };
+    }
+
+    if (attrName == 'li') {
+      return {
+        'margin-top': '0',
+        'margin-bottom': '6px',
+      };
+    }
+    if (attrName == 'p' && element.parent?.localName == 'li') {
+      return {
+        'margin-top': '0',
+        'margin-bottom': '0',
+      };
+    }
+
+    if (attrName == 'blockquote') {
+      return {
+        'border-left': '4px solid #${theme.colors.accentPrimary.toHex}',
+        'padding-left': '12px',
+        'padding-right': '12px',
+        'margin-left': '0',
+        'margin-right': '0',
+        'margin-bottom': '12px',
+      };
+    }
+    if (attrName == 'p' && element.parent?.localName == 'blockquote') {
+      return {
+        'padding': '0',
+        'margin': '0',
+      };
     }
 
     return null;
