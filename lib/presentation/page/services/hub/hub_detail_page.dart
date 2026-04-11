@@ -88,11 +88,11 @@ class HubDetailPageView extends StatelessWidget {
       ),
       body: BlocBuilder<HubCubit, HubState>(
         builder: (context, state) {
-          if (state.status == HubStatus.loading) {
+          if (state.status == .loading) {
             return const CircleIndicator();
           }
 
-          if (state.status == HubStatus.failure) {
+          if (state.status == .failure) {
             return Center(
               child: AppError(
                 message: state.error,

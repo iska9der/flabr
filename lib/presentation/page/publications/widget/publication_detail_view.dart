@@ -7,7 +7,6 @@ import 'package:share_plus/share_plus.dart';
 import '../../../../bloc/publication/publication_bookmarks_bloc.dart';
 import '../../../../bloc/publication/publication_detail_cubit.dart';
 import '../../../../core/constants/constants.dart';
-import '../../../../data/model/loading_status_enum.dart';
 import '../../../../data/model/publication/publication.dart';
 import '../../../../feature/publication_detail_ui/publication_detail_ui_cubit.dart';
 import '../../../extension/extension.dart';
@@ -83,8 +82,7 @@ class _PublicationDetailViewState extends State<PublicationDetailView> {
         body: SafeArea(
           child: BlocListener<PublicationDetailCubit, PublicationDetailState>(
             listenWhen: (previous, current) =>
-                previous.status != current.status &&
-                current.status == LoadingStatus.success,
+                previous.status != current.status && current.status == .success,
             listener: (context, state) {
               context.read<PublicationBookmarksBloc>().add(
                 PublicationBookmarksEvent.updated(
@@ -94,17 +92,15 @@ class _PublicationDetailViewState extends State<PublicationDetailView> {
             },
             child: BlocBuilder<PublicationDetailCubit, PublicationDetailState>(
               builder: (context, state) => switch (state.status) {
-                LoadingStatus.initial => _InitialView(
-                  onRetry: _fetchPublication,
-                ),
-                LoadingStatus.loading => const _LoadingView(),
-                LoadingStatus.failure => Center(
+                .initial => _InitialView(onRetry: _fetchPublication),
+                .loading => const _LoadingView(),
+                .failure => Center(
                   child: AppError(
                     message: state.error,
                     onRetry: _fetchPublication,
                   ),
                 ),
-                LoadingStatus.success => _SuccessView(
+                .success => _SuccessView(
                   publication: state.publication,
                   scrollController: _scrollController,
                   uiCubit: _uiCubit,
@@ -217,7 +213,7 @@ class _AppBarContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<PublicationDetailCubit, PublicationDetailState>(
       builder: (context, state) {
-        if (state.status != LoadingStatus.success) {
+        if (state.status != .success) {
           return const SizedBox.shrink();
         }
 
@@ -247,7 +243,7 @@ class _BottomBarContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<PublicationDetailCubit, PublicationDetailState>(
       builder: (context, state) {
-        if (state.status != LoadingStatus.success) {
+        if (state.status != .success) {
           return const SizedBox.shrink();
         }
 

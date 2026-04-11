@@ -1,17 +1,15 @@
 part of 'hub_cubit.dart';
 
-enum HubStatus { initial, loading, success, failure }
-
 class HubState with EquatableMixin {
   const HubState({
-    this.status = HubStatus.initial,
+    this.status = .initial,
     this.error = '',
     required this.alias,
     this.model = Hub.empty,
     this.profile = HubProfile.empty,
   });
 
-  final HubStatus status;
+  final LoadingStatus status;
   final String error;
 
   final String alias;
@@ -19,7 +17,7 @@ class HubState with EquatableMixin {
   final HubProfile profile;
 
   HubState copyWith({
-    HubStatus? status,
+    LoadingStatus? status,
     String? error,
     Hub? model,
     HubProfile? profile,
