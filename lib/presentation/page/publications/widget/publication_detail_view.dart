@@ -536,7 +536,6 @@ class _ScrollProgressIndicator extends StatelessWidget {
   }
 }
 
-/// Оптимизированный BottomBar с использованием BlocSelector
 class _BottomBar extends StatelessWidget {
   const _BottomBar({
     required this.publication,
@@ -551,24 +550,22 @@ class _BottomBar extends StatelessWidget {
     final theme = context.theme;
 
     return AnimatedSlide(
-      duration: const Duration(milliseconds: 300),
+      duration: const .new(milliseconds: 300),
       curve: Curves.decelerate,
-      offset: isVisible ? const Offset(0, 0) : const Offset(0, 10),
+      offset: isVisible ? const .new(0, 0) : const .new(0, 10),
       child: ColoredBox(
         color: theme.colorScheme.surface.withValues(alpha: .94),
         child: ConstrainedBox(
-          constraints: const BoxConstraints(
+          constraints: const .new(
             maxHeight: AppDimensions.publicationBottomBarHeight,
           ),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: .spaceAround,
             children: [
               Expanded(
                 child: PublicationFooterWidget(
                   publication: publication,
                   isVoteBlocked: false,
-                  crossAxisAlignment: CrossAxisAlignment.start,
                 ),
               ),
               IconButton(
@@ -587,7 +584,7 @@ class _BottomBar extends StatelessWidget {
     showModalBottomSheet(
       context: context,
       builder: (_) => SizedBox(
-        width: double.infinity,
+        width: .infinity,
         height: 120,
         child: PublicationMoreButton(publication: publication),
       ),

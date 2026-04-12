@@ -84,8 +84,8 @@ class _ScoreTooltip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Tooltip(
-      triggerMode: TooltipTriggerMode.tap,
-      showDuration: const Duration(seconds: 5),
+      triggerMode: .tap,
+      showDuration: const .new(seconds: 5),
       message:
           'Всего голосов $votesCount: '
           '↑$votesCountPlus и ↓$votesCountMinus',
