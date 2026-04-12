@@ -7,6 +7,7 @@ import '../../../../bloc/user/user_comment_list_cubit.dart';
 import '../../../../di/di.dart';
 import '../../../../feature/scroll/scroll.dart';
 import '../../../widget/enhancement/refresh_indicator.dart';
+import '../../../widget/navigation/navigation.dart';
 import 'widget/comment_sliver_list.dart';
 
 @RoutePage(name: UserCommentListPage.routeName)
@@ -53,7 +54,9 @@ class _UserCommentListView extends StatelessWidget {
       listenWhen: (p, c) => c.isBottomEdge,
       listener: (c, state) => context.read<UserCommentListCubit>().fetch(),
       child: Scaffold(
-        floatingActionButton: const FloatingScrollToTopButton(),
+        floatingActionButton: const FloatingContainer(
+          children: [FloatingScrollToTopButton()],
+        ),
         body: Scrollbar(
           controller: scrollCtrl,
           child: CustomScrollView(

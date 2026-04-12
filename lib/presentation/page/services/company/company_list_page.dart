@@ -11,6 +11,7 @@ import '../../../../feature/scroll/scroll.dart';
 import '../../../extension/extension.dart';
 import '../../../widget/enhancement/progress_indicator.dart';
 import '../../../widget/error_widget.dart';
+import '../../../widget/navigation/navigation.dart';
 import 'widget/company_card_widget.dart';
 
 @RoutePage(name: CompanyListPage.routeName)
@@ -67,7 +68,9 @@ class CompanyListPageView extends StatelessWidget {
           leading: const AutoLeadingButton(),
           title: const Text(CompanyListPage.name),
         ),
-        floatingActionButton: const FloatingScrollToTopButton(),
+        floatingActionButton: const FloatingContainer(
+          children: [FloatingScrollToTopButton()],
+        ),
         body: SafeArea(
           child: BlocConsumer<CompanyListCubit, CompanyListState>(
             listenWhen: (p, c) => p.page != 1 && c.status == .failure,

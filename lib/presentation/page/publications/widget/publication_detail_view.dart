@@ -1,6 +1,5 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -8,12 +7,13 @@ import '../../../../bloc/publication/publication_bookmarks_bloc.dart';
 import '../../../../bloc/publication/publication_detail_cubit.dart';
 import '../../../../core/constants/constants.dart';
 import '../../../../data/model/publication/publication.dart';
-import '../../../../feature/publication_detail_ui/publication_detail_ui_cubit.dart';
+import '../../../../feature/scroll/scroll.dart';
 import '../../../extension/extension.dart';
 import '../../../theme/theme.dart';
 import '../../../widget/enhancement/progress_indicator.dart';
 import '../../../widget/error_widget.dart';
 import '../../../widget/html_view/html_view_widget.dart';
+import '../../../widget/navigation/navigation.dart';
 import '../../../widget/publication_settings_widget.dart';
 import 'card/card.dart';
 import 'publication_more_button.dart';
@@ -32,81 +32,39 @@ const double _appbarPadding = 40.0;
 // 3. Velocity-aware логика (быстрый скролл → скрываем быстрее)
 // 4. Accessibility improvements (Semantics для screen readers)
 
-class PublicationDetailView extends StatefulWidget {
+class PublicationDetailView extends StatelessWidget {
   const PublicationDetailView({super.key});
 
-  @override
-  State<PublicationDetailView> createState() => _PublicationDetailViewState();
-}
-
-class _PublicationDetailViewState extends State<PublicationDetailView> {
-  late final ScrollController _scrollController;
-  late final PublicationDetailUICubit _uiCubit;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _scrollController = ScrollController();
-    _scrollController.addListener(_onScroll);
-    _uiCubit = PublicationDetailUICubit();
-  }
-
-  @override
-  void dispose() {
-    _scrollController.removeListener(_onScroll);
-    _scrollController.dispose();
-    _uiCubit.close();
-
-    super.dispose();
-  }
-
-  void _onScroll() {
-    final position = _scrollController.position;
-    final max = position.maxScrollExtent;
-    if (max <= 0) return;
-
-    final normalized = position.pixels / max;
-    _uiCubit.updateScrollProgress(normalized);
-  }
-
-  void _fetchPublication() {
+  void _fetch(BuildContext context) {
     context.read<PublicationDetailCubit>().fetch();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider.value(
-      value: _uiCubit,
-      child: Scaffold(
-        body: SafeArea(
-          child: BlocListener<PublicationDetailCubit, PublicationDetailState>(
-            listenWhen: (previous, current) =>
-                previous.status != current.status && current.status == .success,
-            listener: (context, state) {
-              context.read<PublicationBookmarksBloc>().add(
-                PublicationBookmarksEvent.updated(
-                  publications: [state.publication],
+    return Scaffold(
+      body: SafeArea(
+        child: BlocListener<PublicationDetailCubit, PublicationDetailState>(
+          listenWhen: (previous, current) =>
+              previous.status != current.status && current.status == .success,
+          listener: (context, state) {
+            context.read<PublicationBookmarksBloc>().add(
+              PublicationBookmarksEvent.updated(
+                publications: [state.publication],
+              ),
+            );
+          },
+          child: BlocBuilder<PublicationDetailCubit, PublicationDetailState>(
+            builder: (context, state) => switch (state.status) {
+              .initial => _InitialView(onRetry: () => _fetch(context)),
+              .loading => const _LoadingView(),
+              .failure => Center(
+                child: AppError(
+                  message: state.error,
+                  onRetry: () => _fetch(context),
                 ),
-              );
+              ),
+              .success => _SuccessView(publication: state.publication),
             },
-            child: BlocBuilder<PublicationDetailCubit, PublicationDetailState>(
-              builder: (context, state) => switch (state.status) {
-                .initial => _InitialView(onRetry: _fetchPublication),
-                .loading => const _LoadingView(),
-                .failure => Center(
-                  child: AppError(
-                    message: state.error,
-                    onRetry: _fetchPublication,
-                  ),
-                ),
-                .success => _SuccessView(
-                  publication: state.publication,
-                  scrollController: _scrollController,
-                  uiCubit: _uiCubit,
-                ),
-              },
-            ),
           ),
         ),
       ),
@@ -141,67 +99,29 @@ class _LoadingView extends StatelessWidget {
 
 /// Основное содержимое (после успешной загрузки)
 class _SuccessView extends StatelessWidget {
-  const _SuccessView({
-    required this.publication,
-    required this.scrollController,
-    required this.uiCubit,
-  });
+  const _SuccessView({required this.publication});
 
   final Publication publication;
-  final ScrollController scrollController;
-  final PublicationDetailUICubit uiCubit;
 
   @override
   Widget build(BuildContext context) {
-    return NotificationListener<UserScrollNotification>(
-      onNotification: (notification) =>
-          _handleScrollNotification(context, notification),
-      child: Stack(
-        children: [
-          _PublicationContent(
-            publication: publication,
-            scrollController: scrollController,
-          ),
-          const Positioned(
-            top: 0,
-            left: 0,
-            right: 0,
-            child: _AppBarContainer(),
-          ),
-          const Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
-            child: _BottomBarContainer(),
-          ),
-        ],
-      ),
+    return Stack(
+      children: [
+        _PublicationContent(publication: publication),
+        const Positioned(
+          top: 0,
+          left: 0,
+          right: 0,
+          child: _AppBarContainer(),
+        ),
+        const Positioned(
+          bottom: 0,
+          left: 0,
+          right: 0,
+          child: _BottomBarContainer(),
+        ),
+      ],
     );
-  }
-
-  bool _handleScrollNotification(
-    BuildContext context,
-    UserScrollNotification notification,
-  ) {
-    final axis = notification.metrics.axisDirection;
-
-    // Игнорируем горизонтальный скролл
-    if (axis == AxisDirection.right || axis == AxisDirection.left) {
-      return false;
-    }
-
-    final direction = notification.direction;
-    final atEdge = notification.metrics.atEdge;
-    final pixels = notification.metrics.pixels;
-
-    // Показываем бары при скролле вверх или достижении краев
-    if (direction == ScrollDirection.forward || (atEdge && pixels != 0)) {
-      uiCubit.showBars();
-    } else if (direction == ScrollDirection.reverse) {
-      uiCubit.hideBars();
-    }
-
-    return false;
   }
 }
 
@@ -217,16 +137,21 @@ class _AppBarContainer extends StatelessWidget {
           return const SizedBox.shrink();
         }
 
-        return BlocSelector<
-          PublicationDetailUICubit,
-          PublicationDetailUIState,
-          bool
-        >(
-          selector: (state) => state.barsVisible,
-          builder: (context, isVisible) {
-            return _AppBar(
-              publication: state.publication,
-              isVisible: isVisible,
+        return BlocBuilder<NavigationCubit, NavigationState>(
+          builder: (context, navState) {
+            final isVisible = navState.isNavigationVisible;
+
+            return AnimatedContainer(
+              duration: const Duration(milliseconds: 200),
+              curve: Curves.decelerate,
+              height: isVisible ? _appbarPadding : 10,
+              color: Theme.of(context).colorScheme.surface,
+              child: Stack(
+                children: [
+                  if (isVisible) _AppBarContent(publication: state.publication),
+                  const _ScrollProgressIndicator(),
+                ],
+              ),
             );
           },
         );
@@ -239,6 +164,16 @@ class _AppBarContainer extends StatelessWidget {
 class _BottomBarContainer extends StatelessWidget {
   const _BottomBarContainer();
 
+  void _showMoreSheet(BuildContext context, Publication publication) =>
+      showModalBottomSheet(
+        context: context,
+        builder: (_) => SizedBox(
+          width: .infinity,
+          height: 120,
+          child: PublicationMoreButton(publication: publication),
+        ),
+      );
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<PublicationDetailCubit, PublicationDetailState>(
@@ -247,16 +182,41 @@ class _BottomBarContainer extends StatelessWidget {
           return const SizedBox.shrink();
         }
 
-        return BlocSelector<
-          PublicationDetailUICubit,
-          PublicationDetailUIState,
-          bool
-        >(
-          selector: (state) => state.barsVisible,
-          builder: (context, isVisible) {
-            return _BottomBar(
-              publication: state.publication,
-              isVisible: isVisible,
+        final theme = context.theme;
+        final publication = state.publication;
+
+        return BlocBuilder<NavigationCubit, NavigationState>(
+          builder: (context, state) {
+            return AnimatedSlide(
+              duration: const .new(milliseconds: 300),
+              curve: Curves.decelerate,
+              offset: state.isNavigationVisible
+                  ? const .new(0, 0)
+                  : const .new(0, 10),
+              child: ColoredBox(
+                color: theme.colorScheme.surface.withValues(alpha: .94),
+                child: ConstrainedBox(
+                  constraints: const .new(
+                    maxHeight: AppDimensions.publicationBottomBarHeight,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: .spaceAround,
+                    children: [
+                      Expanded(
+                        child: PublicationFooterWidget(
+                          publication: publication,
+                          isVoteBlocked: false,
+                        ),
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.more_horiz_rounded),
+                        tooltip: 'Дополнительно',
+                        onPressed: () => _showMoreSheet(context, publication),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             );
           },
         );
@@ -267,13 +227,9 @@ class _BottomBarContainer extends StatelessWidget {
 
 /// Основной контент со всеми секциями
 class _PublicationContent extends StatelessWidget {
-  const _PublicationContent({
-    required this.publication,
-    required this.scrollController,
-  });
+  const _PublicationContent({required this.publication});
 
   final Publication publication;
-  final ScrollController scrollController;
 
   @override
   Widget build(BuildContext context) {
@@ -281,7 +237,7 @@ class _PublicationContent extends StatelessWidget {
       color: context.theme.colors.card,
       child: SelectionArea(
         child: CustomScrollView(
-          controller: scrollController,
+          controller: context.read<ScrollCubit>().controller,
           slivers: [
             _buildTopPadding(),
             _buildHeader(),
@@ -404,33 +360,6 @@ class _SliverPaddedBox extends StatelessWidget {
   }
 }
 
-/// Оптимизированный AppBar с использованием BlocSelector
-class _AppBar extends StatelessWidget {
-  const _AppBar({
-    required this.publication,
-    required this.isVisible,
-  });
-
-  final Publication publication;
-  final bool isVisible;
-
-  @override
-  Widget build(BuildContext context) {
-    return AnimatedContainer(
-      duration: const Duration(milliseconds: 200),
-      curve: Curves.decelerate,
-      height: isVisible ? _appbarPadding : 10,
-      color: Theme.of(context).colorScheme.surface,
-      child: Stack(
-        children: [
-          if (isVisible) _AppBarContent(publication: publication),
-          const _ScrollProgressIndicator(),
-        ],
-      ),
-    );
-  }
-}
-
 /// Содержимое AppBar (видно только когда isVisible = true)
 class _AppBarContent extends StatelessWidget {
   const _AppBarContent({required this.publication});
@@ -515,78 +444,17 @@ class _ScrollProgressIndicator extends StatelessWidget {
     return IgnorePointer(
       child: SizedBox(
         height: 45,
-        child:
-            BlocSelector<
-              PublicationDetailUICubit,
-              PublicationDetailUIState,
-              double
-            >(
-              selector: (state) => state.scrollProgress,
-              builder: (context, progress) {
-                return LinearProgressIndicator(
-                  stopIndicatorColor: Colors.transparent,
-                  backgroundColor: Colors.transparent,
-                  color: theme.colors.progressTrackColor,
-                  value: progress,
-                );
-              },
-            ),
-      ),
-    );
-  }
-}
-
-class _BottomBar extends StatelessWidget {
-  const _BottomBar({
-    required this.publication,
-    required this.isVisible,
-  });
-
-  final Publication publication;
-  final bool isVisible;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = context.theme;
-
-    return AnimatedSlide(
-      duration: const .new(milliseconds: 300),
-      curve: Curves.decelerate,
-      offset: isVisible ? const .new(0, 0) : const .new(0, 10),
-      child: ColoredBox(
-        color: theme.colorScheme.surface.withValues(alpha: .94),
-        child: ConstrainedBox(
-          constraints: const .new(
-            maxHeight: AppDimensions.publicationBottomBarHeight,
-          ),
-          child: Row(
-            mainAxisAlignment: .spaceAround,
-            children: [
-              Expanded(
-                child: PublicationFooterWidget(
-                  publication: publication,
-                  isVoteBlocked: false,
-                ),
-              ),
-              IconButton(
-                icon: const Icon(Icons.more_horiz_rounded),
-                tooltip: 'Дополнительно',
-                onPressed: () => _showMoreSheet(context),
-              ),
-            ],
-          ),
+        child: BlocSelector<ScrollCubit, ScrollState, double>(
+          selector: (state) => state.scrollProgress,
+          builder: (context, progress) {
+            return LinearProgressIndicator(
+              stopIndicatorColor: Colors.transparent,
+              backgroundColor: Colors.transparent,
+              color: theme.colors.progressTrackColor,
+              value: progress,
+            );
+          },
         ),
-      ),
-    );
-  }
-
-  void _showMoreSheet(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      builder: (_) => SizedBox(
-        width: .infinity,
-        height: 120,
-        child: PublicationMoreButton(publication: publication),
       ),
     );
   }

@@ -267,19 +267,51 @@ class SettingNavVisibilityWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return SettingsCardWidget(
       title: 'Навигация',
-      child: BlocBuilder<SettingsCubit, SettingsState>(
-        buildWhen: (previous, current) =>
-            previous.misc.navigationOnScrollVisible !=
-            current.misc.navigationOnScrollVisible,
-        builder: (context, state) {
-          return SettingsCheckboxWidget(
-            initialValue: state.misc.navigationOnScrollVisible,
-            title: const Text('Показывать при скролле'),
-            onChanged: (bool value) => context
-                .read<SettingsCubit>()
-                .changeNavigationOnScrollVisibility(isVisible: value),
-          );
-        },
+      child: Column(
+        crossAxisAlignment: .start,
+        spacing: 12,
+        children: [
+          BlocBuilder<SettingsCubit, SettingsState>(
+            buildWhen: (previous, current) =>
+                previous.misc.navigationAlignment !=
+                current.misc.navigationAlignment,
+            builder: (context, state) {
+              return Padding(
+                padding: const .only(top: 8.0),
+                child: FilterChipList(
+                  options: NavigationAlignment.values
+                      .map((e) => FilterOption(label: e.label, value: e.label))
+                      .toList(),
+                  isSelected: (option) =>
+                      state.misc.navigationAlignment.label == option.label,
+                  onSelected: (isSelected, option) {
+                    final resolved = NavigationAlignment.values.firstWhere(
+                      (element) => element.label == option.value,
+                    );
+
+                    context.read<SettingsCubit>().changeNavigationAlignment(
+                      resolved,
+                    );
+                  },
+                ),
+              );
+            },
+          ),
+          BlocBuilder<SettingsCubit, SettingsState>(
+            buildWhen: (previous, current) =>
+                previous.misc.navigationOnScrollVisible !=
+                current.misc.navigationOnScrollVisible,
+            builder: (context, state) {
+              return SettingsCheckboxWidget(
+                initialValue: state.misc.navigationOnScrollVisible,
+                title: const Text('Показывать при скролле'),
+                onChanged: (bool value) => context
+                    .read<SettingsCubit>()
+                    .changeNavigationOnScrollVisibility(isVisible: value),
+              );
+            },
+          ),
+        ],
       ),
     );
   }

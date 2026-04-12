@@ -10,6 +10,7 @@ import '../../../../di/di.dart';
 import '../../../../feature/publication_list/publication_list.dart';
 import '../../../../feature/scroll/scroll.dart';
 import '../../../widget/enhancement/refresh_indicator.dart';
+import '../../../widget/navigation/navigation.dart';
 import 'widget/type_dropdown_widget.dart';
 
 @RoutePage(name: UserPublicationListPage.routeName)
@@ -63,7 +64,9 @@ class UserPublicationListView extends StatelessWidget {
       listenWhen: (p, c) => c.isBottomEdge,
       listener: (c, state) => listCubit.fetch(),
       child: Scaffold(
-        floatingActionButton: const FloatingScrollToTopButton(),
+        floatingActionButton: const FloatingContainer(
+          children: [FloatingScrollToTopButton()],
+        ),
         body: Scrollbar(
           controller: scrollCtrl,
           child: CustomScrollView(

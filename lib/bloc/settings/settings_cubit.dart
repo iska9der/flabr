@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../data/model/language/language.dart';
+import '../../data/model/loading_status_enum.dart';
 import '../../data/repository/repository.dart';
 import '../../presentation/page/settings/model/config_model.dart';
 
@@ -64,7 +65,7 @@ class SettingsCubit extends Cubit<SettingsState> {
         ),
       );
     } catch (error, stackTrace) {
-      emit(state.copyWith(status: SettingsStatus.failure));
+      emit(state.copyWith(status: .failure));
 
       super.onError(error, stackTrace);
     }
@@ -170,6 +171,16 @@ class SettingsCubit extends Cubit<SettingsState> {
     final newConfig = state.publication.copyWith(webViewEnabled: isVisible);
     _repository.savePublication(newConfig);
     emit(state.copyWith(publication: newConfig));
+  }
+
+  void changeNavigationAlignment(NavigationAlignment newAlignment) {
+    if (state.misc.navigationAlignment == newAlignment) {
+      return;
+    }
+
+    final newConfig = state.misc.copyWith(navigationAlignment: newAlignment);
+    _repository.saveMisc(newConfig);
+    emit(state.copyWith(misc: newConfig));
   }
 
   void changeNavigationOnScrollVisibility({bool? isVisible}) {

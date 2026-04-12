@@ -10,6 +10,7 @@ import '../../../../feature/scroll/scroll.dart';
 import '../../../extension/extension.dart';
 import '../../../widget/enhancement/progress_indicator.dart';
 import '../../../widget/error_widget.dart';
+import '../../../widget/navigation/navigation.dart';
 import 'widget/user_card_widget.dart';
 
 @RoutePage(name: UserListPage.routeName)
@@ -60,7 +61,9 @@ class UserListPageView extends StatelessWidget {
         leading: const AutoLeadingButton(),
         title: const Text(UserListPage.name),
       ),
-      floatingActionButton: const FloatingScrollToTopButton(),
+      floatingActionButton: const FloatingContainer(
+        children: [FloatingScrollToTopButton()],
+      ),
       body: SafeArea(
         child: BlocConsumer<UserListCubit, UserListState>(
           listenWhen: (p, c) => p.page != 1 && c.status == .failure,

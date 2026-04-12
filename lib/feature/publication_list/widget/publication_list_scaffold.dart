@@ -11,6 +11,7 @@ import '../../../presentation/theme/theme.dart';
 import '../../../presentation/widget/enhancement/card.dart';
 import '../../../presentation/widget/enhancement/refresh_indicator.dart';
 import '../../../presentation/widget/enhancement/responsive_visibility.dart';
+import '../../../presentation/widget/navigation/navigation.dart';
 import '../../most_reading/most_reading.dart';
 import '../../scroll/scroll.dart';
 import '../cubit/publication_list_cubit.dart';
@@ -74,9 +75,7 @@ class PublicationListScaffold<
         ),
       ],
       child: Scaffold(
-        floatingActionButtonLocation: .miniEndFloat,
-        floatingActionButton: Column(
-          mainAxisAlignment: .end,
+        floatingActionButton: FloatingContainer(
           children: [
             const FloatingScrollToTopButton(),
             if (filter != null)
@@ -170,6 +169,7 @@ class _PublicationListView<
                 ),
               ),
             ),
+
             SliverCrossAxisGroup(
               slivers: [
                 PublicationSliverList(
@@ -235,6 +235,9 @@ class _PublicationListView<
                   ),
                 ),
               ],
+            ),
+            SliverPadding(
+              padding: .only(bottom: AppInsets.screenPadding.bottom),
             ),
           ],
         ),

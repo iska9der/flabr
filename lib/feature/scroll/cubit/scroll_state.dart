@@ -5,11 +5,13 @@ class ScrollState with EquatableMixin {
     this.isTopEdge = false,
     this.isBottomEdge = false,
     this.isScrollToTopVisible = false,
+    this.scrollProgress = 0,
   });
 
   final bool isTopEdge;
   final bool isBottomEdge;
   final bool isScrollToTopVisible;
+  final double scrollProgress;
 
   bool get isBetweenEdge => !isTopEdge && !isBottomEdge;
 
@@ -18,11 +20,13 @@ class ScrollState with EquatableMixin {
     bool? isTopEdge,
     bool? isBottomEdge,
     bool? isScrollToTopVisible,
+    double? scrollProgress,
   }) {
     return ScrollState(
       isTopEdge: isTopEdge ?? this.isTopEdge,
       isBottomEdge: isBottomEdge ?? this.isBottomEdge,
       isScrollToTopVisible: isScrollToTopVisible ?? this.isScrollToTopVisible,
+      scrollProgress: scrollProgress ?? this.scrollProgress,
     );
   }
 
@@ -33,6 +37,6 @@ class ScrollState with EquatableMixin {
   List<Object?> get props => [
     isTopEdge,
     isBottomEdge,
-    isScrollToTopVisible,
+    isScrollToTopVisible, scrollProgress
   ];
 }

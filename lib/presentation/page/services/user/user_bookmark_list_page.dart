@@ -10,6 +10,7 @@ import '../../../../di/di.dart';
 import '../../../../feature/publication_list/publication_list.dart';
 import '../../../../feature/scroll/scroll.dart';
 import '../../../widget/enhancement/refresh_indicator.dart';
+import '../../../widget/navigation/navigation.dart';
 import 'widget/comment_sliver_list.dart';
 import 'widget/type_dropdown_widget.dart';
 
@@ -64,7 +65,9 @@ class UserBookmarkListView extends StatelessWidget {
     );
 
     return Scaffold(
-      floatingActionButton: const FloatingScrollToTopButton(),
+      floatingActionButton: const FloatingContainer(
+        children: [FloatingScrollToTopButton()],
+      ),
       body: Scrollbar(
         controller: scrollCtrl,
         child: CustomScrollView(

@@ -14,6 +14,7 @@ import '../../../widget/enhancement/progress_indicator.dart';
 import '../../../widget/enhancement/refresh_indicator.dart';
 import '../../../widget/error_widget.dart';
 import '../../../widget/filter/common_filters_widget.dart';
+import '../../../widget/navigation/navigation.dart';
 import 'widget/hub_profile_card_widget.dart';
 
 @RoutePage(name: HubDetailPage.routeName)
@@ -63,8 +64,7 @@ class HubDetailPageView extends StatelessWidget {
     );
 
     return Scaffold(
-      floatingActionButton: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
+      floatingActionButton: FloatingContainer(
         children: [
           const FloatingScrollToTopButton(),
           FloatingFilterButton(
