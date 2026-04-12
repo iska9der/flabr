@@ -18,7 +18,7 @@ class CompanyCardWidget extends StatelessWidget {
   const CompanyCardWidget({
     super.key,
     required this.company,
-    this.renderType = RenderType.plain,
+    this.renderType = .plain,
   });
 
   final Company company;

@@ -24,7 +24,7 @@ class CommonCardWidget extends StatelessWidget {
   const CommonCardWidget({
     super.key,
     required this.publication,
-    this.renderType = RenderType.plain,
+    this.renderType = .plain,
     this.showType = false,
   });
 

@@ -237,7 +237,7 @@ class _PublicationListView<
               ],
             ),
             SliverPadding(
-              padding: .only(bottom: AppInsets.screenPadding.bottom),
+              padding: .only(bottom: AppInsets.screenPaddingExtended.bottom),
             ),
           ],
         ),

@@ -19,7 +19,12 @@ abstract class AppDimensions {
 }
 
 abstract class AppInsets {
-  static const EdgeInsets screenPadding = .fromLTRB(8, 8, 8, 120);
+  static const EdgeInsets screenPadding = .all(0);
+
+  /// Чтобы боттомбар под ногами не мешался
+  static final EdgeInsets screenPaddingExtended = screenPadding.copyWith(
+    bottom: 128,
+  );
 
   static const EdgeInsets cardMargin = .all(4.0);
   static const EdgeInsets cardPadding = .all(8.0);

@@ -9,6 +9,7 @@ import '../../../../bloc/settings/settings_cubit.dart';
 import '../../../../di/di.dart';
 import '../../../../feature/scroll/scroll.dart';
 import '../../../extension/extension.dart';
+import '../../../theme/theme.dart';
 import '../../../widget/enhancement/progress_indicator.dart';
 import '../../../widget/error_widget.dart';
 import '../../../widget/navigation/navigation.dart';
@@ -103,6 +104,7 @@ class CompanyListPageView extends StatelessWidget {
                 controller: scrollCtrl,
                 child: ListView.builder(
                   controller: scrollCtrl,
+                  padding: AppInsets.screenPaddingExtended,
                   itemCount:
                       state.response.refs.length +
                       (state.status == .loading ? 1 : 0),

@@ -38,7 +38,7 @@ class SettingsView extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: ListView(
-          padding: AppInsets.screenPadding,
+          padding: AppInsets.screenPaddingExtended,
           children: [
             SettingsSectionWidget(
               children: [

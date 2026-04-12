@@ -9,6 +9,7 @@ import '../../../../data/model/hub/hub.dart';
 import '../../../../di/di.dart';
 import '../../../../feature/scroll/scroll.dart';
 import '../../../extension/extension.dart';
+import '../../../theme/theme.dart';
 import '../../../widget/enhancement/progress_indicator.dart';
 import '../../../widget/error_widget.dart';
 import '../../../widget/navigation/navigation.dart';
@@ -91,6 +92,7 @@ class HubListPageView extends StatelessWidget {
                 controller: scrollCtrl,
                 child: ListView.builder(
                   controller: scrollCtrl,
+                  padding: AppInsets.screenPaddingExtended,
                   itemCount:
                       state.list.refs.length +
                       (state.status == .loading ? 1 : 0),

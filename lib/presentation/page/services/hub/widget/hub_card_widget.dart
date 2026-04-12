@@ -15,7 +15,7 @@ class HubCardWidget extends StatelessWidget {
   const HubCardWidget({
     super.key,
     required this.model,
-    this.renderType = RenderType.plain,
+    this.renderType = .plain,
   });
 
   final Hub model;

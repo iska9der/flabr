@@ -59,11 +59,12 @@ class UserDetailPageView extends StatelessWidget {
           var user = state.model;
 
           return ListView(
+            padding: AppInsets.screenPaddingExtended,
             children: [
               UserProfileCardWidget(user: user),
               Padding(
                 padding: EdgeInsets.symmetric(
-                  horizontal: AppInsets.screenPadding.left,
+                  horizontal: AppInsets.cardPadding.left,
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,

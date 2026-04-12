@@ -8,6 +8,7 @@ import '../../../../bloc/user/user_list_cubit.dart';
 import '../../../../di/di.dart';
 import '../../../../feature/scroll/scroll.dart';
 import '../../../extension/extension.dart';
+import '../../../theme/theme.dart';
 import '../../../widget/enhancement/progress_indicator.dart';
 import '../../../widget/error_widget.dart';
 import '../../../widget/navigation/navigation.dart';
@@ -96,6 +97,7 @@ class UserListPageView extends StatelessWidget {
               controller: scrollCtrl,
               child: ListView.builder(
                 controller: scrollCtrl,
+                padding: AppInsets.screenPaddingExtended,
                 itemCount: users.length + (state.status == .loading ? 1 : 0),
                 itemBuilder: (context, i) {
                   if (i < users.length) {

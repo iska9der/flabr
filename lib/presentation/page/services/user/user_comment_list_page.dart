@@ -6,6 +6,7 @@ import '../../../../bloc/settings/settings_cubit.dart';
 import '../../../../bloc/user/user_comment_list_cubit.dart';
 import '../../../../di/di.dart';
 import '../../../../feature/scroll/scroll.dart';
+import '../../../theme/constants.dart';
 import '../../../widget/enhancement/refresh_indicator.dart';
 import '../../../widget/navigation/navigation.dart';
 import 'widget/comment_sliver_list.dart';
@@ -67,8 +68,15 @@ class _UserCommentListView extends StatelessWidget {
               FlabrSliverRefreshIndicator(
                 onRefresh: context.read<UserCommentListCubit>().reset,
               ),
-              CommentSliverList(
-                fetch: context.read<UserCommentListCubit>().fetch,
+              SliverPadding(
+                padding: AppInsets.screenPaddingExtended,
+                sliver: SliverMainAxisGroup(
+                  slivers: [
+                    CommentSliverList(
+                      fetch: context.read<UserCommentListCubit>().fetch,
+                    ),
+                  ],
+                ),
               ),
             ],
           ),

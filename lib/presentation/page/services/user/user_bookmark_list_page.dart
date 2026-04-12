@@ -9,6 +9,7 @@ import '../../../../data/model/user/user.dart';
 import '../../../../di/di.dart';
 import '../../../../feature/publication_list/publication_list.dart';
 import '../../../../feature/scroll/scroll.dart';
+import '../../../theme/theme.dart';
 import '../../../widget/enhancement/refresh_indicator.dart';
 import '../../../widget/navigation/navigation.dart';
 import 'widget/comment_sliver_list.dart';
@@ -86,50 +87,58 @@ class UserBookmarkListView extends StatelessWidget {
                 );
               },
             ),
-            BlocBuilder<UserBookmarkListCubit, UserBookmarkListState>(
-              builder: (context, state) {
-                return SliverToBoxAdapter(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: TypeDropdownMenu(
-                      type: state.type.name,
-                      onChanged: (type) => listCubit.changeType(
-                        UserBookmarksType.fromString(type),
-                      ),
-                      entries: UserBookmarksType.values
-                          .map(
-                            (type) => DropdownMenuItem(
-                              value: type.name,
-                              child: Text(type.label),
+            SliverPadding(
+              padding: AppInsets.screenPaddingExtended,
+              sliver: SliverMainAxisGroup(
+                slivers: [
+                  BlocBuilder<UserBookmarkListCubit, UserBookmarkListState>(
+                    builder: (context, state) {
+                      return SliverToBoxAdapter(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          child: TypeDropdownMenu(
+                            type: state.type.name,
+                            onChanged: (type) => listCubit.changeType(
+                              UserBookmarksType.fromString(type),
                             ),
-                          )
-                          .toList(),
-                    ),
+                            entries: UserBookmarksType.values
+                                .map(
+                                  (type) => DropdownMenuItem(
+                                    value: type.name,
+                                    child: Text(type.label),
+                                  ),
+                                )
+                                .toList(),
+                          ),
+                        ),
+                      );
+                    },
                   ),
-                );
-              },
-            ),
-            BlocBuilder<UserBookmarkListCubit, UserBookmarkListState>(
-              builder: (context, state) {
-                return switch (state.type) {
-                  UserBookmarksType.comments =>
-                    BlocListener<ScrollCubit, ScrollState>(
-                      listenWhen: (p, c) => c.isBottomEdge,
-                      listener: (c, state) =>
-                          context.read<UserCommentListCubit>().fetchBookmarks(),
-                      child: CommentSliverList(
-                        fetch: context
-                            .read<UserCommentListCubit>()
-                            .fetchBookmarks,
-                      ),
-                    ),
-                  _ => BlocListener<ScrollCubit, ScrollState>(
-                    listenWhen: (p, c) => c.isBottomEdge,
-                    listener: (c, state) => listCubit.fetch(),
-                    child: PublicationSliverList(bloc: listCubit),
+                  BlocBuilder<UserBookmarkListCubit, UserBookmarkListState>(
+                    builder: (context, state) {
+                      return switch (state.type) {
+                        UserBookmarksType.comments =>
+                          BlocListener<ScrollCubit, ScrollState>(
+                            listenWhen: (p, c) => c.isBottomEdge,
+                            listener: (c, state) => context
+                                .read<UserCommentListCubit>()
+                                .fetchBookmarks(),
+                            child: CommentSliverList(
+                              fetch: context
+                                  .read<UserCommentListCubit>()
+                                  .fetchBookmarks,
+                            ),
+                          ),
+                        _ => BlocListener<ScrollCubit, ScrollState>(
+                          listenWhen: (p, c) => c.isBottomEdge,
+                          listener: (c, state) => listCubit.fetch(),
+                          child: PublicationSliverList(bloc: listCubit),
+                        ),
+                      };
+                    },
                   ),
-                };
-              },
+                ],
+              ),
             ),
           ],
         ),

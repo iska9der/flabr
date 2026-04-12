@@ -7,12 +7,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../bloc/publication/publication_bookmarks_bloc.dart';
 import '../../../../bloc/search/search_cubit.dart';
 import '../../../../data/model/publication/publication.dart';
-import '../../../../data/model/render_type_enum.dart';
 import '../../../../data/model/search/search_order_enum.dart';
 import '../../../../data/model/search/search_target_enum.dart';
 import '../../../../di/di.dart';
 import '../../../../feature/scroll/scroll.dart';
 import '../../../extension/extension.dart';
+import '../../../theme/theme.dart';
 import '../../../widget/enhancement/progress_indicator.dart';
 import '../../../widget/error_widget.dart';
 import '../../services/company/widget/company_card_widget.dart';
@@ -195,42 +195,47 @@ class _SearchAnywhereViewState extends State<_SearchAnywhereView> {
                     final itemCount =
                         models.length + (state.status == .loading ? 1 : 0);
 
-                    return SliverList.builder(
-                      itemCount: itemCount,
-                      itemBuilder: (context, index) {
-                        if (index < models.length) {
-                          var model = models[index];
+                    return SliverPadding(
+                      padding: AppInsets.screenPadding,
+                      sliver: SliverList.builder(
+                        itemCount: itemCount,
+                        itemBuilder: (context, index) {
+                          if (index < models.length) {
+                            var model = models[index];
 
-                          return switch (state.target) {
-                            SearchTarget.posts => CommonCardWidget(
-                              publication: model,
-                              renderType: RenderType.html,
-                            ),
-                            SearchTarget.hubs => HubCardWidget(
-                              model: model,
-                              renderType: RenderType.html,
-                            ),
-                            SearchTarget.companies => CompanyCardWidget(
-                              company: model,
-                              renderType: RenderType.html,
-                            ),
-                            SearchTarget.users => UserCardWidget(model: model),
-                            SearchTarget.comments => const Center(
-                              child: Text('Не реализовано'),
-                            ),
-                          };
-                        }
+                            return switch (state.target) {
+                              SearchTarget.posts => CommonCardWidget(
+                                publication: model,
+                                renderType: .html,
+                              ),
+                              SearchTarget.hubs => HubCardWidget(
+                                model: model,
+                                renderType: .html,
+                              ),
+                              SearchTarget.companies => CompanyCardWidget(
+                                company: model,
+                                renderType: .html,
+                              ),
+                              SearchTarget.users => UserCardWidget(
+                                model: model,
+                              ),
+                              SearchTarget.comments => const Center(
+                                child: Text('Не реализовано'),
+                              ),
+                            };
+                          }
 
-                        Timer(
-                          scrollCubit.duration,
-                          () => scrollCubit.animateToBottom(),
-                        );
+                          Timer(
+                            scrollCubit.duration,
+                            () => scrollCubit.animateToBottom(),
+                          );
 
-                        return const SizedBox(
-                          height: 60,
-                          child: CircleIndicator.medium(),
-                        );
-                      },
+                          return const SizedBox(
+                            height: 60,
+                            child: CircleIndicator.medium(),
+                          );
+                        },
+                      ),
                     );
                   },
                 ),
