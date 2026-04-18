@@ -24,13 +24,6 @@ class _CommentParentState extends State<CommentParent> {
   late TextStyle textStyle;
   late Color bgColor;
 
-  late final parentHtml = HtmlView(
-    textHtml: parent.message,
-    textStyle: textStyle,
-    renderMode: .column,
-    padding: .zero,
-  );
-
   @override
   void didChangeDependencies() {
     bgColor = context.theme.colors.cardHighlight;
@@ -45,6 +38,12 @@ class _CommentParentState extends State<CommentParent> {
     if (text.isEmpty) {
       return const SizedBox();
     }
+
+    final parentHtml = HtmlView(
+      textHtml: parent.message,
+      renderMode: .column,
+      padding: .zero,
+    );
 
     final theme = context.theme;
     final decoration = BoxDecoration(

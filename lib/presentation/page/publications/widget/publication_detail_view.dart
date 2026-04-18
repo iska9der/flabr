@@ -268,30 +268,21 @@ class _PublicationContent extends StatelessWidget {
 
   Widget _buildTitle() {
     return _SliverPaddedBox(
-      padding: const .symmetric(
-        vertical: _vPadding,
-        horizontal: _hPadding,
-      ),
+      padding: const .symmetric(vertical: _vPadding, horizontal: _hPadding),
       child: PublicationDetailTitle(publication: publication),
     );
   }
 
   Widget _buildStats() {
     return _SliverPaddedBox(
-      padding: const .symmetric(
-        vertical: _vPadding,
-        horizontal: _hPadding,
-      ),
+      padding: const .symmetric(vertical: _vPadding, horizontal: _hPadding),
       child: PublicationStatsWidget(publication),
     );
   }
 
   Widget _buildHubs() {
     return _SliverPaddedBox(
-      padding: const .symmetric(
-        vertical: _vPadding,
-        horizontal: _hPadding,
-      ),
+      padding: const .symmetric(vertical: _vPadding, horizontal: _hPadding),
       child: PublicationHubsWidget(hubs: publication.hubs),
     );
   }

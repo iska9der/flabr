@@ -19,9 +19,8 @@ class PublicationHeaderWidget extends StatelessWidget {
           publication.author,
           subtitle: Text(
             DateFormat.yMMMMd().add_jm().format(publication.publishedAt),
-            style: context.theme.textTheme.bodySmall!.copyWith(
-              fontWeight: .w500,
-              color: context.theme.colors.textInactive,
+            style: context.theme.textTheme.labelMedium!.copyWith(
+              color: context.theme.colors.textSecondary,
             ),
           ),
         ),

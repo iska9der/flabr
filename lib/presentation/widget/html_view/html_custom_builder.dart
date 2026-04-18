@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:html/dom.dart' as dom;
 
 import '../../extension/extension.dart';
+import '../../theme/theme.dart';
 import 'html_custom_parser.dart';
 import 'lazy_image_widget.dart';
 
@@ -72,9 +73,10 @@ abstract class HtmlCustomStyles {
   static Map<String, String>? builder(
     dom.Element element,
     ThemeData theme,
-    EdgeInsets padding,
-    double fontSize,
-  ) {
+    EdgeInsets padding, {
+    double fontSize = 14,
+    double fontScale = 1,
+  }) {
     final attrName = element.localName;
 
     if (element.parentNode is dom.DocumentFragment ||
@@ -97,14 +99,18 @@ abstract class HtmlCustomStyles {
       };
     }
 
-    final headerWeight = switch (attrName) {
-      'h1' || 'h2' || 'h3' || 'h4' || 'h5' || 'h6' => '700',
-      _ => '',
+    final isHeader = switch (attrName) {
+      'h1' || 'h2' || 'h3' || 'h4' || 'h5' || 'h6' => true,
+      _ => false,
     };
-    if (headerWeight.isNotEmpty) {
+    if (isHeader) {
       return {
-        'font-family': 'Geologica',
-        'font-weight': headerWeight,
+        'font-family': AppTypography.fontGeologica,
+        'margin-top': switch (attrName) {
+          'h1' || 'h2' => '48px',
+          _ => '32px',
+        },
+        'margin-bottom': '0',
       };
     }
 
@@ -150,6 +156,15 @@ abstract class HtmlCustomStyles {
       return {
         'padding': '0',
         'margin': '0',
+      };
+    }
+
+    if (attrName == 'figcaption') {
+      final style = theme.textTheme.bodySmall!.apply(fontSizeFactor: fontScale);
+
+      return {
+        'font-size': '${style.fontSize}px',
+        'color': '#${theme.colors.textSecondary.toHex}',
       };
     }
 

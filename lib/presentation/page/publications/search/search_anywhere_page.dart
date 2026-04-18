@@ -57,12 +57,12 @@ class _SearchAnywhereViewState extends State<_SearchAnywhereView> {
     return theme.copyWith(
       appBarTheme: AppBarTheme(
         iconTheme: theme.primaryIconTheme.copyWith(color: Colors.grey),
-        titleTextStyle: theme.textTheme.titleLarge,
+        titleTextStyle: theme.textTheme.titleMedium,
         toolbarTextStyle: theme.textTheme.bodyMedium,
       ),
       inputDecorationTheme: InputDecorationTheme(
         hintStyle: theme.inputDecorationTheme.hintStyle,
-        border: InputBorder.none,
+        border: .none,
       ),
     );
   }
@@ -115,8 +115,8 @@ class _SearchAnywhereViewState extends State<_SearchAnywhereView> {
             title: TextField(
               controller: _queryTextController,
               focusNode: _focusNode,
-              style: theme.textTheme.titleLarge,
-              textInputAction: TextInputAction.search,
+              style: theme.textTheme.titleMedium,
+              textInputAction: .search,
               onSubmitted: (String query) => showResults(context, query),
               decoration: const InputDecoration(hintText: 'Поиск'),
             ),
@@ -266,12 +266,12 @@ class _OptionsListView<T> extends StatelessWidget {
     return SizedBox(
       height: 40,
       child: ListView(
-        clipBehavior: Clip.none,
-        scrollDirection: Axis.horizontal,
+        clipBehavior: .none,
+        scrollDirection: .horizontal,
         children: children
             .map(
               (target) => Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 4),
+                padding: const .symmetric(horizontal: 4),
                 child: ChoiceChip(
                   label: Text(buildLabel(target)),
                   selected: isSelected(target),

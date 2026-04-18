@@ -11,20 +11,20 @@ class PublicationTypeWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = context.theme;
+
     final finalColor =
         color ??
         switch (type) {
-          PublicationType.news => context.theme.colors.apple,
-          PublicationType.article => context.theme.colors.portage,
-          PublicationType.post => context.theme.colors.scarlet,
+          PublicationType.news => theme.colors.apple,
+          PublicationType.article => theme.colors.portage,
+          PublicationType.post => theme.colors.scarlet,
           _ => null,
         };
 
     return Text(
       type.label.toUpperCase(),
-      style: Theme.of(
-        context,
-      ).textTheme.labelMedium?.copyWith(color: finalColor),
+      style: theme.textTheme.labelMedium?.copyWith(color: finalColor),
     );
   }
 }

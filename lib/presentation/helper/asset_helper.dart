@@ -10,8 +10,8 @@ import '../constants/constants.dart';
 
 abstract class AssetHelper {
   static void loadLicense() => LicenseRegistry.addLicense(() async* {
-    final geologica = await rootBundle.loadString(LicenseAssets.fontGeologica);
-    yield LicenseEntryWithLineBreaks(['flabr'], geologica);
+    final ofl = await rootBundle.loadString(LicenseAssets.ofl);
+    yield LicenseEntryWithLineBreaks(['flabr'], ofl);
   });
 
   static Logger get _logger => getIt<Logger>();

@@ -46,11 +46,11 @@ abstract class AppStyles {
 
   static const BorderRadius dialogBorderRadius = .all(.circular(6));
 
-  static const BorderRadius buttonBorderRadius = .all(.circular(3));
+  static const BorderRadius buttonBorderRadius = .all(.circular(6));
 
   static const BorderRadius checkboxBorderRadius = .all(.circular(2));
 
-  static const BorderRadius avatarBorderRadius = .all(.circular(3));
+  static const BorderRadius avatarBorderRadius = .all(.circular(4));
 
   static const Duration hideDuration = .new(milliseconds: 180);
 }

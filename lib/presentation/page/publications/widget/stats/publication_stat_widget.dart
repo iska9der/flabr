@@ -30,9 +30,9 @@ class PublicationStat extends StatelessWidget {
         Icon(icon, color: iconColorResolved),
         Text(
           text,
-          style: theme.textTheme.bodyMedium?.copyWith(
+          style: theme.textTheme.labelLarge?.copyWith(
             color: textColorResolved,
-            fontWeight: .w600,
+            fontWeight: .w700,
           ),
         ),
       ],

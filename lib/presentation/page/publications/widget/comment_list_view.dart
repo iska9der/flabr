@@ -221,7 +221,7 @@ class _CommentTreeWidgetState extends State<CommentTreeWidget> {
                                   DateFormat.yMd().add_jm().format(
                                     comment.publishedAt,
                                   ),
-                                  style: theme.textTheme.bodySmall?.copyWith(
+                                  style: theme.textTheme.labelSmall?.copyWith(
                                     color: theme.colors.textSecondary,
                                   ),
                                 ),

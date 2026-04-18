@@ -15,7 +15,7 @@ class PublicationDetailAppBarTitle extends StatelessWidget {
     return Text(
       title,
       overflow: .ellipsis,
-      style: context.theme.textTheme.titleSmall,
+      style: context.theme.textTheme.headlineSmall!.copyWith(fontSize: 14),
     );
   }
 }

@@ -65,9 +65,7 @@ class _BottomNavigation extends StatelessWidget {
         // shadowColor: Colors.transparent,
         elevation: 0,
         labelPadding: .zero,
-        labelTextStyle: .all(
-          context.theme.textTheme.labelSmall!.copyWith(fontSize: 10),
-        ),
+        labelTextStyle: .all(context.theme.textTheme.labelSmall!),
         onDestinationSelected: (i) {
           /// при нажатию на таб, в котором
           /// мы уже находимся - выходим в корень

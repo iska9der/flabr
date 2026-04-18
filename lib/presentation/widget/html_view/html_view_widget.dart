@@ -29,13 +29,11 @@ class HtmlView extends StatelessWidget {
     required this.textHtml,
     this.renderMode = .sliverList,
     this.padding = const .only(left: 20, right: 20, bottom: 40),
-    this.textStyle = const .new(),
   });
 
   final String textHtml;
   final RenderMode renderMode;
   final EdgeInsets padding;
-  final TextStyle textStyle;
 
   @override
   Widget build(BuildContext context) {
@@ -47,9 +45,9 @@ class HtmlView extends StatelessWidget {
         final publicationConfig = state.publication;
 
         final fontScale = publicationConfig.fontScale;
-        final fontSize =
-            (theme.textTheme.bodyMedium?.fontSize ?? 14) * fontScale;
-        final resultTextStyle = textStyle.copyWith(fontSize: fontSize);
+        final resultTextStyle = theme.textTheme.bodyMedium!.apply(
+          fontSizeFactor: fontScale,
+        );
 
         final isImageVisible = publicationConfig.isImagesVisible;
 
@@ -61,7 +59,7 @@ class HtmlView extends StatelessWidget {
           textStyle: resultTextStyle,
           rebuildTriggers: [
             theme.brightness,
-            fontSize,
+            fontScale,
             isImageVisible,
             isWebViewEnabled,
           ],
@@ -72,7 +70,8 @@ class HtmlView extends StatelessWidget {
             element,
             theme,
             padding,
-            fontSize,
+            fontSize: resultTextStyle.fontSize!,
+            fontScale: fontScale,
           ),
           customWidgetBuilder: (element) => HtmlCustomWidget.builder(
             element,
@@ -177,8 +176,8 @@ abstract class CustomBuildOp {
       title: Text(
         text,
         maxLines: 1,
-        style: context.theme.textTheme.titleSmall?.copyWith(
-          overflow: TextOverflow.ellipsis,
+        style: context.theme.textTheme.titleMedium?.copyWith(
+          overflow: .ellipsis,
         ),
       ),
       content: SelectableText(href),

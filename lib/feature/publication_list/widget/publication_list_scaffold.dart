@@ -260,6 +260,8 @@ class _SideWidgetListState extends State<_SideWidgetList> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = context.theme;
+
     final isEnabled = widget.widgets.length > 1;
     final widgetHeight = Device.getHeight(context) / 2;
 
@@ -269,10 +271,10 @@ class _SideWidgetListState extends State<_SideWidgetList> {
         final isActiveWidget = showIndex == index;
 
         return FlabrCard(
-          margin: EdgeInsets.zero,
-          padding: EdgeInsets.zero,
+          margin: .zero,
+          padding: .zero,
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+            crossAxisAlignment: .stretch,
             children: [
               ListTile(
                 enabled: isEnabled,
@@ -282,7 +284,7 @@ class _SideWidgetListState extends State<_SideWidgetList> {
                 ),
                 title: Text(
                   sideWidget.title,
-                  style: Theme.of(context).textTheme.titleMedium,
+                  style: theme.textTheme.titleMedium,
                 ),
                 trailing: !isEnabled
                     ? null

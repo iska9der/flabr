@@ -98,7 +98,11 @@ flutter:
     - assets/fonts/
   
   fonts:
+    - family:  Google
+      fonts:
+        - asset: assets/fonts/Google/GoogleSans.ttf
+        - asset: assets/fonts/Google/GoogleSans-Italic.ttf
+          style: italic
     - family:  Geologica
       fonts:
         - asset: assets/fonts/Geologica/Geologica-VF.ttf
-          weight: 700
