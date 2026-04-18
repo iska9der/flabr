@@ -7,6 +7,7 @@ import '../../../bloc/profile/profile_bloc.dart';
 import '../../../bloc/publication/publication_bookmarks_bloc.dart';
 import '../../../bloc/settings/settings_cubit.dart';
 import '../../../di/di.dart';
+import '../../widget/navigation/navigation.dart';
 
 /// Предоставляет глобальные BLoC провайдеры для всего приложения.
 ///
@@ -55,7 +56,7 @@ class GlobalBlocProvider extends StatelessWidget {
               PublicationBookmarksBloc(logger: getIt(), repository: getIt()),
         ),
       ],
-      child: child,
+      child: NavigationProvider(child: child),
     );
   }
 }

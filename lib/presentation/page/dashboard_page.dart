@@ -55,45 +55,43 @@ class _DashboardPageState extends State<DashboardPage> {
 
   @override
   Widget build(BuildContext context) {
-    return NavigationProvider(
-      child: MultiBlocListener(
-        listeners: [
-          BlocListener<ProfileBloc, ProfileState>(
-            listenWhen: (p, c) => p.status == .loading && c.status == .failure,
-            listener: (context, state) => showProfileCorruptedAlert(),
-          ),
-        ],
-        child: AutoTabsRouter(
-          lazyLoad: false,
-          routes: const [
-            PublicationDashboardRoute(),
-            ServicesFlowRoute(),
-            SettingsRoute(),
-          ],
-          builder: (context, child) {
-            final tabsRouter = context.tabsRouter;
-            final navAlign = context
-                .watch<SettingsCubit>()
-                .state
-                .misc
-                .navigationAlignment;
-
-            return Scaffold(
-              floatingActionButtonLocation: BottomNavigation.getLocation(
-                alignment: navAlign,
-              ),
-              floatingActionButton: BottomNavigation(router: tabsRouter),
-              body: SafeArea(
-                child: Row(
-                  children: [
-                    DrawerNavigation(router: tabsRouter),
-                    Expanded(child: child),
-                  ],
-                ),
-              ),
-            );
-          },
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<ProfileBloc, ProfileState>(
+          listenWhen: (p, c) => p.status == .loading && c.status == .failure,
+          listener: (context, state) => showProfileCorruptedAlert(),
         ),
+      ],
+      child: AutoTabsRouter(
+        lazyLoad: false,
+        routes: const [
+          PublicationDashboardRoute(),
+          ServicesFlowRoute(),
+          SettingsRoute(),
+        ],
+        builder: (context, child) {
+          final tabsRouter = context.tabsRouter;
+          final navAlign = context
+              .watch<SettingsCubit>()
+              .state
+              .misc
+              .navigationAlignment;
+
+          return Scaffold(
+            floatingActionButtonLocation: BottomNavigation.getLocation(
+              alignment: navAlign,
+            ),
+            floatingActionButton: BottomNavigation(router: tabsRouter),
+            body: SafeArea(
+              child: Row(
+                children: [
+                  DrawerNavigation(router: tabsRouter),
+                  Expanded(child: child),
+                ],
+              ),
+            ),
+          );
+        },
       ),
     );
   }

@@ -7,10 +7,18 @@ class NavigationCubit extends Cubit<NavigationState> {
   NavigationCubit() : super(const NavigationState());
 
   void show() {
+    if (state.isNavigationVisible) {
+      return;
+    }
+
     emit(state.copyWith(isNavigationVisible: true));
   }
 
   void hide() {
+    if (!state.isNavigationVisible) {
+      return;
+    }
+
     emit(state.copyWith(isNavigationVisible: false));
   }
 }

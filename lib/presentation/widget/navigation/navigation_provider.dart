@@ -69,7 +69,7 @@ class _NavigationProviderState extends State<NavigationProvider> {
             default:
           }
 
-          return false;
+          return true;
         },
         child: BlocProvider.value(
           value: cubit,
