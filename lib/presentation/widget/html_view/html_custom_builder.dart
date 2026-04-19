@@ -90,6 +90,10 @@ abstract class HtmlCustomStyles {
       };
     }
 
+    if (attrName == 'a') {
+      return {'text-decoration-color': '#${theme.colors.primary.toHex}'};
+    }
+
     if (attrName == 'code' && element.parent?.localName != 'pre') {
       return {
         'background-color': '#${theme.colors.backgroundSecondary.toHex}',
