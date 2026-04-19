@@ -13,9 +13,7 @@ class DbgInfoWidget extends StatelessWidget {
     final theme = context.theme;
 
     return DefaultTextStyle(
-      style: theme.textTheme.labelMedium!.copyWith(
-        color: theme.colors.sorbus,
-      ),
+      style: theme.textTheme.labelSmall!.copyWith(color: theme.colors.sorbus),
       child: Row(
         spacing: 4,
         children: [

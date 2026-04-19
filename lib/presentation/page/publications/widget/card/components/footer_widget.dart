@@ -20,8 +20,8 @@ class PublicationFooterWidget extends StatelessWidget {
     super.key,
     required this.publication,
     this.isVoteBlocked = true,
-    this.mainAxisAlignment = MainAxisAlignment.spaceAround,
-    this.crossAxisAlignment = CrossAxisAlignment.center,
+    this.mainAxisAlignment = .spaceAround,
+    this.crossAxisAlignment = .center,
   });
 
   final Publication publication;
@@ -49,7 +49,6 @@ class PublicationFooterWidget extends StatelessWidget {
         PublicationStatIconButton(
           icon: Icons.chat_bubble_rounded,
           value: publication.statistics.commentsCount.compact(),
-          isHighlighted: publication.relatedData.unreadCommentsCount > 0,
           onTap: () => context.router.push(
             PublicationFlowRoute(
               type: publication.type.name,

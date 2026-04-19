@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../bloc/publication/flow_publication_list_cubit.dart';
 import '../../../../data/model/filter/filter.dart';
 import '../../../../data/model/publication/publication.dart';
-import '../../../../feature/publication_list/publication_list.dart';
 import '../../../widget/filter/common_filters_widget.dart';
 import '../../../widget/filter/filter_chip_list.dart';
 
@@ -21,24 +20,24 @@ class _PublicationFiltersWidgetState extends State<PublicationFiltersWidget> {
 
   @override
   void initState() {
-    selectedFlow = context.read<FlowPublicationListCubit>().state.flow;
     super.initState();
+
+    selectedFlow = context.read<FlowPublicationListCubit>().state.flow;
   }
 
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: .start,
+      mainAxisSize: .min,
       children: [
         BlocBuilder<FlowPublicationListCubit, FlowPublicationListState>(
           builder: (context, state) {
             return FilterChipList(
-              isEnabled: state.status != PublicationListStatus.loading,
-              options:
-                  PublicationFlow.values
-                      .map((e) => FilterOption(label: e.label, value: e.name))
-                      .toList(),
+              isEnabled: state.status != .loading,
+              options: PublicationFlow.values
+                  .map((e) => FilterOption(label: e.label, value: e.name))
+                  .toList(),
               isSelected: (option) => option.value == selectedFlow.name,
               onSelected: (isSelected, option) {
                 final newFlow = PublicationFlow.fromString(option.value);
@@ -54,7 +53,7 @@ class _PublicationFiltersWidgetState extends State<PublicationFiltersWidget> {
         BlocBuilder<FlowPublicationListCubit, FlowPublicationListState>(
           builder: (context, state) {
             return CommonFiltersWidget(
-              isLoading: state.status == PublicationListStatus.loading,
+              isLoading: state.status == .loading,
               sort: state.filter.sort,
               filterOption: switch (state.filter.sort) {
                 Sort.byBest => state.filter.period,

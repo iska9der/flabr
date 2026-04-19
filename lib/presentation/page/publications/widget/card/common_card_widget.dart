@@ -9,6 +9,7 @@ import '../../../../../data/model/publication/publication.dart';
 import '../../../../../data/model/render_type_enum.dart';
 import '../../../../../di/di.dart';
 import '../../../../../feature/image_action/image_action.dart';
+import '../../../../extension/extension.dart';
 import '../../../../theme/theme.dart';
 import '../../../../widget/enhancement/enhancement.dart';
 import '../stats/publication_stats_widget.dart';
@@ -24,7 +25,7 @@ class CommonCardWidget extends StatelessWidget {
   const CommonCardWidget({
     super.key,
     required this.publication,
-    this.renderType = RenderType.plain,
+    this.renderType = .plain,
     this.showType = false,
   });
 
@@ -42,17 +43,17 @@ class CommonCardWidget extends StatelessWidget {
         ),
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: .start,
+        mainAxisSize: .min,
         children: [
           Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: .start,
             spacing: 12,
             children: [
               if (showType) PublicationTypeWidget(type: publication.type),
               if (kDebugMode) DbgInfoWidget(publication),
               PublicationHeaderWidget(publication),
-              _ArticleTitleWidget(
+              _TitleWidget(
                 title: publication.titleHtml,
                 renderType: renderType,
               ),
@@ -127,29 +128,19 @@ class CommonCardWidget extends StatelessWidget {
   }
 }
 
-class _ArticleTitleWidget extends StatelessWidget {
-  const _ArticleTitleWidget({required this.title, required this.renderType});
+class _TitleWidget extends StatelessWidget {
+  const _TitleWidget({required this.title, required this.renderType});
 
   final String title;
   final RenderType renderType;
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
+    final textStyle = context.theme.textTheme.headlineSmall!;
 
     return switch (renderType) {
-      RenderType.plain => Text(title, style: textTheme.titleLarge),
-      RenderType.html => HtmlWidget(
-        title,
-
-        /// Не знаю почему сделал применение стилей таким образом,
-        /// а не как выше. Как-нибудь проверить
-        textStyle: TextStyle(
-          fontFamily: textTheme.titleLarge?.fontFamily,
-          color: textTheme.titleLarge?.color,
-          fontSize: textTheme.titleLarge?.fontSize,
-        ),
-      ),
+      .plain => Text(title, style: textStyle),
+      .html => HtmlWidget(title, textStyle: textStyle),
     };
   }
 }

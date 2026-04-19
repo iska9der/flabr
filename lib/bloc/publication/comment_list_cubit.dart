@@ -4,9 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../data/exception/exception.dart';
 import '../../data/model/comment/comment.dart';
 import '../../data/model/language/language.dart';
+import '../../data/model/loading_status_enum.dart';
 import '../../data/model/publication/publication.dart';
 import '../../data/repository/repository.dart';
-import '../../presentation/extension/extension.dart';
 
 part 'comment_list_state.dart';
 
@@ -22,9 +22,9 @@ class CommentListCubit extends Cubit<CommentListState> {
   final PublicationRepository _repository;
 
   Future<void> fetch() async {
-    if (state.status.isLoading) return;
+    if (state.status == .loading) return;
 
-    emit(state.copyWith(status: CommentListStatus.loading));
+    emit(state.copyWith(status: .loading));
 
     try {
       final newList = await _repository.fetchComments(
@@ -32,11 +32,11 @@ class CommentListCubit extends Cubit<CommentListState> {
         source: state.source,
       );
 
-      emit(state.copyWith(list: newList, status: CommentListStatus.success));
+      emit(state.copyWith(list: newList, status: .success));
     } catch (error, stackTrace) {
       emit(
         state.copyWith(
-          status: CommentListStatus.failure,
+          status: .failure,
           error: error.parseException('Не удалось получить комментарии'),
         ),
       );

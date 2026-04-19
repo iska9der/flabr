@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../presentation/theme/theme.dart';
+import '../../../presentation/widget/navigation/navigation.dart';
 import '../cubit/publication_list_cubit.dart';
 
 class FloatingFilterButton<
@@ -20,22 +21,34 @@ class FloatingFilterButton<
 
   @override
   Widget build(BuildContext context) {
-    return FloatingActionButton(
-      heroTag: null,
-      mini: true,
-      onPressed: () => showModalBottomSheet(
-        context: context,
-        isScrollControlled: true,
-        constraints: const BoxConstraints(minWidth: 600),
-        builder: (_) => Padding(
-          padding: AppInsets.filterSheetPadding,
-          child: BlocProvider.value(
-            value: context.read<ListCubit>(),
-            child: filter,
+    final isVisible = context.select<NavigationCubit, bool>(
+      (cubit) => cubit.state.isNavigationVisible,
+    );
+
+    return AnimatedOpacity(
+      duration: AppStyles.hideDuration,
+      opacity: isVisible ? 1 : 0,
+      child: IgnorePointer(
+        ignoring: !isVisible,
+        child: FloatingActionButton(
+          heroTag: null,
+          mini: true,
+          onPressed: () => showModalBottomSheet(
+            context: context,
+            isScrollControlled: true,
+            useRootNavigator: true,
+            constraints: const BoxConstraints(minWidth: 600),
+            builder: (_) => Padding(
+              padding: AppInsets.filterSheetPadding,
+              child: BlocProvider.value(
+                value: context.read<ListCubit>(),
+                child: filter,
+              ),
+            ),
           ),
+          child: const Icon(Icons.filter_list_rounded),
         ),
       ),
-      child: const Icon(Icons.filter_list_rounded),
     );
   }
 }

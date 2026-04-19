@@ -187,9 +187,7 @@ class _NotificationWidget extends StatelessWidget {
                               child: GestureDetector(
                                 child: Icon(
                                   Icons.circle,
-                                  color: Theme.of(
-                                    context,
-                                  ).colorScheme.primary,
+                                  color: theme.colors.accentPrimary,
                                   size: 24,
                                 ),
                                 onTap: () => markAsRead(context, model.id),

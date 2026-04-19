@@ -73,7 +73,7 @@ class ApplicationView extends StatelessWidget {
     final theme = context.theme;
 
     Widget result = ColoredBox(
-      color: theme.colors.surface,
+      color: theme.colors.background,
       child: MaxWidthBox(
         maxWidth: config.maxWidth,
         child: AnnotatedRegion(

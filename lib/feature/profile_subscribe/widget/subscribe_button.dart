@@ -29,12 +29,11 @@ class SubscribeButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create:
-          (_) => SubscriptionCubit(
-            repository: getIt(),
-            alias: alias,
-            isSubscribed: isSubscribed,
-          ),
+      create: (_) => SubscriptionCubit(
+        repository: getIt(),
+        alias: alias,
+        isSubscribed: isSubscribed,
+      ),
       child: BlocConsumer<SubscriptionCubit, SubscriptionState>(
         listenWhen: (p, c) => p.status == LoadingStatus.failure,
         listener: (context, state) {
@@ -42,24 +41,23 @@ class SubscribeButton extends StatelessWidget {
         },
         builder: (context, state) {
           var style = OutlinedButton.styleFrom(
-            foregroundColor: context.theme.colors.highlight,
-            side: BorderSide(color: context.theme.colors.highlight),
+            foregroundColor: context.theme.colors.accentPositive,
+            side: BorderSide(color: context.theme.colors.accentPositive),
           );
 
           if (state.isSubscribed) {
             style = OutlinedButton.styleFrom(
-              backgroundColor: context.theme.colors.highlight,
-              foregroundColor: context.theme.colors.onHighlight,
+              backgroundColor: context.theme.colors.accentPositive,
+              foregroundColor: context.theme.colors.onAccentPositive,
               side: BorderSide.none,
             );
           }
 
           return OutlinedButton(
             style: style,
-            onPressed:
-                state.status == LoadingStatus.loading
-                    ? null
-                    : () => onSubscribePressed(context),
+            onPressed: state.status == LoadingStatus.loading
+                ? null
+                : () => onSubscribePressed(context),
             child: Text(state.buttonText),
           );
         },

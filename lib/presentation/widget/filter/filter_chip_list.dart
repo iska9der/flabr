@@ -22,29 +22,27 @@ class FilterChipList extends StatelessWidget {
       height: 40,
       child: ListView(
         shrinkWrap: true,
-        clipBehavior: Clip.none,
-        scrollDirection: Axis.horizontal,
-        children:
-            options
-                .map(
-                  (option) => Padding(
-                    padding: const EdgeInsets.only(right: 8.0),
-                    child: ChoiceChip(
-                      visualDensity: VisualDensity.compact,
-                      label: Text(
-                        option.label,
-                        overflow: TextOverflow.ellipsis,
-                        textAlign: TextAlign.center,
-                      ),
-                      selected: isSelected(option),
-                      onSelected:
-                          isEnabled
-                              ? (bool value) => onSelected(value, option)
-                              : null,
-                    ),
+        clipBehavior: .none,
+        scrollDirection: .horizontal,
+        children: options
+            .map(
+              (option) => Padding(
+                padding: const .only(right: 8.0),
+                child: ChoiceChip(
+                  visualDensity: .compact,
+                  label: Text(
+                    option.label,
+                    overflow: .ellipsis,
+                    textAlign: .center,
                   ),
-                )
-                .toList(),
+                  selected: isSelected(option),
+                  onSelected: isEnabled
+                      ? (bool value) => onSelected(value, option)
+                      : null,
+                ),
+              ),
+            )
+            .toList(),
       ),
     );
   }

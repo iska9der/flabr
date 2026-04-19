@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../bloc/auth/auth_cubit.dart';
 import '../../../../../bloc/publication/feed_publication_list_cubit.dart';
 import '../../../../../data/model/filter/filter.dart';
-import '../../../../../feature/publication_list/publication_list.dart';
 import '../../../../widget/dialog/dialog.dart';
 import '../../../../widget/filter/filter_chip_list.dart';
 import '../../../../widget/filter/publication_filter_submit_button.dart';
@@ -21,7 +20,7 @@ class FeedFiltersWidget extends StatelessWidget {
         BlocBuilder<FeedPublicationListCubit, FeedPublicationListState>(
           builder: (context, state) {
             return _FilterView(
-              isLoading: state.status == PublicationListStatus.loading,
+              isLoading: state.status == .loading,
               currentScore: state.filter.score,
               currentTypes: state.filter.types,
               onSubmit: (newFilter) {
@@ -69,56 +68,61 @@ class _FilterViewState extends State<_FilterView> {
 
   @override
   Widget build(BuildContext context) {
+    const headerStyle = TextStyle(fontWeight: .w700);
+
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
+      spacing: 6,
+      crossAxisAlignment: .start,
+      mainAxisSize: .min,
       children: [
-        Text('Тип публикации', style: Theme.of(context).textTheme.labelLarge),
-        FilterChipList(
-          isEnabled: !widget.isLoading,
-          options: FeedFilterPublication.values
-              .map((e) => FilterOption(label: e.label, value: e.name))
-              .toList(),
-          isSelected: (option) => typesValue.contains(
-            FeedFilterPublication.fromString(option.value),
-          ),
-          onSelected: (isSelected, newOption) {
-            final newType = FeedFilterPublication.fromString(newOption.value);
-
-            List<FeedFilterPublication> newTypes;
-            if (isSelected) {
-              newTypes = [...typesValue, newType];
-            } else {
-              newTypes = [...typesValue]
-                ..removeWhere((element) => element == newType);
-            }
-
-            if (newTypes.isEmpty) {
-              return;
-            }
-
-            setState(() {
-              typesValue = newTypes;
-            });
-          },
-        ),
-        const SizedBox(height: 12),
-        Text('Порог рейтинга', style: Theme.of(context).textTheme.labelLarge),
-        FilterChipList(
-          isEnabled: !widget.isLoading,
-          options: FilterList.scoreOptions,
-          isSelected: (option) => option == scoreValue,
-          onSelected: (isSelected, option) => setState(() {
-            scoreValue = option;
-          }),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(top: 8.0),
-          child: PublicationFilterSubmitButton(
+        ...[
+          const Text('Тип публикации', style: headerStyle),
+          FilterChipList(
             isEnabled: !widget.isLoading,
-            onSubmit: () => widget.onSubmit(
-              FeedFilter(score: scoreValue, types: typesValue),
+            options: FeedFilterPublication.values
+                .map((e) => FilterOption(label: e.label, value: e.name))
+                .toList(),
+            isSelected: (option) => typesValue.contains(
+              FeedFilterPublication.fromString(option.value),
             ),
+            onSelected: (isSelected, newOption) {
+              final newType = FeedFilterPublication.fromString(newOption.value);
+
+              List<FeedFilterPublication> newTypes;
+              if (isSelected) {
+                newTypes = [...typesValue, newType];
+              } else {
+                newTypes = [...typesValue]
+                  ..removeWhere((element) => element == newType);
+              }
+
+              if (newTypes.isEmpty) {
+                return;
+              }
+
+              setState(() {
+                typesValue = newTypes;
+              });
+            },
+          ),
+        ],
+        const SizedBox(height: 8),
+        ...[
+          const Text('Порог рейтинга', style: headerStyle),
+          FilterChipList(
+            isEnabled: !widget.isLoading,
+            options: FilterList.scoreOptions,
+            isSelected: (option) => option == scoreValue,
+            onSelected: (isSelected, option) => setState(() {
+              scoreValue = option;
+            }),
+          ),
+        ],
+        const SizedBox(height: 10),
+        PublicationFilterSubmitButton(
+          isEnabled: !widget.isLoading,
+          onSubmit: () => widget.onSubmit(
+            FeedFilter(score: scoreValue, types: typesValue),
           ),
         ),
       ],

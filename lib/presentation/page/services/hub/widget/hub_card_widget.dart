@@ -5,6 +5,7 @@ import '../../../../../data/model/hub/hub.dart';
 import '../../../../../data/model/render_type_enum.dart';
 import '../../../../../data/model/stat_type_enum.dart';
 import '../../../../../di/di.dart';
+import '../../../../extension/extension.dart';
 import '../../../../theme/theme.dart';
 import '../../../../widget/card_avatar_widget.dart';
 import '../../../../widget/card_title_widget.dart';
@@ -15,7 +16,7 @@ class HubCardWidget extends StatelessWidget {
   const HubCardWidget({
     super.key,
     required this.model,
-    this.renderType = RenderType.plain,
+    this.renderType = .plain,
   });
 
   final Hub model;
@@ -24,58 +25,59 @@ class HubCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var stats = model.statistics as HubStatistics;
-    final tagStyle = Theme.of(context).textTheme.bodySmall;
+
+    final theme = context.theme;
+    final tagStyle = theme.textTheme.bodySmall!.copyWith(
+      color: theme.colors.textSecondary,
+    );
 
     return FlabrCard(
       onTap: () => getIt<AppRouter>().navigate(
         HubDashboardRoute(alias: model.alias),
       ),
       child: Column(
-        spacing: 10,
+        crossAxisAlignment: .start,
         children: [
           Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            spacing: 12,
+            crossAxisAlignment: .start,
             children: [
               CardAvatarWidget(
                 imageUrl: model.imageUrl,
                 placeholderIcon: AppIcons.hubPlaceholder,
               ),
-              const SizedBox(width: 12),
               Expanded(
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  crossAxisAlignment: .stretch,
                   children: [
                     CardTitleWidget(
                       title: model.titleHtml,
                       renderType: renderType,
                     ),
-                    Text(
-                      model.descriptionHtml,
-                      style: Theme.of(context).textTheme.labelMedium,
-                    ),
-                    const SizedBox(height: 10),
-                    Wrap(
-                      children: model.commonTags
-                          .map(
-                            (tag) => Padding(
-                              padding: const EdgeInsets.fromLTRB(
-                                0,
-                                3,
-                                10,
-                                3,
-                              ),
-                              child: Text(tag, style: tagStyle),
-                            ),
-                          )
-                          .toList(),
-                    ),
+                    if (model.descriptionHtml.isNotEmpty)
+                      Text(
+                        model.descriptionHtml,
+                        style: theme.textTheme.labelMedium,
+                      ),
+                    if (model.commonTags.isNotEmpty) ...[
+                      const SizedBox(height: 14),
+                      Wrap(
+                        spacing: 6,
+                        children: model.commonTags
+                            .map(
+                              (tag) => Text(tag, style: tagStyle),
+                            )
+                            .toList(),
+                      ),
+                    ],
                   ],
                 ),
               ),
             ],
           ),
+          const SizedBox(height: 14),
           Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: .center,
             children: [
               Expanded(
                 child: ProfileStatCardWidget(

@@ -21,7 +21,7 @@ class PostCardWidget extends StatelessWidget {
   const PostCardWidget({
     super.key,
     required this.post,
-    this.renderType = RenderType.plain,
+    this.renderType = .plain,
     this.showType = false,
   });
 
@@ -38,18 +38,18 @@ class PostCardWidget extends StatelessWidget {
         PublicationFlowRoute(type: PublicationType.post.name, id: post.id),
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: .stretch,
+        mainAxisSize: .min,
         children: [
           Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: .start,
             spacing: 12,
             children: [
               if (showType) PublicationTypeWidget(type: post.type),
               if (kDebugMode) DbgInfoWidget(post),
               Row(
                 spacing: 12,
-                crossAxisAlignment: CrossAxisAlignment.end,
+                crossAxisAlignment: .end,
                 children: [
                   PublicationHeaderWidget(post),
                   PublicationStat(
@@ -75,18 +75,16 @@ class PostCardWidget extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+            crossAxisAlignment: .stretch,
             children: [
               Wrap(
                 spacing: 8,
                 runSpacing: 6,
-                crossAxisAlignment: WrapCrossAlignment.end,
+                crossAxisAlignment: .end,
                 children: [
                   Text(
                     'Теги:',
-                    style: textTheme.bodyMedium!.copyWith(
-                      fontWeight: FontWeight.w500,
-                    ),
+                    style: textTheme.bodyMedium!.copyWith(fontWeight: .w500),
                   ),
                   ...post.tags.map(
                     (tag) => Text(tag, style: textTheme.bodyMedium),

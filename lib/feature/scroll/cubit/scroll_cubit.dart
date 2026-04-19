@@ -27,6 +27,7 @@ class ScrollCubit extends Cubit<ScrollState> {
   @override
   Future<void> close() {
     _controller.removeListener(_onScroll);
+    _controller.removeListener(_progressListener);
     _controller.dispose();
 
     return super.close();
@@ -45,6 +46,7 @@ class ScrollCubit extends Cubit<ScrollState> {
         position.pixels <= position.minScrollExtent + _edgeTolerance;
     final isBottomEdge =
         position.pixels >= position.maxScrollExtent - _edgeTolerance;
+
     final direction = position.userScrollDirection;
     final isScrollToTopVisible = !isTopEdge && direction == .forward;
 
@@ -59,6 +61,26 @@ class ScrollCubit extends Cubit<ScrollState> {
         ),
       );
     }
+  }
+
+  void listenProgress() {
+    _controller.addListener(_progressListener);
+  }
+
+  void _progressListener() {
+    final position = _controller.position;
+    final max = position.maxScrollExtent;
+
+    if (max <= 0) return;
+
+    final normalized = position.pixels / max;
+
+    /// Игнорируем изменения менее 0.1% для уменьшения количества перестроек
+    if ((state.scrollProgress - normalized).abs() < 0.001) {
+      return;
+    }
+
+    emit(state.copyWith(scrollProgress: normalized.clamp(0.0, 1.0)));
   }
 
   Future<void> _animateTo(

@@ -40,16 +40,14 @@ class PublicationSliverList<
         BlocListener<ListCubit, ListState>(
           bloc: listCubit,
           listenWhen: (previous, current) =>
-              previous.page != 1 &&
-              current.status == PublicationListStatus.failure,
+              previous.page != 1 && current.status == .failure,
           listener: (_, state) => context.showSnack(content: Text(state.error)),
         ),
 
         /// Синхронизация закладок при успешной загрузке публикаций
         BlocListener<ListCubit, ListState>(
           bloc: listCubit,
-          listenWhen: (_, current) =>
-              current.status == PublicationListStatus.success,
+          listenWhen: (_, current) => current.status == .success,
           listener: (context, state) {
             context.read<PublicationBookmarksBloc>().add(
               PublicationBookmarksEvent.updated(
@@ -63,14 +61,14 @@ class PublicationSliverList<
         bloc: listCubit,
         builder: (context, state) {
           /// При инициализации запрашиваем публикации
-          if (state.status == PublicationListStatus.initial) {
+          if (state.status == .initial) {
             listCubit.fetch();
           }
 
           /// Нужно ли отобразить виджет загрузки
           final isLoaderShown = switch (state.status) {
-            PublicationListStatus.initial => true,
-            PublicationListStatus.loading when state.isFirstFetch => true,
+            .initial => true,
+            .loading when state.isFirstFetch => true,
             _ => false,
           };
 
@@ -81,9 +79,7 @@ class PublicationSliverList<
           /// Ошибка при попытке получить статьи.
           /// Ошибку показываем вместо карточек только в случае, если
           /// происходит загрузка первой страницы
-          final isErrorShown =
-              state.isFirstFetch &&
-              state.status == PublicationListStatus.failure;
+          final isErrorShown = state.isFirstFetch && state.status == .failure;
           if (isErrorShown) {
             return SliverFillRemaining(
               child: Center(
@@ -102,9 +98,7 @@ class PublicationSliverList<
             );
           }
 
-          int additional = (state.status == PublicationListStatus.loading
-              ? 1
-              : 0);
+          int additional = (state.status == .loading ? 1 : 0);
 
           return SliverList.builder(
             itemCount: publications.length + additional,

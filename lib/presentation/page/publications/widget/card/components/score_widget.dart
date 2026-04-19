@@ -14,8 +14,8 @@ class ScoreWidget extends StatelessWidget {
   const ScoreWidget({
     required this.publication,
     this.isBlocked = true,
-    this.crossAxisAlignment = CrossAxisAlignment.center,
-    this.mainAxisAlignment = MainAxisAlignment.spaceAround,
+    this.crossAxisAlignment = .center,
+    this.mainAxisAlignment = .spaceAround,
     super.key,
   });
 
@@ -51,7 +51,6 @@ class ScoreWidget extends StatelessWidget {
             child: PublicationStatIconButton(
               icon: icon,
               value: score.compact(),
-              isHighlighted: true,
               color: color,
             ),
           );
@@ -85,8 +84,8 @@ class _ScoreTooltip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Tooltip(
-      triggerMode: TooltipTriggerMode.tap,
-      showDuration: const Duration(seconds: 5),
+      triggerMode: .tap,
+      showDuration: const .new(seconds: 5),
       message:
           'Всего голосов $votesCount: '
           '↑$votesCountPlus и ↓$votesCountMinus',

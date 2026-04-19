@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:html/parser.dart';
 
 import '../../../../data/model/comment_base.dart';
@@ -20,14 +19,10 @@ class CommentParent extends StatefulWidget {
 class _CommentParentState extends State<CommentParent> {
   final tag = UniqueKey();
 
-  late TextStyle textStyle = DefaultTextStyle.of(context).style;
-  late Color bgColor = context.theme.colors.cardHighlight;
-  late final parentHtml = HtmlView(
-    textHtml: widget.parent.message,
-    textStyle: textStyle,
-    renderMode: RenderMode.column,
-    padding: EdgeInsets.zero,
-  );
+  CommentBase get parent => widget.parent;
+
+  late TextStyle textStyle;
+  late Color bgColor;
 
   @override
   void didChangeDependencies() {
@@ -39,44 +34,68 @@ class _CommentParentState extends State<CommentParent> {
 
   @override
   Widget build(BuildContext context) {
-    final text = parse(widget.parent.message).documentElement?.text ?? '';
+    final text = parse(parent.message).documentElement?.text ?? '';
     if (text.isEmpty) {
       return const SizedBox();
     }
 
+    final parentHtml = HtmlView(
+      textHtml: parent.message,
+      renderMode: .column,
+      padding: .zero,
+    );
+
+    final theme = context.theme;
+    final decoration = BoxDecoration(
+      borderRadius: AppStyles.cardBorderRadius,
+      color: bgColor,
+    );
+
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 6),
+      padding: const .symmetric(vertical: 10, horizontal: 6),
       child: Hero(
         tag: tag,
         child: DecoratedBox(
-          decoration: BoxDecoration(
-            borderRadius: AppStyles.cardBorderRadius,
-            color: bgColor,
-          ),
+          decoration: decoration,
           child: Stack(
-            alignment: Alignment.bottomCenter,
+            alignment: .bottomCenter,
             children: [
-              ConstrainedBox(
-                constraints: const BoxConstraints(maxHeight: 100),
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(10, 0, 10, 2),
+              ShaderMask(
+                blendMode: .dstIn,
+                shaderCallback: (bounds) => LinearGradient(
+                  begin: .topCenter,
+                  end: .bottomCenter,
+                  stops: [0.0, 0.3, 0.8, 1.0],
+                  colors: [
+                    bgColor,
+                    bgColor,
+                    bgColor,
+                    Colors.transparent,
+                  ],
+                ).createShader(bounds),
+                child: ConstrainedBox(
+                  constraints: const .new(maxHeight: 100),
                   child: SingleChildScrollView(
+                    padding: const .fromLTRB(10, 0, 10, 2),
                     physics: const NeverScrollableScrollPhysics(),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      mainAxisSize: .min,
+                      crossAxisAlignment: .stretch,
                       children: [
+                        /// "Ответил на сообщение"
                         GestureDetector(
                           onTap: widget.onParentTapped,
-                          behavior: HitTestBehavior.translucent,
+                          behavior: .translucent,
                           child: Padding(
-                            padding: const EdgeInsets.only(top: 10, bottom: 8),
+                            padding: const .only(top: 10, bottom: 8),
                             child: Row(
+                              mainAxisSize: .min,
                               spacing: 4,
                               children: [
                                 Icon(
                                   Icons.arrow_upward,
                                   size: 18,
-                                  color: context.theme.colors.primary,
+                                  color: theme.colors.primary,
                                 ),
                                 Expanded(
                                   child: SelectableText.rich(
@@ -87,17 +106,17 @@ class _CommentParentState extends State<CommentParent> {
                                         TextSpan(
                                           text: 'сообщение от ',
                                           style: textStyle.copyWith(
-                                            color: context.theme.colors.primary,
+                                            color: theme.colors.primary,
                                           ),
                                           children: [
                                             TextSpan(
-                                              text: widget.parent.author.alias,
+                                              text: parent.author.alias,
                                               style: textStyle.copyWith(
                                                 color: context
                                                     .theme
                                                     .colors
                                                     .primary,
-                                                fontWeight: FontWeight.w500,
+                                                fontWeight: .w500,
                                               ),
                                             ),
                                           ],
@@ -112,38 +131,20 @@ class _CommentParentState extends State<CommentParent> {
                             ),
                           ),
                         ),
+
+                        /// Родительский комментарий
                         parentHtml,
                       ],
                     ),
                   ),
                 ),
               ),
-              Positioned.fill(
-                top: 60,
-                child: IgnorePointer(
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(
-                      borderRadius: AppStyles.cardBorderRadius,
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          bgColor.withValues(alpha: .1),
-                          bgColor.withValues(alpha: .3),
-                          bgColor.withValues(alpha: .6),
-                          bgColor.withValues(alpha: .9),
-                          bgColor,
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
+
               Positioned(
                 bottom: 0,
                 right: 0,
                 child: IconButton.filled(
-                  visualDensity: VisualDensity.compact,
+                  visualDensity: .compact,
                   icon: const Icon(Icons.remove_red_eye_sharp, size: 16),
                   tooltip: 'Показать полностью',
                   onPressed: () => context.buildModalRoute(
@@ -151,12 +152,9 @@ class _CommentParentState extends State<CommentParent> {
                     child: Hero(
                       tag: tag,
                       child: DecoratedBox(
-                        decoration: BoxDecoration(
-                          borderRadius: AppStyles.cardBorderRadius,
-                          color: bgColor,
-                        ),
+                        decoration: decoration,
                         child: SingleChildScrollView(
-                          padding: const EdgeInsets.all(16),
+                          padding: const .all(16),
                           child: parentHtml,
                         ),
                       ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 abstract class LicenseAssets {
-  static const String fontGeologica = 'assets/fonts/Geologica/OFL.txt';
+  static const String ofl = 'assets/fonts/OFL.txt';
 }
 
 abstract class IconsAssets {

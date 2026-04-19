@@ -5,7 +5,6 @@ import '../../data/exception/exception.dart';
 import '../../data/model/loading_status_enum.dart';
 import '../../data/model/publication/publication.dart';
 import '../../data/repository/repository.dart';
-import '../../presentation/extension/extension.dart';
 
 part 'publication_detail_state.dart';
 
@@ -27,9 +26,9 @@ class PublicationDetailCubit extends Cubit<PublicationDetailState> {
   final PublicationRepository _repository;
 
   void fetch() async {
-    if (state.status.isLoading) return;
+    if (state.status == .loading) return;
 
-    emit(state.copyWith(status: LoadingStatus.loading));
+    emit(state.copyWith(status: .loading));
 
     try {
       final publication = await _repository.fetchPublicationById(
@@ -37,19 +36,9 @@ class PublicationDetailCubit extends Cubit<PublicationDetailState> {
         source: state.source,
       );
 
-      emit(
-        state.copyWith(
-          status: LoadingStatus.success,
-          publication: publication,
-        ),
-      );
+      emit(state.copyWith(status: .success, publication: publication));
     } catch (e) {
-      emit(
-        state.copyWith(
-          status: LoadingStatus.failure,
-          error: e.parseException(),
-        ),
-      );
+      emit(state.copyWith(status: .failure, error: e.parseException()));
 
       rethrow;
     }

@@ -12,8 +12,8 @@ abstract class ThemeConfigModel with _$ThemeConfigModel {
   static const empty = ThemeConfigModel();
 
   ThemeMode? get modeByBool => switch (isDarkTheme) {
-    true => ThemeMode.dark,
-    false => ThemeMode.light,
+    true => .dark,
+    false => .light,
     _ => null,
   };
 

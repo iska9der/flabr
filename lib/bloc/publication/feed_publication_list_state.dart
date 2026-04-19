@@ -3,7 +3,7 @@ part of 'feed_publication_list_cubit.dart';
 class FeedPublicationListState extends PublicationListState
     with EquatableMixin {
   const FeedPublicationListState({
-    super.status = PublicationListStatus.initial,
+    super.status = .initial,
     super.error = '',
     super.page = 1,
     super.response = const ListResponse<Publication>(),
@@ -13,7 +13,7 @@ class FeedPublicationListState extends PublicationListState
   final FeedFilter filter;
 
   FeedPublicationListState copyWith({
-    PublicationListStatus? status,
+    LoadingStatus? status,
     String? error,
     int? page,
     ListResponse<Publication>? response,

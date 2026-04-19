@@ -5,10 +5,11 @@ import '../../../../../data/model/stat_type_enum.dart';
 import '../../../../../data/repository/repository.dart';
 import '../../../../../di/di.dart';
 import '../../../../../feature/profile_subscribe/profile_subscribe.dart';
+import '../../../../extension/extension.dart';
 import '../../../../theme/theme.dart';
 import '../../../../widget/card_avatar_widget.dart';
 import '../../../../widget/enhancement/card.dart';
-import '../../../../widget/profile_stat_widget.dart';
+import '../../../../widget/profile_stat_detail_widget.dart';
 
 class HubProfileCardWidget extends StatefulWidget {
   const HubProfileCardWidget({super.key, required this.profile});
@@ -44,13 +45,15 @@ class _HubProfileCardWidgetState extends State<HubProfileCardWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = context.theme;
+
     var profile = widget.profile;
     var stats = profile.statistics;
 
     return FlabrCard(
       padding: AppInsets.profileCardPadding,
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+        crossAxisAlignment: .stretch,
         children: [
           Row(
             children: [
@@ -61,14 +64,14 @@ class _HubProfileCardWidgetState extends State<HubProfileCardWidget> {
               const SizedBox(width: 20),
               Expanded(
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  mainAxisAlignment: .spaceEvenly,
                   children: [
-                    ProfileStatWidget(
+                    ProfileStatDetailWidget(
                       type: StatType.rating,
                       title: 'Рейтинг',
                       value: stats.rating,
                     ),
-                    ProfileStatWidget(
+                    ProfileStatDetailWidget(
                       title: 'Подписчиков',
                       value: stats.subscribersCount,
                     ),
@@ -79,17 +82,21 @@ class _HubProfileCardWidgetState extends State<HubProfileCardWidget> {
           ),
           const SizedBox(height: 16),
           Text(
-            profile.descriptionHtml,
-            textAlign: TextAlign.left,
-            style: Theme.of(context).textTheme.labelLarge,
+            profile.titleHtml,
+            textAlign: .left,
+            style: theme.textTheme.headlineSmall,
           ),
-          const SizedBox(height: 8),
+          Text(
+            profile.descriptionHtml,
+            textAlign: .left,
+            style: theme.textTheme.titleSmall,
+          ),
+          const SizedBox(height: 12),
           Text(
             profile.fullDescriptionHtml,
-            textAlign: TextAlign.left,
-            style: Theme.of(context).textTheme.bodySmall,
+            textAlign: .left,
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 16),
           SubscribeButton(
             alias: profile.alias,
             isSubscribed: (profile.relatedData as HubRelatedData).isSubscribed,

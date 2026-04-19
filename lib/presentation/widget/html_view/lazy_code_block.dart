@@ -12,21 +12,21 @@ class LazyCodeBlock extends StatefulWidget {
     super.key,
     required this.text,
     required this.language,
-    required this.textStyle,
     required this.theme,
+    required this.decoration,
+    required this.textStyle,
     required this.padding,
     required this.maxRows,
-    this.backgroundColor,
     this.onTap,
   });
 
   final String text;
   final String language;
-  final TextStyle textStyle;
   final Map<String, TextStyle> theme;
+  final Decoration decoration;
+  final TextStyle textStyle;
   final EdgeInsets padding;
   final int maxRows;
-  final Color? backgroundColor;
   final VoidCallback? onTap;
 
   @override
@@ -61,9 +61,10 @@ class _LazyCodeBlockState extends State<LazyCodeBlock> {
         widget.text,
         language: widget.language,
         tabSize: 4,
-        textStyle: widget.textStyle,
         maxLines: widget.maxRows,
         theme: widget.theme,
+        decoration: widget.decoration,
+        textStyle: widget.textStyle,
         padding: widget.padding,
         onTap: widget.onTap,
       ),
@@ -81,15 +82,18 @@ class _LazyCodeBlockState extends State<LazyCodeBlock> {
   Widget _buildPlaceholder() {
     final displayText = widget.text.split('\n').take(widget.maxRows).join('\n');
 
-    return GestureDetector(
-      onTap: widget.onTap,
-      child: Padding(
-        padding: widget.padding,
-        child: Text(
-          displayText,
-          style: widget.textStyle,
-          maxLines: widget.maxRows,
-          overflow: TextOverflow.ellipsis,
+    return DecoratedBox(
+      decoration: widget.decoration,
+      child: GestureDetector(
+        onTap: widget.onTap,
+        child: Padding(
+          padding: widget.padding,
+          child: Text(
+            displayText,
+            style: widget.textStyle,
+            maxLines: widget.maxRows,
+            overflow: .ellipsis,
+          ),
         ),
       ),
     );

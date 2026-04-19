@@ -1,19 +1,17 @@
 part of 'settings_cubit.dart';
 
-enum SettingsStatus { initial, loading, success, failure }
-
 class SettingsState with EquatableMixin {
   const SettingsState({
-    this.status = SettingsStatus.initial,
-    this.langUI = Language.ru,
-    this.langArticles = const [Language.ru],
-    this.theme = ThemeConfigModel.empty,
-    this.publication = PublicationConfigModel.empty,
-    this.feed = FeedConfigModel.empty,
-    this.misc = MiscConfigModel.empty,
+    this.status = .initial,
+    this.langUI = .ru,
+    this.langArticles = const [.ru],
+    this.theme = .empty,
+    this.publication = .empty,
+    this.feed = .empty,
+    this.misc = .empty,
   });
 
-  final SettingsStatus status;
+  final LoadingStatus status;
 
   /// Язык интерфейса
   final Language langUI;
@@ -28,7 +26,7 @@ class SettingsState with EquatableMixin {
   final MiscConfigModel misc;
 
   SettingsState copyWith({
-    SettingsStatus? status,
+    LoadingStatus? status,
     Language? langUI,
     List<Language>? langArticles,
     ThemeConfigModel? theme,

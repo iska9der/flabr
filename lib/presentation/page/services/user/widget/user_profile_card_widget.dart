@@ -10,7 +10,7 @@ import '../../../../../feature/profile_subscribe/profile_subscribe.dart';
 import '../../../../extension/extension.dart';
 import '../../../../widget/card_avatar_widget.dart';
 import '../../../../widget/enhancement/card.dart';
-import '../../../../widget/profile_stat_widget.dart';
+import '../../../../widget/profile_stat_detail_widget.dart';
 
 class UserProfileCardWidget extends StatefulWidget {
   const UserProfileCardWidget({super.key, required this.user});
@@ -50,17 +50,15 @@ class _UserProfileCardWidgetState extends State<UserProfileCardWidget> {
   Widget build(BuildContext context) {
     return FlabrCard(
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+        crossAxisAlignment: .stretch,
         children: [
           Row(
+            spacing: 20,
             children: [
-              Padding(
-                padding: const EdgeInsets.only(right: 20),
-                child: CardAvatarWidget(imageUrl: user.avatarUrl),
-              ),
+              CardAvatarWidget(imageUrl: user.avatarUrl),
               Row(
                 children: [
-                  ProfileStatWidget(
+                  ProfileStatDetailWidget(
                     type: StatType.rating,
                     title: 'Рейтинг',
                     value: user.rating,
@@ -68,8 +66,8 @@ class _UserProfileCardWidgetState extends State<UserProfileCardWidget> {
                   const SizedBox(width: 40),
                   Tooltip(
                     message: '${user.votesCount.compact()} голосов',
-                    triggerMode: TooltipTriggerMode.tap,
-                    child: ProfileStatWidget(
+                    triggerMode: .tap,
+                    child: ProfileStatDetailWidget(
                       type: StatType.score,
                       title: 'Очки',
                       value: user.score,
@@ -86,7 +84,7 @@ class _UserProfileCardWidgetState extends State<UserProfileCardWidget> {
               }
 
               return Padding(
-                padding: const EdgeInsets.only(top: 8.0),
+                padding: const .only(top: 16),
                 child: SubscribeButton(
                   alias: user.alias,
                   isSubscribed: user.relatedData.isSubscribed,

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../bloc/company/company_cubit.dart';
-import '../../../extension/extension.dart';
 import '../../../theme/theme.dart';
 import '../../../widget/enhancement/progress_indicator.dart';
 import '../../../widget/error_widget.dart';
@@ -31,11 +30,11 @@ class CompanyDetailPage extends StatelessWidget {
 
     return BlocBuilder<CompanyCubit, CompanyState>(
       builder: (context, state) {
-        if (state.status.isLoading) {
+        if (state.status == .loading) {
           return const CircleIndicator();
         }
 
-        if (state.status.isFailure) {
+        if (state.status == .failure) {
           return Center(
             child: AppError(
               message: state.error,
@@ -45,11 +44,12 @@ class CompanyDetailPage extends StatelessWidget {
         }
 
         return ListView(
+          padding: AppInsets.screenPaddingExtended,
           children: [
             CompanyProfileCardWidget(card: state.card),
             Padding(
               padding: EdgeInsets.symmetric(
-                horizontal: AppInsets.screenPadding.left,
+                horizontal: AppInsets.cardPadding.left,
               ),
               child: CompanyDetailsWidget(card: state.card),
             ),

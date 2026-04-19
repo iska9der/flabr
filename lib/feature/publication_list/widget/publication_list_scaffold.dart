@@ -11,6 +11,7 @@ import '../../../presentation/theme/theme.dart';
 import '../../../presentation/widget/enhancement/card.dart';
 import '../../../presentation/widget/enhancement/refresh_indicator.dart';
 import '../../../presentation/widget/enhancement/responsive_visibility.dart';
+import '../../../presentation/widget/navigation/navigation.dart';
 import '../../most_reading/most_reading.dart';
 import '../../scroll/scroll.dart';
 import '../cubit/publication_list_cubit.dart';
@@ -74,15 +75,13 @@ class PublicationListScaffold<
         ),
       ],
       child: Scaffold(
-        floatingActionButton: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
+        floatingActionButton: FloatingContainer(
           children: [
             const FloatingScrollToTopButton(),
             if (filter != null)
               FloatingFilterButton(bloc: listCubit, filter: filter!),
           ],
         ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
         body: PublicationListScaffoldParams(
           filter: filter,
           sidebarEnabled: sidebarEnabled,
@@ -170,6 +169,7 @@ class _PublicationListView<
                 ),
               ),
             ),
+
             SliverCrossAxisGroup(
               slivers: [
                 PublicationSliverList(
@@ -236,6 +236,9 @@ class _PublicationListView<
                 ),
               ],
             ),
+            SliverPadding(
+              padding: .only(bottom: AppInsets.screenPaddingExtended.bottom),
+            ),
           ],
         ),
       ),
@@ -257,6 +260,8 @@ class _SideWidgetListState extends State<_SideWidgetList> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = context.theme;
+
     final isEnabled = widget.widgets.length > 1;
     final widgetHeight = Device.getHeight(context) / 2;
 
@@ -266,10 +271,10 @@ class _SideWidgetListState extends State<_SideWidgetList> {
         final isActiveWidget = showIndex == index;
 
         return FlabrCard(
-          margin: EdgeInsets.zero,
-          padding: EdgeInsets.zero,
+          margin: .zero,
+          padding: .zero,
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+            crossAxisAlignment: .stretch,
             children: [
               ListTile(
                 enabled: isEnabled,
@@ -279,7 +284,7 @@ class _SideWidgetListState extends State<_SideWidgetList> {
                 ),
                 title: Text(
                   sideWidget.title,
-                  style: Theme.of(context).textTheme.titleMedium,
+                  style: theme.textTheme.titleMedium,
                 ),
                 trailing: !isEnabled
                     ? null

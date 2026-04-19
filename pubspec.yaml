@@ -98,7 +98,9 @@ flutter:
     - assets/fonts/
   
   fonts:
+    - family:  Google
+      fonts:
+        - asset: assets/fonts/Google/GoogleSans.ttf
     - family:  Geologica
       fonts:
         - asset: assets/fonts/Geologica/Geologica-VF.ttf
-          weight: 700

@@ -2,7 +2,7 @@ part of 'user_bookmark_list_cubit.dart';
 
 class UserBookmarkListState extends PublicationListState with EquatableMixin {
   const UserBookmarkListState({
-    super.status = PublicationListStatus.initial,
+    super.status = .initial,
     super.error = '',
     super.page = 1,
     super.response = const ListResponse<Publication>(),
@@ -14,7 +14,7 @@ class UserBookmarkListState extends PublicationListState with EquatableMixin {
   final UserBookmarksType type;
 
   UserBookmarkListState copyWith({
-    PublicationListStatus? status,
+    LoadingStatus? status,
     String? error,
     int? page,
     ListResponse<Publication>? response,

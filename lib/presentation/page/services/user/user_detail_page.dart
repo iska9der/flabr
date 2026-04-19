@@ -43,11 +43,11 @@ class UserDetailPageView extends StatelessWidget {
     return SafeArea(
       child: BlocBuilder<UserCubit, UserState>(
         builder: (context, state) {
-          if (state.status.isLoading) {
+          if (state.status == .loading) {
             return const CircleIndicator();
           }
 
-          if (state.status.isFailure) {
+          if (state.status == .failure) {
             return Center(
               child: AppError(
                 message: state.error,
@@ -59,14 +59,13 @@ class UserDetailPageView extends StatelessWidget {
           var user = state.model;
 
           return ListView(
+            padding: AppInsets.screenPaddingExtended,
             children: [
               UserProfileCardWidget(user: user),
               Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: AppInsets.screenPadding.left,
-                ),
+                padding: .symmetric(horizontal: AppInsets.cardPadding.left),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  crossAxisAlignment: .stretch,
                   children: [
                     const Divider(),
                     if (user.fullname.isNotEmpty)

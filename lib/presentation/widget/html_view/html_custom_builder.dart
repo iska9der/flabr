@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:html/dom.dart' as dom;
 
 import '../../extension/extension.dart';
+import '../../theme/theme.dart';
 import 'html_custom_parser.dart';
 import 'lazy_image_widget.dart';
 
@@ -72,11 +73,14 @@ abstract class HtmlCustomStyles {
   static Map<String, String>? builder(
     dom.Element element,
     ThemeData theme,
-    EdgeInsets padding,
-    double fontSize,
-  ) {
+    EdgeInsets padding, {
+    double fontSize = 14,
+    double fontScale = 1,
+  }) {
+    final attrName = element.localName;
+
     if (element.parentNode is dom.DocumentFragment ||
-        element.localName == 'div' && element.parent == null) {
+        attrName == 'div' && element.parent == null) {
       return {
         'margin-left': '${padding.left}px',
         'margin-right': '${padding.right}px',
@@ -86,26 +90,82 @@ abstract class HtmlCustomStyles {
       };
     }
 
-    if (element.localName == 'code' && element.parent?.localName != 'pre') {
+    if (attrName == 'code' && element.parent?.localName != 'pre') {
       return {
-        'background-color': theme.colors.cardHighlight.toHex,
+        'background-color': '#${theme.colors.backgroundSecondary.toHex}',
+        'border-radius': '4px',
+        'padding': '3px 6px',
         'font-weight': '500',
       };
     }
 
-    final headerWeight = switch (element.localName) {
-      'h1' || 'h2' || 'h3' || 'h4' || 'h5' || 'h6' => '700',
-      _ => '',
+    final isHeader = switch (attrName) {
+      'h1' || 'h2' || 'h3' || 'h4' || 'h5' || 'h6' => true,
+      _ => false,
     };
-    if (headerWeight.isNotEmpty) {
+    if (isHeader) {
       return {
-        'font-family': 'Geologica',
-        'font-weight': headerWeight,
+        'font-family': AppTypography.fontGeologica,
+        'margin-top': switch (attrName) {
+          'h1' || 'h2' => '48px',
+          _ => '32px',
+        },
+        'margin-bottom': '0',
       };
     }
 
-    if (element.localName == 'li') {
-      return {'margin-bottom': '6px'};
+    if (attrName == 'ul') {
+      if (element.parent?.localName == 'li') {
+        return {
+          'margin-left': '12px',
+          'padding-left': '12px',
+          'margin-top': '2px',
+          'padding-top': '2px',
+        };
+      }
+      return {
+        'margin-left': '12px',
+        'padding-left': '12px',
+      };
+    }
+
+    if (attrName == 'li') {
+      return {
+        'margin-top': '0',
+        'margin-bottom': '6px',
+      };
+    }
+    if (attrName == 'p' && element.parent?.localName == 'li') {
+      return {
+        'margin-top': '0',
+        'margin-bottom': '0',
+      };
+    }
+
+    if (attrName == 'blockquote') {
+      return {
+        'border-left': '4px solid #${theme.colors.accentPrimary.toHex}',
+        'padding-left': '12px',
+        'padding-right': '12px',
+        'margin-left': '0',
+        'margin-right': '0',
+        'margin-bottom': '12px',
+      };
+    }
+    if (attrName == 'p' && element.parent?.localName == 'blockquote') {
+      return {
+        'padding': '0',
+        'margin': '0',
+      };
+    }
+
+    if (attrName == 'figcaption') {
+      final style = theme.textTheme.bodySmall!.apply(fontSizeFactor: fontScale);
+
+      return {
+        'font-size': '${style.fontSize}px',
+        'color': '#${theme.colors.textSecondary.toHex}',
+      };
     }
 
     return null;

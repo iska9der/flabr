@@ -1,20 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../presentation/theme/theme.dart';
 import '../cubit/scroll_cubit.dart';
 
 /// До того как использовать, нужно
 /// создать [ScrollCubit] выше по дереву
-class FloatingScrollToTopButton extends StatefulWidget {
+class FloatingScrollToTopButton extends StatelessWidget {
   const FloatingScrollToTopButton({super.key});
-
-  @override
-  State<FloatingScrollToTopButton> createState() =>
-      _FloatingScrollToTopButtonState();
-}
-
-class _FloatingScrollToTopButtonState extends State<FloatingScrollToTopButton> {
-  ValueNotifier<bool> isVisible = ValueNotifier(false);
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +16,7 @@ class _FloatingScrollToTopButtonState extends State<FloatingScrollToTopButton> {
     );
 
     return AnimatedOpacity(
-      duration: context.read<ScrollCubit>().duration,
+      duration: AppStyles.hideDuration,
       opacity: visible ? 1 : 0,
       child: IgnorePointer(
         ignoring: !visible,

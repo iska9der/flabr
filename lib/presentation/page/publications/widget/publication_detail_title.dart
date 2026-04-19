@@ -18,8 +18,8 @@ class PublicationDetailTitle extends StatelessWidget {
         padding: padding,
         child: SelectableText(
           (publication as PublicationCommon).titleHtml,
-          textAlign: TextAlign.left,
-          style: Theme.of(context).textTheme.titleLarge,
+          textAlign: .left,
+          style: context.theme.textTheme.headlineSmall,
         ),
       ),
     };

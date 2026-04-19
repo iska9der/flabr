@@ -25,6 +25,9 @@ class HighlightView extends StatefulWidget {
   /// [All available themes](https://github.com/pd4d10/highlight/blob/master/flutter_highlight/lib/themes)
   final Map<String, TextStyle> theme;
 
+  /// Decoration
+  final Decoration? decoration;
+
   /// Padding
   final EdgeInsetsGeometry padding;
 
@@ -50,6 +53,7 @@ class HighlightView extends StatefulWidget {
     super.key,
     this.language,
     this.theme = const {},
+    this.decoration,
     this.padding = EdgeInsets.zero,
     this.textStyle,
     int tabSize = 8, // https://github.com/flutter/flutter/issues/50087
@@ -206,8 +210,8 @@ class _HighlightViewState extends State<HighlightView> {
     final bgColor = widget.theme[HighlightView._rootKey]?.backgroundColor ??
         HighlightView._defaultBackgroundColor;
 
-    return ColoredBox(
-      color: bgColor,
+    return DecoratedBox(
+      decoration: widget.decoration ?? BoxDecoration(color: bgColor),
       child: Padding(
         padding: widget.padding,
         child: FutureBuilder<List<TextSpan>>(

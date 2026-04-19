@@ -3,7 +3,7 @@ part of 'flow_publication_list_cubit.dart';
 class FlowPublicationListState extends PublicationListState
     with EquatableMixin {
   const FlowPublicationListState({
-    super.status = PublicationListStatus.initial,
+    super.status = .initial,
     super.error = '',
     super.page = 1,
     super.response = const ListResponse<Publication>(),
@@ -17,7 +17,7 @@ class FlowPublicationListState extends PublicationListState
   final FlowFilter filter;
 
   FlowPublicationListState copyWith({
-    PublicationListStatus? status,
+    LoadingStatus? status,
     String? error,
     int? page,
     ListResponse<Publication>? response,

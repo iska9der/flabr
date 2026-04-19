@@ -82,7 +82,7 @@ class TrackerPublicationsView extends StatelessWidget {
             },
           ),
           _ => ListView(
-            children: List.filled(6, const TrackerSkeletonWidget()),
+            children: .filled(6, const TrackerSkeletonWidget()),
           ),
         },
       ),
@@ -98,10 +98,10 @@ class TrackerPublicationWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = context.theme;
-    final isUnread = model.isUnread;
+    final anyUnread = model.isUnread;
 
     return FlabrCard(
-      color: isUnread ? theme.colors.cardHighlight : null,
+      color: anyUnread ? theme.colors.cardHighlight : null,
       onTap: () => context.router.push(
         PublicationFlowRoute(type: model.publicationType, id: model.id),
       ),
@@ -125,7 +125,6 @@ class TrackerPublicationWidget extends StatelessWidget {
                     PublicationStatIconButton(
                       icon: Icons.chat_bubble_rounded,
                       value: model.commentsCount.compact(),
-                      isHighlighted: isUnread,
                       onTap: () {
                         context.router.push(
                           PublicationFlowRoute(
@@ -140,14 +139,13 @@ class TrackerPublicationWidget extends StatelessWidget {
                         );
                       },
                     ),
-                    if (isUnread)
+                    if (anyUnread)
                       PublicationStatIconButton(
-                        icon: Icons.add,
-                        value: model.unreadCommentsCount.compact(),
-                        isHighlighted: true,
-                        color: context.theme.colors.highlight,
+                        value: '+${model.unreadCommentsCount.compact()}',
+                        color: theme.colors.accentPositive,
 
                         /// TODO: onTap с навигацией до первого непрочитанного комментария
+                        // onTap: () {},
                       ),
                   ],
                 ),
@@ -166,7 +164,7 @@ class TrackerPublicationWidget extends StatelessWidget {
                     .mark(
                       id: model.id,
                       isMarked: isChecked ?? false,
-                      isUnreaded: isUnread,
+                      isUnreaded: anyUnread,
                     ),
                   );
                 },

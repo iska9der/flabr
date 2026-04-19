@@ -10,10 +10,12 @@ import '../../../../data/model/filter/filter.dart';
 import '../../../../di/di.dart';
 import '../../../../feature/publication_list/publication_list.dart';
 import '../../../../feature/scroll/scroll.dart';
+import '../../../theme/theme.dart';
 import '../../../widget/enhancement/progress_indicator.dart';
 import '../../../widget/enhancement/refresh_indicator.dart';
 import '../../../widget/error_widget.dart';
 import '../../../widget/filter/common_filters_widget.dart';
+import '../../../widget/navigation/navigation.dart';
 import 'widget/hub_profile_card_widget.dart';
 
 @RoutePage(name: HubDetailPage.routeName)
@@ -63,8 +65,7 @@ class HubDetailPageView extends StatelessWidget {
     );
 
     return Scaffold(
-      floatingActionButton: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
+      floatingActionButton: FloatingContainer(
         children: [
           const FloatingScrollToTopButton(),
           FloatingFilterButton(
@@ -73,7 +74,7 @@ class HubDetailPageView extends StatelessWidget {
                 BlocBuilder<HubPublicationListCubit, HubPublicationListState>(
                   builder: (context, state) {
                     return CommonFiltersWidget(
-                      isLoading: state.status == PublicationListStatus.loading,
+                      isLoading: state.status == .loading,
                       sort: state.filter.sort,
                       filterOption: switch (state.filter.sort) {
                         Sort.byBest => state.filter.period,
@@ -108,10 +109,17 @@ class HubDetailPageView extends StatelessWidget {
               physics: scrollPhysics,
               slivers: [
                 FlabrSliverRefreshIndicator(onRefresh: listCubit.reset),
-                SliverToBoxAdapter(
-                  child: HubProfileCardWidget(profile: state.profile),
+                SliverPadding(
+                  padding: AppInsets.screenPaddingExtended,
+                  sliver: SliverMainAxisGroup(
+                    slivers: [
+                      SliverToBoxAdapter(
+                        child: HubProfileCardWidget(profile: state.profile),
+                      ),
+                      const _HubArticleListView(),
+                    ],
+                  ),
                 ),
-                const _HubArticleListView(),
               ],
             ),
           );

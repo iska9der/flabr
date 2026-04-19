@@ -12,7 +12,7 @@ class PublicationStatsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return switch (publication.type) {
-      PublicationType.article || PublicationType.news => ArticleStatsWidget(
+      PublicationType.article || PublicationType.news => CommonStatsWidget(
         complexity: (publication as PublicationCommon).complexity,
         readingTime: (publication as PublicationCommon).readingTime,
         readingCount: publication.statistics.readingCount,
@@ -25,8 +25,8 @@ class PublicationStatsWidget extends StatelessWidget {
   }
 }
 
-class ArticleStatsWidget extends StatelessWidget {
-  const ArticleStatsWidget({
+class CommonStatsWidget extends StatelessWidget {
+  const CommonStatsWidget({
     super.key,
     this.complexity,
     this.readingCount = 0,
@@ -68,17 +68,22 @@ class _ComplexityStat extends StatelessWidget {
     final theme = context.theme;
 
     final Color color = switch (complexity) {
-      PublicationComplexity.low => theme.colors.publicationComplexityLow,
-      PublicationComplexity.medium => theme.colors.publicationComplexityMedium,
-      PublicationComplexity.high => theme.colors.publicationComplexityHight,
+      .low => theme.colors.complexityLow,
+      .medium => theme.colors.complexityMedium,
+      .high => theme.colors.complexityHigh,
     };
 
     final IconData icon = switch (complexity) {
-      PublicationComplexity.low => Icons.light_mode_rounded,
-      PublicationComplexity.medium => Icons.filter_drama_rounded,
-      PublicationComplexity.high => Icons.thunderstorm_rounded,
+      .low => Icons.light_mode_rounded,
+      .medium => Icons.filter_drama_rounded,
+      .high => Icons.thunderstorm_rounded,
     };
 
-    return PublicationStat(text: complexity.label, icon: icon, color: color);
+    return PublicationStat(
+      text: complexity.label,
+      textColor: color,
+      icon: icon,
+      iconColor: color,
+    );
   }
 }

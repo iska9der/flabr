@@ -18,7 +18,7 @@ class CompanyCardWidget extends StatelessWidget {
   const CompanyCardWidget({
     super.key,
     required this.company,
-    this.renderType = RenderType.plain,
+    this.renderType = .plain,
   });
 
   final Company company;
@@ -30,27 +30,29 @@ class CompanyCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = context.theme;
+
+    final baseHubsStyle = theme.textTheme.bodySmall!;
+    final hubLinkStyle = baseHubsStyle.copyWith(color: theme.colors.primary);
+
     final stats = company.statistics;
-    final hubLinkStyle = context.theme.textTheme.bodySmall?.copyWith(
-      color: context.theme.colors.primary,
-    );
 
     return FlabrCard(
       onTap: () => moveToDetails(context),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: .start,
         children: [
           Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            spacing: 12,
+            crossAxisAlignment: .start,
             children: [
               CardAvatarWidget(
                 imageUrl: company.imageUrl,
                 placeholderIcon: AppIcons.companyPlaceholder,
               ),
-              const SizedBox(width: 12),
               Expanded(
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: .start,
                   children: [
                     CardTitleWidget(
                       title: company.titleHtml,
@@ -59,45 +61,65 @@ class CompanyCardWidget extends StatelessWidget {
                     if (company.descriptionHtml.isNotEmpty)
                       HtmlWidget(
                         company.descriptionHtml,
-                        textStyle: context.theme.textTheme.labelMedium,
+                        textStyle: theme.textTheme.labelMedium,
                       ),
+                    if (company.commonHubs.isNotEmpty) ...[
+                      const SizedBox(height: 14),
+                      Transform.translate(
+                        offset: const Offset(-4, -6),
+                        child: Wrap(
+                          spacing: 2,
+                          crossAxisAlignment: .center,
+                          children: [
+                            Padding(
+                              padding: const .symmetric(
+                                horizontal: 4,
+                                vertical: 6,
+                              ),
+                              child: Text(
+                                'Пишет в хабы:',
+                                style: baseHubsStyle,
+                              ),
+                            ),
+                            ...company.commonHubs.map((hub) {
+                              var title = hub.title;
+                              if (hub.isProfiled) {
+                                title += '*';
+                              }
+
+                              final route =
+                                  switch (hub.type.isCorporative) {
+                                        true => CompanyDashboardRoute(
+                                          alias: hub.alias,
+                                        ),
+                                        false => HubDashboardRoute(
+                                          alias: hub.alias,
+                                        ),
+                                      }
+                                      as PageRouteInfo;
+
+                              return InkWell(
+                                onTap: () => getIt<AppRouter>().navigate(route),
+                                borderRadius: AppStyles.cardBorderRadius,
+                                child: Padding(
+                                  padding: const .symmetric(
+                                    horizontal: 4,
+                                    vertical: 6,
+                                  ),
+                                  child: Text(title, style: hubLinkStyle),
+                                ),
+                              );
+                            }),
+                          ].toList(),
+                        ),
+                      ),
+                    ],
                   ],
                 ),
               ),
             ],
           ),
-          if (company.commonHubs.isNotEmpty) ...[
-            const SizedBox(height: 10),
-            const Text('Пишет в хабы:'),
-            Wrap(
-              spacing: 14,
-              children: company.commonHubs.map((hub) {
-                var title = hub.title;
-                if (hub.isProfiled) {
-                  title += '*';
-                }
-
-                final route =
-                    switch (hub.type.isCorporative) {
-                          true => CompanyDashboardRoute(
-                            alias: hub.alias,
-                          ),
-                          false => HubDashboardRoute(alias: hub.alias),
-                        }
-                        as PageRouteInfo;
-
-                return InkWell(
-                  onTap: () => getIt<AppRouter>().navigate(route),
-                  borderRadius: AppStyles.cardBorderRadius,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8),
-                    child: Text(title, style: hubLinkStyle),
-                  ),
-                );
-              }).toList(),
-            ),
-          ],
-          const SizedBox(height: 10),
+          const SizedBox(height: 8),
           Row(
             children: [
               Expanded(

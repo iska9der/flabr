@@ -1,24 +1,22 @@
 part of 'user_cubit.dart';
 
-enum UserStatus { initial, loading, success, failure }
-
 class UserState with EquatableMixin {
   const UserState({
     required this.login,
-    this.status = UserStatus.initial,
+    this.status = .initial,
     this.error = '',
     required this.model,
     this.whoisModel = UserWhois.empty,
   });
 
   final String login;
-  final UserStatus status;
+  final LoadingStatus status;
   final String error;
   final User model;
   final UserWhois whoisModel;
 
   UserState copyWith({
-    UserStatus? status,
+    LoadingStatus? status,
     String? error,
     User? model,
     UserWhois? whoisModel,

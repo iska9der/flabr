@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 
 import '../../data/exception/exception.dart';
 import '../../data/model/list_response_model.dart';
+import '../../data/model/loading_status_enum.dart';
 import '../../data/model/publication/publication.dart';
 import '../../data/model/user/user.dart';
 import '../../feature/publication_list/publication_list.dart';
@@ -23,7 +24,7 @@ class UserPublicationListCubit
       return;
     }
 
-    emit(state.copyWith(status: PublicationListStatus.loading));
+    emit(state.copyWith(status: .loading));
 
     try {
       final response = await repository.fetchUserPublications(
@@ -34,7 +35,7 @@ class UserPublicationListCubit
 
       emit(
         state.copyWith(
-          status: PublicationListStatus.success,
+          status: .success,
           response: state.response.merge(response, getId: (ref) => ref.id),
           page: state.page + 1,
         ),
@@ -43,7 +44,7 @@ class UserPublicationListCubit
       emit(
         state.copyWith(
           error: e.parseException('Не удалось получить статьи'),
-          status: PublicationListStatus.failure,
+          status: .failure,
         ),
       );
 

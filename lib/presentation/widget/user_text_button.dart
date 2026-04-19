@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../../core/component/router/router.dart';
 import '../../data/model/user_base.dart';
+import '../extension/extension.dart';
 import '../theme/theme.dart';
 import 'card_avatar_widget.dart';
 import 'dialog/dialog.dart';
@@ -20,10 +21,10 @@ class UserTextButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextButton(
-      style: Theme.of(context).textButtonTheme.style!.copyWith(
-        alignment: Alignment.centerLeft,
-        padding: const WidgetStatePropertyAll(EdgeInsets.zero),
-        visualDensity: const VisualDensity(vertical: -4, horizontal: -4),
+      style: context.theme.textButtonTheme.style!.copyWith(
+        alignment: .centerLeft,
+        padding: const WidgetStatePropertyAll(.zero),
+        visualDensity: const .new(vertical: -4, horizontal: -4),
       ),
       onPressed: () {
         context.router.push(UserDashboardRoute(alias: user.alias));
@@ -32,7 +33,7 @@ class UserTextButton extends StatelessWidget {
         showProfileDialog(context, child: UserProfileDialog(user: user));
       },
       child: Wrap(
-        crossAxisAlignment: WrapCrossAlignment.center,
+        crossAxisAlignment: .center,
         children: [
           CardAvatarWidget(
             imageUrl: user.avatarUrl,
@@ -40,8 +41,8 @@ class UserTextButton extends StatelessWidget {
           ),
           const SizedBox(width: 8),
           Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: .start,
+            mainAxisSize: .min,
             children: [
               Text(user.alias),
               if (subtitle != null) subtitle!,

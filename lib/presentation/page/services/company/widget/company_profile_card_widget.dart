@@ -6,10 +6,11 @@ import '../../../../../data/model/stat_type_enum.dart';
 import '../../../../../data/repository/repository.dart';
 import '../../../../../di/di.dart';
 import '../../../../../feature/profile_subscribe/profile_subscribe.dart';
+import '../../../../extension/extension.dart';
 import '../../../../theme/theme.dart';
 import '../../../../widget/card_avatar_widget.dart';
 import '../../../../widget/enhancement/card.dart';
-import '../../../../widget/profile_stat_widget.dart';
+import '../../../../widget/profile_stat_detail_widget.dart';
 
 class CompanyProfileCardWidget extends StatefulWidget {
   const CompanyProfileCardWidget({super.key, required this.card});
@@ -46,13 +47,15 @@ class _CompanyProfileCardWidgetState extends State<CompanyProfileCardWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = context.theme;
+
     var card = widget.card;
     var stats = card.statistics;
 
     return FlabrCard(
       padding: AppInsets.profileCardPadding,
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+        crossAxisAlignment: .stretch,
         children: [
           Row(
             children: [
@@ -63,14 +66,14 @@ class _CompanyProfileCardWidgetState extends State<CompanyProfileCardWidget> {
               const SizedBox(width: 20),
               Expanded(
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  mainAxisAlignment: .spaceEvenly,
                   children: [
-                    ProfileStatWidget(
+                    ProfileStatDetailWidget(
                       type: StatType.rating,
                       title: 'Рейтинг',
                       value: stats.rating,
                     ),
-                    ProfileStatWidget(
+                    ProfileStatDetailWidget(
                       title: 'Подписчиков',
                       value: stats.subscribersCount,
                     ),
@@ -82,15 +85,11 @@ class _CompanyProfileCardWidgetState extends State<CompanyProfileCardWidget> {
           const SizedBox(height: 16),
           Text(
             card.titleHtml,
-            textAlign: TextAlign.left,
-            style: Theme.of(context).textTheme.labelLarge,
+            textAlign: .left,
+            style: theme.textTheme.headlineSmall,
           ),
-          const SizedBox(height: 8),
-          HtmlWidget(
-            card.descriptionHtml,
-            textStyle: Theme.of(context).textTheme.bodySmall,
-          ),
-          const SizedBox(height: 8),
+          HtmlWidget(card.descriptionHtml),
+          const SizedBox(height: 16),
           SubscribeButton(
             alias: card.alias,
             isSubscribed: (card.relatedData as CompanyRelatedData).isSubscribed,
