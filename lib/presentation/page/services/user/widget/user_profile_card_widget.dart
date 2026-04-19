@@ -26,13 +26,13 @@ class _UserProfileCardWidgetState extends State<UserProfileCardWidget> {
 
   @override
   void initState() {
+    super.initState();
+
     /// Регистрируем репозиторий подписки для [SubscribeButton]
     getIt.allowReassignment = true;
     getIt.registerFactory<SubscriptionRepository>(
       () => UserSubscriptionRepository(getIt()),
     );
-
-    super.initState();
   }
 
   @override
@@ -48,6 +48,8 @@ class _UserProfileCardWidgetState extends State<UserProfileCardWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = context.theme;
+
     return FlabrCard(
       child: Column(
         crossAxisAlignment: .stretch,
@@ -76,6 +78,25 @@ class _UserProfileCardWidgetState extends State<UserProfileCardWidget> {
                 ],
               ),
             ],
+          ),
+          const SizedBox(height: 16),
+          if (user.fullname.isNotEmpty)
+            FittedBox(
+              fit: .scaleDown,
+              alignment: .topLeft,
+              child: Text(
+                user.fullname,
+                style: theme.textTheme.headlineSmall,
+              ),
+            ),
+          Text(
+            '@${user.alias}',
+            style: theme.textTheme.titleSmall,
+          ),
+          const SizedBox(height: 12),
+          Text(
+            user.speciality.isNotEmpty ? user.speciality : 'Пользователь',
+            style: theme.textTheme.labelLarge,
           ),
           BlocBuilder<ProfileBloc, ProfileState>(
             builder: (context, state) {

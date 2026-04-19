@@ -6,7 +6,6 @@ import '../../../../bloc/company/company_cubit.dart';
 import '../../../../core/component/router/router.dart';
 import '../../../../di/di.dart';
 import '../../../../feature/scaffold/scaffold.dart';
-import '../../../theme/theme.dart';
 import '../../../widget/dashboard_drawer_link_widget.dart';
 import 'company_detail_page.dart';
 
@@ -40,32 +39,23 @@ class CompanyDashboardPageView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final companyCubit = context.read<CompanyCubit>();
-
     return AutoTabsRouter.tabBar(
       routes: [CompanyDetailRoute()],
       builder: (context, child, controller) {
         return Scaffold(
           key: context.read<ScaffoldCubit>().key,
           appBar: AppBar(
-            title: Text(companyCubit.state.alias),
-            bottom: PreferredSize(
-              preferredSize: const Size.fromHeight(AppDimensions.tabBarHeight),
-              child: SizedBox(
-                height: AppDimensions.tabBarHeight,
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: TabBar(
-                    controller: controller,
-                    isScrollable: true,
-                    padding: EdgeInsets.zero,
-                    dividerColor: Colors.transparent,
-                    tabs: const [
-                      DashboardDrawerLinkWidget(title: CompanyDetailPage.title),
-                    ],
-                  ),
-                ),
-              ),
+            leading: const AutoLeadingButton(),
+            titleSpacing: 0,
+            title: TabBar(
+              controller: controller,
+              tabAlignment: .start,
+              isScrollable: true,
+              padding: EdgeInsets.zero,
+              dividerColor: Colors.transparent,
+              tabs: const [
+                DashboardDrawerLinkWidget(title: CompanyDetailPage.title),
+              ],
             ),
           ),
           body: SafeArea(child: child),

@@ -9,7 +9,6 @@ import '../../../../core/component/router/router.dart';
 import '../../../../data/model/loading_status_enum.dart';
 import '../../../../di/di.dart';
 import '../../../../feature/scaffold/scaffold.dart';
-import '../../../theme/theme.dart';
 import '../../../widget/dashboard_drawer_link_widget.dart';
 import '../../../widget/enhancement/enhancement.dart';
 import '../../../widget/error_widget.dart';
@@ -108,8 +107,6 @@ class UserDashboardView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final userCubit = context.read<UserCubit>();
-
     return AutoTabsRouter.tabBar(
       routes: [
         UserDetailRoute(),
@@ -121,33 +118,26 @@ class UserDashboardView extends StatelessWidget {
         return Scaffold(
           key: context.read<ScaffoldCubit>().key,
           appBar: AppBar(
-            title: Text(userCubit.state.login),
-            bottom: PreferredSize(
-              preferredSize: const Size.fromHeight(AppDimensions.tabBarHeight),
-              child: SizedBox(
-                height: AppDimensions.tabBarHeight,
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: TabBar(
-                    controller: controller,
-                    isScrollable: true,
-                    padding: EdgeInsets.zero,
-                    dividerColor: Colors.transparent,
-                    tabs: const [
-                      DashboardDrawerLinkWidget(title: UserDetailPage.title),
-                      DashboardDrawerLinkWidget(
-                        title: UserPublicationListPage.title,
-                      ),
-                      DashboardDrawerLinkWidget(
-                        title: UserCommentListPage.title,
-                      ),
-                      DashboardDrawerLinkWidget(
-                        title: UserBookmarkListPage.title,
-                      ),
-                    ],
-                  ),
+            leading: const AutoLeadingButton(),
+            titleSpacing: 0,
+            title: TabBar(
+              controller: controller,
+              tabAlignment: .start,
+              isScrollable: true,
+              padding: .zero,
+              dividerColor: Colors.transparent,
+              tabs: const [
+                DashboardDrawerLinkWidget(title: UserDetailPage.title),
+                DashboardDrawerLinkWidget(
+                  title: UserPublicationListPage.title,
                 ),
-              ),
+                DashboardDrawerLinkWidget(
+                  title: UserCommentListPage.title,
+                ),
+                DashboardDrawerLinkWidget(
+                  title: UserBookmarkListPage.title,
+                ),
+              ],
             ),
           ),
           body: SafeArea(child: child),

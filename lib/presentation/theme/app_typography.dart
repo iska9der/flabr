@@ -28,9 +28,9 @@ abstract final class AppTypography {
         fontSize: 14,
         fontWeight: .w500,
       ),
-      titleSmall: textTheme.titleSmall?.copyWith(fontWeight: .w500),
-      titleMedium: textTheme.titleMedium?.copyWith(fontWeight: .w500),
-      titleLarge: textTheme.titleLarge?.copyWith(fontWeight: .w600),
+      titleSmall: textTheme.titleSmall!.copyWith(fontWeight: .w500),
+      titleMedium: textTheme.titleMedium!.copyWith(fontWeight: .w500),
+      titleLarge: textTheme.titleLarge!.copyWith(fontWeight: .w600),
       headlineSmall: textTheme.headlineSmall?.copyWith(
         fontFamily: fontGeologica,
         fontWeight: .w400,

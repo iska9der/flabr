@@ -5,18 +5,17 @@ import 'package:flutter/material.dart';
 import 'constants.dart';
 import 'responsive.dart';
 
-const appCardTheme = CardThemeData(
+const appCardThemeData = CardThemeData(
   elevation: 1,
   margin: AppInsets.cardMargin,
   shape: LinearBorder(),
 );
 
-const appAppBarTheme = AppBarTheme(
+const appAppBarThemeData = AppBarThemeData(
   surfaceTintColor: Colors.transparent,
   elevation: 0,
   scrolledUnderElevation: AppDimensions.underElevation,
   toolbarHeight: AppDimensions.toolBarHeight,
-  titleTextStyle: TextStyle(fontSize: 18, fontWeight: .w500),
 );
 
 const appPageTransitionsTheme = PageTransitionsTheme(
@@ -100,7 +99,7 @@ const appChipThemeData = ChipThemeData(
   shape: RoundedRectangleBorder(borderRadius: AppStyles.buttonBorderRadius),
 );
 
-const dialogTheme = DialogThemeData(
+const dialogThemeData = DialogThemeData(
   shape: RoundedRectangleBorder(borderRadius: AppStyles.dialogBorderRadius),
 );
 

@@ -113,7 +113,7 @@ class _DashboardAppBar extends StatelessWidget {
     final updates = context.select((ProfileBloc bloc) => bloc.state.updates);
 
     return ColoredBox(
-      color: context.theme.colorScheme.surfaceContainer,
+      color: context.theme.appBarTheme.backgroundColor!,
       child: Row(
         crossAxisAlignment: .stretch,
         children: [

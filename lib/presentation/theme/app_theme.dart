@@ -33,9 +33,12 @@ abstract class AppTheme {
     );
 
     data = data.copyWith(
-      cardTheme: appCardTheme,
-      appBarTheme: appAppBarTheme.copyWith(
-        titleTextStyle: appAppBarTheme.titleTextStyle?.apply(
+      cardTheme: appCardThemeData,
+      appBarTheme: appAppBarThemeData.copyWith(
+        backgroundColor: scheme.surfaceContainer,
+        foregroundColor: scheme.onSurface,
+        titleTextStyle: textTheme.titleMedium!.copyWith(
+          fontSize: 18,
           color: scheme.onSurface,
         ),
       ),
@@ -68,8 +71,10 @@ abstract class AppTheme {
       switchTheme: appSwitchThemeData,
       sliderTheme: appSliderThemeData,
       chipTheme: appChipThemeData,
-      dialogTheme: dialogTheme,
-      navigationBarTheme: navigationBarThemeData,
+      dialogTheme: dialogThemeData,
+      navigationBarTheme: navigationBarThemeData.copyWith(
+        backgroundColor: scheme.surfaceContainer,
+      ),
       bottomSheetTheme: bottomSheetThemeData,
       listTileTheme: listTileThemeData,
     );

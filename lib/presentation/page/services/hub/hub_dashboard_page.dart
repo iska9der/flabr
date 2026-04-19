@@ -6,7 +6,6 @@ import '../../../../bloc/hub/hub_cubit.dart';
 import '../../../../core/component/router/router.dart';
 import '../../../../di/di.dart';
 import '../../../../feature/scaffold/scaffold.dart';
-import '../../../theme/theme.dart';
 import '../../../widget/dashboard_drawer_link_widget.dart';
 import 'hub_detail_page.dart';
 
@@ -46,27 +45,21 @@ class HubDashboardPageView extends StatelessWidget {
         return Scaffold(
           key: context.read<ScaffoldCubit>().key,
           appBar: AppBar(
-            title: BlocBuilder<HubCubit, HubState>(
-              builder: (context, state) {
-                return Text(state.profile.titleHtml);
-              },
-            ),
-            bottom: PreferredSize(
-              preferredSize: const Size.fromHeight(AppDimensions.tabBarHeight),
-              child: SizedBox(
-                height: AppDimensions.tabBarHeight,
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: TabBar(
-                    controller: controller,
-                    isScrollable: true,
-                    padding: EdgeInsets.zero,
-                    dividerColor: Colors.transparent,
-                    tabs: const [
-                      DashboardDrawerLinkWidget(title: HubDetailPage.name),
-                    ],
+            leading: const AutoLeadingButton(),
+            titleSpacing: 0,
+            title: Align(
+              alignment: .centerLeft,
+              child: TabBar(
+                controller: controller,
+                tabAlignment: .start,
+                isScrollable: true,
+                padding: .zero,
+                dividerColor: Colors.transparent,
+                tabs: const [
+                  DashboardDrawerLinkWidget(
+                    title: HubDetailPage.name,
                   ),
-                ),
+                ],
               ),
             ),
           ),
