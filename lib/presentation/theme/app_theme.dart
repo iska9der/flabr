@@ -26,6 +26,7 @@ abstract class AppTheme {
       useMaterial3: true,
       colorScheme: scheme,
       brightness: scheme.brightness,
+      materialTapTargetSize: .shrinkWrap,
       scaffoldBackgroundColor: scheme.surface,
       canvasColor: scheme.surface,
       textTheme: textTheme,

@@ -10,8 +10,8 @@ import '../../../../widget/enhancement/card.dart';
 import '../../../../widget/profile_stat_card_widget.dart';
 import '../../../publications/publication_detail_page.dart';
 
-class UserCardWidget extends StatelessWidget {
-  const UserCardWidget({super.key, required this.model});
+class UserListCardWidget extends StatelessWidget {
+  const UserListCardWidget({super.key, required this.model});
 
   final User model;
 
@@ -44,7 +44,7 @@ class _UserCard extends StatelessWidget {
     final theme = context.theme;
 
     final model =
-        context.findAncestorWidgetOfExactType<UserCardWidget>()?.model ??
+        context.findAncestorWidgetOfExactType<UserListCardWidget>()?.model ??
         User.empty;
 
     return Row(
@@ -67,9 +67,7 @@ class _UserCard extends StatelessWidget {
                     if (model.fullname.isNotEmpty) const TextSpan(text: ' '),
                     TextSpan(
                       text: '@${model.alias}',
-                      style: theme.textTheme.labelMedium!.copyWith(
-                        color: theme.colors.textSecondary,
-                      ),
+                      style: theme.textTheme.labelLarge!,
                     ),
                   ],
                 ),
@@ -79,7 +77,9 @@ class _UserCard extends StatelessWidget {
               /// Специализация
               Text(
                 model.speciality.isNotEmpty ? model.speciality : 'Пользователь',
-                style: theme.textTheme.bodySmall,
+                style: theme.textTheme.bodySmall!.copyWith(
+                  color: theme.colors.textSecondary,
+                ),
               ),
 
               /// Последний пост
@@ -111,7 +111,7 @@ class _UserScore extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final model =
-        context.findAncestorWidgetOfExactType<UserCardWidget>()?.model ??
+        context.findAncestorWidgetOfExactType<UserListCardWidget>()?.model ??
         User.empty;
 
     return Row(

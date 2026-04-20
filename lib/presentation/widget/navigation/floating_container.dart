@@ -17,15 +17,16 @@ class FloatingContainer extends StatelessWidget {
     );
 
     final double padding = switch (navAlign) {
-      NavigationAlignment.start => 0,
-      NavigationAlignment.center => AppDimensions.navBarHeight + 16,
-      NavigationAlignment.end => AppDimensions.navBarHeight + 16,
+      .start => 0,
+      .center => AppDimensions.navBarHeight + 16,
+      .end => AppDimensions.navBarHeight + 16,
     };
 
     return Padding(
       padding: .only(bottom: padding),
       child: Column(
         mainAxisAlignment: .end,
+        spacing: 12,
         children: children,
       ),
     );

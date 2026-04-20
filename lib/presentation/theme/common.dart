@@ -77,13 +77,11 @@ final ListTileThemeData listTileThemeData = ListTileThemeData(
 );
 
 const appCheckboxThemeData = CheckboxThemeData(
-  materialTapTargetSize: .shrinkWrap,
   visualDensity: .compact,
   shape: RoundedRectangleBorder(borderRadius: AppStyles.checkboxBorderRadius),
 );
 
 const appSwitchThemeData = SwitchThemeData(
-  materialTapTargetSize: .shrinkWrap,
   padding: .zero,
 );
 

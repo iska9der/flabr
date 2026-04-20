@@ -17,7 +17,7 @@ class CompanyDetailsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: .start,
       children: [
         if (card.contacts.isNotEmpty)
           SectionContainerWidget(
@@ -31,7 +31,7 @@ class CompanyDetailsWidget extends StatelessWidget {
                           ? () => getIt<AppRouter>().launchUrl(contact.url)
                           : null,
                       child: Row(
-                        mainAxisSize: MainAxisSize.min,
+                        mainAxisSize: .min,
                         spacing: 10,
                         children: [
                           NetworkImageWidget(
@@ -57,7 +57,7 @@ class CompanyDetailsWidget extends StatelessWidget {
         SectionContainerWidget(
           title: 'Информация',
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+            crossAxisAlignment: .stretch,
             children: [
               if (card.information.siteUrl.isNotEmpty)
                 ListTile(

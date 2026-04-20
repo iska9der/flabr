@@ -106,6 +106,8 @@ class _DashboardAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = context.theme;
+
     final counters = context.select(
       (PublicationCountersBloc bloc) => bloc.state.counters,
     );
@@ -113,7 +115,7 @@ class _DashboardAppBar extends StatelessWidget {
     final updates = context.select((ProfileBloc bloc) => bloc.state.updates);
 
     return ColoredBox(
-      color: context.theme.appBarTheme.backgroundColor!,
+      color: theme.appBarTheme.backgroundColor!,
       child: Row(
         crossAxisAlignment: .stretch,
         children: [
@@ -148,6 +150,7 @@ class _DashboardAppBar extends StatelessWidget {
             ),
           ),
           Row(
+            mainAxisSize: .min,
             children: [
               IconButton(
                 icon: const Icon(Icons.search_rounded),
@@ -160,6 +163,7 @@ class _DashboardAppBar extends StatelessWidget {
                   icon: Badge.count(
                     count: updates.trackerUnreadCount,
                     isLabelVisible: updates.trackerUnreadCount > 0,
+                    offset: const .new(0, -4),
                     child: const Icon(Icons.notifications_outlined),
                   ),
                   tooltip: 'Трекер',

@@ -12,8 +12,8 @@ import '../../../../widget/card_title_widget.dart';
 import '../../../../widget/enhancement/card.dart';
 import '../../../../widget/profile_stat_card_widget.dart';
 
-class HubCardWidget extends StatelessWidget {
-  const HubCardWidget({
+class HubListCardWidget extends StatelessWidget {
+  const HubListCardWidget({
     super.key,
     required this.model,
     this.renderType = .plain,
