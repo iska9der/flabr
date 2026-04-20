@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 
 import '../../../../../data/model/hub/hub.dart';
 import '../../../../../data/model/stat_type_enum.dart';
@@ -86,16 +87,13 @@ class _HubProfileCardWidgetState extends State<HubProfileCardWidget> {
             textAlign: .left,
             style: theme.textTheme.headlineSmall,
           ),
+          const SizedBox(height: 4),
           Text(
             profile.descriptionHtml,
-            textAlign: .left,
             style: theme.textTheme.titleSmall,
           ),
           const SizedBox(height: 12),
-          Text(
-            profile.fullDescriptionHtml,
-            textAlign: .left,
-          ),
+          HtmlWidget(profile.fullDescriptionHtml),
           const SizedBox(height: 16),
           SubscribeButton(
             alias: profile.alias,

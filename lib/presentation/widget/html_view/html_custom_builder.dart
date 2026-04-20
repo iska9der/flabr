@@ -110,9 +110,10 @@ abstract class HtmlCustomStyles {
     if (isHeader) {
       return {
         'font-family': AppTypography.fontGeologica,
+        'line-height': '120%',
         'margin-top': switch (attrName) {
-          'h1' || 'h2' => '48px',
-          _ => '32px',
+          'h1' || 'h2' => '42px',
+          _ => '28px',
         },
         'margin-bottom': '0',
       };

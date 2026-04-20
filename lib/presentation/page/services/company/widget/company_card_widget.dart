@@ -58,11 +58,13 @@ class CompanyCardWidget extends StatelessWidget {
                       title: company.titleHtml,
                       renderType: renderType,
                     ),
-                    if (company.descriptionHtml.isNotEmpty)
+                    if (company.descriptionHtml.isNotEmpty) ...[
+                      const SizedBox(height: 4),
                       HtmlWidget(
                         company.descriptionHtml,
                         textStyle: theme.textTheme.labelMedium,
                       ),
+                    ],
                     if (company.commonHubs.isNotEmpty) ...[
                       const SizedBox(height: 14),
                       Transform.translate(

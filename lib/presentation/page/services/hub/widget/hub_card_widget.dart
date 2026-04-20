@@ -54,11 +54,13 @@ class HubCardWidget extends StatelessWidget {
                       title: model.titleHtml,
                       renderType: renderType,
                     ),
-                    if (model.descriptionHtml.isNotEmpty)
+                    if (model.descriptionHtml.isNotEmpty) ...[
+                      const SizedBox(height: 4),
                       Text(
                         model.descriptionHtml,
                         style: theme.textTheme.labelMedium,
                       ),
+                    ],
                     if (model.commonTags.isNotEmpty) ...[
                       const SizedBox(height: 14),
                       Wrap(

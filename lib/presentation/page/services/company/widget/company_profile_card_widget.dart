@@ -88,6 +88,7 @@ class _CompanyProfileCardWidgetState extends State<CompanyProfileCardWidget> {
             textAlign: .left,
             style: theme.textTheme.headlineSmall,
           ),
+          const SizedBox(height: 4),
           HtmlWidget(card.descriptionHtml),
           const SizedBox(height: 16),
           SubscribeButton(
