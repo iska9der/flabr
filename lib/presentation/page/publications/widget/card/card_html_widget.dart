@@ -3,7 +3,7 @@ import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart
 import 'package:html/dom.dart' as dom;
 
 import '../../../../../feature/image_action/widget/network_image_widget.dart';
-import '../../../../extension/context.dart';
+import '../../../../extension/extension.dart';
 import '../../../../theme/theme.dart';
 import '../../../../widget/html_view/html_view.dart';
 
@@ -24,7 +24,7 @@ class CardHtmlWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = context.theme;
-    final textStyle = theme.textTheme.bodyLarge!;
+    final textStyle = theme.appTypography.feedPublicationDescription;
 
     return HtmlWidget(
       textHtml,

@@ -8,6 +8,7 @@ abstract class FeedConfigModel with _$FeedConfigModel {
     @Default(true) bool isImageVisible,
     @Default(false) bool isDescriptionVisible,
     AppTextStyle? titleStyle,
+    AppTextStyle? descriptionStyle,
   }) = _FeedConfigModel;
 
   static const empty = FeedConfigModel();

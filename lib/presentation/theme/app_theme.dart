@@ -29,6 +29,7 @@ abstract class AppTheme {
 
     var appTypography = AppTypographyExtension.fromTextTheme(textTheme);
     final titleStyle = feedConfig.titleStyle;
+    final descriptionStyle = feedConfig.descriptionStyle;
 
     appTypography = appTypography.copyWith(
       feedPublicationTitle: appTypography.feedPublicationTitle.copyWith(
@@ -36,6 +37,12 @@ abstract class AppTheme {
         fontSize: titleStyle?.size,
         height: titleStyle?.height,
       ),
+      feedPublicationDescription: appTypography.feedPublicationDescription
+          .copyWith(
+            fontFamily: descriptionStyle?.family,
+            fontSize: descriptionStyle?.size,
+            height: descriptionStyle?.height,
+          ),
     );
 
     var data = ThemeData(

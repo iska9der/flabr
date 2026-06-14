@@ -143,40 +143,22 @@ class SettingsCubit extends Cubit<SettingsState> {
     emit(state.copyWith(feed: newConfig));
   }
 
-  void changeFeedTitleFontSize(double? fontSize) {
-    if (state.feed.titleStyle?.size == fontSize) {
+  void changeFeedTitleStyle(AppTextStyle? style) {
+    if (state.feed.titleStyle == style) {
       return;
     }
 
-    final newConfig = state.feed.copyWith(
-      titleStyle: (state.feed.titleStyle ?? AppTextStyle.empty).copyWith(
-        size: fontSize,
-      ),
-    );
+    final newConfig = state.feed.copyWith(titleStyle: style);
     _repository.saveFeed(newConfig);
     emit(state.copyWith(feed: newConfig));
   }
 
-  void changeFeedTitleFontHeight(double? fontHeight) {
-    if (state.feed.titleStyle?.height == fontHeight) {
+  void changeFeedDescriptionStyle(AppTextStyle? style) {
+    if (state.feed.descriptionStyle == style) {
       return;
     }
 
-    final newConfig = state.feed.copyWith(
-      titleStyle: (state.feed.titleStyle ?? AppTextStyle.empty).copyWith(
-        height: fontHeight,
-      ),
-    );
-    _repository.saveFeed(newConfig);
-    emit(state.copyWith(feed: newConfig));
-  }
-
-  void resetFeedTitleTypography() {
-    if (state.feed.titleStyle == null) {
-      return;
-    }
-
-    final newConfig = state.feed.copyWith(titleStyle: null);
+    final newConfig = state.feed.copyWith(descriptionStyle: style);
     _repository.saveFeed(newConfig);
     emit(state.copyWith(feed: newConfig));
   }

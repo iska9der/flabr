@@ -12,6 +12,8 @@ import 'widget/settings_checkbox_widget.dart';
 import 'widget/settings_nested_scaffold.dart';
 import 'widget/settings_section_widget.dart';
 
+const double _fontHeightMin = 1;
+
 class FeedSettingsView extends StatelessWidget {
   const FeedSettingsView({super.key});
 
@@ -25,6 +27,7 @@ class FeedSettingsView extends StatelessWidget {
           children: [
             SettingsFeedWidget(),
             FeedTitleTypographyWidget(),
+            FeedDescriptionTypographyWidget(),
           ],
         ),
         SettingsSectionWidget(
@@ -46,7 +49,6 @@ class SettingsFeedWidget extends StatelessWidget {
     final settingsCubit = context.read<SettingsCubit>();
 
     return SettingsCardWidget(
-      title: 'Карточки статей',
       child: Column(
         crossAxisAlignment: .start,
         mainAxisSize: .min,
@@ -70,131 +72,282 @@ class SettingsFeedWidget extends StatelessWidget {
   }
 }
 
-class FeedTitleTypographyWidget extends StatefulWidget {
+class FeedTitleTypographyWidget extends StatelessWidget {
   const FeedTitleTypographyWidget({super.key});
 
   @override
-  State<FeedTitleTypographyWidget> createState() =>
-      _FeedTitleTypographyWidgetState();
+  Widget build(BuildContext context) {
+    return _FeedTextStyleTypographyWidget(
+      title: 'Заголовок',
+      previewText: 'Пример заголовка публикации в ленте',
+      styleSelector: (state) => state.feed.titleStyle,
+      defaultStyleBuilder: (context) =>
+          _defaultTypography(context).feedPublicationTitle,
+      previewStyleBuilder: (context) =>
+          context.theme.appTypography.feedPublicationTitle,
+      onStyleChange: (context, style) =>
+          context.read<SettingsCubit>().changeFeedTitleStyle(style),
+      fontSizeMin: 18,
+      fontSizeMax: 30,
+      fontHeightMax: 1.3,
+    );
+  }
 }
 
-class _FeedTitleTypographyWidgetState extends State<FeedTitleTypographyWidget> {
-  double? _fontSize;
-  double? _fontHeight;
-  FeedConfigModel? _lastFeedConfig;
+class FeedDescriptionTypographyWidget extends StatelessWidget {
+  const FeedDescriptionTypographyWidget({super.key});
 
-  TextStyle _defaultStyle(BuildContext context) {
-    final textTheme = AppTypography.textTheme(
-      scheme: context.theme.colorScheme,
+  @override
+  Widget build(BuildContext context) {
+    return _FeedTextStyleTypographyWidget(
+      title: 'Короткое описание',
+      previewText: 'Короткое описание помогает быстро понять, о чем публикация',
+      styleSelector: (state) => state.feed.descriptionStyle,
+      defaultStyleBuilder: (context) =>
+          _defaultTypography(context).feedPublicationDescription,
+      previewStyleBuilder: (context) =>
+          context.theme.appTypography.feedPublicationDescription,
+      onStyleChange: (context, style) =>
+          context.read<SettingsCubit>().changeFeedDescriptionStyle(style),
+      fontSizeMin: 12,
+      fontSizeMax: 22,
+      fontHeightMax: 1.5,
     );
+  }
+}
 
-    return AppTypographyExtension.fromTextTheme(textTheme).feedPublicationTitle;
+AppTypographyExtension _defaultTypography(BuildContext context) {
+  final textTheme = AppTypography.textTheme(
+    scheme: context.theme.colorScheme,
+  );
+
+  return AppTypographyExtension.fromTextTheme(textTheme);
+}
+
+class _FeedTextStyleTypographyWidget extends StatelessWidget {
+  const _FeedTextStyleTypographyWidget({
+    required this.title,
+    required this.previewText,
+    required this.styleSelector,
+    required this.defaultStyleBuilder,
+    required this.previewStyleBuilder,
+    required this.onStyleChange,
+    required this.fontSizeMin,
+    required this.fontSizeMax,
+    required this.fontHeightMax,
+  });
+
+  final String title;
+  final String previewText;
+
+  /// Достает сохраненные настройки стиля из состояния
+  final AppTextStyle? Function(SettingsState state) styleSelector;
+
+  /// Стиль без пользовательских настроек, используется для fallback и сброса
+  final TextStyle Function(BuildContext context) defaultStyleBuilder;
+
+  /// Стиль из текущей темы с уже примененными пользовательскими настройками
+  final TextStyle Function(BuildContext context) previewStyleBuilder;
+
+  /// Сохраняет новые настройки стиля; null сбрасывает их к значениям темы
+  final void Function(BuildContext context, AppTextStyle? style) onStyleChange;
+
+  /// Минимальный размер шрифта для слайдера
+  final double fontSizeMin;
+
+  /// Максимальный размер шрифта для слайдера
+  final double fontSizeMax;
+
+  /// Максимальный межстрочный интервал для слайдера
+  final double fontHeightMax;
+
+  @override
+  Widget build(BuildContext context) {
+    final defaultStyle = defaultStyleBuilder(context);
+    final previewStyle = previewStyleBuilder(context);
+
+    return BlocBuilder<SettingsCubit, SettingsState>(
+      buildWhen: (previous, current) =>
+          styleSelector(previous) != styleSelector(current),
+      builder: (context, state) {
+        return _FeedTextStyleTypographyCard(
+          title: title,
+          previewText: previewText,
+          textStyle: styleSelector(state),
+          defaultStyle: defaultStyle,
+          previewStyle: previewStyle,
+          onStyleChange: onStyleChange,
+          fontSizeMin: fontSizeMin,
+          fontSizeMax: fontSizeMax,
+          fontHeightMax: fontHeightMax,
+        );
+      },
+    );
+  }
+}
+
+class _FeedTextStyleTypographyCard extends StatefulWidget {
+  const _FeedTextStyleTypographyCard({
+    required this.title,
+    required this.previewText,
+    required this.textStyle,
+    required this.defaultStyle,
+    required this.previewStyle,
+    required this.onStyleChange,
+    required this.fontSizeMin,
+    required this.fontSizeMax,
+    required this.fontHeightMax,
+  });
+
+  final String title;
+  final String previewText;
+
+  /// Сохраненные пользовательские настройки; null означает значения темы
+  final AppTextStyle? textStyle;
+
+  /// Стиль без пользовательских настроек, используется для fallback и сброса
+  final TextStyle defaultStyle;
+
+  /// Стиль для preview с учетом текущей темы
+  final TextStyle previewStyle;
+
+  /// Сохраняет новые настройки стиля; null сбрасывает их к значениям темы
+  final void Function(BuildContext context, AppTextStyle? style) onStyleChange;
+
+  /// Минимальный размер шрифта для слайдера
+  final double fontSizeMin;
+
+  /// Максимальный размер шрифта для слайдера
+  final double fontSizeMax;
+
+  /// Максимальный межстрочный интервал для слайдера
+  final double fontHeightMax;
+
+  @override
+  State<_FeedTextStyleTypographyCard> createState() =>
+      _FeedTextStyleTypographyCardState();
+}
+
+class _FeedTextStyleTypographyCardState
+    extends State<_FeedTextStyleTypographyCard> {
+  late double _fontSize;
+  late double _fontHeight;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _syncValues();
   }
 
-  void _syncValues(FeedConfigModel feedConfig, TextStyle defaultStyle) {
-    if (_lastFeedConfig == feedConfig) {
-      return;
-    }
+  @override
+  void didUpdateWidget(covariant _FeedTextStyleTypographyCard oldWidget) {
+    super.didUpdateWidget(oldWidget);
 
-    _fontSize = feedConfig.titleStyle?.size ?? defaultStyle.fontSize;
-    _fontHeight = feedConfig.titleStyle?.height ?? defaultStyle.height;
-    _lastFeedConfig = feedConfig;
+    if (oldWidget.textStyle != widget.textStyle ||
+        oldWidget.defaultStyle != widget.defaultStyle) {
+      _syncValues();
+    }
+  }
+
+  void _syncValues() {
+    _fontSize = _clamp(
+      widget.textStyle?.size ?? widget.defaultStyle.fontSize!,
+      min: widget.fontSizeMin,
+      max: widget.fontSizeMax,
+    );
+    _fontHeight = _clamp(
+      widget.textStyle?.height ?? widget.defaultStyle.height!,
+      min: _fontHeightMin,
+      max: widget.fontHeightMax,
+    );
+  }
+
+  void _reset(BuildContext context) {
+    setState(_syncValues);
+    widget.onStyleChange(context, null);
+  }
+
+  AppTextStyle _mergeStyle(AppTextStyle style) {
+    return (widget.textStyle ?? AppTextStyle.empty).merge(style);
+  }
+
+  double _clamp(
+    double value, {
+    required double min,
+    required double max,
+  }) {
+    return value.clamp(min, max).toDouble();
   }
 
   @override
   Widget build(BuildContext context) {
-    final defaultStyle = _defaultStyle(context);
-    final previewStyle = context.theme.appTypography.feedPublicationTitle;
-
     return SettingsCardWidget(
-      title: 'Заголовки',
+      title: widget.title,
       actions: [
         IconButton(
           tooltip: 'Вернуть значения по умолчанию',
-          onPressed: () {
-            setState(() {
-              _fontSize = defaultStyle.fontSize;
-              _fontHeight = defaultStyle.height;
-              _lastFeedConfig = null;
-            });
-            context.read<SettingsCubit>().resetFeedTitleTypography();
-          },
+          onPressed: () => _reset(context),
           icon: const Icon(Icons.restart_alt_rounded),
         ),
       ],
-      child: BlocBuilder<SettingsCubit, SettingsState>(
-        buildWhen: (previous, current) =>
-            previous.feed.titleStyle != current.feed.titleStyle,
-        builder: (context, state) {
-          _syncValues(state.feed, defaultStyle);
-          final fontSize = _fontSize!;
-          final fontHeight = _fontHeight!;
-
-          return Column(
-            crossAxisAlignment: .stretch,
-            mainAxisSize: .min,
-            children: [
-              _FeedTitleSlider(
-                label: 'Размер шрифта',
-                value: fontSize,
-                min: 18,
-                max: 30,
-                divisions: 12,
-                valueFormatter: (value) => value.toStringAsFixed(0),
-                onChanged: (value) {
-                  setState(() {
-                    _fontSize = value;
-                  });
-                },
-                onChangeEnd: (value) => context
-                    .read<SettingsCubit>()
-                    .changeFeedTitleFontSize(value),
+      child: Column(
+        crossAxisAlignment: .stretch,
+        mainAxisSize: .min,
+        children: [
+          _FeedTitleSlider(
+            label: 'Размер шрифта',
+            value: _fontSize,
+            min: widget.fontSizeMin,
+            max: widget.fontSizeMax,
+            divisions: (widget.fontSizeMax - widget.fontSizeMin).round(),
+            valueFormatter: (value) => value.toStringAsFixed(0),
+            onChanged: (value) => setState(() => _fontSize = value),
+            onChangeEnd: (value) => widget.onStyleChange(
+              context,
+              _mergeStyle(AppTextStyle(size: value)),
+            ),
+          ),
+          _FeedTitleSlider(
+            label: 'Межстрочный интервал',
+            value: _fontHeight,
+            min: _fontHeightMin,
+            max: widget.fontHeightMax,
+            divisions: ((widget.fontHeightMax - _fontHeightMin) * 20).round(),
+            valueFormatter: (value) => value.toStringAsFixed(2),
+            onChanged: (value) => setState(() => _fontHeight = value),
+            onChangeEnd: (value) => widget.onStyleChange(
+              context,
+              _mergeStyle(AppTextStyle(height: value)),
+            ),
+          ),
+          Padding(
+            padding: const .symmetric(horizontal: 16.0),
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                color: context.theme.colorScheme.surfaceContainer,
+                borderRadius: .circular(8),
               ),
-              _FeedTitleSlider(
-                label: 'Межстрочный интервал',
-                value: fontHeight,
-                min: 1,
-                max: 1.5,
-                divisions: 10,
-                valueFormatter: (value) => value.toStringAsFixed(2),
-                onChanged: (value) {
-                  setState(() {
-                    _fontHeight = value;
-                  });
-                },
-                onChangeEnd: (value) => context
-                    .read<SettingsCubit>()
-                    .changeFeedTitleFontHeight(value),
-              ),
-              Padding(
-                padding: const .symmetric(horizontal: 16.0),
-                child: DecoratedBox(
-                  decoration: BoxDecoration(
-                    color: context.theme.colorScheme.surfaceContainer,
-                    borderRadius: .circular(8),
-                  ),
-                  child: Padding(
-                    padding: const .all(12.0),
-                    child: Text(
-                      'Пример заголовка публикации в ленте',
-                      style: previewStyle.copyWith(
-                        fontSize: fontSize,
-                        height: fontHeight,
-                      ),
-                    ),
+              child: Padding(
+                padding: const .all(12.0),
+                child: Text(
+                  widget.previewText,
+                  style: widget.previewStyle.copyWith(
+                    fontSize: _fontSize,
+                    height: _fontHeight,
                   ),
                 ),
               ),
-              const SizedBox(height: 8),
-            ],
-          );
-        },
+            ),
+          ),
+          const SizedBox(height: 8),
+        ],
       ),
     );
   }
 }
 
-class _FeedTitleSlider extends StatefulWidget {
+class _FeedTitleSlider extends StatelessWidget {
   const _FeedTitleSlider({
     required this.label,
     required this.value,
@@ -210,33 +363,18 @@ class _FeedTitleSlider extends StatefulWidget {
   final double value;
   final double min;
   final double max;
+
+  /// Количество фиксированных шагов между min и max.
   final int divisions;
+
+  /// Форматирует текущее значение рядом с названием настройки.
   final String Function(double value) valueFormatter;
+
+  /// Обновляет локальное значение во время перемещения слайдера.
   final ValueChanged<double> onChanged;
+
+  /// Сохраняет итоговое значение после завершения перемещения.
   final ValueChanged<double> onChangeEnd;
-
-  @override
-  State<_FeedTitleSlider> createState() => _FeedTitleSliderState();
-}
-
-class _FeedTitleSliderState extends State<_FeedTitleSlider> {
-  late double value;
-
-  @override
-  void initState() {
-    super.initState();
-
-    value = widget.value;
-  }
-
-  @override
-  void didUpdateWidget(covariant _FeedTitleSlider oldWidget) {
-    super.didUpdateWidget(oldWidget);
-
-    if (oldWidget.value != widget.value) {
-      value = widget.value;
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -252,12 +390,12 @@ class _FeedTitleSliderState extends State<_FeedTitleSlider> {
             children: [
               Expanded(
                 child: Text(
-                  widget.label,
+                  label,
                   style: theme.textTheme.bodyMedium,
                 ),
               ),
               Text(
-                widget.valueFormatter(value),
+                valueFormatter(value),
                 style: theme.textTheme.labelLarge?.copyWith(
                   color: theme.colors.textSecondary,
                 ),
@@ -266,18 +404,13 @@ class _FeedTitleSliderState extends State<_FeedTitleSlider> {
           ),
         ),
         Slider(
-          label: widget.label,
+          label: label,
           value: value,
-          min: widget.min,
-          max: widget.max,
-          divisions: widget.divisions,
-          onChanged: (newValue) {
-            setState(() {
-              value = newValue;
-            });
-            widget.onChanged(newValue);
-          },
-          onChangeEnd: widget.onChangeEnd,
+          min: min,
+          max: max,
+          divisions: divisions,
+          onChanged: onChanged,
+          onChangeEnd: onChangeEnd,
         ),
       ],
     );
