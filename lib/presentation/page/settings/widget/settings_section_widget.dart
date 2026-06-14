@@ -6,10 +6,12 @@ class SettingsSectionWidget extends StatelessWidget {
   const SettingsSectionWidget({
     super.key,
     this.title,
+    this.titleTopPadding = 28,
     this.children = const [],
   });
 
   final String? title;
+  final double titleTopPadding;
   final List<Widget> children;
 
   @override
@@ -21,7 +23,7 @@ class SettingsSectionWidget extends StatelessWidget {
       children: [
         if (title != null)
           Padding(
-            padding: const .only(top: 28, bottom: 4),
+            padding: .only(top: titleTopPadding, bottom: 4),
             child: Text(title!, style: textTheme.headlineLarge),
           ),
         Wrap(runSpacing: 4, children: children),
