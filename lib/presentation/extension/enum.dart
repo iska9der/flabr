@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 import '../../data/model/publication/publication.dart';
 import '../../data/model/stat_type_enum.dart';
-import '../theme/app_colors.dart';
+import '../theme/extension/app_colors_extension.dart';
 
 extension StatTypeExtension on StatType {
-  Color? getColorByScore(num score, AppColors colors) {
+  Color? getColorByScore(num score, AppColorsExtension colors) {
     if (score >= 0) {
       return _getPositiveColor(colors);
     }
@@ -13,7 +13,7 @@ extension StatTypeExtension on StatType {
     return _getNegaviteColor(colors);
   }
 
-  Color? _getPositiveColor(AppColors colors) {
+  Color? _getPositiveColor(AppColorsExtension colors) {
     return switch (this) {
       .score => colors.accentPositive,
       .rating => colors.mulberry,
@@ -21,14 +21,14 @@ extension StatTypeExtension on StatType {
     };
   }
 
-  Color? _getNegaviteColor(AppColors colors) => switch (this) {
+  Color? _getNegaviteColor(AppColorsExtension colors) => switch (this) {
     .score => colors.accentDanger,
     _ => null,
   };
 }
 
 extension PublicationFormatExtension on PublicationFormat {
-  Color getColor(AppColors colors) => switch (this) {
+  Color getColor(AppColorsExtension colors) => switch (this) {
     .example || .digest || .opinion || .review => colors.portage,
     .faq || .roadmap || .tutorial => colors.sorbus,
     .interview || .reportage => colors.apple,

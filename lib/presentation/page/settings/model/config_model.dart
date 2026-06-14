@@ -4,6 +4,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'config_model.freezed.dart';
 part 'config_model.g.dart';
+part 'app_text_style_model.dart';
 part 'feed_config_model.dart';
 part 'misc_config_model.dart';
 part 'publication_config_model.dart';

@@ -1,46 +1,62 @@
 import 'package:flutter/material.dart';
 
-import 'app_colors.dart';
+import '../page/settings/model/config_model.dart';
 import 'app_scheme.dart';
 import 'app_typography.dart';
 import 'common.dart';
+import 'extension/app_colors_extension.dart';
+import 'extension/app_typography_extension.dart';
 
 abstract class AppTheme {
-  static ThemeData get light => createThemeData(
-    scheme: AppSchemeLight.scheme,
-    colors: AppSchemeLight.colors,
+  static ThemeData light(FeedConfigModel feedConfig) => createThemeData(
+    appScheme: AppSchemeLight.scheme,
+    appColors: AppSchemeLight.colors,
+    feedConfig: feedConfig,
   );
 
-  static ThemeData get dark => createThemeData(
-    scheme: AppSchemeDark.scheme,
-    colors: AppSchemeDark.colors,
+  static ThemeData dark(FeedConfigModel feedConfig) => createThemeData(
+    appScheme: AppSchemeDark.scheme,
+    appColors: AppSchemeDark.colors,
+    feedConfig: feedConfig,
   );
 
   static ThemeData createThemeData({
-    required ColorScheme scheme,
-    required AppColors colors,
+    required ColorScheme appScheme,
+    required AppColorsExtension appColors,
+    FeedConfigModel feedConfig = FeedConfigModel.empty,
   }) {
-    var textTheme = AppTypography.textTheme(scheme: scheme);
+    var textTheme = AppTypography.textTheme(scheme: appScheme);
+
+    var appTypography = AppTypographyExtension.fromTextTheme(textTheme);
+    final titleStyle = feedConfig.titleStyle;
+
+    appTypography = appTypography.copyWith(
+      feedPublicationTitle: appTypography.feedPublicationTitle.copyWith(
+        fontFamily: titleStyle?.family,
+        fontSize: titleStyle?.size,
+        height: titleStyle?.height,
+      ),
+    );
 
     var data = ThemeData(
       useMaterial3: true,
-      colorScheme: scheme,
-      brightness: scheme.brightness,
+      colorScheme: appScheme,
+      brightness: appScheme.brightness,
       materialTapTargetSize: .shrinkWrap,
-      scaffoldBackgroundColor: scheme.surface,
-      canvasColor: scheme.surface,
+      scaffoldBackgroundColor: appScheme.surface,
+      canvasColor: appScheme.surface,
       textTheme: textTheme,
-      extensions: [colors],
+      extensions: [appColors, appTypography],
     );
 
     data = data.copyWith(
       cardTheme: appCardThemeData,
       appBarTheme: appAppBarThemeData.copyWith(
-        backgroundColor: scheme.surfaceContainer,
-        foregroundColor: scheme.onSurface,
+        backgroundColor: appScheme.surfaceContainer,
+        foregroundColor: appScheme.onSurface,
         titleTextStyle: textTheme.titleMedium!.copyWith(
           fontSize: 18,
-          color: scheme.onSurface,
+          color: appScheme.onSurface,
         ),
       ),
       drawerTheme: appDrawerThemeData,
@@ -54,18 +70,18 @@ abstract class AppTheme {
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: appOutlinedButtonStyle.merge(
           OutlinedButton.styleFrom(
-            disabledBackgroundColor: colors.disabled,
+            disabledBackgroundColor: appColors.disabled,
           ),
         ),
       ),
       filledButtonTheme: FilledButtonThemeData(
         style: appFilledButtonStyle.merge(
-          FilledButton.styleFrom(disabledBackgroundColor: colors.disabled),
+          FilledButton.styleFrom(disabledBackgroundColor: appColors.disabled),
         ),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: appElevatedButtonStyle.merge(
-          ElevatedButton.styleFrom(disabledBackgroundColor: colors.disabled),
+          ElevatedButton.styleFrom(disabledBackgroundColor: appColors.disabled),
         ),
       ),
       checkboxTheme: appCheckboxThemeData,
@@ -74,7 +90,7 @@ abstract class AppTheme {
       chipTheme: appChipThemeData,
       dialogTheme: dialogThemeData,
       navigationBarTheme: navigationBarThemeData.copyWith(
-        backgroundColor: scheme.surfaceContainer,
+        backgroundColor: appScheme.surfaceContainer,
       ),
       bottomSheetTheme: bottomSheetThemeData,
       listTileTheme: listTileThemeData,

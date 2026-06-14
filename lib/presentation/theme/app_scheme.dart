@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 
-import 'app_colors.dart';
+import 'extension/app_colors_extension.dart';
 
 abstract class AppSchemeLight {
   static ColorScheme get scheme => ColorScheme.fromSeed(
@@ -41,7 +41,7 @@ abstract class AppSchemeLight {
     outline: const Color(0xFF71787E),
   );
 
-  static final AppColors colors = AppColors(
+  static final AppColorsExtension colors = AppColorsExtension(
     secondary: const .new(0xFF4F616E),
     tertiary: const .new(0xFF2C88FF),
     error: const .new(0xFFBA1A1A),
@@ -104,7 +104,7 @@ class AppSchemeDark {
     outline: const Color(0xFF8B9198),
   );
 
-  static final AppColors colors = AppColors(
+  static final AppColorsExtension colors = AppColorsExtension(
     secondary: const .new(0xFFB6C9D8),
     tertiary: const .new(0xFF8ECDFF),
     error: const .new(0xFFFFB4AB),

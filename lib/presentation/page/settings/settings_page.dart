@@ -254,8 +254,212 @@ class SettingsFeedWidget extends StatelessWidget {
             onChanged: (bool value) =>
                 settingsCubit.changeFeedDescVisibility(isVisible: value),
           ),
+          const SizedBox(height: 12),
+          const FeedTitleTypographyWidget(),
         ],
       ),
+    );
+  }
+}
+
+class FeedTitleTypographyWidget extends StatefulWidget {
+  const FeedTitleTypographyWidget({super.key});
+
+  @override
+  State<FeedTitleTypographyWidget> createState() =>
+      _FeedTitleTypographyWidgetState();
+}
+
+class _FeedTitleTypographyWidgetState extends State<FeedTitleTypographyWidget> {
+  double? _fontSize;
+  double? _fontHeight;
+  FeedConfigModel? _lastFeedConfig;
+
+  TextStyle _defaultStyle(BuildContext context) {
+    final textTheme = AppTypography.textTheme(
+      scheme: context.theme.colorScheme,
+    );
+
+    return AppTypographyExtension.fromTextTheme(textTheme).feedPublicationTitle;
+  }
+
+  void _syncValues(FeedConfigModel feedConfig, TextStyle defaultStyle) {
+    if (_lastFeedConfig == feedConfig) {
+      return;
+    }
+
+    _fontSize = feedConfig.titleStyle?.size ?? defaultStyle.fontSize;
+    _fontHeight = feedConfig.titleStyle?.height ?? defaultStyle.height;
+    _lastFeedConfig = feedConfig;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final defaultStyle = _defaultStyle(context);
+    final previewStyle = context.theme.appTypography.feedPublicationTitle;
+
+    return BlocBuilder<SettingsCubit, SettingsState>(
+      buildWhen: (previous, current) =>
+          previous.feed.titleStyle != current.feed.titleStyle,
+      builder: (context, state) {
+        _syncValues(state.feed, defaultStyle);
+        final fontSize = _fontSize!;
+        final fontHeight = _fontHeight!;
+
+        return Column(
+          crossAxisAlignment: .stretch,
+          mainAxisSize: .min,
+          children: [
+            Padding(
+              padding: const .symmetric(horizontal: 16.0),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      'Заголовки',
+                      style: context.theme.textTheme.bodyLarge,
+                    ),
+                  ),
+                  IconButton(
+                    tooltip: 'Вернуть значения по умолчанию',
+                    onPressed: () {
+                      setState(() {
+                        _fontSize = defaultStyle.fontSize;
+                        _fontHeight = defaultStyle.height;
+                        _lastFeedConfig = null;
+                      });
+                      context.read<SettingsCubit>().resetFeedTitleTypography();
+                    },
+                    icon: const Icon(Icons.restart_alt_rounded),
+                  ),
+                ],
+              ),
+            ),
+            _FeedTitleSlider(
+              label: 'Размер шрифта',
+              value: fontSize,
+              min: 18,
+              max: 30,
+              divisions: 12,
+              onChanged: (value) {
+                setState(() {
+                  _fontSize = value;
+                });
+              },
+              onChangeEnd: (value) =>
+                  context.read<SettingsCubit>().changeFeedTitleFontSize(value),
+            ),
+            _FeedTitleSlider(
+              label: 'Межстрочный интервал',
+              value: fontHeight,
+              min: 1,
+              max: 1.5,
+              divisions: 10,
+              onChanged: (value) {
+                setState(() {
+                  _fontHeight = value;
+                });
+              },
+              onChangeEnd: (value) => context
+                  .read<SettingsCubit>()
+                  .changeFeedTitleFontHeight(value),
+            ),
+            Padding(
+              padding: const .symmetric(horizontal: 16.0),
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  color: context.theme.colorScheme.surfaceContainer,
+                  borderRadius: .circular(8),
+                ),
+                child: Padding(
+                  padding: const .all(12.0),
+                  child: Text(
+                    'Пример заголовка публикации в ленте',
+                    style: previewStyle.copyWith(
+                      fontSize: fontSize,
+                      height: fontHeight,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+}
+
+class _FeedTitleSlider extends StatefulWidget {
+  const _FeedTitleSlider({
+    required this.label,
+    required this.value,
+    required this.min,
+    required this.max,
+    required this.divisions,
+    required this.onChanged,
+    required this.onChangeEnd,
+  });
+
+  final String label;
+  final double value;
+  final double min;
+  final double max;
+  final int divisions;
+  final ValueChanged<double> onChanged;
+  final ValueChanged<double> onChangeEnd;
+
+  @override
+  State<_FeedTitleSlider> createState() => _FeedTitleSliderState();
+}
+
+class _FeedTitleSliderState extends State<_FeedTitleSlider> {
+  late double value;
+
+  @override
+  void initState() {
+    super.initState();
+
+    value = widget.value;
+  }
+
+  @override
+  void didUpdateWidget(covariant _FeedTitleSlider oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (oldWidget.value != widget.value) {
+      value = widget.value;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: .stretch,
+      mainAxisSize: .min,
+      children: [
+        Padding(
+          padding: const .only(left: 16.0, right: 16.0, top: 8.0),
+          child: Text(
+            '${widget.label}: ${value.toStringAsFixed(2)}',
+            style: context.theme.textTheme.bodyMedium,
+          ),
+        ),
+        Slider(
+          label: widget.label,
+          value: value,
+          min: widget.min,
+          max: widget.max,
+          divisions: widget.divisions,
+          onChanged: (newValue) {
+            setState(() {
+              value = newValue;
+            });
+            widget.onChanged(newValue);
+          },
+          onChangeEnd: widget.onChangeEnd,
+        ),
+      ],
     );
   }
 }
