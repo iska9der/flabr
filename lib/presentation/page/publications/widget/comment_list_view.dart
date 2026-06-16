@@ -1,7 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_fancy_tree_view/flutter_fancy_tree_view.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../bloc/publication/comment_list_cubit.dart';
@@ -74,8 +73,7 @@ class CommentTreeWidget extends StatefulWidget {
 
 class _CommentTreeWidgetState extends State<CommentTreeWidget> {
   late final ScrollController scrollController;
-  late final Comment root;
-  late final TreeController<Comment> treeController;
+  late Set<String> expandedCommentIds;
 
   final _parentKeys = <String, GlobalKey>{};
   final _history = OffsetHistory();
@@ -88,29 +86,97 @@ class _CommentTreeWidgetState extends State<CommentTreeWidget> {
     super.initState();
 
     scrollController = ScrollController();
+    expandedCommentIds = _collectExpandableCommentIds(widget.comments);
+  }
 
-    root = Comment(id: '0', children: widget.comments);
-    treeController = TreeController<Comment>(
-      roots: root.children,
-      childrenProvider: (comment) => comment.children,
-    )..expandAll();
+  @override
+  void didUpdateWidget(covariant CommentTreeWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (oldWidget.comments == widget.comments) {
+      return;
+    }
+
+    final newCommentIds = _collectExpandableCommentIds(widget.comments);
+    final oldCommentIds = _collectExpandableCommentIds(oldWidget.comments);
+
+    expandedCommentIds = {
+      ...expandedCommentIds.where(newCommentIds.contains),
+      ...newCommentIds.difference(oldCommentIds),
+    };
   }
 
   @override
   void dispose() {
     _history.close();
     scrollController.dispose();
-    treeController.dispose();
 
     super.dispose();
   }
 
+  Set<String> _collectExpandableCommentIds(List<Comment> comments) {
+    final ids = <String>{};
+
+    void collect(Comment comment) {
+      if (comment.children.isNotEmpty) {
+        ids.add(comment.id);
+        comment.children.forEach(collect);
+      }
+    }
+
+    comments.forEach(collect);
+
+    return ids;
+  }
+
+  GlobalKey? _keyFor(Comment comment) {
+    if (comment.childrenRaw.isNotEmpty) {
+      return _parentKeys.putIfAbsent(comment.id, GlobalKey.new);
+    }
+
+    return null;
+  }
+
+  List<Comment> _visibleComments() {
+    final visibleComments = <Comment>[];
+
+    void collect(Comment comment) {
+      visibleComments.add(comment);
+
+      if (!expandedCommentIds.contains(comment.id)) {
+        return;
+      }
+
+      comment.children.forEach(collect);
+    }
+
+    widget.comments.forEach(collect);
+
+    return visibleComments;
+  }
+
+  void _toggle(Comment comment) {
+    setState(() {
+      if (!expandedCommentIds.remove(comment.id)) {
+        expandedCommentIds.add(comment.id);
+      }
+    });
+  }
+
+  double _topPadding({required Comment comment, required int index}) {
+    if (index == 0) {
+      return 0;
+    }
+
+    if (comment.parentId.isNotEmpty) {
+      return 2;
+    }
+
+    return 8;
+  }
+
   /// добавляем в историю текущий оффсет скролла
-  void _saveToHistory({
-    required String id,
-    required double offset,
-    required String parentId,
-  }) {
+  void _saveToHistory({required String id, required String parentId}) {
     final key = _parentKeys[parentId];
     final box = key?.currentContext?.findRenderObject();
     if (box != null) {
@@ -157,7 +223,7 @@ class _CommentTreeWidgetState extends State<CommentTreeWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = context.theme;
+    final visibleComments = _visibleComments();
 
     return NotificationListener<UserScrollNotification>(
       onNotification: (notification) {
@@ -171,101 +237,43 @@ class _CommentTreeWidgetState extends State<CommentTreeWidget> {
       },
       child: Stack(
         children: [
-          TreeView<Comment>(
-            treeController: treeController,
+          CustomScrollView(
             controller: scrollController,
-            padding: const .fromLTRB(4, 4, 4, 16),
-            nodeBuilder: (BuildContext context, TreeEntry<Comment> entry) {
-              final comment = entry.node;
+            slivers: [
+              SliverPadding(
+                padding: const .fromLTRB(4, 4, 4, 16),
+                sliver: SliverList.builder(
+                  itemCount: visibleComments.length,
+                  itemBuilder: (context, index) {
+                    final comment = visibleComments[index];
 
-              final key = comment.childrenRaw.isNotEmpty ? GlobalKey() : null;
-              if (key != null) {
-                _parentKeys[comment.id] = key;
-              }
+                    return _CommentTreeItem(
+                      key: _keyFor(comment),
+                      comment: comment,
+                      isExpanded:
+                          comment.children.isEmpty ||
+                          expandedCommentIds.contains(comment.id),
+                      hasChildren: comment.children.isNotEmpty,
+                      topPadding: _topPadding(comment: comment, index: index),
+                      onToggle: () => _toggle(comment),
+                      onParentTapped: () {
+                        final parent = comment.parent;
+                        if (parent == null) {
+                          return;
+                        }
 
-              final authorColor = switch (comment.isPostAuthor) {
-                true => theme.colors.author,
-                false => null,
-              };
+                        _saveToHistory(id: comment.id, parentId: parent.id);
 
-              double topPadding = entry.index == 0
-                  ? 0
-                  : comment.parentId.isNotEmpty
-                  ? 2
-                  : 8;
-
-              return Padding(
-                key: key,
-                padding: .only(top: topPadding),
-
-                /// TODO: package deprecated
-                /// see: https://pub.dev/packages/flutter_fancy_tree_view
-                /// use: https://pub.dev/packages/two_dimensional_scrollables
-                child: TreeIndentation(
-                  entry: entry,
-                  guide: const IndentGuide(indent: 0),
-                  child: FlabrCard(
-                    margin: .zero,
-                    padding: .zero,
-                    color: authorColor,
-                    child: Column(
-                      crossAxisAlignment: .stretch,
-                      children: [
-                        Row(
-                          children: [
-                            Padding(
-                              padding: const .only(left: 8),
-                              child: UserTextButton(
-                                comment.author,
-                                subtitle: Text(
-                                  DateFormat.yMd().add_jm().format(
-                                    comment.publishedAt,
-                                  ),
-                                  style: theme.textTheme.labelSmall!.copyWith(
-                                    color: theme.colors.textSecondary,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            const Spacer(),
-                            ExpandIcon(
-                              key: GlobalObjectKey(comment),
-                              isExpanded: entry.isExpanded,
-                              onPressed: (_) => treeController.toggleExpansion(
-                                comment,
-                              ),
-                            ),
-                          ],
-                        ),
-                        if (entry.isExpanded)
-                          Column(
-                            crossAxisAlignment: .stretch,
-                            children: [
-                              if (comment.parent != null)
-                                CommentParent(
-                                  model: comment.parent!,
-                                  onParentTapped: () {
-                                    _saveToHistory(
-                                      id: comment.id,
-                                      offset: scrollController.offset,
-                                      parentId: comment.parent!.id,
-                                    );
-
-                                    _moveToParent(comment.parentId);
-                                  },
-                                ),
-                              CommentWidget(comment),
-                            ],
-                          ),
-                      ],
-                    ),
-                  ),
+                        _moveToParent(comment.parentId);
+                      },
+                    );
+                  },
                 ),
-              );
-            },
+              ),
+            ],
           ),
           Align(
-            alignment: Alignment.bottomRight,
+            alignment: .bottomRight,
             child: Padding(
               padding: const .all(8.0),
               child: StreamBuilder(
@@ -299,6 +307,88 @@ class _CommentTreeWidgetState extends State<CommentTreeWidget> {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _CommentTreeItem extends StatelessWidget {
+  const _CommentTreeItem({
+    super.key,
+    required this.comment,
+    required this.isExpanded,
+    required this.hasChildren,
+    required this.topPadding,
+    required this.onToggle,
+    required this.onParentTapped,
+  });
+
+  final Comment comment;
+  final bool isExpanded;
+  final bool hasChildren;
+  final double topPadding;
+  final VoidCallback onToggle;
+  final VoidCallback onParentTapped;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = context.theme;
+    final authorColor = switch (comment.isPostAuthor) {
+      true => theme.colors.author,
+      false => null,
+    };
+
+    return Padding(
+      padding: .only(top: topPadding),
+      child: FlabrCard(
+        margin: .zero,
+        padding: .zero,
+        color: authorColor,
+        child: Column(
+          crossAxisAlignment: .stretch,
+          children: [
+            Row(
+              children: [
+                Padding(
+                  padding: const .only(left: 8),
+                  child: UserTextButton(
+                    comment.author,
+                    subtitle: Text(
+                      DateFormat.yMd().add_jm().format(comment.publishedAt),
+                      style: theme.textTheme.labelSmall!.copyWith(
+                        color: theme.colors.textSecondary,
+                      ),
+                    ),
+                  ),
+                ),
+                const Spacer(),
+                Visibility(
+                  visible: hasChildren,
+                  maintainAnimation: true,
+                  maintainSize: true,
+                  maintainState: true,
+                  child: ExpandIcon(
+                    key: GlobalObjectKey(comment),
+                    isExpanded: isExpanded,
+                    onPressed: (_) => onToggle(),
+                  ),
+                ),
+              ],
+            ),
+            if (isExpanded)
+              Column(
+                crossAxisAlignment: .stretch,
+                children: [
+                  if (comment.parent != null)
+                    CommentParent(
+                      model: comment.parent!,
+                      onParentTapped: onParentTapped,
+                    ),
+                  CommentWidget(comment),
+                ],
+              ),
+          ],
+        ),
       ),
     );
   }
