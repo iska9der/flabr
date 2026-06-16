@@ -7,9 +7,9 @@ import '../../../theme/theme.dart';
 import '../../../widget/html_view/html_view_widget.dart';
 
 class CommentParent extends StatefulWidget {
-  const CommentParent({super.key, required this.parent, this.onParentTapped});
+  const CommentParent({super.key, required this.model, this.onParentTapped});
 
-  final CommentBase parent;
+  final CommentBase model;
   final VoidCallback? onParentTapped;
 
   @override
@@ -19,7 +19,7 @@ class CommentParent extends StatefulWidget {
 class _CommentParentState extends State<CommentParent> {
   final tag = UniqueKey();
 
-  CommentBase get parent => widget.parent;
+  CommentBase get model => widget.model;
 
   late TextStyle textStyle;
   late Color bgColor;
@@ -34,13 +34,13 @@ class _CommentParentState extends State<CommentParent> {
 
   @override
   Widget build(BuildContext context) {
-    final text = parse(parent.message).documentElement?.text ?? '';
+    final text = parse(model.message).documentElement?.text ?? '';
     if (text.isEmpty) {
       return const SizedBox();
     }
 
     final parentHtml = HtmlView(
-      textHtml: parent.message,
+      textHtml: model.message,
       renderMode: .column,
       padding: .zero,
     );
@@ -110,7 +110,7 @@ class _CommentParentState extends State<CommentParent> {
                                           ),
                                           children: [
                                             TextSpan(
-                                              text: parent.author.alias,
+                                              text: model.author.alias,
                                               style: textStyle.copyWith(
                                                 color: context
                                                     .theme

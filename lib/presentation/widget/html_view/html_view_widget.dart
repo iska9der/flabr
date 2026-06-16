@@ -344,6 +344,8 @@ abstract class CustomBuildOp {
 
     return BuildOp(
       onRenderBlock: (tree, placeholder) {
+        final constraints = BoxConstraints(minWidth: Device.getWidth(context));
+
         if (lang != null) {
           final maxRows = 5;
           final splittedText = text.split('\n');
@@ -360,7 +362,7 @@ abstract class CustomBuildOp {
             true => () => context.buildModalRoute(
               rootNavigator: true,
               child: ConstrainedBox(
-                constraints: .new(minWidth: Device.getWidth(context)),
+                constraints: constraints,
                 child: SingleChildScrollView(
                   scrollDirection: .horizontal,
                   child: HighlightView(
@@ -377,7 +379,7 @@ abstract class CustomBuildOp {
           };
 
           return ConstrainedBox(
-            constraints: .new(minWidth: Device.getWidth(context)),
+            constraints: constraints,
             child: Stack(
               alignment: .bottomLeft,
               children: [
@@ -394,9 +396,15 @@ abstract class CustomBuildOp {
                 if (isLong)
                   GestureDetector(
                     onTap: onTap,
-                    child: const Padding(
-                      padding: .only(left: 12, bottom: 6),
-                      child: Text('Показать полностью...'),
+                    child: Padding(
+                      padding: const .only(left: 12, bottom: 6),
+                      child: Text(
+                        'Показать полностью...',
+
+                        /// Если убрать стиль, то во время hero-анимации
+                        /// стиль не подцепится, и будет отображаться debug стиль
+                        style: theme.textTheme.bodyMedium,
+                      ),
                     ),
                   ),
               ],
@@ -405,7 +413,7 @@ abstract class CustomBuildOp {
         }
 
         return ConstrainedBox(
-          constraints: .new(minWidth: Device.getWidth(context)),
+          constraints: constraints,
           child: DecoratedBox(
             decoration: decoration,
             child: SingleChildScrollView(

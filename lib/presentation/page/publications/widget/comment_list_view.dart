@@ -243,7 +243,7 @@ class _CommentTreeWidgetState extends State<CommentTreeWidget> {
                             children: [
                               if (comment.parent != null)
                                 CommentParent(
-                                  parent: comment.parent!,
+                                  model: comment.parent!,
                                   onParentTapped: () {
                                     _saveToHistory(
                                       id: comment.id,
