@@ -46,7 +46,7 @@ extension UrlLauncherExtension on AppRouter {
       uri.host.contains('habr.com') || uri.host.contains('habrahabr.ru');
 
   static final Map<PublicationType, Set<String>> _publicationMatcher = {
-    .article: {'article/', 'articles/', 'blog/', 'blogs/'},
+    .article: {'article/', 'articles/', 'post/', 'blog/', 'blogs/'},
     .post: {'posts/'},
     .news: {'news/'},
   };
