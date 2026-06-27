@@ -10,8 +10,8 @@ import '../../../../widget/enhancement/card.dart';
 import '../../../../widget/profile_stat_card_widget.dart';
 import '../../../publications/publication_detail_page.dart';
 
-class UserCardWidget extends StatelessWidget {
-  const UserCardWidget({super.key, required this.model});
+class UserListCardWidget extends StatelessWidget {
+  const UserListCardWidget({super.key, required this.model});
 
   final User model;
 
@@ -41,31 +41,33 @@ class _UserCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = context.theme;
+
     final model =
-        context.findAncestorWidgetOfExactType<UserCardWidget>()?.model ??
+        context.findAncestorWidgetOfExactType<UserListCardWidget>()?.model ??
         User.empty;
 
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: .start,
       children: [
         /// Аватар
         CardAvatarWidget(imageUrl: model.avatarUrl),
         const SizedBox(width: 12),
         Expanded(
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: .start,
             children: [
               /// Полное имя
               /// Никнэйм
               RichText(
                 text: TextSpan(
-                  style: Theme.of(context).textTheme.titleSmall,
+                  style: theme.textTheme.titleMedium,
                   text: model.fullname,
                   children: [
-                    if (model.fullname.isNotEmpty) const TextSpan(text: ', '),
+                    if (model.fullname.isNotEmpty) const TextSpan(text: ' '),
                     TextSpan(
                       text: '@${model.alias}',
-                      style: Theme.of(context).textTheme.bodySmall,
+                      style: theme.textTheme.labelLarge!,
                     ),
                   ],
                 ),
@@ -75,15 +77,17 @@ class _UserCard extends StatelessWidget {
               /// Специализация
               Text(
                 model.speciality.isNotEmpty ? model.speciality : 'Пользователь',
-                style: Theme.of(context).textTheme.bodySmall,
+                style: theme.textTheme.bodySmall!.copyWith(
+                  color: theme.colors.textSecondary,
+                ),
               ),
 
               /// Последний пост
               if (!model.lastPost.isEmpty)
                 Padding(
-                  padding: const EdgeInsets.only(top: 10),
+                  padding: const .only(top: 10),
                   child: TextButton(
-                    style: TextButton.styleFrom(padding: EdgeInsets.zero),
+                    style: TextButton.styleFrom(padding: .zero),
                     onPressed: () => getIt<AppRouter>().pushWidget(
                       PublicationDetailPage(
                         id: model.lastPost.id,
@@ -107,11 +111,11 @@ class _UserScore extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final model =
-        context.findAncestorWidgetOfExactType<UserCardWidget>()?.model ??
+        context.findAncestorWidgetOfExactType<UserListCardWidget>()?.model ??
         User.empty;
 
     return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: .center,
       children: [
         Expanded(
           child: ProfileStatCardWidget(
@@ -123,7 +127,7 @@ class _UserScore extends StatelessWidget {
         Expanded(
           child: Tooltip(
             message: '${model.votesCount.compact()} голосов',
-            triggerMode: TooltipTriggerMode.tap,
+            triggerMode: .tap,
             child: ProfileStatCardWidget(
               type: StatType.score,
               title: 'Очки',

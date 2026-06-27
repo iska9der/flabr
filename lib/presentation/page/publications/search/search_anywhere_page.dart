@@ -15,9 +15,9 @@ import '../../../extension/extension.dart';
 import '../../../theme/theme.dart';
 import '../../../widget/enhancement/progress_indicator.dart';
 import '../../../widget/error_widget.dart';
-import '../../services/company/widget/company_card_widget.dart';
-import '../../services/hub/widget/hub_card_widget.dart';
-import '../../services/user/widget/user_card_widget.dart';
+import '../../services/company/widget/company_list_card_widget.dart';
+import '../../services/hub/widget/hub_list_card_widget.dart';
+import '../../services/user/widget/user_list_card_widget.dart';
 import '../widget/card/card.dart';
 
 @RoutePage(name: SearchAnywherePage.routeName)
@@ -208,15 +208,15 @@ class _SearchAnywhereViewState extends State<_SearchAnywhereView> {
                                 publication: model,
                                 renderType: .html,
                               ),
-                              SearchTarget.hubs => HubCardWidget(
+                              SearchTarget.hubs => HubListCardWidget(
                                 model: model,
                                 renderType: .html,
                               ),
-                              SearchTarget.companies => CompanyCardWidget(
+                              SearchTarget.companies => CompanyListCardWidget(
                                 company: model,
                                 renderType: .html,
                               ),
-                              SearchTarget.users => UserCardWidget(
+                              SearchTarget.users => UserListCardWidget(
                                 model: model,
                               ),
                               SearchTarget.comments => const Center(

@@ -69,12 +69,9 @@ class _ListViewState extends State<_ListView> {
                     child: Column(
                       crossAxisAlignment: .start,
                       children: [
-                        Padding(
-                          padding: const .only(bottom: 4),
-                          child: Text(
-                            model.titleHtml,
-                            style: theme.textTheme.titleSmall,
-                          ),
+                        Text(
+                          model.titleHtml,
+                          style: theme.textTheme.titleSmall,
                         ),
                         Row(
                           children: [

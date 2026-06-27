@@ -10,6 +10,7 @@ import '../../../core/component/router/router.dart';
 import '../../../core/constants/constants.dart';
 import '../../../di/di.dart';
 import '../../extension/extension.dart';
+import '../../page/settings/model/config_model.dart';
 import '../../theme/theme.dart';
 import '../config/config.dart';
 
@@ -39,14 +40,18 @@ class ApplicationView extends StatelessWidget {
         .select((SettingsCubit cubit) => cubit.state.misc.scrollVariant)
         .behavior;
 
+    final feedConfig = context.select<SettingsCubit, FeedConfigModel>(
+      (cubit) => cubit.state.feed,
+    );
+
     return MaterialApp.router(
       title: AppEnvironment.appName,
       // ignore: deprecated_member_use
       useInheritedMediaQuery: true,
       locale: locale,
       themeMode: themeMode,
-      theme: AppTheme.light,
-      darkTheme: AppTheme.dark,
+      theme: AppTheme.light(feedConfig),
+      darkTheme: AppTheme.dark(feedConfig),
       scrollBehavior: scrollBehavior,
       routerConfig: getIt<AppRouter>().config(
         deepLinkTransformer: (uri) {

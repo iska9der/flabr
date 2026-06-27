@@ -274,6 +274,7 @@ List<RedirectRoute> _newsRedirects() {
 
 List<RedirectRoute> _articlesRedirects() {
   List<String> externalPathList = [
+    '/article/:id',
     '/articles/:id',
     '/post/:id',
 
@@ -292,6 +293,10 @@ List<RedirectRoute> _articlesRedirects() {
           RedirectRoute(path: path, redirectTo: '/publication/article/:id'),
           RedirectRoute(
             path: '$path/comments',
+            redirectTo: '/publication/article/:id/comments',
+          ),
+          RedirectRoute(
+            path: '$path/comments/',
             redirectTo: '/publication/article/:id/comments',
           ),
         ],
@@ -327,6 +332,10 @@ List<RedirectRoute> _postsRedirects() {
           RedirectRoute(path: path, redirectTo: '/publication/post/:id'),
           RedirectRoute(
             path: '$path/comments',
+            redirectTo: '/publication/post/:id/comments',
+          ),
+          RedirectRoute(
+            path: '$path/comments/',
             redirectTo: '/publication/post/:id/comments',
           ),
         ],

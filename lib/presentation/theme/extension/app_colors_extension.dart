@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:theme_tailor_annotation/theme_tailor_annotation.dart';
 
-part 'app_colors.tailor.dart';
+part 'app_colors_extension.tailor.dart';
 
 @TailorMixin()
-class AppColors extends ThemeExtension<AppColors> with _$AppColorsTailorMixin {
-  AppColors({
+class AppColorsExtension extends ThemeExtension<AppColorsExtension>
+    with _$AppColorsExtensionTailorMixin {
+  AppColorsExtension({
     required this.secondary,
     required this.tertiary,
     required this.error,

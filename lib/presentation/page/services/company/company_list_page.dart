@@ -13,7 +13,7 @@ import '../../../theme/theme.dart';
 import '../../../widget/enhancement/progress_indicator.dart';
 import '../../../widget/error_widget.dart';
 import '../../../widget/navigation/navigation.dart';
-import 'widget/company_card_widget.dart';
+import 'widget/company_list_card_widget.dart';
 
 @RoutePage(name: CompanyListPage.routeName)
 class CompanyListPage extends StatelessWidget {
@@ -112,7 +112,7 @@ class CompanyListPageView extends StatelessWidget {
                     if (index < state.response.refs.length) {
                       final company = state.response.refs[index];
 
-                      return CompanyCardWidget(company: company);
+                      return CompanyListCardWidget(company: company);
                     }
 
                     Timer(

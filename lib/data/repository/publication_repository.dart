@@ -1,7 +1,11 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:injectable/injectable.dart';
 
+import '../../core/component/storage/storage.dart';
+import '../../core/constants/constants.dart';
+import '../exception/exception.dart';
 import '../model/comment/comment.dart';
 import '../model/filter/filter.dart';
 import '../model/list_response_model.dart';
@@ -12,9 +16,13 @@ import '../service/service.dart';
 
 @LazySingleton()
 class PublicationRepository {
-  PublicationRepository(this.service);
+  PublicationRepository(
+    this.service, {
+    @Named('sharedStorage') required CacheStorage storage,
+  }) : _storage = storage;
 
   final PublicationService service;
+  final CacheStorage _storage;
 
   Future<PublicationCounters> fetchCounters() async {
     final rawData = await service.fetchCounters();
@@ -80,6 +88,25 @@ class PublicationRepository {
     response = response.copyWith(refs: sortedList);
 
     return response;
+  }
+
+  /// Восстанавливает последний примененный фильтр моей ленты.
+  Future<FeedFilter?> restoreFeedFilter() async {
+    try {
+      final str = await _storage.read(CacheKeys.feedFilter);
+      if (str == null) {
+        throw const NotFoundException();
+      }
+
+      return FeedFilter.fromJson(jsonDecode(str));
+    } catch (_) {
+      _storage.delete(CacheKeys.feedFilter);
+      return null;
+    }
+  }
+
+  void saveFeedFilter(FeedFilter filter) {
+    _storage.write(CacheKeys.feedFilter, jsonEncode(filter));
   }
 
   /// Получение статей/новостей/постов

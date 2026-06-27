@@ -1,9 +1,5 @@
-import 'dart:convert';
-
 import 'package:equatable/equatable.dart';
 
-import '../../core/component/storage/storage.dart';
-import '../../core/constants/constants.dart';
 import '../../data/exception/exception.dart';
 import '../../data/model/filter/filter.dart';
 import '../../data/model/list_response_model.dart';
@@ -18,36 +14,20 @@ class FeedPublicationListCubit
   FeedPublicationListCubit({
     required super.repository,
     required super.languageRepository,
-
-    /// TODO: удалить зависимость
-    /// создать метод восстановления фильтра в репозитории [PublicationRepository]
-    required CacheStorage storage,
-  }) : _storage = storage,
-       super(const FeedPublicationListState()) {
+  }) : super(const FeedPublicationListState()) {
     _restoreFilter();
   }
-
-  final CacheStorage _storage;
 
   Future<void> _restoreFilter() async {
     emit(state.copyWith(status: .loading));
 
-    const key = CacheKeys.feedFilter;
     FeedPublicationListState newState = state;
-    try {
-      /// вспоминаем последний примененный фильтр в моей ленте
-      final str = await _storage.read(key);
-      if (str == null) {
-        throw const NotFoundException();
-      }
-
-      final lastFilter = FeedFilter.fromJson(jsonDecode(str));
+    final lastFilter = await repository.restoreFeedFilter();
+    if (lastFilter != null) {
       newState = newState.copyWith(filter: lastFilter);
-    } catch (_) {
-      _storage.delete(key);
-    } finally {
-      emit(newState.copyWith(status: .initial));
     }
+
+    emit(newState.copyWith(status: .initial));
   }
 
   @override
@@ -93,7 +73,7 @@ class FeedPublicationListCubit
       return;
     }
 
-    _storage.write(CacheKeys.feedFilter, jsonEncode(newFilter));
+    repository.saveFeedFilter(newFilter);
 
     emit(FeedPublicationListState(filter: newFilter));
   }

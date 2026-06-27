@@ -14,8 +14,8 @@ import '../../../../widget/card_title_widget.dart';
 import '../../../../widget/enhancement/card.dart';
 import '../../../../widget/profile_stat_card_widget.dart';
 
-class CompanyCardWidget extends StatelessWidget {
-  const CompanyCardWidget({
+class CompanyListCardWidget extends StatelessWidget {
+  const CompanyListCardWidget({
     super.key,
     required this.company,
     this.renderType = .plain,
@@ -58,11 +58,13 @@ class CompanyCardWidget extends StatelessWidget {
                       title: company.titleHtml,
                       renderType: renderType,
                     ),
-                    if (company.descriptionHtml.isNotEmpty)
+                    if (company.descriptionHtml.isNotEmpty) ...[
+                      const SizedBox(height: 4),
                       HtmlWidget(
                         company.descriptionHtml,
                         textStyle: theme.textTheme.labelMedium,
                       ),
+                    ],
                     if (company.commonHubs.isNotEmpty) ...[
                       const SizedBox(height: 14),
                       Transform.translate(

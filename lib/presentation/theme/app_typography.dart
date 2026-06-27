@@ -28,20 +28,30 @@ abstract final class AppTypography {
         fontSize: 14,
         fontWeight: .w500,
       ),
-      titleSmall: textTheme.titleSmall!.copyWith(fontWeight: .w500),
-      titleMedium: textTheme.titleMedium!.copyWith(fontWeight: .w500),
-      titleLarge: textTheme.titleLarge!.copyWith(fontWeight: .w600),
+      titleSmall: textTheme.titleSmall!.copyWith(
+        fontWeight: .w500,
+        height: 1.1,
+      ),
+      titleMedium: textTheme.titleMedium!.copyWith(
+        fontWeight: .w500,
+        height: 1.1,
+      ),
+      titleLarge: textTheme.titleLarge!.copyWith(
+        fontFamily: fontGeologica,
+        fontWeight: .w500,
+        height: 1.1,
+      ),
       headlineSmall: textTheme.headlineSmall?.copyWith(
         fontFamily: fontGeologica,
-        fontWeight: .w400,
+        height: 1.1,
       ),
       headlineMedium: textTheme.headlineMedium?.copyWith(
         fontFamily: fontGeologica,
-        fontWeight: .w500,
+        height: 1.1,
       ),
       headlineLarge: textTheme.headlineLarge?.copyWith(
         fontFamily: fontGeologica,
-        fontWeight: .w600,
+        height: 1.1,
       ),
     );
 

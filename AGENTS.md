@@ -1,13 +1,13 @@
-# CLAUDE.md
+# AGENTS.md
 
-This file provides guidance to Claude Code when working with this repository.
+This file provides guidance to Agents when working with this repository.
 
 ## Project Overview
 
 Flabr is an unofficial mobile client for habr.com built with Flutter. It supports Android, iOS, and Web platforms with features including dark/light themes, authorization, feed customization, and AI-powered article summaries using YandexGPT.
 
 **Architecture**: Clean Architecture with BLoC pattern
-**Key Technologies**: Flutter 3.35.6, auto_route, injectable/get_it, freezed
+**Key Technologies**: Flutter 3.41.0, Dart 3.11, auto_route, injectable/get_it, freezed
 
 ## Quick Reference
 
@@ -18,7 +18,7 @@ Flabr is an unofficial mobile client for habr.com built with Flutter. It support
 
 ## Critical Instructions
 
-**IMPORTANT**: This project uses FVM (Flutter Version Manager). All `flutter` and `dart` commands must be executed through `.fvm/flutter_sdk/bin/` path.
+**IMPORTANT**: This project uses FVM (Flutter Version Manager). All `flutter` and `dart` commands must be executed through `.fvm/flutter_sdk/bin/` path. Current Flutter version is defined in `.fvmrc` and `pubspec.yaml`.
 
 ### Code Generation
 
@@ -27,10 +27,17 @@ After modifying models, DI annotations, or routes, always run:
 .fvm/flutter_sdk/bin/flutter pub run build_runner build --delete-conflicting-outputs
 ```
 
+Do not edit generated files manually:
+- `*.g.dart`
+- `*.freezed.dart`
+- `*.gr.dart`
+- `*.config.dart`
+
 ### BLoC/Cubit Usage
 
 - **Never use `await`** when calling Cubit/Bloc methods from UI
 - Call methods without await (fire-and-forget)
+- If a returned `Future` must be intentionally ignored outside UI callbacks, use `unawaited(...)` instead of leaving it implicit
 - Use `BlocListener` or `BlocBuilder` to react to state changes
 - Always use shared `LoadingStatus` enum from `lib/data/model/loading_status_enum.dart`
 
@@ -39,6 +46,13 @@ After modifying models, DI annotations, or routes, always run:
 - Use triple-slash `///` for documentation comments (Dart convention)
 - Write comments in Russian, keep technical terms in their original language
 
+### Style & Analyzer
+
+- Follow `analysis_options.yaml`
+- Use single quotes, relative imports inside `lib/`, explicit return types, super parameters, and const constructors where possible
+- Preserve trailing commas; formatter is configured with `trailing_commas: preserve`
+- Run `.fvm/flutter_sdk/bin/flutter analyze` after non-trivial Dart changes
+
 ## Key Patterns
 
 1. **Dependency Injection**: `injectable` + `get_it` → Access via `getIt<Type>()`
@@ -46,6 +60,7 @@ After modifying models, DI annotations, or routes, always run:
 3. **Navigation**: `auto_route` for type-safe routing
 4. **Code Generation**: freezed, json_serializable, injectable, auto_route
 5. **Responsive Design**: `responsive_framework` for multi-device support
+6. **Workspace Packages**: Flutter/Dart workspace packages are declared in `pubspec.yaml`
 
 ## Project Structure
 
@@ -54,8 +69,9 @@ lib/
 ├── bloc/              # Business logic (BLoC/Cubit)
 ├── data/              # Data layer (models, repositories, services)
 ├── presentation/      # Presentation layer (pages, widgets, themes)
-│   └── app/          # App initialization & configuration
-├── feature/          # Self-contained feature modules (with cubit + widgets)
+│   ├── app.dart      # Main application widget
+│   └── app/          # App-level initialization/configuration helpers
+├── feature/          # Self-contained feature modules (with cubit + widgets), e.g. image_action, most_reading
 ├── core/             # Core infrastructure
 │   └── component/    # Shared components (router, logger, shortcuts, http, storage)
 └── di/               # Dependency injection setup
@@ -65,6 +81,13 @@ packages/
 ├── ya_summary/       # YandexGPT integration
 └── flutter_highlight/ # Custom syntax highlighting
 ```
+
+### Routing Notes
+
+- Router sources are in `lib/core/component/router/`
+- `router.dart` declares parts and shared router setup
+- `app_router.dart` contains `AppRouter` with `@AutoRouterConfig`
+- `router.gr.dart` is generated and must not be edited manually
 
 ## Git Workflow
 

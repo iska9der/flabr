@@ -37,12 +37,13 @@ class _PublicationHub extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var style = context.theme.textTheme.labelMedium!.copyWith(
-      color: context.theme.colors.textInactive,
-    );
+    final theme = context.theme;
 
+    var textStyle = theme.textTheme.labelMedium!.copyWith(
+      color: theme.colors.textInactive,
+    );
     if (hub.relatedData case HubRelatedData(isSubscribed: true)) {
-      style = style.copyWith(color: context.theme.colors.accentPositive);
+      textStyle = textStyle.copyWith(color: theme.colors.accentPositive);
     }
 
     var title = hub.title;
@@ -59,10 +60,10 @@ class _PublicationHub extends StatelessWidget {
 
     return InkWell(
       onTap: () => getIt<AppRouter>().navigate(route),
-      borderRadius: AppStyles.cardBorderRadius,
+      borderRadius: AppStyles.buttonBorderRadius,
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
-        child: Text(title, style: style, softWrap: true),
+        padding: const .symmetric(vertical: 4.0, horizontal: 8.0),
+        child: Text(title, style: textStyle, softWrap: true),
       ),
     );
   }

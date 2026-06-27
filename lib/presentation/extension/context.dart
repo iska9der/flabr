@@ -83,6 +83,8 @@ extension ModalExtension on BuildContext {
     bool rootNavigator = false,
     required Widget child,
   }) {
+    final theme = Theme.of(this);
+
     Widget body = Center(
       child: BackdropFilter(
         filter: .blur(sigmaX: 6, sigmaY: 6),
@@ -100,7 +102,10 @@ extension ModalExtension on BuildContext {
       PageRouteBuilder(
         opaque: false,
         barrierDismissible: true,
-        pageBuilder: (_, _, _) => body,
+        pageBuilder: (_, _, _) => Theme(
+          data: theme,
+          child: Material(type: MaterialType.transparency, child: body),
+        ),
       ),
     );
   }

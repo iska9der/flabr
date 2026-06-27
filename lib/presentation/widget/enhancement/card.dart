@@ -38,7 +38,7 @@ class FlabrCard extends StatelessWidget {
         shadowColor: theme.colorScheme.shadow,
         surfaceTintColor: cardColor,
         shape: cardTheme.shape,
-        clipBehavior: Clip.hardEdge,
+        clipBehavior: .hardEdge,
         child: InkWell(
           onTap: onTap,
           child: Padding(padding: cardPadding, child: child),

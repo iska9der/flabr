@@ -12,7 +12,7 @@ import '../../../theme/theme.dart';
 import '../../../widget/enhancement/progress_indicator.dart';
 import '../../../widget/error_widget.dart';
 import '../../../widget/navigation/navigation.dart';
-import 'widget/user_card_widget.dart';
+import 'widget/user_list_card_widget.dart';
 
 @RoutePage(name: UserListPage.routeName)
 class UserListPage extends StatelessWidget {
@@ -101,7 +101,7 @@ class UserListPageView extends StatelessWidget {
                 itemCount: users.length + (state.status == .loading ? 1 : 0),
                 itemBuilder: (context, i) {
                   if (i < users.length) {
-                    return UserCardWidget(model: state.users[i]);
+                    return UserListCardWidget(model: state.users[i]);
                   }
 
                   Timer(

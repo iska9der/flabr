@@ -57,7 +57,7 @@ class PublicationStatIconButton extends StatelessWidget {
       type: .transparency,
       child: InkWell(
         onTap: onTap,
-        borderRadius: AppStyles.cardBorderRadius,
+        borderRadius: AppStyles.buttonBorderRadius,
         child: Padding(
           padding: paddingResolved,
           child: Row(

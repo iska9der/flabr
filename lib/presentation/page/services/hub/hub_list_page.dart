@@ -13,7 +13,7 @@ import '../../../theme/theme.dart';
 import '../../../widget/enhancement/progress_indicator.dart';
 import '../../../widget/error_widget.dart';
 import '../../../widget/navigation/navigation.dart';
-import 'widget/hub_card_widget.dart';
+import 'widget/hub_list_card_widget.dart';
 
 @RoutePage(name: HubListPage.routeName)
 class HubListPage extends StatelessWidget {
@@ -100,7 +100,7 @@ class HubListPageView extends StatelessWidget {
                     if (index < state.list.refs.length) {
                       Hub item = state.list.refs[index];
 
-                      return HubCardWidget(model: item);
+                      return HubListCardWidget(model: item);
                     }
 
                     Timer(
