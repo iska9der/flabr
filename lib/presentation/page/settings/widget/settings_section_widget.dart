@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../extension/extension.dart';
+import '../../../theme/constants.dart';
 
 class SettingsSectionWidget extends StatelessWidget {
   const SettingsSectionWidget({
@@ -23,8 +24,12 @@ class SettingsSectionWidget extends StatelessWidget {
       children: [
         if (title != null)
           Padding(
-            padding: .only(top: titleTopPadding, bottom: 4),
-            child: Text(title!, style: textTheme.headlineLarge),
+            padding: .only(
+              left: AppInsets.cardPadding.left,
+              top: titleTopPadding,
+              bottom: AppInsets.cardPadding.bottom,
+            ),
+            child: Text(title!, style: textTheme.headlineMedium),
           ),
         Wrap(runSpacing: 4, children: children),
       ],

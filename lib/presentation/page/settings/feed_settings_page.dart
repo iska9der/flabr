@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -13,6 +14,18 @@ import 'widget/settings_nested_scaffold.dart';
 import 'widget/settings_section_widget.dart';
 
 const double _fontHeightMin = 1;
+
+@RoutePage()
+class FeedSettingsPage extends StatelessWidget {
+  const FeedSettingsPage({super.key});
+
+  static const String routePath = 'feed';
+
+  @override
+  Widget build(BuildContext context) {
+    return const FeedSettingsView();
+  }
+}
 
 class FeedSettingsView extends StatelessWidget {
   const FeedSettingsView({super.key});
@@ -87,7 +100,7 @@ class FeedTitleTypographyWidget extends StatelessWidget {
           context.theme.appTypography.feedPublicationTitle,
       onStyleChange: (context, style) =>
           context.read<SettingsCubit>().changeFeedTitleStyle(style),
-      fontSizeMin: 18,
+      fontSizeMin: 20,
       fontSizeMax: 30,
       fontHeightMax: 1.3,
     );
@@ -110,7 +123,7 @@ class FeedDescriptionTypographyWidget extends StatelessWidget {
       onStyleChange: (context, style) =>
           context.read<SettingsCubit>().changeFeedDescriptionStyle(style),
       fontSizeMin: 12,
-      fontSizeMax: 22,
+      fontSizeMax: 20,
       fontHeightMax: 1.5,
     );
   }

@@ -31,7 +31,6 @@ class ServicesPageView extends StatelessWidget {
           crossAxisCount: 3,
           mainAxisSpacing: 8,
           crossAxisSpacing: 8,
-          padding: const .symmetric(horizontal: 12, vertical: 12),
           children: [
             ServiceCard(
               title: HubListPage.name,

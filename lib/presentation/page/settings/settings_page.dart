@@ -1,20 +1,17 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
+import '../../../core/component/router/router.dart';
 import '../../extension/extension.dart';
 import '../../theme/theme.dart';
 import '../../widget/enhancement/enhancement.dart';
-import 'account_settings_page.dart';
-import 'feed_settings_page.dart';
-import 'interface_settings_page.dart';
-import 'publication_settings_page.dart';
 import 'widget/settings_section_widget.dart';
 
 @RoutePage()
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
 
-  static const String routePath = 'settings';
+  static const String routePath = '';
 
   @override
   Widget build(BuildContext context) {
@@ -28,27 +25,27 @@ class SettingsView extends StatelessWidget {
   static const _menuItems = [
     SettingsMenuItem(
       title: 'Аккаунт',
-      subtitle: 'Профиль, авторизация и YandexGPT',
+      subtitle: 'Профиль и интеграции',
       icon: Icons.person_outline_rounded,
-      page: AccountSettingsView(),
+      route: AccountSettingsRoute(),
     ),
     SettingsMenuItem(
       title: 'Интерфейс',
-      subtitle: 'Тема, язык интерфейса и язык публикаций',
+      subtitle: 'Внешний вид, скролл и языки',
       icon: Icons.tune_rounded,
-      page: InterfaceSettingsView(),
+      route: InterfaceSettingsRoute(),
     ),
     SettingsMenuItem(
       title: 'Лента',
-      subtitle: 'Карточки, заголовки, навигация и скролл',
+      subtitle: 'Карточки, заголовки и навигация',
       icon: Icons.view_agenda_outlined,
-      page: FeedSettingsView(),
+      route: FeedSettingsRoute(),
     ),
     SettingsMenuItem(
       title: 'Публикации',
-      subtitle: 'Чтение статей, изображения и WebView',
+      subtitle: 'Шрифты, видимость элементов',
       icon: Icons.article_outlined,
-      page: PublicationSettingsView(),
+      route: PublicationSettingsRoute(),
     ),
   ];
 
@@ -64,21 +61,13 @@ class SettingsView extends StatelessWidget {
                   .map(
                     (item) => SettingsMenuTile(
                       item: item,
-                      onTap: () => _pushSettingsPage(context, item.page),
+                      onTap: () => context.router.push(item.route),
                     ),
                   )
                   .toList(),
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  void _pushSettingsPage(BuildContext context, Widget page) {
-    Navigator.of(context).push(
-      MaterialPageRoute<void>(
-        builder: (_) => page,
       ),
     );
   }
@@ -89,13 +78,13 @@ class SettingsMenuItem {
     required this.title,
     required this.subtitle,
     required this.icon,
-    required this.page,
+    required this.route,
   });
 
   final String title;
   final String subtitle;
   final IconData icon;
-  final Widget page;
+  final PageRouteInfo route;
 }
 
 class SettingsMenuTile extends StatelessWidget {
@@ -113,7 +102,7 @@ class SettingsMenuTile extends StatelessWidget {
     final theme = context.theme;
 
     return FlabrCard(
-      margin: const .symmetric(vertical: 4.0),
+      margin: .zero,
       padding: .zero,
       onTap: onTap,
       child: ConstrainedBox(

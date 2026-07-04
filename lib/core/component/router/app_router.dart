@@ -114,7 +114,33 @@ class AppRouter extends RootStackRouter {
         ),
 
         /// Таб "Настройки"
-        AutoRoute(page: SettingsRoute.page, path: SettingsPage.routePath),
+        AutoRoute(
+          page: SettingsFlowRoute.page,
+          path: SettingsFlowPage.routePath,
+          children: [
+            AutoRoute(
+              initial: true,
+              page: SettingsRoute.page,
+              path: SettingsPage.routePath,
+            ),
+            AutoRoute(
+              page: AccountSettingsRoute.page,
+              path: AccountSettingsPage.routePath,
+            ),
+            AutoRoute(
+              page: InterfaceSettingsRoute.page,
+              path: InterfaceSettingsPage.routePath,
+            ),
+            AutoRoute(
+              page: FeedSettingsRoute.page,
+              path: FeedSettingsPage.routePath,
+            ),
+            AutoRoute(
+              page: PublicationSettingsRoute.page,
+              path: PublicationSettingsPage.routePath,
+            ),
+          ],
+        ),
       ],
     ),
 

@@ -51,7 +51,6 @@ class HtmlView extends StatelessWidget {
         );
 
         final isImageVisible = publicationConfig.isImagesVisible;
-
         final isWebViewEnabled = publicationConfig.webViewEnabled;
 
         return HtmlWidget(

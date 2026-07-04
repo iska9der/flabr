@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -10,6 +11,18 @@ import 'widget/settings_card_widget.dart';
 import 'widget/settings_checkbox_widget.dart';
 import 'widget/settings_nested_scaffold.dart';
 import 'widget/settings_section_widget.dart';
+
+@RoutePage()
+class InterfaceSettingsPage extends StatelessWidget {
+  const InterfaceSettingsPage({super.key});
+
+  static const String routePath = 'interface';
+
+  @override
+  Widget build(BuildContext context) {
+    return const InterfaceSettingsView();
+  }
+}
 
 class InterfaceSettingsView extends StatelessWidget {
   const InterfaceSettingsView({super.key});

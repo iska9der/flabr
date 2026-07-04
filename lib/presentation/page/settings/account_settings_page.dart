@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:ya_summary/ya_summary.dart';
 
@@ -8,6 +9,18 @@ import '../../widget/profile/profile.dart';
 import 'widget/settings_card_widget.dart';
 import 'widget/settings_nested_scaffold.dart';
 import 'widget/settings_section_widget.dart';
+
+@RoutePage()
+class AccountSettingsPage extends StatelessWidget {
+  const AccountSettingsPage({super.key});
+
+  static const String routePath = 'account';
+
+  @override
+  Widget build(BuildContext context) {
+    return const AccountSettingsView();
+  }
+}
 
 class AccountSettingsView extends StatelessWidget {
   const AccountSettingsView({super.key});

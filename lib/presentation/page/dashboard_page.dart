@@ -67,7 +67,7 @@ class _DashboardPageState extends State<DashboardPage> {
         routes: const [
           PublicationDashboardRoute(),
           ServicesFlowRoute(),
-          SettingsRoute(),
+          SettingsFlowRoute(),
         ],
         builder: (context, child) {
           final tabsRouter = context.tabsRouter;
