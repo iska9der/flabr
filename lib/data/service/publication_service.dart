@@ -125,8 +125,11 @@ class PublicationServiceImpl implements PublicationService {
     required List<String> types,
   }) async {
     try {
-      final params =
-          FeedListParams(page: page, score: score, types: types).toMap();
+      final params = FeedListParams(
+        page: page,
+        score: score,
+        types: types,
+      ).toMap();
 
       final response = await _siteClient.get(
         '/v2/articles/',
@@ -153,27 +156,26 @@ class PublicationServiceImpl implements PublicationService {
     try {
       final flowStr = (flow == PublicationFlow.all) ? null : flow.name;
 
-      final params =
-          switch (section) {
-            Section.post => PublicationPostListParams(
-              page: page,
-              flow: flowStr,
-              sort: sort.postValue,
-              period: sort == Sort.byBest ? period.value : null,
-              score: score.value,
-            ),
-            _ => PublicationListParams(
-              page: page,
-              flow: flowStr,
-              news: section == Section.news,
+      final params = switch (section) {
+        Section.post => PublicationPostListParams(
+          page: page,
+          flow: flowStr,
+          sort: sort.postValue,
+          period: sort == Sort.byBest ? period.value : null,
+          score: score.value,
+        ),
+        _ => PublicationListParams(
+          page: page,
+          flow: flowStr,
+          news: section == Section.news,
 
-              /// если мы находимся не во "Все потоки", в значение sort, по завету
-              /// костыльного api хабра, нужно передавать значение 'all'
-              sort: flow == PublicationFlow.all ? sort.value : 'all',
-              period: sort == Sort.byBest ? period.value : null,
-              score: score.value,
-            ),
-          }.toMap();
+          /// если мы находимся не во "Все потоки", в значение sort, по завету
+          /// костыльного api хабра, нужно передавать значение 'all'
+          sort: flow == PublicationFlow.all ? sort.value : 'all',
+          period: sort == Sort.byBest ? period.value : null,
+          score: score.value,
+        ),
+      }.toMap();
 
       final response = await _siteClient.get(
         '/v2/articles/',
@@ -200,13 +202,12 @@ class PublicationServiceImpl implements PublicationService {
     required String page,
   }) async {
     try {
-      final params =
-          PublicationListParams(
-            page: page,
-            sort: 'all',
-            period: sort == Sort.byBest ? period.value : null,
-            score: score.value,
-          ).toMap();
+      final params = PublicationListParams(
+        page: page,
+        sort: 'all',
+        period: sort == Sort.byBest ? period.value : null,
+        score: score.value,
+      ).toMap();
 
       params.addAll({'hub': hub});
 
@@ -274,8 +275,9 @@ class PublicationServiceImpl implements PublicationService {
         UserBookmarksType.articles => {'user_bookmarks': 'true'},
         UserBookmarksType.posts => {'user_bookmarks_posts': 'true'},
         UserBookmarksType.news => {'user_bookmarks_news': 'true'},
-        UserBookmarksType.comments =>
-          throw const ValueException('Вы не туда попали...'),
+        UserBookmarksType.comments => throw const ValueException(
+          'Вы не туда попали...',
+        ),
       };
 
       params.addAll({'user': user, ...typeQuery});

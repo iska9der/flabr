@@ -18,7 +18,7 @@ import '../../../presentation/page/publications/news/news_flow.dart';
 import '../../../presentation/page/publications/news/news_list_page.dart';
 import '../../../presentation/page/publications/posts/post_list_page.dart';
 import '../../../presentation/page/publications/posts/posts_flow.dart';
-import '../../../presentation/page/publications/publication_comment_page.dart';
+import '../../../presentation/page/publications/publication_comments_page.dart';
 import '../../../presentation/page/publications/publication_dashboard_page.dart';
 import '../../../presentation/page/publications/publication_detail_page.dart';
 import '../../../presentation/page/publications/publication_flow.dart';
@@ -44,6 +44,7 @@ import '../../../presentation/page/services/user/user_list_page.dart';
 import '../../../presentation/page/services/user/user_publication_list_page.dart';
 import '../../../presentation/page/settings/settings_page.dart';
 import '../../../presentation/page/splash/splash.dart';
+import '../../constants/constants.dart';
 
 part 'app_router.dart';
 part 'router.gr.dart';

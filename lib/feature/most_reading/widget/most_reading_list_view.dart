@@ -87,7 +87,7 @@ class _ListViewState extends State<_ListView> {
                                 PublicationFlowRoute(
                                   type: model.type.name,
                                   id: model.id,
-                                  children: [PublicationCommentRoute()],
+                                  children: [PublicationCommentsRoute()],
                                 ),
                               ),
                             ),

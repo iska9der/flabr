@@ -43,6 +43,7 @@ class ApplicationView extends StatelessWidget {
     final feedConfig = context.select<SettingsCubit, FeedConfigModel>(
       (cubit) => cubit.state.feed,
     );
+    final router = getIt<AppRouter>();
 
     return MaterialApp.router(
       title: AppEnvironment.appName,
@@ -53,13 +54,9 @@ class ApplicationView extends StatelessWidget {
       theme: AppTheme.light(feedConfig),
       darkTheme: AppTheme.dark(feedConfig),
       scrollBehavior: scrollBehavior,
-      routerConfig: getIt<AppRouter>().config(
+      routerConfig: router.config(
         deepLinkTransformer: (uri) {
-          if (uri.path.startsWith('/ru')) {
-            final newPath = uri.path.replaceFirst('/ru', '');
-            return SynchronousFuture(uri.replace(path: newPath));
-          }
-          return SynchronousFuture(uri);
+          return SynchronousFuture(router.transformDeepLink(uri));
         },
       ),
       builder: (context, child) => _buildAppWrapper(

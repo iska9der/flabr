@@ -7,19 +7,25 @@ import '../../../data/model/publication/publication.dart';
 import '../../../di/di.dart';
 import 'widget/comment_list_view.dart';
 
-@RoutePage(name: PublicationCommentPage.routeName)
-class PublicationCommentPage extends StatelessWidget {
-  PublicationCommentPage({
+@RoutePage(name: PublicationCommentsPage.routeName)
+class PublicationCommentsPage extends StatelessWidget {
+  PublicationCommentsPage({
     super.key,
     @PathParam.inherit() required String type,
     @PathParam.inherit() required this.id,
+    @urlFragment this.initialId,
   }) : type = .fromString(type);
 
   final PublicationType type;
+
+  /// Идентификатор публикации
   final String id;
 
+  /// Идентификатор комментария, к которому надо проскроллить
+  final String? initialId;
+
   static const String routePath = 'comments';
-  static const String routeName = 'PublicationCommentRoute';
+  static const String routeName = 'PublicationCommentsRoute';
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +41,20 @@ class PublicationCommentPage extends StatelessWidget {
           ),
         ),
       ],
-      child: const CommentListView(),
+      child: CommentListView(initialId: _parseCommentId(initialId)),
     );
+  }
+
+  String? _parseCommentId(String? fragment) {
+    if (fragment == null || fragment.isEmpty) {
+      return null;
+    }
+
+    const prefix = 'comment_';
+    if (fragment.startsWith(prefix)) {
+      return fragment.substring(prefix.length);
+    }
+
+    return fragment;
   }
 }

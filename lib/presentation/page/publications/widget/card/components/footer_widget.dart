@@ -53,7 +53,7 @@ class PublicationFooterWidget extends StatelessWidget {
             PublicationFlowRoute(
               type: publication.type.name,
               id: publication.id,
-              children: [PublicationCommentRoute()],
+              children: [PublicationCommentsRoute()],
             ),
           ),
         ),

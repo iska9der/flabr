@@ -44,6 +44,7 @@ dependencies:
   path_provider: ^2.1.5
   rxdart: ^0.28.0
   auto_route: ^11.1.0
+  scrollable_positioned_list: ^0.3.8
   bloc: ^9.2.0
   flutter_bloc: ^9.1.1
   bloc_concurrency: ^0.3.0

@@ -163,8 +163,8 @@ class AppRouter extends RootStackRouter {
           path: PublicationDetailPage.routePath,
         ),
         AutoRoute(
-          page: PublicationCommentRoute.page,
-          path: PublicationCommentPage.routePath,
+          page: PublicationCommentsRoute.page,
+          path: PublicationCommentsPage.routePath,
         ),
       ],
     ),
@@ -188,6 +188,44 @@ class AppRouter extends RootStackRouter {
     ..._usersRedirects(),
     ..._hubsRedirects(),
   ];
+
+  Uri transformDeepLink(Uri uri) {
+    var result = uri;
+
+    if (result.path.startsWith('/ru')) {
+      result = result.replace(path: result.path.replaceFirst('/ru', ''));
+    }
+
+    if (_parseCommentFragmentId(result.fragment) != null) {
+      final path = result.path;
+      final type = _parsePublicationType(result);
+      if (type != null && !_isCommentsPath(path)) {
+        final normalizedPath = path.endsWith('/')
+            ? '${path}comments'
+            : '$path/comments';
+
+        result = result.replace(path: normalizedPath);
+      }
+    }
+
+    return result;
+  }
+
+  String? _parseCommentFragmentId(String fragment) {
+    if (fragment.startsWith('comment_')) {
+      return fragment;
+    }
+
+    return null;
+  }
+
+  bool _isCommentsPath(String path) {
+    final normalizedPath = path.endsWith('/')
+        ? path.substring(0, path.length - 1)
+        : path;
+
+    return normalizedPath.endsWith('/comments');
+  }
 }
 
 List<AutoRoute> get _userChildren => [
@@ -253,6 +291,10 @@ List<RedirectRoute> _newsRedirects() {
           RedirectRoute(path: path, redirectTo: '/publication/news/:id'),
           RedirectRoute(
             path: '$path/comments',
+            redirectTo: '/publication/news/:id/comments',
+          ),
+          RedirectRoute(
+            path: '$path/comments/',
             redirectTo: '/publication/news/:id/comments',
           ),
         ],
