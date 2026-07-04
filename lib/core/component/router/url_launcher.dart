@@ -8,11 +8,21 @@ extension UrlLauncherExtension on AppRouter {
   /// Открыть ссылку в приложении, либо в браузере
   Future<dynamic> navigateOrLaunchUrl(Uri uri) async {
     final id = _parseId(uri);
-
     if (id != null) {
-      final type = _publicationTypeHandler(uri);
+      final type = _parsePublicationType(uri);
       if (type != null) {
-        return await pushWidget(PublicationDetailPage(id: id, type: type.name));
+        final commentId = _parseCommentFragmentId(uri.fragment);
+        return await push(
+          PublicationFlowRoute(
+            type: type.name,
+            id: id,
+            children: [
+              PublicationDetailRoute(),
+              if (commentId != null)
+                PublicationCommentsRoute(initialId: commentId),
+            ],
+          ),
+        );
       }
 
       final isUser = isUserUrl(uri);
@@ -31,19 +41,20 @@ extension UrlLauncherExtension on AppRouter {
   }
 
   String? _parseId(Uri url) {
-    Iterable<String> parts = url.pathSegments.where(
-      (element) => element.isNotEmpty,
-    );
+    final parts = url.pathSegments
+        .where((segment) => segment.isNotEmpty)
+        .toList();
 
     if (parts.isEmpty) {
       return null;
     }
 
+    if (parts.length > 1 && parts.last == 'comments') {
+      return parts[parts.length - 2];
+    }
+
     return parts.last;
   }
-
-  bool _isHostCompatible(Uri uri) =>
-      uri.host.contains('habr.com') || uri.host.contains('habrahabr.ru');
 
   static final Map<PublicationType, Set<String>> _publicationMatcher = {
     .article: {'article/', 'articles/', 'post/', 'blog/', 'blogs/'},
@@ -51,16 +62,13 @@ extension UrlLauncherExtension on AppRouter {
     .news: {'news/'},
   };
 
-  PublicationType? _publicationTypeHandler(Uri uri) {
-    if (!_isHostCompatible(uri)) {
+  PublicationType? _parsePublicationType(Uri uri) {
+    if (!AppEnvironment.isHostSafe(uri)) {
       return null;
     }
 
     for (final entry in _publicationMatcher.entries) {
-      final isMatch = entry.value.any(
-        (comparePath) => uri.path.contains(comparePath),
-      );
-
+      final isMatch = entry.value.any((v) => uri.path.contains(v));
       if (isMatch) {
         return entry.key;
       }
@@ -70,7 +78,7 @@ extension UrlLauncherExtension on AppRouter {
   }
 
   bool isUserUrl(Uri uri) {
-    if (_isHostCompatible(uri) && uri.path.contains('users/')) {
+    if (AppEnvironment.isHostSafe(uri) && uri.path.contains('users/')) {
       return true;
     }
 

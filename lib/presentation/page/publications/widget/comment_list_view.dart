@@ -1,23 +1,46 @@
+import 'dart:async';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import '../../../../bloc/publication/comment_list_cubit.dart';
 import '../../../../data/model/comment/comment.dart';
-import '../../../../data/model/offset_history.dart';
 import '../../../extension/extension.dart';
 import '../../../widget/comment/comment.dart';
 import '../../../widget/enhancement/card.dart';
 import '../../../widget/enhancement/progress_indicator.dart';
 import '../../../widget/error_widget.dart';
 import '../../../widget/user_text_button.dart';
+import '../model/scroll_history.dart';
 import 'comment_parent_widget.dart';
 
-class CommentListView extends StatelessWidget {
-  const CommentListView({super.key});
+class CommentListView extends StatefulWidget {
+  const CommentListView({
+    super.key,
+    this.initialId,
+  });
 
-  void fetch(BuildContext context) => context.read<CommentListCubit>().fetch();
+  /// Идентификатор комментария, к которому надо проскроллить
+  final String? initialId;
+
+  @override
+  State<CommentListView> createState() => _CommentListViewState();
+}
+
+class _CommentListViewState extends State<CommentListView> {
+  @override
+  void initState() {
+    super.initState();
+
+    _fetch();
+  }
+
+  void _fetch() {
+    unawaited(context.read<CommentListCubit>().fetch());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,13 +52,7 @@ class CommentListView extends StatelessWidget {
       body: SafeArea(
         child: BlocBuilder<CommentListCubit, CommentListState>(
           builder: (context, state) {
-            if (state.status == .initial) {
-              fetch(context);
-
-              return const CircleIndicator();
-            }
-
-            if (state.status == .loading) {
+            if (state.status == .initial || state.status == .loading) {
               return const CircleIndicator();
             }
 
@@ -43,7 +60,7 @@ class CommentListView extends StatelessWidget {
               return Center(
                 child: AppError(
                   message: state.error,
-                  onRetry: () => fetch(context),
+                  onRetry: _fetch,
                 ),
               );
             }
@@ -53,7 +70,12 @@ class CommentListView extends StatelessWidget {
               return const Center(child: Text('Нет комментариев'));
             }
 
-            return SelectionArea(child: CommentTreeWidget(comments));
+            return SelectionArea(
+              child: CommentTreeWidget(
+                comments: comments,
+                initialId: widget.initialId,
+              ),
+            );
           },
         ),
       ),
@@ -63,53 +85,77 @@ class CommentListView extends StatelessWidget {
 
 /// Рекурсивный виджет для отрисовки дерева комментариев
 class CommentTreeWidget extends StatefulWidget {
-  const CommentTreeWidget(this.comments, {super.key});
+  const CommentTreeWidget({
+    super.key,
+    required this.comments,
+    this.initialId,
+  });
 
   final List<Comment> comments;
+
+  /// Идентификатор комментария, к которому надо проскроллить
+  final String? initialId;
 
   @override
   State<CommentTreeWidget> createState() => _CommentTreeWidgetState();
 }
 
 class _CommentTreeWidgetState extends State<CommentTreeWidget> {
-  late final ScrollController scrollController;
-  late Set<String> expandedCommentIds;
+  static const _scrollDuration = Duration(milliseconds: 300);
+  static const _scrollAlignment = 0.08;
 
-  final _parentKeys = <String, GlobalKey>{};
-  final _history = OffsetHistory();
+  late final ItemScrollController _itemScrollController;
+  late final ItemPositionsListener _itemPositionsListener;
+  late Set<String> _expandedCommentIds;
 
-  final scrollDuration = const Duration(milliseconds: 300);
-  final scrollCurve = Curves.linear;
+  // Плоский список комментариев, которые сейчас должны быть доступны скроллу
+  late List<Comment> _visibleComments;
+
+  final _history = CommentScrollHistory();
+
+  // Последний обработанный верхний элемент, чтобы не пересчитывать историю без смещения списка
+  int? _lastFirstVisibleIndex;
+
+  // CommentId, для которого initial scroll уже выполнен или покрыт initialScrollIndex
+  String? _handledInitialId;
+
+  // Флаг активного отложенного перехода к initialId
+  var _isInitialScrollScheduled = false;
 
   @override
   void initState() {
     super.initState();
 
-    scrollController = ScrollController();
-    expandedCommentIds = _collectExpandableCommentIds(widget.comments);
+    _itemScrollController = ItemScrollController();
+    _itemPositionsListener = ItemPositionsListener.create();
+
+    // По видимым позициям скрываем кнопку возврата, когда пользователь уже дошел до сохраненного комментария
+    _itemPositionsListener.itemPositions.addListener(_onItemPositionsChanged);
+    _expandedCommentIds = _collectExpandableCommentIds(widget.comments);
+    _refreshVisibleComments();
+    _markInitialScrollHandledByInitialIndex();
   }
 
   @override
   void didUpdateWidget(covariant CommentTreeWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
 
-    if (oldWidget.comments == widget.comments) {
-      return;
+    if (oldWidget.comments != widget.comments) {
+      _syncExpandedComments(oldWidget.comments);
+      _refreshVisibleComments();
     }
 
-    final newCommentIds = _collectExpandableCommentIds(widget.comments);
-    final oldCommentIds = _collectExpandableCommentIds(oldWidget.comments);
-
-    expandedCommentIds = {
-      ...expandedCommentIds.where(newCommentIds.contains),
-      ...newCommentIds.difference(oldCommentIds),
-    };
+    if (oldWidget.initialId != widget.initialId) {
+      _scheduleInitialScroll();
+    }
   }
 
   @override
   void dispose() {
+    _itemPositionsListener.itemPositions.removeListener(
+      _onItemPositionsChanged,
+    );
     _history.close();
-    scrollController.dispose();
 
     super.dispose();
   }
@@ -118,10 +164,12 @@ class _CommentTreeWidgetState extends State<CommentTreeWidget> {
     final ids = <String>{};
 
     void collect(Comment comment) {
-      if (comment.children.isNotEmpty) {
-        ids.add(comment.id);
-        comment.children.forEach(collect);
+      if (comment.children.isEmpty) {
+        return;
       }
+
+      ids.add(comment.id);
+      comment.children.forEach(collect);
     }
 
     comments.forEach(collect);
@@ -129,21 +177,28 @@ class _CommentTreeWidgetState extends State<CommentTreeWidget> {
     return ids;
   }
 
-  GlobalKey? _keyFor(Comment comment) {
-    if (comment.childrenRaw.isNotEmpty) {
-      return _parentKeys.putIfAbsent(comment.id, GlobalKey.new);
-    }
+  void _syncExpandedComments(List<Comment> previousComments) {
+    final currentCommentIds = _collectExpandableCommentIds(widget.comments);
+    final previousCommentIds = _collectExpandableCommentIds(previousComments);
 
-    return null;
+    // Сохраняем пользовательские раскрытия после обновления дерева, но новые ветки показываем раскрытыми
+    _expandedCommentIds = {
+      ..._expandedCommentIds.where(currentCommentIds.contains),
+      ...currentCommentIds.difference(previousCommentIds),
+    };
   }
 
-  List<Comment> _visibleComments() {
-    final visibleComments = <Comment>[];
+  void _refreshVisibleComments() {
+    _visibleComments = _buildVisibleComments();
+  }
+
+  List<Comment> _buildVisibleComments() {
+    final result = <Comment>[];
 
     void collect(Comment comment) {
-      visibleComments.add(comment);
+      result.add(comment);
 
-      if (!expandedCommentIds.contains(comment.id)) {
+      if (!_expandedCommentIds.contains(comment.id)) {
         return;
       }
 
@@ -152,15 +207,117 @@ class _CommentTreeWidgetState extends State<CommentTreeWidget> {
 
     widget.comments.forEach(collect);
 
-    return visibleComments;
+    return result;
   }
 
   void _toggle(Comment comment) {
     setState(() {
-      if (!expandedCommentIds.remove(comment.id)) {
-        expandedCommentIds.add(comment.id);
+      if (!_expandedCommentIds.remove(comment.id)) {
+        _expandedCommentIds.add(comment.id);
       }
+
+      _refreshVisibleComments();
     });
+  }
+
+  void _markInitialScrollHandledByInitialIndex() {
+    final initialId = widget.initialId;
+    if (initialId == null) {
+      return;
+    }
+
+    final initialIndex = _indexOfComment(commentId: initialId);
+    if (initialIndex != null) {
+      _handledInitialId = initialId;
+    }
+  }
+
+  void _scheduleInitialScroll() {
+    final initialId = widget.initialId;
+    if (initialId == null ||
+        initialId == _handledInitialId ||
+        _isInitialScrollScheduled) {
+      return;
+    }
+
+    _isInitialScrollScheduled = true;
+
+    // Переход к элементу возможен только после первого layout списка
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _isInitialScrollScheduled = false;
+      if (!mounted) {
+        return;
+      }
+
+      if (widget.initialId != initialId) {
+        _scheduleInitialScroll();
+        return;
+      }
+
+      _moveToInitialComment(initialId);
+    });
+  }
+
+  void _moveToInitialComment(String initialId) {
+    if (!_itemScrollController.isAttached) {
+      _scheduleInitialScroll();
+      return;
+    }
+
+    // Перед переходом раскрываем всех родителей, иначе элемента не будет в плоском списке
+    final parentIds = _parentIdsFor(initialId);
+    if (parentIds == null) {
+      return;
+    }
+
+    if (!_expandedCommentIds.containsAll(parentIds)) {
+      setState(() {
+        _expandedCommentIds.addAll(parentIds);
+        _refreshVisibleComments();
+      });
+
+      _scheduleInitialScroll();
+      return;
+    }
+
+    final index = _indexOfComment(commentId: initialId);
+    if (index == null) {
+      return;
+    }
+
+    _handledInitialId = initialId;
+    _scrollToIndex(index);
+  }
+
+  List<String>? _parentIdsFor(String targetCommentId) {
+    List<String>? find(List<Comment> comments, List<String> parentIds) {
+      for (final comment in comments) {
+        if (comment.id == targetCommentId) {
+          return parentIds;
+        }
+
+        final result = find(comment.children, [...parentIds, comment.id]);
+        if (result != null) {
+          return result;
+        }
+      }
+
+      return null;
+    }
+
+    return find(widget.comments, []);
+  }
+
+  int? _indexOfComment({required String commentId}) {
+    final index = _visibleComments.indexWhere(
+      (comment) => comment.id == commentId,
+    );
+
+    if (index == -1) {
+      return null;
+    }
+
+    return index;
   }
 
   double _topPadding({required Comment comment, required int index}) {
@@ -175,138 +332,181 @@ class _CommentTreeWidgetState extends State<CommentTreeWidget> {
     return 8;
   }
 
-  /// добавляем в историю текущий оффсет скролла
-  void _saveToHistory({required String id, required String parentId}) {
-    final key = _parentKeys[parentId];
-    final box = key?.currentContext?.findRenderObject();
-    if (box != null) {
-      final double yPosition = (box as RenderBox).localToGlobal(.zero).dy;
-
-      /// если родительский комментарий не очень далеко - не сохраняем в историю
-      if (yPosition > -400) {
-        return;
-      }
-    }
-
-    _history.push(id, scrollController.offset);
-  }
-
-  /// скролл к родительскому комментарию
-  void _moveToParent(String parentId) async {
-    final key = _parentKeys[parentId];
-    if (key == null) {
+  void _saveToHistory({
+    required Comment comment,
+    required int index,
+    required int parentIndex,
+  }) {
+    // Если родительский комментарий рядом, кнопку возврата не показываем
+    if (index - parentIndex <= 4) {
       return;
     }
 
-    final context = key.currentContext;
+    _history.push(comment.id);
+  }
 
-    /// если не найден контекст - значит необходимый элемент отлетел в мусорку,
-    /// поэтому мы скроллимся вверх пока он снова не создатся
-    if (context == null) {
-      final shift = scrollController.offset < 400
-          ? scrollController.offset
-          : 400;
-      await scrollController.animateTo(
-        scrollController.offset - shift,
-        duration: const .new(milliseconds: 50),
-        curve: scrollCurve,
-      );
-      return _moveToParent(parentId);
+  void _onItemPositionsChanged() {
+    final firstVisibleIndex = _firstVisibleIndex();
+    if (firstVisibleIndex == null ||
+        firstVisibleIndex == _lastFirstVisibleIndex) {
+      return;
     }
 
-    Scrollable.ensureVisible(
-      context,
-      duration: scrollDuration,
-      curve: scrollCurve,
+    _lastFirstVisibleIndex = firstVisibleIndex;
+
+    // Сдвиг верхнего элемента означает, что часть сохраненных позиций могла стать неактуальной
+    _removeScrolledHistory(firstVisibleIndex);
+  }
+
+  void _removeScrolledHistory(int firstVisibleIndex) {
+    _history.removeVisibleBefore(
+      firstVisibleIndex: firstVisibleIndex,
+      indexOf: (commentId) {
+        return _visibleComments.indexWhere(
+          (comment) => comment.id == commentId,
+        );
+      },
     );
+  }
+
+  int? _firstVisibleIndex() {
+    final positions = _itemPositionsListener.itemPositions.value;
+    if (positions.isEmpty) {
+      return null;
+    }
+
+    final visiblePositions = positions.where((position) {
+      return position.itemTrailingEdge > 0 && position.itemLeadingEdge < 1;
+    });
+
+    if (visiblePositions.isEmpty) {
+      return null;
+    }
+
+    return visiblePositions.reduce((a, b) => a.index < b.index ? a : b).index;
+  }
+
+  void _moveToParent({
+    required Comment comment,
+    required int index,
+  }) {
+    final parent = comment.parent;
+    if (parent == null) {
+      return;
+    }
+
+    final parentIndex = _indexOfComment(commentId: parent.id);
+    if (parentIndex == null) {
+      return;
+    }
+
+    _saveToHistory(comment: comment, index: index, parentIndex: parentIndex);
+    _scrollToIndex(parentIndex);
+  }
+
+  void _returnToHistoryComment() {
+    // История хранит commentId, поэтому индекс пересчитывается по актуальному списку
+    final commentId = _history.pop();
+    final index = _indexOfComment(commentId: commentId);
+    if (index == null) {
+      return;
+    }
+
+    _scrollToIndex(index);
+  }
+
+  void _scrollToIndex(int index) {
+    _itemScrollController.scrollTo(
+      index: index,
+      duration: _scrollDuration,
+      alignment: _scrollAlignment,
+    );
+  }
+
+  int _initialScrollIndex() {
+    final initialId = widget.initialId;
+    if (initialId == null) {
+      return 0;
+    }
+
+    return _indexOfComment(commentId: initialId) ?? 0;
   }
 
   @override
   Widget build(BuildContext context) {
-    final visibleComments = _visibleComments();
+    return Stack(
+      children: [
+        ScrollablePositionedList.builder(
+          itemScrollController: _itemScrollController,
+          itemPositionsListener: _itemPositionsListener,
+          initialScrollIndex: _initialScrollIndex(),
+          initialAlignment: _scrollAlignment,
+          padding: const .fromLTRB(4, 4, 4, 16),
+          itemCount: _visibleComments.length,
+          itemBuilder: (context, index) {
+            final comment = _visibleComments[index];
+            final isExpanded =
+                comment.children.isEmpty ||
+                _expandedCommentIds.contains(comment.id);
 
-    return NotificationListener<UserScrollNotification>(
-      onNotification: (notification) {
-        /// удаляем из истории оффсет, если мы его проскроллили
-        final id = _history.lessThan(notification.metrics.pixels);
-        if (id != null) {
-          _history.remove(id);
-        }
+            return _CommentTreeItem(
+              comment: comment,
+              isExpanded: isExpanded,
+              hasChildren: comment.children.isNotEmpty,
+              topPadding: _topPadding(comment: comment, index: index),
+              onToggle: () => _toggle(comment),
+              onParentTapped: () => _moveToParent(
+                comment: comment,
+                index: index,
+              ),
+            );
+          },
+        ),
+        _HistoryButton(
+          history: _history,
+          onPressed: _returnToHistoryComment,
+        ),
+      ],
+    );
+  }
+}
 
-        return false;
-      },
-      child: Stack(
-        children: [
-          CustomScrollView(
-            controller: scrollController,
-            slivers: [
-              SliverPadding(
-                padding: const .fromLTRB(4, 4, 4, 16),
-                sliver: SliverList.builder(
-                  itemCount: visibleComments.length,
-                  itemBuilder: (context, index) {
-                    final comment = visibleComments[index];
+class _HistoryButton extends StatelessWidget {
+  const _HistoryButton({
+    required this.history,
+    required this.onPressed,
+  });
 
-                    return _CommentTreeItem(
-                      key: _keyFor(comment),
-                      comment: comment,
-                      isExpanded:
-                          comment.children.isEmpty ||
-                          expandedCommentIds.contains(comment.id),
-                      hasChildren: comment.children.isNotEmpty,
-                      topPadding: _topPadding(comment: comment, index: index),
-                      onToggle: () => _toggle(comment),
-                      onParentTapped: () {
-                        final parent = comment.parent;
-                        if (parent == null) {
-                          return;
-                        }
+  final CommentScrollHistory history;
+  final VoidCallback onPressed;
 
-                        _saveToHistory(id: comment.id, parentId: parent.id);
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+      alignment: .bottomRight,
+      child: Padding(
+        padding: const .all(8.0),
+        child: StreamBuilder<CommentScrollHistory>(
+          initialData: history,
+          stream: history.stream,
+          builder: (context, snapshot) {
+            final data = snapshot.data;
+            final isEmpty = data == null || data.isEmpty;
 
-                        _moveToParent(comment.parentId);
-                      },
-                    );
-                  },
+            return IgnorePointer(
+              ignoring: isEmpty,
+              child: AnimatedOpacity(
+                opacity: isEmpty ? 0 : 1,
+                duration: const Duration(milliseconds: 200),
+                child: FloatingActionButton(
+                  heroTag: null,
+                  onPressed: onPressed,
+                  child: const Icon(Icons.history_rounded),
                 ),
               ),
-            ],
-          ),
-          Align(
-            alignment: .bottomRight,
-            child: Padding(
-              padding: const .all(8.0),
-              child: StreamBuilder(
-                stream: _history.stream,
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData) {
-                    return const SizedBox();
-                  }
-
-                  final history = snapshot.data!;
-
-                  return IgnorePointer(
-                    ignoring: history.isEmpty,
-                    child: AnimatedOpacity(
-                      opacity: history.isEmpty ? 0 : 1,
-                      duration: const Duration(milliseconds: 200),
-                      child: FloatingActionButton(
-                        heroTag: null,
-                        mini: true,
-                        onPressed: () => scrollController.animateTo(
-                          history.pop(),
-                          duration: scrollDuration,
-                          curve: scrollCurve,
-                        ),
-                        child: const Icon(Icons.history_rounded),
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
-          ),
-        ],
+            );
+          },
+        ),
       ),
     );
   }
@@ -314,7 +514,6 @@ class _CommentTreeWidgetState extends State<CommentTreeWidget> {
 
 class _CommentTreeItem extends StatelessWidget {
   const _CommentTreeItem({
-    super.key,
     required this.comment,
     required this.isExpanded,
     required this.hasChildren,

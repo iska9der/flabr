@@ -130,7 +130,7 @@ class TrackerPublicationWidget extends StatelessWidget {
                           PublicationFlowRoute(
                             type: model.publicationType,
                             id: model.id,
-                            children: [PublicationCommentRoute()],
+                            children: [PublicationCommentsRoute()],
                           ),
                         );
 

@@ -15,4 +15,10 @@ abstract class AppEnvironment {
     'CONTACT_TG',
     defaultValue: 'username',
   );
+
+  static bool isHostSafe(Uri uri) => [
+    'habr.com',
+    'm.habr.com',
+    'habrahabr.ru',
+  ].any((safeHost) => safeHost == uri.host);
 }

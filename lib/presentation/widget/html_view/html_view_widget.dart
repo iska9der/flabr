@@ -14,6 +14,7 @@ import 'package:fwfh_webview/fwfh_webview.dart';
 
 import '../../../bloc/settings/settings_cubit.dart';
 import '../../../core/component/router/router.dart';
+import '../../../core/constants/constants.dart';
 import '../../../di/di.dart';
 import '../../extension/extension.dart';
 import '../../theme/theme.dart';
@@ -160,13 +161,14 @@ abstract class CustomBuildOp {
     required String href,
     required String text,
   }) async {
-    Future<void> go() =>
-        getIt<AppRouter>().navigateOrLaunchUrl(Uri.parse(href));
+    final uri = Uri.parse(href);
+
+    Future<void> go() => getIt<AppRouter>().navigateOrLaunchUrl(uri);
 
     /// Проверяем необходимость открытия модалки
     /// для того чтобы показать полную ссылку на ресурс.
     /// Если текст не совпадает со ссылкой - показываем
-    final isNeedPopup = text != href;
+    final isNeedPopup = !AppEnvironment.isHostSafe(uri) && text != href;
     if (!isNeedPopup) {
       return go();
     }
