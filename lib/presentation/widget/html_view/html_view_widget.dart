@@ -3,7 +3,6 @@ import 'dart:collection';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_highlight/flutter_highlight.dart';
 import 'package:flutter_highlight/themes/darcula.dart';
 import 'package:flutter_highlight/themes/github_gist.dart';
@@ -12,13 +11,13 @@ import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart
 import 'package:fwfh_svg/fwfh_svg.dart';
 import 'package:fwfh_webview/fwfh_webview.dart';
 
-import '../../../bloc/settings/settings_cubit.dart';
 import '../../../core/component/router/router.dart';
 import '../../../core/constants/constants.dart';
 import '../../../di/di.dart';
 import '../../extension/extension.dart';
 import '../../theme/theme.dart';
 import '../enhancement/progress_indicator.dart';
+import 'html_config.dart';
 import 'html_custom_builder.dart';
 import 'html_custom_parser.dart';
 import 'lazy_code_block.dart';
@@ -30,63 +29,67 @@ class HtmlView extends StatelessWidget {
     required this.textHtml,
     this.renderMode = .sliverList,
     this.padding = const .only(left: 20, right: 20, bottom: 40),
+    this.config = const HtmlConfig(),
   });
 
   final String textHtml;
   final RenderMode renderMode;
   final EdgeInsets padding;
+  final HtmlConfig config;
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SettingsCubit, SettingsState>(
-      builder: (context, state) {
-        final theme = context.theme;
+    final theme = context.theme;
+    final baseTextStyle = config.textStyle ?? theme.textTheme.bodyMedium!;
+    final resultTextStyle = baseTextStyle.apply(
+      fontSizeFactor: config.fontScale,
+    );
 
-        /// user config
-        final publicationConfig = state.publication;
-
-        final fontScale = publicationConfig.fontScale;
-        final resultTextStyle = theme.textTheme.bodyMedium!.apply(
-          fontSizeFactor: fontScale,
-        );
-
-        final isImageVisible = publicationConfig.isImagesVisible;
-        final isWebViewEnabled = publicationConfig.webViewEnabled;
-
-        return HtmlWidget(
-          textHtml,
-          renderMode: renderMode,
-          textStyle: resultTextStyle,
-          rebuildTriggers: [
-            theme.brightness,
-            fontScale,
-            isImageVisible,
-            isWebViewEnabled,
-          ],
-          onErrorBuilder: (_, element, error) => Text('$element error: $error'),
-          onLoadingBuilder: (ctx, el, prgrs) => const CircleIndicator.medium(),
-          factoryBuilder: () => CustomFactory(context),
-          customStylesBuilder: (element) => HtmlCustomStyles.builder(
-            element,
-            theme,
-            padding,
-            fontSize: resultTextStyle.fontSize!,
-            fontScale: fontScale,
-          ),
-          customWidgetBuilder: (element) => HtmlCustomWidget.builder(
-            element,
-            isImageVisible,
-          ),
-        );
-      },
+    return HtmlWidget(
+      textHtml,
+      renderMode: renderMode,
+      textStyle: resultTextStyle,
+      rebuildTriggers: [
+        theme.brightness,
+        config.fontScale,
+        config.isImageVisible,
+        config.isWebViewVisible,
+      ],
+      onErrorBuilder: (_, element, error) => Text('$element error: $error'),
+      onLoadingBuilder: (ctx, el, prgrs) => const CircleIndicator.medium(),
+      factoryBuilder: () => CustomFactory(
+        context,
+        textStyle: resultTextStyle,
+        fontScale: config.fontScale,
+        isWebViewEnabled: config.isWebViewVisible,
+      ),
+      customStylesBuilder: (element) => HtmlCustomStyles.builder(
+        element,
+        theme,
+        padding,
+        fontSize: resultTextStyle.fontSize!,
+        fontScale: config.fontScale,
+      ),
+      customWidgetBuilder: (element) => HtmlCustomWidget.builder(
+        element,
+        config.isImageVisible,
+      ),
     );
   }
 }
 
 class CustomFactory extends WidgetFactory with SvgFactory, WebViewFactory {
-  CustomFactory(this.context);
+  CustomFactory(
+    this.context, {
+    required this.textStyle,
+    required this.fontScale,
+    required this.isWebViewEnabled,
+  });
 
   final BuildContext context;
+  final TextStyle textStyle;
+  final double fontScale;
+  final bool isWebViewEnabled;
 
   @override
   bool get webView => true;
@@ -106,7 +109,7 @@ class CustomFactory extends WidgetFactory with SvgFactory, WebViewFactory {
     /// обычно это математические символы/формулы
     widget = widget.copyWith(
       colorFilter: ColorFilter.mode(
-        theme.textTheme.bodyMedium!.color!,
+        textStyle.color!,
         BlendMode.srcIn,
       ),
     );
@@ -131,6 +134,7 @@ class CustomFactory extends WidgetFactory with SvgFactory, WebViewFactory {
           context,
           this,
           attributes,
+          isWebViewEnabled: isWebViewEnabled,
           banFrameSources: ['video.yandex.ru/iframe'],
         );
         meta.register(op);
@@ -145,6 +149,7 @@ class CustomFactory extends WidgetFactory with SvgFactory, WebViewFactory {
           context,
           attributes,
           text: element.text,
+          fontScale: fontScale,
         );
         meta.register(op);
         break;
@@ -267,16 +272,11 @@ abstract class CustomBuildOp {
     BuildContext context,
     WebViewFactory factory,
     Map<Object, String> attributes, {
+    required bool isWebViewEnabled,
 
     /// список кривых iframe-источников
     List<String> banFrameSources = const [],
   }) {
-    final isWebViewEnabled = context
-        .read<SettingsCubit>()
-        .state
-        .publication
-        .webViewEnabled;
-
     return BuildOp(
       onRenderBlock: (meta, widgets) {
         // Извлекаем высоту с учетом CSS стилей и родительских элементов
@@ -315,13 +315,12 @@ abstract class CustomBuildOp {
     BuildContext context,
     LinkedHashMap<Object, String> attributes, {
     required String text,
+    required double fontScale,
   }) {
     final theme = context.theme;
     final String? lang = attributes['class'];
 
-    final fontSize =
-        (theme.textTheme.bodySmall?.fontSize ?? 12) *
-        context.read<SettingsCubit>().state.publication.fontScale;
+    final fontSize = (theme.textTheme.bodySmall?.fontSize ?? 12) * fontScale;
     final codeTextStyle = theme.textTheme.bodyMedium!.copyWith(
       fontSize: fontSize,
       fontFamily: HighlightView.defaultFontFamily,

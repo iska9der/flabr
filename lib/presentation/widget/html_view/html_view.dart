@@ -1,3 +1,4 @@
+export 'html_config.dart';
 export 'html_custom_builder.dart';
 export 'html_custom_parser.dart';
 export 'html_view_widget.dart';

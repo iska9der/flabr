@@ -115,7 +115,7 @@ class _FontScaleCardState extends State<FontScaleCard> {
   }
 
   void _syncValue() {
-    _defaultFontSize = context.theme.textTheme.bodyMedium!.fontSize!;
+    _defaultFontSize = context.theme.appTypography.publicationText.fontSize!;
 
     _fontSize = _scaleToFontSize(
       context,
@@ -168,7 +168,7 @@ class _FontScaleCardState extends State<FontScaleCard> {
                 child: Text(
                   'Пример текста публикации.\n'
                   'Так проще оценить размер и ритм строки',
-                  style: theme.textTheme.bodyMedium?.apply(
+                  style: theme.appTypography.publicationText.apply(
                     fontSizeFactor: _fontSizeToScale(context, _fontSize),
                   ),
                 ),

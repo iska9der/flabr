@@ -9,6 +9,7 @@ class AppTypographyExtension extends ThemeExtension<AppTypographyExtension>
   AppTypographyExtension({
     required this.feedPublicationTitle,
     required this.feedPublicationDescription,
+    required this.publicationText,
   });
 
   factory AppTypographyExtension.fromTextTheme(TextTheme textTheme) {
@@ -21,6 +22,10 @@ class AppTypographyExtension extends ThemeExtension<AppTypographyExtension>
         fontSize: 16,
         height: 1.2,
       ),
+      publicationText: textTheme.bodyMedium!.copyWith(
+        fontSize: 14,
+        height: 1.3,
+      ),
     );
   }
 
@@ -28,4 +33,6 @@ class AppTypographyExtension extends ThemeExtension<AppTypographyExtension>
   final TextStyle feedPublicationTitle;
   @override
   final TextStyle feedPublicationDescription;
+  @override
+  final TextStyle publicationText;
 }

@@ -5,6 +5,7 @@ import 'package:share_plus/share_plus.dart';
 
 import '../../../../bloc/publication/publication_bookmarks_bloc.dart';
 import '../../../../bloc/publication/publication_detail_cubit.dart';
+import '../../../../bloc/settings/settings_cubit.dart';
 import '../../../../core/constants/constants.dart';
 import '../../../../data/model/publication/publication.dart';
 import '../../../../feature/scroll/scroll.dart';
@@ -12,6 +13,7 @@ import '../../../extension/extension.dart';
 import '../../../theme/theme.dart';
 import '../../../widget/enhancement/progress_indicator.dart';
 import '../../../widget/error_widget.dart';
+import '../../../widget/html_view/html_config.dart';
 import '../../../widget/html_view/html_view_widget.dart';
 import '../../../widget/navigation/navigation.dart';
 import '../../../widget/publication_settings_widget.dart';
@@ -131,6 +133,8 @@ class _AppBarContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = context.theme;
+
     return BlocBuilder<PublicationDetailCubit, PublicationDetailState>(
       builder: (context, state) {
         if (state.status != .success) {
@@ -145,7 +149,7 @@ class _AppBarContainer extends StatelessWidget {
               duration: const Duration(milliseconds: 200),
               curve: Curves.decelerate,
               height: isVisible ? _appbarPadding : 10,
-              color: Theme.of(context).colorScheme.surface,
+              color: theme.colorScheme.surface,
               child: Stack(
                 children: [
                   if (isVisible) _AppBarContent(publication: state.publication),
@@ -246,7 +250,7 @@ class _PublicationContent extends StatelessWidget {
             _buildHubs(),
             _buildLabels(),
             _buildLabelsData(),
-            _buildHtmlContent(),
+            _buildHtmlContent(context),
           ],
         ),
       ),
@@ -325,8 +329,23 @@ class _PublicationContent extends StatelessWidget {
     };
   }
 
-  Widget _buildHtmlContent() {
-    return HtmlView(textHtml: publication.textHtml);
+  Widget _buildHtmlContent(BuildContext context) {
+    return BlocBuilder<SettingsCubit, SettingsState>(
+      builder: (context, state) {
+        final publicationConfig = state.publication;
+        final theme = context.theme;
+
+        return HtmlView(
+          textHtml: publication.textHtml,
+          config: HtmlConfig(
+            textStyle: theme.appTypography.publicationText,
+            fontScale: publicationConfig.fontScale,
+            isImageVisible: publicationConfig.isImagesVisible,
+            isWebViewVisible: publicationConfig.webViewEnabled,
+          ),
+        );
+      },
+    );
   }
 }
 
