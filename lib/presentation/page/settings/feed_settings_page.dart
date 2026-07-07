@@ -13,8 +13,6 @@ import 'widget/settings_checkbox_widget.dart';
 import 'widget/settings_nested_scaffold.dart';
 import 'widget/settings_section_widget.dart';
 
-const double _fontHeightMin = 1;
-
 @RoutePage()
 class FeedSettingsPage extends StatelessWidget {
   const FeedSettingsPage({super.key});
@@ -243,6 +241,8 @@ class _FeedTextStyleTypographyCard extends StatefulWidget {
 
 class _FeedTextStyleTypographyCardState
     extends State<_FeedTextStyleTypographyCard> {
+  static const double _fontHeightMin = 1;
+
   late double _fontSize;
   late double _fontHeight;
 

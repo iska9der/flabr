@@ -435,6 +435,26 @@ class MyWidget extends StatelessWidget {
 - Fields are declared by constructor parameters
 - Methods use the fields
 
+### Constants Scope
+
+Keep constants in the smallest scope that owns their usage.
+
+```dart
+// ✅ Good: Used only by this State, so keep it inside the owner
+class _FontScaleCardState extends State<FontScaleCard> {
+  static const double _minFontSize = 12;
+
+  // ...
+}
+
+// ❌ Bad: Do not move it to file scope until another owner needs it
+const double _minFontSize = 12;
+```
+
+Move constants to file scope only when they are shared by multiple classes,
+widgets, or top-level helpers in the same file. Move them to shared constants
+only when they are reused across files.
+
 ### Naming Conventions
 
 ```dart

@@ -64,20 +64,30 @@ class PublicationFontScaleWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final publicationTextStyle = context.theme.appTypography.publicationText;
+
     return BlocBuilder<SettingsCubit, SettingsState>(
       buildWhen: (previous, current) =>
           previous.publication.fontScale != current.publication.fontScale,
       builder: (context, state) {
-        return FontScaleCard(fontScale: state.publication.fontScale);
+        return FontScaleCard(
+          fontScale: state.publication.fontScale,
+          textStyle: publicationTextStyle,
+        );
       },
     );
   }
 }
 
 class FontScaleCard extends StatefulWidget {
-  const FontScaleCard({super.key, required this.fontScale});
+  const FontScaleCard({
+    super.key,
+    required this.fontScale,
+    required this.textStyle,
+  });
 
   final double fontScale;
+  final TextStyle textStyle;
 
   @override
   State<FontScaleCard> createState() => _FontScaleCardState();
@@ -87,12 +97,11 @@ class _FontScaleCardState extends State<FontScaleCard> {
   static const double _minFontSize = 12;
   static const double _maxFontSize = 24;
 
-  late double _defaultFontSize;
   late double _fontSize;
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
+  void initState() {
+    super.initState();
 
     _syncValue();
   }
@@ -101,24 +110,26 @@ class _FontScaleCardState extends State<FontScaleCard> {
   void didUpdateWidget(covariant FontScaleCard oldWidget) {
     super.didUpdateWidget(oldWidget);
 
-    if (oldWidget.fontScale != widget.fontScale) {
+    if (oldWidget.fontScale != widget.fontScale ||
+        oldWidget.textStyle != widget.textStyle) {
       _syncValue();
     }
   }
 
-  double _scaleToFontSize(BuildContext context, double scale) {
+  double get _defaultFontSize {
+    return widget.textStyle.fontSize ?? 14;
+  }
+
+  double _scaleToFontSize(double scale) {
     return _defaultFontSize * scale;
   }
 
-  double _fontSizeToScale(BuildContext context, double fontSize) {
+  double _fontSizeToScale(double fontSize) {
     return fontSize / _defaultFontSize;
   }
 
   void _syncValue() {
-    _defaultFontSize = context.theme.appTypography.publicationText.fontSize!;
-
     _fontSize = _scaleToFontSize(
-      context,
       widget.fontScale,
     ).clamp(_minFontSize, _maxFontSize).toDouble();
   }
@@ -154,7 +165,7 @@ class _FontScaleCardState extends State<FontScaleCard> {
             onChanged: (value) => setState(() => _fontSize = value),
             onChangeEnd: (value) => context
                 .read<SettingsCubit>()
-                .changeArticleFontScale(_fontSizeToScale(context, value)),
+                .changeArticleFontScale(_fontSizeToScale(value)),
           ),
           Padding(
             padding: const .symmetric(horizontal: 16.0),
@@ -168,8 +179,8 @@ class _FontScaleCardState extends State<FontScaleCard> {
                 child: Text(
                   'Пример текста публикации.\n'
                   'Так проще оценить размер и ритм строки',
-                  style: theme.appTypography.publicationText.apply(
-                    fontSizeFactor: _fontSizeToScale(context, _fontSize),
+                  style: widget.textStyle.apply(
+                    fontSizeFactor: _fontSizeToScale(_fontSize),
                   ),
                 ),
               ),

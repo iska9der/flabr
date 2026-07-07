@@ -109,7 +109,7 @@ class CustomFactory extends WidgetFactory with SvgFactory, WebViewFactory {
     /// обычно это математические символы/формулы
     widget = widget.copyWith(
       colorFilter: ColorFilter.mode(
-        textStyle.color!,
+        textStyle.color ?? theme.textTheme.bodyMedium!.color!,
         BlendMode.srcIn,
       ),
     );
