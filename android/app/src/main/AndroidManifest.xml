@@ -2,11 +2,14 @@
     <!-- Permissions -->
     <uses-permission android:name="android.permission.INTERNET" />
     <!-- Application -->
+    <!-- Issue: enableOnBackInvokedCallback="false" - predictive back disabled
+         see: https://github.com/Milad-Akarie/auto_route_library/issues/2225 -->
    <application
         android:label="@string/app_name"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
         android:allowBackup="false"
+        android:enableOnBackInvokedCallback="false"
         android:fullBackupContent="@xml/backup_rules">
         <activity
             android:name=".MainActivity"
