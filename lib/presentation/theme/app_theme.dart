@@ -8,22 +8,31 @@ import 'extension/app_colors_extension.dart';
 import 'extension/app_typography_extension.dart';
 
 abstract class AppTheme {
-  static ThemeData light(FeedConfigModel feedConfig) => createThemeData(
+  static ThemeData light({
+    FeedConfigModel feedConfig = FeedConfigModel.empty,
+    PublicationConfigModel publicationConfig = PublicationConfigModel.empty,
+  }) => createThemeData(
     appScheme: AppSchemeLight.scheme,
     appColors: AppSchemeLight.colors,
     feedConfig: feedConfig,
+    publicationConfig: publicationConfig,
   );
 
-  static ThemeData dark(FeedConfigModel feedConfig) => createThemeData(
+  static ThemeData dark({
+    FeedConfigModel feedConfig = FeedConfigModel.empty,
+    PublicationConfigModel publicationConfig = PublicationConfigModel.empty,
+  }) => createThemeData(
     appScheme: AppSchemeDark.scheme,
     appColors: AppSchemeDark.colors,
     feedConfig: feedConfig,
+    publicationConfig: publicationConfig,
   );
 
   static ThemeData createThemeData({
     required ColorScheme appScheme,
     required AppColorsExtension appColors,
     FeedConfigModel feedConfig = FeedConfigModel.empty,
+    PublicationConfigModel publicationConfig = PublicationConfigModel.empty,
   }) {
     var textTheme = AppTypography.textTheme(scheme: appScheme);
 
@@ -43,6 +52,11 @@ abstract class AppTheme {
             fontSize: descriptionStyle?.size,
             height: descriptionStyle?.height,
           ),
+      publicationText: appTypography.publicationText.copyWith(
+        fontFamily: publicationConfig.textStyle?.family,
+        fontSize: publicationConfig.textStyle?.size,
+        height: publicationConfig.textStyle?.height,
+      ),
     );
 
     var data = ThemeData(

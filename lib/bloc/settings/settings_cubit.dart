@@ -163,12 +163,12 @@ class SettingsCubit extends Cubit<SettingsState> {
     emit(state.copyWith(feed: newConfig));
   }
 
-  void changeArticleFontScale(double newScale) {
-    if (state.publication.fontScale == newScale) {
+  void changeArticleTextStyle(AppTextStyle? style) {
+    if (state.publication.textStyle == style) {
       return;
     }
 
-    final newConfig = state.publication.copyWith(fontScale: newScale);
+    final newConfig = state.publication.copyWith(textStyle: style);
     _repository.savePublication(newConfig);
     emit(state.copyWith(publication: newConfig));
   }

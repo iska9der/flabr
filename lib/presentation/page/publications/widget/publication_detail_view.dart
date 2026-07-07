@@ -334,12 +334,14 @@ class _PublicationContent extends StatelessWidget {
       builder: (context, state) {
         final publicationConfig = state.publication;
         final theme = context.theme;
+        final textStyle = theme.appTypography.publicationText;
+        final defaultTextStyle = _defaultTypography(context).publicationText;
 
         return HtmlView(
           textHtml: publication.textHtml,
+          textStyle: textStyle,
           config: HtmlConfig(
-            textStyle: theme.appTypography.publicationText,
-            fontScale: publicationConfig.fontScale,
+            fontScale: _fontScale(textStyle, defaultTextStyle),
             isImageVisible: publicationConfig.isImagesVisible,
             isWebViewVisible: publicationConfig.webViewEnabled,
           ),
@@ -347,6 +349,24 @@ class _PublicationContent extends StatelessWidget {
       },
     );
   }
+}
+
+AppTypographyExtension _defaultTypography(BuildContext context) {
+  final textTheme = AppTypography.textTheme(
+    scheme: context.theme.colorScheme,
+  );
+
+  return AppTypographyExtension.fromTextTheme(textTheme);
+}
+
+double _fontScale(TextStyle textStyle, TextStyle defaultTextStyle) {
+  final defaultFontSize = defaultTextStyle.fontSize;
+  final fontSize = textStyle.fontSize;
+  if (defaultFontSize == null || fontSize == null) {
+    return 1;
+  }
+
+  return fontSize / defaultFontSize;
 }
 
 /// Helper виджет для повторяющегося паттерна SliverToBoxAdapter + Padding

@@ -22,9 +22,9 @@ class AppTypographyExtension extends ThemeExtension<AppTypographyExtension>
         fontSize: 16,
         height: 1.2,
       ),
-      publicationText: textTheme.bodyMedium!.copyWith(
-        fontSize: 14,
-        height: 1.3,
+      publicationText: textTheme.bodyLarge!.copyWith(
+        fontSize: 16,
+        height: 1.2,
       ),
     );
   }

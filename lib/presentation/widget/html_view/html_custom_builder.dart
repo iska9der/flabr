@@ -3,16 +3,14 @@ import 'package:html/dom.dart' as dom;
 
 import '../../extension/extension.dart';
 import '../../theme/theme.dart';
+import 'html_config.dart';
 import 'html_custom_parser.dart';
 import 'lazy_image_widget.dart';
 
 abstract class HtmlCustomWidget {
-  static Widget? builder(dom.Element element, bool isImageVisible) {
+  static Widget? builder(dom.Element element, HtmlConfig config) {
     return switch (element.localName) {
-      'img' => HtmlCustomWidget._buildImageWidget(
-        element,
-        isImageVisible,
-      ),
+      'img' => _buildImageWidget(element, config.isImageVisible),
       _ => null,
     };
   }
@@ -73,10 +71,11 @@ abstract class HtmlCustomStyles {
   static Map<String, String>? builder(
     dom.Element element,
     ThemeData theme,
-    EdgeInsets padding, {
+    EdgeInsets padding,
+    HtmlConfig config, {
     double fontSize = 14,
-    double fontScale = 1,
   }) {
+    double fontScale = config.fontScale;
     final attrName = element.localName;
 
     if (element.parentNode is dom.DocumentFragment ||

@@ -43,6 +43,10 @@ class ApplicationView extends StatelessWidget {
     final feedConfig = context.select<SettingsCubit, FeedConfigModel>(
       (cubit) => cubit.state.feed,
     );
+    final publicationConfig = context
+        .select<SettingsCubit, PublicationConfigModel>(
+          (cubit) => cubit.state.publication,
+        );
     final router = getIt<AppRouter>();
 
     return MaterialApp.router(
@@ -51,8 +55,14 @@ class ApplicationView extends StatelessWidget {
       useInheritedMediaQuery: true,
       locale: locale,
       themeMode: themeMode,
-      theme: AppTheme.light(feedConfig),
-      darkTheme: AppTheme.dark(feedConfig),
+      theme: AppTheme.light(
+        feedConfig: feedConfig,
+        publicationConfig: publicationConfig,
+      ),
+      darkTheme: AppTheme.dark(
+        feedConfig: feedConfig,
+        publicationConfig: publicationConfig,
+      ),
       scrollBehavior: scrollBehavior,
       routerConfig: router.config(
         deepLinkTransformer: (uri) {

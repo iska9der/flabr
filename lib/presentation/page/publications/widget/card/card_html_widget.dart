@@ -34,6 +34,7 @@ class CardHtmlWidget extends StatelessWidget {
         element,
         theme,
         EdgeInsets.zero,
+        const .new(),
         fontSize: textStyle.fontSize!,
       ),
       customWidgetBuilder: (element) {

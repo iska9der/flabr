@@ -27,12 +27,14 @@ class HtmlView extends StatelessWidget {
   const HtmlView({
     super.key,
     required this.textHtml,
+    this.textStyle,
     this.renderMode = .sliverList,
     this.padding = const .only(left: 20, right: 20, bottom: 40),
     this.config = const HtmlConfig(),
   });
 
   final String textHtml;
+  final TextStyle? textStyle;
   final RenderMode renderMode;
   final EdgeInsets padding;
   final HtmlConfig config;
@@ -40,10 +42,7 @@ class HtmlView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = context.theme;
-    final baseTextStyle = config.textStyle ?? theme.textTheme.bodyMedium!;
-    final resultTextStyle = baseTextStyle.apply(
-      fontSizeFactor: config.fontScale,
-    );
+    final resultTextStyle = textStyle ?? theme.textTheme.bodyMedium!;
 
     return HtmlWidget(
       textHtml,
@@ -51,45 +50,35 @@ class HtmlView extends StatelessWidget {
       textStyle: resultTextStyle,
       rebuildTriggers: [
         theme.brightness,
-        config.fontScale,
-        config.isImageVisible,
-        config.isWebViewVisible,
+        config,
       ],
       onErrorBuilder: (_, element, error) => Text('$element error: $error'),
       onLoadingBuilder: (ctx, el, prgrs) => const CircleIndicator.medium(),
-      factoryBuilder: () => CustomFactory(
-        context,
-        textStyle: resultTextStyle,
-        fontScale: config.fontScale,
-        isWebViewEnabled: config.isWebViewVisible,
-      ),
+      factoryBuilder: CustomFactory.new,
       customStylesBuilder: (element) => HtmlCustomStyles.builder(
         element,
         theme,
         padding,
+        config,
         fontSize: resultTextStyle.fontSize!,
-        fontScale: config.fontScale,
       ),
-      customWidgetBuilder: (element) => HtmlCustomWidget.builder(
-        element,
-        config.isImageVisible,
-      ),
+      customWidgetBuilder: (element) =>
+          HtmlCustomWidget.builder(element, config),
     );
   }
 }
 
 class CustomFactory extends WidgetFactory with SvgFactory, WebViewFactory {
-  CustomFactory(
-    this.context, {
-    required this.textStyle,
-    required this.fontScale,
-    required this.isWebViewEnabled,
-  });
+  BuildContext? _context;
+  BuildContext get context => _context!;
+  ThemeData get theme => context.theme;
 
-  final BuildContext context;
-  final TextStyle textStyle;
-  final double fontScale;
-  final bool isWebViewEnabled;
+  TextStyle? _textStyle;
+  TextStyle get textStyle => _textStyle ?? theme.textTheme.bodyMedium!;
+
+  HtmlConfig _config = const HtmlConfig();
+  double get fontScale => _config.fontScale;
+  bool get isWebViewEnabled => _config.isWebViewVisible;
 
   @override
   bool get webView => true;
@@ -97,7 +86,23 @@ class CustomFactory extends WidgetFactory with SvgFactory, WebViewFactory {
   @override
   bool get webViewMediaPlaybackAlwaysAllow => true;
 
-  ThemeData get theme => context.theme;
+  @override
+  void reset(State state) {
+    super.reset(state);
+
+    _context = state.context;
+
+    final widget = state.widget;
+    if (widget is! HtmlWidget) {
+      return;
+    }
+
+    _textStyle = widget.textStyle;
+    _config = widget.rebuildTriggers.firstWhere(
+      (trigger) => trigger is HtmlConfig,
+      orElse: () => _config,
+    );
+  }
 
   /// Переопределяем метод построения SVG изображения
   @override
