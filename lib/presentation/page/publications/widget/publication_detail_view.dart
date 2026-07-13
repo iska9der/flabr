@@ -351,12 +351,12 @@ class _PublicationContent extends StatelessWidget {
   }
 }
 
-AppTypographyExtension _defaultTypography(BuildContext context) {
+UserTypographyExtension _defaultTypography(BuildContext context) {
   final textTheme = AppTypography.textTheme(
     scheme: context.theme.colorScheme,
   );
 
-  return AppTypographyExtension.fromTextTheme(textTheme);
+  return UserTypographyExtension.fromTextTheme(textTheme);
 }
 
 double _fontScale(TextStyle textStyle, TextStyle defaultTextStyle) {

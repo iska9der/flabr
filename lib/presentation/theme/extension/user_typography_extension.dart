@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:theme_tailor_annotation/theme_tailor_annotation.dart';
 
-part 'app_typography_extension.tailor.dart';
+part 'user_typography_extension.tailor.dart';
 
 @TailorMixin()
-class AppTypographyExtension extends ThemeExtension<AppTypographyExtension>
-    with _$AppTypographyExtensionTailorMixin {
-  AppTypographyExtension({
+class UserTypographyExtension extends ThemeExtension<UserTypographyExtension>
+    with _$UserTypographyExtensionTailorMixin {
+  UserTypographyExtension({
     required this.feedPublicationTitle,
     required this.feedPublicationDescription,
     required this.publicationText,
   });
 
-  factory AppTypographyExtension.fromTextTheme(TextTheme textTheme) {
-    return AppTypographyExtension(
+  factory UserTypographyExtension.fromTextTheme(TextTheme textTheme) {
+    return UserTypographyExtension(
       feedPublicationTitle: textTheme.titleLarge!.copyWith(
         fontSize: 22,
         height: 1.1,

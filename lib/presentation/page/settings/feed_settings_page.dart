@@ -128,10 +128,10 @@ class FeedDescriptionTypographyWidget extends StatelessWidget {
   }
 }
 
-AppTypographyExtension _defaultTypography(BuildContext context) {
+UserTypographyExtension _defaultTypography(BuildContext context) {
   final textTheme = AppTypography.textTheme(scheme: context.theme.colorScheme);
 
-  return AppTypographyExtension.fromTextTheme(textTheme);
+  return UserTypographyExtension.fromTextTheme(textTheme);
 }
 
 class SettingNavVisibilityWidget extends StatelessWidget {

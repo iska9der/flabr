@@ -5,7 +5,7 @@ import 'app_scheme.dart';
 import 'app_typography.dart';
 import 'common.dart';
 import 'extension/app_colors_extension.dart';
-import 'extension/app_typography_extension.dart';
+import 'extension/user_typography_extension.dart';
 
 abstract class AppTheme {
   static ThemeData light({
@@ -36,23 +36,23 @@ abstract class AppTheme {
   }) {
     var textTheme = AppTypography.textTheme(scheme: appScheme);
 
-    var appTypography = AppTypographyExtension.fromTextTheme(textTheme);
+    var userTypography = UserTypographyExtension.fromTextTheme(textTheme);
     final titleStyle = feedConfig.titleStyle;
     final descriptionStyle = feedConfig.descriptionStyle;
 
-    appTypography = appTypography.copyWith(
-      feedPublicationTitle: appTypography.feedPublicationTitle.copyWith(
+    userTypography = userTypography.copyWith(
+      feedPublicationTitle: userTypography.feedPublicationTitle.copyWith(
         fontFamily: titleStyle?.family,
         fontSize: titleStyle?.size,
         height: titleStyle?.height,
       ),
-      feedPublicationDescription: appTypography.feedPublicationDescription
+      feedPublicationDescription: userTypography.feedPublicationDescription
           .copyWith(
             fontFamily: descriptionStyle?.family,
             fontSize: descriptionStyle?.size,
             height: descriptionStyle?.height,
           ),
-      publicationText: appTypography.publicationText.copyWith(
+      publicationText: userTypography.publicationText.copyWith(
         fontFamily: publicationConfig.textStyle?.family,
         fontSize: publicationConfig.textStyle?.size,
         height: publicationConfig.textStyle?.height,
@@ -67,7 +67,7 @@ abstract class AppTheme {
       scaffoldBackgroundColor: appScheme.surface,
       canvasColor: appScheme.surface,
       textTheme: textTheme,
-      extensions: [appColors, appTypography],
+      extensions: [appColors, userTypography],
     );
 
     data = data.copyWith(
