@@ -1,7 +1,7 @@
 part of 'publication.dart';
 
 class PublicationCommonListResponse extends ListResponse<Publication>
-    with EquatableMixin {
+    with Equatable {
   const PublicationCommonListResponse({
     super.pagesCount = 1,
     super.ids = const [],

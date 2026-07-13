@@ -3,7 +3,7 @@ import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
 
-class UserBadget with EquatableMixin {
+class UserBadget with Equatable {
   const UserBadget({
     this.title = '',
     this.description = '',

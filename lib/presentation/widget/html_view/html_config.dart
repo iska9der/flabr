@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-class HtmlConfig with EquatableMixin {
+class HtmlConfig with Equatable {
   const HtmlConfig({
     this.fontScale = 1.0,
     this.isImageVisible = true,

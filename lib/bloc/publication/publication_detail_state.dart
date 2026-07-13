@@ -1,6 +1,6 @@
 part of 'publication_detail_cubit.dart';
 
-class PublicationDetailState with EquatableMixin {
+class PublicationDetailState with Equatable {
   const PublicationDetailState({
     this.status = LoadingStatus.initial,
     this.error = '',

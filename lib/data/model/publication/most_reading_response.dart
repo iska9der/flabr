@@ -1,7 +1,7 @@
 part of 'publication.dart';
 
 class MostReadingResponse extends ListResponse<PublicationCommon>
-    with EquatableMixin {
+    with Equatable {
   const MostReadingResponse({
     super.pagesCount = 1,
     super.ids = const [],

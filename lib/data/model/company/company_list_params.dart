@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 
 import '../query_params_model.dart';
 
-class CompanyListParams extends QueryParams with EquatableMixin {
+class CompanyListParams extends QueryParams with Equatable {
   const CompanyListParams({
     super.page,
     this.order = 'rating',

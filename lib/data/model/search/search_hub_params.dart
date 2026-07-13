@@ -12,4 +12,7 @@ class SearchHubParams extends QueryParams implements SearchParamsFactory {
     return '/hubs/search?q=$query&target_type=hubs'
         '&order=$order&page=$page';
   }
+
+  @override
+  List<Object?> get props => [...super.props, query, order];
 }

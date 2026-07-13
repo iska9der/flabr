@@ -5,7 +5,7 @@ import 'package:equatable/equatable.dart';
 import '../list_response_model.dart';
 import 'hub_model.dart';
 
-class HubListResponse extends ListResponse<Hub> with EquatableMixin {
+class HubListResponse extends ListResponse<Hub> with Equatable {
   const HubListResponse({
     super.pagesCount = 1,
     super.ids = const [],

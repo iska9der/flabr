@@ -15,4 +15,7 @@ class SearchArticleParams extends QueryParams implements SearchParamsFactory {
   String toQueryString() {
     return '/articles/?query=$query&order=$order&page=$page';
   }
+
+  @override
+  List<Object?> get props => [...super.props, query, order];
 }

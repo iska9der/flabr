@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 
 import '../publication/publication.dart';
 
-class UserCommentPublication with EquatableMixin {
+class UserCommentPublication with Equatable {
   const UserCommentPublication({
     required this.id,
     this.type = PublicationType.unknown,

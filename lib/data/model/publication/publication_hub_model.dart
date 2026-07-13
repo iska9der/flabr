@@ -1,6 +1,6 @@
 part of 'publication.dart';
 
-class PublicationHub extends HubBase with EquatableMixin {
+class PublicationHub extends HubBase with Equatable {
   const PublicationHub({
     required this.id,
     super.alias = '',

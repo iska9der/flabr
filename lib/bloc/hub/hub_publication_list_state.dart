@@ -1,6 +1,6 @@
 part of 'hub_publication_list_cubit.dart';
 
-class HubPublicationListState extends PublicationListState with EquatableMixin {
+class HubPublicationListState extends PublicationListState with Equatable {
   const HubPublicationListState({
     super.status = .initial,
     super.error = '',

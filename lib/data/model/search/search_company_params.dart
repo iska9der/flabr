@@ -15,4 +15,7 @@ class SearchCompanyParams extends QueryParams implements SearchParamsFactory {
   String toQueryString() {
     return '/companies/search?q=$query&sort=$order&order=$order&page=$page';
   }
+
+  @override
+  List<Object?> get props => [...super.props, query, order];
 }

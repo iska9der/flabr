@@ -5,7 +5,7 @@ import 'package:equatable/equatable.dart';
 import 'comment_access_model.dart';
 import 'comment_model.dart';
 
-class CommentListResponse with EquatableMixin {
+class CommentListResponse with Equatable {
   const CommentListResponse({
     this.commentAccess = CommentAccess.empty,
     this.comments = const [],

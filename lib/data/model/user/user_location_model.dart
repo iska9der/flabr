@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-class UserLocation with EquatableMixin {
+class UserLocation with Equatable {
   final String country;
   final String region;
   final String city;

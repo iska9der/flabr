@@ -1,6 +1,6 @@
 part of 'company_card_model.dart';
 
-class CompanyCardStatistics with EquatableMixin {
+class CompanyCardStatistics with Equatable {
   const CompanyCardStatistics({
     this.subscribersCount = 0,
     this.rating = 0.0,

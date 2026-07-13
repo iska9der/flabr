@@ -1,6 +1,6 @@
 part of 'scaffold_cubit.dart';
 
-class ScaffoldCubitState with EquatableMixin {
+class ScaffoldCubitState with Equatable {
   const ScaffoldCubitState({required this.key});
 
   final GlobalKey<ScaffoldState> key;

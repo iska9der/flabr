@@ -1,6 +1,6 @@
 part of 'hub_list_cubit.dart';
 
-class HubListState with EquatableMixin {
+class HubListState with Equatable {
   const HubListState({
     this.status = .initial,
     this.error = '',

@@ -1,6 +1,6 @@
 part of 'scroll_cubit.dart';
 
-class ScrollState with EquatableMixin {
+class ScrollState with Equatable {
   const ScrollState({
     this.isTopEdge = false,
     this.isBottomEdge = false,
@@ -37,6 +37,7 @@ class ScrollState with EquatableMixin {
   List<Object?> get props => [
     isTopEdge,
     isBottomEdge,
-    isScrollToTopVisible, scrollProgress
+    isScrollToTopVisible,
+    scrollProgress,
   ];
 }

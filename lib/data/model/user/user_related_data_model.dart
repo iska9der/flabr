@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 
 import '../related_data_base.dart';
 
-class UserRelatedData extends RelatedDataBase with EquatableMixin {
+class UserRelatedData extends RelatedDataBase with Equatable {
   const UserRelatedData({this.isSubscribed = false});
 
   final bool isSubscribed;

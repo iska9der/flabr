@@ -6,7 +6,7 @@ import '../comment_base.dart';
 import '../publication/publication.dart';
 import 'user_comment_publication_model.dart';
 
-class UserComment extends CommentBase with EquatableMixin {
+class UserComment extends CommentBase with Equatable {
   const UserComment({
     required super.id,
     super.author = PublicationAuthor.empty,

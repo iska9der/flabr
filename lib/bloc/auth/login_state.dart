@@ -1,6 +1,6 @@
 part of 'login_cubit.dart';
 
-class LoginState with EquatableMixin {
+class LoginState with Equatable {
   const LoginState({
     this.status = LoadingStatus.initial,
     this.error = '',

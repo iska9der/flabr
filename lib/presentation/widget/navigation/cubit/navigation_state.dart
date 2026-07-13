@@ -1,7 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 part of 'navigation_cubit.dart';
 
-class NavigationState with EquatableMixin {
+class NavigationState with Equatable {
   const NavigationState({
     this.isNavigationVisible = true,
   });

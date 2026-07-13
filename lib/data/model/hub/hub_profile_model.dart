@@ -7,7 +7,7 @@ import '../publication/publication.dart';
 import 'hub_related_data_model.dart';
 import 'hub_statistics_model.dart';
 
-class HubProfile extends HubBase with EquatableMixin {
+class HubProfile extends HubBase with Equatable {
   const HubProfile({
     required super.alias,
     required this.flow,

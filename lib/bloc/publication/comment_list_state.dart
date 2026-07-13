@@ -1,6 +1,6 @@
 part of 'comment_list_cubit.dart';
 
-class CommentListState with EquatableMixin {
+class CommentListState with Equatable {
   const CommentListState({
     this.status = .initial,
     this.error = '',
