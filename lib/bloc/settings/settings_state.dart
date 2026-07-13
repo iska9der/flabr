@@ -9,6 +9,7 @@ class SettingsState with Equatable {
     this.publication = .empty,
     this.feed = .empty,
     this.misc = .empty,
+    this.typography = .empty,
   });
 
   final LoadingStatus status;
@@ -24,6 +25,7 @@ class SettingsState with Equatable {
   final PublicationConfigModel publication;
   final FeedConfigModel feed;
   final MiscConfigModel misc;
+  final TypographyConfigModel typography;
 
   SettingsState copyWith({
     LoadingStatus? status,
@@ -33,6 +35,7 @@ class SettingsState with Equatable {
     PublicationConfigModel? publication,
     FeedConfigModel? feed,
     MiscConfigModel? misc,
+    TypographyConfigModel? typography,
   }) {
     return SettingsState(
       status: status ?? this.status,
@@ -42,6 +45,7 @@ class SettingsState with Equatable {
       publication: publication ?? this.publication,
       feed: feed ?? this.feed,
       misc: misc ?? this.misc,
+      typography: typography ?? this.typography,
     );
   }
 
@@ -57,5 +61,6 @@ class SettingsState with Equatable {
     publication,
     feed,
     misc,
+    typography,
   ];
 }

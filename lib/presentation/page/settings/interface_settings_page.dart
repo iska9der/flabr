@@ -11,7 +11,6 @@ import 'widget/settings_card_widget.dart';
 import 'widget/settings_checkbox_widget.dart';
 import 'widget/settings_nested_scaffold.dart';
 import 'widget/settings_section_widget.dart';
-import 'widget/settings_slider_widget.dart';
 
 @RoutePage()
 class InterfaceSettingsPage extends StatelessWidget {
@@ -37,7 +36,6 @@ class InterfaceSettingsView extends StatelessWidget {
           title: 'Внешний вид',
           children: [
             UIThemeWidget(),
-            TextScaleFactorWidget(),
             SettingScrollVariantWidget(),
           ],
         ),
@@ -110,78 +108,6 @@ class _UIThemeWidgetState extends State<UIThemeWidget> {
             });
           },
         ),
-      ),
-    );
-  }
-}
-
-class TextScaleFactorWidget extends StatelessWidget {
-  const TextScaleFactorWidget({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<SettingsCubit, SettingsState>(
-      buildWhen: (previous, current) =>
-          previous.misc.textScaleFactor != current.misc.textScaleFactor,
-      builder: (context, state) {
-        return _TextScaleFactorCard(value: state.misc.textScaleFactor);
-      },
-    );
-  }
-}
-
-class _TextScaleFactorCard extends StatefulWidget {
-  const _TextScaleFactorCard({required this.value});
-
-  final double value;
-
-  @override
-  State<_TextScaleFactorCard> createState() => _TextScaleFactorCardState();
-}
-
-class _TextScaleFactorCardState extends State<_TextScaleFactorCard> {
-  late double _value;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _value = widget.value;
-  }
-
-  @override
-  void didUpdateWidget(covariant _TextScaleFactorCard oldWidget) {
-    super.didUpdateWidget(oldWidget);
-
-    if (oldWidget.value != widget.value) {
-      _value = widget.value;
-    }
-  }
-
-  String _format(double value) {
-    return '${(value * 100).round()}%';
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final divisions =
-        ((MiscConfigModel.maxTextScaleFactor -
-                    MiscConfigModel.minTextScaleFactor) *
-                20)
-            .round();
-
-    return SettingsCardWidget(
-      child: SettingsSliderWidget(
-        label: 'Общий масштаб текста',
-        value: _value,
-        min: MiscConfigModel.minTextScaleFactor,
-        max: MiscConfigModel.maxTextScaleFactor,
-        divisions: divisions,
-        valueFormatter: _format,
-        sliderLabel: _format(_value),
-        onChanged: (value) => setState(() => _value = value),
-        onChangeEnd: (value) =>
-            context.read<SettingsCubit>().changeTextScaleFactor(value),
       ),
     );
   }

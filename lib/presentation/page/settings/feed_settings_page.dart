@@ -4,15 +4,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../bloc/settings/settings_cubit.dart';
 import '../../../data/model/filter/filter.dart';
-import '../../extension/extension.dart';
-import '../../theme/theme.dart';
 import '../../widget/filter/filter_chip_list.dart';
 import 'model/config_model.dart';
 import 'widget/settings_card_widget.dart';
 import 'widget/settings_checkbox_widget.dart';
 import 'widget/settings_nested_scaffold.dart';
 import 'widget/settings_section_widget.dart';
-import 'widget/text_style_typography_widget.dart';
 
 @RoutePage()
 class FeedSettingsPage extends StatelessWidget {
@@ -38,8 +35,6 @@ class FeedSettingsView extends StatelessWidget {
           title: 'Карточки',
           children: [
             SettingsFeedWidget(),
-            FeedTitleTypographyWidget(),
-            FeedDescriptionTypographyWidget(),
           ],
         ),
         SettingsSectionWidget(
@@ -82,56 +77,6 @@ class SettingsFeedWidget extends StatelessWidget {
       ),
     );
   }
-}
-
-class FeedTitleTypographyWidget extends StatelessWidget {
-  const FeedTitleTypographyWidget({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return TextStyleTypographyWidget(
-      title: 'Заголовок',
-      previewText: 'Пример заголовка публикации в ленте',
-      styleSelector: (state) => state.feed.titleStyle,
-      defaultStyleBuilder: (context) =>
-          _defaultTypography(context).feedPublicationTitle,
-      previewStyleBuilder: (context) =>
-          context.theme.appTypography.feedPublicationTitle,
-      onStyleChange: (context, style) =>
-          context.read<SettingsCubit>().changeFeedTitleStyle(style),
-      fontSizeMin: 20,
-      fontSizeMax: 30,
-      fontHeightMax: 1.3,
-    );
-  }
-}
-
-class FeedDescriptionTypographyWidget extends StatelessWidget {
-  const FeedDescriptionTypographyWidget({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return TextStyleTypographyWidget(
-      title: 'Короткое описание',
-      previewText: 'Короткое описание помогает быстро понять, о чем публикация',
-      styleSelector: (state) => state.feed.descriptionStyle,
-      defaultStyleBuilder: (context) =>
-          _defaultTypography(context).feedPublicationDescription,
-      previewStyleBuilder: (context) =>
-          context.theme.appTypography.feedPublicationDescription,
-      onStyleChange: (context, style) =>
-          context.read<SettingsCubit>().changeFeedDescriptionStyle(style),
-      fontSizeMin: 12,
-      fontSizeMax: 20,
-      fontHeightMax: 1.5,
-    );
-  }
-}
-
-UserTypographyExtension _defaultTypography(BuildContext context) {
-  final textTheme = AppTypography.textTheme(scheme: context.theme.colorScheme);
-
-  return UserTypographyExtension.fromTextTheme(textTheme);
 }
 
 class SettingNavVisibilityWidget extends StatelessWidget {

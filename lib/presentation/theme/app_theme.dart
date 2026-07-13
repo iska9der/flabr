@@ -9,53 +9,42 @@ import 'extension/user_typography_extension.dart';
 
 abstract class AppTheme {
   static ThemeData light({
-    FeedConfigModel feedConfig = FeedConfigModel.empty,
-    PublicationConfigModel publicationConfig = PublicationConfigModel.empty,
+    TypographyConfigModel typographyConfig = TypographyConfigModel.empty,
   }) => createThemeData(
     appScheme: AppSchemeLight.scheme,
     appColors: AppSchemeLight.colors,
-    feedConfig: feedConfig,
-    publicationConfig: publicationConfig,
+    typographyConfig: typographyConfig,
   );
 
   static ThemeData dark({
-    FeedConfigModel feedConfig = FeedConfigModel.empty,
-    PublicationConfigModel publicationConfig = PublicationConfigModel.empty,
+    TypographyConfigModel typographyConfig = TypographyConfigModel.empty,
   }) => createThemeData(
     appScheme: AppSchemeDark.scheme,
     appColors: AppSchemeDark.colors,
-    feedConfig: feedConfig,
-    publicationConfig: publicationConfig,
+    typographyConfig: typographyConfig,
   );
 
   static ThemeData createThemeData({
     required ColorScheme appScheme,
     required AppColorsExtension appColors,
-    FeedConfigModel feedConfig = FeedConfigModel.empty,
-    PublicationConfigModel publicationConfig = PublicationConfigModel.empty,
+    TypographyConfigModel typographyConfig = TypographyConfigModel.empty,
   }) {
     var textTheme = AppTypography.textTheme(scheme: appScheme);
 
     var userTypography = UserTypographyExtension.fromTextTheme(textTheme);
-    final titleStyle = feedConfig.titleStyle;
-    final descriptionStyle = feedConfig.descriptionStyle;
+    final titleStyle = typographyConfig.titleStyle;
+    final textStyle = typographyConfig.textStyle;
 
     userTypography = userTypography.copyWith(
-      feedPublicationTitle: userTypography.feedPublicationTitle.copyWith(
+      publicationTitle: userTypography.publicationTitle.copyWith(
         fontFamily: titleStyle?.family,
         fontSize: titleStyle?.size,
         height: titleStyle?.height,
       ),
-      feedPublicationDescription: userTypography.feedPublicationDescription
-          .copyWith(
-            fontFamily: descriptionStyle?.family,
-            fontSize: descriptionStyle?.size,
-            height: descriptionStyle?.height,
-          ),
       publicationText: userTypography.publicationText.copyWith(
-        fontFamily: publicationConfig.textStyle?.family,
-        fontSize: publicationConfig.textStyle?.size,
-        height: publicationConfig.textStyle?.height,
+        fontFamily: textStyle?.family,
+        fontSize: textStyle?.size,
+        height: textStyle?.height,
       ),
     );
 

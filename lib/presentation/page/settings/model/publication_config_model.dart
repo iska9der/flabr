@@ -5,7 +5,6 @@ abstract class PublicationConfigModel with _$PublicationConfigModel {
   const PublicationConfigModel._();
 
   const factory PublicationConfigModel({
-    AppTextStyle? textStyle,
     @Default(true) bool isImagesVisible,
     @Default(true) bool webViewEnabled,
   }) = _PublicationConfigModel;

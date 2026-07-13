@@ -24,7 +24,7 @@ class CardHtmlWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = context.theme;
-    final textStyle = theme.appTypography.feedPublicationDescription;
+    final textStyle = theme.appTypography.publicationText;
 
     return HtmlWidget(
       textHtml,
@@ -36,6 +36,7 @@ class CardHtmlWidget extends StatelessWidget {
         EdgeInsets.zero,
         const .new(),
         fontSize: textStyle.fontSize!,
+        headerTextStyle: theme.appTypography.publicationTitle,
       ),
       customWidgetBuilder: (element) {
         return switch (element.localName) {

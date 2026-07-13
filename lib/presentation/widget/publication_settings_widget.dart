@@ -2,11 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../bloc/settings/settings_cubit.dart';
-import '../extension/extension.dart';
 import '../page/settings/widget/settings_card_widget.dart';
 import '../page/settings/widget/settings_checkbox_widget.dart';
-import '../page/settings/widget/text_style_typography_widget.dart';
-import '../theme/theme.dart';
 
 class PublicationSettingsWidget extends StatelessWidget {
   const PublicationSettingsWidget({super.key});
@@ -18,7 +15,6 @@ class PublicationSettingsWidget extends StatelessWidget {
       mainAxisSize: .min,
       spacing: 4,
       children: [
-        const PublicationFontScaleWidget(),
         SettingsCardWidget(
           child: Column(
             crossAxisAlignment: .start,
@@ -58,37 +54,4 @@ class PublicationSettingsWidget extends StatelessWidget {
       ],
     );
   }
-}
-
-class PublicationFontScaleWidget extends StatelessWidget {
-  const PublicationFontScaleWidget({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final publicationTextStyle = _defaultTypography(context).publicationText;
-
-    return TextStyleTypographyWidget(
-      title: 'Текст',
-      previewText:
-          'Пример текста публикации.\n'
-          'Так проще оценить размер и ритм строки',
-      styleSelector: (state) => state.publication.textStyle,
-      defaultStyleBuilder: (context) => publicationTextStyle,
-      previewStyleBuilder: (context) =>
-          context.theme.appTypography.publicationText,
-      onStyleChange: (context, style) =>
-          context.read<SettingsCubit>().changeArticleTextStyle(style),
-      fontSizeMin: 12,
-      fontSizeMax: 24,
-      fontHeightMax: 1.8,
-    );
-  }
-}
-
-UserTypographyExtension _defaultTypography(BuildContext context) {
-  final textTheme = AppTypography.textTheme(
-    scheme: context.theme.colorScheme,
-  );
-
-  return UserTypographyExtension.fromTextTheme(textTheme);
 }

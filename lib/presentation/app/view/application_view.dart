@@ -40,14 +40,11 @@ class ApplicationView extends StatelessWidget {
         .select((SettingsCubit cubit) => cubit.state.misc.scrollVariant)
         .behavior;
     final textScaleFactor = context.select<SettingsCubit, double>(
-      (cubit) => cubit.state.misc.textScaleFactor,
+      (cubit) => cubit.state.typography.textScaleFactor,
     );
-    final feedConfig = context.select<SettingsCubit, FeedConfigModel>(
-      (cubit) => cubit.state.feed,
-    );
-    final publicationConfig = context
-        .select<SettingsCubit, PublicationConfigModel>(
-          (cubit) => cubit.state.publication,
+    final typographyConfig = context
+        .select<SettingsCubit, TypographyConfigModel>(
+          (cubit) => cubit.state.typography,
         );
     final router = getIt<AppRouter>();
 
@@ -58,12 +55,10 @@ class ApplicationView extends StatelessWidget {
       locale: locale,
       themeMode: themeMode,
       theme: AppTheme.light(
-        feedConfig: feedConfig,
-        publicationConfig: publicationConfig,
+        typographyConfig: typographyConfig,
       ),
       darkTheme: AppTheme.dark(
-        feedConfig: feedConfig,
-        publicationConfig: publicationConfig,
+        typographyConfig: typographyConfig,
       ),
       scrollBehavior: scrollBehavior,
       routerConfig: router.config(

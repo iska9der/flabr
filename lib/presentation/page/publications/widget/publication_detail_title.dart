@@ -19,7 +19,7 @@ class PublicationDetailTitle extends StatelessWidget {
         child: SelectableText(
           (publication as PublicationCommon).titleHtml,
           textAlign: .left,
-          style: context.theme.textTheme.headlineSmall,
+          style: context.theme.appTypography.publicationTitle,
         ),
       ),
     };

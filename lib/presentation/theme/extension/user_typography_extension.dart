@@ -7,20 +7,15 @@ part 'user_typography_extension.tailor.dart';
 class UserTypographyExtension extends ThemeExtension<UserTypographyExtension>
     with _$UserTypographyExtensionTailorMixin {
   UserTypographyExtension({
-    required this.feedPublicationTitle,
-    required this.feedPublicationDescription,
+    required this.publicationTitle,
     required this.publicationText,
   });
 
   factory UserTypographyExtension.fromTextTheme(TextTheme textTheme) {
     return UserTypographyExtension(
-      feedPublicationTitle: textTheme.titleLarge!.copyWith(
+      publicationTitle: textTheme.titleLarge!.copyWith(
         fontSize: 22,
         height: 1.1,
-      ),
-      feedPublicationDescription: textTheme.bodyLarge!.copyWith(
-        fontSize: 16,
-        height: 1.2,
       ),
       publicationText: textTheme.bodyLarge!.copyWith(
         fontSize: 16,
@@ -30,9 +25,7 @@ class UserTypographyExtension extends ThemeExtension<UserTypographyExtension>
   }
 
   @override
-  final TextStyle feedPublicationTitle;
-  @override
-  final TextStyle feedPublicationDescription;
+  final TextStyle publicationTitle;
   @override
   final TextStyle publicationText;
 }

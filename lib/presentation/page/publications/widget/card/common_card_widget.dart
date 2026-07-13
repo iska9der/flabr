@@ -136,7 +136,7 @@ class _TitleWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textStyle = context.theme.appTypography.feedPublicationTitle;
+    final textStyle = context.theme.appTypography.publicationTitle;
 
     return switch (renderType) {
       .plain => Text(title, style: textStyle),

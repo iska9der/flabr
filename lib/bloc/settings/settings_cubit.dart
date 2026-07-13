@@ -62,6 +62,7 @@ class SettingsCubit extends Cubit<SettingsState> {
           feed: config.feed,
           publication: config.publication,
           misc: config.misc,
+          typography: config.typography,
         ),
       );
     } catch (error, stackTrace) {
@@ -143,34 +144,24 @@ class SettingsCubit extends Cubit<SettingsState> {
     emit(state.copyWith(feed: newConfig));
   }
 
-  void changeFeedTitleStyle(AppTextStyle? style) {
-    if (state.feed.titleStyle == style) {
+  void changePublicationTitleStyle(AppTextStyle? style) {
+    if (state.typography.titleStyle == style) {
       return;
     }
 
-    final newConfig = state.feed.copyWith(titleStyle: style);
-    _repository.saveFeed(newConfig);
-    emit(state.copyWith(feed: newConfig));
+    final newConfig = state.typography.copyWith(titleStyle: style);
+    _repository.saveTypography(newConfig);
+    emit(state.copyWith(typography: newConfig));
   }
 
-  void changeFeedDescriptionStyle(AppTextStyle? style) {
-    if (state.feed.descriptionStyle == style) {
+  void changePublicationTextStyle(AppTextStyle? style) {
+    if (state.typography.textStyle == style) {
       return;
     }
 
-    final newConfig = state.feed.copyWith(descriptionStyle: style);
-    _repository.saveFeed(newConfig);
-    emit(state.copyWith(feed: newConfig));
-  }
-
-  void changeArticleTextStyle(AppTextStyle? style) {
-    if (state.publication.textStyle == style) {
-      return;
-    }
-
-    final newConfig = state.publication.copyWith(textStyle: style);
-    _repository.savePublication(newConfig);
-    emit(state.copyWith(publication: newConfig));
+    final newConfig = state.typography.copyWith(textStyle: style);
+    _repository.saveTypography(newConfig);
+    emit(state.copyWith(typography: newConfig));
   }
 
   void changeArticleImageVisibility({bool? isVisible}) {
@@ -227,17 +218,17 @@ class SettingsCubit extends Cubit<SettingsState> {
   void changeTextScaleFactor(double value) {
     final resolved = value
         .clamp(
-          MiscConfigModel.minTextScaleFactor,
-          MiscConfigModel.maxTextScaleFactor,
+          TypographyConfigModel.minTextScaleFactor,
+          TypographyConfigModel.maxTextScaleFactor,
         )
         .toDouble();
 
-    if (state.misc.textScaleFactor == resolved) {
+    if (state.typography.textScaleFactor == resolved) {
       return;
     }
 
-    final newConfig = state.misc.copyWith(textScaleFactor: resolved);
-    _repository.saveMisc(newConfig);
-    emit(state.copyWith(misc: newConfig));
+    final newConfig = state.typography.copyWith(textScaleFactor: resolved);
+    _repository.saveTypography(newConfig);
+    emit(state.copyWith(typography: newConfig));
   }
 }
