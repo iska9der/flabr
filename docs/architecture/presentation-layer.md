@@ -65,7 +65,6 @@ Centralized configuration using freezed.
 
 **AppConfig.dev** - Development configuration:
 - Enables DevicePreview
-- Custom text scale factor
 - Development-specific breakpoints
 - No minimum splash duration
 
@@ -76,10 +75,11 @@ Centralized configuration using freezed.
 
 **Properties:**
 - `enableDevicePreview` - Toggle device preview
-- `textScaleFactor` - Text scaling
 - `responsiveBreakpoints` - Responsive framework breakpoints
 - `maxWidth` - Maximum content width
 - `splashMinDuration` - Minimum splash screen duration
+
+Text scaling is a persisted user setting in `SettingsCubit`/`MiscConfigModel`.
 
 #### app_config_provider.dart
 

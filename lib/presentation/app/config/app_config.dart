@@ -9,9 +9,6 @@ abstract class AppConfig with _$AppConfig {
     /// Включить DevicePreview для тестирования на разных устройствах
     required bool enableDevicePreview,
 
-    /// Коэффициент масштабирования текста
-    @Default(1.0) double textScaleFactor,
-
     /// Breakpoints для responsive дизайна
     @Default([
       Breakpoint(start: 0, end: 600, name: ScreenType.mobile),

@@ -5,6 +5,7 @@ import '../../../../bloc/settings/settings_cubit.dart';
 import '../../../extension/extension.dart';
 import '../model/config_model.dart';
 import 'settings_card_widget.dart';
+import 'settings_slider_widget.dart';
 
 class TextStyleTypographyWidget extends StatelessWidget {
   const TextStyleTypographyWidget({
@@ -190,7 +191,7 @@ class _TextStyleTypographyCardState extends State<_TextStyleTypographyCard> {
         crossAxisAlignment: .stretch,
         mainAxisSize: .min,
         children: [
-          _TextStyleSlider(
+          SettingsSliderWidget(
             label: 'Размер шрифта',
             value: _fontSize,
             min: widget.fontSizeMin,
@@ -203,7 +204,7 @@ class _TextStyleTypographyCardState extends State<_TextStyleTypographyCard> {
               _mergeStyle(AppTextStyle(size: value)),
             ),
           ),
-          _TextStyleSlider(
+          SettingsSliderWidget(
             label: 'Межстрочный интервал',
             value: _fontHeight,
             min: _fontHeightMin,
@@ -238,76 +239,6 @@ class _TextStyleTypographyCardState extends State<_TextStyleTypographyCard> {
           const SizedBox(height: 8),
         ],
       ),
-    );
-  }
-}
-
-class _TextStyleSlider extends StatelessWidget {
-  const _TextStyleSlider({
-    required this.label,
-    required this.value,
-    required this.min,
-    required this.max,
-    required this.divisions,
-    required this.valueFormatter,
-    required this.onChanged,
-    required this.onChangeEnd,
-  });
-
-  final String label;
-  final double value;
-  final double min;
-  final double max;
-
-  /// Количество фиксированных шагов между min и max.
-  final int divisions;
-
-  /// Форматирует текущее значение рядом с названием настройки.
-  final String Function(double value) valueFormatter;
-
-  /// Обновляет локальное значение во время перемещения слайдера.
-  final ValueChanged<double> onChanged;
-
-  /// Сохраняет итоговое значение после завершения перемещения.
-  final ValueChanged<double> onChangeEnd;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = context.theme;
-
-    return Column(
-      crossAxisAlignment: .stretch,
-      mainAxisSize: .min,
-      children: [
-        Padding(
-          padding: const .only(left: 16.0, right: 16.0, top: 8.0),
-          child: Row(
-            children: [
-              Expanded(
-                child: Text(
-                  label,
-                  style: theme.textTheme.bodyMedium,
-                ),
-              ),
-              Text(
-                valueFormatter(value),
-                style: theme.textTheme.labelLarge?.copyWith(
-                  color: theme.colors.textSecondary,
-                ),
-              ),
-            ],
-          ),
-        ),
-        Slider(
-          label: label,
-          value: value,
-          min: min,
-          max: max,
-          divisions: divisions,
-          onChanged: onChanged,
-          onChangeEnd: onChangeEnd,
-        ),
-      ],
     );
   }
 }

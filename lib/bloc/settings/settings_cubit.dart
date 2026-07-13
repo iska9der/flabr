@@ -223,4 +223,21 @@ class SettingsCubit extends Cubit<SettingsState> {
     _repository.saveMisc(newConfig);
     emit(state.copyWith(misc: newConfig));
   }
+
+  void changeTextScaleFactor(double value) {
+    final resolved = value
+        .clamp(
+          MiscConfigModel.minTextScaleFactor,
+          MiscConfigModel.maxTextScaleFactor,
+        )
+        .toDouble();
+
+    if (state.misc.textScaleFactor == resolved) {
+      return;
+    }
+
+    final newConfig = state.misc.copyWith(textScaleFactor: resolved);
+    _repository.saveMisc(newConfig);
+    emit(state.copyWith(misc: newConfig));
+  }
 }

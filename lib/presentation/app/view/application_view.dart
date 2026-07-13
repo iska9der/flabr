@@ -39,7 +39,9 @@ class ApplicationView extends StatelessWidget {
     final scrollBehavior = context
         .select((SettingsCubit cubit) => cubit.state.misc.scrollVariant)
         .behavior;
-
+    final textScaleFactor = context.select<SettingsCubit, double>(
+      (cubit) => cubit.state.misc.textScaleFactor,
+    );
     final feedConfig = context.select<SettingsCubit, FeedConfigModel>(
       (cubit) => cubit.state.feed,
     );
@@ -72,6 +74,7 @@ class ApplicationView extends StatelessWidget {
       builder: (context, child) => _buildAppWrapper(
         context,
         config,
+        textScaleFactor,
         child,
       ),
     );
@@ -80,6 +83,7 @@ class ApplicationView extends StatelessWidget {
   Widget _buildAppWrapper(
     BuildContext context,
     AppConfig config,
+    double textScaleFactor,
     Widget? child,
   ) {
     final theme = context.theme;
@@ -109,7 +113,7 @@ class ApplicationView extends StatelessWidget {
 
     return MediaQuery(
       data: MediaQuery.of(context).copyWith(
-        textScaler: .linear(config.textScaleFactor),
+        textScaler: .linear(textScaleFactor),
       ),
       child: result,
     );
