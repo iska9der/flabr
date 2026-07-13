@@ -6,14 +6,13 @@ publish_to: "none"
 version: 1.2.8+10711
 
 environment:
-  flutter: 3.41.0
+  flutter: 3.44.6
   sdk: ^3.11.0
 
 workspace:
   - packages/flutter_highlight
   - packages/quick_shortcuts
   - packages/ya_summary
-
 
 dependencies:
   flutter:
@@ -96,11 +95,11 @@ flutter:
   assets:
     - assets/
     - assets/fonts/
-  
+
   fonts:
-    - family:  Google
+    - family: Google
       fonts:
         - asset: assets/fonts/Google/GoogleSans.ttf
-    - family:  Geologica
+    - family: Geologica
       fonts:
         - asset: assets/fonts/Geologica/Geologica-VF.ttf

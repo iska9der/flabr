@@ -146,8 +146,8 @@ class _PublicationListView<
       child: Scrollbar(
         controller: scrollController,
         child: CustomScrollView(
-          cacheExtent: 1000,
           controller: scrollController,
+          scrollCacheExtent: const .pixels(1000),
           physics: scrollPhysics,
           slivers: [
             /// Обновление списка по свайпу
