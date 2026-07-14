@@ -29,23 +29,11 @@ abstract class AppTheme {
     required AppColorsExtension appColors,
     TypographyConfigModel typographyConfig = TypographyConfigModel.empty,
   }) {
-    var textTheme = AppTypography.textTheme(scheme: appScheme);
+    final textTheme = AppTypography.textTheme(scheme: appScheme);
 
-    var userTypography = UserTypographyExtension.fromTextTheme(textTheme);
-    final titleStyle = typographyConfig.titleStyle;
-    final textStyle = typographyConfig.textStyle;
-
-    userTypography = userTypography.copyWith(
-      publicationTitle: userTypography.publicationTitle.copyWith(
-        fontFamily: titleStyle?.family,
-        fontSize: titleStyle?.size,
-        height: titleStyle?.height,
-      ),
-      publicationText: userTypography.publicationText.copyWith(
-        fontFamily: textStyle?.family,
-        fontSize: textStyle?.size,
-        height: textStyle?.height,
-      ),
+    final userTypography = UserTypographyExtension.create(
+      textTheme,
+      typographyConfig,
     );
 
     var data = ThemeData(

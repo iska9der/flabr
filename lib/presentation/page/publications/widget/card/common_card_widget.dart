@@ -96,7 +96,7 @@ class CommonCardWidget extends StatelessWidget {
                     }
 
                     return Padding(
-                      padding: const EdgeInsets.only(bottom: 8),
+                      padding: const .only(bottom: 8),
                       child: NetworkImageWidget(
                         imageUrl: publication.leadData.image.url,
                         isTapable: true,
@@ -109,10 +109,9 @@ class CommonCardWidget extends StatelessWidget {
                 buildWhen: (previous, current) => previous.feed != current.feed,
                 builder: (context, state) {
                   return Padding(
-                    padding: const EdgeInsets.only(bottom: 8),
+                    padding: const .only(bottom: 8),
                     child: CardHtmlWidget(
-                      textHtml: publication.leadData.textHtml,
-                      rebuildTriggers: [state.feed],
+                      htmlText: publication.leadData.textHtml,
                       isTextVisible: state.feed.isDescriptionVisible,
                       isImageVisible: state.feed.isImageVisible,
                     ),

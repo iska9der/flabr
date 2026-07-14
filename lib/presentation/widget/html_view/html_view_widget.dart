@@ -61,7 +61,6 @@ class HtmlView extends StatelessWidget {
         padding,
         config,
         fontSize: resultTextStyle.fontSize!,
-        headerTextStyle: theme.appTypography.publicationTitle,
       ),
       customWidgetBuilder: (element) =>
           HtmlCustomWidget.builder(element, config),

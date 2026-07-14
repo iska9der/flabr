@@ -17,6 +17,7 @@ import '../../../widget/html_view/html_config.dart';
 import '../../../widget/html_view/html_view_widget.dart';
 import '../../../widget/navigation/navigation.dart';
 import '../../../widget/publication_settings_widget.dart';
+import '../../../widget/publication_typography_widget.dart';
 import 'card/card.dart';
 import 'publication_more_button.dart';
 import 'stats/stats.dart';
@@ -335,6 +336,7 @@ class _PublicationContent extends StatelessWidget {
         final publicationConfig = state.publication;
         final theme = context.theme;
         final textStyle = theme.appTypography.publicationText;
+        final titleStyle = theme.appTypography.publicationTitle;
         final defaultTextStyle = _defaultTypography(context).publicationText;
 
         return HtmlView(
@@ -344,6 +346,7 @@ class _PublicationContent extends StatelessWidget {
             fontScale: _fontScale(textStyle, defaultTextStyle),
             isImageVisible: publicationConfig.isImagesVisible,
             isWebViewVisible: publicationConfig.webViewEnabled,
+            titleStyle: titleStyle,
           ),
         );
       },
@@ -356,7 +359,7 @@ UserTypographyExtension _defaultTypography(BuildContext context) {
     scheme: context.theme.colorScheme,
   );
 
-  return UserTypographyExtension.fromTextTheme(textTheme);
+  return UserTypographyExtension.create(textTheme);
 }
 
 double _fontScale(TextStyle textStyle, TextStyle defaultTextStyle) {
@@ -431,6 +434,8 @@ class _SettingsButton extends StatelessWidget {
       builder: (_) => ListView(
         children: [
           const PublicationSettingsWidget(),
+          const PublicationTitleTypographyWidget(),
+          const PublicationTextTypographyWidget(),
         ],
       ),
     );

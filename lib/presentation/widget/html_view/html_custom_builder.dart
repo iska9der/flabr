@@ -74,7 +74,6 @@ abstract class HtmlCustomStyles {
     EdgeInsets padding,
     HtmlConfig config, {
     double fontSize = 14,
-    TextStyle? headerTextStyle,
   }) {
     double fontScale = config.fontScale;
     final attrName = element.localName;
@@ -108,15 +107,15 @@ abstract class HtmlCustomStyles {
       _ => false,
     };
     if (isHeader) {
-      final headerFontFamily =
-          headerTextStyle?.fontFamily ?? AppTypography.fontGeologica;
-      final headerLineHeight = headerTextStyle?.height == null
+      final titleFontFamily =
+          config.titleStyle?.fontFamily ?? AppTypography.fontGeologica;
+      final titleLineHeight = config.titleStyle?.height == null
           ? '120%'
-          : '${(headerTextStyle!.height! * 100).round()}%';
+          : '${(config.titleStyle!.height! * 100).round()}%';
 
       return {
-        'font-family': headerFontFamily,
-        'line-height': headerLineHeight,
+        'font-family': titleFontFamily,
+        'line-height': titleLineHeight,
         'margin-top': switch (attrName) {
           'h1' || 'h2' => '42px',
           _ => '28px',
