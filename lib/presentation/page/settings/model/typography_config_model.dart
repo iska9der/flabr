@@ -9,8 +9,8 @@ abstract class TypographyConfigModel with _$TypographyConfigModel {
 
   const factory TypographyConfigModel({
     @Default(1.0) double textScaleFactor,
-    AppTextStyle? titleStyle,
-    AppTextStyle? textStyle,
+    AppTextStyle? publicationTitleStyle,
+    AppTextStyle? publicationTextStyle,
   }) = _TypographyConfigModel;
 
   static const empty = TypographyConfigModel();

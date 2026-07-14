@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:html/dom.dart' as dom;
 
 import '../../extension/extension.dart';
-import '../../theme/theme.dart';
 import 'html_config.dart';
 import 'html_custom_parser.dart';
 import 'lazy_image_widget.dart';
@@ -107,14 +106,13 @@ abstract class HtmlCustomStyles {
       _ => false,
     };
     if (isHeader) {
-      final titleFontFamily =
-          config.titleStyle?.fontFamily ?? AppTypography.fontGeologica;
+      final titleFontFamily = config.titleStyle?.fontFamily;
       final titleLineHeight = config.titleStyle?.height == null
           ? '120%'
           : '${(config.titleStyle!.height! * 100).round()}%';
 
       return {
-        'font-family': titleFontFamily,
+        if (titleFontFamily != null) 'font-family': titleFontFamily,
         'line-height': titleLineHeight,
         'margin-top': switch (attrName) {
           'h1' || 'h2' => '42px',

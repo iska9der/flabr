@@ -145,21 +145,21 @@ class SettingsCubit extends Cubit<SettingsState> {
   }
 
   void changePublicationTitleStyle(AppTextStyle? style) {
-    if (state.typography.titleStyle == style) {
+    if (state.typography.publicationTitleStyle == style) {
       return;
     }
 
-    final newConfig = state.typography.copyWith(titleStyle: style);
+    final newConfig = state.typography.copyWith(publicationTitleStyle: style);
     _repository.saveTypography(newConfig);
     emit(state.copyWith(typography: newConfig));
   }
 
   void changePublicationTextStyle(AppTextStyle? style) {
-    if (state.typography.textStyle == style) {
+    if (state.typography.publicationTextStyle == style) {
       return;
     }
 
-    final newConfig = state.typography.copyWith(textStyle: style);
+    final newConfig = state.typography.copyWith(publicationTextStyle: style);
     _repository.saveTypography(newConfig);
     emit(state.copyWith(typography: newConfig));
   }

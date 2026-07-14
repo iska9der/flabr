@@ -31,7 +31,7 @@ class FontsSettingsView extends StatelessWidget {
       title: 'Шрифты',
       children: [
         SettingsSectionWidget(
-          title: 'Общее',
+          title: 'Общие',
           children: [
             TextScaleFactorWidget(),
           ],

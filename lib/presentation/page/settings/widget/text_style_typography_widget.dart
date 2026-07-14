@@ -16,6 +16,7 @@ class TextStyleTypographyWidget extends StatelessWidget {
     required this.defaultStyleBuilder,
     required this.previewStyleBuilder,
     required this.onStyleChange,
+    required this.fontFamilies,
     required this.fontSizeMin,
     required this.fontSizeMax,
     required this.fontHeightMax,
@@ -35,6 +36,9 @@ class TextStyleTypographyWidget extends StatelessWidget {
 
   /// Сохраняет новые настройки стиля; null сбрасывает их к значениям темы
   final void Function(BuildContext context, AppTextStyle? style) onStyleChange;
+
+  /// Доступные семейства шрифтов
+  final List<String> fontFamilies;
 
   /// Минимальный размер шрифта для слайдера
   final double fontSizeMin;
@@ -61,6 +65,7 @@ class TextStyleTypographyWidget extends StatelessWidget {
           defaultStyle: defaultStyle,
           previewStyle: previewStyle,
           onStyleChange: onStyleChange,
+          fontFamilies: fontFamilies,
           fontSizeMin: fontSizeMin,
           fontSizeMax: fontSizeMax,
           fontHeightMax: fontHeightMax,
@@ -78,6 +83,7 @@ class _TextStyleTypographyCard extends StatefulWidget {
     required this.defaultStyle,
     required this.previewStyle,
     required this.onStyleChange,
+    required this.fontFamilies,
     required this.fontSizeMin,
     required this.fontSizeMax,
     required this.fontHeightMax,
@@ -98,6 +104,9 @@ class _TextStyleTypographyCard extends StatefulWidget {
   /// Сохраняет новые настройки стиля; null сбрасывает их к значениям темы
   final void Function(BuildContext context, AppTextStyle? style) onStyleChange;
 
+  /// Доступные семейства шрифтов
+  final List<String> fontFamilies;
+
   /// Минимальный размер шрифта для слайдера
   final double fontSizeMin;
 
@@ -115,6 +124,7 @@ class _TextStyleTypographyCard extends StatefulWidget {
 class _TextStyleTypographyCardState extends State<_TextStyleTypographyCard> {
   static const double _fontHeightMin = 1;
 
+  late String _fontFamily;
   late double _fontSize;
   late double _fontHeight;
 
@@ -136,6 +146,9 @@ class _TextStyleTypographyCardState extends State<_TextStyleTypographyCard> {
   }
 
   void _syncValues() {
+    _fontFamily = _resolveFontFamily(
+      widget.textStyle?.family ?? widget.defaultStyle.fontFamily,
+    );
     _fontSize = _clamp(
       widget.textStyle?.size ?? widget.defaultStyle.fontSize!,
       min: widget.fontSizeMin,
@@ -150,6 +163,7 @@ class _TextStyleTypographyCardState extends State<_TextStyleTypographyCard> {
 
   void _reset(BuildContext context) {
     setState(() {
+      _fontFamily = _resolveFontFamily(widget.defaultStyle.fontFamily);
       _fontSize = _clamp(
         widget.defaultStyle.fontSize!,
         min: widget.fontSizeMin,
@@ -162,6 +176,14 @@ class _TextStyleTypographyCardState extends State<_TextStyleTypographyCard> {
       );
     });
     widget.onStyleChange(context, null);
+  }
+
+  String _resolveFontFamily(String? family) {
+    if (family != null && widget.fontFamilies.contains(family)) {
+      return family;
+    }
+
+    return widget.fontFamilies.first;
   }
 
   AppTextStyle _mergeStyle(AppTextStyle style) {
@@ -191,6 +213,33 @@ class _TextStyleTypographyCardState extends State<_TextStyleTypographyCard> {
         crossAxisAlignment: .stretch,
         mainAxisSize: .min,
         children: [
+          Padding(
+            padding: const .symmetric(horizontal: 16),
+            child: DropdownButtonFormField<String>(
+              key: ValueKey(_fontFamily),
+              initialValue: _fontFamily,
+              decoration: const InputDecoration(labelText: 'Шрифт'),
+              items: widget.fontFamilies
+                  .map(
+                    (family) => DropdownMenuItem(
+                      value: family,
+                      child: Text(family, style: TextStyle(fontFamily: family)),
+                    ),
+                  )
+                  .toList(),
+              onChanged: (family) {
+                if (family == null) {
+                  return;
+                }
+
+                setState(() => _fontFamily = family);
+                widget.onStyleChange(
+                  context,
+                  _mergeStyle(AppTextStyle(family: family)),
+                );
+              },
+            ),
+          ),
           SettingsSliderWidget(
             label: 'Размер шрифта',
             value: _fontSize,
@@ -229,6 +278,7 @@ class _TextStyleTypographyCardState extends State<_TextStyleTypographyCard> {
                 child: Text(
                   widget.previewText,
                   style: widget.previewStyle.copyWith(
+                    fontFamily: _fontFamily,
                     fontSize: _fontSize,
                     height: _fontHeight,
                   ),

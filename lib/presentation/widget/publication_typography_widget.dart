@@ -12,15 +12,16 @@ class PublicationTitleTypographyWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextStyleTypographyWidget(
-      title: 'Заголовок',
+      title: 'Заголовки',
       previewText: 'Пример заголовка публикации',
-      styleSelector: (state) => state.typography.titleStyle,
+      styleSelector: (state) => state.typography.publicationTitleStyle,
       defaultStyleBuilder: (context) =>
           _defaultTypography(context).publicationTitle,
       previewStyleBuilder: (context) =>
           context.theme.appTypography.publicationTitle,
       onStyleChange: (context, style) =>
           context.read<SettingsCubit>().changePublicationTitleStyle(style),
+      fontFamilies: AppFonts.titleFonts,
       fontSizeMin: 20,
       fontSizeMax: 30,
       fontHeightMax: 1.3,
@@ -38,13 +39,14 @@ class PublicationTextTypographyWidget extends StatelessWidget {
       previewText:
           'Пример текста публикации.\n'
           'Так проще оценить размер и ритм строки',
-      styleSelector: (state) => state.typography.textStyle,
+      styleSelector: (state) => state.typography.publicationTextStyle,
       defaultStyleBuilder: (context) =>
           _defaultTypography(context).publicationText,
       previewStyleBuilder: (context) =>
           context.theme.appTypography.publicationText,
       onStyleChange: (context, style) =>
           context.read<SettingsCubit>().changePublicationTextStyle(style),
+      fontFamilies: AppFonts.textFonts,
       fontSizeMin: 12,
       fontSizeMax: 24,
       fontHeightMax: 1.8,
