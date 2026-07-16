@@ -73,7 +73,7 @@ class UserBookmarkListView extends StatelessWidget {
         controller: scrollCtrl,
         child: CustomScrollView(
           controller: scrollCtrl,
-          cacheExtent: 1000,
+          scrollCacheExtent: const .pixels(1000),
           physics: scrollPhysics,
           slivers: [
             BlocBuilder<UserBookmarkListCubit, UserBookmarkListState>(

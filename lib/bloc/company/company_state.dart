@@ -1,6 +1,6 @@
 part of 'company_cubit.dart';
 
-class CompanyState with EquatableMixin {
+class CompanyState with Equatable {
   const CompanyState({
     this.status = .initial,
     this.error = '',

@@ -1,7 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 part of 'user_comment_list_cubit.dart';
 
-class UserCommentListState with EquatableMixin {
+class UserCommentListState with Equatable {
   const UserCommentListState({
     this.status = .initial,
     this.error = '',

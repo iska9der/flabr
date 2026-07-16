@@ -16,4 +16,7 @@ class SearchUserParams extends QueryParams implements SearchParamsFactory {
     return '/users/search?q=$query&target_type=users'
         '&order=$order&page=$page';
   }
+
+  @override
+  List<Object?> get props => [...super.props, query, order];
 }

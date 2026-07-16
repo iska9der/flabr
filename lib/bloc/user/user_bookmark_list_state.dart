@@ -1,6 +1,6 @@
 part of 'user_bookmark_list_cubit.dart';
 
-class UserBookmarkListState extends PublicationListState with EquatableMixin {
+class UserBookmarkListState extends PublicationListState with Equatable {
   const UserBookmarkListState({
     super.status = .initial,
     super.error = '',

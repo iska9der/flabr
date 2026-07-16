@@ -8,7 +8,7 @@ enum PublicationDownloadStatus {
   failure,
 }
 
-class PublicationDownloadState with EquatableMixin {
+class PublicationDownloadState with Equatable {
   const PublicationDownloadState({
     this.id = '',
     this.htmlText = '',

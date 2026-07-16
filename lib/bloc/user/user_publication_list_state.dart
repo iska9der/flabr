@@ -1,7 +1,6 @@
 part of 'user_publication_list_cubit.dart';
 
-class UserPublicationListState extends PublicationListState
-    with EquatableMixin {
+class UserPublicationListState extends PublicationListState with Equatable {
   const UserPublicationListState({
     super.status = .initial,
     super.error = '',

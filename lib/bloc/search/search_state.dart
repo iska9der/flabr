@@ -1,6 +1,6 @@
 part of 'search_cubit.dart';
 
-class SearchState with EquatableMixin {
+class SearchState with Equatable {
   const SearchState({
     this.status = .initial,
     this.error = '',

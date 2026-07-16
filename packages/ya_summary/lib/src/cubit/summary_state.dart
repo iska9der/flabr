@@ -3,7 +3,7 @@ part of 'summary_cubit.dart';
 
 enum SummaryStatus { initial, loading, failure, success }
 
-class SummaryState with EquatableMixin {
+class SummaryState with Equatable {
   const SummaryState({
     this.status = SummaryStatus.initial,
     this.error = '',

@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-class CommentAccess with EquatableMixin {
+class CommentAccess with Equatable {
   const CommentAccess({
     this.isCanComment = false,
     this.cantCommentReason = '',

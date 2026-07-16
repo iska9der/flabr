@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 import '../list_response_model.dart';
 import 'company_model.dart';
 
-class CompanyListResponse extends ListResponse<Company> with EquatableMixin {
+class CompanyListResponse extends ListResponse<Company> with Equatable {
   const CompanyListResponse({
     super.pagesCount = 1,
     super.ids = const [],

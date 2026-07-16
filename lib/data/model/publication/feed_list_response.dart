@@ -1,6 +1,6 @@
 part of 'publication.dart';
 
-class FeedListResponse extends ListResponse<Publication> with EquatableMixin {
+class FeedListResponse extends ListResponse<Publication> with Equatable {
   const FeedListResponse({
     super.pagesCount = 1,
     super.ids = const [],

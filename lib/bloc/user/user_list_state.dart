@@ -1,6 +1,6 @@
 part of 'user_list_cubit.dart';
 
-class UserListState with EquatableMixin {
+class UserListState with Equatable {
   const UserListState({
     this.status = LoadingStatus.initial,
     this.error = '',

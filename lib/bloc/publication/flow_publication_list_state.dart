@@ -1,7 +1,6 @@
 part of 'flow_publication_list_cubit.dart';
 
-class FlowPublicationListState extends PublicationListState
-    with EquatableMixin {
+class FlowPublicationListState extends PublicationListState with Equatable {
   const FlowPublicationListState({
     super.status = .initial,
     super.error = '',

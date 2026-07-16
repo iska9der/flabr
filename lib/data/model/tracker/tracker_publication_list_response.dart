@@ -1,7 +1,7 @@
 part of 'tracker.dart';
 
 class TrackerPublicationListResponse extends ListResponse<TrackerPublication>
-    with EquatableMixin {
+    with Equatable {
   const TrackerPublicationListResponse({
     super.pagesCount = 1,
     super.ids = const [],

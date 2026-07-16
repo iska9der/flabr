@@ -6,7 +6,7 @@ import 'company_hub_model.dart';
 import 'company_related_data_model.dart';
 import 'company_statistics_model.dart';
 
-class Company extends CompanyBase with EquatableMixin {
+class Company extends CompanyBase with Equatable {
   const Company({
     required super.alias,
     super.imageUrl = '',

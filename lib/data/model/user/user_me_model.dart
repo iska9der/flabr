@@ -4,7 +4,7 @@ import 'package:equatable/equatable.dart';
 
 import '../user_base.dart';
 
-class UserMe extends UserBase with EquatableMixin {
+class UserMe extends UserBase with Equatable {
   const UserMe({
     required super.id,
     super.alias,

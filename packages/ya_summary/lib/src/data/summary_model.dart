@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-class SummaryModel with EquatableMixin {
+class SummaryModel with Equatable {
   const SummaryModel({
     this.title = '',
     this.sharingUrl = '',

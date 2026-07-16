@@ -3,7 +3,7 @@ import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
 
-class UserWorkplace with EquatableMixin {
+class UserWorkplace with Equatable {
   const UserWorkplace({
     required this.title,
     required this.alias,

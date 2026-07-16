@@ -1,6 +1,6 @@
 part of 'user_cubit.dart';
 
-class UserState with EquatableMixin {
+class UserState with Equatable {
   const UserState({
     required this.login,
     this.status = .initial,

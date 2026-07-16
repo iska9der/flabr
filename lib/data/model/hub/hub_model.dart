@@ -6,7 +6,7 @@ import '../hub_base.dart';
 import 'hub_related_data_model.dart';
 import 'hub_statistics_model.dart';
 
-class Hub extends HubBase with EquatableMixin {
+class Hub extends HubBase with Equatable {
   const Hub({
     required super.alias,
     super.titleHtml = '',

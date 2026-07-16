@@ -72,7 +72,7 @@ class UserPublicationListView extends StatelessWidget {
           controller: scrollCtrl,
           child: CustomScrollView(
             controller: scrollCtrl,
-            cacheExtent: 2000,
+            scrollCacheExtent: const .pixels(2000),
             physics: scrollPhysics,
             slivers: [
               FlabrSliverRefreshIndicator(onRefresh: listCubit.reset),

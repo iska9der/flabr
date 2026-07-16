@@ -1,6 +1,6 @@
 part of 'settings_cubit.dart';
 
-class SettingsState with EquatableMixin {
+class SettingsState with Equatable {
   const SettingsState({
     this.status = .initial,
     this.langUI = .ru,

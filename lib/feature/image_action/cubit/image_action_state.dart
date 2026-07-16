@@ -2,7 +2,7 @@ part of 'image_action_cubit.dart';
 
 enum ImageActionStatus { initial, loading, success, failure }
 
-class ImageActionState with EquatableMixin {
+class ImageActionState with Equatable {
   const ImageActionState({
     this.status = ImageActionStatus.initial,
     this.error = '',
