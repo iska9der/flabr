@@ -67,8 +67,7 @@ class PostCardWidget extends StatelessWidget {
                 previous.feed.isImageVisible != current.feed.isImageVisible,
             builder: (context, state) {
               return CardHtmlWidget(
-                textHtml: post.textHtml,
-                rebuildTriggers: [state.feed],
+                htmlText: post.textHtml,
                 isImageVisible: state.feed.isImageVisible,
               );
             },

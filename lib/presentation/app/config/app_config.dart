@@ -7,10 +7,7 @@ part of 'config.dart';
 abstract class AppConfig with _$AppConfig {
   const factory AppConfig({
     /// Включить DevicePreview для тестирования на разных устройствах
-    @Default(false) bool enableDevicePreview,
-
-    /// Коэффициент масштабирования текста
-    @Default(1.0) double textScaleFactor,
+    required bool enableDevicePreview,
 
     /// Breakpoints для responsive дизайна
     @Default([
@@ -36,6 +33,7 @@ abstract class AppConfig with _$AppConfig {
 
   /// Конфигурация для production
   static const prod = AppConfig(
+    enableDevicePreview: false,
     splashMinDuration: Duration(milliseconds: 800),
   );
 }

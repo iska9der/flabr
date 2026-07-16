@@ -5,6 +5,6 @@ import '../theme/theme.dart';
 extension ThemeX on ThemeData {
   AppColorsExtension get colors => extension<AppColorsExtension>()!;
 
-  AppTypographyExtension get appTypography =>
-      extension<AppTypographyExtension>()!;
+  UserTypographyExtension get appTypography =>
+      extension<UserTypographyExtension>()!;
 }

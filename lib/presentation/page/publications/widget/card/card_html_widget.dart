@@ -10,38 +10,41 @@ import '../../../../widget/html_view/html_view.dart';
 class CardHtmlWidget extends StatelessWidget {
   const CardHtmlWidget({
     super.key,
-    required this.textHtml,
-    this.rebuildTriggers,
+    required this.htmlText,
     this.isTextVisible = true,
     this.isImageVisible = true,
   });
 
-  final String textHtml;
-  final List<dynamic>? rebuildTriggers;
+  final String htmlText;
   final bool isTextVisible;
   final bool isImageVisible;
 
   @override
   Widget build(BuildContext context) {
     final theme = context.theme;
-    final textStyle = theme.appTypography.feedPublicationDescription;
+    final textStyle = theme.appTypography.publicationText;
+    final config = HtmlConfig(
+      titleStyle: theme.appTypography.publicationTitle,
+      isImageVisible: isImageVisible,
+      isTextVisible: isTextVisible,
+    );
 
     return HtmlWidget(
-      textHtml,
-      rebuildTriggers: rebuildTriggers,
+      htmlText,
+      rebuildTriggers: [config],
       textStyle: textStyle,
       customStylesBuilder: (element) => HtmlCustomStyles.builder(
         element,
         theme,
         EdgeInsets.zero,
-        const .new(),
+        config,
         fontSize: textStyle.fontSize!,
       ),
       customWidgetBuilder: (element) {
         return switch (element.localName) {
           'br' => const SizedBox.shrink(),
-          'p' => _buildTextWidget(element, isTextVisible),
-          'img' => _buildImageWidget(element, isImageVisible),
+          'p' => _buildTextWidget(element, config.isTextVisible),
+          'img' => _buildImageWidget(element, config.isImageVisible),
           _ => null,
         };
       },

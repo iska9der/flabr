@@ -10,6 +10,7 @@ part 'misc_config_model.dart';
 part 'publication_config_model.dart';
 part 'scroll_variant.dart';
 part 'theme_config_model.dart';
+part 'typography_config_model.dart';
 
 @freezed
 abstract class Config with _$Config {
@@ -18,6 +19,7 @@ abstract class Config with _$Config {
     @Default(FeedConfigModel.empty) FeedConfigModel feed,
     @Default(PublicationConfigModel.empty) PublicationConfigModel publication,
     @Default(MiscConfigModel.empty) MiscConfigModel misc,
+    @Default(TypographyConfigModel.empty) TypographyConfigModel typography,
   }) = _Config;
 
   factory Config.fromJson(Map<String, dynamic> json) => _$ConfigFromJson(json);

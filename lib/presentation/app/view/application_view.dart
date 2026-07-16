@@ -39,13 +39,12 @@ class ApplicationView extends StatelessWidget {
     final scrollBehavior = context
         .select((SettingsCubit cubit) => cubit.state.misc.scrollVariant)
         .behavior;
-
-    final feedConfig = context.select<SettingsCubit, FeedConfigModel>(
-      (cubit) => cubit.state.feed,
+    final textScaleFactor = context.select<SettingsCubit, double>(
+      (cubit) => cubit.state.typography.textScaleFactor,
     );
-    final publicationConfig = context
-        .select<SettingsCubit, PublicationConfigModel>(
-          (cubit) => cubit.state.publication,
+    final typographyConfig = context
+        .select<SettingsCubit, TypographyConfigModel>(
+          (cubit) => cubit.state.typography,
         );
     final router = getIt<AppRouter>();
 
@@ -56,12 +55,10 @@ class ApplicationView extends StatelessWidget {
       locale: locale,
       themeMode: themeMode,
       theme: AppTheme.light(
-        feedConfig: feedConfig,
-        publicationConfig: publicationConfig,
+        typographyConfig: typographyConfig,
       ),
       darkTheme: AppTheme.dark(
-        feedConfig: feedConfig,
-        publicationConfig: publicationConfig,
+        typographyConfig: typographyConfig,
       ),
       scrollBehavior: scrollBehavior,
       routerConfig: router.config(
@@ -72,6 +69,7 @@ class ApplicationView extends StatelessWidget {
       builder: (context, child) => _buildAppWrapper(
         context,
         config,
+        textScaleFactor,
         child,
       ),
     );
@@ -80,6 +78,7 @@ class ApplicationView extends StatelessWidget {
   Widget _buildAppWrapper(
     BuildContext context,
     AppConfig config,
+    double textScaleFactor,
     Widget? child,
   ) {
     final theme = context.theme;
@@ -109,7 +108,7 @@ class ApplicationView extends StatelessWidget {
 
     return MediaQuery(
       data: MediaQuery.of(context).copyWith(
-        textScaler: .linear(config.textScaleFactor),
+        textScaler: .linear(textScaleFactor),
       ),
       child: result,
     );

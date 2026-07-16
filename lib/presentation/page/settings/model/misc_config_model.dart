@@ -3,8 +3,7 @@ part of 'config_model.dart';
 enum NavigationAlignment {
   start,
   center,
-  end
-  ;
+  end;
 
   String get label => switch (this) {
     NavigationAlignment.start => 'В начале',

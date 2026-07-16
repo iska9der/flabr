@@ -53,6 +53,11 @@ class SettingsRepository {
       config = config.copyWith(misc: .fromJson(jsonDecode(raw)));
     }
 
+    raw = await _storage.read(CacheKeys.typographyConfig);
+    if (raw != null) {
+      config = config.copyWith(typography: .fromJson(jsonDecode(raw)));
+    }
+
     return config;
   }
 
@@ -70,5 +75,9 @@ class SettingsRepository {
 
   void saveMisc(MiscConfigModel config) {
     _storage.write(CacheKeys.miscConfig, jsonEncode(config.toJson()));
+  }
+
+  void saveTypography(TypographyConfigModel config) {
+    _storage.write(CacheKeys.typographyConfig, jsonEncode(config.toJson()));
   }
 }

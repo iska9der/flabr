@@ -5,58 +5,35 @@ import 'app_scheme.dart';
 import 'app_typography.dart';
 import 'common.dart';
 import 'extension/app_colors_extension.dart';
-import 'extension/app_typography_extension.dart';
+import 'extension/user_typography_extension.dart';
 
 abstract class AppTheme {
   static ThemeData light({
-    FeedConfigModel feedConfig = FeedConfigModel.empty,
-    PublicationConfigModel publicationConfig = PublicationConfigModel.empty,
+    TypographyConfigModel typographyConfig = TypographyConfigModel.empty,
   }) => createThemeData(
     appScheme: AppSchemeLight.scheme,
     appColors: AppSchemeLight.colors,
-    feedConfig: feedConfig,
-    publicationConfig: publicationConfig,
+    typographyConfig: typographyConfig,
   );
 
   static ThemeData dark({
-    FeedConfigModel feedConfig = FeedConfigModel.empty,
-    PublicationConfigModel publicationConfig = PublicationConfigModel.empty,
+    TypographyConfigModel typographyConfig = TypographyConfigModel.empty,
   }) => createThemeData(
     appScheme: AppSchemeDark.scheme,
     appColors: AppSchemeDark.colors,
-    feedConfig: feedConfig,
-    publicationConfig: publicationConfig,
+    typographyConfig: typographyConfig,
   );
 
   static ThemeData createThemeData({
     required ColorScheme appScheme,
     required AppColorsExtension appColors,
-    FeedConfigModel feedConfig = FeedConfigModel.empty,
-    PublicationConfigModel publicationConfig = PublicationConfigModel.empty,
+    TypographyConfigModel typographyConfig = TypographyConfigModel.empty,
   }) {
-    var textTheme = AppTypography.textTheme(scheme: appScheme);
+    final textTheme = AppTypography.textTheme(scheme: appScheme);
 
-    var appTypography = AppTypographyExtension.fromTextTheme(textTheme);
-    final titleStyle = feedConfig.titleStyle;
-    final descriptionStyle = feedConfig.descriptionStyle;
-
-    appTypography = appTypography.copyWith(
-      feedPublicationTitle: appTypography.feedPublicationTitle.copyWith(
-        fontFamily: titleStyle?.family,
-        fontSize: titleStyle?.size,
-        height: titleStyle?.height,
-      ),
-      feedPublicationDescription: appTypography.feedPublicationDescription
-          .copyWith(
-            fontFamily: descriptionStyle?.family,
-            fontSize: descriptionStyle?.size,
-            height: descriptionStyle?.height,
-          ),
-      publicationText: appTypography.publicationText.copyWith(
-        fontFamily: publicationConfig.textStyle?.family,
-        fontSize: publicationConfig.textStyle?.size,
-        height: publicationConfig.textStyle?.height,
-      ),
+    final userTypography = UserTypographyExtension.create(
+      textTheme,
+      typographyConfig,
     );
 
     var data = ThemeData(
@@ -67,7 +44,7 @@ abstract class AppTheme {
       scaffoldBackgroundColor: appScheme.surface,
       canvasColor: appScheme.surface,
       textTheme: textTheme,
-      extensions: [appColors, appTypography],
+      extensions: [appColors, userTypography],
     );
 
     data = data.copyWith(

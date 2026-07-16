@@ -44,6 +44,7 @@ import '../../../presentation/page/services/user/user_list_page.dart';
 import '../../../presentation/page/services/user/user_publication_list_page.dart';
 import '../../../presentation/page/settings/account_settings_page.dart';
 import '../../../presentation/page/settings/feed_settings_page.dart';
+import '../../../presentation/page/settings/fonts_settings_page.dart';
 import '../../../presentation/page/settings/interface_settings_page.dart';
 import '../../../presentation/page/settings/publication_settings_page.dart';
 import '../../../presentation/page/settings/settings_flow.dart';

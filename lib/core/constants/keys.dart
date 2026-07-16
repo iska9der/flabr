@@ -3,6 +3,7 @@ abstract class CacheKeys {
   static const feedConfig = 'feed_config';
   static const publicationConfig = 'publication_config';
   static const miscConfig = 'misc_config';
+  static const typographyConfig = 'typography_config';
 
   static const authTokens = 'aData';
 

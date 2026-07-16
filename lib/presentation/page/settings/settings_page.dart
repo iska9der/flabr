@@ -36,14 +36,20 @@ class SettingsView extends StatelessWidget {
       route: InterfaceSettingsRoute(),
     ),
     SettingsMenuItem(
+      title: 'Шрифты',
+      subtitle: 'Масштаб и типографика публикаций',
+      icon: Icons.text_fields_rounded,
+      route: FontsSettingsRoute(),
+    ),
+    SettingsMenuItem(
       title: 'Лента',
-      subtitle: 'Карточки, заголовки и навигация',
+      subtitle: 'Карточки и навигация',
       icon: Icons.view_agenda_outlined,
       route: FeedSettingsRoute(),
     ),
     SettingsMenuItem(
       title: 'Публикации',
-      subtitle: 'Шрифты, видимость элементов',
+      subtitle: 'Видимость элементов',
       icon: Icons.article_outlined,
       route: PublicationSettingsRoute(),
     ),

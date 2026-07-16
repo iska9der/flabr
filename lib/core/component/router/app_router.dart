@@ -132,6 +132,10 @@ class AppRouter extends RootStackRouter {
               path: InterfaceSettingsPage.routePath,
             ),
             AutoRoute(
+              page: FontsSettingsRoute.page,
+              path: FontsSettingsPage.routePath,
+            ),
+            AutoRoute(
               page: FeedSettingsRoute.page,
               path: FeedSettingsPage.routePath,
             ),
