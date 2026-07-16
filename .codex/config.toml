@@ -1,0 +1,14 @@
+[mcp_servers.dart]
+command = "../.fvm/flutter_sdk/bin/dart"
+args = ["mcp-server", "--force-roots-fallback"]
+
+[mcp_servers.codebase_memory]
+command = "../.ai/bin/codebase-memory-mcp/codebase-memory-mcp"
+cwd = ".."
+required = false
+startup_timeout_sec = 60
+tool_timeout_sec = 120
+
+[mcp_servers.codebase_memory.env]
+CBM_ALLOWED_ROOT = "."
+CBM_CACHE_DIR = ".ai/cache/codebase-memory"
