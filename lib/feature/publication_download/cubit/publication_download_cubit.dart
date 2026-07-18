@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_file_dialog/flutter_file_dialog.dart';
 
+import '../../../core/component/html_asset/html_asset.dart';
 import '../../../data/exception/exception.dart';
 import '../model/publication_download_format.dart';
 import '../service/publication_text_converter.dart';
@@ -16,10 +17,8 @@ class PublicationDownloadCubit extends Cubit<PublicationDownloadState> {
     required String publicationId,
     required String publicationText,
     required PublicationDownloadFormat format,
-  }) : _converter = PublicationTextConverter(
-         text: publicationText,
-         desiredFormat: format,
-       ),
+    required HtmlAssetService assetService,
+  }) : _assetService = assetService,
        super(
          PublicationDownloadState(
            id: publicationId,
@@ -30,7 +29,7 @@ class PublicationDownloadCubit extends Cubit<PublicationDownloadState> {
     _init();
   }
 
-  final PublicationTextConverter _converter;
+  final HtmlAssetService _assetService;
 
   Future<void> _init() async {
     if (kIsWeb || !await FlutterFileDialog.isPickDirectorySupported()) {
@@ -54,7 +53,17 @@ class PublicationDownloadCubit extends Cubit<PublicationDownloadState> {
         return emit(state.copyWith(status: PublicationDownloadStatus.initial));
       }
 
-      final text = _converter.convert();
+      final htmlWithAssets = await _assetService.saveHtml(
+        html: state.htmlText,
+        target: HtmlAssetTarget.uri(
+          parent: Uri.parse(pickedDirectory.toString()),
+          path: '${state.id}_assets',
+        ),
+      );
+      final text = PublicationTextConverter(
+        text: htmlWithAssets,
+        desiredFormat: state.format,
+      ).convert();
       final data = utf8.encode(text);
 
       await FlutterFileDialog.saveFileToDirectory(

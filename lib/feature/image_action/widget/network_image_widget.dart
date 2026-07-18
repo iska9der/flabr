@@ -1,8 +1,12 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
+import '../../../core/component/html_asset/html_asset.dart';
+import '../../../di/di.dart';
 import '../../../presentation/extension/context.dart';
 import '../../../presentation/theme/theme.dart';
 import 'full_image_widget.dart';
@@ -26,6 +30,7 @@ class NetworkImageWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = context.theme;
+    final uri = Uri.tryParse(imageUrl);
 
     int? cacheHeight = height != null
         ? (height! * MediaQuery.devicePixelRatioOf(context)).round()
@@ -37,6 +42,15 @@ class NetworkImageWidget extends StatelessWidget {
 
     final errorBuilderResolved =
         errorBuilder ?? (_, _, _) => _ImageError(height: height);
+
+    if (uri?.scheme == HtmlAssetService.cacheScheme) {
+      return _CachedAssetImage(
+        source: imageUrl,
+        height: height,
+        cacheHeight: cacheHeight,
+        errorBuilder: errorBuilderResolved,
+      );
+    }
 
     return GestureDetector(
       onTap: switch (canOpenInModal) {
@@ -86,6 +100,60 @@ class NetworkImageWidget extends StatelessWidget {
             ),
           ),
         ),
+      },
+    );
+  }
+}
+
+class _CachedAssetImage extends StatelessWidget {
+  const _CachedAssetImage({
+    required this.source,
+    required this.height,
+    required this.cacheHeight,
+    required this.errorBuilder,
+  });
+
+  final String source;
+  final double? height;
+  final int? cacheHeight;
+  final ImageErrorWidgetBuilder errorBuilder;
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<Uri?>(
+      future: getIt<HtmlAssetService>().resolveUri(source),
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return errorBuilder(
+            context,
+            snapshot.error!,
+            snapshot.stackTrace,
+          );
+        }
+        final uri = snapshot.data;
+        if (uri == null) return SizedBox(height: height);
+        final file = File.fromUri(uri);
+
+        if (uri.path.toLowerCase().endsWith('.svg')) {
+          return SvgPicture.file(
+            file,
+            height: height,
+            errorBuilder: errorBuilder,
+          );
+        }
+
+        return SizedBox(
+          height: height,
+          child: Image(
+            height: height,
+            errorBuilder: errorBuilder,
+            image: ResizeImage.resizeIfNeeded(
+              null,
+              cacheHeight,
+              FileImage(file),
+            ),
+          ),
+        );
       },
     );
   }

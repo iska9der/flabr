@@ -82,7 +82,8 @@ class PublicationResponseConverter
 
   @override
   PublicationSealed fromJson(Map<String, dynamic> json) {
-    final String? typeValue = json['publicationType'] ?? json['postType'];
+    final String? typeValue =
+        json['publicationType'] ?? json['postType'] ?? json['type'];
 
     final PublicationType resolvedType = switch (typeValue != null) {
       true => .fromString(typeValue!),
@@ -102,9 +103,17 @@ class PublicationResponseConverter
 
 Object? _tagsReader(Map<dynamic, dynamic> json, String key) {
   if (key == 'tags') {
-    return List<Map<String, dynamic>>.from(
-      json['tags'] ?? [],
-    ).map((tag) => tag['titleHtml']).toList();
+    final tags = json['tags'];
+    if (tags is! List) return const <String>[];
+
+    return tags
+        .map((tag) {
+          if (tag is String) return tag;
+          if (tag is Map) return tag['titleHtml']?.toString() ?? '';
+          return '';
+        })
+        .where((tag) => tag.isNotEmpty)
+        .toList();
   }
 
   return json[key];
@@ -112,7 +121,7 @@ Object? _tagsReader(Map<dynamic, dynamic> json, String key) {
 
 Object? _typeReader(Map<dynamic, dynamic> json, String key) {
   if (key == 'type') {
-    return json['postType'] ?? json['publicationType'];
+    return json['postType'] ?? json['publicationType'] ?? json['type'];
   }
 
   return json[key];

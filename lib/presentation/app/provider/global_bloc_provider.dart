@@ -62,11 +62,6 @@ class GlobalBlocProvider extends StatelessWidget {
         /// Оффлайн режим
         BlocProvider(
           create: (_) =>
-              OfflinePublicationListBloc(repository: getIt())
-                ..add(const .load()),
-        ),
-        BlocProvider(
-          create: (_) =>
               OfflinePublicationBloc(repository: getIt())..add(const .load()),
         ),
       ],

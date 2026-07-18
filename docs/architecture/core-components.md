@@ -171,6 +171,23 @@ Local storage management for persistent data.
 - User preferences
 - Authentication tokens
 - Cached data
+
+## HTML Asset Component
+
+**Location:** `lib/core/component/html_asset/`
+
+Shared service for downloading resources referenced by HTML. Callers provide
+an `HtmlAssetTarget` with the destination path, so the core component does not
+depend on feature-specific directory conventions. It supports two targets:
+
+- A relative path inside persistent application documents
+- A relative path inside a user-selected URI directory
+
+Cached HTML stores stable `flabr-asset://` references instead of absolute
+paths because mobile application container paths can change between launches.
+The presentation layer resolves these references against the current
+application documents directory. Web keeps remote URLs unchanged because
+`background_downloader` does not support Web.
 - App settings
 
 ## Component Design Principles

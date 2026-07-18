@@ -1,9 +1,14 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
+import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../../data/exception/exception.dart';
+import '../../../data/model/loading_status_enum.dart';
 import '../../../data/model/publication/publication.dart';
-import '../airplane.dart';
+import '../model/publication_offline.dart';
+import '../repository/repository.dart';
 
 part 'offline_publication_bloc.freezed.dart';
 part 'offline_publication_event.dart';
@@ -15,62 +20,93 @@ class OfflinePublicationBloc
     : _repository = repository,
       super(const OfflinePublicationState()) {
     on<_LoadEvent>(_onLoad);
-    on<_ToggleEvent>(_onToggle);
+    on<_SetSavedEvent>(_onSetSaved, transformer: sequential());
+    on<_ChangedEvent>(_onChanged);
+    on<_FailedEvent>(_onFailed);
   }
 
   final OfflinePublicationRepository _repository;
+  StreamSubscription<List<PublicationOffline>>? _subscription;
 
   Future<void> _onLoad(
     _LoadEvent event,
     Emitter<OfflinePublicationState> emit,
   ) async {
-    await emit.forEach(
-      _repository.watchAll(),
-      onData: (data) {
-        final ids = data.map((e) => e.id).toSet();
-
-        return state.copyWith(idsInDb: ids, error: null);
-      },
-      onError: (error, stackTrace) {
-        super.onError(error, stackTrace);
-
-        return state.copyWith(error: error);
+    emit(state.copyWith(status: LoadingStatus.loading, error: null));
+    await _subscription?.cancel();
+    _subscription = _repository.watchSavedPublications().listen(
+      (publications) => add(OfflinePublicationEvent.changed(publications)),
+      onError: (Object error, StackTrace stackTrace) {
+        add(OfflinePublicationEvent.failed(error, stackTrace));
       },
     );
   }
 
-  Future<void> _onToggle(
-    _ToggleEvent event,
+  Future<void> _onSetSaved(
+    _SetSavedEvent event,
     Emitter<OfflinePublicationState> emit,
   ) async {
     final id = event.publication.id;
-    final exists = state.idsInDb.contains(id);
+    if (state.loadingIds.contains(id)) return;
 
-    emit(state.copyWith(loadingIds: {...state.loadingIds, id}));
-
+    emit(
+      state.copyWith(
+        loadingIds: {...state.loadingIds, id},
+        operationError: null,
+        operationErrorId: null,
+      ),
+    );
     try {
-      switch (exists) {
-        case true:
-          await _repository.remove(id);
-        case false:
-          await _repository.save(event.publication);
+      if (event.saved) {
+        await _repository.save(event.publication);
+      } else {
+        await _repository.remove(id);
       }
-
       emit(
         state.copyWith(
           loadingIds: {...state.loadingIds}..remove(id),
-          error: null,
+          operationError: null,
+          operationErrorId: null,
         ),
       );
     } catch (error, stackTrace) {
       emit(
         state.copyWith(
           loadingIds: {...state.loadingIds}..remove(id),
-          error: error.parseException(),
+          operationError: error.parseException(),
+          operationErrorId: id,
         ),
       );
-
       super.onError(error, stackTrace);
     }
+  }
+
+  void _onChanged(
+    _ChangedEvent event,
+    Emitter<OfflinePublicationState> emit,
+  ) {
+    emit(
+      state.copyWith(
+        status: LoadingStatus.success,
+        publications: event.publications,
+        error: null,
+      ),
+    );
+  }
+
+  void _onFailed(_FailedEvent event, Emitter<OfflinePublicationState> emit) {
+    emit(
+      state.copyWith(
+        status: LoadingStatus.failure,
+        error: event.error.parseException(),
+      ),
+    );
+    super.onError(event.error, event.stackTrace);
+  }
+
+  @override
+  Future<void> close() async {
+    await _subscription?.cancel();
+    return super.close();
   }
 }

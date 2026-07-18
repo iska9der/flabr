@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../di/di.dart';
 import '../cubit/publication_download_cubit.dart';
 import '../model/publication_download_format.dart';
 
@@ -30,6 +31,7 @@ class PublicationDownload extends StatelessWidget {
                 publicationId: publicationId,
                 publicationText: publicationText,
                 format: PublicationDownloadFormat.markdown,
+                assetService: getIt(),
               ),
               child: const Expanded(
                 child: _SaveButton(label: 'Markdown'),
@@ -41,6 +43,7 @@ class PublicationDownload extends StatelessWidget {
                 publicationId: publicationId,
                 publicationText: publicationText,
                 format: PublicationDownloadFormat.html,
+                assetService: getIt(),
               ),
               child: const Expanded(
                 child: _SaveButton(label: 'HTML'),
