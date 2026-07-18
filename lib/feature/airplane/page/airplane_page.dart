@@ -33,10 +33,7 @@ class AirplanePage extends StatelessWidget {
                       onTap: () => context.router.pushWidget(
                         Scaffold(
                           body: SafeArea(
-                            child: PublicationDetailView(
-                              publication: model,
-                              type: .airplane,
-                            ),
+                            child: PublicationDetailView(publication: model),
                           ),
                         ),
                       ),

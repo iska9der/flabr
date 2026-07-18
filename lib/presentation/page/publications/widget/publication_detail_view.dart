@@ -29,13 +29,6 @@ const double _hPadding = 12.0;
 const double _vPadding = 6.0;
 const double _appbarPadding = 40.0;
 
-enum DetailType { remote, airplane }
-
-// TODO(new-detail):
-// 1. RepaintBoundary вокруг _PublicationContent для изоляции перерисовок
-// 2. Hysteresis в скролл-логике (задержка перед скрытием баров)
-// 3. Velocity-aware логика (быстрый скролл → скрываем быстрее)
-// 4. Accessibility improvements (Semantics для screen readers)
 class PublicationDetailRemoteBuilder extends StatelessWidget {
   const PublicationDetailRemoteBuilder({super.key});
 
@@ -67,10 +60,7 @@ class PublicationDetailRemoteBuilder extends StatelessWidget {
                   onRetry: () => _fetch(context),
                 ),
               ),
-              .success => PublicationDetailView(
-                publication: state.publication,
-                type: .remote,
-              ),
+              .success => PublicationDetailView(publication: state.publication),
             },
           ),
         ),
@@ -80,35 +70,44 @@ class PublicationDetailRemoteBuilder extends StatelessWidget {
 }
 
 /// Основное содержимое (после успешной загрузки)
+// TODO(new-detail):
+// 1. RepaintBoundary вокруг _PublicationContent для изоляции перерисовок
+// 2. Hysteresis в скролл-логике (задержка перед скрытием баров)
+// 3. Velocity-aware логика (быстрый скролл → скрываем быстрее)
+// 4. Accessibility improvements (Semantics для screen readers)
 class PublicationDetailView extends StatelessWidget {
-  const PublicationDetailView({
-    super.key,
-    required this.publication,
-    required this.type,
-  });
+  const PublicationDetailView({super.key, required this.publication});
 
   final Publication publication;
-  final DetailType type;
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        _PublicationContent(publication: publication),
-        const Positioned(
-          top: 0,
-          left: 0,
-          right: 0,
-          child: _AppBarContainer(),
+    return BlocProvider(
+      create: (_) => ScrollCubit()..listenProgress(),
+      child: BlocListener<ScrollCubit, ScrollState>(
+        listenWhen: (previous, current) =>
+            !previous.isBottomEdge && current.isBottomEdge,
+        listener: (context, state) {
+          context.read<NavigationCubit>().show();
+        },
+        child: Stack(
+          children: [
+            _PublicationContent(publication: publication),
+            Positioned(
+              top: 0,
+              left: 0,
+              right: 0,
+              child: _AppBarContainer(publication: publication),
+            ),
+            Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: _BottomBarContainer(publication: publication),
+            ),
+          ],
         ),
-        if (type == .remote)
-          const Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
-            child: _BottomBarContainer(),
-          ),
-      ],
+      ),
     );
   }
 }
@@ -140,35 +139,29 @@ class _LoadingView extends StatelessWidget {
 
 /// Контейнер для AppBar с управлением видимостью
 class _AppBarContainer extends StatelessWidget {
-  const _AppBarContainer();
+  const _AppBarContainer({required this.publication});
+
+  final Publication publication;
 
   @override
   Widget build(BuildContext context) {
     final theme = context.theme;
 
-    return BlocBuilder<PublicationDetailCubit, PublicationDetailState>(
-      builder: (context, state) {
-        if (state.status != .success) {
-          return const SizedBox.shrink();
-        }
+    return BlocBuilder<NavigationCubit, NavigationState>(
+      builder: (context, navState) {
+        final isVisible = navState.isNavigationVisible;
 
-        return BlocBuilder<NavigationCubit, NavigationState>(
-          builder: (context, navState) {
-            final isVisible = navState.isNavigationVisible;
-
-            return AnimatedContainer(
-              duration: const Duration(milliseconds: 200),
-              curve: Curves.decelerate,
-              height: isVisible ? _appbarPadding : 10,
-              color: theme.colorScheme.surface,
-              child: Stack(
-                children: [
-                  if (isVisible) _AppBarContent(publication: state.publication),
-                  const _ScrollProgressIndicator(),
-                ],
-              ),
-            );
-          },
+        return AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          curve: Curves.decelerate,
+          height: isVisible ? _appbarPadding : 10,
+          color: theme.colorScheme.surface,
+          child: Stack(
+            children: [
+              if (isVisible) _AppBarContent(publication: publication),
+              const _ScrollProgressIndicator(),
+            ],
+          ),
         );
       },
     );
@@ -177,7 +170,9 @@ class _AppBarContainer extends StatelessWidget {
 
 /// Контейнер для BottomBar с управлением видимостью
 class _BottomBarContainer extends StatelessWidget {
-  const _BottomBarContainer();
+  const _BottomBarContainer({required this.publication});
+
+  final Publication publication;
 
   void _showMoreSheet(BuildContext context, Publication publication) =>
       showModalBottomSheet(
@@ -191,49 +186,40 @@ class _BottomBarContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<PublicationDetailCubit, PublicationDetailState>(
+    final theme = context.theme;
+
+    return BlocBuilder<NavigationCubit, NavigationState>(
       builder: (context, state) {
-        if (state.status != .success) {
-          return const SizedBox.shrink();
-        }
-
-        final theme = context.theme;
-        final publication = state.publication;
-
-        return BlocBuilder<NavigationCubit, NavigationState>(
-          builder: (context, state) {
-            return AnimatedSlide(
-              duration: const .new(milliseconds: 300),
-              curve: Curves.decelerate,
-              offset: state.isNavigationVisible
-                  ? const .new(0, 0)
-                  : const .new(0, 10),
-              child: ColoredBox(
-                color: theme.colorScheme.surface.withValues(alpha: .94),
-                child: ConstrainedBox(
-                  constraints: const .new(
-                    maxHeight: AppDimensions.publicationBottomBarHeight,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: .spaceAround,
-                    children: [
-                      Expanded(
-                        child: PublicationFooterWidget(
-                          publication: publication,
-                          isVoteBlocked: false,
-                        ),
-                      ),
-                      IconButton(
-                        icon: const Icon(Icons.more_horiz_rounded),
-                        tooltip: 'Дополнительно',
-                        onPressed: () => _showMoreSheet(context, publication),
-                      ),
-                    ],
-                  ),
-                ),
+        return AnimatedSlide(
+          duration: const .new(milliseconds: 300),
+          curve: Curves.decelerate,
+          offset: state.isNavigationVisible
+              ? const .new(0, 0)
+              : const .new(0, 10),
+          child: ColoredBox(
+            color: theme.colorScheme.surface.withValues(alpha: .94),
+            child: ConstrainedBox(
+              constraints: const .new(
+                maxHeight: AppDimensions.publicationBottomBarHeight,
               ),
-            );
-          },
+              child: Row(
+                mainAxisAlignment: .spaceAround,
+                children: [
+                  Expanded(
+                    child: PublicationFooterWidget(
+                      publication: publication,
+                      isVoteBlocked: false,
+                    ),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.more_horiz_rounded),
+                    tooltip: 'Дополнительно',
+                    onPressed: () => _showMoreSheet(context, publication),
+                  ),
+                ],
+              ),
+            ),
+          ),
         );
       },
     );
