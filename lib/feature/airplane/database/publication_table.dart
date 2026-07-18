@@ -1,6 +1,5 @@
 part of 'database.dart';
 
-@LazySingleton()
 class PublicationTable extends Table {
   TextColumn get id => text()();
   TextColumn get type => text().map(const PublicationTypeConverter())();

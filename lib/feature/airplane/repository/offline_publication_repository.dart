@@ -1,13 +1,13 @@
 part of 'repository.dart';
 
 abstract interface class OfflinePublicationRepository {
-  FutureOr<List<Publication>> getAll();
+  Future<List<Publication>> getAll();
 
   Stream<List<Publication>> watchAll();
 
-  Future<void> create(Publication publication);
+  Future<void> save(Publication publication);
 
-  Future<void> delete(String id);
+  Future<void> remove(String id);
 }
 
 @dev
@@ -26,14 +26,14 @@ class OfflinePublicationRepositoryImpl implements OfflinePublicationRepository {
   }
 
   @override
-  FutureOr<List<Publication>> getAll() {
+  Future<List<Publication>> getAll() {
     return _dao.getAll().catchError((error) {
       throw DatabaseException.from(error);
     });
   }
 
   @override
-  Future<void> create(Publication publication) async {
+  Future<void> save(Publication publication) async {
     try {
       await _dao.insertPublication(publication);
     } catch (error) {
@@ -42,7 +42,7 @@ class OfflinePublicationRepositoryImpl implements OfflinePublicationRepository {
   }
 
   @override
-  Future<void> delete(String id) async {
+  Future<void> remove(String id) async {
     try {
       await _dao.deletePublication(id);
     } catch (error) {

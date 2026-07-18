@@ -51,9 +51,9 @@ class OfflinePublicationBloc
     try {
       switch (exists) {
         case true:
-          await _repository.delete(id);
+          await _repository.remove(id);
         case false:
-          await _repository.create(event.publication);
+          await _repository.save(event.publication);
       }
 
       emit(
