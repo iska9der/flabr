@@ -10,11 +10,9 @@ class PublicationSaveOfflineButton extends StatelessWidget {
   const PublicationSaveOfflineButton({
     super.key,
     required this.publication,
-    this.label = 'Сохранить оффлайн',
   });
 
   final Publication publication;
-  final String label;
 
   @override
   Widget build(BuildContext context) {
@@ -40,14 +38,18 @@ class PublicationSaveOfflineButton extends StatelessWidget {
               final exists = value.saved;
               final isLoading = value.loading;
 
-              return FilledButton.tonalIcon(
-                label: Text(exists ? 'Удалить из оффлайна' : label),
-                icon: switch (isLoading) {
-                  true => const CircleIndicator.small(),
-                  false => Icon(
-                    exists ? Icons.bookmark : Icons.bookmark_border,
-                  ),
-                },
+              return AppActionTile(
+                icon: exists
+                    ? Icons.delete_outline_rounded
+                    : Icons.offline_pin_outlined,
+                title: exists
+                    ? 'Удалить офлайн-копию'
+                    : 'Сохранить для офлайна',
+                subtitle: exists
+                    ? 'Статья сохранена на устройстве'
+                    : 'Статья и изображения будут доступны без интернета',
+                destructive: exists,
+                trailing: isLoading ? const CircleIndicator.small() : null,
                 onPressed: switch (isLoading) {
                   true => null,
                   false => () => context.read<OfflinePublicationBloc>().add(

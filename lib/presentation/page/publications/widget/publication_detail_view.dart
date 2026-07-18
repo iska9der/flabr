@@ -177,11 +177,8 @@ class _BottomBarContainer extends StatelessWidget {
   void _showMoreSheet(BuildContext context, Publication publication) =>
       showModalBottomSheet(
         context: context,
-        builder: (_) => SizedBox(
-          width: .infinity,
-          height: 120,
-          child: PublicationMoreButton(publication: publication),
-        ),
+        isScrollControlled: true,
+        builder: (_) => PublicationMoreButton(publication: publication),
       );
 
   @override
