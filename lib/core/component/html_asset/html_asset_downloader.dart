@@ -4,15 +4,19 @@ import 'package:background_downloader/background_downloader.dart';
 import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
 
+/// Загружает HTML-ресурсы в хранилища, выбранные вызывающим сервисом
 abstract interface class HtmlAssetDownloader {
+  /// Загружает файл в application documents и возвращает его file URI
   Future<Uri?> downloadToApplicationDocuments({
     required String url,
     required String directory,
     required String filename,
   });
 
+  /// Создаёт дочерний каталог у внешнего document provider
   Future<Uri> createDirectory(Uri parent, String name);
 
+  /// Загружает файл в каталог внешнего document provider
   Future<Uri?> downloadToUri({
     required String url,
     required Uri directory,
@@ -20,6 +24,7 @@ abstract interface class HtmlAssetDownloader {
   });
 }
 
+/// Реализация загрузчика на основе background_downloader
 @LazySingleton(as: HtmlAssetDownloader)
 class BackgroundHtmlAssetDownloader implements HtmlAssetDownloader {
   BackgroundHtmlAssetDownloader() : _downloader = FileDownloader();

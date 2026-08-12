@@ -5,7 +5,6 @@ import '../../../di/di.dart';
 import '../../../presentation/extension/extension.dart';
 import '../../../presentation/widget/enhancement/enhancement.dart';
 import '../cubit/publication_download_cubit.dart';
-import '../model/publication_download_format.dart';
 
 class PublicationDownload extends StatelessWidget {
   const PublicationDownload({
@@ -26,7 +25,7 @@ class PublicationDownload extends StatelessWidget {
           create: (_) => PublicationDownloadCubit(
             publicationId: publicationId,
             publicationText: publicationText,
-            format: PublicationDownloadFormat.markdown,
+            format: .markdown,
             assetService: getIt(),
           ),
           child: const _SaveButton(
@@ -40,7 +39,7 @@ class PublicationDownload extends StatelessWidget {
           create: (_) => PublicationDownloadCubit(
             publicationId: publicationId,
             publicationText: publicationText,
-            format: PublicationDownloadFormat.html,
+            format: .html,
             assetService: getIt(),
           ),
           child: const _SaveButton(
