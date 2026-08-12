@@ -8,6 +8,7 @@ import 'package:flabr/core/component/storage/cache_storage.dart';
 import 'package:flabr/core/constants/constants.dart';
 import 'package:flabr/data/repository/language_repository.dart';
 import 'package:flabr/data/repository/token_repository.dart';
+import 'package:flabr/data/service/profile_service.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -47,7 +48,7 @@ void main() {
       await expectSid(restartedJar, Urls.mobileBaseUrl, 'site-sid');
     });
 
-    test('sends a restored SID through CSRF and mobile interceptors', () async {
+    test('sends a restored SID through CSRF and site interceptors', () async {
       final storage = MemoryCookieStorage();
       final initialJar = PersistCookieJar(storage: storage);
       await initialJar.saveFromResponse(Uri.parse(Urls.baseUrl), [
@@ -58,7 +59,7 @@ void main() {
       final repository = TokenRepository(cookieJar: restartedJar);
       await repository.init();
 
-      final dio = Dio(BaseOptions(baseUrl: Urls.mobileApiUrl));
+      final dio = Dio(BaseOptions(baseUrl: Urls.siteApiUrl));
       final client = HabraClient(
         dio,
         logger: NoOpLogger(),
@@ -69,9 +70,12 @@ void main() {
       final adapter = RecordingHttpClientAdapter();
       dio.httpClientAdapter = adapter;
 
-      final response = await client.get('/me');
+      final service = ProfileServiceImpl(
+        siteClient: client,
+      );
+      final profile = await service.fetchMe();
 
-      expect(response.statusCode, 200);
+      expect(profile, isEmpty);
       expect(adapter.requests, hasLength(2));
 
       final csrfRequest = adapter.requests.first;
@@ -86,7 +90,7 @@ void main() {
       final meRequest = adapter.requests.last;
       expect(
         '${meRequest.uri.scheme}://${meRequest.uri.host}${meRequest.uri.path}',
-        'https://m.habr.com/kek/v2/me',
+        'https://habr.com/kek/v2/me',
       );
       expectSingleSid(meRequest, 'site-sid');
       expect(meRequest.headers[Keys.csrfToken], 'test-csrf');
