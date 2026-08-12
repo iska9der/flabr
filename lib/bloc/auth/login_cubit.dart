@@ -13,14 +13,14 @@ class LoginCubit extends Cubit<LoginState> {
 
   final TokenRepository _tokenRepository;
 
-  Future<void> submit({required String token, bool isManual = false}) async {
+  Future<void> submit({required String token}) async {
     if (state.status == LoadingStatus.loading) return;
 
     emit(state.copyWith(status: LoadingStatus.loading));
 
     await Future.delayed(const Duration(seconds: 1));
 
-    await _tokenRepository.saveToken(token, asCookie: isManual);
+    await _tokenRepository.saveToken(token);
 
     emit(state.copyWith(status: LoadingStatus.success));
   }
