@@ -40,6 +40,17 @@ For any non-trivial change:
 4. Identify whether generated files, DI, routes, models, or workspace packages are affected.
 5. State the intended edit briefly before patching.
 
+### Before Finishing Checklist
+
+For every non-trivial Dart change, do not report the task as complete until all
+of the following checks have been performed:
+1. Review the final diff for scope, consistency with nearby code, and accidental
+   changes to user-owned work.
+2. Apply the [Documentation Comments](#documentation-comments) rules to changed
+   Dart files where their conditions apply.
+3. Update generated files through the appropriate generator when affected.
+4. Run formatter and analyzer through FVM.
+
 ## Quality Bar
 
 A change is not done until it is consistent with local project patterns, not just generic Flutter/BLoC practices.
@@ -90,6 +101,11 @@ Do not edit generated files manually:
 
 - Follow `analysis_options.yaml`
 - Use single quotes, relative imports inside `lib/`, explicit return types, super parameters, and const constructors where possible
+- Prefer Dart dot shorthand syntax in Flutter code whenever the target type is
+  inferred unambiguously from context, for example `padding: .all(16)`,
+  `alignment: .center`, and `mainAxisAlignment: .center`
+- Use the explicit type when dot shorthand is ambiguous, unsupported, or makes
+  the code harder to understand
 - Preserve trailing commas; formatter is configured with `trailing_commas: preserve`
 - Run `.fvm/flutter_sdk/bin/flutter analyze` after non-trivial Dart changes
 
