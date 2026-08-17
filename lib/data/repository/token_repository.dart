@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:collection/collection.dart';
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
@@ -21,29 +20,63 @@ class TokenRepository {
   String? get csrf => _csrf;
 
   Future<void> init() async {
-    /// Получаем из кук токен [Keys.sidToken]
-    final cookies = await cookieJar.loadForRequest(Uri.parse(Urls.baseUrl));
-    final token =
-        cookies
-            .firstWhereOrNull((cookie) => cookie.name == Keys.sidToken)
-            ?.value ??
-        '';
+    final siteCookies = await cookieJar.loadForRequest(
+      Uri.parse(Urls.baseUrl),
+    );
+    final mobileCookies = await cookieJar.loadForRequest(
+      Uri.parse(Urls.mobileBaseUrl),
+    );
+    final siteToken = _readToken(siteCookies);
+    final mobileToken = _readToken(mobileCookies);
+    final token = siteToken ?? mobileToken ?? '';
 
-    saveToken(token);
+    if (token.isNotEmpty && (siteToken != token || mobileToken != token)) {
+      await _persistToken(token);
+    }
+
+    _emitToken(token);
   }
 
-  Future<void> saveToken(String newToken, {bool asCookie = false}) async {
-    if (newToken == _tokenController.value) {
+  Future<void> saveToken(String newToken) async {
+    if (newToken.isNotEmpty) {
+      await _persistToken(newToken);
+    }
+
+    _emitToken(newToken);
+  }
+
+  String? _readToken(List<Cookie> cookies) {
+    String? fallback;
+    for (final cookie in cookies) {
+      if (cookie.name != Keys.sidToken) {
+        continue;
+      }
+
+      fallback ??= cookie.value;
+      if (cookie.path == null || cookie.path == '/') {
+        return cookie.value;
+      }
+    }
+
+    return fallback;
+  }
+
+  Future<void> _persistToken(String token) async {
+    final siteCookie = Cookie(Keys.sidToken, token)..path = '/';
+    await cookieJar.saveFromResponse(Uri.parse(Urls.baseUrl), [siteCookie]);
+
+    final mobileCookie = Cookie(Keys.sidToken, token)..path = '/';
+    await cookieJar.saveFromResponse(Uri.parse(Urls.mobileBaseUrl), [
+      mobileCookie,
+    ]);
+  }
+
+  void _emitToken(String token) {
+    if (token == _tokenController.value) {
       return;
     }
 
-    if (asCookie) {
-      final Cookie cookie = Cookie(Keys.sidToken, newToken);
-      await cookieJar.saveFromResponse(Uri.parse(Urls.baseUrl), [cookie]);
-      await cookieJar.saveFromResponse(Uri.parse(Urls.mobileBaseUrl), [cookie]);
-    }
-
-    _tokenController.add(newToken);
+    _tokenController.add(token);
   }
 
   void setCsrf(String value) {

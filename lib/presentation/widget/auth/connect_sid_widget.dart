@@ -70,7 +70,6 @@ class _ConnectSidWidgetState extends State<ConnectSidWidget> {
                             false => () {
                               context.read<LoginCubit>().submit(
                                 token: controller.text,
-                                isManual: true,
                               );
                             },
                           },

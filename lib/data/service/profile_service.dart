@@ -13,17 +13,14 @@ abstract interface class ProfileService {
 class ProfileServiceImpl implements ProfileService {
   const ProfileServiceImpl({
     @Named('siteClient') required HttpClient siteClient,
-    @Named('mobileClient') required HttpClient mobileClient,
-  }) : _siteClient = siteClient,
-       _mobileClient = mobileClient;
+  }) : _siteClient = siteClient;
 
   final HttpClient _siteClient;
-  final HttpClient _mobileClient;
 
   @override
   Future<Map<String, dynamic>?> fetchMe() async {
     try {
-      final response = await _mobileClient.get('/me');
+      final response = await _siteClient.get('/v2/me');
 
       return response.data;
     } catch (e, trace) {

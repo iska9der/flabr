@@ -147,11 +147,17 @@ class _WebViewLoginState extends State<_WebViewLogin> {
 
   Future<String> handleCookies(String url) async {
     final list = await cookieManager.getCookies(url);
+    final token = list
+        .firstWhere((cookie) => cookie.name == Keys.sidToken)
+        .value;
+    final cookies = list
+        .where((cookie) => cookie.name != Keys.sidToken)
+        .toList();
 
     final cookieJar = getIt<TokenRepository>().cookieJar;
-    await cookieJar.saveFromResponse(Uri.parse(Urls.baseUrl), list);
-    await cookieJar.saveFromResponse(Uri.parse(Urls.mobileBaseUrl), list);
-    return list.firstWhere((element) => element.name == Keys.sidToken).value;
+    await cookieJar.saveFromResponse(Uri.parse(Urls.baseUrl), cookies);
+    await cookieJar.saveFromResponse(Uri.parse(Urls.mobileBaseUrl), cookies);
+    return token;
   }
 
   void _clearControllerData() async {
