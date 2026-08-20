@@ -4,7 +4,6 @@ args = ["mcp-server", "--force-roots-fallback"]
 
 [mcp_servers.codebase_memory]
 command = "../.ai/bin/codebase-memory-mcp/codebase-memory-mcp"
-cwd = ".."
 required = false
 startup_timeout_sec = 60
 tool_timeout_sec = 120
