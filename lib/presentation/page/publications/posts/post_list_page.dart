@@ -30,6 +30,7 @@ class PostListPage extends StatelessWidget {
           create: (_) => FlowPublicationListCubit(
             repository: getIt(),
             languageRepository: getIt(),
+            settingsRepository: getIt(),
             storage: getIt(instanceName: 'sharedStorage'),
             section: Section.post,
             flow: PublicationFlow.fromString(flow),

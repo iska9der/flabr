@@ -42,6 +42,7 @@ class HubDetailPage extends StatelessWidget {
           create: (_) => HubPublicationListCubit(
             repository: getIt(),
             languageRepository: getIt(),
+            settingsRepository: getIt(),
             hub: alias,
           ),
         ),
@@ -108,7 +109,7 @@ class HubDetailPageView extends StatelessWidget {
               controller: scrollCtrl,
               physics: scrollPhysics,
               slivers: [
-                FlabrSliverRefreshIndicator(onRefresh: listCubit.reset),
+                FlabrSliverRefreshIndicator(onRefresh: listCubit.refresh),
                 SliverPadding(
                   padding: AppInsets.screenPaddingExtended,
                   sliver: SliverMainAxisGroup(
@@ -140,7 +141,12 @@ class _HubArticleListView extends StatelessWidget {
       listeners: [
         BlocListener<ScrollCubit, ScrollState>(
           listenWhen: (previous, current) => current.isBottomEdge,
-          listener: (_, _) => listCubit.fetch(),
+          listener: (context, _) {
+            if (context.read<SettingsCubit>().state.feed.navigationMode ==
+                .infiniteScroll) {
+              listCubit.fetch();
+            }
+          },
         ),
         BlocListener<SettingsCubit, SettingsState>(
           listenWhen: (previous, current) =>

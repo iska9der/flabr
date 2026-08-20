@@ -43,11 +43,11 @@ class PublicationListScaffold<
 
     return MultiBlocListener(
       listeners: [
-        /// Если пользователь вошел или вышел - надо переполучить статьи
+        /// После входа или выхода повторно получаем текущую страницу
         BlocListener<AuthCubit, AuthState>(
           listener: (context, state) {
             if (state.isAuthorized || state.isUnauthorized) {
-              listCubit.reset();
+              listCubit.refresh();
             }
           },
         ),
@@ -63,7 +63,12 @@ class PublicationListScaffold<
         /// Когда скролл достиг предела, получаем следующую страницу
         BlocListener<ScrollCubit, ScrollState>(
           listenWhen: (_, current) => current.isBottomEdge,
-          listener: (_, state) => listCubit.fetch(),
+          listener: (context, state) {
+            if (context.read<SettingsCubit>().state.feed.navigationMode ==
+                .infiniteScroll) {
+              listCubit.fetch();
+            }
+          },
         ),
 
         /// Обработка ошибок закладок
@@ -153,7 +158,9 @@ class _PublicationListView<
             /// Обновление списка по свайпу
             SliverPadding(
               padding: const EdgeInsets.only(top: AppDimensions.tabBarHeight),
-              sliver: FlabrSliverRefreshIndicator(onRefresh: bloc.reset),
+              sliver: FlabrSliverRefreshIndicator(
+                onRefresh: bloc.refresh,
+              ),
             ),
 
             /// Кнопка "Читают сейчас"

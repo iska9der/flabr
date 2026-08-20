@@ -15,6 +15,7 @@ abstract class PublicationListCubit<State extends PublicationListState>
     super.initialState, {
     required this.repository,
     required this.languageRepository,
+    required this.settingsRepository,
   }) {
     _uiLanguageSub = languageRepository.onUIChange.listen((_) => reset());
     _publicationLanguagesSub = languageRepository.onPubUIChange.listen(
@@ -24,6 +25,7 @@ abstract class PublicationListCubit<State extends PublicationListState>
 
   final PublicationRepository repository;
   final LanguageRepository languageRepository;
+  final SettingsRepository settingsRepository;
 
   late final StreamSubscription<Language> _uiLanguageSub;
   late final StreamSubscription<List<Language>> _publicationLanguagesSub;
@@ -37,13 +39,34 @@ abstract class PublicationListCubit<State extends PublicationListState>
   }
 
   bool get fetchDisabled =>
-      state.status == .loading || !state.isFirstFetch && state.isLastPage;
+      state.status == .loading ||
+      state.response.pagesCount > 0 && state.isLastPage;
 
   /// Получение списка публикаций
   FutureOr<void> fetch();
 
-  /// Сбросить состояние до начального
-  FutureOr<void> reset();
+  /// Переводит Cubit в пустое состояние указанной страницы с текущими фильтрами
+  void reset({int page = 1});
+
+  /// Очищает список для повторной загрузки
+  void refresh() {
+    final paginationEnabled =
+        settingsRepository.lastConfig.feed.navigationMode == .pagination;
+
+    reset(page: paginationEnabled ? state.currentPage : 1);
+  }
+
+  /// Загружает выбранную страницу без публикаций с других страниц
+  void changePage(int page) {
+    final pagesCount = state.response.pagesCount;
+    final isOutOfRange = page < 1 || pagesCount > 0 && page > pagesCount;
+
+    if (state.status == .loading || isOutOfRange || page == state.currentPage) {
+      return;
+    }
+
+    reset(page: page);
+  }
 }
 
 /// Абстрактный класс для стейта списка публикаций
@@ -61,5 +84,6 @@ abstract class PublicationListState {
   final ListResponse<Publication> response;
 
   bool get isFirstFetch => page == 1;
-  bool get isLastPage => page >= response.pagesCount;
+  int get currentPage => status == .success && page > 1 ? page - 1 : page;
+  bool get isLastPage => currentPage >= response.pagesCount;
 }

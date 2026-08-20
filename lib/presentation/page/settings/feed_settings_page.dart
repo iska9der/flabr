@@ -92,6 +92,28 @@ class SettingNavVisibilityWidget extends StatelessWidget {
         children: [
           BlocBuilder<SettingsCubit, SettingsState>(
             buildWhen: (previous, current) =>
+                previous.feed.navigationMode != current.feed.navigationMode,
+            builder: (context, state) {
+              return FilterChipList(
+                options: FeedNavigationMode.values
+                    .map(
+                      (mode) => FilterOption(
+                        label: mode.label,
+                        value: mode.name,
+                      ),
+                    )
+                    .toList(),
+                isSelected: (option) =>
+                    state.feed.navigationMode.name == option.value,
+                onSelected: (_, option) {
+                  final mode = FeedNavigationMode.values.byName(option.value);
+                  context.read<SettingsCubit>().changeFeedNavigationMode(mode);
+                },
+              );
+            },
+          ),
+          BlocBuilder<SettingsCubit, SettingsState>(
+            buildWhen: (previous, current) =>
                 previous.misc.navigationAlignment !=
                 current.misc.navigationAlignment,
             builder: (context, state) {

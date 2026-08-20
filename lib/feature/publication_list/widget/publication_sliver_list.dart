@@ -6,12 +6,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 import '../../../bloc/publication/publication_bookmarks_bloc.dart';
+import '../../../bloc/settings/settings_cubit.dart';
 import '../../../presentation/extension/extension.dart';
 import '../../../presentation/page/publications/widget/card/card.dart';
 import '../../../presentation/widget/enhancement/progress_indicator.dart';
 import '../../../presentation/widget/error_widget.dart';
 import '../../scroll/scroll.dart';
 import '../cubit/publication_list_cubit.dart';
+import 'publication_pagination.dart';
 
 class PublicationSliverList<
   ListCubit extends PublicationListCubit<ListState>,
@@ -34,13 +36,16 @@ class PublicationSliverList<
     final listCubit = bloc ?? context.read<ListCubit>();
     final scrollCubit = context.read<ScrollCubit?>();
     const skeletonLoader = _SkeletonLoader();
+    final paginationEnabled = context.select<SettingsCubit, bool>(
+      (cubit) => cubit.state.feed.navigationMode == .pagination,
+    );
 
     return MultiBlocListener(
       listeners: [
         BlocListener<ListCubit, ListState>(
           bloc: listCubit,
           listenWhen: (previous, current) =>
-              previous.page != 1 && current.status == .failure,
+              previous.response.refs.isNotEmpty && current.status == .failure,
           listener: (_, state) => context.showSnack(content: Text(state.error)),
         ),
 
@@ -56,6 +61,14 @@ class PublicationSliverList<
             );
           },
         ),
+        BlocListener<SettingsCubit, SettingsState>(
+          listenWhen: (previous, current) =>
+              previous.feed.navigationMode != current.feed.navigationMode,
+          listener: (_, _) {
+            listCubit.reset();
+            scrollCubit?.animateToTop();
+          },
+        ),
       ],
       child: BlocBuilder<ListCubit, ListState>(
         bloc: listCubit,
@@ -65,21 +78,19 @@ class PublicationSliverList<
             listCubit.fetch();
           }
 
-          /// Нужно ли отобразить виджет загрузки
-          final isLoaderShown = switch (state.status) {
-            .initial => true,
-            .loading when state.isFirstFetch => true,
-            _ => false,
-          };
+          /// При смене страницы список очищается, поэтому skeleton нужен
+          /// для загрузки любой страницы в режиме пагинации
+          final isLoaderShown =
+              state.response.refs.isEmpty &&
+              (state.status == .initial || state.status == .loading);
 
           if (isLoaderShown) {
             return skeletonLoader;
           }
 
-          /// Ошибка при попытке получить статьи.
-          /// Ошибку показываем вместо карточек только в случае, если
-          /// происходит загрузка первой страницы
-          final isErrorShown = state.isFirstFetch && state.status == .failure;
+          /// Ошибку показываем вместо карточек, если текущая страница пуста
+          final isErrorShown =
+              state.response.refs.isEmpty && state.status == .failure;
           if (isErrorShown) {
             return SliverFillRemaining(
               child: Center(
@@ -98,9 +109,10 @@ class PublicationSliverList<
             );
           }
 
-          int additional = (state.status == .loading ? 1 : 0);
-
-          return SliverList.builder(
+          final additional = !paginationEnabled && state.status == .loading
+              ? 1
+              : 0;
+          final list = SliverList.builder(
             itemCount: publications.length + additional,
             itemBuilder: (context, index) {
               if (index < publications.length) {
@@ -123,6 +135,26 @@ class PublicationSliverList<
                 child: CircleIndicator.medium(),
               );
             },
+          );
+
+          if (!paginationEnabled || state.response.pagesCount <= 1) {
+            return list;
+          }
+
+          return SliverMainAxisGroup(
+            slivers: [
+              list,
+              SliverToBoxAdapter(
+                child: PublicationPagination(
+                  currentPage: state.currentPage,
+                  pagesCount: state.response.pagesCount,
+                  onPageSelected: (page) {
+                    listCubit.changePage(page);
+                    scrollCubit?.animateToTop();
+                  },
+                ),
+              ),
+            ],
           );
         },
       ),

@@ -39,6 +39,7 @@ class UserBookmarkListPage extends StatelessWidget {
           create: (_) => UserBookmarkListCubit(
             repository: getIt(),
             languageRepository: getIt(),
+            settingsRepository: getIt(),
             user: alias,
             type: UserBookmarksType.fromString(type),
           ),
@@ -82,7 +83,7 @@ class UserBookmarkListView extends StatelessWidget {
                   onRefresh: switch (state.type) {
                     UserBookmarksType.comments =>
                       context.read<UserCommentListCubit>().reset,
-                    _ => listCubit.reset,
+                    _ => listCubit.refresh,
                   },
                 );
               },
@@ -131,7 +132,16 @@ class UserBookmarkListView extends StatelessWidget {
                           ),
                         _ => BlocListener<ScrollCubit, ScrollState>(
                           listenWhen: (p, c) => c.isBottomEdge,
-                          listener: (c, state) => listCubit.fetch(),
+                          listener: (context, state) {
+                            if (context
+                                    .read<SettingsCubit>()
+                                    .state
+                                    .feed
+                                    .navigationMode ==
+                                .infiniteScroll) {
+                              listCubit.fetch();
+                            }
+                          },
                           child: PublicationSliverList(bloc: listCubit),
                         ),
                       };

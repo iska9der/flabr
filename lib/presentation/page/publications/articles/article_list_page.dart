@@ -28,6 +28,7 @@ class ArticleListPage extends StatelessWidget {
           create: (_) => FlowPublicationListCubit(
             repository: getIt(),
             languageRepository: getIt(),
+            settingsRepository: getIt(),
             storage: getIt(instanceName: 'sharedStorage'),
             flow: PublicationFlow.fromString(flow),
           ),
