@@ -14,6 +14,7 @@ class UserPublicationListCubit
   UserPublicationListCubit({
     required super.repository,
     required super.languageRepository,
+    required super.settingsRepository,
     String user = '',
     UserPublicationType type = UserPublicationType.articles,
   }) : super(UserPublicationListState(alias: user, type: type));
@@ -53,8 +54,14 @@ class UserPublicationListCubit
   }
 
   @override
-  void reset() {
-    emit(.new(alias: state.alias, type: state.type));
+  void emitInitialState({int page = 1}) {
+    emit(
+      UserPublicationListState(
+        alias: state.alias,
+        type: state.type,
+        page: page,
+      ),
+    );
   }
 
   void changeType(UserPublicationType type) {

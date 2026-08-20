@@ -20,6 +20,7 @@ class FlowPublicationListCubit
   FlowPublicationListCubit({
     required super.repository,
     required super.languageRepository,
+    required super.settingsRepository,
     required CacheStorage storage,
     PublicationFlow flow = .all,
     Section section = .article,
@@ -87,8 +88,15 @@ class FlowPublicationListCubit
   }
 
   @override
-  void reset() {
-    emit(.new(flow: state.flow, section: state.section, filter: state.filter));
+  void emitInitialState({int page = 1}) {
+    emit(
+      FlowPublicationListState(
+        flow: state.flow,
+        section: state.section,
+        filter: state.filter,
+        page: page,
+      ),
+    );
   }
 
   void applyFilter(PublicationFlow newFlow, FlowFilter newFilter) {

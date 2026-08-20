@@ -16,6 +16,7 @@ class HubPublicationListCubit
   HubPublicationListCubit({
     required super.repository,
     required super.languageRepository,
+    required super.settingsRepository,
     String hub = '',
     PublicationType type = PublicationType.article,
   }) : super(HubPublicationListState(hub: hub, type: type));
@@ -55,12 +56,13 @@ class HubPublicationListCubit
   }
 
   @override
-  void reset() {
+  void emitInitialState({int page = 1}) {
     emit(
       HubPublicationListState(
         hub: state.hub,
         type: state.type,
         filter: state.filter,
+        page: page,
       ),
     );
   }

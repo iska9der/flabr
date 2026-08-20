@@ -30,6 +30,7 @@ class NewsListPage extends StatelessWidget {
           create: (_) => FlowPublicationListCubit(
             repository: getIt(),
             languageRepository: getIt(),
+            settingsRepository: getIt(),
             storage: getIt(instanceName: 'sharedStorage'),
             section: Section.news,
             flow: PublicationFlow.fromString(flow),

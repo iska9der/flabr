@@ -16,6 +16,7 @@ class UserBookmarkListCubit
   UserBookmarkListCubit({
     required super.repository,
     required super.languageRepository,
+    required super.settingsRepository,
     String user = '',
     UserBookmarksType type = UserBookmarksType.articles,
   }) : super(UserBookmarkListState(user: user, type: type));
@@ -55,8 +56,14 @@ class UserBookmarkListCubit
   }
 
   @override
-  void reset() {
-    emit(.new(user: state.user, type: state.type));
+  void emitInitialState({int page = 1}) {
+    emit(
+      UserBookmarkListState(
+        user: state.user,
+        type: state.type,
+        page: page,
+      ),
+    );
   }
 
   void changeType(UserBookmarksType type) {

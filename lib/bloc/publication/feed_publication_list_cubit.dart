@@ -14,6 +14,7 @@ class FeedPublicationListCubit
   FeedPublicationListCubit({
     required super.repository,
     required super.languageRepository,
+    required super.settingsRepository,
   }) : super(const FeedPublicationListState()) {
     _restoreFilter();
   }
@@ -64,8 +65,13 @@ class FeedPublicationListCubit
   }
 
   @override
-  void reset() {
-    emit(FeedPublicationListState(filter: state.filter));
+  void emitInitialState({int page = 1}) {
+    emit(
+      FeedPublicationListState(
+        filter: state.filter,
+        page: page,
+      ),
+    );
   }
 
   void applyFilter(FeedFilter newFilter) {
