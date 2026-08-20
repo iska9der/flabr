@@ -56,7 +56,7 @@ class UserBookmarkListCubit
   }
 
   @override
-  void emitInitialState({int page = 1}) {
+  void reset({int page = 1}) {
     emit(
       UserBookmarkListState(
         user: state.user,

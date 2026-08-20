@@ -46,21 +46,14 @@ abstract class PublicationListCubit<State extends PublicationListState>
   FutureOr<void> fetch();
 
   /// Переводит Cubit в пустое состояние указанной страницы с текущими фильтрами
-  void emitInitialState({int page = 1});
-
-  /// Сбрасывает список на первую страницу
-  void reset() {
-    emitInitialState();
-  }
+  void reset({int page = 1});
 
   /// Очищает список для повторной загрузки
   void refresh() {
     final paginationEnabled =
         settingsRepository.lastConfig.feed.navigationMode == .pagination;
 
-    emitInitialState(
-      page: paginationEnabled ? state.currentPage : 1,
-    );
+    reset(page: paginationEnabled ? state.currentPage : 1);
   }
 
   /// Загружает выбранную страницу без публикаций с других страниц
@@ -72,7 +65,7 @@ abstract class PublicationListCubit<State extends PublicationListState>
       return;
     }
 
-    emitInitialState(page: page);
+    reset(page: page);
   }
 }
 

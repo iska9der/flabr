@@ -88,7 +88,7 @@ class FlowPublicationListCubit
   }
 
   @override
-  void emitInitialState({int page = 1}) {
+  void reset({int page = 1}) {
     emit(
       FlowPublicationListState(
         flow: state.flow,

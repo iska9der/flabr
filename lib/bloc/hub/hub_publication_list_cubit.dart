@@ -56,7 +56,7 @@ class HubPublicationListCubit
   }
 
   @override
-  void emitInitialState({int page = 1}) {
+  void reset({int page = 1}) {
     emit(
       HubPublicationListState(
         hub: state.hub,

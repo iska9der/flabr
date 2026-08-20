@@ -65,7 +65,7 @@ class FeedPublicationListCubit
   }
 
   @override
-  void emitInitialState({int page = 1}) {
+  void reset({int page = 1}) {
     emit(
       FeedPublicationListState(
         filter: state.filter,

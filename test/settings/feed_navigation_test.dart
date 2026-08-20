@@ -185,7 +185,7 @@ class _TestPublicationListCubit
   }
 
   @override
-  void emitInitialState({int page = 1}) {
+  void reset({int page = 1}) {
     emit(
       _TestPublicationListState(
         status: LoadingStatus.initial,

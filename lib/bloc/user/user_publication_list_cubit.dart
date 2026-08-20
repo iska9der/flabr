@@ -54,7 +54,7 @@ class UserPublicationListCubit
   }
 
   @override
-  void emitInitialState({int page = 1}) {
+  void reset({int page = 1}) {
     emit(
       UserPublicationListState(
         alias: state.alias,
