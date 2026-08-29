@@ -27,7 +27,8 @@ class SubscriptionState with Equatable {
     );
   }
 
-  String get buttonText => isSubscribed ? 'Подписан' : 'Подписаться';
+  String get buttonText =>
+      isSubscribed ? t.profile.subscribed : t.profile.subscribe;
 
   @override
   List<Object> get props => [status, error, alias, isSubscribed];

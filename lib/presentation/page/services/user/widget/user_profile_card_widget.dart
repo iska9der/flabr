@@ -7,6 +7,7 @@ import '../../../../../data/model/user/user.dart';
 import '../../../../../data/repository/repository.dart';
 import '../../../../../di/di.dart';
 import '../../../../../feature/profile_subscribe/profile_subscribe.dart';
+import '../../../../../i18n/i18n.dart';
 import '../../../../extension/extension.dart';
 import '../../../../widget/card_avatar_widget.dart';
 import '../../../../widget/enhancement/card.dart';
@@ -62,16 +63,18 @@ class _UserProfileCardWidgetState extends State<UserProfileCardWidget> {
                 children: [
                   ProfileStatDetailWidget(
                     type: StatType.rating,
-                    title: 'Рейтинг',
+                    title: context.t.company.rating,
                     value: user.rating,
                   ),
                   const SizedBox(width: 40),
                   Tooltip(
-                    message: '${user.votesCount.compact()} голосов',
+                    message: context.t.user.profileVotes(
+                      votesCount: user.votesCount.compact(),
+                    ),
                     triggerMode: .tap,
                     child: ProfileStatDetailWidget(
                       type: StatType.score,
-                      title: 'Очки',
+                      title: context.t.user.points,
                       value: user.score,
                     ),
                   ),
@@ -95,7 +98,7 @@ class _UserProfileCardWidgetState extends State<UserProfileCardWidget> {
           ),
           const SizedBox(height: 12),
           Text(
-            user.speciality.isNotEmpty ? user.speciality : 'Пользователь',
+            user.speciality.isNotEmpty ? user.speciality : context.t.user.role,
             style: theme.textTheme.labelLarge,
           ),
           BlocBuilder<ProfileBloc, ProfileState>(

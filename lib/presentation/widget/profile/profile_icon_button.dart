@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../bloc/profile/profile_bloc.dart';
+import '../../../i18n/i18n.dart';
 import '../../extension/extension.dart';
 import '../card_avatar_widget.dart';
 import '../dialog/dialog.dart';
@@ -15,7 +16,7 @@ class MyProfileIconButton extends StatelessWidget {
     final state = context.watch<ProfileBloc>().state;
 
     return IconButton(
-      tooltip: 'Профиль',
+      tooltip: context.t.company.profile,
       onPressed: switch (state.status) {
         .initial || .failure => () => showLoginDialog(context),
         .success => () => showProfileDialog(

@@ -10,6 +10,7 @@ import '../../../../../data/model/comment/comment.dart';
 import '../../../../../data/model/publication/publication.dart';
 import '../../../../../di/di.dart';
 import '../../../../../feature/scroll/scroll.dart';
+import '../../../../../i18n/i18n.dart';
 import '../../../../extension/extension.dart';
 import '../../../../widget/comment/comment.dart';
 import '../../../../widget/enhancement/card.dart';
@@ -58,8 +59,8 @@ class CommentSliverList extends StatelessWidget {
 
         var comments = state.response.refs;
         if (comments.isEmpty) {
-          return const SliverFillRemaining(
-            child: Center(child: Text('Ничего нет')),
+          return SliverFillRemaining(
+            child: Center(child: Text(context.t.publication.listEmpty)),
           );
         }
 

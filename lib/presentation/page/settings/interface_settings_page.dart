@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../bloc/settings/settings_cubit.dart';
 import '../../../data/model/filter/filter.dart';
 import '../../../data/model/language/language.dart';
+import '../../../i18n/i18n.dart';
 import '../../widget/filter/filter_chip_list.dart';
 import 'model/config_model.dart';
 import 'widget/settings_card_widget.dart';
@@ -29,21 +30,21 @@ class InterfaceSettingsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const SettingsNestedScaffold(
-      title: 'Интерфейс',
+    return SettingsNestedScaffold(
+      title: context.t.interface.settingsTitle,
       children: [
         SettingsSectionWidget(
-          title: 'Внешний вид',
+          title: context.t.interface.appearance,
           children: [
-            UIThemeWidget(),
-            SettingScrollVariantWidget(),
+            const UIThemeWidget(),
+            const SettingScrollVariantWidget(),
           ],
         ),
         SettingsSectionWidget(
-          title: 'Языки',
+          title: context.t.interface.languages,
           children: [
-            UILangWidget(),
-            ArticlesLangWidget(),
+            const UILangWidget(),
+            const ArticlesLangWidget(),
           ],
         ),
       ],
@@ -72,7 +73,7 @@ class _UIThemeWidgetState extends State<UIThemeWidget> {
   @override
   Widget build(BuildContext context) {
     return SettingsCardWidget(
-      title: 'Цветовая тема',
+      title: context.t.interface.colorTheme,
       child: Padding(
         padding: const .only(top: 8.0),
         child: FilterChipList(
@@ -80,9 +81,9 @@ class _UIThemeWidgetState extends State<UIThemeWidget> {
               .map(
                 (e) => FilterOption(
                   label: switch (e) {
-                    .system => 'Системная',
-                    .light => 'Светлая',
-                    .dark => 'Темная',
+                    .system => context.t.theme.system,
+                    .light => context.t.theme.light,
+                    .dark => context.t.theme.dark,
                   },
                   value: e.name,
                 ),
@@ -119,7 +120,7 @@ class UILangWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SettingsCardWidget(
-      title: 'Язык интерфейса',
+      title: context.t.interface.language,
       child: Padding(
         padding: const .only(top: 8.0),
         child: BlocBuilder<SettingsCubit, SettingsState>(
@@ -131,8 +132,8 @@ class UILangWidget extends StatelessWidget {
                     (lang) => FilterOption(
                       value: lang.name,
                       label: switch (lang) {
-                        .ru => 'Русский',
-                        .en => 'Английский',
+                        .ru => context.t.language.russian,
+                        .en => context.t.language.english,
                       },
                     ),
                   )
@@ -158,8 +159,8 @@ class ArticlesLangWidget extends StatelessWidget {
     final settingsCubit = context.read<SettingsCubit>();
 
     return SettingsCardWidget(
-      title: 'Язык публикаций',
-      subtitle: 'должен быть выбран хотя бы один',
+      title: context.t.publication.language,
+      subtitle: context.t.publication.languageRequired,
       child: BlocBuilder<SettingsCubit, SettingsState>(
         buildWhen: (p, c) => p.langArticles != c.langArticles,
         builder: (context, state) {
@@ -191,7 +192,7 @@ class SettingScrollVariantWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SettingsCardWidget(
-      title: 'Скролл',
+      title: context.t.interface.scroll,
       child: BlocBuilder<SettingsCubit, SettingsState>(
         buildWhen: (previous, current) =>
             previous.misc.scrollVariant != current.misc.scrollVariant,

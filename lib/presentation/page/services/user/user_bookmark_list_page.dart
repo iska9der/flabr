@@ -9,6 +9,7 @@ import '../../../../data/model/user/user.dart';
 import '../../../../di/di.dart';
 import '../../../../feature/publication_list/publication_list.dart';
 import '../../../../feature/scroll/scroll.dart';
+import '../../../../i18n/i18n.dart';
 import '../../../theme/theme.dart';
 import '../../../widget/enhancement/refresh_indicator.dart';
 import '../../../widget/navigation/navigation.dart';
@@ -26,7 +27,7 @@ class UserBookmarkListPage extends StatelessWidget {
   final String alias;
   final String type;
 
-  static const String title = 'Закладки';
+  static String get title => t.shortcut.bookmarks;
   static const String routePath = 'bookmarks/:type';
   static const String routeName = 'UserBookmarkListRoute';
 

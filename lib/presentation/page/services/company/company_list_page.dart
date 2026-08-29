@@ -8,6 +8,7 @@ import '../../../../bloc/company/company_list_cubit.dart';
 import '../../../../bloc/settings/settings_cubit.dart';
 import '../../../../di/di.dart';
 import '../../../../feature/scroll/scroll.dart';
+import '../../../../i18n/i18n.dart';
 import '../../../extension/extension.dart';
 import '../../../theme/theme.dart';
 import '../../../widget/enhancement/progress_indicator.dart';
@@ -19,7 +20,7 @@ import 'widget/company_list_card_widget.dart';
 class CompanyListPage extends StatelessWidget {
   const CompanyListPage({super.key});
 
-  static const name = 'Компании';
+  static String get name => t.search.targetCompanies;
   static const routePath = 'companies';
   static const routeName = 'CompanyListRoute';
 
@@ -67,7 +68,7 @@ class CompanyListPageView extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           leading: const AutoLeadingButton(),
-          title: const Text(CompanyListPage.name),
+          title: Text(CompanyListPage.name),
         ),
         floatingActionButton: const FloatingContainer(
           children: [FloatingScrollToTopButton()],

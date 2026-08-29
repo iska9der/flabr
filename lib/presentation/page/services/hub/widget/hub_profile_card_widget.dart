@@ -6,6 +6,7 @@ import '../../../../../data/model/stat_type_enum.dart';
 import '../../../../../data/repository/repository.dart';
 import '../../../../../di/di.dart';
 import '../../../../../feature/profile_subscribe/profile_subscribe.dart';
+import '../../../../../i18n/i18n.dart';
 import '../../../../extension/extension.dart';
 import '../../../../theme/theme.dart';
 import '../../../../widget/card_avatar_widget.dart';
@@ -69,11 +70,11 @@ class _HubProfileCardWidgetState extends State<HubProfileCardWidget> {
                   children: [
                     ProfileStatDetailWidget(
                       type: StatType.rating,
-                      title: 'Рейтинг',
+                      title: context.t.company.rating,
                       value: stats.rating,
                     ),
                     ProfileStatDetailWidget(
-                      title: 'Подписчиков',
+                      title: context.t.company.followerCount,
                       value: stats.subscribersCount,
                     ),
                   ],

@@ -1,0 +1,21 @@
+targets:
+  $default:
+    builders:
+      slang_build_runner:
+        options:
+          base_locale: ru
+          fallback_strategy: base_locale
+          input_directory: lib/i18n
+          input_file_pattern: .i18n.json
+          output_directory: lib/i18n
+          output_file_name: translations.g.dart
+          flutter_integration: true
+          locale_handling: true
+          lazy: false
+          enum_name: YaSummaryLocale
+          class_name: YaSummaryTranslations
+          translate_var: yaSummaryT
+          key_case: camel
+          key_map_case: camel
+          string_interpolation: double_braces
+          timestamp: false

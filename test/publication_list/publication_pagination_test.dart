@@ -1,8 +1,11 @@
 import 'package:flabr/feature/publication_list/widget/publication_pagination.dart';
+import 'package:flabr/i18n/i18n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
+  setUp(() => LocaleSettings.setLocaleSync(AppLocale.ru));
+
   testWidgets('shows compact page ranges at the beginning', (tester) async {
     await _pumpPagination(tester, currentPage: 1);
 
@@ -55,14 +58,16 @@ Future<void> _pumpPagination(
   ValueChanged<int>? onPageSelected,
 }) async {
   await tester.pumpWidget(
-    MaterialApp(
-      home: Scaffold(
-        body: SizedBox(
-          width: 633,
-          child: PublicationPagination(
-            currentPage: currentPage,
-            pagesCount: 50,
-            onPageSelected: onPageSelected ?? (_) {},
+    TranslationProvider(
+      child: MaterialApp(
+        home: Scaffold(
+          body: SizedBox(
+            width: 633,
+            child: PublicationPagination(
+              currentPage: currentPage,
+              pagesCount: 50,
+              onPageSelected: onPageSelected ?? (_) {},
+            ),
           ),
         ),
       ),

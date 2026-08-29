@@ -6,6 +6,7 @@ import '../../../data/model/language/language.dart';
 import '../../../data/model/loading_status_enum.dart';
 import '../../../data/model/publication/publication.dart';
 import '../../../data/repository/repository.dart';
+import '../../../i18n/i18n.dart';
 
 part 'most_reading_state.dart';
 
@@ -31,7 +32,7 @@ class MostReadingCubit extends Cubit<MostReadingState> {
     } catch (e) {
       emit(
         state.copyWith(
-          error: e.parseException('Не удалось получить статьи'),
+          error: e.parseException(t.hub.articlesFetchFailed),
           status: LoadingStatus.failure,
         ),
       );

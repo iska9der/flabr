@@ -4,3 +4,21 @@ targets:
       json_serializable:
         options:
           explicit_to_json: true
+      slang_build_runner:
+        options:
+          base_locale: ru
+          fallback_strategy: base_locale
+          input_directory: lib/i18n
+          input_file_pattern: .i18n.json
+          output_directory: lib/i18n
+          output_file_name: translations.g.dart
+          flutter_integration: true
+          locale_handling: true
+          lazy: false
+          enum_name: AppLocale
+          class_name: Translations
+          translate_var: t
+          key_case: camel
+          key_map_case: camel
+          string_interpolation: double_braces
+          timestamp: false

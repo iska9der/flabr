@@ -1,6 +1,7 @@
 import 'package:injectable/injectable.dart';
 
 import '../../core/component/http/http.dart';
+import '../../i18n/i18n.dart';
 import '../exception/exception.dart';
 import '../model/list_response_model.dart';
 import '../model/query_params_model.dart';
@@ -98,7 +99,7 @@ class UserServiceImpl implements UserService {
       rethrow;
     } catch (_, trace) {
       Error.throwWithStackTrace(
-        const FetchException('Не удалось получить комментарии в закладках'),
+        FetchException(t.bookmark.commentsLoadFailed),
         trace,
       );
     }
@@ -119,7 +120,7 @@ class UserServiceImpl implements UserService {
       rethrow;
     } catch (e, trace) {
       Error.throwWithStackTrace(
-        const FetchException('Не удалось получить комментарии пользователя'),
+        FetchException(t.user.commentsLoadFailed),
         trace,
       );
     }

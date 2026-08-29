@@ -8,6 +8,7 @@ import '../../../../../data/model/list_response_model.dart';
 import '../../../../../data/model/loading_status_enum.dart';
 import '../../../../../data/model/tracker/tracker.dart';
 import '../../../../../data/repository/repository.dart';
+import '../../i18n/i18n.dart';
 
 part 'tracker_notifications_bloc.freezed.dart';
 part 'tracker_notifications_event.dart';
@@ -64,7 +65,7 @@ class TrackerNotificationsBloc
       emit(
         state.copyWith(
           status: .failure,
-          error: error.parseException('Не удалось получить уведомления'),
+          error: error.parseException(t.tracker.notificationsFetchFailed),
         ),
       );
 

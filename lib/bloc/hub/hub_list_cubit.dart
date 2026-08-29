@@ -6,6 +6,7 @@ import '../../data/model/hub/hub.dart';
 import '../../data/model/list_response_model.dart';
 import '../../data/model/loading_status_enum.dart';
 import '../../data/repository/repository.dart';
+import '../../i18n/i18n.dart';
 
 part 'hub_list_state.dart';
 
@@ -34,7 +35,7 @@ class HubListCubit extends Cubit<HubListState> {
         ),
       );
     } catch (error, stackTrace) {
-      const fallbackMessage = 'Не удалось получить список хабов';
+      final fallbackMessage = t.hub.listFetchFailed;
       emit(
         state.copyWith(
           status: .failure,

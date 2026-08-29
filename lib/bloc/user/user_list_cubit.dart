@@ -5,6 +5,7 @@ import '../../data/exception/exception.dart';
 import '../../data/model/loading_status_enum.dart';
 import '../../data/model/user/user.dart';
 import '../../data/repository/repository.dart';
+import '../../i18n/i18n.dart';
 
 part 'user_list_state.dart';
 
@@ -37,7 +38,7 @@ class UserListCubit extends Cubit<UserListState> {
         ),
       );
     } catch (e) {
-      const fallbackMessage = 'Не удалось получить пользователей';
+      final fallbackMessage = t.user.listFetchFailed;
 
       emit(
         state.copyWith(

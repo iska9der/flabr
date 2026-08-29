@@ -6,9 +6,9 @@ enum NavigationAlignment {
   end;
 
   String get label => switch (this) {
-    NavigationAlignment.start => 'В начале',
-    NavigationAlignment.center => 'В центре',
-    NavigationAlignment.end => 'В конце',
+    NavigationAlignment.start => t.alignment.start,
+    NavigationAlignment.center => t.alignment.center,
+    NavigationAlignment.end => t.alignment.end,
   };
 }
 

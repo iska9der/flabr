@@ -1,0 +1,298 @@
+{
+  "company": {
+    "profileFetchFailed": "Failed to load the company profile",
+    "listFetchFailed": "Failed to load the company list",
+    "profile": "Profile",
+    "contacts": "Contacts",
+    "information": "Information",
+    "website": "Website",
+    "registrationDate": "Registration date",
+    "foundedDate": "Founded",
+    "size": "Company size",
+    "representative": "Representative",
+    "postsInHubs": "Posts in hubs:",
+    "rating": "Rating",
+    "followers": "Followers",
+    "followerCount": "Followers"
+  },
+  "hub": {
+    "profileFetchFailed": "Failed to load the hub profile",
+    "listFetchFailed": "Failed to load the hub list",
+    "articlesFetchFailed": "Failed to load articles",
+    "unknownType": "Unknown hub type"
+  },
+  "publication": {
+    "commentsFetchFailed": "Failed to load comments",
+    "countersFetchFailed": "Failed to load counters",
+    "votingEnded": "Voting has already ended",
+    "dailyVoteLimitReached": "You have reached today's vote limit",
+    "insufficientRatingToVote": "Your rating is too low to vote",
+    "votingNoLongerAllowed": "You can no longer vote",
+    "upvoteFailed": "Failed to increase the rating",
+    "complexityEasy": "Easy",
+    "complexityMedium": "Medium",
+    "complexityHard": "Hard",
+    "flowDevelopment": "Development",
+    "flowAdministration": "Administration",
+    "flowDesign": "Design",
+    "flowManagement": "Management",
+    "flowMarketing": "Marketing",
+    "flowPopularScience": "Popular science",
+    "formatCaseStudy": "Case study",
+    "formatTutorial": "Tutorial",
+    "formatReview": "Review",
+    "formatOpinion": "Opinion",
+    "formatDigest": "Digest",
+    "formatAnalytics": "Analytics",
+    "formatRoadmap": "Roadmap",
+    "formatReport": "Report",
+    "formatInterview": "Interview",
+    "formatRetrospective": "Retrospective",
+    "typeUnknown": "Unknown",
+    "typeArticle": "Article",
+    "typePost": "Post",
+    "typeNews": "News",
+    "typeMegaproject": "Megaproject",
+    "typeVoice": "Voice",
+    "wrongDestination": "You've ended up in the wrong place...",
+    "failed": "Failed!",
+    "saveArticle": "Save article",
+    "saved": "Saved",
+    "unavailable": "Unavailable",
+    "listEmpty": "Nothing here",
+    "originalAuthor": "Original author: {{originalAuthorName}}",
+    "originalLink": "Link to original",
+    "totalVotes": "Total votes {{votesCount}}: ",
+    "voteBreakdown": "↑{{votesCountPlus}} and ↓{{votesCountMinus}}",
+    "upvote": "Upvote",
+    "downvote": "Downvote",
+    "tags": "Tags:",
+    "more": "More",
+    "configure": "Configure",
+    "readingTimeMinutes": "{{readingTime}} min",
+    "language": "Publication language",
+    "languageRequired": "at least one must be selected",
+    "downvoteUnavailable": "The developer does not have enough voting power to downvote publications, so downvoting behavior is currently unknown"
+  },
+  "feed": {
+    "publicationsFetchFailed": "Failed to load publications",
+    "publicationUnknownType": "Unknown type",
+    "myFeed": "My feed",
+    "publicationType": "Publication type",
+    "ratingThreshold": "Rating threshold",
+    "settingsTitle": "Feed",
+    "cardsSection": "Cards",
+    "behaviorSection": "Behavior",
+    "images": "Images",
+    "imagesPerformanceNote": "affects performance",
+    "shortDescription": "Short description",
+    "navigation": "Navigation",
+    "showOnScroll": "Show while scrolling",
+    "infiniteScroll": "Infinite scroll",
+    "pagination": "Pagination"
+  },
+  "bookmark": {
+    "commentsLoadFailed": "Failed to load bookmarked comments"
+  },
+  "tracker": {
+    "notificationsFetchFailed": "Failed to load notifications",
+    "notificationsMarkReadFailed": "Failed to mark notifications as read",
+    "publicationsMarkReadFailed": "Failed to mark publications as read",
+    "publicationsRemoveFailed": "Failed to remove publications from the tracker",
+    "publicationReadFailed": "Failed to read the publication",
+    "somethingHappenedTo": "Something happened to",
+    "publishedNewPost": "Published a new post",
+    "bookmarkedNewPost": "Bookmarked a new post",
+    "title": "Tracker",
+    "publications": "Publications",
+    "subscriptions": "Subscriptions",
+    "markAsRead": "Mark as read",
+    "remove": "Remove from tracker",
+    "subscriptionMarkAsRead": "Mark as read",
+    "unknownNotificationWanted": "The developer is looking for this notification type!",
+    "unknownNotificationHelp": "To display the data, I need to know its structure.\nI have not received this type of notification, so I need a little help:\ntapping the email or Telegram icon will copy the notification structure and open the selected app.\nSend the message, and no one gets hurt. Thank you!"
+  },
+  "user": {
+    "bookmarksFetchFailed": "Failed to load bookmarks",
+    "profileCardFetchFailed": "Failed to load the user profile card",
+    "listFetchFailed": "Failed to load users",
+    "ufo": "UFO",
+    "joinedByInvitation": "{{createdAtDate}} by invitation from {{issuerLogin}}",
+    "commentsLoadFailed": "Failed to load user comments",
+    "profileLoadFailed": "Failed to load your profile",
+    "ranking": "Ranking",
+    "notRanked": "Not ranked",
+    "rankingPosition": "{{ratingPosition}}th",
+    "location": "Location",
+    "worksAt": "Works at",
+    "detailsEmpty": "It's so quiet here...",
+    "registered": "Registered",
+    "activity": "Activity",
+    "authors": "Authors",
+    "role": "User",
+    "listVotes": "{{votesCount}} votes",
+    "points": "Points",
+    "profileVotes": "{{votesCount}} votes",
+    "badges": "Badges",
+    "invited": "Invited",
+    "about": "About"
+  },
+  "shortcut": {
+    "bookmarks": "Bookmarks",
+    "articles": "Articles",
+    "posts": "Posts",
+    "news": "News",
+    "search": "Search"
+  },
+  "error": {
+    "somethingWentWrong": "Something went wrong",
+    "operationFailed": "Failed to complete the operation",
+    "requestFailed": "Failed to complete the request",
+    "valueError": "Value error"
+  },
+  "comment": {
+    "fetchFailed": "Failed to load the comment list",
+    "notFound": "Not found",
+    "publicationInDrafts": "The publication is in drafts",
+    "disabled": "Comments are disabled for this publication",
+    "empty": "No comments",
+    "repliedTo": "replied to ",
+    "messageFrom": "message from ",
+    "showFull": "Show in full"
+  },
+  "filter": {
+    "all": "All",
+    "day": "Day",
+    "week": "Week",
+    "month": "Month",
+    "year": "Year",
+    "allTime": "All time",
+    "apply": "Apply"
+  },
+  "sort": {
+    "newest": "Newest",
+    "best": "Best",
+    "unknownValue": "Unknown sort value"
+  },
+  "language": {
+    "unknown": "Unknown language",
+    "russian": "Russian",
+    "english": "English"
+  },
+  "search": {
+    "orderRelevance": "By relevance",
+    "orderDate": "By date",
+    "orderRating": "By rating",
+    "notImplemented": "Not implemented",
+    "targetHubs": "Hubs",
+    "targetCompanies": "Companies",
+    "targetUsers": "Users",
+    "targetComments": "Comments",
+    "noResults": "No search results"
+  },
+  "image": {
+    "missingMimeType": "mime/type is not specified in the headers",
+    "download": "Download",
+    "share": "Share"
+  },
+  "mostRead": {
+    "readingNow": "Reading now"
+  },
+  "profile": {
+    "subscribed": "Subscribed",
+    "subscribe": "Subscribe"
+  },
+  "pagination": {
+    "previousPage": "Previous page",
+    "nextPage": "Next page"
+  },
+  "common": {
+    "warning": "Warning",
+    "learnMore": "Learn more",
+    "loading": "Loading...",
+    "retry": "Retry",
+    "clear": "Clear",
+    "save": "Save",
+    "copiedToClipboard": "Copied to clipboard",
+    "copy": "Copy",
+    "genericError": "An error occurred",
+    "tryAgain": "Try again"
+  },
+  "auth": {
+    "error": "Authorization error",
+    "signOut": "Sign out",
+    "loginFallbackHint": "If you can't sign in using the login form",
+    "tokenLabel": "Token {{sidToken}}",
+    "tokenCookieHint": "Can be found in cookies",
+    "loginRequired": "You need to sign in",
+    "login": "Sign in",
+    "authorization": "Authorization",
+    "logout": "Sign out",
+    "tokenDialogMessage": "There was a problem retrieving the token.\n\nTry signing in again or ignore this annoying dialog.\n\nMaybe it will resolve itself? 🤔"
+  },
+  "settings": {
+    "account": "Account",
+    "integrations": "Integrations",
+    "profileAndIntegrations": "Profile and integrations",
+    "interfaceDescription": "Appearance, scrolling, and languages",
+    "fontsDescription": "Publication scale and typography",
+    "feedDescription": "Cards and navigation",
+    "elementVisibility": "Element visibility"
+  },
+  "summary": {
+    "generationPurpose": "For generating article summaries"
+  },
+  "fonts": {
+    "settingsTitle": "Fonts",
+    "generalSection": "General",
+    "textScale": "Text scale"
+  },
+  "interface": {
+    "settingsTitle": "Interface",
+    "appearance": "Appearance",
+    "languages": "Languages",
+    "colorTheme": "Color theme",
+    "language": "Interface language",
+    "scroll": "Scrolling"
+  },
+  "theme": {
+    "system": "System",
+    "light": "Light",
+    "dark": "Dark"
+  },
+  "alignment": {
+    "start": "At the start",
+    "center": "In the center",
+    "end": "At the end"
+  },
+  "typography": {
+    "resetDefaults": "Restore defaults",
+    "font": "Font",
+    "fontSize": "Font size",
+    "lineHeight": "Line height",
+    "headings": "Headings",
+    "headingExample": "Example publication heading",
+    "text": "Text",
+    "textExample": "Example publication text.\\n",
+    "lineRhythmHint": "This makes it easier to assess the line size and rhythm"
+  },
+  "app": {
+    "initializationError": "App initialization error",
+    "requiredDataLoadError": "Failed to load the required data"
+  },
+  "html": {
+    "copyToClipboard": "Copy to clipboard",
+    "openLink": "Open",
+    "showFull": "Show in full...",
+    "displayImage": "Display image",
+    "displayWebView": "Display WebView",
+    "openInBrowser": "Open in browser"
+  },
+  "navigation": {
+    "services": "Services",
+    "settings": "Settings"
+  },
+  "account": {
+    "notLoggedIn": "You are not signed in"
+  }
+}

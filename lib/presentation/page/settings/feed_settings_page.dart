@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../bloc/settings/settings_cubit.dart';
 import '../../../data/model/filter/filter.dart';
+import '../../../i18n/i18n.dart';
 import '../../widget/filter/filter_chip_list.dart';
 import 'model/config_model.dart';
 import 'widget/settings_card_widget.dart';
@@ -28,19 +29,19 @@ class FeedSettingsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const SettingsNestedScaffold(
-      title: 'Лента',
+    return SettingsNestedScaffold(
+      title: context.t.feed.settingsTitle,
       children: [
         SettingsSectionWidget(
-          title: 'Карточки',
+          title: context.t.feed.cardsSection,
           children: [
-            SettingsFeedWidget(),
+            const SettingsFeedWidget(),
           ],
         ),
         SettingsSectionWidget(
-          title: 'Поведение',
+          title: context.t.feed.behaviorSection,
           children: [
-            SettingNavVisibilityWidget(),
+            const SettingNavVisibilityWidget(),
           ],
         ),
       ],
@@ -62,14 +63,14 @@ class SettingsFeedWidget extends StatelessWidget {
         children: [
           SettingsCheckboxWidget(
             initialValue: settingsCubit.state.feed.isImageVisible,
-            title: const Text('Изображения'),
-            subtitle: const Text('влияет на производительность'),
+            title: Text(context.t.feed.images),
+            subtitle: Text(context.t.feed.imagesPerformanceNote),
             onChanged: (bool value) =>
                 settingsCubit.changeFeedImageVisibility(isVisible: value),
           ),
           SettingsCheckboxWidget(
             initialValue: settingsCubit.state.feed.isDescriptionVisible,
-            title: const Text('Короткое описание'),
+            title: Text(context.t.feed.shortDescription),
             onChanged: (bool value) =>
                 settingsCubit.changeFeedDescVisibility(isVisible: value),
           ),
@@ -85,7 +86,7 @@ class SettingNavVisibilityWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SettingsCardWidget(
-      title: 'Навигация',
+      title: context.t.feed.navigation,
       child: Column(
         crossAxisAlignment: .start,
         spacing: 12,
@@ -145,7 +146,7 @@ class SettingNavVisibilityWidget extends StatelessWidget {
             builder: (context, state) {
               return SettingsCheckboxWidget(
                 initialValue: state.misc.navigationOnScrollVisible,
-                title: const Text('Показывать при скролле'),
+                title: Text(context.t.feed.showOnScroll),
                 onChanged: (bool value) => context
                     .read<SettingsCubit>()
                     .changeNavigationOnScrollVisibility(isVisible: value),

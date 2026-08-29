@@ -16,11 +16,10 @@ enum TrackerNotificationType {
   };
 
   String get text => switch (this) {
-    TrackerNotificationType.unknown => 'Что-то произошло с',
+    TrackerNotificationType.unknown => t.tracker.somethingHappenedTo,
     TrackerNotificationType.postAdd ||
-    TrackerNotificationType.threadAdd => 'Опубликовал новую публикацию',
+    TrackerNotificationType.threadAdd => t.tracker.publishedNewPost,
     TrackerNotificationType.postAddToFavorite ||
-    TrackerNotificationType.threadAddToFavorite =>
-      'Добавил в закладки новую публикацию',
+    TrackerNotificationType.threadAddToFavorite => t.tracker.bookmarkedNewPost,
   };
 }

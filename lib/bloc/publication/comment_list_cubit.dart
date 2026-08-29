@@ -7,6 +7,7 @@ import '../../data/model/language/language.dart';
 import '../../data/model/loading_status_enum.dart';
 import '../../data/model/publication/publication.dart';
 import '../../data/repository/repository.dart';
+import '../../i18n/i18n.dart';
 
 part 'comment_list_state.dart';
 
@@ -37,7 +38,7 @@ class CommentListCubit extends Cubit<CommentListState> {
       emit(
         state.copyWith(
           status: .failure,
-          error: error.parseException('Не удалось получить комментарии'),
+          error: error.parseException(t.publication.commentsFetchFailed),
         ),
       );
 

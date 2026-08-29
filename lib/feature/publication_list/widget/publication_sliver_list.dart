@@ -7,6 +7,7 @@ import 'package:skeletonizer/skeletonizer.dart';
 
 import '../../../bloc/publication/publication_bookmarks_bloc.dart';
 import '../../../bloc/settings/settings_cubit.dart';
+import '../../../i18n/i18n.dart';
 import '../../../presentation/extension/extension.dart';
 import '../../../presentation/page/publications/widget/card/card.dart';
 import '../../../presentation/widget/enhancement/progress_indicator.dart';
@@ -104,8 +105,8 @@ class PublicationSliverList<
 
           var publications = state.response.refs;
           if (publications.isEmpty) {
-            return const SliverFillRemaining(
-              child: Center(child: Text('Ничего нет')),
+            return SliverFillRemaining(
+              child: Center(child: Text(context.t.publication.listEmpty)),
             );
           }
 

@@ -6,6 +6,7 @@ import '../../data/model/company/company.dart';
 import '../../data/model/language/language.dart';
 import '../../data/model/loading_status_enum.dart';
 import '../../data/repository/repository.dart';
+import '../../i18n/i18n.dart';
 
 part 'company_state.dart';
 
@@ -31,7 +32,7 @@ class CompanyCubit extends Cubit<CompanyState> {
       emit(
         state.copyWith(
           status: .failure,
-          error: error.parseException('Не удалось получить профиль компании'),
+          error: error.parseException(t.company.profileFetchFailed),
         ),
       );
 

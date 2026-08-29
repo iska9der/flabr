@@ -6,6 +6,7 @@ import '../../data/model/list_response_model.dart';
 import '../../data/model/loading_status_enum.dart';
 import '../../data/model/user/user.dart';
 import '../../data/repository/repository.dart';
+import '../../i18n/i18n.dart';
 
 part 'user_comment_list_state.dart';
 
@@ -46,7 +47,7 @@ class UserCommentListCubit extends Cubit<UserCommentListState> {
       emit(
         state.copyWith(
           status: .failure,
-          error: error.parseException('Не удалось получить комментарии'),
+          error: error.parseException(t.publication.commentsFetchFailed),
         ),
       );
 

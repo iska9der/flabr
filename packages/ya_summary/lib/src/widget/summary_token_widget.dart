@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../i18n/i18n.dart';
 
 import '../cubit/summary_auth_cubit.dart';
 
@@ -44,11 +45,11 @@ class _SummaryTokenWidgetState extends State<SummaryTokenWidget> {
               enabled: !state.isAuthorized,
               controller: controller,
               keyboardType: TextInputType.text,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 floatingLabelBehavior: FloatingLabelBehavior.always,
-                labelText: 'Токен',
-                hintText: 'Можно найти на 300.ya.ru',
-                border: OutlineInputBorder(),
+                labelText: context.yaSummaryT.summary.token,
+                hintText: context.yaSummaryT.summary.tokenLocationHint,
+                border: const OutlineInputBorder(),
               ),
             ),
             const SizedBox(height: 8),
@@ -59,7 +60,7 @@ class _SummaryTokenWidgetState extends State<SummaryTokenWidget> {
                         onPressed: () {
                           context.read<SummaryAuthCubit>().logOut();
                         },
-                        child: const Text('Очистить'),
+                        child: Text(context.yaSummaryT.common.clear),
                       )
                     : FilledButton(
                         onPressed: () {
@@ -67,7 +68,7 @@ class _SummaryTokenWidgetState extends State<SummaryTokenWidget> {
                                 controller.text,
                               );
                         },
-                        child: const Text('Сохранить'),
+                        child: Text(context.yaSummaryT.common.save),
                       ),
                 const SizedBox(width: 12),
                 if (state.isAuthorized)
@@ -77,9 +78,11 @@ class _SummaryTokenWidgetState extends State<SummaryTokenWidget> {
                         ClipboardData(text: controller.text),
                       );
 
-                      widget.onShowSnack?.call('Скопировано в буфер обмена');
+                      widget.onShowSnack?.call(
+                        context.yaSummaryT.common.copiedToClipboard,
+                      );
                     },
-                    child: const Text('Скопировать'),
+                    child: Text(context.yaSummaryT.common.copy),
                   ),
               ],
             ),

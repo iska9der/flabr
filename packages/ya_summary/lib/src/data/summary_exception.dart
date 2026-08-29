@@ -1,3 +1,5 @@
+import '../../i18n/i18n.dart';
+
 class SummaryException implements Exception {
   SummaryException([this.message]);
 
@@ -5,6 +7,6 @@ class SummaryException implements Exception {
 
   @override
   String toString() {
-    return message ?? 'Не удалось получить данные';
+    return message ?? yaSummaryT.summary.dataFetchError;
   }
 }

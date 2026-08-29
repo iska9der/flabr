@@ -10,13 +10,13 @@ enum PublicationFlow {
   popsci;
 
   String get label => switch (this) {
-    PublicationFlow.all => 'Все',
-    PublicationFlow.develop => 'Разработка',
-    PublicationFlow.admin => 'Администрирование',
-    PublicationFlow.design => 'Дизайн',
-    PublicationFlow.management => 'Менеджмент',
-    PublicationFlow.marketing => 'Маркетинг',
-    PublicationFlow.popsci => 'Научпоп',
+    PublicationFlow.all => t.filter.all,
+    PublicationFlow.develop => t.publication.flowDevelopment,
+    PublicationFlow.admin => t.publication.flowAdministration,
+    PublicationFlow.design => t.publication.flowDesign,
+    PublicationFlow.management => t.publication.flowManagement,
+    PublicationFlow.marketing => t.publication.flowMarketing,
+    PublicationFlow.popsci => t.publication.flowPopularScience,
   };
 
   static PublicationFlow fromString(String value) {

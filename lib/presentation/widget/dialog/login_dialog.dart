@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+import '../../../i18n/i18n.dart';
 import '../../extension/extension.dart';
 import '../../theme/theme.dart';
 import '../auth/connect_sid_widget.dart';
@@ -8,9 +9,9 @@ import '../auth/login_webview.dart';
 
 void showLoginSnackBar(BuildContext context) async {
   return context.showSnack(
-    content: const Text('Необходимо войти в аккаунт'),
+    content: Text(context.t.auth.loginRequired),
     action: SnackBarAction(
-      label: 'Вход',
+      label: context.t.auth.login,
       onPressed: () => showLoginDialog(context),
     ),
   );
@@ -19,32 +20,31 @@ void showLoginSnackBar(BuildContext context) async {
 Future showLoginDialog(BuildContext context) async {
   return await showDialog(
     context: context,
-    builder:
-        (context) => AlertDialog.adaptive(
-          insetPadding: EdgeInsets.zero,
-          contentPadding: EdgeInsets.zero,
-          actionsPadding: EdgeInsets.zero,
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text('Авторизация'),
-              IconButton(
-                onPressed: () => Navigator.of(context).pop(),
-                icon: const Icon(Icons.close),
-              ),
-            ],
+    builder: (context) => AlertDialog.adaptive(
+      insetPadding: EdgeInsets.zero,
+      contentPadding: EdgeInsets.zero,
+      actionsPadding: EdgeInsets.zero,
+      title: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(context.t.auth.authorization),
+          IconButton(
+            onPressed: () => Navigator.of(context).pop(),
+            icon: const Icon(Icons.close),
           ),
-          content:
-              /// в вебе не работает webview_flutter
-              kIsWeb
-                  ? const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 12, vertical: 24),
-                    child: ConnectSidWidget(),
-                  )
-                  : SizedBox(
-                    width: Device.getWidth(context),
-                    child: const LoginWebView(),
-                  ),
-        ),
+        ],
+      ),
+      content:
+          /// в вебе не работает webview_flutter
+          kIsWeb
+          ? const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 12, vertical: 24),
+              child: ConnectSidWidget(),
+            )
+          : SizedBox(
+              width: Device.getWidth(context),
+              child: const LoginWebView(),
+            ),
+    ),
   );
 }

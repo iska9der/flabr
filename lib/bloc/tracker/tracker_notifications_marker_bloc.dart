@@ -6,6 +6,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import '../../../../../data/model/loading_status_enum.dart';
 import '../../../../../data/model/tracker/tracker.dart';
 import '../../../../../data/repository/repository.dart';
+import '../../i18n/i18n.dart';
 
 part 'tracker_notifications_marker_bloc.freezed.dart';
 part 'tracker_notifications_marker_event.dart';
@@ -45,7 +46,7 @@ class TrackerNotificationsMarkerBloc
       emit(state.copyWith(status: .success, handledIds: event.ids));
     } catch (error, stackTrace) {
       final message = switch (event.isErrorEnabled) {
-        true => 'Не удалось отметить уведомления как прочитанные',
+        true => t.tracker.notificationsMarkReadFailed,
         false => '',
       };
 

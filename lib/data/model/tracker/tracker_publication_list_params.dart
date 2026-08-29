@@ -9,7 +9,7 @@ class TrackerPublicationListParams extends QueryParams {
 
   final String perPage;
 
-  /// Если true, то получаем подраздел "Мои", иначе "Все"
+  /// Если true, то получаем подраздел "Мои", иначе t.filter.all
   final bool byAuthor;
 
   @override

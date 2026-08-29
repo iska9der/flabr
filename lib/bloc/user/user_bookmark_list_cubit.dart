@@ -8,6 +8,7 @@ import '../../data/model/loading_status_enum.dart';
 import '../../data/model/publication/publication.dart';
 import '../../data/model/user/user.dart';
 import '../../feature/publication_list/publication_list.dart';
+import '../../i18n/i18n.dart';
 
 part 'user_bookmark_list_state.dart';
 
@@ -46,7 +47,7 @@ class UserBookmarkListCubit
     } catch (e) {
       emit(
         state.copyWith(
-          error: e.parseException('Не удалось получить закладки'),
+          error: e.parseException(t.user.bookmarksFetchFailed),
           status: .failure,
         ),
       );

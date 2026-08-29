@@ -9,6 +9,7 @@ import '../../../../core/component/router/router.dart';
 import '../../../../data/model/loading_status_enum.dart';
 import '../../../../di/di.dart';
 import '../../../../feature/scaffold/scaffold.dart';
+import '../../../../i18n/i18n.dart';
 import '../../../widget/dashboard_drawer_link_widget.dart';
 import '../../../widget/enhancement/enhancement.dart';
 import '../../../widget/error_widget.dart';
@@ -65,7 +66,7 @@ class ProfileDashboardPage extends StatelessWidget {
           if (state.status == LoadingStatus.failure) {
             return Center(
               child: AppError(
-                message: 'Не удалось загрузить ваш профиль',
+                message: context.t.user.profileLoadFailed,
                 onRetry: () => fetch(context),
               ),
             );
@@ -126,7 +127,7 @@ class UserDashboardView extends StatelessWidget {
               isScrollable: true,
               padding: .zero,
               dividerColor: Colors.transparent,
-              tabs: const [
+              tabs: [
                 DashboardDrawerLinkWidget(title: UserDetailPage.title),
                 DashboardDrawerLinkWidget(
                   title: UserPublicationListPage.title,

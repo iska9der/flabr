@@ -9,6 +9,7 @@ import '../../../core/component/router/router.dart';
 import '../../../core/component/shortcuts/shortcuts_manager.dart';
 import '../../../di/di.dart';
 import '../../../feature/most_reading/most_reading.dart';
+import '../../../i18n/i18n.dart';
 import '../../extension/extension.dart';
 import '../../theme/theme.dart';
 import '../../widget/dashboard_drawer_link_widget.dart';
@@ -130,19 +131,19 @@ class _DashboardAppBar extends StatelessWidget {
                 dividerColor: Colors.transparent,
                 tabs: [
                   DashboardDrawerLinkWidget(
-                    title: 'Моя лента',
+                    title: context.t.feed.myFeed,
                     count: updates.feeds.newCount,
                   ),
                   DashboardDrawerLinkWidget(
-                    title: 'Статьи',
+                    title: context.t.shortcut.articles,
                     count: counters.articles,
                   ),
                   DashboardDrawerLinkWidget(
-                    title: 'Посты',
+                    title: context.t.shortcut.posts,
                     count: counters.posts,
                   ),
                   DashboardDrawerLinkWidget(
-                    title: 'Новости',
+                    title: context.t.shortcut.news,
                     count: counters.news,
                   ),
                 ],
@@ -154,7 +155,7 @@ class _DashboardAppBar extends StatelessWidget {
             children: [
               IconButton(
                 icon: const Icon(Icons.search_rounded),
-                tooltip: 'Поиск',
+                tooltip: context.t.shortcut.search,
                 onPressed: () =>
                     getIt<AppRouter>().push(const SearchAnywhereRoute()),
               ),
@@ -166,7 +167,7 @@ class _DashboardAppBar extends StatelessWidget {
                     offset: const .new(0, -4),
                     child: const Icon(Icons.notifications_outlined),
                   ),
-                  tooltip: 'Трекер',
+                  tooltip: context.t.tracker.title,
                   onPressed: () async {
                     final userBloc = context.read<ProfileBloc>();
 

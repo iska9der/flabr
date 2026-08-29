@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../bloc/user/user_list_cubit.dart';
 import '../../../../di/di.dart';
 import '../../../../feature/scroll/scroll.dart';
+import '../../../../i18n/i18n.dart';
 import '../../../extension/extension.dart';
 import '../../../theme/theme.dart';
 import '../../../widget/enhancement/progress_indicator.dart';
@@ -18,7 +19,7 @@ import 'widget/user_list_card_widget.dart';
 class UserListPage extends StatelessWidget {
   const UserListPage({super.key});
 
-  static const String name = 'Авторы';
+  static String get name => t.user.authors;
   static const String routePath = 'users';
   static const String routeName = 'UserListRoute';
 
@@ -60,7 +61,7 @@ class UserListPageView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: const AutoLeadingButton(),
-        title: const Text(UserListPage.name),
+        title: Text(UserListPage.name),
       ),
       floatingActionButton: const FloatingContainer(
         children: [FloatingScrollToTopButton()],

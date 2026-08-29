@@ -53,7 +53,7 @@ class CompanyDashboardPageView extends StatelessWidget {
               isScrollable: true,
               padding: EdgeInsets.zero,
               dividerColor: Colors.transparent,
-              tabs: const [
+              tabs: [
                 DashboardDrawerLinkWidget(title: CompanyDetailPage.title),
               ],
             ),

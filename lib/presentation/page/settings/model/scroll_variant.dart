@@ -6,8 +6,7 @@ const ScrollBehavior _cupertino = CupertinoScrollBehavior();
 enum ScrollVariant {
   material,
   cupertino,
-  cupertinoFast
-  ;
+  cupertinoFast;
 
   String get label => switch (this) {
     .material => 'Material',

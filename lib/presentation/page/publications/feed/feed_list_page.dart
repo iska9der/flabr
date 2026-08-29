@@ -6,13 +6,14 @@ import '../../../../bloc/publication/feed_publication_list_cubit.dart';
 import '../../../../di/di.dart';
 import '../../../../feature/publication_list/publication_list.dart';
 import '../../../../feature/scroll/scroll.dart';
+import '../../../../i18n/i18n.dart';
 import 'widget/feed_filters_widget.dart';
 
 @RoutePage(name: FeedListPage.routeName)
 class FeedListPage extends StatelessWidget {
   const FeedListPage({super.key});
 
-  static const String name = 'Моя лента';
+  static String get name => t.feed.myFeed;
   static const String routePath = '';
   static const String routeName = 'FeedListRoute';
 

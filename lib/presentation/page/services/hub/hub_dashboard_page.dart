@@ -55,7 +55,7 @@ class HubDashboardPageView extends StatelessWidget {
                 isScrollable: true,
                 padding: .zero,
                 dividerColor: Colors.transparent,
-                tabs: const [
+                tabs: [
                   DashboardDrawerLinkWidget(
                     title: HubDetailPage.name,
                   ),

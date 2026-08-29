@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../bloc/company/company_cubit.dart';
+import '../../../../i18n/i18n.dart';
 import '../../../theme/theme.dart';
 import '../../../widget/enhancement/progress_indicator.dart';
 import '../../../widget/error_widget.dart';
@@ -18,7 +19,7 @@ class CompanyDetailPage extends StatelessWidget {
 
   final String alias;
 
-  static const String title = 'Профиль';
+  static String get title => t.company.profile;
   static const String routePath = 'profile';
   static const String routeName = 'CompanyDetailRoute';
 

@@ -1,8 +1,10 @@
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_highlight/flutter_highlight.dart';
+import 'package:ya_summary/i18n/i18n.dart' as ya_summary_localizations;
 
 import '../../di/di.dart';
+import '../../i18n/i18n.dart' as app_localizations;
 import 'config/config.dart';
 import 'coordinator/global_bloc_listener.dart';
 import 'provider/global_bloc_provider.dart';
@@ -30,13 +32,17 @@ class Application extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final app = AppConfigProvider(
-      config: config,
-      repository: getIt<AppConfigRepository>(),
-      child: const GlobalBlocProvider(
-        child: GlobalBlocListener(
-          child: HighlightBackgroundEnvironment(
-            child: ApplicationView(),
+    final app = app_localizations.TranslationProvider(
+      child: ya_summary_localizations.TranslationProvider(
+        child: AppConfigProvider(
+          config: config,
+          repository: getIt<AppConfigRepository>(),
+          child: const GlobalBlocProvider(
+            child: GlobalBlocListener(
+              child: HighlightBackgroundEnvironment(
+                child: ApplicationView(),
+              ),
+            ),
           ),
         ),
       ),

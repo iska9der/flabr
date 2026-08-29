@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import '../../i18n/i18n.dart';
 
 import 'summary_client.dart';
 import 'summary_exception.dart';
@@ -25,7 +26,7 @@ class SummaryServiceImpl implements SummaryService {
       return response.data['sharing_url'];
     } on DioException catch (e) {
       Error.throwWithStackTrace(
-        SummaryException('Не удалось получить ссылку на пересказ'),
+        SummaryException(yaSummaryT.summary.linkFetchError),
         e.stackTrace,
       );
     }
@@ -40,13 +41,13 @@ class SummaryServiceImpl implements SummaryService {
       );
 
       if (response.data['status_code'] != 2) {
-        throw SummaryException('Не удалось получить пересказ');
+        throw SummaryException(yaSummaryT.summary.fetchError);
       }
 
       return response.data;
     } on DioException catch (e) {
       Error.throwWithStackTrace(
-        SummaryException('Не удалось получить пересказ'),
+        SummaryException(yaSummaryT.summary.fetchError),
         e.stackTrace,
       );
     }

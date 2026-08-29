@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../i18n/i18n.dart';
+
 class PublicationFilterSubmitButton extends StatelessWidget {
   const PublicationFilterSubmitButton({
     super.key,
@@ -14,7 +16,7 @@ class PublicationFilterSubmitButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return FilledButton(
       onPressed: isEnabled ? onSubmit : null,
-      child: const Text('Применить'),
+      child: Text(context.t.filter.apply),
     );
   }
 }

@@ -1,3 +1,5 @@
+import '../../../i18n/i18n.dart';
+
 enum UserBookmarksType {
   articles,
   posts,
@@ -5,11 +7,11 @@ enum UserBookmarksType {
   comments;
 
   String get label => switch (this) {
-        UserBookmarksType.articles => 'Статьи',
-        UserBookmarksType.posts => 'Посты',
-        UserBookmarksType.news => 'Новости',
-        UserBookmarksType.comments => 'Комментарии',
-      };
+    UserBookmarksType.articles => t.shortcut.articles,
+    UserBookmarksType.posts => t.shortcut.posts,
+    UserBookmarksType.news => t.shortcut.news,
+    UserBookmarksType.comments => t.search.targetComments,
+  };
 
   factory UserBookmarksType.fromString(String value) {
     return UserBookmarksType.values.firstWhere(

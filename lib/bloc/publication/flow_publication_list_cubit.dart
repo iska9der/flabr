@@ -12,6 +12,7 @@ import '../../data/model/loading_status_enum.dart';
 import '../../data/model/publication/publication.dart';
 import '../../data/model/section_enum.dart';
 import '../../feature/publication_list/publication_list.dart';
+import '../../i18n/i18n.dart';
 
 part 'flow_publication_list_state.dart';
 
@@ -78,7 +79,7 @@ class FlowPublicationListCubit
     } catch (e) {
       emit(
         state.copyWith(
-          error: e.parseException('Не удалось получить статьи'),
+          error: e.parseException(t.hub.articlesFetchFailed),
           status: .failure,
         ),
       );

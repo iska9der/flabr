@@ -11,6 +11,7 @@ import '../../../../data/model/search/search_order_enum.dart';
 import '../../../../data/model/search/search_target_enum.dart';
 import '../../../../di/di.dart';
 import '../../../../feature/scroll/scroll.dart';
+import '../../../../i18n/i18n.dart';
 import '../../../extension/extension.dart';
 import '../../../theme/theme.dart';
 import '../../../widget/enhancement/progress_indicator.dart';
@@ -118,7 +119,7 @@ class _SearchAnywhereViewState extends State<_SearchAnywhereView> {
               style: theme.textTheme.titleMedium,
               textInputAction: .search,
               onSubmitted: (String query) => showResults(context, query),
-              decoration: const InputDecoration(hintText: 'Поиск'),
+              decoration: InputDecoration(hintText: context.t.shortcut.search),
             ),
           ),
           body: Scrollbar(
@@ -187,8 +188,8 @@ class _SearchAnywhereViewState extends State<_SearchAnywhereView> {
 
                     var models = state.listResponse.refs;
                     if (models.isEmpty) {
-                      return const SliverFillRemaining(
-                        child: Align(child: Text('Поиск не дал результатов')),
+                      return SliverFillRemaining(
+                        child: Align(child: Text(context.t.search.noResults)),
                       );
                     }
 
@@ -219,8 +220,8 @@ class _SearchAnywhereViewState extends State<_SearchAnywhereView> {
                               SearchTarget.users => UserListCardWidget(
                                 model: model,
                               ),
-                              SearchTarget.comments => const Center(
-                                child: Text('Не реализовано'),
+                              SearchTarget.comments => Center(
+                                child: Text(context.t.search.notImplemented),
                               ),
                             };
                           }

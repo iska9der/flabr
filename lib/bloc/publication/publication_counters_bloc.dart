@@ -7,6 +7,7 @@ import '../../../../data/exception/exception.dart';
 import '../../../../data/model/loading_status_enum.dart';
 import '../../../../data/model/publication/publication.dart';
 import '../../../../data/repository/repository.dart';
+import '../../i18n/i18n.dart';
 
 part 'publication_counters_bloc.freezed.dart';
 part 'publication_counters_event.dart';
@@ -44,7 +45,7 @@ class PublicationCountersBloc
       emit(
         state.copyWith(
           status: LoadingStatus.failure,
-          error: e.parseException('Не удалось получить счетчики'),
+          error: e.parseException(t.publication.countersFetchFailed),
         ),
       );
     }

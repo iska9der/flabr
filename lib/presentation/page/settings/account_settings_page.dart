@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:ya_summary/ya_summary.dart';
 
 import '../../../core/constants/constants.dart';
+import '../../../i18n/i18n.dart';
 import '../../extension/extension.dart';
 import '../../widget/auth/auth.dart';
 import '../../widget/profile/profile.dart';
@@ -28,28 +29,28 @@ class AccountSettingsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SettingsNestedScaffold(
-      title: 'Аккаунт',
+      title: context.t.settings.account,
       children: [
-        const SettingsSectionWidget(
-          title: 'Профиль',
+        SettingsSectionWidget(
+          title: context.t.company.profile,
           children: [
-            AccountTile(),
+            const AccountTile(),
           ],
         ),
         SettingsSectionWidget(
-          title: 'Интеграции',
+          title: context.t.settings.integrations,
           children: [
-            const SettingsCardWidget(
+            SettingsCardWidget(
               title: Keys.sidToken,
-              subtitle: 'Если не удается войти через форму логина',
-              child: Padding(
+              subtitle: context.t.auth.loginFallbackHint,
+              child: const Padding(
                 padding: .only(top: 12.0),
                 child: ConnectSidWidget(),
               ),
             ),
             SettingsCardWidget(
               title: 'YandexGPT',
-              subtitle: 'Для генерации пересказов статей',
+              subtitle: context.t.summary.generationPurpose,
               child: Padding(
                 padding: const .only(top: 12.0),
                 child: SummaryTokenWidget(

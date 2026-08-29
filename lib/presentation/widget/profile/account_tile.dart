@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 import '../../../bloc/profile/profile_bloc.dart';
+import '../../../i18n/i18n.dart';
 import '../../extension/extension.dart';
 import '../../theme/theme.dart';
 import '../card_avatar_widget.dart';
@@ -21,8 +22,12 @@ class AccountTile extends StatelessWidget {
       builder: (context, state) {
         final profile = state.me;
 
-        final titleText = profile.isEmpty ? 'Аккаунт' : profile.alias;
-        final subtitleText = profile.isEmpty ? 'Вы не вошли' : profile.fullname;
+        final titleText = profile.isEmpty
+            ? context.t.settings.account
+            : profile.alias;
+        final subtitleText = profile.isEmpty
+            ? context.t.account.notLoggedIn
+            : profile.fullname;
 
         return Skeletonizer(
           enabled: state.status == .loading,

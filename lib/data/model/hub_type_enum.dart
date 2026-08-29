@@ -1,3 +1,4 @@
+import '../../i18n/i18n.dart';
 import '../exception/exception.dart';
 
 enum HubType {
@@ -10,7 +11,7 @@ enum HubType {
   factory HubType.fromString(String value) {
     return HubType.values.firstWhere(
       (type) => type.name == value,
-      orElse: () => throw const ValueException('Неизвестный тип хаба'),
+      orElse: () => throw ValueException(t.hub.unknownType),
     );
   }
 }

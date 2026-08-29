@@ -6,6 +6,7 @@ import '../../data/model/list_response_model.dart';
 import '../../data/model/loading_status_enum.dart';
 import '../../data/model/publication/publication.dart';
 import '../../feature/publication_list/publication_list.dart';
+import '../../i18n/i18n.dart';
 
 part 'feed_publication_list_state.dart';
 
@@ -55,7 +56,7 @@ class FeedPublicationListCubit
     } catch (e) {
       emit(
         state.copyWith(
-          error: e.parseException('Не удалось получить публикации'),
+          error: e.parseException(t.feed.publicationsFetchFailed),
           status: .failure,
         ),
       );

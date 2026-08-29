@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../i18n/i18n.dart';
 
 import '../data/summary_exception.dart';
 import '../data/summary_model.dart';
@@ -31,7 +32,7 @@ class SummaryCubit extends Cubit<SummaryState> {
     } catch (error, stackTrace) {
       emit(state.copyWith(
         status: SummaryStatus.failure,
-        error: 'Не удалось получить краткий пересказ',
+        error: yaSummaryT.summary.briefFetchError,
       ));
 
       super.onError(error, stackTrace);

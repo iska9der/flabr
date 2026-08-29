@@ -42,8 +42,8 @@ class SkeletonCardWidget extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               BlocBuilder<SettingsCubit, SettingsState>(
-                buildWhen:
-                    (p, c) => p.feed.isImageVisible != c.feed.isImageVisible,
+                buildWhen: (p, c) =>
+                    p.feed.isImageVisible != c.feed.isImageVisible,
                 builder: (context, state) {
                   if (!state.feed.isImageVisible) {
                     return const SizedBox();
@@ -59,12 +59,10 @@ class SkeletonCardWidget extends StatelessWidget {
                 },
               ),
               BlocBuilder<SettingsCubit, SettingsState>(
-                buildWhen:
-                    (previous, current) =>
-                        previous.feed.isDescriptionVisible !=
-                            current.feed.isDescriptionVisible ||
-                        previous.feed.isImageVisible !=
-                            current.feed.isImageVisible,
+                buildWhen: (previous, current) =>
+                    previous.feed.isDescriptionVisible !=
+                        current.feed.isDescriptionVisible ||
+                    previous.feed.isImageVisible != current.feed.isImageVisible,
                 builder: (context, state) {
                   if (!state.feed.isDescriptionVisible) {
                     return const SizedBox();

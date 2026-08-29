@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../data/exception/exception.dart';
 import '../../../data/model/loading_status_enum.dart';
 import '../../../data/repository/repository.dart';
+import '../../../i18n/i18n.dart';
 
 part 'subscription_state.dart';
 

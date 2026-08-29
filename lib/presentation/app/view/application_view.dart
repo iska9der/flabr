@@ -3,12 +3,14 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
 import '../../../bloc/settings/settings_cubit.dart';
 import '../../../core/component/router/router.dart';
 import '../../../core/constants/constants.dart';
 import '../../../di/di.dart';
+import '../../../i18n/i18n.dart' as app_localizations;
 import '../../extension/extension.dart';
 import '../../page/settings/model/config_model.dart';
 import '../../theme/theme.dart';
@@ -27,10 +29,9 @@ class ApplicationView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final config = AppConfigProvider.of(context);
-    final locale = switch (config.enableDevicePreview) {
-      true => DevicePreview.locale(context),
-      false => null,
-    };
+    final locale = app_localizations.TranslationProvider.of(
+      context,
+    ).flutterLocale;
 
     final themeMode = context.select<SettingsCubit, ThemeMode>(
       (cubit) => cubit.state.theme.modeByBool ?? cubit.state.theme.mode,
@@ -53,6 +54,8 @@ class ApplicationView extends StatelessWidget {
       // ignore: deprecated_member_use
       useInheritedMediaQuery: true,
       locale: locale,
+      supportedLocales: app_localizations.AppLocaleUtils.supportedLocales,
+      localizationsDelegates: GlobalMaterialLocalizations.delegates,
       themeMode: themeMode,
       theme: AppTheme.light(
         typographyConfig: typographyConfig,

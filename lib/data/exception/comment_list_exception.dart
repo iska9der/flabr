@@ -1,21 +1,24 @@
 import 'package:dio/dio.dart';
 
+import '../../i18n/i18n.dart';
 import 'app_exception.dart';
 
 class CommentsListException extends AppException {
   const CommentsListException([
     this.httpCode = 400,
     this.errorCode = 'BAD_REQUEST',
-    super.message = 'Не удалось получить список комментариев',
+    super.message,
   ]);
 
   final int httpCode;
   final String errorCode;
+  @override
+  String get defaultMessage => t.comment.fetchFailed;
 
   static AppException fromDioException(DioException exception) {
     int httpCode = 400;
     String errorCode = 'BAD_REQUEST';
-    String message = 'Не удалось получить список комментариев';
+    String message = t.comment.fetchFailed;
 
     if (exception.response?.data != null) {
       Map<String, dynamic> data = exception.response!.data;
@@ -30,10 +33,10 @@ class CommentsListException extends AppException {
 
   static String parseMessage(String errorCode) {
     return switch (errorCode) {
-      'NOT_FOUND' => 'Не найдено',
-      'POST_IN_DRAFTS' => 'Публикация в черновиках',
-      'POST_COMMENTS_DISABLED' => 'Комментарии к этой публикации отключены',
-      _ => 'Не удалось получить список комментариев',
+      'NOT_FOUND' => t.comment.notFound,
+      'POST_IN_DRAFTS' => t.comment.publicationInDrafts,
+      'POST_COMMENTS_DISABLED' => t.comment.disabled,
+      _ => t.comment.fetchFailed,
     };
   }
 }

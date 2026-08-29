@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:injectable/injectable.dart';
 
+import '../../i18n/i18n.dart';
 import '../exception/exception.dart';
 import '../model/company/company.dart' show CompanyListResponse;
 import '../model/hub/hub.dart' show HubListResponse;
@@ -45,7 +46,7 @@ class SearchRepository {
       case SearchTarget.users:
         return UserListResponse.fromMap(raw);
       case SearchTarget.comments:
-        throw const ValueException('Не реализовано');
+        throw ValueException(t.search.notImplemented);
     }
   }
 

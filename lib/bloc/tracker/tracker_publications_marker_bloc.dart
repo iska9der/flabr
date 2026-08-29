@@ -5,6 +5,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../../../../data/model/loading_status_enum.dart';
 import '../../../../../data/repository/repository.dart';
+import '../../i18n/i18n.dart';
 
 part 'tracker_publications_marker_bloc.freezed.dart';
 part 'tracker_publications_marker_event.dart';
@@ -71,7 +72,7 @@ class TrackerPublicationsMarkerBloc
       emit(
         state.copyWith(
           status: .failure,
-          error: 'Не удалось отметить публикации как прочитанные',
+          error: t.tracker.publicationsMarkReadFailed,
         ),
       );
 
@@ -99,7 +100,7 @@ class TrackerPublicationsMarkerBloc
       emit(
         state.copyWith(
           status: .failure,
-          error: 'Не удалось удалить публикации из трекера',
+          error: t.tracker.publicationsRemoveFailed,
         ),
       );
 
@@ -125,7 +126,7 @@ class TrackerPublicationsMarkerBloc
       emit(
         state.copyWith(
           status: .failure,
-          error: 'Не удалось прочесть публикацию',
+          error: t.tracker.publicationReadFailed,
         ),
       );
 

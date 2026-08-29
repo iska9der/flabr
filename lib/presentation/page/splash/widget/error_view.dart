@@ -21,25 +21,25 @@ class _ErrorView extends StatelessWidget {
                 color: Colors.red,
               ),
               const SizedBox(height: 24),
-              const Text(
-                'Ошибка инициализации приложения',
-                style: TextStyle(
+              Text(
+                context.t.app.initializationError,
+                style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                 ),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 12),
-              const Text(
-                'Не удалось загрузить необходимые данные',
-                style: TextStyle(fontSize: 14),
+              Text(
+                context.t.app.requiredDataLoadError,
+                style: const TextStyle(fontSize: 14),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 32),
               ElevatedButton.icon(
                 onPressed: onRetry,
                 icon: const Icon(Icons.refresh),
-                label: const Text('Повторить'),
+                label: Text(context.t.common.retry),
               ),
             ],
           ),

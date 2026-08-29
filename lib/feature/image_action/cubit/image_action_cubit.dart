@@ -8,6 +8,7 @@ import 'package:share_plus/share_plus.dart';
 
 import '../../../core/component/http/http.dart';
 import '../../../data/exception/exception.dart';
+import '../../../i18n/i18n.dart';
 
 part 'image_action_state.dart';
 
@@ -39,7 +40,7 @@ class ImageActionCubit extends Cubit<ImageActionState> {
     );
 
     if (!response.headers.map.containsKey('content-type')) {
-      throw const FetchException('В заголовках не указан mime/type');
+      throw FetchException(t.image.missingMimeType);
     }
 
     final name = path.basename(state.url);

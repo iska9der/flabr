@@ -7,6 +7,7 @@ import '../../../../data/model/publication/publication.dart';
 import '../../../../di/di.dart';
 import '../../../../feature/publication_list/publication_list.dart';
 import '../../../../feature/scroll/scroll.dart';
+import '../../../../i18n/i18n.dart';
 import '../widget/publication_filters_widget.dart';
 
 @RoutePage(name: ArticleListPage.routeName)
@@ -15,7 +16,7 @@ class ArticleListPage extends StatelessWidget {
 
   final String flow;
 
-  static const String name = 'Статьи';
+  static String get name => t.shortcut.articles;
   static const String routePath = 'flows/:flow';
   static const String routeName = 'ArticleListRoute';
 

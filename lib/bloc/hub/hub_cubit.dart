@@ -5,6 +5,7 @@ import '../../data/exception/exception.dart';
 import '../../data/model/hub/hub.dart';
 import '../../data/model/loading_status_enum.dart';
 import '../../data/repository/repository.dart';
+import '../../i18n/i18n.dart';
 
 part 'hub_state.dart';
 
@@ -27,7 +28,7 @@ class HubCubit extends Cubit<HubState> {
 
       emit(state.copyWith(status: .success, profile: profile));
     } catch (e) {
-      const fallbackMessage = 'Не удалось получить профиль хаба';
+      final fallbackMessage = t.hub.profileFetchFailed;
       emit(
         state.copyWith(
           status: .failure,

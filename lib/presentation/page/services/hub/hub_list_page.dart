@@ -8,6 +8,7 @@ import '../../../../bloc/hub/hub_list_cubit.dart';
 import '../../../../data/model/hub/hub.dart';
 import '../../../../di/di.dart';
 import '../../../../feature/scroll/scroll.dart';
+import '../../../../i18n/i18n.dart';
 import '../../../extension/extension.dart';
 import '../../../theme/theme.dart';
 import '../../../widget/enhancement/progress_indicator.dart';
@@ -19,7 +20,7 @@ import 'widget/hub_list_card_widget.dart';
 class HubListPage extends StatelessWidget {
   const HubListPage({super.key});
 
-  static const name = 'Хабы';
+  static String get name => t.search.targetHubs;
   static const routePath = 'hubs';
   static const routeName = 'HubListRoute';
 
@@ -55,7 +56,7 @@ class HubListPageView extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           leading: const AutoLeadingButton(),
-          title: const Text(HubListPage.name),
+          title: Text(HubListPage.name),
         ),
         floatingActionButton: const FloatingContainer(
           children: [FloatingScrollToTopButton()],

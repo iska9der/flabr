@@ -9,6 +9,7 @@ import '../../../../di/di.dart';
 import '../../../../feature/publication_list/publication_list.dart';
 import '../../../../feature/scaffold/scaffold.dart';
 import '../../../../feature/scroll/scroll.dart';
+import '../../../../i18n/i18n.dart';
 import '../widget/publication_filters_widget.dart';
 
 @RoutePage(name: PostListPage.routeName)
@@ -17,7 +18,7 @@ class PostListPage extends StatelessWidget {
 
   final String flow;
 
-  static const String name = 'Посты';
+  static String get name => t.shortcut.posts;
   static const String routePath = 'flows/:flow';
   static const String routeName = 'PostListRoute';
 

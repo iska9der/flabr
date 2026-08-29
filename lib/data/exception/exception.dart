@@ -1,3 +1,4 @@
+import '../../i18n/i18n.dart';
 import 'app_exception.dart';
 
 export 'app_exception.dart';
@@ -8,13 +9,13 @@ export 'value_exception.dart';
 
 extension ExceptionExtension on Object {
   String parseException([
-    String fallback = 'Не удалось выполнить',
+    String? fallback,
     StackTrace? trace,
   ]) {
     if (this is AppException) {
       return toString();
     }
 
-    return fallback;
+    return fallback ?? t.error.operationFailed;
   }
 }

@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:photo_view/photo_view.dart';
 
 import '../../../di/di.dart';
+import '../../../i18n/i18n.dart';
 import '../cubit/image_action_cubit.dart';
 
 class FullImageAsset extends StatelessWidget {
@@ -197,7 +198,7 @@ class FullImageBottomBar extends StatelessWidget {
                 builder: (context, state) {
                   return IconButton(
                     icon: const Icon(Icons.download),
-                    tooltip: 'Скачать',
+                    tooltip: context.t.image.download,
                     onPressed: switch (state.canSave) {
                       true =>
                         () => context.read<ImageActionCubit>().pickAndSave(),
@@ -212,7 +213,7 @@ class FullImageBottomBar extends StatelessWidget {
                 builder: (context, state) {
                   return IconButton(
                     icon: const Icon(Icons.share),
-                    tooltip: 'Поделиться',
+                    tooltip: context.t.image.share,
                     onPressed: switch (state.canShare) {
                       true => () => context.read<ImageActionCubit>().share(),
                       false => null,

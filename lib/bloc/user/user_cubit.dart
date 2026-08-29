@@ -5,6 +5,7 @@ import '../../data/exception/exception.dart';
 import '../../data/model/loading_status_enum.dart';
 import '../../data/model/user/user.dart';
 import '../../data/repository/repository.dart';
+import '../../i18n/i18n.dart';
 
 part 'user_state.dart';
 
@@ -31,7 +32,7 @@ class UserCubit extends Cubit<UserState> {
         state.copyWith(
           status: .failure,
           error: error.parseException(
-            'Не удалось получить карточку пользователя',
+            t.user.profileCardFetchFailed,
           ),
         ),
       );

@@ -3,8 +3,7 @@ part of 'publication.dart';
 enum PublicationComplexity {
   low,
   medium,
-  high
-  ;
+  high;
 
   static PublicationComplexity? fromString(String value) {
     final result = PublicationComplexity.values.firstWhereOrNull(
@@ -21,8 +20,8 @@ enum PublicationComplexity {
   }
 
   String get label => switch (this) {
-    PublicationComplexity.low => 'Простой',
-    PublicationComplexity.medium => 'Средний',
-    PublicationComplexity.high => 'Сложный',
+    PublicationComplexity.low => t.publication.complexityEasy,
+    PublicationComplexity.medium => t.publication.complexityMedium,
+    PublicationComplexity.high => t.publication.complexityHard,
   };
 }

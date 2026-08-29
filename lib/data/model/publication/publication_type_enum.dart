@@ -3,11 +3,11 @@ part of 'publication.dart';
 @JsonEnum()
 enum PublicationType {
   /// для всех неопознанных типов
-  unknown(label: 'Неизвестно'),
-  article(label: 'Статья'),
-  post(label: 'Пост'),
-  news(label: 'Новость'),
-  megaproject(label: 'Мегапроект'),
+  unknown,
+  article,
+  post,
+  news,
+  megaproject,
 
   /// Этот тип постов прилетает к нам, но мы не понимать каково их предназначение.
   /// Почти все поля у них пустые.
@@ -40,12 +40,16 @@ enum PublicationType {
   /// },
   /// ```
   ///
-  voice(label: 'Голос')
-  ;
+  voice;
 
-  const PublicationType({required this.label});
-
-  final String label;
+  String get label => switch (this) {
+    PublicationType.unknown => t.publication.typeUnknown,
+    PublicationType.article => t.publication.typeArticle,
+    PublicationType.post => t.publication.typePost,
+    PublicationType.news => t.publication.typeNews,
+    PublicationType.megaproject => t.publication.typeMegaproject,
+    PublicationType.voice => t.publication.typeVoice,
+  };
 
   factory PublicationType.fromString(String value) {
     return PublicationType.values.firstWhere(

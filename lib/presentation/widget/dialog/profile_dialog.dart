@@ -6,6 +6,7 @@ import '../../../bloc/auth/auth_cubit.dart';
 import '../../../bloc/profile/profile_bloc.dart';
 import '../../../core/component/router/router.dart';
 import '../../../data/model/user_base.dart';
+import '../../../i18n/i18n.dart';
 import '../../extension/extension.dart';
 import '../../theme/theme.dart';
 import '../card_avatar_widget.dart';
@@ -78,7 +79,7 @@ class MyProfileDialog extends StatelessWidget implements UserDialog {
               ),
               child: ElevatedButton(
                 onPressed: () => context.read<AuthCubit>().logOut(),
-                child: const Text('Выход'),
+                child: Text(context.t.auth.logout),
               ),
             ),
           ],
@@ -113,7 +114,7 @@ class UserCommonTileList extends StatelessWidget {
           },
         ),
         ListTile(
-          title: const Text('Публикации'),
+          title: Text(context.t.tracker.publications),
           onTap: () {
             context.router.push(
               UserDashboardRoute(
@@ -126,7 +127,7 @@ class UserCommonTileList extends StatelessWidget {
           },
         ),
         ListTile(
-          title: const Text('Закладки'),
+          title: Text(context.t.shortcut.bookmarks),
           onTap: () {
             context.router.push(
               UserDashboardRoute(
@@ -139,7 +140,7 @@ class UserCommonTileList extends StatelessWidget {
           },
         ),
         ListTile(
-          title: const Text('Комментарии'),
+          title: Text(context.t.search.targetComments),
           onTap: () {
             context.router.push(
               UserDashboardRoute(

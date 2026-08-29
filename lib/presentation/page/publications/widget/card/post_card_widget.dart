@@ -7,6 +7,7 @@ import '../../../../../core/component/router/router.dart';
 import '../../../../../data/model/publication/publication.dart';
 import '../../../../../data/model/render_type_enum.dart';
 import '../../../../../di/di.dart';
+import '../../../../../i18n/i18n.dart';
 import '../../../../extension/extension.dart';
 import '../../../../widget/enhancement/enhancement.dart';
 import '../stats/publication_stat_widget.dart';
@@ -82,7 +83,7 @@ class PostCardWidget extends StatelessWidget {
                 crossAxisAlignment: .end,
                 children: [
                   Text(
-                    'Теги:',
+                    context.t.publication.tags,
                     style: textTheme.bodyMedium!.copyWith(fontWeight: .w500),
                   ),
                   ...post.tags.map(

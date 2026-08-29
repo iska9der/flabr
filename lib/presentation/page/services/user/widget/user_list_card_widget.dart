@@ -4,6 +4,7 @@ import '../../../../../core/component/router/router.dart';
 import '../../../../../data/model/stat_type_enum.dart';
 import '../../../../../data/model/user/user.dart';
 import '../../../../../di/di.dart';
+import '../../../../../i18n/i18n.dart';
 import '../../../../extension/extension.dart';
 import '../../../../widget/card_avatar_widget.dart';
 import '../../../../widget/enhancement/card.dart';
@@ -76,7 +77,9 @@ class _UserCard extends StatelessWidget {
 
               /// Специализация
               Text(
-                model.speciality.isNotEmpty ? model.speciality : 'Пользователь',
+                model.speciality.isNotEmpty
+                    ? model.speciality
+                    : context.t.user.role,
                 style: theme.textTheme.bodySmall!.copyWith(
                   color: theme.colors.textSecondary,
                 ),
@@ -120,17 +123,19 @@ class _UserScore extends StatelessWidget {
         Expanded(
           child: ProfileStatCardWidget(
             type: StatType.rating,
-            title: 'Рейтинг',
+            title: context.t.company.rating,
             value: model.rating,
           ),
         ),
         Expanded(
           child: Tooltip(
-            message: '${model.votesCount.compact()} голосов',
+            message: context.t.user.listVotes(
+              votesCount: model.votesCount.compact(),
+            ),
             triggerMode: .tap,
             child: ProfileStatCardWidget(
               type: StatType.score,
-              title: 'Очки',
+              title: context.t.user.points,
               value: model.score,
             ),
           ),

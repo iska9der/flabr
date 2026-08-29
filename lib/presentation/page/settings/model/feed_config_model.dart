@@ -1,12 +1,13 @@
 part of 'config_model.dart';
 
 enum FeedNavigationMode {
-  infiniteScroll('Бесконечная прокрутка'),
-  pagination('По страницам');
+  infiniteScroll,
+  pagination;
 
-  const FeedNavigationMode(this.label);
-
-  final String label;
+  String get label => switch (this) {
+    FeedNavigationMode.infiniteScroll => t.feed.infiniteScroll,
+    FeedNavigationMode.pagination => t.feed.pagination,
+  };
 }
 
 @freezed

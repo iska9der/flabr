@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../bloc/settings/settings_cubit.dart';
+import '../../i18n/i18n.dart';
 import '../page/settings/widget/settings_card_widget.dart';
 import '../page/settings/widget/settings_checkbox_widget.dart';
 
@@ -27,7 +28,7 @@ class PublicationSettingsWidget extends StatelessWidget {
                 builder: (context, state) {
                   return SettingsCheckboxWidget(
                     initialValue: state.publication.isImagesVisible,
-                    title: const Text('Изображения'),
+                    title: Text(context.t.feed.images),
                     onChanged: (bool value) => context
                         .read<SettingsCubit>()
                         .changeArticleImageVisibility(isVisible: value),

@@ -1,13 +1,17 @@
+import '../../../i18n/i18n.dart';
 import 'filter_list.dart';
 import 'filter_option_model.dart';
 
 enum Sort {
-  byNew('Новые', 'rating', 'all'),
-  byBest('Лучшие', 'date', 'top');
+  byNew('rating', 'all'),
+  byBest('date', 'top');
 
-  const Sort(this.label, this.value, this.postValue);
+  const Sort(this.value, this.postValue);
 
-  final String label;
+  String get label => switch (this) {
+    Sort.byNew => t.sort.newest,
+    Sort.byBest => t.sort.best,
+  };
   final String value;
   final String postValue;
 
@@ -19,7 +23,7 @@ enum Sort {
   factory Sort.fromString(String value) {
     return Sort.values.firstWhere(
       (element) => element.name == value,
-      orElse: () => throw Exception('Неизвестное значение сортировки'),
+      orElse: () => throw Exception(t.sort.unknownValue),
     );
   }
 }

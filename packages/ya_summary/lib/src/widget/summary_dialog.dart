@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../i18n/i18n.dart';
 
 import '../cubit/summary_auth_cubit.dart';
 import '../cubit/summary_cubit.dart';
@@ -56,7 +57,7 @@ Future showSummaryDialog(
 
                       return TextButton(
                         onPressed: () => onLinkPressed(state.model.sharingUrl),
-                        child: const Text('Ссылка на пересказ'),
+                        child: Text(context.yaSummaryT.summary.link),
                       );
                     },
                   ),
@@ -75,7 +76,7 @@ Future showSummaryDialog(
                         fit: BoxFit.scaleDown,
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          'краткий пересказ статьи от нейросети',
+                          context.yaSummaryT.summary.aiDescription,
                           style: DefaultTextStyle.of(context).style,
                         ),
                       ),

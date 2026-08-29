@@ -7,6 +7,7 @@ import '../../../../../../data/model/loading_status_enum.dart';
 import '../../../../../../data/model/publication/publication.dart';
 import '../../../../../../data/model/stat_type_enum.dart';
 import '../../../../../../di/di.dart';
+import '../../../../../../i18n/i18n.dart';
 import '../../../../../extension/extension.dart';
 import '../../stats/publication_stat_icon_widget.dart';
 
@@ -87,8 +88,11 @@ class _ScoreTooltip extends StatelessWidget {
       triggerMode: .tap,
       showDuration: const .new(seconds: 5),
       message:
-          'Всего голосов $votesCount: '
-          '↑$votesCountPlus и ↓$votesCountMinus',
+          context.t.publication.totalVotes(votesCount: votesCount) +
+          context.t.publication.voteBreakdown(
+            votesCountPlus: votesCountPlus,
+            votesCountMinus: votesCountMinus,
+          ),
       child: child,
     );
   }
@@ -140,7 +144,7 @@ class _VoteButtons extends StatelessWidget {
             children: [
               IconButton(
                 style: iconStyle,
-                tooltip: 'Повысить рейтинг',
+                tooltip: context.t.publication.upvote,
                 icon: const Icon(Icons.arrow_upward, size: 18),
                 onPressed: isLoading
                     ? null
@@ -166,7 +170,7 @@ class _VoteButtons extends StatelessWidget {
               ),
               IconButton(
                 style: iconStyle,
-                tooltip: 'Понизить рейтинг',
+                tooltip: context.t.publication.downvote,
                 icon: Icon(
                   Icons.arrow_downward,
                   size: 18,

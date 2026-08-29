@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../../../../core/component/router/router.dart';
 import '../../../../../../data/model/publication/publication.dart';
 import '../../../../../../di/di.dart';
+import '../../../../../../i18n/i18n.dart';
 import '../../../../../extension/extension.dart';
 import '../../../../../theme/theme.dart';
 
@@ -41,8 +42,10 @@ class _TranslationLabelWidget extends StatelessWidget {
     final theme = context.theme;
     final radius = AppStyles.buttonBorderRadius;
     final text = label.data.originalAuthorName != null
-        ? 'Автор оригинала: ${label.data.originalAuthorName}'
-        : 'Ссылка на оригинал';
+        ? context.t.publication.originalAuthor(
+            originalAuthorName: label.data.originalAuthorName!,
+          )
+        : context.t.publication.originalLink;
 
     return Material(
       color: theme.colors.card,

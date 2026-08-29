@@ -7,6 +7,7 @@ import '../../../../bloc/tracker/tracker_publications_marker_bloc.dart';
 import '../../../../core/component/router/router.dart';
 import '../../../../data/model/tracker/tracker.dart';
 import '../../../../di/di.dart';
+import '../../../../i18n/i18n.dart';
 import '../../../extension/extension.dart';
 import '../../../widget/enhancement/card.dart';
 import '../../../widget/enhancement/progress_indicator.dart';
@@ -203,7 +204,7 @@ class _TrackerFloatingButton extends StatelessWidget {
           children: [
             if (state.isAnyUnreaded)
               FilledButton.icon(
-                label: const Text('Пометить как прочитанное'),
+                label: Text(context.t.tracker.markAsRead),
                 icon: isLoading
                     ? fabLoader
                     : Icon(Icons.mark_chat_read, size: iconSize),
@@ -215,7 +216,7 @@ class _TrackerFloatingButton extends StatelessWidget {
               ),
 
             FilledButton.icon(
-              label: const Text('Удалить из трекера'),
+              label: Text(context.t.tracker.remove),
               icon: isLoading ? fabLoader : Icon(Icons.delete, size: iconSize),
               onPressed: isLoading
                   ? null

@@ -4,6 +4,7 @@ import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart
 
 import '../../../../../bloc/user/user_cubit.dart';
 import '../../../../../data/model/user/user.dart';
+import '../../../../../i18n/i18n.dart';
 import '../../../../widget/detail/section_container_widget.dart';
 import '../../../../widget/enhancement/card.dart';
 import '../../../../widget/html_view/html_view_widget.dart';
@@ -24,17 +25,17 @@ class UserWhoisWidget extends StatelessWidget {
           children: [
             if (model.badgets.isNotEmpty)
               SectionContainerWidget(
-                title: 'Значки',
+                title: context.t.user.badges,
                 child: _BadgetsWidget(badgets: model.badgets),
               ),
             if (!model.invitedBy.isEmpty)
               SectionContainerWidget(
-                title: 'Приглашен',
+                title: context.t.user.invited,
                 child: Text(model.invitedBy.fullText),
               ),
             if (model.aboutHtml.isNotEmpty)
               SectionContainerWidget(
-                title: 'О себе',
+                title: context.t.user.about,
                 child: HtmlView(
                   textHtml: model.aboutHtml,
                   renderMode: RenderMode.column,

@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
+import '../../../i18n/i18n.dart';
 import '../../theme/theme.dart';
 
 class DrawerNavigation extends StatelessWidget {
@@ -44,20 +45,20 @@ class _Drawer extends StatelessWidget {
           router.setActiveIndex(i);
         }
       },
-      destinations: const [
+      destinations: [
         NavigationRailDestination(
-          icon: Icon(Icons.article_rounded),
-          label: Text('Публикации'),
+          icon: const Icon(Icons.article_rounded),
+          label: Text(context.t.tracker.publications),
           padding: padding,
         ),
         NavigationRailDestination(
-          icon: Icon(Icons.widgets_rounded),
-          label: Text('Сервисы'),
+          icon: const Icon(Icons.widgets_rounded),
+          label: Text(context.t.navigation.services),
           padding: padding,
         ),
         NavigationRailDestination(
-          icon: Icon(Icons.settings_rounded),
-          label: Text('Настройки'),
+          icon: const Icon(Icons.settings_rounded),
+          label: Text(context.t.navigation.settings),
           padding: padding,
         ),
       ],
