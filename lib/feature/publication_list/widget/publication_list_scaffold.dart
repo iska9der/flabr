@@ -43,11 +43,11 @@ class PublicationListScaffold<
 
     return MultiBlocListener(
       listeners: [
-        /// После входа или выхода повторно получаем текущую страницу
+        /// Если пользователь вошел или вышел - надо переполучить статьи
         BlocListener<AuthCubit, AuthState>(
           listener: (context, state) {
             if (state.isAuthorized || state.isUnauthorized) {
-              listCubit.refresh();
+              listCubit.reset();
             }
           },
         ),
