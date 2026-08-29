@@ -77,7 +77,9 @@ class CompanyListPageView extends StatelessWidget {
           child: BlocConsumer<CompanyListCubit, CompanyListState>(
             listenWhen: (p, c) => p.page != 1 && c.status == .failure,
             listener: (c, state) {
-              context.showSnack(content: Text(state.error));
+              context.showSnack(
+                content: Text(context.t.errorMessage(state.error)),
+              );
             },
             builder: (context, state) {
               if (state.status == .initial) {
@@ -94,7 +96,7 @@ class CompanyListPageView extends StatelessWidget {
                 if (state.status == .failure) {
                   return Center(
                     child: AppError(
-                      message: state.error,
+                      error: state.error,
                       onRetry: () => fetch(context),
                     ),
                   );

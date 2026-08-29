@@ -1,7 +1,6 @@
 import 'package:injectable/injectable.dart';
 
 import '../../core/component/http/http.dart';
-import '../../i18n/i18n.dart';
 import '../exception/exception.dart';
 import '../model/list_response_model.dart';
 import '../model/query_params_model.dart';
@@ -99,7 +98,7 @@ class UserServiceImpl implements UserService {
       rethrow;
     } catch (_, trace) {
       Error.throwWithStackTrace(
-        FetchException(t.bookmark.commentsLoadFailed),
+        const FetchException(null, .bookmarkCommentsLoadFailed),
         trace,
       );
     }
@@ -120,7 +119,7 @@ class UserServiceImpl implements UserService {
       rethrow;
     } catch (e, trace) {
       Error.throwWithStackTrace(
-        FetchException(t.user.commentsLoadFailed),
+        const FetchException(null, .userCommentsLoadFailed),
         trace,
       );
     }

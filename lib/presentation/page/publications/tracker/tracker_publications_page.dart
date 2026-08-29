@@ -42,11 +42,11 @@ class TrackerPublicationsPage extends StatelessWidget {
             TrackerPublicationsMarkerState
           >(
             listenWhen: (previous, current) =>
-                previous.status != current.status &&
-                current.status == .failure &&
-                current.error.isNotEmpty,
+                previous.status != current.status && current.status == .failure,
             listener: (context, state) {
-              context.showSnack(content: Text(state.error));
+              context.showSnack(
+                content: Text(context.t.errorMessage(state.error)),
+              );
             },
             child: const TrackerPublicationsView(),
           ),
@@ -65,7 +65,7 @@ class TrackerPublicationsView extends StatelessWidget {
         builder: (context, state) => switch (state.status) {
           .failure when state.isFirstFetch => Center(
             child: AppError(
-              message: state.error,
+              error: state.error,
               onRetry: () =>
                   context.read<TrackerPublicationsBloc>().add(const .load()),
             ),

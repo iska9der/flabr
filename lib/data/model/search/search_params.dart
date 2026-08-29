@@ -1,4 +1,3 @@
-import '../../../i18n/i18n.dart';
 import '../../exception/exception.dart';
 import '../query_params_model.dart';
 import 'search_article_params.dart';
@@ -34,6 +33,9 @@ abstract class SearchParamsFactory extends QueryParams {
       order: order,
       page: page.toString(),
     ),
-    SearchTarget.comments => throw ValueException(t.search.notImplemented),
+    SearchTarget.comments => throw const ValueException(
+      null,
+      .searchNotImplemented,
+    ),
   };
 }

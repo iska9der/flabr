@@ -47,7 +47,9 @@ class PublicationSliverList<
           bloc: listCubit,
           listenWhen: (previous, current) =>
               previous.response.refs.isNotEmpty && current.status == .failure,
-          listener: (_, state) => context.showSnack(content: Text(state.error)),
+          listener: (_, state) => context.showSnack(
+            content: Text(context.t.errorMessage(state.error)),
+          ),
         ),
 
         /// Синхронизация закладок при успешной загрузке публикаций
@@ -96,7 +98,7 @@ class PublicationSliverList<
             return SliverFillRemaining(
               child: Center(
                 child: AppError(
-                  message: state.error,
+                  error: state.error,
                   onRetry: () => listCubit.fetch(),
                 ),
               ),

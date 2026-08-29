@@ -66,7 +66,7 @@ class ProfileDashboardPage extends StatelessWidget {
           if (state.status == LoadingStatus.failure) {
             return Center(
               child: AppError(
-                message: context.t.user.profileLoadFailed,
+                error: context.t.user.profileLoadFailed,
                 onRetry: () => fetch(context),
               ),
             );

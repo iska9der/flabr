@@ -1,11 +1,10 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../data/exception/exception.dart';
 import '../../data/model/loading_status_enum.dart';
 import '../../data/model/user/user.dart';
 import '../../data/repository/repository.dart';
-import '../../i18n/i18n.dart';
+import '../error/app_failure.dart';
 
 part 'user_state.dart';
 
@@ -31,9 +30,7 @@ class UserCubit extends Cubit<UserState> {
       emit(
         state.copyWith(
           status: .failure,
-          error: error.parseException(
-            t.user.profileCardFetchFailed,
-          ),
+          error: AppFailure(.userProfileCardFetchFailed, error),
         ),
       );
 

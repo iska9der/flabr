@@ -50,7 +50,7 @@ class UserDetailPageView extends StatelessWidget {
         if (state.status == .failure) {
           return Center(
             child: AppError(
-              message: state.error,
+              error: state.error,
               onRetry: () => _fetch(context),
             ),
           );

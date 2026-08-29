@@ -128,7 +128,9 @@ class _VoteButtons extends StatelessWidget {
       child: BlocConsumer<PublicationVoteBloc, PublicationVoteState>(
         listener: (context, state) {
           if (state.status == LoadingStatus.failure && state.error != null) {
-            context.showSnack(content: Text(state.error!));
+            context.showSnack(
+              content: Text(context.t.errorMessage(state.error)),
+            );
           }
         },
         builder: (context, state) {

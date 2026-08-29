@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../bloc/auth/auth_cubit.dart';
 import '../../../data/model/loading_status_enum.dart';
 import '../../../di/di.dart';
+import '../../../i18n/i18n.dart';
 import '../../../presentation/extension/extension.dart';
 import '../../../presentation/widget/dialog/dialog.dart';
 import '../cubit/subscription_cubit.dart';
@@ -35,9 +36,11 @@ class SubscribeButton extends StatelessWidget {
         isSubscribed: isSubscribed,
       ),
       child: BlocConsumer<SubscriptionCubit, SubscriptionState>(
-        listenWhen: (p, c) => p.status == LoadingStatus.failure,
+        listenWhen: (previous, current) =>
+            previous.status != current.status &&
+            current.status == LoadingStatus.failure,
         listener: (context, state) {
-          context.showSnack(content: Text(state.error));
+          context.showSnack(content: Text(context.t.errorMessage(state.error)));
         },
         builder: (context, state) {
           var style = OutlinedButton.styleFrom(
@@ -58,7 +61,11 @@ class SubscribeButton extends StatelessWidget {
             onPressed: state.status == LoadingStatus.loading
                 ? null
                 : () => onSubscribePressed(context),
-            child: Text(state.buttonText),
+            child: Text(
+              state.isSubscribed
+                  ? context.t.profile.subscribed
+                  : context.t.profile.subscribe,
+            ),
           );
         },
       ),

@@ -5,7 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_file_dialog/flutter_file_dialog.dart';
 
-import '../../../data/exception/exception.dart';
+import '../../../bloc/error/app_failure.dart';
 import '../model/publication_download_format.dart';
 import '../service/publication_text_converter.dart';
 
@@ -70,7 +70,7 @@ class PublicationDownloadCubit extends Cubit<PublicationDownloadState> {
       emit(
         state.copyWith(
           status: PublicationDownloadStatus.failure,
-          error: error.parseException(),
+          error: AppFailure(.operationFailed, error),
         ),
       );
 

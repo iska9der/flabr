@@ -15,6 +15,6 @@ enum FeedFilterPublication {
   factory FeedFilterPublication.fromString(String value) =>
       FeedFilterPublication.values.firstWhere(
         (type) => type.name == value,
-        orElse: () => throw ValueException(t.feed.publicationUnknownType),
+        orElse: () => throw const ValueException(null, .unknownFeedPublication),
       );
 }

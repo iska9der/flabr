@@ -3,10 +3,10 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../../../data/model/loading_status_enum.dart';
-import '../../../../data/model/publication/publication.dart';
-import '../../../../data/repository/repository.dart';
-import '../../i18n/i18n.dart';
+import '../../data/model/loading_status_enum.dart';
+import '../../data/model/publication/publication.dart';
+import '../../data/repository/repository.dart';
+import '../error/app_failure.dart';
 
 part 'publication_vote_bloc.freezed.dart';
 part 'publication_vote_event.dart';
@@ -40,15 +40,15 @@ class PublicationVoteBloc
 
   final PublicationVoteRepository _repository;
 
-  String? _commonValidation(PublicationVoteAction action) {
+  AppFailure? _commonValidation(PublicationVoteAction action) {
     if (action.isVotingOver) {
-      return t.publication.votingEnded;
+      return const AppFailure(.publicationVotingEnded);
     } else if (!action.isChargeEnough) {
-      return t.publication.dailyVoteLimitReached;
+      return const AppFailure(.publicationDailyVoteLimitReached);
     } else if (!action.isKarmaEnough) {
-      return t.publication.insufficientRatingToVote;
+      return const AppFailure(.publicationInsufficientRatingToVote);
     } else if (!action.canVote) {
-      return t.publication.votingNoLongerAllowed;
+      return const AppFailure(.publicationVotingNoLongerAllowed);
     }
 
     return null;
@@ -85,7 +85,7 @@ class PublicationVoteBloc
       emit(
         state.copyWith(
           status: LoadingStatus.failure,
-          error: t.publication.upvoteFailed,
+          error: const AppFailure(.publicationUpvoteFailed),
         ),
       );
 
@@ -103,7 +103,7 @@ class PublicationVoteBloc
     return emit(
       state.copyWith(
         status: LoadingStatus.failure,
-        error: t.publication.downvoteUnavailable,
+        error: const AppFailure(.publicationDownvoteUnavailable),
       ),
     );
 

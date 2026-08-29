@@ -1,9 +1,21 @@
-import '../../i18n/i18n.dart';
 import 'app_exception.dart';
 
-class ValueException extends AppException {
-  const ValueException([super.message]);
+enum ValueExceptionType {
+  invalidValue,
+  unknownHub,
+  unknownFeedPublication,
+  unknownSort,
+  unknownLanguage,
+  searchNotImplemented,
+  wrongPublicationDestination,
+  publicationOperationFailed,
+}
 
-  @override
-  String get defaultMessage => t.error.valueError;
+class ValueException extends AppException {
+  const ValueException([
+    super.message,
+    this.type = .invalidValue,
+  ]);
+
+  final ValueExceptionType type;
 }

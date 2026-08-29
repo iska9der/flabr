@@ -3,10 +3,10 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../../../../data/model/loading_status_enum.dart';
-import '../../../../../data/model/tracker/tracker.dart';
-import '../../../../../data/repository/repository.dart';
-import '../../i18n/i18n.dart';
+import '../../data/model/loading_status_enum.dart';
+import '../../data/model/tracker/tracker.dart';
+import '../../data/repository/repository.dart';
+import '../error/app_failure.dart';
 
 part 'tracker_notifications_marker_bloc.freezed.dart';
 part 'tracker_notifications_marker_event.dart';
@@ -45,12 +45,14 @@ class TrackerNotificationsMarkerBloc
 
       emit(state.copyWith(status: .success, handledIds: event.ids));
     } catch (error, stackTrace) {
-      final message = switch (event.isErrorEnabled) {
-        true => t.tracker.notificationsMarkReadFailed,
-        false => '',
-      };
-
-      emit(state.copyWith(status: .failure, error: message));
+      emit(
+        state.copyWith(
+          status: .failure,
+          error: event.isErrorEnabled
+              ? const AppFailure(.trackerNotificationsMarkReadFailed)
+              : null,
+        ),
+      );
 
       super.onError(error, stackTrace);
     }

@@ -15,7 +15,7 @@ class ImageActionState with Equatable {
   });
 
   final ImageActionStatus status;
-  final String error;
+  final Object error;
   final bool isSaveEnabled;
   final bool isShareEnabled;
 
@@ -28,7 +28,7 @@ class ImageActionState with Equatable {
   bool get canShare => isShareEnabled && status != ImageActionStatus.loading;
 
   ImageActionState copyWith({
-    String? error,
+    Object? error,
     ImageActionStatus? status,
     bool? isSaveEnabled,
     bool? isShareEnabled,

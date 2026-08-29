@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 
 import '../../i18n/i18n.dart';
+import '../extension/error.dart';
 
 class AppError extends StatelessWidget {
   const AppError({
     super.key,
-    this.message,
+    this.error,
     this.onRetry,
   });
 
-  final String? message;
+  final Object? error;
   final VoidCallback? onRetry;
 
   @override
@@ -19,7 +20,7 @@ class AppError extends StatelessWidget {
       mainAxisAlignment: .center,
       children: [
         Text(
-          message ?? context.t.common.genericError,
+          context.t.errorMessage(error),
           textAlign: .center,
         ),
         if (onRetry != null)

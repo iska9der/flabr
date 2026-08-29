@@ -1,10 +1,10 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../data/exception/exception.dart';
 import '../../data/model/loading_status_enum.dart';
 import '../../data/model/publication/publication.dart';
 import '../../data/repository/repository.dart';
+import '../error/app_failure.dart';
 
 part 'publication_detail_state.dart';
 
@@ -38,7 +38,12 @@ class PublicationDetailCubit extends Cubit<PublicationDetailState> {
 
       emit(state.copyWith(status: .success, publication: publication));
     } catch (e) {
-      emit(state.copyWith(status: .failure, error: e.parseException()));
+      emit(
+        state.copyWith(
+          status: .failure,
+          error: AppFailure(.operationFailed, e),
+        ),
+      );
 
       rethrow;
     }

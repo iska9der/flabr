@@ -1,4 +1,3 @@
-
 part of 'publication.dart';
 
 class PublicationListParams extends QueryParams {
@@ -33,14 +32,13 @@ class PublicationListParams extends QueryParams {
     String periodParam = period != null ? 'period=$period' : '';
     String scoreParam = score.isNotEmpty ? 'score=$score' : '';
 
-    final params =
-        [
-          flowParam,
-          newsParam,
-          sortParam,
-          periodParam,
-          scoreParam,
-        ].where((element) => element.isNotEmpty).toList();
+    final params = [
+      flowParam,
+      newsParam,
+      sortParam,
+      periodParam,
+      scoreParam,
+    ].where((element) => element.isNotEmpty).toList();
 
     params.add('page=$page');
 

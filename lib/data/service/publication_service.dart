@@ -2,7 +2,6 @@ import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../core/component/http/http.dart';
-import '../../i18n/i18n.dart';
 import '../exception/exception.dart';
 import '../model/comment/comment.dart';
 import '../model/filter/filter.dart';
@@ -276,8 +275,9 @@ class PublicationServiceImpl implements PublicationService {
         UserBookmarksType.articles => {'user_bookmarks': 'true'},
         UserBookmarksType.posts => {'user_bookmarks_posts': 'true'},
         UserBookmarksType.news => {'user_bookmarks_news': 'true'},
-        UserBookmarksType.comments => throw ValueException(
-          t.publication.wrongDestination,
+        UserBookmarksType.comments => throw const ValueException(
+          null,
+          .wrongPublicationDestination,
         ),
       };
 
@@ -353,7 +353,7 @@ class PublicationServiceImpl implements PublicationService {
       );
 
       if (response.data['ok'] != true) {
-        throw ValueException(t.publication.failed);
+        throw const ValueException(null, .publicationOperationFailed);
       }
 
       return true;
@@ -391,7 +391,7 @@ class PublicationServiceImpl implements PublicationService {
       };
 
       if (response.data['ok'] != true) {
-        throw ValueException(t.publication.failed);
+        throw const ValueException(null, .publicationOperationFailed);
       }
 
       return true;

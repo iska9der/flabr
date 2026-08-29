@@ -1,4 +1,5 @@
 import '../../../i18n/i18n.dart';
+import '../../exception/exception.dart';
 import 'filter_list.dart';
 import 'filter_option_model.dart';
 
@@ -23,7 +24,7 @@ enum Sort {
   factory Sort.fromString(String value) {
     return Sort.values.firstWhere(
       (element) => element.name == value,
-      orElse: () => throw Exception(t.sort.unknownValue),
+      orElse: () => throw const ValueException(null, .unknownSort),
     );
   }
 }

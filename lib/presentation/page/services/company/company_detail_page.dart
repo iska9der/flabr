@@ -38,7 +38,7 @@ class CompanyDetailPage extends StatelessWidget {
         if (state.status == .failure) {
           return Center(
             child: AppError(
-              message: state.error,
+              error: state.error,
               onRetry: () => fetch(context),
             ),
           );

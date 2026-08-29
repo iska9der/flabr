@@ -76,7 +76,9 @@ class PublicationListScaffold<
         BlocListener<PublicationBookmarksBloc, PublicationBookmarksState>(
           listenWhen: (_, current) => current.error != null,
           listener: (context, state) {
-            context.showSnack(content: Text(state.error!));
+            context.showSnack(
+              content: Text(context.t.errorMessage(state.error)),
+            );
           },
         ),
       ],

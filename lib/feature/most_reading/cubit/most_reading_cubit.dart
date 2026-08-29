@@ -1,12 +1,11 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../data/exception/exception.dart';
+import '../../../bloc/error/app_failure.dart';
 import '../../../data/model/language/language.dart';
 import '../../../data/model/loading_status_enum.dart';
 import '../../../data/model/publication/publication.dart';
 import '../../../data/repository/repository.dart';
-import '../../../i18n/i18n.dart';
 
 part 'most_reading_state.dart';
 
@@ -32,7 +31,7 @@ class MostReadingCubit extends Cubit<MostReadingState> {
     } catch (e) {
       emit(
         state.copyWith(
-          error: e.parseException(t.hub.articlesFetchFailed),
+          error: AppFailure(.hubArticlesFetchFailed, e),
           status: LoadingStatus.failure,
         ),
       );

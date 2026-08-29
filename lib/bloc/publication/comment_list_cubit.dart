@@ -1,13 +1,12 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../data/exception/exception.dart';
 import '../../data/model/comment/comment.dart';
 import '../../data/model/language/language.dart';
 import '../../data/model/loading_status_enum.dart';
 import '../../data/model/publication/publication.dart';
 import '../../data/repository/repository.dart';
-import '../../i18n/i18n.dart';
+import '../error/app_failure.dart';
 
 part 'comment_list_state.dart';
 
@@ -38,7 +37,7 @@ class CommentListCubit extends Cubit<CommentListState> {
       emit(
         state.copyWith(
           status: .failure,
-          error: error.parseException(t.publication.commentsFetchFailed),
+          error: AppFailure(.publicationCommentsFetchFailed, error),
         ),
       );
 

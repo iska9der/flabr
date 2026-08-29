@@ -60,7 +60,7 @@ class _CommentListViewState extends State<CommentListView> {
             if (state.status == .failure) {
               return Center(
                 child: AppError(
-                  message: state.error,
+                  error: state.error,
                   onRetry: _fetch,
                 ),
               );

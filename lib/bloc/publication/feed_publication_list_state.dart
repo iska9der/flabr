@@ -13,7 +13,7 @@ class FeedPublicationListState extends PublicationListState with Equatable {
 
   FeedPublicationListState copyWith({
     LoadingStatus? status,
-    String? error,
+    Object? error,
     int? page,
     ListResponse<Publication>? response,
     FeedFilter? filter,

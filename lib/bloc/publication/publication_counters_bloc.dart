@@ -3,11 +3,10 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../../../data/exception/exception.dart';
-import '../../../../data/model/loading_status_enum.dart';
-import '../../../../data/model/publication/publication.dart';
-import '../../../../data/repository/repository.dart';
-import '../../i18n/i18n.dart';
+import '../../data/model/loading_status_enum.dart';
+import '../../data/model/publication/publication.dart';
+import '../../data/repository/repository.dart';
+import '../error/app_failure.dart';
 
 part 'publication_counters_bloc.freezed.dart';
 part 'publication_counters_event.dart';
@@ -45,7 +44,7 @@ class PublicationCountersBloc
       emit(
         state.copyWith(
           status: LoadingStatus.failure,
-          error: e.parseException(t.publication.countersFetchFailed),
+          error: AppFailure(.publicationCountersFetchFailed, e),
         ),
       );
     }

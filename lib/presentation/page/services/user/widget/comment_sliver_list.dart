@@ -33,7 +33,7 @@ class CommentSliverList extends StatelessWidget {
     return BlocConsumer<UserCommentListCubit, UserCommentListState>(
       listenWhen: (p, c) => p.page != 1 && c.status == .failure,
       listener: (c, state) {
-        context.showSnack(content: Text(state.error));
+        context.showSnack(content: Text(context.t.errorMessage(state.error)));
       },
       builder: (context, state) {
         /// Инициализация
@@ -52,7 +52,7 @@ class CommentSliverList extends StatelessWidget {
           /// Ошибка при попытке получить статьи
           if (state.status == .failure) {
             return SliverFillRemaining(
-              child: AppError(message: state.error, onRetry: fetch),
+              child: AppError(error: state.error, onRetry: fetch),
             );
           }
         }

@@ -21,7 +21,8 @@ class PublicationTextConverter {
   }
 
   String _foldHtml(String body) {
-    final String html = '''
+    final String html =
+        '''
       <html>
         <head>
           <meta charset="utf-8">

@@ -85,7 +85,9 @@ class _SearchAnywhereViewState extends State<_SearchAnywhereView> {
         BlocListener<SearchCubit, SearchState>(
           listenWhen: (p, c) => p.page != 1 && c.status == .failure,
           listener: (c, state) {
-            context.showSnack(content: Text(state.error));
+            context.showSnack(
+              content: Text(context.t.errorMessage(state.error)),
+            );
           },
         ),
         BlocListener<SearchCubit, SearchState>(
@@ -178,7 +180,7 @@ class _SearchAnywhereViewState extends State<_SearchAnywhereView> {
                         return SliverFillRemaining(
                           child: Center(
                             child: AppError(
-                              message: state.error,
+                              error: state.error,
                               onRetry: () => showResults(context, state.query),
                             ),
                           ),

@@ -38,9 +38,11 @@ class ResponsiveVisibilitySliver extends StatelessWidget {
     conditions.addAll(visibleConditions.map((e) => e.copyWith(value: true)));
     conditions.addAll(hiddenConditions.map((e) => e.copyWith(value: false)));
     // Get visible value from active condition.
-    visibleValue = ResponsiveValue(context,
-            defaultValue: visibleValue, conditionalValues: conditions)
-        .value;
+    visibleValue = ResponsiveValue(
+      context,
+      defaultValue: visibleValue,
+      conditionalValues: conditions,
+    ).value;
 
     return SliverVisibility(
       replacementSliver: replacementSliver,

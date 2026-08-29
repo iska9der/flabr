@@ -51,9 +51,11 @@ class TrackerSubscriptionPage extends StatelessWidget {
             listenWhen: (previous, current) =>
                 previous.status != current.status &&
                 current.status == .failure &&
-                current.error.isNotEmpty,
+                current.error != null,
             listener: (context, state) {
-              context.showSnack(content: Text(state.error));
+              context.showSnack(
+                content: Text(context.t.errorMessage(state.error)),
+              );
             },
             child: const TrackerSubscriptionView(),
           ),
@@ -71,7 +73,7 @@ class TrackerSubscriptionView extends StatelessWidget {
         builder: (context, state) => switch (state.status) {
           .failure when state.isFirstFetch => Center(
             child: AppError(
-              message: state.error,
+              error: state.error,
               onRetry: () =>
                   context.read<TrackerNotificationsBloc>().add(const .load()),
             ),

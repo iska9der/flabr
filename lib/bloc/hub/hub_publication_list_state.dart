@@ -17,7 +17,7 @@ class HubPublicationListState extends PublicationListState with Equatable {
 
   HubPublicationListState copyWith({
     LoadingStatus? status,
-    String? error,
+    Object? error,
     String? hub,
     PublicationType? type,
     FlowFilter? filter,

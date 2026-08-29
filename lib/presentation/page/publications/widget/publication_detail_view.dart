@@ -63,7 +63,7 @@ class PublicationDetailView extends StatelessWidget {
               .loading => const _LoadingView(),
               .failure => Center(
                 child: AppError(
-                  message: state.error,
+                  error: state.error,
                   onRetry: () => _fetch(context),
                 ),
               ),

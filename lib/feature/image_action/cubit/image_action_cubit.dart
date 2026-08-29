@@ -6,9 +6,9 @@ import 'package:flutter_file_dialog/flutter_file_dialog.dart';
 import 'package:path/path.dart' as path;
 import 'package:share_plus/share_plus.dart';
 
+import '../../../bloc/error/app_failure.dart';
 import '../../../core/component/http/http.dart';
 import '../../../data/exception/exception.dart';
-import '../../../i18n/i18n.dart';
 
 part 'image_action_state.dart';
 
@@ -40,7 +40,7 @@ class ImageActionCubit extends Cubit<ImageActionState> {
     );
 
     if (!response.headers.map.containsKey('content-type')) {
-      throw FetchException(t.image.missingMimeType);
+      throw const FetchException(null, .missingMimeType);
     }
 
     final name = path.basename(state.url);
@@ -78,7 +78,7 @@ class ImageActionCubit extends Cubit<ImageActionState> {
       emit(
         state.copyWith(
           status: ImageActionStatus.failure,
-          error: error.parseException(),
+          error: AppFailure(.operationFailed, error),
         ),
       );
 
@@ -113,7 +113,7 @@ class ImageActionCubit extends Cubit<ImageActionState> {
       emit(
         state.copyWith(
           status: ImageActionStatus.failure,
-          error: error.parseException(),
+          error: AppFailure(.operationFailed, error),
         ),
       );
 
