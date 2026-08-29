@@ -25,6 +25,7 @@ class FeedListPage extends StatelessWidget {
           create: (_) => FeedPublicationListCubit(
             repository: getIt(),
             languageRepository: getIt(),
+            settingsRepository: getIt(),
           ),
         ),
         BlocProvider(create: (_) => ScrollCubit()),

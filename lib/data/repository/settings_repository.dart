@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:injectable/injectable.dart';
+import 'package:rxdart/rxdart.dart';
 
 import '../../core/component/storage/storage.dart';
 import '../../core/constants/constants.dart';
@@ -16,6 +17,14 @@ class SettingsRepository {
   }) : _storage = storage;
 
   final CacheStorage _storage;
+
+  final _configCtrl = BehaviorSubject<Config>.seeded(const Config());
+
+  /// Поток актуальной конфигурации с replay последнего значения
+  Stream<Config> get onChange => _configCtrl.stream;
+
+  /// Последняя опубликованная конфигурация
+  Config get lastConfig => _configCtrl.value;
 
   /// Инициализация конфигурации
   Future<Config> initConfig() async {
@@ -58,26 +67,33 @@ class SettingsRepository {
       config = config.copyWith(typography: .fromJson(jsonDecode(raw)));
     }
 
+    _configCtrl.add(config);
+
     return config;
   }
 
   void saveTheme(ThemeConfigModel config) {
     _storage.write(CacheKeys.themeConfig, jsonEncode(config.toJson()));
+    _configCtrl.add(lastConfig.copyWith(theme: config));
   }
 
   void saveFeed(FeedConfigModel config) {
     _storage.write(CacheKeys.feedConfig, jsonEncode(config.toJson()));
+    _configCtrl.add(lastConfig.copyWith(feed: config));
   }
 
   void savePublication(PublicationConfigModel config) {
     _storage.write(CacheKeys.publicationConfig, jsonEncode(config.toJson()));
+    _configCtrl.add(lastConfig.copyWith(publication: config));
   }
 
   void saveMisc(MiscConfigModel config) {
     _storage.write(CacheKeys.miscConfig, jsonEncode(config.toJson()));
+    _configCtrl.add(lastConfig.copyWith(misc: config));
   }
 
   void saveTypography(TypographyConfigModel config) {
     _storage.write(CacheKeys.typographyConfig, jsonEncode(config.toJson()));
+    _configCtrl.add(lastConfig.copyWith(typography: config));
   }
 }
