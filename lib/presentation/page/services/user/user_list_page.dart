@@ -60,7 +60,7 @@ class UserListPageView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: const AutoLeadingButton(),
-        title: Text(context.t.user.authors),
+        title: Text(context.t.user.list.title),
       ),
       floatingActionButton: const FloatingContainer(
         children: [FloatingScrollToTopButton()],

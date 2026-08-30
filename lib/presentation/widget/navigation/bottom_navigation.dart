@@ -79,7 +79,7 @@ class _BottomNavigation extends StatelessWidget {
         },
         destinations: [
           NavigationDestination(
-            label: context.t.tracker.publications,
+            label: context.t.navigation.publications,
             icon: const Icon(Icons.article_rounded),
           ),
           NavigationDestination(

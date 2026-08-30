@@ -125,16 +125,16 @@ class UserDashboardView extends StatelessWidget {
               dividerColor: Colors.transparent,
               tabs: [
                 DashboardDrawerLinkWidget(
-                  title: context.t.company.profile,
+                  title: context.t.user.dashboard.profile,
                 ),
                 DashboardDrawerLinkWidget(
-                  title: context.t.tracker.publications,
+                  title: context.t.user.dashboard.publications,
                 ),
                 DashboardDrawerLinkWidget(
-                  title: context.t.search.targetComments,
+                  title: context.t.user.dashboard.comments,
                 ),
                 DashboardDrawerLinkWidget(
-                  title: context.t.shortcut.bookmarks,
+                  title: context.t.user.dashboard.bookmarks,
                 ),
               ],
             ),

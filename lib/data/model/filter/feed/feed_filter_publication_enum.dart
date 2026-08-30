@@ -7,9 +7,9 @@ enum FeedFilterPublication {
   news;
 
   String get label => switch (this) {
-    FeedFilterPublication.articles => t.shortcut.articles,
-    FeedFilterPublication.posts => t.shortcut.posts,
-    FeedFilterPublication.news => t.shortcut.news,
+    FeedFilterPublication.articles => t.feed.publicationTypes.articles,
+    FeedFilterPublication.posts => t.feed.publicationTypes.posts,
+    FeedFilterPublication.news => t.feed.publicationTypes.news,
   };
 
   factory FeedFilterPublication.fromString(String value) =>

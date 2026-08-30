@@ -60,7 +60,7 @@ class CommentSliverList extends StatelessWidget {
         var comments = state.response.refs;
         if (comments.isEmpty) {
           return SliverFillRemaining(
-            child: Center(child: Text(context.t.publication.listEmpty)),
+            child: Center(child: Text(context.t.comment.empty)),
           );
         }
 

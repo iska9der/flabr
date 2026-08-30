@@ -16,7 +16,7 @@ class MyProfileIconButton extends StatelessWidget {
     final state = context.watch<ProfileBloc>().state;
 
     return IconButton(
-      tooltip: context.t.company.profile,
+      tooltip: context.t.profile.title,
       onPressed: switch (state.status) {
         .initial || .failure => () => showLoginDialog(context),
         .success => () => showProfileDialog(

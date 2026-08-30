@@ -6,9 +6,9 @@ enum UserPublicationType {
   news;
 
   String get label => switch (this) {
-    UserPublicationType.articles => t.shortcut.articles,
-    UserPublicationType.posts => t.shortcut.posts,
-    UserPublicationType.news => t.shortcut.news,
+    UserPublicationType.articles => t.user.publicationTypes.articles,
+    UserPublicationType.posts => t.user.publicationTypes.posts,
+    UserPublicationType.news => t.user.publicationTypes.news,
   };
 
   factory UserPublicationType.fromString(String value) {

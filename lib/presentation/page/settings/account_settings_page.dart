@@ -31,7 +31,7 @@ class AccountSettingsView extends StatelessWidget {
       title: context.t.settings.account,
       children: [
         SettingsSectionWidget(
-          title: context.t.company.profile,
+          title: context.t.account.profile,
           children: [
             const AccountTile(),
           ],

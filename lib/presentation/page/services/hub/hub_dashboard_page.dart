@@ -57,7 +57,7 @@ class HubDashboardPageView extends StatelessWidget {
                 dividerColor: Colors.transparent,
                 tabs: [
                   DashboardDrawerLinkWidget(
-                    title: context.t.company.profile,
+                    title: context.t.hub.dashboard.profile,
                   ),
                 ],
               ),

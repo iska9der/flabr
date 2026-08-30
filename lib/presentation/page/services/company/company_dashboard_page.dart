@@ -54,7 +54,9 @@ class CompanyDashboardPageView extends StatelessWidget {
               padding: EdgeInsets.zero,
               dividerColor: Colors.transparent,
               tabs: [
-                DashboardDrawerLinkWidget(title: context.t.company.profile),
+                DashboardDrawerLinkWidget(
+                  title: context.t.company.dashboard.profile,
+                ),
               ],
             ),
           ),

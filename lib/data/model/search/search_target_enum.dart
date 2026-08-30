@@ -8,7 +8,7 @@ enum SearchTarget {
   comments;
 
   String get label => switch (this) {
-    SearchTarget.posts => t.shortcut.articles,
+    SearchTarget.posts => t.search.targetArticles,
     SearchTarget.hubs => t.search.targetHubs,
     SearchTarget.companies => t.search.targetCompanies,
     SearchTarget.users => t.search.targetUsers,

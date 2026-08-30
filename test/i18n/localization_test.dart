@@ -88,6 +88,30 @@ void main() {
     );
   });
 
+  test('feature labels are owned by their semantic domains', () {
+    expect(app_localizations.t.services.hubs, 'Хабы');
+    expect(app_localizations.t.company.dashboard.profile, 'Профиль');
+    expect(app_localizations.t.hub.list.title, 'Хабы');
+    expect(app_localizations.t.user.dashboard.publications, 'Публикации');
+    expect(app_localizations.t.user.bookmarkTypes.comments, 'Комментарии');
+    expect(app_localizations.t.publication.dashboard.myFeed, 'Моя лента');
+    expect(app_localizations.t.navigation.publications, 'Публикации');
+    expect(app_localizations.t.profile.bookmarks, 'Закладки');
+
+    app_localizations.LocaleSettings.setLocaleSync(
+      app_localizations.AppLocale.en,
+    );
+
+    expect(app_localizations.t.services.hubs, 'Hubs');
+    expect(app_localizations.t.company.dashboard.profile, 'Profile');
+    expect(app_localizations.t.hub.list.title, 'Hubs');
+    expect(app_localizations.t.user.dashboard.publications, 'Publications');
+    expect(app_localizations.t.user.bookmarkTypes.comments, 'Comments');
+    expect(app_localizations.t.publication.dashboard.myFeed, 'My feed');
+    expect(app_localizations.t.navigation.publications, 'Publications');
+    expect(app_localizations.t.profile.bookmarks, 'Bookmarks');
+  });
+
   testWidgets('provider rebuilds the app catalog after locale change', (
     tester,
   ) async {

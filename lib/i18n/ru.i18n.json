@@ -2,7 +2,12 @@
   "company": {
     "profileFetchFailed": "Не удалось получить профиль компании",
     "listFetchFailed": "Не удалось получить список компаний",
-    "profile": "Профиль",
+    "dashboard": {
+      "profile": "Профиль"
+    },
+    "list": {
+      "title": "Компании"
+    },
     "contacts": "Контакты",
     "information": "Информация",
     "website": "Сайт",
@@ -19,9 +24,27 @@
     "profileFetchFailed": "Не удалось получить профиль хаба",
     "listFetchFailed": "Не удалось получить список хабов",
     "articlesFetchFailed": "Не удалось получить статьи",
+    "dashboard": {
+      "profile": "Профиль"
+    },
+    "list": {
+      "title": "Хабы"
+    },
+    "rating": "Рейтинг",
+    "followers": "Подписчики",
+    "followerCount": "Подписчиков",
     "unknownType": "Неизвестный тип хаба"
   },
   "publication": {
+    "dashboard": {
+      "myFeed": "Моя лента",
+      "articles": "Статьи",
+      "posts": "Посты",
+      "news": "Новости",
+      "search": "Поиск",
+      "tracker": "Трекер"
+    },
+    "settingsTitle": "Публикации",
     "commentsFetchFailed": "Не удалось получить комментарии",
     "countersFetchFailed": "Не удалось получить счетчики",
     "unknownFlow": "Неизвестный поток публикации",
@@ -71,14 +94,16 @@
     "more": "Дополнительно",
     "configure": "Настроить",
     "readingTimeMinutes": "{{readingTime}} мин",
-    "language": "Язык публикаций",
-    "languageRequired": "должен быть выбран хотя бы один",
     "downvoteUnavailable": "У разработчика не хватает сил ставить минусы на публикации, поэтому пока неизвестно, как работает понижение голосов"
   },
   "feed": {
     "publicationsFetchFailed": "Не удалось получить публикации",
     "publicationUnknownType": "Неизвестный тип публикации",
-    "myFeed": "Моя лента",
+    "publicationTypes": {
+      "articles": "Статьи",
+      "posts": "Посты",
+      "news": "Новости"
+    },
     "publicationType": "Тип публикации",
     "ratingThreshold": "Порог рейтинга",
     "settingsTitle": "Лента",
@@ -121,6 +146,27 @@
     "joinedByInvitation": "{{createdAtDate}} по приглашению {{issuerLogin}}",
     "commentsLoadFailed": "Не удалось получить комментарии пользователя",
     "profileLoadFailed": "Не удалось загрузить ваш профиль",
+    "dashboard": {
+      "profile": "Профиль",
+      "publications": "Публикации",
+      "comments": "Комментарии",
+      "bookmarks": "Закладки"
+    },
+    "list": {
+      "title": "Авторы"
+    },
+    "publicationTypes": {
+      "articles": "Статьи",
+      "posts": "Посты",
+      "news": "Новости"
+    },
+    "bookmarkTypes": {
+      "articles": "Статьи",
+      "posts": "Посты",
+      "news": "Новости",
+      "comments": "Комментарии"
+    },
+    "rating": "Рейтинг",
     "ranking": "В рейтинге",
     "notRanked": "Не участвует",
     "rankingPosition": "{{ratingPosition}}-й",
@@ -129,7 +175,6 @@
     "detailsEmpty": "Здесь так тихо...",
     "registered": "Зарегистрирован",
     "activity": "Активность",
-    "authors": "Авторы",
     "role": "Пользователь",
     "listVotes": "{{votesCount}} голосов",
     "points": "Очки",
@@ -153,6 +198,7 @@
     "valueError": "Ошибка значения"
   },
   "comment": {
+    "title": "Комментарии",
     "fetchFailed": "Не удалось получить список комментариев",
     "publicationInDrafts": "Публикация в черновиках",
     "disabled": "Комментарии к этой публикации отключены",
@@ -185,6 +231,8 @@
     "orderDate": "По времени",
     "orderRating": "По рейтингу",
     "notImplemented": "Не реализовано",
+    "hint": "Поиск",
+    "targetArticles": "Статьи",
     "targetHubs": "Хабы",
     "targetCompanies": "Компании",
     "targetUsers": "Пользователи",
@@ -200,6 +248,10 @@
     "readingNow": "Читают сейчас"
   },
   "profile": {
+    "title": "Профиль",
+    "publications": "Публикации",
+    "bookmarks": "Закладки",
+    "comments": "Комментарии",
     "subscribed": "Подписан",
     "subscribe": "Подписаться"
   },
@@ -253,6 +305,7 @@
   },
   "fonts": {
     "settingsTitle": "Шрифты",
+    "publicationsSection": "Публикации",
     "generalSection": "Общие",
     "textScale": "Масштаб текста"
   },
@@ -262,6 +315,8 @@
     "languages": "Языки",
     "colorTheme": "Цветовая тема",
     "language": "Язык интерфейса",
+    "publicationLanguage": "Язык публикаций",
+    "publicationLanguageRequired": "должен быть выбран хотя бы один",
     "scroll": "Скролл"
   },
   "theme": {
@@ -298,10 +353,17 @@
     "openInBrowser": "Показать в браузере"
   },
   "navigation": {
+    "publications": "Публикации",
     "services": "Сервисы",
     "settings": "Настройки"
   },
+  "services": {
+    "hubs": "Хабы",
+    "authors": "Авторы",
+    "companies": "Компании"
+  },
   "account": {
+    "profile": "Профиль",
     "notLoggedIn": "Вы не вошли"
   }
 }

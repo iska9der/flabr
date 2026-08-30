@@ -34,17 +34,17 @@ class ServicesPageView extends StatelessWidget {
           crossAxisSpacing: 8,
           children: [
             ServiceCard(
-              title: context.t.search.targetHubs,
+              title: context.t.services.hubs,
               icon: Icons.hub_rounded,
               onTap: () => context.router.pushWidget(const HubListPage()),
             ),
             ServiceCard(
-              title: context.t.user.authors,
+              title: context.t.services.authors,
               icon: Icons.supervisor_account_sharp,
               onTap: () => context.router.pushWidget(const UserListPage()),
             ),
             ServiceCard(
-              title: context.t.search.targetCompanies,
+              title: context.t.services.companies,
               icon: Icons.cases_rounded,
               onTap: () => context.router.pushWidget(const CompanyListPage()),
             ),

@@ -159,8 +159,8 @@ class ArticlesLangWidget extends StatelessWidget {
     final settingsCubit = context.read<SettingsCubit>();
 
     return SettingsCardWidget(
-      title: context.t.publication.language,
-      subtitle: context.t.publication.languageRequired,
+      title: context.t.interface.publicationLanguage,
+      subtitle: context.t.interface.publicationLanguageRequired,
       child: BlocBuilder<SettingsCubit, SettingsState>(
         buildWhen: (p, c) => p.langArticles != c.langArticles,
         builder: (context, state) {

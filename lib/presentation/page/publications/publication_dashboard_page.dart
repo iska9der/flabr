@@ -131,19 +131,19 @@ class _DashboardAppBar extends StatelessWidget {
                 dividerColor: Colors.transparent,
                 tabs: [
                   DashboardDrawerLinkWidget(
-                    title: context.t.feed.myFeed,
+                    title: context.t.publication.dashboard.myFeed,
                     count: updates.feeds.newCount,
                   ),
                   DashboardDrawerLinkWidget(
-                    title: context.t.shortcut.articles,
+                    title: context.t.publication.dashboard.articles,
                     count: counters.articles,
                   ),
                   DashboardDrawerLinkWidget(
-                    title: context.t.shortcut.posts,
+                    title: context.t.publication.dashboard.posts,
                     count: counters.posts,
                   ),
                   DashboardDrawerLinkWidget(
-                    title: context.t.shortcut.news,
+                    title: context.t.publication.dashboard.news,
                     count: counters.news,
                   ),
                 ],
@@ -155,7 +155,7 @@ class _DashboardAppBar extends StatelessWidget {
             children: [
               IconButton(
                 icon: const Icon(Icons.search_rounded),
-                tooltip: context.t.shortcut.search,
+                tooltip: context.t.publication.dashboard.search,
                 onPressed: () =>
                     getIt<AppRouter>().push(const SearchAnywhereRoute()),
               ),
@@ -167,7 +167,7 @@ class _DashboardAppBar extends StatelessWidget {
                     offset: const .new(0, -4),
                     child: const Icon(Icons.notifications_outlined),
                   ),
-                  tooltip: context.t.tracker.title,
+                  tooltip: context.t.publication.dashboard.tracker,
                   onPressed: () async {
                     final userBloc = context.read<ProfileBloc>();
 

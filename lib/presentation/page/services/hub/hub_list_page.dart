@@ -55,7 +55,7 @@ class HubListPageView extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           leading: const AutoLeadingButton(),
-          title: Text(context.t.search.targetHubs),
+          title: Text(context.t.hub.list.title),
         ),
         floatingActionButton: const FloatingContainer(
           children: [FloatingScrollToTopButton()],

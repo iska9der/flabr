@@ -121,7 +121,7 @@ class _SearchAnywhereViewState extends State<_SearchAnywhereView> {
               style: theme.textTheme.titleMedium,
               textInputAction: .search,
               onSubmitted: (String query) => showResults(context, query),
-              decoration: InputDecoration(hintText: context.t.shortcut.search),
+              decoration: InputDecoration(hintText: context.t.search.hint),
             ),
           ),
           body: Scrollbar(

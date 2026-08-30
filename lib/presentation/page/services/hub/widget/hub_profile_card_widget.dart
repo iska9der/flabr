@@ -70,11 +70,11 @@ class _HubProfileCardWidgetState extends State<HubProfileCardWidget> {
                   children: [
                     ProfileStatDetailWidget(
                       type: StatType.rating,
-                      title: context.t.company.rating,
+                      title: context.t.hub.rating,
                       value: stats.rating,
                     ),
                     ProfileStatDetailWidget(
-                      title: context.t.company.followerCount,
+                      title: context.t.hub.followerCount,
                       value: stats.subscribersCount,
                     ),
                   ],

@@ -67,7 +67,7 @@ class CompanyListPageView extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           leading: const AutoLeadingButton(),
-          title: Text(context.t.search.targetCompanies),
+          title: Text(context.t.company.list.title),
         ),
         floatingActionButton: const FloatingContainer(
           children: [FloatingScrollToTopButton()],

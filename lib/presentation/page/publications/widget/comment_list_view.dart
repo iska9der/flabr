@@ -48,7 +48,7 @@ class _CommentListViewState extends State<CommentListView> {
     return Scaffold(
       appBar: AppBar(
         leading: const AutoLeadingButton(),
-        title: Text(context.t.search.targetComments),
+        title: Text(context.t.comment.title),
       ),
       body: SafeArea(
         child: BlocBuilder<CommentListCubit, CommentListState>(

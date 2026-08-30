@@ -38,7 +38,7 @@ class FontsSettingsView extends StatelessWidget {
           ],
         ),
         SettingsSectionWidget(
-          title: context.t.tracker.publications,
+          title: context.t.fonts.publicationsSection,
           children: [
             const PublicationTitleTypographyWidget(),
             const PublicationTextTypographyWidget(),

@@ -24,7 +24,7 @@ class PublicationSettingsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SettingsNestedScaffold(
-      title: context.t.tracker.publications,
+      title: context.t.publication.settingsTitle,
       children: [
         const SettingsSectionWidget(
           children: [

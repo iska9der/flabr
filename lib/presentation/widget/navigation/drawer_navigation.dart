@@ -48,7 +48,7 @@ class _Drawer extends StatelessWidget {
       destinations: [
         NavigationRailDestination(
           icon: const Icon(Icons.article_rounded),
-          label: Text(context.t.tracker.publications),
+          label: Text(context.t.navigation.publications),
           padding: padding,
         ),
         NavigationRailDestination(

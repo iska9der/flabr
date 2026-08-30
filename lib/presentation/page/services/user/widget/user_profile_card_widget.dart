@@ -63,7 +63,7 @@ class _UserProfileCardWidgetState extends State<UserProfileCardWidget> {
                 children: [
                   ProfileStatDetailWidget(
                     type: StatType.rating,
-                    title: context.t.company.rating,
+                    title: context.t.user.rating,
                     value: user.rating,
                   ),
                   const SizedBox(width: 40),

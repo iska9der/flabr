@@ -114,7 +114,7 @@ class UserCommonTileList extends StatelessWidget {
           },
         ),
         ListTile(
-          title: Text(context.t.tracker.publications),
+          title: Text(context.t.profile.publications),
           onTap: () {
             context.router.push(
               UserDashboardRoute(
@@ -127,7 +127,7 @@ class UserCommonTileList extends StatelessWidget {
           },
         ),
         ListTile(
-          title: Text(context.t.shortcut.bookmarks),
+          title: Text(context.t.profile.bookmarks),
           onTap: () {
             context.router.push(
               UserDashboardRoute(
@@ -140,7 +140,7 @@ class UserCommonTileList extends StatelessWidget {
           },
         ),
         ListTile(
-          title: Text(context.t.search.targetComments),
+          title: Text(context.t.profile.comments),
           onTap: () {
             context.router.push(
               UserDashboardRoute(

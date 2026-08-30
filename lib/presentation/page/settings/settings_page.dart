@@ -51,7 +51,7 @@ class SettingsView extends StatelessWidget {
         route: const FeedSettingsRoute(),
       ),
       SettingsMenuItem(
-        title: context.t.tracker.publications,
+        title: context.t.publication.settingsTitle,
         subtitle: context.t.settings.elementVisibility,
         icon: Icons.article_outlined,
         route: const PublicationSettingsRoute(),

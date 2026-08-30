@@ -2,7 +2,12 @@
   "company": {
     "profileFetchFailed": "Failed to load the company profile",
     "listFetchFailed": "Failed to load the company list",
-    "profile": "Profile",
+    "dashboard": {
+      "profile": "Profile"
+    },
+    "list": {
+      "title": "Companies"
+    },
     "contacts": "Contacts",
     "information": "Information",
     "website": "Website",
@@ -19,9 +24,27 @@
     "profileFetchFailed": "Failed to load the hub profile",
     "listFetchFailed": "Failed to load the hub list",
     "articlesFetchFailed": "Failed to load articles",
+    "dashboard": {
+      "profile": "Profile"
+    },
+    "list": {
+      "title": "Hubs"
+    },
+    "rating": "Rating",
+    "followers": "Followers",
+    "followerCount": "Followers",
     "unknownType": "Unknown hub type"
   },
   "publication": {
+    "dashboard": {
+      "myFeed": "My feed",
+      "articles": "Articles",
+      "posts": "Posts",
+      "news": "News",
+      "search": "Search",
+      "tracker": "Tracker"
+    },
+    "settingsTitle": "Publications",
     "commentsFetchFailed": "Failed to load comments",
     "countersFetchFailed": "Failed to load counters",
     "unknownFlow": "Unknown publication flow",
@@ -71,14 +94,16 @@
     "more": "More",
     "configure": "Configure",
     "readingTimeMinutes": "{{readingTime}} min",
-    "language": "Publication language",
-    "languageRequired": "at least one must be selected",
     "downvoteUnavailable": "The developer does not have enough voting power to downvote publications, so downvoting behavior is currently unknown"
   },
   "feed": {
     "publicationsFetchFailed": "Failed to load publications",
     "publicationUnknownType": "Unknown publication type",
-    "myFeed": "My feed",
+    "publicationTypes": {
+      "articles": "Articles",
+      "posts": "Posts",
+      "news": "News"
+    },
     "publicationType": "Publication type",
     "ratingThreshold": "Rating threshold",
     "settingsTitle": "Feed",
@@ -121,6 +146,27 @@
     "joinedByInvitation": "{{createdAtDate}} by invitation from {{issuerLogin}}",
     "commentsLoadFailed": "Failed to load user comments",
     "profileLoadFailed": "Failed to load your profile",
+    "dashboard": {
+      "profile": "Profile",
+      "publications": "Publications",
+      "comments": "Comments",
+      "bookmarks": "Bookmarks"
+    },
+    "list": {
+      "title": "Authors"
+    },
+    "publicationTypes": {
+      "articles": "Articles",
+      "posts": "Posts",
+      "news": "News"
+    },
+    "bookmarkTypes": {
+      "articles": "Articles",
+      "posts": "Posts",
+      "news": "News",
+      "comments": "Comments"
+    },
+    "rating": "Rating",
     "ranking": "Ranking",
     "notRanked": "Not ranked",
     "rankingPosition": "{{ratingPosition}}th",
@@ -129,7 +175,6 @@
     "detailsEmpty": "It's so quiet here...",
     "registered": "Registered",
     "activity": "Activity",
-    "authors": "Authors",
     "role": "User",
     "listVotes": "{{votesCount}} votes",
     "points": "Points",
@@ -153,6 +198,7 @@
     "valueError": "Value error"
   },
   "comment": {
+    "title": "Comments",
     "fetchFailed": "Failed to load the comment list",
     "publicationInDrafts": "The publication is in drafts",
     "disabled": "Comments are disabled for this publication",
@@ -185,6 +231,8 @@
     "orderDate": "By date",
     "orderRating": "By rating",
     "notImplemented": "Not implemented",
+    "hint": "Search",
+    "targetArticles": "Articles",
     "targetHubs": "Hubs",
     "targetCompanies": "Companies",
     "targetUsers": "Users",
@@ -200,6 +248,10 @@
     "readingNow": "Reading now"
   },
   "profile": {
+    "title": "Profile",
+    "publications": "Publications",
+    "bookmarks": "Bookmarks",
+    "comments": "Comments",
     "subscribed": "Subscribed",
     "subscribe": "Subscribe"
   },
@@ -253,6 +305,7 @@
   },
   "fonts": {
     "settingsTitle": "Fonts",
+    "publicationsSection": "Publications",
     "generalSection": "General",
     "textScale": "Text scale"
   },
@@ -262,6 +315,8 @@
     "languages": "Languages",
     "colorTheme": "Color theme",
     "language": "Interface language",
+    "publicationLanguage": "Publication language",
+    "publicationLanguageRequired": "at least one must be selected",
     "scroll": "Scrolling"
   },
   "theme": {
@@ -298,10 +353,17 @@
     "openInBrowser": "Open in browser"
   },
   "navigation": {
+    "publications": "Publications",
     "services": "Services",
     "settings": "Settings"
   },
+  "services": {
+    "hubs": "Hubs",
+    "authors": "Authors",
+    "companies": "Companies"
+  },
   "account": {
+    "profile": "Profile",
     "notLoggedIn": "You are not signed in"
   }
 }

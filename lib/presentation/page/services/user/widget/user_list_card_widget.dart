@@ -123,7 +123,7 @@ class _UserScore extends StatelessWidget {
         Expanded(
           child: ProfileStatCardWidget(
             type: StatType.rating,
-            title: context.t.company.rating,
+            title: context.t.user.rating,
             value: model.rating,
           ),
         ),

@@ -85,13 +85,13 @@ class HubListCardWidget extends StatelessWidget {
               Expanded(
                 child: ProfileStatCardWidget(
                   type: StatType.rating,
-                  title: context.t.company.rating,
+                  title: context.t.hub.rating,
                   value: stats.rating,
                 ),
               ),
               Expanded(
                 child: ProfileStatCardWidget(
-                  title: context.t.company.followers,
+                  title: context.t.hub.followers,
                   value: stats.subscribersCount,
                 ),
               ),
