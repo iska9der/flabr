@@ -22,6 +22,16 @@ void main() {
     expect(company.alias, 'acme');
   });
 
+  test('service does not mask parsing errors as FetchException', () async {
+    const client = _StubHttpClient({'alias': 1});
+    const service = CompanyServiceImpl(
+      mobileClient: client,
+      siteClient: client,
+    );
+
+    await expectLater(service.fetchCard('acme'), throwsA(isA<TypeError>()));
+  });
+
   group('SearchService parses responses by target', () {
     final cases = <SearchTarget, Matcher>{
       SearchTarget.posts: isA<PublicationCommonListResponse>(),

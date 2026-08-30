@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 
+import '../../../data/exception/exception.dart';
 import 'http_client.dart';
 
 class DioClient implements HttpClient {
@@ -12,7 +13,9 @@ class DioClient implements HttpClient {
     String url, {
     Map<String, dynamic>? queryParams,
     Options? options,
-  }) => dio.get(url, queryParameters: queryParams, options: options);
+  }) => _execute(
+    () => dio.get(url, queryParameters: queryParams, options: options),
+  );
 
   @override
   Future<Response> post(
@@ -20,24 +23,45 @@ class DioClient implements HttpClient {
     dynamic body,
     Map<String, dynamic>? queryParams,
     Options? options,
-  }) =>
-      dio.post(url, data: body, queryParameters: queryParams, options: options);
+  }) => _execute(
+    () => dio.post(
+      url,
+      data: body,
+      queryParameters: queryParams,
+      options: options,
+    ),
+  );
 
   @override
   Future<Response> put(
     String url, {
     dynamic body,
     Map<String, dynamic>? queryParams,
-  }) => dio.put(url, data: body, queryParameters: queryParams);
+  }) => _execute(
+    () => dio.put(url, data: body, queryParameters: queryParams),
+  );
 
   @override
   Future<Response> patch(
     String url, {
     dynamic body,
     Map<String, dynamic>? queryParams,
-  }) => dio.patch(url, data: body, queryParameters: queryParams);
+  }) => _execute(
+    () => dio.patch(url, data: body, queryParameters: queryParams),
+  );
 
   @override
   Future<Response> delete(String url, {dynamic body}) =>
-      dio.delete(url, data: body);
+      _execute(() => dio.delete(url, data: body));
+
+  Future<Response> _execute(Future<Response> Function() request) async {
+    try {
+      return await request();
+    } on DioException catch (error) {
+      Error.throwWithStackTrace(
+        FetchException.fromDioException(error),
+        error.stackTrace,
+      );
+    }
+  }
 }

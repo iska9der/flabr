@@ -1,7 +1,6 @@
 import 'package:injectable/injectable.dart';
 
 import '../../core/component/http/http.dart';
-import '../exception/exception.dart';
 import '../model/company/company.dart';
 
 abstract interface class CompanyService {
@@ -25,43 +24,24 @@ class CompanyServiceImpl implements CompanyService {
 
   @override
   Future<CompanyListResponse> fetchAll({required int page}) async {
-    try {
-      var params = CompanyListParams(page: page.toString()).toMap();
+    final params = CompanyListParams(page: page.toString()).toMap();
+    final response = await _mobileClient.get(
+      '/companies/',
+      queryParams: params,
+    );
 
-      final response = await _mobileClient.get(
-        '/companies/',
-        queryParams: params,
-      );
-
-      return CompanyListResponse.fromMap(response.data);
-    } on AppException {
-      rethrow;
-    } catch (_, stackTrace) {
-      Error.throwWithStackTrace(const FetchException(), stackTrace);
-    }
+    return CompanyListResponse.fromMap(response.data);
   }
 
   @override
   Future<CompanyCard> fetchCard(String alias) async {
-    try {
-      final response = await _mobileClient.get('/companies/$alias/card');
+    final response = await _mobileClient.get('/companies/$alias/card');
 
-      return CompanyCard.fromMap(response.data);
-    } on AppException {
-      rethrow;
-    } catch (_, stackTrace) {
-      Error.throwWithStackTrace(const FetchException(), stackTrace);
-    }
+    return CompanyCard.fromMap(response.data);
   }
 
   @override
   Future<void> toggleSubscription({required String alias}) async {
-    try {
-      await _siteClient.post('/v2/companies/$alias/subscription', body: {});
-    } on AppException {
-      rethrow;
-    } catch (_, stackTrace) {
-      Error.throwWithStackTrace(const FetchException(), stackTrace);
-    }
+    await _siteClient.post('/v2/companies/$alias/subscription', body: {});
   }
 }

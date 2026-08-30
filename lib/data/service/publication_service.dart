@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../core/component/http/http.dart';
@@ -87,35 +86,23 @@ class PublicationServiceImpl implements PublicationService {
 
   @override
   Future<PublicationCounters> fetchCounters() async {
-    try {
-      final response = await _mobileClient.get('/feed/counters');
+    final response = await _mobileClient.get('/feed/counters');
 
-      return PublicationCounters.fromJson(response.data);
-    } catch (_, trace) {
-      Error.throwWithStackTrace(const FetchException(), trace);
-    }
+    return PublicationCounters.fromJson(response.data);
   }
 
   @override
   Future<PublicationCommon> fetchArticleById(String id) async {
-    try {
-      final response = await _mobileClient.get('/articles/$id/');
+    final response = await _mobileClient.get('/articles/$id/');
 
-      return PublicationCommon.fromJson(response.data);
-    } catch (_, trace) {
-      Error.throwWithStackTrace(const FetchException(), trace);
-    }
+    return PublicationCommon.fromJson(response.data);
   }
 
   @override
   Future<PublicationPost> fetchPostById(String id) async {
-    try {
-      final response = await _mobileClient.get('/threads/$id/');
+    final response = await _mobileClient.get('/threads/$id/');
 
-      return PublicationPost.fromJson(response.data);
-    } catch (_, trace) {
-      Error.throwWithStackTrace(const FetchException(), trace);
-    }
+    return PublicationPost.fromJson(response.data);
   }
 
   @override
@@ -124,24 +111,18 @@ class PublicationServiceImpl implements PublicationService {
     required String score,
     required List<String> types,
   }) async {
-    try {
-      final params = FeedListParams(
-        page: page,
-        score: score,
-        types: types,
-      ).toMap();
+    final params = FeedListParams(
+      page: page,
+      score: score,
+      types: types,
+    ).toMap();
 
-      final response = await _siteClient.get(
-        '/v2/articles/',
-        queryParams: params,
-      );
+    final response = await _siteClient.get(
+      '/v2/articles/',
+      queryParams: params,
+    );
 
-      return FeedListResponse.fromMap(response.data);
-    } on AppException {
-      rethrow;
-    } catch (_, trace) {
-      Error.throwWithStackTrace(const FetchException(), trace);
-    }
+    return FeedListResponse.fromMap(response.data);
   }
 
   @override
@@ -153,44 +134,38 @@ class PublicationServiceImpl implements PublicationService {
     required FilterOption score,
     required String page,
   }) async {
-    try {
-      final flowStr = (flow == PublicationFlow.all) ? null : flow.name;
+    final flowStr = (flow == PublicationFlow.all) ? null : flow.name;
 
-      final params = switch (section) {
-        Section.post => PublicationPostListParams(
-          page: page,
-          flow: flowStr,
-          sort: sort.postValue,
-          period: sort == Sort.byBest ? period.value : null,
-          score: score.value,
-        ),
-        _ => PublicationListParams(
-          page: page,
-          flow: flowStr,
-          news: section == Section.news,
+    final params = switch (section) {
+      Section.post => PublicationPostListParams(
+        page: page,
+        flow: flowStr,
+        sort: sort.postValue,
+        period: sort == Sort.byBest ? period.value : null,
+        score: score.value,
+      ),
+      _ => PublicationListParams(
+        page: page,
+        flow: flowStr,
+        news: section == Section.news,
 
-          /// если мы находимся не во "Все потоки", в значение sort, по завету
-          /// костыльного api хабра, нужно передавать значение 'all'
-          sort: flow == PublicationFlow.all ? sort.value : 'all',
-          period: sort == Sort.byBest ? period.value : null,
-          score: score.value,
-        ),
-      }.toMap();
+        /// если мы находимся не во "Все потоки", в значение sort, по завету
+        /// костыльного api хабра, нужно передавать значение 'all'
+        sort: flow == PublicationFlow.all ? sort.value : 'all',
+        period: sort == Sort.byBest ? period.value : null,
+        score: score.value,
+      ),
+    }.toMap();
 
-      final response = await _siteClient.get(
-        '/v2/articles/',
-        queryParams: params,
-      );
+    final response = await _siteClient.get(
+      '/v2/articles/',
+      queryParams: params,
+    );
 
-      return switch (section) {
-        Section.post => PublicationPostListResponse.fromMap(response.data),
-        _ => PublicationCommonListResponse.fromMap(response.data),
-      };
-    } on AppException {
-      rethrow;
-    } catch (_, trace) {
-      Error.throwWithStackTrace(const FetchException(), trace);
-    }
+    return switch (section) {
+      Section.post => PublicationPostListResponse.fromMap(response.data),
+      _ => PublicationCommonListResponse.fromMap(response.data),
+    };
   }
 
   @override
@@ -201,27 +176,21 @@ class PublicationServiceImpl implements PublicationService {
     required FilterOption score,
     required String page,
   }) async {
-    try {
-      final params = PublicationListParams(
-        page: page,
-        sort: 'all',
-        period: sort == Sort.byBest ? period.value : null,
-        score: score.value,
-      ).toMap();
+    final params = PublicationListParams(
+      page: page,
+      sort: 'all',
+      period: sort == Sort.byBest ? period.value : null,
+      score: score.value,
+    ).toMap();
 
-      params.addAll({'hub': hub});
+    params.addAll({'hub': hub});
 
-      final response = await _mobileClient.get(
-        '/articles/',
-        queryParams: params,
-      );
+    final response = await _mobileClient.get(
+      '/articles/',
+      queryParams: params,
+    );
 
-      return PublicationCommonListResponse.fromMap(response.data);
-    } on AppException {
-      rethrow;
-    } catch (_, trace) {
-      Error.throwWithStackTrace(const FetchException(), trace);
-    }
+    return PublicationCommonListResponse.fromMap(response.data);
   }
 
   @override
@@ -230,36 +199,30 @@ class PublicationServiceImpl implements PublicationService {
     required String page,
     required UserPublicationType type,
   }) async {
-    try {
-      final params = PublicationListParams(page: page).toMap();
+    final params = PublicationListParams(page: page).toMap();
 
-      final typeQuery = switch (type) {
-        UserPublicationType.articles => null,
-        UserPublicationType.posts => {'posts': 'true'},
-        UserPublicationType.news => {'news': 'true'},
-      };
+    final typeQuery = switch (type) {
+      UserPublicationType.articles => null,
+      UserPublicationType.posts => {'posts': 'true'},
+      UserPublicationType.news => {'news': 'true'},
+    };
 
-      params.addAll({'user': user});
-      if (typeQuery != null) {
-        params.addAll(typeQuery);
-      }
-
-      final response = await _mobileClient.get(
-        '/articles/',
-        queryParams: params,
-      );
-
-      return switch (type) {
-        UserPublicationType.posts => PublicationPostListResponse.fromMap(
-          response.data,
-        ),
-        _ => PublicationCommonListResponse.fromMap(response.data),
-      };
-    } on AppException {
-      rethrow;
-    } catch (_, trace) {
-      Error.throwWithStackTrace(const FetchException(), trace);
+    params.addAll({'user': user});
+    if (typeQuery != null) {
+      params.addAll(typeQuery);
     }
+
+    final response = await _mobileClient.get(
+      '/articles/',
+      queryParams: params,
+    );
+
+    return switch (type) {
+      UserPublicationType.posts => PublicationPostListResponse.fromMap(
+        response.data,
+      ),
+      _ => PublicationCommonListResponse.fromMap(response.data),
+    };
   }
 
   @override
@@ -268,37 +231,31 @@ class PublicationServiceImpl implements PublicationService {
     required String page,
     required UserBookmarksType type,
   }) async {
-    try {
-      final params = PublicationListParams(page: page).toMap();
+    final params = PublicationListParams(page: page).toMap();
 
-      final typeQuery = switch (type) {
-        UserBookmarksType.articles => {'user_bookmarks': 'true'},
-        UserBookmarksType.posts => {'user_bookmarks_posts': 'true'},
-        UserBookmarksType.news => {'user_bookmarks_news': 'true'},
-        UserBookmarksType.comments => throw const ValueException(
-          null,
-          .wrongPublicationDestination,
-        ),
-      };
+    final typeQuery = switch (type) {
+      UserBookmarksType.articles => {'user_bookmarks': 'true'},
+      UserBookmarksType.posts => {'user_bookmarks_posts': 'true'},
+      UserBookmarksType.news => {'user_bookmarks_news': 'true'},
+      UserBookmarksType.comments => throw const ValueException(
+        null,
+        .wrongPublicationDestination,
+      ),
+    };
 
-      params.addAll({'user': user, ...typeQuery});
+    params.addAll({'user': user, ...typeQuery});
 
-      final response = await _mobileClient.get(
-        '/articles/',
-        queryParams: params,
-      );
+    final response = await _mobileClient.get(
+      '/articles/',
+      queryParams: params,
+    );
 
-      return switch (type) {
-        UserBookmarksType.posts => PublicationPostListResponse.fromMap(
-          response.data,
-        ),
-        _ => PublicationCommonListResponse.fromMap(response.data),
-      };
-    } on AppException {
-      rethrow;
-    } catch (_, trace) {
-      Error.throwWithStackTrace(const FetchException(), trace);
-    }
+    return switch (type) {
+      UserBookmarksType.posts => PublicationPostListResponse.fromMap(
+        response.data,
+      ),
+      _ => PublicationCommonListResponse.fromMap(response.data),
+    };
   }
 
   @override
@@ -317,15 +274,11 @@ class PublicationServiceImpl implements PublicationService {
       );
 
       return CommentListResponse.fromMap(response.data);
-    } on AppException {
-      rethrow;
-    } on DioException catch (e, trace) {
+    } on FetchException catch (error, stackTrace) {
       Error.throwWithStackTrace(
-        CommentsListException.fromDioException(e),
-        trace,
+        CommentsListException.fromFetchException(error),
+        stackTrace,
       );
-    } catch (_, trace) {
-      Error.throwWithStackTrace(const FetchException(), trace);
     }
   }
 
@@ -334,34 +287,28 @@ class PublicationServiceImpl implements PublicationService {
     required String id,
     required PublicationSource source,
   }) async {
-    try {
-      final sourcePath = switch (source) {
-        PublicationSource.post => 'threads',
-        PublicationSource.news => 'news',
-        _ => 'articles',
-      };
+    final sourcePath = switch (source) {
+      PublicationSource.post => 'threads',
+      PublicationSource.news => 'news',
+      _ => 'articles',
+    };
 
-      /// для постов в конце пути добавляется слово "add"
-      final append = switch (source) {
-        PublicationSource.post => 'add/',
-        _ => '',
-      };
+    /// для постов в конце пути добавляется слово "add"
+    final append = switch (source) {
+      PublicationSource.post => 'add/',
+      _ => '',
+    };
 
-      final response = await _siteClient.post(
-        '/v2/$sourcePath/$id/bookmarks/$append',
-        body: {},
-      );
+    final response = await _siteClient.post(
+      '/v2/$sourcePath/$id/bookmarks/$append',
+      body: {},
+    );
 
-      if (response.data['ok'] != true) {
-        throw const ValueException(null, .publicationOperationFailed);
-      }
-
-      return true;
-    } on AppException {
-      rethrow;
-    } catch (e, trace) {
-      Error.throwWithStackTrace(const FetchException(), trace);
+    if (response.data['ok'] != true) {
+      throw const ValueException(null, .publicationOperationFailed);
     }
+
+    return true;
   }
 
   @override
@@ -369,77 +316,57 @@ class PublicationServiceImpl implements PublicationService {
     required String id,
     required PublicationSource source,
   }) async {
-    try {
-      final sourcePath = switch (source) {
-        PublicationSource.post => 'threads',
-        PublicationSource.news => 'news',
-        _ => 'articles',
-      };
+    final sourcePath = switch (source) {
+      PublicationSource.post => 'threads',
+      PublicationSource.news => 'news',
+      _ => 'articles',
+    };
 
-      /// для постов в конце пути добавляется слово "remove"
-      final append = switch (source) {
-        PublicationSource.post => 'remove/',
-        _ => '',
-      };
+    /// для постов в конце пути добавляется слово "remove"
+    final append = switch (source) {
+      PublicationSource.post => 'remove/',
+      _ => '',
+    };
 
-      final path = '/v2/$sourcePath/$id/bookmarks/$append';
+    final path = '/v2/$sourcePath/$id/bookmarks/$append';
 
-      /// для новостей и статей используется DELETE, а для постов используется POST
-      final response = await switch (source) {
-        PublicationSource.post => _siteClient.post(path),
-        _ => _siteClient.delete(path),
-      };
+    /// для новостей и статей используется DELETE, а для постов используется POST
+    final response = await switch (source) {
+      PublicationSource.post => _siteClient.post(path),
+      _ => _siteClient.delete(path),
+    };
 
-      if (response.data['ok'] != true) {
-        throw const ValueException(null, .publicationOperationFailed);
-      }
-
-      return true;
-    } on AppException {
-      rethrow;
-    } catch (_, trace) {
-      Error.throwWithStackTrace(const FetchException(), trace);
+    if (response.data['ok'] != true) {
+      throw const ValueException(null, .publicationOperationFailed);
     }
+
+    return true;
   }
 
   @override
   Future<MostReadingResponse> fetchMostReading() async {
-    try {
-      final response = await _mobileClient.get('/articles/most-reading');
+    final response = await _mobileClient.get('/articles/most-reading');
 
-      return MostReadingResponse.fromMap(response.data);
-    } on AppException {
-      rethrow;
-    } catch (_, trace) {
-      Error.throwWithStackTrace(const FetchException(), trace);
-    }
+    return MostReadingResponse.fromMap(response.data);
   }
 
   @override
   Future<PublicationVoteResponse> voteUp(String publicationId) async {
-    try {
-      final response = await _siteClient.post(
-        '/v2/articles/$publicationId/votes/up',
-        body: {},
-      );
+    final response = await _siteClient.post(
+      '/v2/articles/$publicationId/votes/up',
+      body: {},
+    );
 
-      return PublicationVoteResponse.fromJson(response.data);
-    } catch (_, trace) {
-      Error.throwWithStackTrace(const FetchException(), trace);
-    }
+    return PublicationVoteResponse.fromJson(response.data);
   }
 
   @override
   Future<PublicationVoteResponse> voteDown(String publicationId) async {
-    try {
-      final response = await _siteClient.post(
-        '/v2/articles/$publicationId/votes/down',
-        body: {},
-      );
+    final response = await _siteClient.post(
+      '/v2/articles/$publicationId/votes/down',
+      body: {},
+    );
 
-      return PublicationVoteResponse.fromJson(response.data);
-    } catch (_, trace) {
-      Error.throwWithStackTrace(const FetchException(), trace);
-    }
+    return PublicationVoteResponse.fromJson(response.data);
   }
 }

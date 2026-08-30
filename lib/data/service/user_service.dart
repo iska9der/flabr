@@ -39,48 +39,29 @@ class UserServiceImpl implements UserService {
 
   @override
   Future<UserListResponse> fetchAll({required String page}) async {
-    try {
-      final params = QueryParams(page: page).toMap();
+    final params = QueryParams(page: page).toMap();
+    final response = await _mobileClient.get('/users', queryParams: params);
 
-      final response = await _mobileClient.get('/users', queryParams: params);
-
-      return UserListResponse.fromMap(response.data);
-    } on AppException {
-      rethrow;
-    }
+    return UserListResponse.fromMap(response.data);
   }
 
   @override
   Future<User> fetchCard({required String alias}) async {
-    try {
-      final response = await _mobileClient.get('/users/$alias/card');
+    final response = await _mobileClient.get('/users/$alias/card');
 
-      return User.fromMap(response.data);
-    } on AppException {
-      rethrow;
-    }
+    return User.fromMap(response.data);
   }
 
   @override
   Future<UserWhois> fetchWhois({required String alias}) async {
-    try {
-      final response = await _mobileClient.get('/users/$alias/whois');
+    final response = await _mobileClient.get('/users/$alias/whois');
 
-      return UserWhois.fromMap(response.data);
-    } on AppException {
-      rethrow;
-    }
+    return UserWhois.fromMap(response.data);
   }
 
   @override
   Future<void> toggleSubscription({required String alias}) async {
-    try {
-      await _siteClient.post('/v2/users/$alias/following/toggle', body: {});
-    } on AppException {
-      rethrow;
-    } catch (_, stackTrace) {
-      Error.throwWithStackTrace(const FetchException(), stackTrace);
-    }
+    await _siteClient.post('/v2/users/$alias/following/toggle', body: {});
   }
 
   @override
@@ -94,12 +75,10 @@ class UserServiceImpl implements UserService {
       );
 
       return UserCommentListResponse.fromMap(response.data);
-    } on AppException {
-      rethrow;
-    } catch (_, trace) {
+    } on FetchException catch (error, stackTrace) {
       Error.throwWithStackTrace(
-        const FetchException(null, .bookmarkCommentsLoadFailed),
-        trace,
+        error.withType(.bookmarkCommentsLoadFailed),
+        stackTrace,
       );
     }
   }
@@ -115,12 +94,10 @@ class UserServiceImpl implements UserService {
       );
 
       return UserCommentListResponse.fromMap(response.data);
-    } on AppException {
-      rethrow;
-    } catch (e, trace) {
+    } on FetchException catch (error, stackTrace) {
       Error.throwWithStackTrace(
-        const FetchException(null, .userCommentsLoadFailed),
-        trace,
+        error.withType(.userCommentsLoadFailed),
+        stackTrace,
       );
     }
   }

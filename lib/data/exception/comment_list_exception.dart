@@ -1,6 +1,5 @@
-import 'package:dio/dio.dart';
-
 import 'app_exception.dart';
+import 'fetch_exception.dart';
 
 class CommentsListException extends AppException {
   const CommentsListException([
@@ -12,11 +11,11 @@ class CommentsListException extends AppException {
   final int httpCode;
   final String errorCode;
 
-  static AppException fromDioException(DioException exception) {
-    var httpCode = 400;
+  static CommentsListException fromFetchException(FetchException exception) {
+    var httpCode = exception.statusCode ?? 400;
     var errorCode = 'BAD_REQUEST';
 
-    if (exception.response?.data case final Map<String, dynamic> data) {
+    if (exception.responseData case final Map<String, dynamic> data) {
       httpCode = data['httpCode'] as int? ?? httpCode;
       errorCode = data['errorCode'] as String? ?? errorCode;
     }

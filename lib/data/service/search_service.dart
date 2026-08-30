@@ -32,33 +32,27 @@ class SearchServiceImpl implements SearchService {
     required String order,
     required int page,
   }) async {
-    try {
-      final params = SearchParamsFactory.from(
-        query: query,
-        target: target,
-        order: order,
-        page: page,
-      );
+    final params = SearchParamsFactory.from(
+      query: query,
+      target: target,
+      order: order,
+      page: page,
+    );
 
-      final queryString = params.toQueryString();
-      final response = await _mobileClient.get(queryString);
+    final queryString = params.toQueryString();
+    final response = await _mobileClient.get(queryString);
 
-      return switch (target) {
-        SearchTarget.posts => PublicationCommonListResponse.fromMap(
-          response.data,
-        ),
-        SearchTarget.hubs => HubListResponse.fromMap(response.data),
-        SearchTarget.companies => CompanyListResponse.fromMap(response.data),
-        SearchTarget.users => UserListResponse.fromMap(response.data),
-        SearchTarget.comments => throw const ValueException(
-          null,
-          .searchNotImplemented,
-        ),
-      };
-    } on AppException {
-      rethrow;
-    } catch (_, stackTrace) {
-      Error.throwWithStackTrace(const FetchException(), stackTrace);
-    }
+    return switch (target) {
+      SearchTarget.posts => PublicationCommonListResponse.fromMap(
+        response.data,
+      ),
+      SearchTarget.hubs => HubListResponse.fromMap(response.data),
+      SearchTarget.companies => CompanyListResponse.fromMap(response.data),
+      SearchTarget.users => UserListResponse.fromMap(response.data),
+      SearchTarget.comments => throw const ValueException(
+        null,
+        .searchNotImplemented,
+      ),
+    };
   }
 }
