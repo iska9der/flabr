@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
+import '../../../i18n/i18n.dart';
 import '../../extension/extension.dart';
 import '../../widget/enhancement/card.dart';
 import 'company/company_list_page.dart';
@@ -33,17 +34,17 @@ class ServicesPageView extends StatelessWidget {
           crossAxisSpacing: 8,
           children: [
             ServiceCard(
-              title: HubListPage.name,
+              title: context.t.search.targetHubs,
               icon: Icons.hub_rounded,
               onTap: () => context.router.pushWidget(const HubListPage()),
             ),
             ServiceCard(
-              title: UserListPage.name,
+              title: context.t.user.authors,
               icon: Icons.supervisor_account_sharp,
               onTap: () => context.router.pushWidget(const UserListPage()),
             ),
             ServiceCard(
-              title: CompanyListPage.name,
+              title: context.t.search.targetCompanies,
               icon: Icons.cases_rounded,
               onTap: () => context.router.pushWidget(const CompanyListPage()),
             ),

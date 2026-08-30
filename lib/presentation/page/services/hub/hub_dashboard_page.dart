@@ -6,8 +6,8 @@ import '../../../../bloc/hub/hub_cubit.dart';
 import '../../../../core/component/router/router.dart';
 import '../../../../di/di.dart';
 import '../../../../feature/scaffold/scaffold.dart';
+import '../../../../i18n/i18n.dart';
 import '../../../widget/dashboard_drawer_link_widget.dart';
-import 'hub_detail_page.dart';
 
 @RoutePage(name: HubDashboardPage.routeName)
 class HubDashboardPage extends StatelessWidget {
@@ -57,7 +57,7 @@ class HubDashboardPageView extends StatelessWidget {
                 dividerColor: Colors.transparent,
                 tabs: [
                   DashboardDrawerLinkWidget(
-                    title: HubDetailPage.name,
+                    title: context.t.company.profile,
                   ),
                 ],
               ),

@@ -13,10 +13,6 @@ import '../../../../i18n/i18n.dart';
 import '../../../widget/dashboard_drawer_link_widget.dart';
 import '../../../widget/enhancement/enhancement.dart';
 import '../../../widget/error_widget.dart';
-import 'user_bookmark_list_page.dart';
-import 'user_comment_list_page.dart';
-import 'user_detail_page.dart';
-import 'user_publication_list_page.dart';
 
 /// Роут используется, когда нам нужно отобразить собственный профиль,
 /// но нам пока неизвестен alias пользователя.
@@ -128,15 +124,17 @@ class UserDashboardView extends StatelessWidget {
               padding: .zero,
               dividerColor: Colors.transparent,
               tabs: [
-                DashboardDrawerLinkWidget(title: UserDetailPage.title),
                 DashboardDrawerLinkWidget(
-                  title: UserPublicationListPage.title,
+                  title: context.t.company.profile,
                 ),
                 DashboardDrawerLinkWidget(
-                  title: UserCommentListPage.title,
+                  title: context.t.tracker.publications,
                 ),
                 DashboardDrawerLinkWidget(
-                  title: UserBookmarkListPage.title,
+                  title: context.t.search.targetComments,
+                ),
+                DashboardDrawerLinkWidget(
+                  title: context.t.shortcut.bookmarks,
                 ),
               ],
             ),

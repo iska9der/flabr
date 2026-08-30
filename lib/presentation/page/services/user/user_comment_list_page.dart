@@ -6,7 +6,6 @@ import '../../../../bloc/settings/settings_cubit.dart';
 import '../../../../bloc/user/user_comment_list_cubit.dart';
 import '../../../../di/di.dart';
 import '../../../../feature/scroll/scroll.dart';
-import '../../../../i18n/i18n.dart';
 import '../../../theme/constants.dart';
 import '../../../widget/enhancement/refresh_indicator.dart';
 import '../../../widget/navigation/navigation.dart';
@@ -21,7 +20,6 @@ class UserCommentListPage extends StatelessWidget {
 
   final String alias;
 
-  static String get title => t.search.targetComments;
   static const String routePath = 'comments';
   static const String routeName = 'UserCommentListRoute';
 

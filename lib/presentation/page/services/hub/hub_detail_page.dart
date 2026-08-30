@@ -10,7 +10,6 @@ import '../../../../data/model/filter/filter.dart';
 import '../../../../di/di.dart';
 import '../../../../feature/publication_list/publication_list.dart';
 import '../../../../feature/scroll/scroll.dart';
-import '../../../../i18n/i18n.dart';
 import '../../../theme/theme.dart';
 import '../../../widget/enhancement/progress_indicator.dart';
 import '../../../widget/enhancement/refresh_indicator.dart';
@@ -28,7 +27,6 @@ class HubDetailPage extends StatelessWidget {
 
   final String alias;
 
-  static String get name => t.company.profile;
   static const routePath = 'profile';
   static const routeName = 'HubDetailRoute';
 

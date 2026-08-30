@@ -19,7 +19,6 @@ import 'widget/user_list_card_widget.dart';
 class UserListPage extends StatelessWidget {
   const UserListPage({super.key});
 
-  static String get name => t.user.authors;
   static const String routePath = 'users';
   static const String routeName = 'UserListRoute';
 
@@ -61,7 +60,7 @@ class UserListPageView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: const AutoLeadingButton(),
-        title: Text(UserListPage.name),
+        title: Text(context.t.user.authors),
       ),
       floatingActionButton: const FloatingContainer(
         children: [FloatingScrollToTopButton()],

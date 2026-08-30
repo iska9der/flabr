@@ -20,7 +20,6 @@ import 'widget/hub_list_card_widget.dart';
 class HubListPage extends StatelessWidget {
   const HubListPage({super.key});
 
-  static String get name => t.search.targetHubs;
   static const routePath = 'hubs';
   static const routeName = 'HubListRoute';
 
@@ -56,7 +55,7 @@ class HubListPageView extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           leading: const AutoLeadingButton(),
-          title: Text(HubListPage.name),
+          title: Text(context.t.search.targetHubs),
         ),
         floatingActionButton: const FloatingContainer(
           children: [FloatingScrollToTopButton()],

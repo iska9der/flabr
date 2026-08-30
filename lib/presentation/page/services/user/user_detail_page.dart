@@ -24,7 +24,6 @@ class UserDetailPage extends StatelessWidget {
 
   final String alias;
 
-  static String get title => t.company.profile;
   static const String routePath = 'detail';
   static const String routeName = 'UserDetailRoute';
 

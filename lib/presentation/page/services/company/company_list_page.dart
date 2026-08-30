@@ -20,7 +20,6 @@ import 'widget/company_list_card_widget.dart';
 class CompanyListPage extends StatelessWidget {
   const CompanyListPage({super.key});
 
-  static String get name => t.search.targetCompanies;
   static const routePath = 'companies';
   static const routeName = 'CompanyListRoute';
 
@@ -68,7 +67,7 @@ class CompanyListPageView extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           leading: const AutoLeadingButton(),
-          title: Text(CompanyListPage.name),
+          title: Text(context.t.search.targetCompanies),
         ),
         floatingActionButton: const FloatingContainer(
           children: [FloatingScrollToTopButton()],
