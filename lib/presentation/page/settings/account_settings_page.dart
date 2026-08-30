@@ -1,10 +1,9 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:ya_summary/ya_summary.dart';
 
 import '../../../core/constants/constants.dart';
+import '../../../feature/summary/summary.dart';
 import '../../../i18n/i18n.dart';
-import '../../extension/extension.dart';
 import '../../widget/auth/auth.dart';
 import '../../widget/profile/profile.dart';
 import 'widget/settings_card_widget.dart';
@@ -51,13 +50,9 @@ class AccountSettingsView extends StatelessWidget {
             SettingsCardWidget(
               title: 'YandexGPT',
               subtitle: context.t.summary.generationPurpose,
-              child: Padding(
-                padding: const .only(top: 12.0),
-                child: SummaryTokenWidget(
-                  onShowSnack: (text) {
-                    context.showSnack(content: Text(text));
-                  },
-                ),
+              child: const Padding(
+                padding: .only(top: 12.0),
+                child: SummaryTokenWidget(),
               ),
             ),
           ],

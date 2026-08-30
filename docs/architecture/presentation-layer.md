@@ -135,7 +135,7 @@ Creates all global app-level BLoCs.
 **Immediate Initialization (lazy: false):**
 - `SettingsCubit` - App settings and preferences
 - `AuthCubit` - Authentication state
-- `SummaryAuthCubit` - YandexGPT authentication
+- `SummaryAuthCubit` - YandexGPT authentication from `lib/feature/summary/`
 - `ProfileBloc` - User profile data
 
 **Lazy Initialization (lazy: true):**

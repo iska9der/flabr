@@ -37,7 +37,7 @@ Application
 **Immediate (lazy: false):**
 1. `SettingsCubit` - Loads app settings from storage
 2. `AuthCubit` - Checks authentication status
-3. `SummaryAuthCubit` - YandexGPT authentication
+3. `SummaryAuthCubit` - YandexGPT authentication from `lib/feature/summary/`
 4. `ProfileBloc` - User profile (awaits auth)
 
 **Lazy (lazy: true):**

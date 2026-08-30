@@ -241,7 +241,15 @@
     "elementVisibility": "Видимость элементов"
   },
   "summary": {
-    "generationPurpose": "Для генерации пересказов статей"
+    "generationPurpose": "Для генерации пересказов статей",
+    "briefFetchError": "Не удалось получить краткий пересказ",
+    "linkFetchError": "Не удалось получить ссылку на пересказ",
+    "fetchError": "Не удалось получить пересказ",
+    "authorizationRequired": "Необходим токен YandexGPT",
+    "link": "Ссылка на пересказ",
+    "aiDescription": "краткий пересказ статьи от нейросети",
+    "token": "Токен",
+    "tokenLocationHint": "Можно найти на 300.ya.ru"
   },
   "fonts": {
     "settingsTitle": "Шрифты",

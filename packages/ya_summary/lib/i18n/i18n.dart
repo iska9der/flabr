@@ -1,1 +1,0 @@
-export 'translations.g.dart';

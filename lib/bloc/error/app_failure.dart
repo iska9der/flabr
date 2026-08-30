@@ -22,6 +22,10 @@ enum AppFailureType {
   userBookmarksFetchFailed,
   userProfileCardFetchFailed,
   userListFetchFailed,
+  summaryAuthorizationRequired,
+  summarySharingUrlFetchFailed,
+  summaryFetchFailed,
+  summaryOperationFailed,
 }
 
 final class AppFailure {

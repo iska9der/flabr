@@ -80,6 +80,11 @@ extension ErrorTranslations on Translations {
         AppFailureType.userProfileCardFetchFailed =>
           user.profileCardFetchFailed,
         AppFailureType.userListFetchFailed => user.listFetchFailed,
+        AppFailureType.summaryAuthorizationRequired =>
+          summary.authorizationRequired,
+        AppFailureType.summarySharingUrlFetchFailed => summary.linkFetchError,
+        AppFailureType.summaryFetchFailed => summary.fetchError,
+        AppFailureType.summaryOperationFailed => summary.briefFetchError,
       };
     }
 

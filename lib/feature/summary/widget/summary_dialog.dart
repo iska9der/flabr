@@ -1,20 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../i18n/i18n.dart';
 
+import '../../../data/repository/summary_repository.dart';
+import '../../../i18n/i18n.dart';
 import '../cubit/summary_auth_cubit.dart';
 import '../cubit/summary_cubit.dart';
-import '../data/summary_repository.dart';
 import 'summary_token_widget.dart';
 import 'summary_widget.dart';
 
-Future showSummaryDialog(
+Future<void> showSummaryDialog(
   BuildContext context, {
   required String url,
   required SummaryRepository repository,
   Widget? loaderWidget,
-
-  /// обработчик нажатия: ссылка на пересказ
   void Function(String)? onLinkPressed,
 }) async {
   final theme = Theme.of(context);
@@ -22,61 +20,60 @@ Future showSummaryDialog(
   final loader =
       loaderWidget ?? const Center(child: CircularProgressIndicator());
 
-  return await showDialog(
+  await showDialog<void>(
     context: context,
     barrierColor: barrierColor,
     builder: (context) => MultiBlocProvider(
       providers: [
-        BlocProvider.value(value: context.read<SummaryAuthCubit>()),
+        BlocProvider<SummaryAuthCubit>.value(
+          value: context.read<SummaryAuthCubit>(),
+        ),
         BlocProvider(
-          create: (_) => SummaryCubit(
-            url: url,
-            repository: repository,
-          ),
+          create: (_) => SummaryCubit(url: url, repository: repository),
         ),
       ],
       child: BlocBuilder<SummaryAuthCubit, SummaryAuthState>(
         builder: (context, authState) {
           return AlertDialog(
             clipBehavior: Clip.hardEdge,
-            insetPadding: const EdgeInsets.fromLTRB(6, 6, 6, 64),
-            titlePadding: const EdgeInsets.all(18),
-            actionsPadding: const EdgeInsets.all(12),
-            contentPadding: EdgeInsets.zero,
+            insetPadding: const .fromLTRB(6, 6, 6, 64),
+            titlePadding: const .all(18),
+            actionsPadding: const .all(12),
+            contentPadding: .zero,
             backgroundColor: theme.colorScheme.surfaceContainerLow,
             shadowColor: theme.colorScheme.shadow,
-            alignment: Alignment.center,
+            alignment: .center,
             actions: switch (authState.status) {
               SummaryAuthStatus.authorized => [
-                  BlocBuilder<SummaryCubit, SummaryState>(
-                    builder: (context, state) {
-                      if (onLinkPressed == null ||
-                          state.model.sharingUrl.isEmpty) {
-                        return const SizedBox();
-                      }
+                BlocBuilder<SummaryCubit, SummaryState>(
+                  builder: (context, state) {
+                    if (onLinkPressed == null ||
+                        state.model.sharingUrl.isEmpty) {
+                      return const SizedBox();
+                    }
 
-                      return TextButton(
-                        onPressed: () => onLinkPressed(state.model.sharingUrl),
-                        child: Text(context.yaSummaryT.summary.link),
-                      );
-                    },
-                  ),
-                ],
+                    return TextButton(
+                      onPressed: () => onLinkPressed(state.model.sharingUrl),
+                      child: Text(context.t.summary.link),
+                    );
+                  },
+                ),
+              ],
               _ => null,
             },
             title: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: .spaceBetween,
               children: [
                 Expanded(
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    crossAxisAlignment: .stretch,
                     children: [
                       const Text('YandexGPT'),
                       FittedBox(
                         fit: BoxFit.scaleDown,
-                        alignment: Alignment.centerLeft,
+                        alignment: .centerLeft,
                         child: Text(
-                          context.yaSummaryT.summary.aiDescription,
+                          context.t.summary.aiDescription,
                           style: DefaultTextStyle.of(context).style,
                         ),
                       ),
@@ -92,19 +89,17 @@ Future showSummaryDialog(
             content: switch (authState.status) {
               SummaryAuthStatus.loading => loader,
               SummaryAuthStatus.unauthorized => const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 12),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SummaryTokenWidget(),
-                    ],
-                  ),
+                padding: .symmetric(horizontal: 12),
+                child: Column(
+                  mainAxisSize: .min,
+                  mainAxisAlignment: .center,
+                  children: [SummaryTokenWidget()],
                 ),
+              ),
               SummaryAuthStatus.authorized => SizedBox(
-                  width: MediaQuery.sizeOf(context).width,
-                  child: SummaryWidget(loaderWidget: loader),
-                ),
+                width: MediaQuery.sizeOf(context).width,
+                child: SummaryWidget(loaderWidget: loader),
+              ),
               _ => const SizedBox(),
             },
           );

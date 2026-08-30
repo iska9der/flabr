@@ -134,7 +134,7 @@ Uses `responsive_framework` for multi-device support (mobile, tablet, desktop).
 ### 6. Workspace Structure
 
 Monorepo with workspace packages in `packages/`:
-- `ya_summary/` - YandexGPT integration for article summaries
+- `ya_summary/` - Pure Dart YandexGPT API client; app UI and state stay in `lib/feature/summary/`
 - `flutter_highlight/` - Custom syntax highlighting
 - `quick_shortcuts/` - Wrapper for quick_actions library (home screen shortcuts)
 
@@ -161,6 +161,7 @@ lib/
 ├── feature/          # Self-contained features
 │   ├── image_action/
 │   ├── most_reading/
+│   ├── summary/      # Summary Cubits and widgets
 │   └── ...
 ├── core/             # Core infrastructure
 │   ├── component/    # Shared components
@@ -172,7 +173,7 @@ lib/
 
 packages/
 ├── quick_shortcuts/   # Quick actions wrapper
-├── ya_summary/        # YandexGPT integration
+├── ya_summary/        # Pure Dart YandexGPT API client
 └── flutter_highlight/ # Syntax highlighting
 ```
 

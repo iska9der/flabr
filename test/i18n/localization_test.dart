@@ -5,7 +5,6 @@ import 'package:flabr/i18n/i18n.dart' as app_localizations;
 import 'package:flabr/presentation/extension/error.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:ya_summary/i18n/i18n.dart' as summary_localizations;
 
 void main() {
   setUp(() {
@@ -89,29 +88,25 @@ void main() {
     );
   });
 
-  testWidgets('providers rebuild both catalogs after locale change', (
+  testWidgets('provider rebuilds the app catalog after locale change', (
     tester,
   ) async {
     await tester.pumpWidget(
       app_localizations.TranslationProvider(
-        child: summary_localizations.TranslationProvider(
-          child: Builder(
-            builder: (context) {
-              final translations = app_localizations.Translations.of(context);
-              final summaryTranslations =
-                  summary_localizations.YaSummaryTranslations.of(context);
+        child: Builder(
+          builder: (context) {
+            final translations = app_localizations.Translations.of(context);
 
-              return Directionality(
-                textDirection: TextDirection.ltr,
-                child: Column(
-                  children: [
-                    Text(translations.shortcut.bookmarks),
-                    Text(summaryTranslations.summary.token),
-                  ],
-                ),
-              );
-            },
-          ),
+            return Directionality(
+              textDirection: TextDirection.ltr,
+              child: Column(
+                children: [
+                  Text(translations.shortcut.bookmarks),
+                  Text(translations.summary.token),
+                ],
+              ),
+            );
+          },
         ),
       ),
     );

@@ -1,7 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ya_summary/ya_summary.dart';
 
 import '../../../../../../bloc/auth/auth_cubit.dart';
 import '../../../../../../bloc/publication/publication_bookmarks_bloc.dart';
@@ -9,6 +8,7 @@ import '../../../../../../core/component/router/router.dart';
 import '../../../../../../core/constants/constants.dart';
 import '../../../../../../data/model/publication/publication.dart';
 import '../../../../../../di/di.dart';
+import '../../../../../../feature/summary/summary.dart';
 import '../../../../../../i18n/i18n.dart';
 import '../../../../../extension/extension.dart';
 import '../../../../../widget/dialog/dialog.dart';
