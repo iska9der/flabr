@@ -148,11 +148,11 @@
     "somethingWentWrong": "Something went wrong",
     "operationFailed": "Failed to complete the operation",
     "requestFailed": "Failed to complete the request",
+    "notFound": "Not found",
     "valueError": "Value error"
   },
   "comment": {
     "fetchFailed": "Failed to load the comment list",
-    "notFound": "Not found",
     "publicationInDrafts": "The publication is in drafts",
     "disabled": "Comments are disabled for this publication",
     "empty": "No comments",

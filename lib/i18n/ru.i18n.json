@@ -148,11 +148,11 @@
     "somethingWentWrong": "Что-то пошло не так",
     "operationFailed": "Не удалось выполнить",
     "requestFailed": "Не удалось выполнить запрос",
+    "notFound": "Не найдено",
     "valueError": "Ошибка значения"
   },
   "comment": {
     "fetchFailed": "Не удалось получить список комментариев",
-    "notFound": "Не найдено",
     "publicationInDrafts": "Публикация в черновиках",
     "disabled": "Комментарии к этой публикации отключены",
     "empty": "Нет комментариев",

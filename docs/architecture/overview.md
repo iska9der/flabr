@@ -180,6 +180,7 @@ packages/
 
 - [Core Components](core-components.md) - Detailed description of core infrastructure components
 - [Presentation Layer](presentation-layer.md) - Application initialization and UI structure
+- [Error Handling](error-handling.md) - Exception boundaries and layer responsibilities
 - [Authentication Flow](../flows/authentication.md) - Authentication system details
 - [App Initialization](../flows/app-initialization.md) - Bootstrap process
 - [Development Commands](../development/commands.md) - Development workflow

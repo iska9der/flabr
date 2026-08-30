@@ -14,7 +14,7 @@ extension ErrorTranslations on Translations {
 
     final specificMessage = switch (cause) {
       CommentsListException(errorCode: final errorCode) => switch (errorCode) {
-        'NOT_FOUND' => comment.notFound,
+        'NOT_FOUND' => this.error.notFound,
         'POST_IN_DRAFTS' => comment.publicationInDrafts,
         'POST_COMMENTS_DISABLED' => comment.disabled,
         _ => comment.fetchFailed,
@@ -26,7 +26,7 @@ extension ErrorTranslations on Translations {
         FetchExceptionType.userCommentsLoadFailed => user.commentsLoadFailed,
         FetchExceptionType.missingMimeType => image.missingMimeType,
       },
-      NotFoundException() => comment.notFound,
+      NotFoundException() => this.error.notFound,
       ValueException(type: final type) => switch (type) {
         ValueExceptionType.invalidValue => this.error.valueError,
         ValueExceptionType.unknownHub => hub.unknownType,

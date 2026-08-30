@@ -51,6 +51,19 @@ void main() {
     );
   });
 
+  test('not found exceptions use the common error message', () {
+    expect(
+      app_localizations.t.errorMessage(const NotFoundException()),
+      'Не найдено',
+    );
+    expect(
+      app_localizations.t.errorMessage(
+        const CommentsListException(404, 'NOT_FOUND'),
+      ),
+      'Не найдено',
+    );
+  });
+
   testWidgets('providers rebuild both catalogs after locale change', (
     tester,
   ) async {
