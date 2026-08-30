@@ -8,7 +8,7 @@ import '../model/query_params_model.dart';
 abstract interface class HubService {
   Future<HubListResponse> fetchAll({required int page});
 
-  Future<Map<String, dynamic>> fetchProfile(String alias);
+  Future<HubProfile> fetchProfile(String alias);
 
   Future<void> toggleSubscription({required String alias});
 }
@@ -39,11 +39,11 @@ class HubServiceImpl implements HubService {
   }
 
   @override
-  Future<Map<String, dynamic>> fetchProfile(String alias) async {
+  Future<HubProfile> fetchProfile(String alias) async {
     try {
       final response = await _mobileClient.get('/hubs/$alias/profile');
 
-      return response.data;
+      return HubProfile.fromMap(response.data);
     } on AppException {
       rethrow;
     } catch (_, stackTrace) {

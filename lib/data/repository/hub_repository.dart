@@ -15,9 +15,5 @@ class HubRepository {
     return response;
   }
 
-  Future<HubProfile> fetchProfile(String alias) async {
-    final raw = await _service.fetchProfile(alias);
-
-    return HubProfile.fromMap(raw);
-  }
+  Future<HubProfile> fetchProfile(String alias) => _service.fetchProfile(alias);
 }

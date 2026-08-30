@@ -9,9 +9,9 @@ import '../model/user/user.dart';
 abstract interface class UserService {
   Future<UserListResponse> fetchAll({required String page});
 
-  Future<Map<String, dynamic>> fetchCard({required String alias});
+  Future<User> fetchCard({required String alias});
 
-  Future<Map<String, dynamic>> fetchWhois({required String alias});
+  Future<UserWhois> fetchWhois({required String alias});
 
   Future<void> toggleSubscription({required String alias});
 
@@ -51,22 +51,22 @@ class UserServiceImpl implements UserService {
   }
 
   @override
-  Future<Map<String, dynamic>> fetchCard({required String alias}) async {
+  Future<User> fetchCard({required String alias}) async {
     try {
       final response = await _mobileClient.get('/users/$alias/card');
 
-      return response.data;
+      return User.fromMap(response.data);
     } on AppException {
       rethrow;
     }
   }
 
   @override
-  Future<Map<String, dynamic>> fetchWhois({required String alias}) async {
+  Future<UserWhois> fetchWhois({required String alias}) async {
     try {
       final response = await _mobileClient.get('/users/$alias/whois');
 
-      return response.data;
+      return UserWhois.fromMap(response.data);
     } on AppException {
       rethrow;
     }

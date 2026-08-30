@@ -7,7 +7,7 @@ import '../model/company/company.dart';
 abstract interface class CompanyService {
   Future<CompanyListResponse> fetchAll({required int page});
 
-  Future<Map<String, dynamic>> fetchCard(String alias);
+  Future<CompanyCard> fetchCard(String alias);
 
   Future<void> toggleSubscription({required String alias});
 }
@@ -42,11 +42,11 @@ class CompanyServiceImpl implements CompanyService {
   }
 
   @override
-  Future<Map<String, dynamic>> fetchCard(String alias) async {
+  Future<CompanyCard> fetchCard(String alias) async {
     try {
       final response = await _mobileClient.get('/companies/$alias/card');
 
-      return response.data;
+      return CompanyCard.fromMap(response.data);
     } on AppException {
       rethrow;
     } catch (_, stackTrace) {

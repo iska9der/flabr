@@ -2,10 +2,15 @@ import 'package:injectable/injectable.dart';
 
 import '../../core/component/http/http.dart';
 import '../exception/exception.dart';
+import '../model/company/company.dart' show CompanyListResponse;
+import '../model/hub/hub.dart' show HubListResponse;
+import '../model/list_response_model.dart';
+import '../model/publication/publication.dart';
 import '../model/search/search.dart';
+import '../model/user/user_list_response.dart' show UserListResponse;
 
 abstract interface class SearchService {
-  Future fetch({
+  Future<ListResponse<dynamic>> fetch({
     required String query,
     required SearchTarget target,
     required String order,
@@ -21,7 +26,7 @@ class SearchServiceImpl implements SearchService {
   final HttpClient _mobileClient;
 
   @override
-  Future fetch({
+  Future<ListResponse<dynamic>> fetch({
     required String query,
     required SearchTarget target,
     required String order,
@@ -38,7 +43,18 @@ class SearchServiceImpl implements SearchService {
       final queryString = params.toQueryString();
       final response = await _mobileClient.get(queryString);
 
-      return response.data;
+      return switch (target) {
+        SearchTarget.posts => PublicationCommonListResponse.fromMap(
+          response.data,
+        ),
+        SearchTarget.hubs => HubListResponse.fromMap(response.data),
+        SearchTarget.companies => CompanyListResponse.fromMap(response.data),
+        SearchTarget.users => UserListResponse.fromMap(response.data),
+        SearchTarget.comments => throw const ValueException(
+          null,
+          .searchNotImplemented,
+        ),
+      };
     } on AppException {
       rethrow;
     } catch (_, stackTrace) {

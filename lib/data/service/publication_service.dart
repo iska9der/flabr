@@ -11,11 +11,11 @@ import '../model/section_enum.dart';
 import '../model/user/user.dart';
 
 abstract interface class PublicationService {
-  Future<Map<String, dynamic>> fetchCounters();
+  Future<PublicationCounters> fetchCounters();
 
-  Future<Map<String, dynamic>> fetchArticleById(String id);
+  Future<PublicationCommon> fetchArticleById(String id);
 
-  Future<Map<String, dynamic>> fetchPostById(String id);
+  Future<PublicationPost> fetchPostById(String id);
 
   Future<ListResponse<Publication>> fetchFeed({
     required String page,
@@ -86,33 +86,33 @@ class PublicationServiceImpl implements PublicationService {
   final HttpClient _siteClient;
 
   @override
-  Future<Map<String, dynamic>> fetchCounters() async {
+  Future<PublicationCounters> fetchCounters() async {
     try {
       final response = await _mobileClient.get('/feed/counters');
 
-      return response.data;
+      return PublicationCounters.fromJson(response.data);
     } catch (_, trace) {
       Error.throwWithStackTrace(const FetchException(), trace);
     }
   }
 
   @override
-  Future<Map<String, dynamic>> fetchArticleById(String id) async {
+  Future<PublicationCommon> fetchArticleById(String id) async {
     try {
       final response = await _mobileClient.get('/articles/$id/');
 
-      return response.data;
+      return PublicationCommon.fromJson(response.data);
     } catch (_, trace) {
       Error.throwWithStackTrace(const FetchException(), trace);
     }
   }
 
   @override
-  Future<Map<String, dynamic>> fetchPostById(String id) async {
+  Future<PublicationPost> fetchPostById(String id) async {
     try {
       final response = await _mobileClient.get('/threads/$id/');
 
-      return response.data;
+      return PublicationPost.fromJson(response.data);
     } catch (_, trace) {
       Error.throwWithStackTrace(const FetchException(), trace);
     }
