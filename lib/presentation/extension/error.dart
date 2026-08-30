@@ -6,12 +6,6 @@ extension ErrorTranslations on Translations {
   String errorMessage(Object? error) {
     final cause = error is AppFailure ? error.cause : error;
 
-    if (cause case AppException(
-      message: final message?,
-    ) when message.isNotEmpty) {
-      return message;
-    }
-
     final specificMessage = switch (cause) {
       CommentsListException(errorCode: final errorCode) => switch (errorCode) {
         'NOT_FOUND' => this.error.notFound,
@@ -32,6 +26,7 @@ extension ErrorTranslations on Translations {
         ValueExceptionType.unknownHub => hub.unknownType,
         ValueExceptionType.unknownFeedPublication =>
           feed.publicationUnknownType,
+        ValueExceptionType.unknownPublicationFlow => publication.unknownFlow,
         ValueExceptionType.unknownSort => sort.unknownValue,
         ValueExceptionType.unknownLanguage => language.unknown,
         ValueExceptionType.searchNotImplemented => search.notImplemented,

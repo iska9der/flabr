@@ -5,7 +5,6 @@ class CommentsListException extends AppException {
   const CommentsListException([
     this.httpCode = 400,
     this.errorCode = 'BAD_REQUEST',
-    super.message,
   ]);
 
   final int httpCode;

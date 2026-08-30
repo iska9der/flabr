@@ -24,7 +24,7 @@ enum Sort {
   factory Sort.fromString(String value) {
     return Sort.values.firstWhere(
       (element) => element.name == value,
-      orElse: () => throw const ValueException(null, .unknownSort),
+      orElse: () => throw const ValueException(.unknownSort),
     );
   }
 }

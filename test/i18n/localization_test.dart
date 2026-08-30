@@ -64,6 +64,24 @@ void main() {
     );
   });
 
+  test('unknown publication flow uses a localized typed error', () {
+    const error = ValueException(ValueExceptionType.unknownPublicationFlow);
+
+    expect(
+      app_localizations.t.errorMessage(error),
+      'Неизвестный поток публикации',
+    );
+
+    app_localizations.LocaleSettings.setLocaleSync(
+      app_localizations.AppLocale.en,
+    );
+
+    expect(
+      app_localizations.t.errorMessage(error),
+      'Unknown publication flow',
+    );
+  });
+
   testWidgets('providers rebuild both catalogs after locale change', (
     tester,
   ) async {

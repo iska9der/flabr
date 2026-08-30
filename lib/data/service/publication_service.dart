@@ -238,7 +238,6 @@ class PublicationServiceImpl implements PublicationService {
       UserBookmarksType.posts => {'user_bookmarks_posts': 'true'},
       UserBookmarksType.news => {'user_bookmarks_news': 'true'},
       UserBookmarksType.comments => throw const ValueException(
-        null,
         .wrongPublicationDestination,
       ),
     };
@@ -305,7 +304,7 @@ class PublicationServiceImpl implements PublicationService {
     );
 
     if (response.data['ok'] != true) {
-      throw const ValueException(null, .publicationOperationFailed);
+      throw const ValueException(.publicationOperationFailed);
     }
 
     return true;
@@ -337,7 +336,7 @@ class PublicationServiceImpl implements PublicationService {
     };
 
     if (response.data['ok'] != true) {
-      throw const ValueException(null, .publicationOperationFailed);
+      throw const ValueException(.publicationOperationFailed);
     }
 
     return true;

@@ -22,9 +22,7 @@ enum PublicationFlow {
   static PublicationFlow fromString(String value) {
     return PublicationFlow.values.firstWhere(
       (e) => e.name == value,
-      orElse: () {
-        throw ValueException('Неизвестное значение PublicationFlow: $value');
-      },
+      orElse: () => throw const ValueException(.unknownPublicationFlow),
     );
   }
 }

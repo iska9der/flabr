@@ -1,8 +1,6 @@
 abstract class AppException implements Exception {
-  const AppException([this.message]);
-
-  final String? message;
+  const AppException();
 
   @override
-  String toString() => message ?? runtimeType.toString();
+  String toString() => runtimeType.toString();
 }

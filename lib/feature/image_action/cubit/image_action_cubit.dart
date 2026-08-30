@@ -40,7 +40,7 @@ class ImageActionCubit extends Cubit<ImageActionState> {
     );
 
     if (!response.headers.map.containsKey('content-type')) {
-      throw const FetchException(null, .missingMimeType);
+      throw const FetchException(.missingMimeType);
     }
 
     final name = path.basename(state.url);

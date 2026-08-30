@@ -4,6 +4,7 @@ enum ValueExceptionType {
   invalidValue,
   unknownHub,
   unknownFeedPublication,
+  unknownPublicationFlow,
   unknownSort,
   unknownLanguage,
   searchNotImplemented,
@@ -12,10 +13,7 @@ enum ValueExceptionType {
 }
 
 class ValueException extends AppException {
-  const ValueException([
-    super.message,
-    this.type = .invalidValue,
-  ]);
+  const ValueException([this.type = .invalidValue]);
 
   final ValueExceptionType type;
 }

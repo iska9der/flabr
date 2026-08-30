@@ -50,7 +50,6 @@ class SearchServiceImpl implements SearchService {
       SearchTarget.companies => CompanyListResponse.fromMap(response.data),
       SearchTarget.users => UserListResponse.fromMap(response.data),
       SearchTarget.comments => throw const ValueException(
-        null,
         .searchNotImplemented,
       ),
     };

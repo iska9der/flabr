@@ -34,7 +34,6 @@ abstract class SearchParamsFactory extends QueryParams {
       page: page.toString(),
     ),
     SearchTarget.comments => throw const ValueException(
-      null,
       .searchNotImplemented,
     ),
   };

@@ -24,6 +24,7 @@
   "publication": {
     "commentsFetchFailed": "Failed to load comments",
     "countersFetchFailed": "Failed to load counters",
+    "unknownFlow": "Unknown publication flow",
     "votingEnded": "Voting has already ended",
     "dailyVoteLimitReached": "You have reached today's vote limit",
     "insufficientRatingToVote": "Your rating is too low to vote",
@@ -76,7 +77,7 @@
   },
   "feed": {
     "publicationsFetchFailed": "Failed to load publications",
-    "publicationUnknownType": "Unknown type",
+    "publicationUnknownType": "Unknown publication type",
     "myFeed": "My feed",
     "publicationType": "Publication type",
     "ratingThreshold": "Rating threshold",

@@ -24,6 +24,7 @@
   "publication": {
     "commentsFetchFailed": "Не удалось получить комментарии",
     "countersFetchFailed": "Не удалось получить счетчики",
+    "unknownFlow": "Неизвестный поток публикации",
     "votingEnded": "Голосование уже закончено",
     "dailyVoteLimitReached": "Лимит голосов на сегодня исчерпан",
     "insufficientRatingToVote": "Вам не хватает рейтинга для голосования",
@@ -76,7 +77,7 @@
   },
   "feed": {
     "publicationsFetchFailed": "Не удалось получить публикации",
-    "publicationUnknownType": "Неизвестный тип",
+    "publicationUnknownType": "Неизвестный тип публикации",
     "myFeed": "Моя лента",
     "publicationType": "Тип публикации",
     "ratingThreshold": "Порог рейтинга",
