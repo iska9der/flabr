@@ -64,6 +64,13 @@ void main() {
     );
   });
 
+  test('missing MIME type uses the image-specific message', () {
+    expect(
+      app_localizations.t.errorMessage(const MissingMimeTypeException()),
+      'В заголовках не указан mime/type',
+    );
+  });
+
   test('unknown publication flow uses a localized typed error', () {
     const error = ValueException(ValueExceptionType.unknownPublicationFlow);
 

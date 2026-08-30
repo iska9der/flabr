@@ -18,8 +18,8 @@ extension ErrorTranslations on Translations {
         FetchExceptionType.bookmarkCommentsLoadFailed =>
           bookmark.commentsLoadFailed,
         FetchExceptionType.userCommentsLoadFailed => user.commentsLoadFailed,
-        FetchExceptionType.missingMimeType => image.missingMimeType,
       },
+      MissingMimeTypeException() => image.missingMimeType,
       NotFoundException() => this.error.notFound,
       ValueException(type: final type) => switch (type) {
         ValueExceptionType.invalidValue => this.error.valueError,

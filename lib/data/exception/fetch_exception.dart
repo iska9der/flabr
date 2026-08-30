@@ -6,7 +6,6 @@ enum FetchExceptionType {
   requestFailed,
   bookmarkCommentsLoadFailed,
   userCommentsLoadFailed,
-  missingMimeType,
 }
 
 class FetchException extends AppException {
