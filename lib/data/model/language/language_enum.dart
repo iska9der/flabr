@@ -1,6 +1,3 @@
-import 'package:flutter/widgets.dart';
-
-import '../../../i18n/i18n.dart';
 import '../../exception/exception.dart';
 
 enum Language {
@@ -14,18 +11,4 @@ enum Language {
       _ => throw const ValueException(.unknownLanguage),
     };
   }
-
-  Locale get locale => switch (this) {
-    Language.ru => const Locale('ru', 'RU'),
-    Language.en => const Locale('en', 'US'),
-  };
-  AppLocale get appLocale => switch (this) {
-    Language.ru => AppLocale.ru,
-    Language.en => AppLocale.en,
-  };
-
-  String get label => switch (this) {
-    Language.ru => t.language.russian,
-    Language.en => t.language.english,
-  };
 }

@@ -2,21 +2,34 @@ import 'package:flabr/bloc/error/app_failure.dart';
 import 'package:flabr/data/exception/exception.dart';
 import 'package:flabr/data/model/language/language.dart';
 import 'package:flabr/i18n/i18n.dart' as app_localizations;
+import 'package:flabr/i18n/language_extension.dart';
 import 'package:flabr/presentation/extension/error.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:intl/intl.dart' show Intl;
 
 void main() {
   setUp(() {
-    app_localizations.LocaleSettings.setLocaleSync(
-      app_localizations.AppLocale.ru,
-    );
+    app_localizations.LocalizationManager.setLocale(Language.ru);
   });
 
-  test('Language maps to the matching Slang locale', () {
+  test('Language extension maps the model to localization values', () {
     expect(Language.ru.appLocale, app_localizations.AppLocale.ru);
     expect(Language.en.appLocale, app_localizations.AppLocale.en);
+    expect(Language.en.locale, const Locale('en', 'US'));
+    expect(Language.en.label, 'Английский');
   });
+
+  test('localization manager synchronizes Slang and Intl locales', () {
+    app_localizations.LocalizationManager.setLocale(Language.en);
+
+    expect(
+      app_localizations.LocaleSettings.currentLocale,
+      app_localizations.AppLocale.en,
+    );
+    expect(Intl.defaultLocale, 'en_US');
+  });
+
   test('failures are localized when presented', () {
     final failure = AppFailure(
       .companyProfileFetchFailed,

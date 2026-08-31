@@ -16,6 +16,8 @@
 ```text
 lib/i18n/
 ├── i18n.dart               # публичный экспорт локализации
+├── language_extension.dart  # адаптер Language для Flutter и Slang
+├── localization_manager.dart # синхронизация Slang и Intl
 ├── ru.i18n.json            # русский каталог и базовая структура ключей
 ├── en.i18n.json            # английский каталог
 ├── translations.g.dart     # общий сгенерированный Slang API
@@ -144,13 +146,16 @@ enum Language {
 }
 ```
 
-`Language.appLocale` связывает доменную модель языка со сгенерированным `AppLocale`. `Language.locale` предоставляет Flutter/Intl locale.
+Localization-свойства `Language` определены в `language_extension.dart`: `appLocale` связывает модель со сгенерированным `AppLocale`, `locale` предоставляет Flutter/Intl locale, а `label` возвращает локализованное название языка. Сама data-модель `Language` от Flutter и Slang не зависит.
 
-Текущий язык интерфейса хранится через `LanguageRepository` в `CacheStorage` под ключом `CacheKeys.langUI`. Поток `LanguageRepository.onUIChange` обновляет `SettingsCubit`. Затем `GlobalBlocListener` синхронизирует:
+Текущий язык интерфейса хранится через `LanguageRepository` в `CacheStorage` под ключом `CacheKeys.langUI`. Поток `LanguageRepository.onUIChange` обновляет `SettingsCubit`. Затем `GlobalBlocListener` передаёт выбранный `Language` в `LocalizationManager.setLocale`.
 
-- `LocaleSettings` Slang;
-- `Intl.defaultLocale`;
-- локализованные быстрые действия приложения.
+`LocalizationManager` синхронизирует обе localization-системы приложения:
+
+- вызывает `LocaleSettings.setLocaleSync(language.appLocale)` для Slang;
+- устанавливает `Intl.defaultLocale` из `language.locale`.
+
+После синхронизации `GlobalBlocListener` обновляет локализованные быстрые действия приложения.
 
 Языки публикаций хранятся отдельно под `CacheKeys.langPublications`. Они влияют на параметры и cookie запросов к Habr, но не выбирают каталог интерфейса.
 
@@ -158,7 +163,7 @@ enum Language {
 
 1. Выбрать семантический домен и вложенную группу ключа.
 2. Добавить одинаковый путь в `ru.i18n.json` и `en.i18n.json`.
-3. Для нового языка добавить значение в `Language`, сопоставления `locale` и `appLocale`, а также соответствующий `.i18n.json` каталог.
+3. Для нового языка добавить значение в `Language`, сопоставления `locale`, `appLocale` и `label` в `LanguageExtension`, а также соответствующий `.i18n.json` каталог.
 4. Запустить генерацию:
 
 ```bash

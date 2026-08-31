@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 
 import '../../../bloc/auth/auth_cubit.dart';
 import '../../../bloc/profile/profile_bloc.dart';
@@ -32,8 +31,7 @@ class GlobalBlocListener extends StatelessWidget {
               previous.langUI != current.langUI ||
               previous.status != current.status && current.status == .success,
           listener: (context, state) {
-            LocaleSettings.setLocaleSync(state.langUI.appLocale);
-            Intl.defaultLocale = state.langUI.locale.toString();
+            LocalizationManager.setLocale(state.langUI);
 
             unawaited(
               getIt<ShortcutsManager>().createShortcuts(
