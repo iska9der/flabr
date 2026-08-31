@@ -55,9 +55,21 @@
     "settingsTitle": "Publications",
     "wrongDestination": "You've ended up in the wrong place...",
     "failed": "Failed!",
-    "saveArticle": "Save article",
-    "saved": "Saved",
-    "unavailable": "Unavailable",
+    "download": {
+      "markdown": {
+        "title": "Save as Markdown",
+        "subtitle": ".md file with images"
+      },
+      "html": {
+        "title": "Save as HTML",
+        "subtitle": ".html file with images"
+      },
+      "status": {
+        "preparing": "Preparing file...",
+        "saved": "File saved on device",
+        "notSupported": "Unavailable on this platform"
+      }
+    },
     "list": {
       "empty": "Nothing here"
     },
@@ -65,6 +77,9 @@
     "downvote": "Downvote",
     "tags": "Tags:",
     "more": "More",
+    "actions": {
+      "title": "Actions"
+    },
     "configure": "Configure",
     "readingTimeMinutes": "{{readingTime}} min",
     "comments": {
@@ -122,6 +137,26 @@
     "votes": {
       "total": "Total votes {{votesCount}}: ",
       "breakdown": "↑{{votesCountPlus}} and ↓{{votesCountMinus}}"
+    }
+  },
+  "offline": {
+    "title": "Saved articles",
+    "navigationLabel": "Offline",
+    "empty": {
+      "title": "Nothing here yet",
+      "description": "Save articles from the publication menu to keep their text and available images on your device."
+    },
+    "save": {
+      "title": "Save for offline",
+      "subtitle": "The article and images will be available without internet access",
+      "savedSubtitle": "The article is saved on your device"
+    },
+    "remove": {
+      "title": "Remove offline copy",
+      "tooltip": "Remove from offline"
+    },
+    "metadata": {
+      "savedAt": "saved {{date}}"
     }
   },
   "feed": {

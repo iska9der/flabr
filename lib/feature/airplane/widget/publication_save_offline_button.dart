@@ -46,11 +46,11 @@ class PublicationSaveOfflineButton extends StatelessWidget {
                     ? Icons.delete_outline_rounded
                     : Icons.offline_pin_outlined,
                 title: exists
-                    ? 'Удалить офлайн-копию'
-                    : 'Сохранить для офлайна',
+                    ? context.t.offline.remove.title
+                    : context.t.offline.save.title,
                 subtitle: exists
-                    ? 'Статья сохранена на устройстве'
-                    : 'Статья и изображения будут доступны без интернета',
+                    ? context.t.offline.save.savedSubtitle
+                    : context.t.offline.save.subtitle,
                 destructive: exists,
                 trailing: isLoading ? const CircleIndicator.small() : null,
                 onPressed: switch (isLoading) {

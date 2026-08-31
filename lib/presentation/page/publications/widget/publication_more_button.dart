@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../../data/model/publication/publication.dart';
 import '../../../../feature/airplane/airplane.dart';
 import '../../../../feature/publication_download/publication_download.dart';
+import '../../../../i18n/i18n.dart';
 import '../../../extension/extension.dart';
 
 class PublicationMoreButton extends StatelessWidget {
@@ -23,7 +24,7 @@ class PublicationMoreButton extends StatelessWidget {
             Padding(
               padding: const .fromLTRB(4, 0, 4, 12),
               child: Text(
-                'Действия',
+                context.t.publication.actions.title,
                 style: context.theme.textTheme.titleMedium,
               ),
             ),

@@ -29,9 +29,9 @@ class PublicationDownload extends StatelessWidget {
             format: .markdown,
             assetService: getIt(),
           ),
-          child: const _SaveButton(
-            title: 'Сохранить как Markdown',
-            subtitle: 'Файл .md с изображениями',
+          child: _SaveButton(
+            title: context.t.publication.download.markdown.title,
+            subtitle: context.t.publication.download.markdown.subtitle,
             icon: Icons.description_outlined,
           ),
         ),
@@ -43,9 +43,9 @@ class PublicationDownload extends StatelessWidget {
             format: .html,
             assetService: getIt(),
           ),
-          child: const _SaveButton(
-            title: 'Сохранить как HTML',
-            subtitle: 'Файл .html с изображениями',
+          child: _SaveButton(
+            title: context.t.publication.download.html.title,
+            subtitle: context.t.publication.download.html.subtitle,
             icon: Icons.code_rounded,
           ),
         ),
@@ -80,9 +80,9 @@ class _SaveButton extends StatelessWidget {
           icon: icon,
           title: title,
           subtitle: switch (state.status) {
-            .loading => 'Подготовка файла...',
-            .success => 'Файл сохранён на устройстве',
-            .notSupported => 'Недоступно на этой платформе',
+            .loading => context.t.publication.download.status.preparing,
+            .success => context.t.publication.download.status.saved,
+            .notSupported => context.t.publication.download.status.notSupported,
             _ => subtitle,
           },
           trailing: switch (state.status) {

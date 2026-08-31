@@ -155,7 +155,7 @@ class _DashboardAppBar extends StatelessWidget {
             children: [
               IconButton(
                 icon: const Icon(Icons.airplanemode_active_outlined),
-                tooltip: 'Оффлайн',
+                tooltip: context.t.offline.navigationLabel,
                 onPressed: () => getIt<AppRouter>().push(const AirplaneRoute()),
               ),
               IconButton(

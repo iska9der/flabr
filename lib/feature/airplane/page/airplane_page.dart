@@ -22,7 +22,7 @@ class AirplanePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Сохранённые статьи'),
+        title: Text(context.t.offline.title),
       ),
       body: BlocListener<OfflinePublicationBloc, OfflinePublicationState>(
         listenWhen: (previous, current) =>
@@ -82,14 +82,13 @@ class _EmptyView extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             Text(
-              'Здесь пока пусто',
+              context.t.offline.empty.title,
               style: Theme.of(context).textTheme.headlineSmall,
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 8),
             Text(
-              'Сохраняйте статьи через меню публикации — текст и доступные '
-              'изображения останутся на устройстве.',
+              context.t.offline.empty.description,
               style: Theme.of(context).textTheme.bodyMedium,
               textAlign: TextAlign.center,
             ),
@@ -148,7 +147,7 @@ class _PublicationList extends StatelessWidget {
                     ),
                   ),
                   IconButton(
-                    tooltip: 'Удалить из оффлайна',
+                    tooltip: context.t.offline.remove.tooltip,
                     onPressed: isLoading
                         ? null
                         : () => context.read<OfflinePublicationBloc>().add(
@@ -188,7 +187,7 @@ class _PublicationList extends StatelessWidget {
     ).formatShortDate(saved.savedAt);
     return [
       if (authorName.isNotEmpty) authorName,
-      'сохранено $date',
+      context.t.offline.metadata.savedAt(date: date),
     ].join(' · ');
   }
 
