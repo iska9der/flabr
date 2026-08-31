@@ -15,7 +15,7 @@ class UserBookmarkListState extends PublicationListState with Equatable {
 
   UserBookmarkListState copyWith({
     LoadingStatus? status,
-    String? error,
+    Object? error,
     int? page,
     ListResponse<Publication>? response,
     String? user,

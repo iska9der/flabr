@@ -25,7 +25,6 @@ class UserPublicationListPage extends StatelessWidget {
   final String alias;
   final String type;
 
-  static const String title = 'Публикации';
   static const String routePath = 'publications/:type';
   static const String routeName = 'UserPublicationListRoute';
 

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
+import '../../../i18n/i18n.dart';
 import '../../extension/extension.dart';
 import '../../page/settings/model/config_model.dart';
 import '../../theme/theme.dart';
@@ -76,18 +77,18 @@ class _BottomNavigation extends StatelessWidget {
             router.setActiveIndex(i);
           }
         },
-        destinations: const [
+        destinations: [
           NavigationDestination(
-            label: 'Публикации',
-            icon: Icon(Icons.article_rounded),
+            label: context.t.navigation.publications,
+            icon: const Icon(Icons.article_rounded),
           ),
           NavigationDestination(
-            label: 'Сервисы',
-            icon: Icon(Icons.widgets_rounded),
+            label: context.t.navigation.services,
+            icon: const Icon(Icons.widgets_rounded),
           ),
           NavigationDestination(
-            label: 'Настройки',
-            icon: Icon(Icons.settings_rounded),
+            label: context.t.navigation.settings,
+            icon: const Icon(Icons.settings_rounded),
           ),
         ],
       ),

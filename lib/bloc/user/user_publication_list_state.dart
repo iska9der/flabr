@@ -15,7 +15,7 @@ class UserPublicationListState extends PublicationListState with Equatable {
 
   UserPublicationListState copyWith({
     LoadingStatus? status,
-    String? error,
+    Object? error,
     int? page,
     ListResponse<Publication>? response,
     String? alias,

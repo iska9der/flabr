@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../i18n/i18n.dart';
 import '../../../presentation/extension/extension.dart';
 
 /// Переключатель страниц с сокращением недоступных диапазонов
@@ -97,7 +98,7 @@ class _PublicationPaginationState extends State<PublicationPagination> {
       child: Row(
         children: [
           IconButton(
-            tooltip: 'Предыдущая страница',
+            tooltip: context.t.pagination.previousPage,
             onPressed: widget.currentPage > 1
                 ? () => widget.onPageSelected(widget.currentPage - 1)
                 : null,
@@ -140,7 +141,7 @@ class _PublicationPaginationState extends State<PublicationPagination> {
           ),
           const SizedBox(width: _itemSpacing),
           IconButton(
-            tooltip: 'Следующая страница',
+            tooltip: context.t.pagination.nextPage,
             onPressed: widget.currentPage < widget.pagesCount
                 ? () => widget.onPageSelected(widget.currentPage + 1)
                 : null,

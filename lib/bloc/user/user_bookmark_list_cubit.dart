@@ -2,12 +2,12 @@ import 'dart:async';
 
 import 'package:equatable/equatable.dart';
 
-import '../../data/exception/exception.dart';
 import '../../data/model/list_response_model.dart';
 import '../../data/model/loading_status_enum.dart';
 import '../../data/model/publication/publication.dart';
 import '../../data/model/user/user.dart';
 import '../../feature/publication_list/publication_list.dart';
+import '../error/app_failure.dart';
 
 part 'user_bookmark_list_state.dart';
 
@@ -46,7 +46,7 @@ class UserBookmarkListCubit
     } catch (e) {
       emit(
         state.copyWith(
-          error: e.parseException('Не удалось получить закладки'),
+          error: AppFailure(.userBookmarksFetchFailed, e),
           status: .failure,
         ),
       );

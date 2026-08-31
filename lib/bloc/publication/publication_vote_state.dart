@@ -4,7 +4,7 @@ part of 'publication_vote_bloc.dart';
 abstract class PublicationVoteState with _$PublicationVoteState {
   const factory PublicationVoteState({
     @Default(LoadingStatus.initial) LoadingStatus status,
-    String? error,
+    Object? error,
 
     /// Идентификатор публикации
     required String id,

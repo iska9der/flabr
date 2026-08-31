@@ -1,14 +1,13 @@
 import 'package:injectable/injectable.dart';
 
 import '../../core/component/http/http.dart';
-import '../exception/exception.dart';
 import '../model/hub/hub.dart';
 import '../model/query_params_model.dart';
 
 abstract interface class HubService {
   Future<HubListResponse> fetchAll({required int page});
 
-  Future<Map<String, dynamic>> fetchProfile(String alias);
+  Future<HubProfile> fetchProfile(String alias);
 
   Future<void> toggleSubscription({required String alias});
 }
@@ -26,39 +25,21 @@ class HubServiceImpl implements HubService {
 
   @override
   Future<HubListResponse> fetchAll({required int page}) async {
-    try {
-      var params = QueryParams(page: page.toString()).toMap();
-      final response = await _mobileClient.get('/hubs', queryParams: params);
+    final params = QueryParams(page: page.toString()).toMap();
+    final response = await _mobileClient.get('/hubs', queryParams: params);
 
-      return HubListResponse.fromMap(response.data);
-    } on AppException {
-      rethrow;
-    } catch (_, stackTrace) {
-      Error.throwWithStackTrace(const FetchException(), stackTrace);
-    }
+    return HubListResponse.fromMap(response.data);
   }
 
   @override
-  Future<Map<String, dynamic>> fetchProfile(String alias) async {
-    try {
-      final response = await _mobileClient.get('/hubs/$alias/profile');
+  Future<HubProfile> fetchProfile(String alias) async {
+    final response = await _mobileClient.get('/hubs/$alias/profile');
 
-      return response.data;
-    } on AppException {
-      rethrow;
-    } catch (_, stackTrace) {
-      Error.throwWithStackTrace(const FetchException(), stackTrace);
-    }
+    return HubProfile.fromMap(response.data);
   }
 
   @override
   Future<void> toggleSubscription({required String alias}) async {
-    try {
-      await _siteClient.post('/v2/hubs/$alias/subscription', body: {});
-    } on AppException {
-      rethrow;
-    } catch (_, stackTrace) {
-      Error.throwWithStackTrace(const FetchException(), stackTrace);
-    }
+    await _siteClient.post('/v2/hubs/$alias/subscription', body: {});
   }
 }

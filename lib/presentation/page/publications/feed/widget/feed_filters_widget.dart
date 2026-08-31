@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../bloc/auth/auth_cubit.dart';
 import '../../../../../bloc/publication/feed_publication_list_cubit.dart';
 import '../../../../../data/model/filter/filter.dart';
+import '../../../../../i18n/i18n.dart';
 import '../../../../widget/dialog/dialog.dart';
 import '../../../../widget/filter/filter_chip_list.dart';
 import '../../../../widget/filter/publication_filter_submit_button.dart';
@@ -76,7 +77,7 @@ class _FilterViewState extends State<_FilterView> {
       mainAxisSize: .min,
       children: [
         ...[
-          const Text('Тип публикации', style: headerStyle),
+          Text(context.t.feed.publication.type, style: headerStyle),
           FilterChipList(
             isEnabled: !widget.isLoading,
             options: FeedFilterPublication.values
@@ -108,7 +109,7 @@ class _FilterViewState extends State<_FilterView> {
         ],
         const SizedBox(height: 8),
         ...[
-          const Text('Порог рейтинга', style: headerStyle),
+          Text(context.t.feed.ratingThreshold, style: headerStyle),
           FilterChipList(
             isEnabled: !widget.isLoading,
             options: FilterList.scoreOptions,

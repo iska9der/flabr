@@ -79,7 +79,7 @@ abstract class PublicationListState {
   });
 
   final LoadingStatus status;
-  final String error;
+  final Object error;
   final int page;
   final ListResponse<Publication> response;
 

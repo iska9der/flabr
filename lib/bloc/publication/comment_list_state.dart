@@ -10,7 +10,7 @@ class CommentListState with Equatable {
   });
 
   final LoadingStatus status;
-  final String error;
+  final Object error;
 
   final String publicationId;
   final PublicationSource source;
@@ -18,7 +18,7 @@ class CommentListState with Equatable {
 
   CommentListState copyWith({
     LoadingStatus? status,
-    String? error,
+    Object? error,
     Language? langUI,
     List<Language>? langArticles,
     CommentListResponse? list,

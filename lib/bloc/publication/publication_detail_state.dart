@@ -10,7 +10,7 @@ class PublicationDetailState with Equatable {
   });
 
   final LoadingStatus status;
-  final String error;
+  final Object error;
 
   final String id;
   final PublicationSource source;
@@ -18,7 +18,7 @@ class PublicationDetailState with Equatable {
 
   PublicationDetailState copyWith({
     LoadingStatus? status,
-    String? error,
+    Object? error,
     Publication? publication,
   }) {
     return PublicationDetailState(

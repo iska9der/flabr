@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../feature/image_action/image_action.dart';
+import '../../../i18n/i18n.dart';
 import '../../extension/context.dart';
 import '../../theme/theme.dart';
 import 'lazy_visibility_widget.dart';
@@ -59,16 +60,16 @@ class _LazyImageWidgetState extends State<LazyImageWidget> {
           color: bgColor,
           child: InkWell(
             onTap: () => setState(() => _isEnabled = true),
-            child: const Center(
+            child: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.image_outlined, size: 48),
-                  SizedBox(height: 8),
+                  const Icon(Icons.image_outlined, size: 48),
+                  const SizedBox(height: 8),
                   Text(
-                    'Отобразить изображение',
+                    context.t.html.display.image,
                     textAlign: TextAlign.center,
-                    style: TextStyle(fontWeight: FontWeight.w500),
+                    style: const TextStyle(fontWeight: FontWeight.w500),
                   ),
                 ],
               ),

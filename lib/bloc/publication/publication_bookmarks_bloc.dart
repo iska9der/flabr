@@ -3,9 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../core/component/logger/logger.dart';
-import '../../data/exception/exception.dart';
 import '../../data/model/publication/publication.dart';
 import '../../data/repository/repository.dart';
+import '../error/app_failure.dart';
 
 part 'publication_bookmarks_bloc.freezed.dart';
 part 'publication_bookmarks_event.dart';
@@ -107,7 +107,7 @@ class PublicationBookmarksBloc
     } catch (error, stackTrace) {
       emit(
         state.copyWith(
-          error: error.parseException(),
+          error: AppFailure(.operationFailed, error),
           loadingIds: {...state.loadingIds}..remove(id),
         ),
       );

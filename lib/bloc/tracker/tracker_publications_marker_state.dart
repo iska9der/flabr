@@ -7,7 +7,7 @@ abstract class TrackerPublicationsMarkerState
 
   const factory TrackerPublicationsMarkerState({
     @Default(LoadingStatus.initial) LoadingStatus status,
-    @Default('') String error,
+    Object? error,
 
     /// Список отмеченных публикаций
     /// {идентификатор публикации: является ли публикация непрочитанной}

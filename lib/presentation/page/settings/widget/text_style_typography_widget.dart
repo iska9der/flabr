@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../bloc/settings/settings_cubit.dart';
+import '../../../../i18n/i18n.dart';
 import '../../../extension/extension.dart';
 import '../model/config_model.dart';
 import 'settings_card_widget.dart';
@@ -204,7 +205,7 @@ class _TextStyleTypographyCardState extends State<_TextStyleTypographyCard> {
       title: widget.title,
       actions: [
         IconButton(
-          tooltip: 'Вернуть значения по умолчанию',
+          tooltip: context.t.typography.resetDefaults,
           onPressed: () => _reset(context),
           icon: const Icon(Icons.restart_alt_rounded),
         ),
@@ -218,7 +219,9 @@ class _TextStyleTypographyCardState extends State<_TextStyleTypographyCard> {
             child: DropdownButtonFormField<String>(
               key: ValueKey(_fontFamily),
               initialValue: _fontFamily,
-              decoration: const InputDecoration(labelText: 'Шрифт'),
+              decoration: InputDecoration(
+                labelText: context.t.typography.font.label,
+              ),
               items: widget.fontFamilies
                   .map(
                     (family) => DropdownMenuItem(
@@ -241,7 +244,7 @@ class _TextStyleTypographyCardState extends State<_TextStyleTypographyCard> {
             ),
           ),
           SettingsSliderWidget(
-            label: 'Размер шрифта',
+            label: context.t.typography.font.size,
             value: _fontSize,
             min: widget.fontSizeMin,
             max: widget.fontSizeMax,
@@ -254,7 +257,7 @@ class _TextStyleTypographyCardState extends State<_TextStyleTypographyCard> {
             ),
           ),
           SettingsSliderWidget(
-            label: 'Межстрочный интервал',
+            label: context.t.typography.line.height,
             value: _fontHeight,
             min: _fontHeightMin,
             max: widget.fontHeightMax,

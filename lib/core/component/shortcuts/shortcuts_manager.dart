@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:auto_route/auto_route.dart';
 import 'package:injectable/injectable.dart';
 import 'package:quick_shortcuts/quick_shortcuts.dart';
+import '../../../i18n/i18n.dart';
 
 import '../logger/logger.dart';
 import '../router/router.dart';
@@ -90,7 +91,13 @@ class ShortcutsManager {
         .map(
           (action) => Shortcut(
             id: action.id,
-            title: action.title,
+            title: switch (action) {
+              .bookmarks => t.shortcut.bookmarks,
+              .articles => t.shortcut.articles,
+              .posts => t.shortcut.posts,
+              .news => t.shortcut.news,
+              .search => t.shortcut.search,
+            },
             icon: icon,
           ),
         )

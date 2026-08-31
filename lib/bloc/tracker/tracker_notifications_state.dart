@@ -6,7 +6,7 @@ abstract class TrackerNotificationsState with _$TrackerNotificationsState {
 
   const factory TrackerNotificationsState({
     @Default(LoadingStatus.initial) LoadingStatus status,
-    @Default('') String error,
+    Object? error,
     required TrackerNotificationCategory category,
     @Default(TrackerNotificationListResponse.empty)
     ListResponse<TrackerNotification> response,

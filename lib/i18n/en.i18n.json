@@ -1,0 +1,455 @@
+{
+  "company": {
+    "dashboard": {
+      "profile": "Profile"
+    },
+    "list": {
+      "title": "Companies",
+      "fetchFailed": "Failed to load the company list"
+    },
+    "contacts": "Contacts",
+    "information": "Information",
+    "website": "Website",
+    "registrationDate": "Registration date",
+    "foundedDate": "Founded",
+    "size": "Company size",
+    "representative": "Representative",
+    "postsInHubs": "Posts in hubs:",
+    "rating": "Rating",
+    "followers": "Followers",
+    "followerCount": "Followers",
+    "profile": {
+      "fetchFailed": "Failed to load the company profile"
+    }
+  },
+  "hub": {
+    "dashboard": {
+      "profile": "Profile"
+    },
+    "list": {
+      "title": "Hubs",
+      "fetchFailed": "Failed to load the hub list"
+    },
+    "rating": "Rating",
+    "followers": "Followers",
+    "followerCount": "Followers",
+    "profile": {
+      "fetchFailed": "Failed to load the hub profile"
+    },
+    "articles": {
+      "fetchFailed": "Failed to load articles"
+    },
+    "type": {
+      "unknown": "Unknown hub type"
+    }
+  },
+  "publication": {
+    "dashboard": {
+      "myFeed": "My feed",
+      "articles": "Articles",
+      "posts": "Posts",
+      "news": "News",
+      "search": "Search",
+      "tracker": "Tracker"
+    },
+    "settingsTitle": "Publications",
+    "wrongDestination": "You've ended up in the wrong place...",
+    "failed": "Failed!",
+    "saveArticle": "Save article",
+    "saved": "Saved",
+    "unavailable": "Unavailable",
+    "list": {
+      "empty": "Nothing here"
+    },
+    "upvote": "Upvote",
+    "downvote": "Downvote",
+    "tags": "Tags:",
+    "more": "More",
+    "configure": "Configure",
+    "readingTimeMinutes": "{{readingTime}} min",
+    "comments": {
+      "fetchFailed": "Failed to load comments"
+    },
+    "counters": {
+      "fetchFailed": "Failed to load counters"
+    },
+    "voting": {
+      "ended": "Voting has already ended",
+      "dailyLimitReached": "You have reached today's vote limit",
+      "insufficientRating": "Your rating is too low to vote",
+      "noLongerAllowed": "You can no longer vote",
+      "upvoteFailed": "Failed to increase the rating",
+      "downvoteUnavailable": "The developer does not have enough voting power to downvote publications, so downvoting behavior is currently unknown"
+    },
+    "complexity": {
+      "easy": "Easy",
+      "medium": "Medium",
+      "hard": "Hard"
+    },
+    "flow": {
+      "development": "Development",
+      "administration": "Administration",
+      "design": "Design",
+      "management": "Management",
+      "marketing": "Marketing",
+      "popularScience": "Popular science",
+      "unknown": "Unknown publication flow"
+    },
+    "format": {
+      "caseStudy": "Case study",
+      "tutorial": "Tutorial",
+      "review": "Review",
+      "opinion": "Opinion",
+      "digest": "Digest",
+      "analytics": "Analytics",
+      "roadmap": "Roadmap",
+      "report": "Report",
+      "interview": "Interview",
+      "retrospective": "Retrospective"
+    },
+    "type": {
+      "unknown": "Unknown",
+      "article": "Article",
+      "post": "Post",
+      "news": "News",
+      "megaproject": "Megaproject",
+      "voice": "Voice"
+    },
+    "original": {
+      "author": "Original author: {{originalAuthorName}}",
+      "link": "Link to original"
+    },
+    "votes": {
+      "total": "Total votes {{votesCount}}: ",
+      "breakdown": "↑{{votesCountPlus}} and ↓{{votesCountMinus}}"
+    }
+  },
+  "feed": {
+    "ratingThreshold": "Rating threshold",
+    "settingsTitle": "Feed",
+    "cardsSection": "Cards",
+    "behaviorSection": "Behavior",
+    "images": {
+      "label": "Images",
+      "performanceNote": "affects performance"
+    },
+    "shortDescription": "Short description",
+    "navigation": "Navigation",
+    "showOnScroll": "Show while scrolling",
+    "infiniteScroll": "Infinite scroll",
+    "pagination": "Pagination",
+    "publications": {
+      "fetchFailed": "Failed to load publications"
+    },
+    "publication": {
+      "unknownType": "Unknown publication type",
+      "type": "Publication type",
+      "types": {
+        "articles": "Articles",
+        "posts": "Posts",
+        "news": "News"
+      }
+    }
+  },
+  "bookmark": {
+    "comments": {
+      "loadFailed": "Failed to load bookmarked comments"
+    }
+  },
+  "tracker": {
+    "somethingHappenedTo": "Something happened to",
+    "publishedNewPost": "Published a new post",
+    "bookmarkedNewPost": "Bookmarked a new post",
+    "title": "Tracker",
+    "publications": {
+      "title": "Publications",
+      "markReadFailed": "Failed to mark publications as read",
+      "removeFailed": "Failed to remove publications from the tracker",
+      "readFailed": "Failed to read the publication"
+    },
+    "subscriptions": "Subscriptions",
+    "markAsRead": "Mark as read",
+    "remove": "Remove from tracker",
+    "notifications": {
+      "fetchFailed": "Failed to load notifications",
+      "markReadFailed": "Failed to mark notifications as read"
+    },
+    "subscription": {
+      "markAsRead": "Mark as read"
+    },
+    "unknownNotification": {
+      "wanted": "The developer is looking for this notification type!",
+      "help": "To display the data, I need to know its structure.\nI have not received this type of notification, so I need a little help:\ntapping the email or Telegram icon will copy the notification structure and open the selected app.\nSend the message, and no one gets hurt. Thank you!"
+    }
+  },
+  "user": {
+    "ufo": "UFO",
+    "joinedByInvitation": "{{createdAtDate}} by invitation from {{issuerLogin}}",
+    "dashboard": {
+      "profile": "Profile",
+      "publications": "Publications",
+      "comments": "Comments",
+      "bookmarks": "Bookmarks"
+    },
+    "list": {
+      "title": "Authors",
+      "fetchFailed": "Failed to load users",
+      "votes": "{{votesCount}} votes"
+    },
+    "rating": "Rating",
+    "ranking": {
+      "label": "Ranking",
+      "position": "{{ratingPosition}}th"
+    },
+    "notRanked": "Not ranked",
+    "location": "Location",
+    "worksAt": "Works at",
+    "detailsEmpty": "It's so quiet here...",
+    "registered": "Registered",
+    "activity": "Activity",
+    "role": "User",
+    "points": "Points",
+    "badges": "Badges",
+    "invited": "Invited",
+    "about": "About",
+    "bookmarks": {
+      "fetchFailed": "Failed to load bookmarks",
+      "types": {
+        "articles": "Articles",
+        "posts": "Posts",
+        "news": "News",
+        "comments": "Comments"
+      }
+    },
+    "publications": {
+      "types": {
+        "articles": "Articles",
+        "posts": "Posts",
+        "news": "News"
+      }
+    },
+    "profile": {
+      "cardFetchFailed": "Failed to load the user profile card",
+      "loadFailed": "Failed to load your profile",
+      "votes": "{{votesCount}} votes"
+    },
+    "comments": {
+      "loadFailed": "Failed to load user comments"
+    }
+  },
+  "shortcut": {
+    "bookmarks": "Bookmarks",
+    "articles": "Articles",
+    "posts": "Posts",
+    "news": "News",
+    "search": "Search"
+  },
+  "error": {
+    "somethingWentWrong": "Something went wrong",
+    "operationFailed": "Failed to complete the operation",
+    "requestFailed": "Failed to complete the request",
+    "notFound": "Not found",
+    "valueError": "Value error"
+  },
+  "comment": {
+    "title": "Comments",
+    "fetchFailed": "Failed to load the comment list",
+    "publication": {
+      "inDrafts": "The publication is in drafts"
+    },
+    "disabled": "Comments are disabled for this publication",
+    "empty": "No comments",
+    "repliedTo": "replied to ",
+    "messageFrom": "message from ",
+    "showFull": "Show in full"
+  },
+  "filter": {
+    "all": "All",
+    "period": {
+      "day": "Day",
+      "week": "Week",
+      "month": "Month",
+      "year": "Year",
+      "allTime": "All time"
+    },
+    "apply": "Apply"
+  },
+  "sort": {
+    "newest": "Newest",
+    "best": "Best",
+    "unknownValue": "Unknown sort value"
+  },
+  "language": {
+    "unknown": "Unknown language",
+    "russian": "Russian",
+    "english": "English"
+  },
+  "search": {
+    "notImplemented": "Not implemented",
+    "hint": "Search",
+    "noResults": "No search results",
+    "order": {
+      "relevance": "By relevance",
+      "date": "By date",
+      "rating": "By rating"
+    },
+    "target": {
+      "articles": "Articles",
+      "hubs": "Hubs",
+      "companies": "Companies",
+      "users": "Users",
+      "comments": "Comments"
+    }
+  },
+  "image": {
+    "missingMimeType": "mime/type is not specified in the headers",
+    "download": "Download",
+    "share": "Share"
+  },
+  "mostRead": {
+    "readingNow": "Reading now"
+  },
+  "profile": {
+    "title": "Profile",
+    "publications": "Publications",
+    "bookmarks": "Bookmarks",
+    "comments": "Comments",
+    "subscribed": "Subscribed",
+    "subscribe": "Subscribe"
+  },
+  "pagination": {
+    "previousPage": "Previous page",
+    "nextPage": "Next page"
+  },
+  "common": {
+    "warning": "Warning",
+    "learnMore": "Learn more",
+    "loading": "Loading...",
+    "retry": "Retry",
+    "clear": "Clear",
+    "save": "Save",
+    "copiedToClipboard": "Copied to clipboard",
+    "copy": "Copy",
+    "genericError": "An error occurred",
+    "tryAgain": "Try again"
+  },
+  "auth": {
+    "error": "Authorization error",
+    "signOut": "Sign out",
+    "login": {
+      "action": "Sign in",
+      "fallbackHint": "If you can't sign in using the login form",
+      "required": "You need to sign in"
+    },
+    "authorization": "Authorization",
+    "logout": "Sign out",
+    "token": {
+      "label": "Token {{sidToken}}",
+      "cookieHint": "Can be found in cookies",
+      "dialogMessage": "There was a problem retrieving the token.\n\nTry signing in again or ignore this annoying dialog.\n\nMaybe it will resolve itself? 🤔"
+    }
+  },
+  "settings": {
+    "account": "Account",
+    "integrations": "Integrations",
+    "profileAndIntegrations": "Profile and integrations",
+    "interfaceDescription": "Appearance, scrolling, and languages",
+    "fontsDescription": "Publication scale and typography",
+    "feedDescription": "Cards and navigation",
+    "elementVisibility": "Element visibility"
+  },
+  "summary": {
+    "generationPurpose": "For generating article summaries",
+    "brief": {
+      "fetchError": "Failed to get the brief summary"
+    },
+    "link": {
+      "label": "Summary link",
+      "fetchError": "Failed to get the summary link"
+    },
+    "fetchError": "Failed to get the summary",
+    "authorizationRequired": "YandexGPT token is required",
+    "aiDescription": "a brief article summary generated by AI",
+    "token": {
+      "label": "Token",
+      "locationHint": "Can be found at 300.ya.ru"
+    }
+  },
+  "fonts": {
+    "settingsTitle": "Fonts",
+    "publicationsSection": "Publications",
+    "generalSection": "General",
+    "textScale": "Text scale"
+  },
+  "interface": {
+    "settingsTitle": "Interface",
+    "appearance": "Appearance",
+    "languages": "Languages",
+    "colorTheme": "Color theme",
+    "language": "Interface language",
+    "scroll": "Scrolling",
+    "publication": {
+      "language": {
+        "label": "Publication language",
+        "required": "at least one must be selected"
+      }
+    }
+  },
+  "theme": {
+    "system": "System",
+    "light": "Light",
+    "dark": "Dark"
+  },
+  "alignment": {
+    "start": "At the start",
+    "center": "In the center",
+    "end": "At the end"
+  },
+  "typography": {
+    "resetDefaults": "Restore defaults",
+    "font": {
+      "label": "Font",
+      "size": "Font size"
+    },
+    "headings": "Headings",
+    "headingExample": "Example publication heading",
+    "text": {
+      "label": "Text",
+      "example": "Example publication text.\\n"
+    },
+    "line": {
+      "height": "Line height",
+      "rhythmHint": "This makes it easier to assess the line size and rhythm"
+    }
+  },
+  "app": {
+    "initializationError": "App initialization error",
+    "requiredDataLoadError": "Failed to load the required data"
+  },
+  "html": {
+    "copyToClipboard": "Copy to clipboard",
+    "showFull": "Show in full...",
+    "open": {
+      "link": "Open",
+      "inBrowser": "Open in browser"
+    },
+    "display": {
+      "image": "Display image",
+      "webView": "Display WebView"
+    }
+  },
+  "navigation": {
+    "publications": "Publications",
+    "services": "Services",
+    "settings": "Settings"
+  },
+  "services": {
+    "hubs": "Hubs",
+    "authors": "Authors",
+    "companies": "Companies"
+  },
+  "account": {
+    "profile": "Profile",
+    "notLoggedIn": "You are not signed in"
+  }
+}

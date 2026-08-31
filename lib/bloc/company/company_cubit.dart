@@ -1,11 +1,11 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../data/exception/exception.dart';
 import '../../data/model/company/company.dart';
 import '../../data/model/language/language.dart';
 import '../../data/model/loading_status_enum.dart';
 import '../../data/repository/repository.dart';
+import '../error/app_failure.dart';
 
 part 'company_state.dart';
 
@@ -31,7 +31,7 @@ class CompanyCubit extends Cubit<CompanyState> {
       emit(
         state.copyWith(
           status: .failure,
-          error: error.parseException('Не удалось получить профиль компании'),
+          error: AppFailure(.companyProfileFetchFailed, error),
         ),
       );
 

@@ -149,10 +149,7 @@ class MyFeatureRepository {
 
   MyFeatureRepository(this._service);
 
-  Future<List<MyModel>> fetchData() async {
-    final response = await _service.getData();
-    return response.map((json) => MyModel.fromJson(json)).toList();
-  }
+  Future<List<MyModel>> fetchData() => _service.getData();
 }
 ```
 

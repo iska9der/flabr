@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../i18n/i18n.dart';
 import '../cubit/publication_download_cubit.dart';
 import '../model/publication_download_format.dart';
 
@@ -17,7 +18,7 @@ class PublicationDownload extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ExpansionTile(
-      title: const Text('Сохранить статью'),
+      title: Text(context.t.publication.saveArticle),
       tilePadding: EdgeInsets.zero,
       childrenPadding: EdgeInsets.zero,
       shape: const RoundedRectangleBorder(),
@@ -45,9 +46,9 @@ class PublicationDownload extends StatelessWidget {
               child: const Expanded(
                 child: _SaveButton(label: 'HTML'),
               ),
-            )
+            ),
           ],
-        )
+        ),
       ],
     );
   }
@@ -65,15 +66,18 @@ class _SaveButton extends StatelessWidget {
         return OutlinedButton.icon(
           icon: const Icon(Icons.save_alt_rounded),
           label: switch (state.status) {
-            PublicationDownloadStatus.success => const Text('Сохранено'),
-            PublicationDownloadStatus.notSupported => const Text('Недоступно'),
+            PublicationDownloadStatus.success => Text(
+              context.t.publication.saved,
+            ),
+            PublicationDownloadStatus.notSupported => Text(
+              context.t.publication.unavailable,
+            ),
             _ => Text(label),
           },
           onPressed: switch (state.status) {
             PublicationDownloadStatus.notSupported ||
             PublicationDownloadStatus.loading ||
-            PublicationDownloadStatus.success =>
-              null,
+            PublicationDownloadStatus.success => null,
             _ => () => context.read<PublicationDownloadCubit>().pickAndSave(),
           },
         );

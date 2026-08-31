@@ -26,7 +26,6 @@ class UserBookmarkListPage extends StatelessWidget {
   final String alias;
   final String type;
 
-  static const String title = 'Закладки';
   static const String routePath = 'bookmarks/:type';
   static const String routeName = 'UserBookmarkListRoute';
 

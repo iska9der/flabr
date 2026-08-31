@@ -11,14 +11,14 @@ class MostReadingState with Equatable {
   });
 
   final LoadingStatus status;
-  final String error;
+  final Object error;
   final Language langUI;
   final List<Language> langArticles;
   final List<PublicationCommon> publications;
 
   MostReadingState copyWith({
     LoadingStatus? status,
-    String? error,
+    Object? error,
     Language? langUI,
     List<Language>? langArticles,
     List<PublicationCommon>? publications,

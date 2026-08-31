@@ -6,6 +6,7 @@ import '../../../bloc/auth/auth_cubit.dart';
 import '../../../bloc/auth/login_cubit.dart';
 import '../../../core/constants/constants.dart';
 import '../../../di/di.dart';
+import '../../../i18n/i18n.dart';
 import '../../extension/extension.dart';
 
 class ConnectSidWidget extends StatefulWidget {
@@ -46,11 +47,13 @@ class _ConnectSidWidgetState extends State<ConnectSidWidget> {
                 enabled: !state.isAuthorized,
                 controller: controller,
                 keyboardType: .text,
-                decoration: const .new(
+                decoration: InputDecoration(
                   floatingLabelBehavior: .always,
-                  labelText: 'Токен ${Keys.sidToken}',
-                  hintText: 'Можно найти в cookies',
-                  border: OutlineInputBorder(),
+                  labelText: context.t.auth.token.label(
+                    sidToken: Keys.sidToken,
+                  ),
+                  hintText: context.t.auth.token.cookieHint,
+                  border: const OutlineInputBorder(),
                 ),
               ),
               const SizedBox(height: 8),
@@ -59,7 +62,7 @@ class _ConnectSidWidgetState extends State<ConnectSidWidget> {
                   if (state.isAuthorized)
                     ElevatedButton(
                       onPressed: () => context.read<AuthCubit>().logOut(),
-                      child: const Text('Очистить'),
+                      child: Text(context.t.common.clear),
                     )
                   else
                     BlocBuilder<LoginCubit, LoginState>(
@@ -73,7 +76,7 @@ class _ConnectSidWidgetState extends State<ConnectSidWidget> {
                               );
                             },
                           },
-                          child: const Text('Сохранить'),
+                          child: Text(context.t.common.save),
                         );
                       },
                     ),
@@ -84,10 +87,10 @@ class _ConnectSidWidgetState extends State<ConnectSidWidget> {
                         Clipboard.setData(.new(text: controller.text));
 
                         context.showSnack(
-                          content: const Text('Скопировано в буфер обмена'),
+                          content: Text(context.t.common.copiedToClipboard),
                         );
                       },
-                      child: const Text('Скопировать'),
+                      child: Text(context.t.common.copy),
                     ),
                 ],
               ),

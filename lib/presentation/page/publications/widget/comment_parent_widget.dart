@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:html/parser.dart';
 
 import '../../../../data/model/comment_base.dart';
+import '../../../../i18n/i18n.dart';
 import '../../../extension/extension.dart';
 import '../../../theme/theme.dart';
 import '../../../widget/html_view/html_view_widget.dart';
@@ -100,11 +101,11 @@ class _CommentParentState extends State<CommentParent> {
                                 Expanded(
                                   child: SelectableText.rich(
                                     TextSpan(
-                                      text: 'ответил на ',
+                                      text: context.t.comment.repliedTo,
                                       style: textStyle,
                                       children: [
                                         TextSpan(
-                                          text: 'сообщение от ',
+                                          text: context.t.comment.messageFrom,
                                           style: textStyle.copyWith(
                                             color: theme.colors.primary,
                                           ),
@@ -146,7 +147,7 @@ class _CommentParentState extends State<CommentParent> {
                 child: IconButton.filled(
                   visualDensity: .compact,
                   icon: const Icon(Icons.remove_red_eye_sharp, size: 16),
-                  tooltip: 'Показать полностью',
+                  tooltip: context.t.comment.showFull,
                   onPressed: () => context.buildModalRoute(
                     rootNavigator: true,
                     child: Hero(

@@ -27,7 +27,6 @@ class HubDetailPage extends StatelessWidget {
 
   final String alias;
 
-  static const name = 'Профиль';
   static const routePath = 'profile';
   static const routeName = 'HubDetailRoute';
 
@@ -97,7 +96,7 @@ class HubDetailPageView extends StatelessWidget {
           if (state.status == .failure) {
             return Center(
               child: AppError(
-                message: state.error,
+                error: state.error,
                 onRetry: () => listCubit.fetch(),
               ),
             );

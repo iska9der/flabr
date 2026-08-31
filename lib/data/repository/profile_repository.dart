@@ -9,21 +9,7 @@ class ProfileRepository {
 
   final ProfileService _service;
 
-  Future<UserMe?> fetchMe() async {
-    final raw = await _service.fetchMe();
+  Future<UserMe?> fetchMe() => _service.fetchMe();
 
-    if (raw == null) {
-      return null;
-    }
-
-    return UserMe.fromMap(raw);
-  }
-
-  Future<UserUpdates> fetchUpdates() async {
-    final map = await _service.fetchUpdates();
-
-    final model = UserUpdates.fromJson(map);
-
-    return model;
-  }
+  Future<UserUpdates> fetchUpdates() => _service.fetchUpdates();
 }

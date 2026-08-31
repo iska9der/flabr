@@ -6,6 +6,7 @@ import 'package:responsive_framework/responsive_framework.dart';
 import '../../../bloc/auth/auth_cubit.dart';
 import '../../../bloc/publication/publication_bookmarks_bloc.dart';
 import '../../../bloc/settings/settings_cubit.dart';
+import '../../../i18n/i18n.dart';
 import '../../../presentation/extension/extension.dart';
 import '../../../presentation/theme/theme.dart';
 import '../../../presentation/widget/enhancement/card.dart';
@@ -75,7 +76,9 @@ class PublicationListScaffold<
         BlocListener<PublicationBookmarksBloc, PublicationBookmarksState>(
           listenWhen: (_, current) => current.error != null,
           listener: (context, state) {
-            context.showSnack(content: Text(state.error!));
+            context.showSnack(
+              content: Text(context.t.errorMessage(state.error)),
+            );
           },
         ),
       ],
@@ -163,7 +166,7 @@ class _PublicationListView<
               ),
             ),
 
-            /// Кнопка "Читают сейчас"
+            /// Кнопка context.t.mostRead.readingNow
             /// видна только на мобильных устройствах
             const ResponsiveVisibilitySliver(
               hiddenConditions: [
@@ -184,7 +187,7 @@ class _PublicationListView<
                   showType: params.showPublicationType,
                 ),
 
-                /// Боковая панель с дополнительными виджетами, например "Читают сейчас"
+                /// Боковая панель с дополнительными виджетами, например context.t.mostRead.readingNow
                 /// Видна на планшетах и десктопных устройствах,
                 /// и если sidebarEnabled = true
                 ResponsiveVisibilitySliver(
@@ -225,13 +228,13 @@ class _PublicationListView<
                           toolbarHeight: sidebarHeight,
                           expandedHeight: sidebarHeight,
                           pinned: true,
-                          flexibleSpace: const Padding(
+                          flexibleSpace: Padding(
                             padding: AppInsets.mostReadingDesktop,
                             child: _SideWidgetList(
                               widgets: [
                                 _SideWidget(
-                                  title: 'Читают сейчас',
-                                  child: MostReadingWidget(),
+                                  title: context.t.mostRead.readingNow,
+                                  child: const MostReadingWidget(),
                                 ),
                               ],
                             ),

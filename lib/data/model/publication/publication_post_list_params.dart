@@ -1,4 +1,3 @@
-
 part of 'publication.dart';
 
 class PublicationPostListParams extends QueryParams {

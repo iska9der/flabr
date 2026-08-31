@@ -1,11 +1,11 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../data/exception/exception.dart';
 import '../../data/model/hub/hub.dart';
 import '../../data/model/list_response_model.dart';
 import '../../data/model/loading_status_enum.dart';
 import '../../data/repository/repository.dart';
+import '../error/app_failure.dart';
 
 part 'hub_list_state.dart';
 
@@ -34,11 +34,10 @@ class HubListCubit extends Cubit<HubListState> {
         ),
       );
     } catch (error, stackTrace) {
-      const fallbackMessage = 'Не удалось получить список хабов';
       emit(
         state.copyWith(
           status: .failure,
-          error: error.parseException(fallbackMessage),
+          error: AppFailure(.hubListFetchFailed, error),
         ),
       );
 

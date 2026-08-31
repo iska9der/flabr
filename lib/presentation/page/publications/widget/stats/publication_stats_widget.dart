@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../../data/model/publication/publication.dart';
+import '../../../../../i18n/i18n.dart';
 import '../../../../extension/extension.dart';
 import 'publication_stat_widget.dart';
 
@@ -46,7 +47,9 @@ class CommonStatsWidget extends StatelessWidget {
         if (complexity != null) _ComplexityStat(complexity!),
         if (readingTime > 0)
           PublicationStat(
-            text: '$readingTime мин',
+            text: context.t.publication.readingTimeMinutes(
+              readingTime: readingTime,
+            ),
             icon: Icons.access_time_filled_rounded,
           ),
         PublicationStat(

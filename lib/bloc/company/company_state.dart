@@ -10,7 +10,7 @@ class CompanyState with Equatable {
   });
 
   final LoadingStatus status;
-  final String error;
+  final Object error;
 
   final String alias;
   final Company model;
@@ -18,7 +18,7 @@ class CompanyState with Equatable {
 
   CompanyState copyWith({
     LoadingStatus? status,
-    String? error,
+    Object? error,
     Language? langUI,
     List<Language>? langArticles,
     Company? model,

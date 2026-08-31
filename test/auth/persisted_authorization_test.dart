@@ -75,7 +75,7 @@ void main() {
       );
       final profile = await service.fetchMe();
 
-      expect(profile, isEmpty);
+      expect(profile?.id, isEmpty);
       expect(adapter.requests, hasLength(2));
 
       final csrfRequest = adapter.requests.first;

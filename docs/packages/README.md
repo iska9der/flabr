@@ -18,11 +18,13 @@ Wrapper for `quick_actions` library providing home screen shortcuts functionalit
 
 ### ya_summary
 
-YandexGPT API integration for generating AI-powered article summaries.
+Pure Dart API client for generating AI-powered article summaries. It exports
+`SummaryApi`, `SummaryModel`, typed `SummaryException` errors, and the
+asynchronous token-provider contract. App repositories, Cubits, widgets, and
+localized messages remain in `lib/`.
 
-**Used by:** `SummaryAuthCubit` and summary features
-
-**Details:** See package README at `packages/ya_summary/README.md`
+**Used by:** `lib/data/repository/summary_repository.dart` and
+`lib/feature/summary/`
 
 ### flutter_highlight
 

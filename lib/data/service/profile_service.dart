@@ -1,12 +1,12 @@
 import 'package:injectable/injectable.dart';
 
 import '../../core/component/http/http.dart';
-import '../exception/exception.dart';
+import '../model/user/user.dart';
 
 abstract interface class ProfileService {
-  Future<Map<String, dynamic>?> fetchMe();
+  Future<UserMe?> fetchMe();
 
-  Future<Map<String, dynamic>> fetchUpdates();
+  Future<UserUpdates> fetchUpdates();
 }
 
 @Singleton(as: ProfileService)
@@ -18,24 +18,19 @@ class ProfileServiceImpl implements ProfileService {
   final HttpClient _siteClient;
 
   @override
-  Future<Map<String, dynamic>?> fetchMe() async {
-    try {
-      final response = await _siteClient.get('/v2/me');
-
-      return response.data;
-    } catch (e, trace) {
-      Error.throwWithStackTrace(const FetchException(), trace);
+  Future<UserMe?> fetchMe() async {
+    final response = await _siteClient.get('/v2/me');
+    if (response.data == null) {
+      return null;
     }
+
+    return UserMe.fromMap(response.data);
   }
 
   @override
-  Future<Map<String, dynamic>> fetchUpdates() async {
-    try {
-      final response = await _siteClient.get('/v2/me/updates');
+  Future<UserUpdates> fetchUpdates() async {
+    final response = await _siteClient.get('/v2/me/updates');
 
-      return response.data;
-    } catch (e, trace) {
-      Error.throwWithStackTrace(const FetchException(), trace);
-    }
+    return UserUpdates.fromJson(response.data);
   }
 }

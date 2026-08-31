@@ -6,7 +6,7 @@ typedef Bookmark = ({int count, bool isBookmarked});
 abstract class PublicationBookmarksState with _$PublicationBookmarksState {
   const factory PublicationBookmarksState({
     @Default({}) Map<String, Bookmark> bookmarks,
-    String? error,
+    Object? error,
     @Default({}) Set<String> loadingIds,
   }) = _PublicationBookmarksState;
 }

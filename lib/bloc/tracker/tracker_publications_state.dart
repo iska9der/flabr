@@ -6,7 +6,7 @@ abstract class TrackerPublicationsState with _$TrackerPublicationsState {
 
   const factory TrackerPublicationsState({
     @Default(LoadingStatus.initial) LoadingStatus status,
-    @Default('') String error,
+    Object? error,
     @Default(TrackerPublicationListResponse.empty)
     ListResponse<TrackerPublication> response,
     @Default(1) int page,

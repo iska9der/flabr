@@ -9,6 +9,7 @@ import '../../../../bloc/settings/settings_cubit.dart';
 import '../../../../core/constants/constants.dart';
 import '../../../../data/model/publication/publication.dart';
 import '../../../../feature/scroll/scroll.dart';
+import '../../../../i18n/i18n.dart';
 import '../../../extension/extension.dart';
 import '../../../theme/theme.dart';
 import '../../../widget/enhancement/progress_indicator.dart';
@@ -62,7 +63,7 @@ class PublicationDetailView extends StatelessWidget {
               .loading => const _LoadingView(),
               .failure => Center(
                 child: AppError(
-                  message: state.error,
+                  error: state.error,
                   onRetry: () => _fetch(context),
                 ),
               ),
@@ -215,7 +216,7 @@ class _BottomBarContainer extends StatelessWidget {
                       ),
                       IconButton(
                         icon: const Icon(Icons.more_horiz_rounded),
-                        tooltip: 'Дополнительно',
+                        tooltip: context.t.publication.more,
                         onPressed: () => _showMoreSheet(context, publication),
                       ),
                     ],
@@ -423,7 +424,7 @@ class _SettingsButton extends StatelessWidget {
     return IconButton(
       icon: const Icon(Icons.tune_rounded),
       iconSize: 18,
-      tooltip: 'Настроить',
+      tooltip: context.t.publication.configure,
       onPressed: () => _showSettingsSheet(context),
     );
   }
@@ -453,7 +454,7 @@ class _ShareButton extends StatelessWidget {
     return IconButton(
       icon: const Icon(Icons.share),
       iconSize: 18,
-      tooltip: 'Поделиться',
+      tooltip: context.t.image.share,
       onPressed: _sharePublication,
     );
   }

@@ -6,6 +6,7 @@ import '../../bloc/auth/auth_cubit.dart';
 import '../../bloc/profile/profile_bloc.dart';
 import '../../bloc/settings/settings_cubit.dart';
 import '../../core/component/router/router.dart';
+import '../../i18n/i18n.dart';
 import '../extension/extension.dart';
 import '../widget/navigation/navigation.dart';
 
@@ -34,20 +35,15 @@ class _DashboardPageState extends State<DashboardPage> {
   /// некорректный connectSSID и [ProfileEvent.fetchMe] вернул null
   void showProfileCorruptedAlert() {
     context.showAlert(
-      title: const Text('Ошибка авторизации'),
-      content: const Text(
-        'Возникли проблемы с полученым токеном\n\n'
-        'Попробуйте перезайти в аккаунт, или игнорируйте '
-        'это назойливое окно\n\n'
-        'Может само пройдет? 🤔',
-      ),
+      title: Text(context.t.auth.error),
+      content: Text(context.t.auth.token.dialogMessage),
       actionsBuilder: (context) => [
         TextButton(
           onPressed: () {
             context.read<AuthCubit>().logOut();
             Navigator.of(context).pop();
           },
-          child: const Text('Выйти из аккаунта'),
+          child: Text(context.t.auth.signOut),
         ),
       ],
     );

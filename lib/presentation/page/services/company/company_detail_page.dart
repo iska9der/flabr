@@ -18,7 +18,6 @@ class CompanyDetailPage extends StatelessWidget {
 
   final String alias;
 
-  static const String title = 'Профиль';
   static const String routePath = 'profile';
   static const String routeName = 'CompanyDetailRoute';
 
@@ -37,7 +36,7 @@ class CompanyDetailPage extends StatelessWidget {
         if (state.status == .failure) {
           return Center(
             child: AppError(
-              message: state.error,
+              error: state.error,
               onRetry: () => fetch(context),
             ),
           );

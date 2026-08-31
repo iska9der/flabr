@@ -17,7 +17,6 @@ class PostListPage extends StatelessWidget {
 
   final String flow;
 
-  static const String name = 'Посты';
   static const String routePath = 'flows/:flow';
   static const String routeName = 'PostListRoute';
 

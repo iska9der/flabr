@@ -9,13 +9,10 @@ import '../../../../core/component/router/router.dart';
 import '../../../../data/model/loading_status_enum.dart';
 import '../../../../di/di.dart';
 import '../../../../feature/scaffold/scaffold.dart';
+import '../../../../i18n/i18n.dart';
 import '../../../widget/dashboard_drawer_link_widget.dart';
 import '../../../widget/enhancement/enhancement.dart';
 import '../../../widget/error_widget.dart';
-import 'user_bookmark_list_page.dart';
-import 'user_comment_list_page.dart';
-import 'user_detail_page.dart';
-import 'user_publication_list_page.dart';
 
 /// Роут используется, когда нам нужно отобразить собственный профиль,
 /// но нам пока неизвестен alias пользователя.
@@ -65,7 +62,7 @@ class ProfileDashboardPage extends StatelessWidget {
           if (state.status == LoadingStatus.failure) {
             return Center(
               child: AppError(
-                message: 'Не удалось загрузить ваш профиль',
+                error: context.t.user.profile.loadFailed,
                 onRetry: () => fetch(context),
               ),
             );
@@ -126,16 +123,18 @@ class UserDashboardView extends StatelessWidget {
               isScrollable: true,
               padding: .zero,
               dividerColor: Colors.transparent,
-              tabs: const [
-                DashboardDrawerLinkWidget(title: UserDetailPage.title),
+              tabs: [
                 DashboardDrawerLinkWidget(
-                  title: UserPublicationListPage.title,
+                  title: context.t.user.dashboard.profile,
                 ),
                 DashboardDrawerLinkWidget(
-                  title: UserCommentListPage.title,
+                  title: context.t.user.dashboard.publications,
                 ),
                 DashboardDrawerLinkWidget(
-                  title: UserBookmarkListPage.title,
+                  title: context.t.user.dashboard.comments,
+                ),
+                DashboardDrawerLinkWidget(
+                  title: context.t.user.dashboard.bookmarks,
                 ),
               ],
             ),

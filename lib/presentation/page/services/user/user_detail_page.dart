@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../bloc/user/user_cubit.dart';
+import '../../../../i18n/i18n.dart';
 import '../../../extension/extension.dart';
 import '../../../theme/theme.dart';
 import '../../../widget/detail/section_container_widget.dart';
@@ -23,7 +24,6 @@ class UserDetailPage extends StatelessWidget {
 
   final String alias;
 
-  static const String title = 'Профиль';
   static const String routePath = 'detail';
   static const String routeName = 'UserDetailRoute';
 
@@ -49,7 +49,7 @@ class UserDetailPageView extends StatelessWidget {
         if (state.status == .failure) {
           return Center(
             child: AppError(
-              message: state.error,
+              error: state.error,
               onRetry: () => _fetch(context),
             ),
           );
@@ -67,27 +67,29 @@ class UserDetailPageView extends StatelessWidget {
                 crossAxisAlignment: .stretch,
                 children: [
                   SectionContainerWidget(
-                    title: 'В рейтинге',
+                    title: context.t.user.ranking.label,
                     child: Text(switch (user.ratingPosition == 0) {
-                      true => 'Не участвует',
-                      false => '${user.ratingPosition.toString()}-й',
+                      true => context.t.user.notRanked,
+                      false => context.t.user.ranking.position(
+                        ratingPosition: user.ratingPosition,
+                      ),
                     }),
                   ),
                   if (user.location.fullLocation.isNotEmpty)
                     SectionContainerWidget(
-                      title: 'Откуда',
+                      title: context.t.user.location,
                       child: Text(user.location.fullLocation),
                     ),
                   if (user.workplace.isNotEmpty) ...[
                     SectionContainerWidget(
-                      title: 'Работает в',
+                      title: context.t.user.worksAt,
                       child: Column(
                         crossAxisAlignment: .start,
                         children: user.workplace.map((e) {
                           return TextButton(
                             onPressed: () => context.showSnack(
-                              content: const Text(
-                                'Здесь так тихо...',
+                              content: Text(
+                                context.t.user.detailsEmpty,
                               ),
                             ),
                             child: Text(e.title),
@@ -98,14 +100,14 @@ class UserDetailPageView extends StatelessWidget {
                   ],
                   if (user.registeredAt != null)
                     SectionContainerWidget(
-                      title: 'Зарегистрирован',
+                      title: context.t.user.registered,
                       child: Text(
                         DateFormat.yMMMMEEEEd().format(user.registeredAt!),
                       ),
                     ),
                   if (user.lastActivityAt != null)
                     SectionContainerWidget(
-                      title: 'Активность',
+                      title: context.t.user.activity,
                       child: Text(
                         DateFormat.yMMMMEEEEd().format(user.lastActivityAt!),
                       ),

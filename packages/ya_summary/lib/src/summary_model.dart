@@ -11,22 +11,11 @@ class SummaryModel with Equatable {
   final String sharingUrl;
   final List<String> content;
 
-  SummaryModel copyWith({
-    String? title,
-    String? sharingUrl,
-    List<String>? content,
-  }) {
-    return SummaryModel(
-      title: title ?? this.title,
-      sharingUrl: sharingUrl ?? this.sharingUrl,
-      content: content ?? this.content,
-    );
-  }
-
   factory SummaryModel.fromMap(Map<String, dynamic> map) {
     final thesisList = List<Map<String, dynamic>>.from(map['thesis'] ?? []);
-    final parsedContent =
-        List<String>.from(thesisList.map((t) => t['content'])).toList();
+    final parsedContent = thesisList
+        .map((thesis) => thesis['content'] as String)
+        .toList();
 
     return SummaryModel(
       title: (map['title'] ?? '') as String,
@@ -36,6 +25,7 @@ class SummaryModel with Equatable {
   }
 
   static const empty = SummaryModel();
+
   bool get isEmpty => this == empty;
 
   @override

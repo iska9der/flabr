@@ -10,7 +10,7 @@ class HubState with Equatable {
   });
 
   final LoadingStatus status;
-  final String error;
+  final Object error;
 
   final String alias;
   final Hub model;
@@ -18,7 +18,7 @@ class HubState with Equatable {
 
   HubState copyWith({
     LoadingStatus? status,
-    String? error,
+    Object? error,
     Hub? model,
     HubProfile? profile,
   }) {

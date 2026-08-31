@@ -13,20 +13,19 @@ enum PublicationFormat {
   roadmap,
   reportage,
   interview,
-  retrospective
-  ;
+  retrospective;
 
   String get label => switch (this) {
-    example => 'Кейс',
-    tutorial => 'Туториал',
+    example => t.publication.format.caseStudy,
+    tutorial => t.publication.format.tutorial,
     faq => 'FAQ',
-    review => 'Обзор',
-    opinion => 'Мнение',
-    digest => 'Дайджест',
-    analytics => 'Аналитика',
-    roadmap => 'Дорожная карта',
-    reportage => 'Репортаж',
-    interview => 'Интервью',
-    retrospective => 'Ретроспектива',
+    review => t.publication.format.review,
+    opinion => t.publication.format.opinion,
+    digest => t.publication.format.digest,
+    analytics => t.publication.format.analytics,
+    roadmap => t.publication.format.roadmap,
+    reportage => t.publication.format.report,
+    interview => t.publication.format.interview,
+    retrospective => t.publication.format.retrospective,
   };
 }

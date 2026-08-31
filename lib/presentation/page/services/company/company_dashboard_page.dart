@@ -6,8 +6,8 @@ import '../../../../bloc/company/company_cubit.dart';
 import '../../../../core/component/router/router.dart';
 import '../../../../di/di.dart';
 import '../../../../feature/scaffold/scaffold.dart';
+import '../../../../i18n/i18n.dart';
 import '../../../widget/dashboard_drawer_link_widget.dart';
-import 'company_detail_page.dart';
 
 @RoutePage(name: CompanyDashboardPage.routeName)
 class CompanyDashboardPage extends StatelessWidget {
@@ -53,8 +53,10 @@ class CompanyDashboardPageView extends StatelessWidget {
               isScrollable: true,
               padding: EdgeInsets.zero,
               dividerColor: Colors.transparent,
-              tabs: const [
-                DashboardDrawerLinkWidget(title: CompanyDetailPage.title),
+              tabs: [
+                DashboardDrawerLinkWidget(
+                  title: context.t.company.dashboard.profile,
+                ),
               ],
             ),
           ),

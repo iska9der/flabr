@@ -9,7 +9,7 @@ class CompanyListState with Equatable {
   });
 
   final LoadingStatus status;
-  final String error;
+  final Object error;
   final ListResponse<Company> response;
   final int page;
 
@@ -18,7 +18,7 @@ class CompanyListState with Equatable {
 
   CompanyListState copyWith({
     LoadingStatus? status,
-    String? error,
+    Object? error,
     ListResponse<Company>? response,
     int? page,
   }) {

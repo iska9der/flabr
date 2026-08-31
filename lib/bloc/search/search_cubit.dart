@@ -1,12 +1,12 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../data/exception/exception.dart';
 import '../../data/model/list_response_model.dart';
 import '../../data/model/loading_status_enum.dart';
 import '../../data/model/search/search_order_enum.dart';
 import '../../data/model/search/search_target_enum.dart';
 import '../../data/repository/repository.dart';
+import '../error/app_failure.dart';
 
 part 'search_state.dart';
 
@@ -85,7 +85,7 @@ class SearchCubit extends Cubit<SearchState> {
       emit(
         state.copyWith(
           status: .failure,
-          error: error.parseException(),
+          error: AppFailure(.operationFailed, error),
         ),
       );
 

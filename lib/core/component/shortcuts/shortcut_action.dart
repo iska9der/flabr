@@ -2,16 +2,15 @@ import 'package:collection/collection.dart';
 
 /// Действия быстрого доступа, доступные в приложении
 enum ShortcutAction {
-  bookmarks('action_bookmarks', 'Закладки'),
-  articles('action_articles', 'Статьи'),
-  posts('action_posts', 'Посты'),
-  news('action_news', 'Новости'),
-  search('action_search', 'Поиск');
+  bookmarks('action_bookmarks'),
+  articles('action_articles'),
+  posts('action_posts'),
+  news('action_news'),
+  search('action_search');
 
-  const ShortcutAction(this.id, this.title);
+  const ShortcutAction(this.id);
 
   final String id;
-  final String title;
 
   /// Получить ShortcutAction по ID
   static ShortcutAction? fromId(String id) {

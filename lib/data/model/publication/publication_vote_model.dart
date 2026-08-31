@@ -1,4 +1,3 @@
-
 part of 'publication.dart';
 
 @freezed

@@ -9,13 +9,13 @@ class SubscriptionState with Equatable {
   });
 
   final LoadingStatus status;
-  final String error;
+  final Object error;
   final String alias;
   final bool isSubscribed;
 
   SubscriptionState copyWith({
     LoadingStatus? status,
-    String? error,
+    Object? error,
     String? alias,
     bool? isSubscribed,
   }) {
@@ -26,8 +26,6 @@ class SubscriptionState with Equatable {
       isSubscribed: isSubscribed ?? this.isSubscribed,
     );
   }
-
-  String get buttonText => isSubscribed ? 'Подписан' : 'Подписаться';
 
   @override
   List<Object> get props => [status, error, alias, isSubscribed];

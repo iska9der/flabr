@@ -34,7 +34,7 @@ class _ButtonState extends State<_Button> {
                   child: Padding(
                     padding: const .only(left: 12),
                     child: Text(
-                      'Читают сейчас',
+                      context.t.mostRead.readingNow,
                       style: theme.textTheme.titleSmall,
                     ),
                   ),

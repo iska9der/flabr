@@ -1,16 +1,20 @@
-import 'dart:async';
-
 import 'package:injectable/injectable.dart';
-import 'package:ya_summary/ya_summary.dart';
 
 import '../../core/component/storage/storage.dart';
+
+abstract interface class SummaryTokenRepository {
+  Future<String?> getToken();
+
+  Future<void> setToken(String token);
+
+  Future<void> clear();
+}
 
 @Singleton(as: SummaryTokenRepository)
 class SummaryTokenRepositoryImpl implements SummaryTokenRepository {
   SummaryTokenRepositoryImpl(@Named('secureStorage') this._storage);
 
   final CacheStorage _storage;
-
   final String _cacheKey = 'yaGptToken';
   String _token = '';
 
@@ -30,14 +34,12 @@ class SummaryTokenRepositoryImpl implements SummaryTokenRepository {
   @override
   Future<void> setToken(String token) async {
     await _storage.write(_cacheKey, token);
-
     _token = token;
   }
 
   @override
   Future<void> clear() async {
     _token = '';
-
     await _storage.delete(_cacheKey);
   }
 }

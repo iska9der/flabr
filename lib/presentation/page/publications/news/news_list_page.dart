@@ -17,7 +17,6 @@ class NewsListPage extends StatelessWidget {
 
   final String flow;
 
-  static const String name = 'Новости';
   static const String routePath = 'flows/:flow';
   static const String routeName = 'NewsListRoute';
 
