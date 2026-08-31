@@ -31,7 +31,6 @@ class PublicationDownload extends StatelessWidget {
           ),
           child: _SaveButton(
             title: context.t.publication.download.markdown.title,
-            subtitle: context.t.publication.download.markdown.subtitle,
             icon: Icons.description_outlined,
           ),
         ),
@@ -45,7 +44,6 @@ class PublicationDownload extends StatelessWidget {
           ),
           child: _SaveButton(
             title: context.t.publication.download.html.title,
-            subtitle: context.t.publication.download.html.subtitle,
             icon: Icons.code_rounded,
           ),
         ),
@@ -57,12 +55,10 @@ class PublicationDownload extends StatelessWidget {
 class _SaveButton extends StatelessWidget {
   const _SaveButton({
     required this.title,
-    required this.subtitle,
     required this.icon,
   });
 
   final String title;
-  final String subtitle;
   final IconData icon;
 
   @override
@@ -83,7 +79,7 @@ class _SaveButton extends StatelessWidget {
             .loading => context.t.publication.download.status.preparing,
             .success => context.t.publication.download.status.saved,
             .notSupported => context.t.publication.download.status.notSupported,
-            _ => subtitle,
+            _ => null,
           },
           trailing: switch (state.status) {
             .loading => const CircleIndicator.small(),

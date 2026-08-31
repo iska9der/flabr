@@ -57,12 +57,10 @@
     "failed": "Failed!",
     "download": {
       "markdown": {
-        "title": "Save as Markdown",
-        "subtitle": ".md file with images"
+        "title": "Save as Markdown"
       },
       "html": {
-        "title": "Save as HTML",
-        "subtitle": ".html file with images"
+        "title": "Save as HTML"
       },
       "status": {
         "preparing": "Preparing file...",
@@ -140,16 +138,16 @@
     }
   },
   "offline": {
-    "title": "Saved articles",
+    "title": "Saved publications",
     "navigationLabel": "Offline",
     "empty": {
       "title": "Nothing here yet",
-      "description": "Save articles from the publication menu to keep their text and available images on your device."
+      "description": "Save publications from the publication menu to read them offline"
     },
     "save": {
       "title": "Save for offline",
-      "subtitle": "The article and images will be available without internet access",
-      "savedSubtitle": "The article is saved on your device"
+      "subtitle": "The publication will be available without internet access",
+      "savedSubtitle": "The publication is saved on your device"
     },
     "remove": {
       "title": "Remove offline copy",

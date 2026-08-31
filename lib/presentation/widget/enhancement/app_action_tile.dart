@@ -8,7 +8,7 @@ class AppActionTile extends StatelessWidget {
     super.key,
     required this.icon,
     required this.title,
-    required this.subtitle,
+    this.subtitle,
     required this.onPressed,
     this.trailing,
     this.destructive = false,
@@ -16,7 +16,7 @@ class AppActionTile extends StatelessWidget {
 
   final IconData icon;
   final String title;
-  final String subtitle;
+  final String? subtitle;
   final VoidCallback? onPressed;
   final Widget? trailing;
   final bool destructive;
@@ -49,10 +49,12 @@ class AppActionTile extends StatelessWidget {
           title,
           key: ValueKey(('title', title)),
         ),
-        subtitle: Text(
-          subtitle,
-          key: ValueKey(('subtitle', subtitle)),
-        ),
+        subtitle: subtitle == null
+            ? null
+            : Text(
+                subtitle!,
+                key: ValueKey(('subtitle', subtitle)),
+              ),
         trailing: trailing == null
             ? null
             : SizedBox.square(
