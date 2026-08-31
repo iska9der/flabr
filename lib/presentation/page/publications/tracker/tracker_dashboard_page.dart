@@ -36,7 +36,7 @@ class TrackerDashboardPage extends StatelessWidget {
                 dividerColor: Colors.transparent,
                 tabs: [
                   DashboardDrawerLinkWidget(
-                    title: context.t.tracker.publications,
+                    title: context.t.tracker.publications.title,
                   ),
                   DashboardDrawerLinkWidget(
                     title: context.t.tracker.subscriptions,

@@ -14,10 +14,10 @@ abstract class FilterList {
 
   static const dateDefault = FilterOption(label: '', value: 'daily');
   static List<FilterOption> get dateOptions => [
-    FilterOption(value: 'daily', label: t.filter.day),
-    FilterOption(value: 'weekly', label: t.filter.week),
-    FilterOption(value: 'monthly', label: t.filter.month),
-    FilterOption(value: 'yearly', label: t.filter.year),
-    FilterOption(value: 'alltime', label: t.filter.allTime),
+    FilterOption(value: 'daily', label: t.filter.period.day),
+    FilterOption(value: 'weekly', label: t.filter.period.week),
+    FilterOption(value: 'monthly', label: t.filter.period.month),
+    FilterOption(value: 'yearly', label: t.filter.period.year),
+    FilterOption(value: 'alltime', label: t.filter.period.allTime),
   ];
 }

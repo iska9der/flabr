@@ -43,12 +43,12 @@ enum PublicationType {
   voice;
 
   String get label => switch (this) {
-    PublicationType.unknown => t.publication.typeUnknown,
-    PublicationType.article => t.publication.typeArticle,
-    PublicationType.post => t.publication.typePost,
-    PublicationType.news => t.publication.typeNews,
-    PublicationType.megaproject => t.publication.typeMegaproject,
-    PublicationType.voice => t.publication.typeVoice,
+    PublicationType.unknown => t.publication.type.unknown,
+    PublicationType.article => t.publication.type.article,
+    PublicationType.post => t.publication.type.post,
+    PublicationType.news => t.publication.type.news,
+    PublicationType.megaproject => t.publication.type.megaproject,
+    PublicationType.voice => t.publication.type.voice,
   };
 
   factory PublicationType.fromString(String value) {

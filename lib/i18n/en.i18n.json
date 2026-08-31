@@ -1,12 +1,11 @@
 {
   "company": {
-    "profileFetchFailed": "Failed to load the company profile",
-    "listFetchFailed": "Failed to load the company list",
     "dashboard": {
       "profile": "Profile"
     },
     "list": {
-      "title": "Companies"
+      "title": "Companies",
+      "fetchFailed": "Failed to load the company list"
     },
     "contacts": "Contacts",
     "information": "Information",
@@ -18,22 +17,31 @@
     "postsInHubs": "Posts in hubs:",
     "rating": "Rating",
     "followers": "Followers",
-    "followerCount": "Followers"
+    "followerCount": "Followers",
+    "profile": {
+      "fetchFailed": "Failed to load the company profile"
+    }
   },
   "hub": {
-    "profileFetchFailed": "Failed to load the hub profile",
-    "listFetchFailed": "Failed to load the hub list",
-    "articlesFetchFailed": "Failed to load articles",
     "dashboard": {
       "profile": "Profile"
     },
     "list": {
-      "title": "Hubs"
+      "title": "Hubs",
+      "fetchFailed": "Failed to load the hub list"
     },
     "rating": "Rating",
     "followers": "Followers",
     "followerCount": "Followers",
-    "unknownType": "Unknown hub type"
+    "profile": {
+      "fetchFailed": "Failed to load the hub profile"
+    },
+    "articles": {
+      "fetchFailed": "Failed to load articles"
+    },
+    "type": {
+      "unknown": "Unknown hub type"
+    }
   },
   "publication": {
     "dashboard": {
@@ -45,107 +53,138 @@
       "tracker": "Tracker"
     },
     "settingsTitle": "Publications",
-    "commentsFetchFailed": "Failed to load comments",
-    "countersFetchFailed": "Failed to load counters",
-    "unknownFlow": "Unknown publication flow",
-    "votingEnded": "Voting has already ended",
-    "dailyVoteLimitReached": "You have reached today's vote limit",
-    "insufficientRatingToVote": "Your rating is too low to vote",
-    "votingNoLongerAllowed": "You can no longer vote",
-    "upvoteFailed": "Failed to increase the rating",
-    "complexityEasy": "Easy",
-    "complexityMedium": "Medium",
-    "complexityHard": "Hard",
-    "flowDevelopment": "Development",
-    "flowAdministration": "Administration",
-    "flowDesign": "Design",
-    "flowManagement": "Management",
-    "flowMarketing": "Marketing",
-    "flowPopularScience": "Popular science",
-    "formatCaseStudy": "Case study",
-    "formatTutorial": "Tutorial",
-    "formatReview": "Review",
-    "formatOpinion": "Opinion",
-    "formatDigest": "Digest",
-    "formatAnalytics": "Analytics",
-    "formatRoadmap": "Roadmap",
-    "formatReport": "Report",
-    "formatInterview": "Interview",
-    "formatRetrospective": "Retrospective",
-    "typeUnknown": "Unknown",
-    "typeArticle": "Article",
-    "typePost": "Post",
-    "typeNews": "News",
-    "typeMegaproject": "Megaproject",
-    "typeVoice": "Voice",
     "wrongDestination": "You've ended up in the wrong place...",
     "failed": "Failed!",
     "saveArticle": "Save article",
     "saved": "Saved",
     "unavailable": "Unavailable",
-    "listEmpty": "Nothing here",
-    "originalAuthor": "Original author: {{originalAuthorName}}",
-    "originalLink": "Link to original",
-    "totalVotes": "Total votes {{votesCount}}: ",
-    "voteBreakdown": "↑{{votesCountPlus}} and ↓{{votesCountMinus}}",
+    "list": {
+      "empty": "Nothing here"
+    },
     "upvote": "Upvote",
     "downvote": "Downvote",
     "tags": "Tags:",
     "more": "More",
     "configure": "Configure",
     "readingTimeMinutes": "{{readingTime}} min",
-    "downvoteUnavailable": "The developer does not have enough voting power to downvote publications, so downvoting behavior is currently unknown"
+    "comments": {
+      "fetchFailed": "Failed to load comments"
+    },
+    "counters": {
+      "fetchFailed": "Failed to load counters"
+    },
+    "voting": {
+      "ended": "Voting has already ended",
+      "dailyLimitReached": "You have reached today's vote limit",
+      "insufficientRating": "Your rating is too low to vote",
+      "noLongerAllowed": "You can no longer vote",
+      "upvoteFailed": "Failed to increase the rating",
+      "downvoteUnavailable": "The developer does not have enough voting power to downvote publications, so downvoting behavior is currently unknown"
+    },
+    "complexity": {
+      "easy": "Easy",
+      "medium": "Medium",
+      "hard": "Hard"
+    },
+    "flow": {
+      "development": "Development",
+      "administration": "Administration",
+      "design": "Design",
+      "management": "Management",
+      "marketing": "Marketing",
+      "popularScience": "Popular science",
+      "unknown": "Unknown publication flow"
+    },
+    "format": {
+      "caseStudy": "Case study",
+      "tutorial": "Tutorial",
+      "review": "Review",
+      "opinion": "Opinion",
+      "digest": "Digest",
+      "analytics": "Analytics",
+      "roadmap": "Roadmap",
+      "report": "Report",
+      "interview": "Interview",
+      "retrospective": "Retrospective"
+    },
+    "type": {
+      "unknown": "Unknown",
+      "article": "Article",
+      "post": "Post",
+      "news": "News",
+      "megaproject": "Megaproject",
+      "voice": "Voice"
+    },
+    "original": {
+      "author": "Original author: {{originalAuthorName}}",
+      "link": "Link to original"
+    },
+    "votes": {
+      "total": "Total votes {{votesCount}}: ",
+      "breakdown": "↑{{votesCountPlus}} and ↓{{votesCountMinus}}"
+    }
   },
   "feed": {
-    "publicationsFetchFailed": "Failed to load publications",
-    "publicationUnknownType": "Unknown publication type",
-    "publicationTypes": {
-      "articles": "Articles",
-      "posts": "Posts",
-      "news": "News"
-    },
-    "publicationType": "Publication type",
     "ratingThreshold": "Rating threshold",
     "settingsTitle": "Feed",
     "cardsSection": "Cards",
     "behaviorSection": "Behavior",
-    "images": "Images",
-    "imagesPerformanceNote": "affects performance",
+    "images": {
+      "label": "Images",
+      "performanceNote": "affects performance"
+    },
     "shortDescription": "Short description",
     "navigation": "Navigation",
     "showOnScroll": "Show while scrolling",
     "infiniteScroll": "Infinite scroll",
-    "pagination": "Pagination"
+    "pagination": "Pagination",
+    "publications": {
+      "fetchFailed": "Failed to load publications"
+    },
+    "publication": {
+      "unknownType": "Unknown publication type",
+      "type": "Publication type",
+      "types": {
+        "articles": "Articles",
+        "posts": "Posts",
+        "news": "News"
+      }
+    }
   },
   "bookmark": {
-    "commentsLoadFailed": "Failed to load bookmarked comments"
+    "comments": {
+      "loadFailed": "Failed to load bookmarked comments"
+    }
   },
   "tracker": {
-    "notificationsFetchFailed": "Failed to load notifications",
-    "notificationsMarkReadFailed": "Failed to mark notifications as read",
-    "publicationsMarkReadFailed": "Failed to mark publications as read",
-    "publicationsRemoveFailed": "Failed to remove publications from the tracker",
-    "publicationReadFailed": "Failed to read the publication",
     "somethingHappenedTo": "Something happened to",
     "publishedNewPost": "Published a new post",
     "bookmarkedNewPost": "Bookmarked a new post",
     "title": "Tracker",
-    "publications": "Publications",
+    "publications": {
+      "title": "Publications",
+      "markReadFailed": "Failed to mark publications as read",
+      "removeFailed": "Failed to remove publications from the tracker",
+      "readFailed": "Failed to read the publication"
+    },
     "subscriptions": "Subscriptions",
     "markAsRead": "Mark as read",
     "remove": "Remove from tracker",
-    "subscriptionMarkAsRead": "Mark as read",
-    "unknownNotificationWanted": "The developer is looking for this notification type!",
-    "unknownNotificationHelp": "To display the data, I need to know its structure.\nI have not received this type of notification, so I need a little help:\ntapping the email or Telegram icon will copy the notification structure and open the selected app.\nSend the message, and no one gets hurt. Thank you!"
+    "notifications": {
+      "fetchFailed": "Failed to load notifications",
+      "markReadFailed": "Failed to mark notifications as read"
+    },
+    "subscription": {
+      "markAsRead": "Mark as read"
+    },
+    "unknownNotification": {
+      "wanted": "The developer is looking for this notification type!",
+      "help": "To display the data, I need to know its structure.\nI have not received this type of notification, so I need a little help:\ntapping the email or Telegram icon will copy the notification structure and open the selected app.\nSend the message, and no one gets hurt. Thank you!"
+    }
   },
   "user": {
-    "bookmarksFetchFailed": "Failed to load bookmarks",
-    "profileCardFetchFailed": "Failed to load the user profile card",
-    "listFetchFailed": "Failed to load users",
     "ufo": "UFO",
     "joinedByInvitation": "{{createdAtDate}} by invitation from {{issuerLogin}}",
-    "commentsLoadFailed": "Failed to load user comments",
-    "profileLoadFailed": "Failed to load your profile",
     "dashboard": {
       "profile": "Profile",
       "publications": "Publications",
@@ -153,35 +192,50 @@
       "bookmarks": "Bookmarks"
     },
     "list": {
-      "title": "Authors"
-    },
-    "publicationTypes": {
-      "articles": "Articles",
-      "posts": "Posts",
-      "news": "News"
-    },
-    "bookmarkTypes": {
-      "articles": "Articles",
-      "posts": "Posts",
-      "news": "News",
-      "comments": "Comments"
+      "title": "Authors",
+      "fetchFailed": "Failed to load users",
+      "votes": "{{votesCount}} votes"
     },
     "rating": "Rating",
-    "ranking": "Ranking",
+    "ranking": {
+      "label": "Ranking",
+      "position": "{{ratingPosition}}th"
+    },
     "notRanked": "Not ranked",
-    "rankingPosition": "{{ratingPosition}}th",
     "location": "Location",
     "worksAt": "Works at",
     "detailsEmpty": "It's so quiet here...",
     "registered": "Registered",
     "activity": "Activity",
     "role": "User",
-    "listVotes": "{{votesCount}} votes",
     "points": "Points",
-    "profileVotes": "{{votesCount}} votes",
     "badges": "Badges",
     "invited": "Invited",
-    "about": "About"
+    "about": "About",
+    "bookmarks": {
+      "fetchFailed": "Failed to load bookmarks",
+      "types": {
+        "articles": "Articles",
+        "posts": "Posts",
+        "news": "News",
+        "comments": "Comments"
+      }
+    },
+    "publications": {
+      "types": {
+        "articles": "Articles",
+        "posts": "Posts",
+        "news": "News"
+      }
+    },
+    "profile": {
+      "cardFetchFailed": "Failed to load the user profile card",
+      "loadFailed": "Failed to load your profile",
+      "votes": "{{votesCount}} votes"
+    },
+    "comments": {
+      "loadFailed": "Failed to load user comments"
+    }
   },
   "shortcut": {
     "bookmarks": "Bookmarks",
@@ -200,7 +254,9 @@
   "comment": {
     "title": "Comments",
     "fetchFailed": "Failed to load the comment list",
-    "publicationInDrafts": "The publication is in drafts",
+    "publication": {
+      "inDrafts": "The publication is in drafts"
+    },
     "disabled": "Comments are disabled for this publication",
     "empty": "No comments",
     "repliedTo": "replied to ",
@@ -209,11 +265,13 @@
   },
   "filter": {
     "all": "All",
-    "day": "Day",
-    "week": "Week",
-    "month": "Month",
-    "year": "Year",
-    "allTime": "All time",
+    "period": {
+      "day": "Day",
+      "week": "Week",
+      "month": "Month",
+      "year": "Year",
+      "allTime": "All time"
+    },
     "apply": "Apply"
   },
   "sort": {
@@ -227,17 +285,21 @@
     "english": "English"
   },
   "search": {
-    "orderRelevance": "By relevance",
-    "orderDate": "By date",
-    "orderRating": "By rating",
     "notImplemented": "Not implemented",
     "hint": "Search",
-    "targetArticles": "Articles",
-    "targetHubs": "Hubs",
-    "targetCompanies": "Companies",
-    "targetUsers": "Users",
-    "targetComments": "Comments",
-    "noResults": "No search results"
+    "noResults": "No search results",
+    "order": {
+      "relevance": "By relevance",
+      "date": "By date",
+      "rating": "By rating"
+    },
+    "target": {
+      "articles": "Articles",
+      "hubs": "Hubs",
+      "companies": "Companies",
+      "users": "Users",
+      "comments": "Comments"
+    }
   },
   "image": {
     "missingMimeType": "mime/type is not specified in the headers",
@@ -274,14 +336,18 @@
   "auth": {
     "error": "Authorization error",
     "signOut": "Sign out",
-    "loginFallbackHint": "If you can't sign in using the login form",
-    "tokenLabel": "Token {{sidToken}}",
-    "tokenCookieHint": "Can be found in cookies",
-    "loginRequired": "You need to sign in",
-    "login": "Sign in",
+    "login": {
+      "action": "Sign in",
+      "fallbackHint": "If you can't sign in using the login form",
+      "required": "You need to sign in"
+    },
     "authorization": "Authorization",
     "logout": "Sign out",
-    "tokenDialogMessage": "There was a problem retrieving the token.\n\nTry signing in again or ignore this annoying dialog.\n\nMaybe it will resolve itself? 🤔"
+    "token": {
+      "label": "Token {{sidToken}}",
+      "cookieHint": "Can be found in cookies",
+      "dialogMessage": "There was a problem retrieving the token.\n\nTry signing in again or ignore this annoying dialog.\n\nMaybe it will resolve itself? 🤔"
+    }
   },
   "settings": {
     "account": "Account",
@@ -294,14 +360,20 @@
   },
   "summary": {
     "generationPurpose": "For generating article summaries",
-    "briefFetchError": "Failed to get the brief summary",
-    "linkFetchError": "Failed to get the summary link",
+    "brief": {
+      "fetchError": "Failed to get the brief summary"
+    },
+    "link": {
+      "label": "Summary link",
+      "fetchError": "Failed to get the summary link"
+    },
     "fetchError": "Failed to get the summary",
     "authorizationRequired": "YandexGPT token is required",
-    "link": "Summary link",
     "aiDescription": "a brief article summary generated by AI",
-    "token": "Token",
-    "tokenLocationHint": "Can be found at 300.ya.ru"
+    "token": {
+      "label": "Token",
+      "locationHint": "Can be found at 300.ya.ru"
+    }
   },
   "fonts": {
     "settingsTitle": "Fonts",
@@ -315,9 +387,13 @@
     "languages": "Languages",
     "colorTheme": "Color theme",
     "language": "Interface language",
-    "publicationLanguage": "Publication language",
-    "publicationLanguageRequired": "at least one must be selected",
-    "scroll": "Scrolling"
+    "scroll": "Scrolling",
+    "publication": {
+      "language": {
+        "label": "Publication language",
+        "required": "at least one must be selected"
+      }
+    }
   },
   "theme": {
     "system": "System",
@@ -331,14 +407,20 @@
   },
   "typography": {
     "resetDefaults": "Restore defaults",
-    "font": "Font",
-    "fontSize": "Font size",
-    "lineHeight": "Line height",
+    "font": {
+      "label": "Font",
+      "size": "Font size"
+    },
     "headings": "Headings",
     "headingExample": "Example publication heading",
-    "text": "Text",
-    "textExample": "Example publication text.\\n",
-    "lineRhythmHint": "This makes it easier to assess the line size and rhythm"
+    "text": {
+      "label": "Text",
+      "example": "Example publication text.\\n"
+    },
+    "line": {
+      "height": "Line height",
+      "rhythmHint": "This makes it easier to assess the line size and rhythm"
+    }
   },
   "app": {
     "initializationError": "App initialization error",
@@ -346,11 +428,15 @@
   },
   "html": {
     "copyToClipboard": "Copy to clipboard",
-    "openLink": "Open",
     "showFull": "Show in full...",
-    "displayImage": "Display image",
-    "displayWebView": "Display WebView",
-    "openInBrowser": "Open in browser"
+    "open": {
+      "link": "Open",
+      "inBrowser": "Open in browser"
+    },
+    "display": {
+      "image": "Display image",
+      "webView": "Display WebView"
+    }
   },
   "navigation": {
     "publications": "Publications",

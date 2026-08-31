@@ -16,16 +16,16 @@ enum PublicationFormat {
   retrospective;
 
   String get label => switch (this) {
-    example => t.publication.formatCaseStudy,
-    tutorial => t.publication.formatTutorial,
+    example => t.publication.format.caseStudy,
+    tutorial => t.publication.format.tutorial,
     faq => 'FAQ',
-    review => t.publication.formatReview,
-    opinion => t.publication.formatOpinion,
-    digest => t.publication.formatDigest,
-    analytics => t.publication.formatAnalytics,
-    roadmap => t.publication.formatRoadmap,
-    reportage => t.publication.formatReport,
-    interview => t.publication.formatInterview,
-    retrospective => t.publication.formatRetrospective,
+    review => t.publication.format.review,
+    opinion => t.publication.format.opinion,
+    digest => t.publication.format.digest,
+    analytics => t.publication.format.analytics,
+    roadmap => t.publication.format.roadmap,
+    reportage => t.publication.format.report,
+    interview => t.publication.format.interview,
+    retrospective => t.publication.format.retrospective,
   };
 }

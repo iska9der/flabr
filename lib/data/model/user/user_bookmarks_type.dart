@@ -7,10 +7,10 @@ enum UserBookmarksType {
   comments;
 
   String get label => switch (this) {
-    UserBookmarksType.articles => t.user.bookmarkTypes.articles,
-    UserBookmarksType.posts => t.user.bookmarkTypes.posts,
-    UserBookmarksType.news => t.user.bookmarkTypes.news,
-    UserBookmarksType.comments => t.user.bookmarkTypes.comments,
+    UserBookmarksType.articles => t.user.bookmarks.types.articles,
+    UserBookmarksType.posts => t.user.bookmarks.types.posts,
+    UserBookmarksType.news => t.user.bookmarks.types.news,
+    UserBookmarksType.comments => t.user.bookmarks.types.comments,
   };
 
   factory UserBookmarksType.fromString(String value) {

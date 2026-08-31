@@ -108,7 +108,7 @@ class PublicationSliverList<
           var publications = state.response.refs;
           if (publications.isEmpty) {
             return SliverFillRemaining(
-              child: Center(child: Text(context.t.publication.listEmpty)),
+              child: Center(child: Text(context.t.publication.list.empty)),
             );
           }
 

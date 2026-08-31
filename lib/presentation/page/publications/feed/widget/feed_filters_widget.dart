@@ -77,7 +77,7 @@ class _FilterViewState extends State<_FilterView> {
       mainAxisSize: .min,
       children: [
         ...[
-          Text(context.t.feed.publicationType, style: headerStyle),
+          Text(context.t.feed.publication.type, style: headerStyle),
           FilterChipList(
             isEnabled: !widget.isLoading,
             options: FeedFilterPublication.values

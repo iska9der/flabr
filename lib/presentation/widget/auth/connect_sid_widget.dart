@@ -49,10 +49,10 @@ class _ConnectSidWidgetState extends State<ConnectSidWidget> {
                 keyboardType: .text,
                 decoration: InputDecoration(
                   floatingLabelBehavior: .always,
-                  labelText: context.t.auth.tokenLabel(
+                  labelText: context.t.auth.token.label(
                     sidToken: Keys.sidToken,
                   ),
-                  hintText: context.t.auth.tokenCookieHint,
+                  hintText: context.t.auth.token.cookieHint,
                   border: const OutlineInputBorder(),
                 ),
               ),

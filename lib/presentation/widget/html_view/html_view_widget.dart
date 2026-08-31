@@ -208,7 +208,7 @@ abstract class CustomBuildOp {
             Navigator.of(context).pop();
             go();
           },
-          child: Text(context.t.html.openLink),
+          child: Text(context.t.html.open.link),
         ),
       ],
     );

@@ -67,10 +67,10 @@ class UserDetailPageView extends StatelessWidget {
                 crossAxisAlignment: .stretch,
                 children: [
                   SectionContainerWidget(
-                    title: context.t.user.ranking,
+                    title: context.t.user.ranking.label,
                     child: Text(switch (user.ratingPosition == 0) {
                       true => context.t.user.notRanked,
-                      false => context.t.user.rankingPosition(
+                      false => context.t.user.ranking.position(
                         ratingPosition: user.ratingPosition,
                       ),
                     }),

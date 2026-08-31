@@ -68,7 +68,7 @@ class _UserProfileCardWidgetState extends State<UserProfileCardWidget> {
                   ),
                   const SizedBox(width: 40),
                   Tooltip(
-                    message: context.t.user.profileVotes(
+                    message: context.t.user.profile.votes(
                       votesCount: user.votesCount.compact(),
                     ),
                     triggerMode: .tap,

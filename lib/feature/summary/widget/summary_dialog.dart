@@ -54,7 +54,7 @@ Future<void> showSummaryDialog(
 
                     return TextButton(
                       onPressed: () => onLinkPressed(state.model.sharingUrl),
-                      child: Text(context.t.summary.link),
+                      child: Text(context.t.summary.link.label),
                     );
                   },
                 ),

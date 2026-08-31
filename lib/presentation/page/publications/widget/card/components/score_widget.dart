@@ -88,8 +88,8 @@ class _ScoreTooltip extends StatelessWidget {
       triggerMode: .tap,
       showDuration: const .new(seconds: 5),
       message:
-          context.t.publication.totalVotes(votesCount: votesCount) +
-          context.t.publication.voteBreakdown(
+          context.t.publication.votes.total(votesCount: votesCount) +
+          context.t.publication.votes.breakdown(
             votesCountPlus: votesCountPlus,
             votesCountMinus: votesCountMinus,
           ),

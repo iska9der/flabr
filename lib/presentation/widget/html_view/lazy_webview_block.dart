@@ -80,7 +80,7 @@ class _LazyWebViewBlockState extends State<LazyWebViewBlock> {
                         const Icon(Icons.play_arrow, size: 48),
                         const SizedBox(height: 8),
                         Text(
-                          context.t.html.displayWebView,
+                          context.t.html.display.webView,
                           textAlign: TextAlign.center,
                           style: const TextStyle(fontWeight: FontWeight.w500),
                         ),
@@ -100,7 +100,7 @@ class _LazyWebViewBlockState extends State<LazyWebViewBlock> {
               onPressed: () {
                 getIt<AppRouter>().launchUrl(widget.src);
               },
-              child: Text(context.t.html.openInBrowser),
+              child: Text(context.t.html.open.inBrowser),
             ),
           ],
         ),

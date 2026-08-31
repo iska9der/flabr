@@ -20,8 +20,8 @@ enum PublicationComplexity {
   }
 
   String get label => switch (this) {
-    PublicationComplexity.low => t.publication.complexityEasy,
-    PublicationComplexity.medium => t.publication.complexityMedium,
-    PublicationComplexity.high => t.publication.complexityHard,
+    PublicationComplexity.low => t.publication.complexity.easy,
+    PublicationComplexity.medium => t.publication.complexity.medium,
+    PublicationComplexity.high => t.publication.complexity.hard,
   };
 }

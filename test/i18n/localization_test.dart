@@ -93,8 +93,14 @@ void main() {
     expect(app_localizations.t.company.dashboard.profile, 'Профиль');
     expect(app_localizations.t.hub.list.title, 'Хабы');
     expect(app_localizations.t.user.dashboard.publications, 'Публикации');
-    expect(app_localizations.t.user.bookmarkTypes.comments, 'Комментарии');
+    expect(app_localizations.t.user.bookmarks.types.comments, 'Комментарии');
     expect(app_localizations.t.publication.dashboard.myFeed, 'Моя лента');
+    expect(app_localizations.t.publication.complexity.easy, 'Простой');
+    expect(app_localizations.t.publication.flow.development, 'Разработка');
+    expect(app_localizations.t.publication.format.caseStudy, 'Кейс');
+    expect(app_localizations.t.publication.type.article, 'Статья');
+    expect(app_localizations.t.search.order.relevance, 'По релевантности');
+    expect(app_localizations.t.tracker.publications.title, 'Публикации');
     expect(app_localizations.t.navigation.publications, 'Публикации');
     expect(app_localizations.t.profile.bookmarks, 'Закладки');
 
@@ -106,8 +112,14 @@ void main() {
     expect(app_localizations.t.company.dashboard.profile, 'Profile');
     expect(app_localizations.t.hub.list.title, 'Hubs');
     expect(app_localizations.t.user.dashboard.publications, 'Publications');
-    expect(app_localizations.t.user.bookmarkTypes.comments, 'Comments');
+    expect(app_localizations.t.user.bookmarks.types.comments, 'Comments');
     expect(app_localizations.t.publication.dashboard.myFeed, 'My feed');
+    expect(app_localizations.t.publication.complexity.easy, 'Easy');
+    expect(app_localizations.t.publication.flow.development, 'Development');
+    expect(app_localizations.t.publication.format.caseStudy, 'Case study');
+    expect(app_localizations.t.publication.type.article, 'Article');
+    expect(app_localizations.t.search.order.relevance, 'By relevance');
+    expect(app_localizations.t.tracker.publications.title, 'Publications');
     expect(app_localizations.t.navigation.publications, 'Publications');
     expect(app_localizations.t.profile.bookmarks, 'Bookmarks');
   });
@@ -126,7 +138,7 @@ void main() {
               child: Column(
                 children: [
                   Text(translations.shortcut.bookmarks),
-                  Text(translations.summary.token),
+                  Text(translations.summary.token.label),
                 ],
               ),
             );

@@ -8,10 +8,10 @@ enum SearchTarget {
   comments;
 
   String get label => switch (this) {
-    SearchTarget.posts => t.search.targetArticles,
-    SearchTarget.hubs => t.search.targetHubs,
-    SearchTarget.companies => t.search.targetCompanies,
-    SearchTarget.users => t.search.targetUsers,
-    SearchTarget.comments => t.search.targetComments,
+    SearchTarget.posts => t.search.target.articles,
+    SearchTarget.hubs => t.search.target.hubs,
+    SearchTarget.companies => t.search.target.companies,
+    SearchTarget.users => t.search.target.users,
+    SearchTarget.comments => t.search.target.comments,
   };
 }

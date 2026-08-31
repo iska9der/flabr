@@ -42,10 +42,10 @@ class _TranslationLabelWidget extends StatelessWidget {
     final theme = context.theme;
     final radius = AppStyles.buttonBorderRadius;
     final text = label.data.originalAuthorName != null
-        ? context.t.publication.originalAuthor(
+        ? context.t.publication.original.author(
             originalAuthorName: label.data.originalAuthorName!,
           )
-        : context.t.publication.originalLink;
+        : context.t.publication.original.link;
 
     return Material(
       color: theme.colors.card,

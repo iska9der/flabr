@@ -36,10 +36,10 @@ class PublicationTextTypographyWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextStyleTypographyWidget(
-      title: context.t.typography.text,
+      title: context.t.typography.text.label,
       previewText:
-          context.t.typography.textExample +
-          context.t.typography.lineRhythmHint,
+          context.t.typography.text.example +
+          context.t.typography.line.rhythmHint,
       styleSelector: (state) => state.typography.publicationTextStyle,
       defaultStyleBuilder: (context) =>
           _defaultTypography(context).publicationText,

@@ -219,7 +219,9 @@ class _TextStyleTypographyCardState extends State<_TextStyleTypographyCard> {
             child: DropdownButtonFormField<String>(
               key: ValueKey(_fontFamily),
               initialValue: _fontFamily,
-              decoration: InputDecoration(labelText: context.t.typography.font),
+              decoration: InputDecoration(
+                labelText: context.t.typography.font.label,
+              ),
               items: widget.fontFamilies
                   .map(
                     (family) => DropdownMenuItem(
@@ -242,7 +244,7 @@ class _TextStyleTypographyCardState extends State<_TextStyleTypographyCard> {
             ),
           ),
           SettingsSliderWidget(
-            label: context.t.typography.fontSize,
+            label: context.t.typography.font.size,
             value: _fontSize,
             min: widget.fontSizeMin,
             max: widget.fontSizeMax,
@@ -255,7 +257,7 @@ class _TextStyleTypographyCardState extends State<_TextStyleTypographyCard> {
             ),
           ),
           SettingsSliderWidget(
-            label: context.t.typography.lineHeight,
+            label: context.t.typography.line.height,
             value: _fontHeight,
             min: _fontHeightMin,
             max: widget.fontHeightMax,

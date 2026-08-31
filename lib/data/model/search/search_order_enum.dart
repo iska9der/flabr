@@ -6,8 +6,8 @@ enum SearchOrder {
   rating;
 
   String get label => switch (this) {
-    SearchOrder.relevance => t.search.orderRelevance,
-    SearchOrder.date => t.search.orderDate,
-    SearchOrder.rating => t.search.orderRating,
+    SearchOrder.relevance => t.search.order.relevance,
+    SearchOrder.date => t.search.order.date,
+    SearchOrder.rating => t.search.order.rating,
   };
 }

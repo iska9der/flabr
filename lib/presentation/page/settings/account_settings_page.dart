@@ -41,7 +41,7 @@ class AccountSettingsView extends StatelessWidget {
           children: [
             SettingsCardWidget(
               title: Keys.sidToken,
-              subtitle: context.t.auth.loginFallbackHint,
+              subtitle: context.t.auth.login.fallbackHint,
               child: const Padding(
                 padding: .only(top: 12.0),
                 child: ConnectSidWidget(),

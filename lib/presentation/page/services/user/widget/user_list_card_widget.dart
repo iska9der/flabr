@@ -129,7 +129,7 @@ class _UserScore extends StatelessWidget {
         ),
         Expanded(
           child: Tooltip(
-            message: context.t.user.listVotes(
+            message: context.t.user.list.votes(
               votesCount: model.votesCount.compact(),
             ),
             triggerMode: .tap,

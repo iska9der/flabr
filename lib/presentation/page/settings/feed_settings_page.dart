@@ -63,8 +63,8 @@ class SettingsFeedWidget extends StatelessWidget {
         children: [
           SettingsCheckboxWidget(
             initialValue: settingsCubit.state.feed.isImageVisible,
-            title: Text(context.t.feed.images),
-            subtitle: Text(context.t.feed.imagesPerformanceNote),
+            title: Text(context.t.feed.images.label),
+            subtitle: Text(context.t.feed.images.performanceNote),
             onChanged: (bool value) =>
                 settingsCubit.changeFeedImageVisibility(isVisible: value),
           ),

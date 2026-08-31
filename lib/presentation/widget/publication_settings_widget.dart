@@ -28,7 +28,7 @@ class PublicationSettingsWidget extends StatelessWidget {
                 builder: (context, state) {
                   return SettingsCheckboxWidget(
                     initialValue: state.publication.isImagesVisible,
-                    title: Text(context.t.feed.images),
+                    title: Text(context.t.feed.images.label),
                     onChanged: (bool value) => context
                         .read<SettingsCubit>()
                         .changeArticleImageVisibility(isVisible: value),

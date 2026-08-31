@@ -9,24 +9,24 @@ extension ErrorTranslations on Translations {
     final specificMessage = switch (cause) {
       CommentsListException(errorCode: final errorCode) => switch (errorCode) {
         'NOT_FOUND' => this.error.notFound,
-        'POST_IN_DRAFTS' => comment.publicationInDrafts,
+        'POST_IN_DRAFTS' => comment.publication.inDrafts,
         'POST_COMMENTS_DISABLED' => comment.disabled,
         _ => comment.fetchFailed,
       },
       FetchException(type: final type) => switch (type) {
         FetchExceptionType.requestFailed => this.error.requestFailed,
         FetchExceptionType.bookmarkCommentsLoadFailed =>
-          bookmark.commentsLoadFailed,
-        FetchExceptionType.userCommentsLoadFailed => user.commentsLoadFailed,
+          bookmark.comments.loadFailed,
+        FetchExceptionType.userCommentsLoadFailed => user.comments.loadFailed,
       },
       MissingMimeTypeException() => image.missingMimeType,
       NotFoundException() => this.error.notFound,
       ValueException(type: final type) => switch (type) {
         ValueExceptionType.invalidValue => this.error.valueError,
-        ValueExceptionType.unknownHub => hub.unknownType,
+        ValueExceptionType.unknownHub => hub.type.unknown,
         ValueExceptionType.unknownFeedPublication =>
-          feed.publicationUnknownType,
-        ValueExceptionType.unknownPublicationFlow => publication.unknownFlow,
+          feed.publication.unknownType,
+        ValueExceptionType.unknownPublicationFlow => publication.flow.unknown,
         ValueExceptionType.unknownSort => sort.unknownValue,
         ValueExceptionType.unknownLanguage => language.unknown,
         ValueExceptionType.searchNotImplemented => search.notImplemented,
@@ -45,46 +45,47 @@ extension ErrorTranslations on Translations {
     if (error is AppFailure) {
       return switch (error.type) {
         AppFailureType.operationFailed => this.error.operationFailed,
-        AppFailureType.companyProfileFetchFailed => company.profileFetchFailed,
-        AppFailureType.companyListFetchFailed => company.listFetchFailed,
-        AppFailureType.hubProfileFetchFailed => hub.profileFetchFailed,
-        AppFailureType.hubListFetchFailed => hub.listFetchFailed,
-        AppFailureType.hubArticlesFetchFailed => hub.articlesFetchFailed,
+        AppFailureType.companyProfileFetchFailed => company.profile.fetchFailed,
+        AppFailureType.companyListFetchFailed => company.list.fetchFailed,
+        AppFailureType.hubProfileFetchFailed => hub.profile.fetchFailed,
+        AppFailureType.hubListFetchFailed => hub.list.fetchFailed,
+        AppFailureType.hubArticlesFetchFailed => hub.articles.fetchFailed,
         AppFailureType.publicationCommentsFetchFailed =>
-          publication.commentsFetchFailed,
+          publication.comments.fetchFailed,
         AppFailureType.feedPublicationsFetchFailed =>
-          feed.publicationsFetchFailed,
+          feed.publications.fetchFailed,
         AppFailureType.publicationCountersFetchFailed =>
-          publication.countersFetchFailed,
-        AppFailureType.publicationVotingEnded => publication.votingEnded,
+          publication.counters.fetchFailed,
+        AppFailureType.publicationVotingEnded => publication.voting.ended,
         AppFailureType.publicationDailyVoteLimitReached =>
-          publication.dailyVoteLimitReached,
+          publication.voting.dailyLimitReached,
         AppFailureType.publicationInsufficientRatingToVote =>
-          publication.insufficientRatingToVote,
+          publication.voting.insufficientRating,
         AppFailureType.publicationVotingNoLongerAllowed =>
-          publication.votingNoLongerAllowed,
-        AppFailureType.publicationUpvoteFailed => publication.upvoteFailed,
+          publication.voting.noLongerAllowed,
+        AppFailureType.publicationUpvoteFailed =>
+          publication.voting.upvoteFailed,
         AppFailureType.publicationDownvoteUnavailable =>
-          publication.downvoteUnavailable,
+          publication.voting.downvoteUnavailable,
         AppFailureType.trackerNotificationsFetchFailed =>
-          tracker.notificationsFetchFailed,
+          tracker.notifications.fetchFailed,
         AppFailureType.trackerPublicationsMarkReadFailed =>
-          tracker.publicationsMarkReadFailed,
+          tracker.publications.markReadFailed,
         AppFailureType.trackerNotificationsMarkReadFailed =>
-          tracker.notificationsMarkReadFailed,
+          tracker.notifications.markReadFailed,
         AppFailureType.trackerPublicationsRemoveFailed =>
-          tracker.publicationsRemoveFailed,
+          tracker.publications.removeFailed,
         AppFailureType.trackerPublicationReadFailed =>
-          tracker.publicationReadFailed,
-        AppFailureType.userBookmarksFetchFailed => user.bookmarksFetchFailed,
+          tracker.publications.readFailed,
+        AppFailureType.userBookmarksFetchFailed => user.bookmarks.fetchFailed,
         AppFailureType.userProfileCardFetchFailed =>
-          user.profileCardFetchFailed,
-        AppFailureType.userListFetchFailed => user.listFetchFailed,
+          user.profile.cardFetchFailed,
+        AppFailureType.userListFetchFailed => user.list.fetchFailed,
         AppFailureType.summaryAuthorizationRequired =>
           summary.authorizationRequired,
-        AppFailureType.summarySharingUrlFetchFailed => summary.linkFetchError,
+        AppFailureType.summarySharingUrlFetchFailed => summary.link.fetchError,
         AppFailureType.summaryFetchFailed => summary.fetchError,
-        AppFailureType.summaryOperationFailed => summary.briefFetchError,
+        AppFailureType.summaryOperationFailed => summary.brief.fetchError,
       };
     }
 

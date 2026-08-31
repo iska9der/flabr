@@ -9,9 +9,9 @@ import '../auth/login_webview.dart';
 
 void showLoginSnackBar(BuildContext context) async {
   return context.showSnack(
-    content: Text(context.t.auth.loginRequired),
+    content: Text(context.t.auth.login.required),
     action: SnackBarAction(
-      label: context.t.auth.login,
+      label: context.t.auth.login.action,
       onPressed: () => showLoginDialog(context),
     ),
   );

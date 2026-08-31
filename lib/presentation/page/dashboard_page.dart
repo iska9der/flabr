@@ -36,7 +36,7 @@ class _DashboardPageState extends State<DashboardPage> {
   void showProfileCorruptedAlert() {
     context.showAlert(
       title: Text(context.t.auth.error),
-      content: Text(context.t.auth.tokenDialogMessage),
+      content: Text(context.t.auth.token.dialogMessage),
       actionsBuilder: (context) => [
         TextButton(
           onPressed: () {

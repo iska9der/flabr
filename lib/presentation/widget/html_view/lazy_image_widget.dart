@@ -67,7 +67,7 @@ class _LazyImageWidgetState extends State<LazyImageWidget> {
                   const Icon(Icons.image_outlined, size: 48),
                   const SizedBox(height: 8),
                   Text(
-                    context.t.html.displayImage,
+                    context.t.html.display.image,
                     textAlign: TextAlign.center,
                     style: const TextStyle(fontWeight: FontWeight.w500),
                   ),

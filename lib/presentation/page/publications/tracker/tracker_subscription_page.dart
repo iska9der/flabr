@@ -186,7 +186,8 @@ class _NotificationWidget extends StatelessWidget {
                             }
 
                             return Tooltip(
-                              message: context.t.tracker.subscriptionMarkAsRead,
+                              message:
+                                  context.t.tracker.subscription.markAsRead,
                               child: GestureDetector(
                                 child: Icon(
                                   Icons.circle,
@@ -229,7 +230,7 @@ class _UnknownWidget extends StatelessWidget {
             'ALLO?! KTO ETA???',
             style: theme.textTheme.titleSmall,
           ),
-          Text(context.t.tracker.unknownNotificationWanted),
+          Text(context.t.tracker.unknownNotification.wanted),
           Row(
             children: [
               FilledButton.icon(
@@ -241,7 +242,7 @@ class _UnknownWidget extends StatelessWidget {
                     context: context,
                     builder: (context) => AlertDialog(
                       content: Text(
-                        context.t.tracker.unknownNotificationHelp,
+                        context.t.tracker.unknownNotification.help,
                       ),
                     ),
                   );

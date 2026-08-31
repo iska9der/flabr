@@ -46,8 +46,8 @@ class _SummaryTokenWidgetState extends State<SummaryTokenWidget> {
               keyboardType: TextInputType.text,
               decoration: InputDecoration(
                 floatingLabelBehavior: .always,
-                labelText: context.t.summary.token,
-                hintText: context.t.summary.tokenLocationHint,
+                labelText: context.t.summary.token.label,
+                hintText: context.t.summary.token.locationHint,
                 border: const OutlineInputBorder(),
               ),
             ),
