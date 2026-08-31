@@ -8,8 +8,8 @@ abstract class OfflinePublicationState with _$OfflinePublicationState {
     @Default(LoadingStatus.initial) LoadingStatus status,
     @Default([]) List<PublicationOffline> publications,
     @Default({}) Set<String> loadingIds,
-    String? error,
-    String? operationError,
+    Object? error,
+    Object? operationError,
     String? operationErrorId,
   }) = _OfflinePublicationState;
 

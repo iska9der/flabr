@@ -81,6 +81,6 @@ abstract class RegisterModule {
   )..init();
 
   @Singleton()
-  SummaryClient summaryClient(Dio dio, SummaryTokenRepository repository) =>
-      SummaryClient(dio, tokenRepository: repository);
+  SummaryApi summaryApi(Dio dio, SummaryTokenRepository repository) =>
+      SummaryApi(dio: dio, tokenProvider: repository.getToken);
 }

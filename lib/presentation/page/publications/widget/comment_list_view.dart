@@ -8,6 +8,7 @@ import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import '../../../../bloc/publication/comment_list_cubit.dart';
 import '../../../../data/model/comment/comment.dart';
+import '../../../../i18n/i18n.dart';
 import '../../../extension/extension.dart';
 import '../../../widget/comment/comment.dart';
 import '../../../widget/enhancement/card.dart';
@@ -47,7 +48,7 @@ class _CommentListViewState extends State<CommentListView> {
     return Scaffold(
       appBar: AppBar(
         leading: const AutoLeadingButton(),
-        title: const Text('Комментарии'),
+        title: Text(context.t.comment.title),
       ),
       body: SafeArea(
         child: BlocBuilder<CommentListCubit, CommentListState>(
@@ -59,7 +60,7 @@ class _CommentListViewState extends State<CommentListView> {
             if (state.status == .failure) {
               return Center(
                 child: AppError(
-                  message: state.error,
+                  error: state.error,
                   onRetry: _fetch,
                 ),
               );
@@ -67,7 +68,7 @@ class _CommentListViewState extends State<CommentListView> {
 
             final comments = state.list.comments;
             if (comments.isEmpty) {
-              return const Center(child: Text('Нет комментариев'));
+              return Center(child: Text(context.t.comment.empty));
             }
 
             return SelectionArea(

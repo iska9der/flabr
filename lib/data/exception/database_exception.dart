@@ -1,9 +1,9 @@
 import 'app_exception.dart';
 
 class DatabaseException extends AppException {
-  const DatabaseException([super.message = 'Ошибка базы данных']);
+  const DatabaseException(this.cause);
 
-  factory DatabaseException.from(Object error) {
-    return DatabaseException(error.toString());
-  }
+  final Object cause;
+
+  factory DatabaseException.from(Object error) => DatabaseException(error);
 }

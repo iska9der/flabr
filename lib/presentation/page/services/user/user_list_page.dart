@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../bloc/user/user_list_cubit.dart';
 import '../../../../di/di.dart';
 import '../../../../feature/scroll/scroll.dart';
+import '../../../../i18n/i18n.dart';
 import '../../../extension/extension.dart';
 import '../../../theme/theme.dart';
 import '../../../widget/enhancement/progress_indicator.dart';
@@ -18,7 +19,6 @@ import 'widget/user_list_card_widget.dart';
 class UserListPage extends StatelessWidget {
   const UserListPage({super.key});
 
-  static const String name = 'Авторы';
   static const String routePath = 'users';
   static const String routeName = 'UserListRoute';
 
@@ -60,7 +60,7 @@ class UserListPageView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: const AutoLeadingButton(),
-        title: const Text(UserListPage.name),
+        title: Text(context.t.user.list.title),
       ),
       floatingActionButton: const FloatingContainer(
         children: [FloatingScrollToTopButton()],
@@ -68,8 +68,9 @@ class UserListPageView extends StatelessWidget {
       body: SafeArea(
         child: BlocConsumer<UserListCubit, UserListState>(
           listenWhen: (p, c) => p.page != 1 && c.status == .failure,
-          listener: (context, state) =>
-              context.showSnack(content: Text(state.error)),
+          listener: (context, state) => context.showSnack(
+            content: Text(context.t.errorMessage(state.error)),
+          ),
           builder: (context, state) {
             if (state.status == .initial) {
               usersCubit.fetchAll();
@@ -84,7 +85,7 @@ class UserListPageView extends StatelessWidget {
               if (state.status == .failure) {
                 return Center(
                   child: AppError(
-                    message: state.error,
+                    error: state.error,
                     onRetry: () => usersCubit.fetchAll(),
                   ),
                 );

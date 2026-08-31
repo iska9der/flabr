@@ -1,0 +1,455 @@
+{
+  "company": {
+    "dashboard": {
+      "profile": "Профиль"
+    },
+    "list": {
+      "title": "Компании",
+      "fetchFailed": "Не удалось получить список компаний"
+    },
+    "contacts": "Контакты",
+    "information": "Информация",
+    "website": "Сайт",
+    "registrationDate": "Дата регистрации",
+    "foundedDate": "Дата основания",
+    "size": "Численность",
+    "representative": "Представитель",
+    "postsInHubs": "Пишет в хабы:",
+    "rating": "Рейтинг",
+    "followers": "Подписчики",
+    "followerCount": "Подписчиков",
+    "profile": {
+      "fetchFailed": "Не удалось получить профиль компании"
+    }
+  },
+  "hub": {
+    "dashboard": {
+      "profile": "Профиль"
+    },
+    "list": {
+      "title": "Хабы",
+      "fetchFailed": "Не удалось получить список хабов"
+    },
+    "rating": "Рейтинг",
+    "followers": "Подписчики",
+    "followerCount": "Подписчиков",
+    "profile": {
+      "fetchFailed": "Не удалось получить профиль хаба"
+    },
+    "articles": {
+      "fetchFailed": "Не удалось получить статьи"
+    },
+    "type": {
+      "unknown": "Неизвестный тип хаба"
+    }
+  },
+  "publication": {
+    "dashboard": {
+      "myFeed": "Моя лента",
+      "articles": "Статьи",
+      "posts": "Посты",
+      "news": "Новости",
+      "search": "Поиск",
+      "tracker": "Трекер"
+    },
+    "settingsTitle": "Публикации",
+    "wrongDestination": "Вы не туда попали...",
+    "failed": "Не удалось!",
+    "saveArticle": "Сохранить статью",
+    "saved": "Сохранено",
+    "unavailable": "Недоступно",
+    "list": {
+      "empty": "Ничего нет"
+    },
+    "upvote": "Повысить рейтинг",
+    "downvote": "Понизить рейтинг",
+    "tags": "Теги:",
+    "more": "Дополнительно",
+    "configure": "Настроить",
+    "readingTimeMinutes": "{{readingTime}} мин",
+    "comments": {
+      "fetchFailed": "Не удалось получить комментарии"
+    },
+    "counters": {
+      "fetchFailed": "Не удалось получить счетчики"
+    },
+    "voting": {
+      "ended": "Голосование уже закончено",
+      "dailyLimitReached": "Лимит голосов на сегодня исчерпан",
+      "insufficientRating": "Вам не хватает рейтинга для голосования",
+      "noLongerAllowed": "Вы больше не можете голосовать",
+      "upvoteFailed": "Не удалось повысить рейтинг",
+      "downvoteUnavailable": "У разработчика не хватает сил ставить минусы на публикации, поэтому пока неизвестно, как работает понижение голосов"
+    },
+    "complexity": {
+      "easy": "Простой",
+      "medium": "Средний",
+      "hard": "Сложный"
+    },
+    "flow": {
+      "development": "Разработка",
+      "administration": "Администрирование",
+      "design": "Дизайн",
+      "management": "Менеджмент",
+      "marketing": "Маркетинг",
+      "popularScience": "Научпоп",
+      "unknown": "Неизвестный поток публикации"
+    },
+    "format": {
+      "caseStudy": "Кейс",
+      "tutorial": "Туториал",
+      "review": "Обзор",
+      "opinion": "Мнение",
+      "digest": "Дайджест",
+      "analytics": "Аналитика",
+      "roadmap": "Дорожная карта",
+      "report": "Репортаж",
+      "interview": "Интервью",
+      "retrospective": "Ретроспектива"
+    },
+    "type": {
+      "unknown": "Неизвестно",
+      "article": "Статья",
+      "post": "Пост",
+      "news": "Новость",
+      "megaproject": "Мегапроект",
+      "voice": "Голос"
+    },
+    "original": {
+      "author": "Автор оригинала: {{originalAuthorName}}",
+      "link": "Ссылка на оригинал"
+    },
+    "votes": {
+      "total": "Всего голосов {{votesCount}}: ",
+      "breakdown": "↑{{votesCountPlus}} и ↓{{votesCountMinus}}"
+    }
+  },
+  "feed": {
+    "ratingThreshold": "Порог рейтинга",
+    "settingsTitle": "Лента",
+    "cardsSection": "Карточки",
+    "behaviorSection": "Поведение",
+    "images": {
+      "label": "Изображения",
+      "performanceNote": "влияет на производительность"
+    },
+    "shortDescription": "Короткое описание",
+    "navigation": "Навигация",
+    "showOnScroll": "Показывать при скролле",
+    "infiniteScroll": "Бесконечная прокрутка",
+    "pagination": "По страницам",
+    "publications": {
+      "fetchFailed": "Не удалось получить публикации"
+    },
+    "publication": {
+      "unknownType": "Неизвестный тип публикации",
+      "type": "Тип публикации",
+      "types": {
+        "articles": "Статьи",
+        "posts": "Посты",
+        "news": "Новости"
+      }
+    }
+  },
+  "bookmark": {
+    "comments": {
+      "loadFailed": "Не удалось получить комментарии в закладках"
+    }
+  },
+  "tracker": {
+    "somethingHappenedTo": "Что-то произошло с",
+    "publishedNewPost": "Опубликовал новую публикацию",
+    "bookmarkedNewPost": "Добавил в закладки новую публикацию",
+    "title": "Трекер",
+    "publications": {
+      "title": "Публикации",
+      "markReadFailed": "Не удалось отметить публикации как прочитанные",
+      "removeFailed": "Не удалось удалить публикации из трекера",
+      "readFailed": "Не удалось прочесть публикацию"
+    },
+    "subscriptions": "Подписки",
+    "markAsRead": "Пометить как прочитанное",
+    "remove": "Удалить из трекера",
+    "notifications": {
+      "fetchFailed": "Не удалось получить уведомления",
+      "markReadFailed": "Не удалось отметить уведомления как прочитанные"
+    },
+    "subscription": {
+      "markAsRead": "Отметить как прочитанное"
+    },
+    "unknownNotification": {
+      "wanted": "Этот тип уведомления разыскивается разработчиком!",
+      "help": "Чтобы отобразить данные, нужно знать, как они выглядят.\nУведомления такого типа мне не приходили, поэтому нужна небольшая помощь:\nпо нажатию на иконку почты или Telegram скопируется структура уведомления и откроется выбранное приложение.\nОтправьте сообщение, и никто не пострадает. Спасибо!"
+    }
+  },
+  "user": {
+    "ufo": "НЛО",
+    "joinedByInvitation": "{{createdAtDate}} по приглашению {{issuerLogin}}",
+    "dashboard": {
+      "profile": "Профиль",
+      "publications": "Публикации",
+      "comments": "Комментарии",
+      "bookmarks": "Закладки"
+    },
+    "list": {
+      "title": "Авторы",
+      "fetchFailed": "Не удалось получить пользователей",
+      "votes": "{{votesCount}} голосов"
+    },
+    "rating": "Рейтинг",
+    "ranking": {
+      "label": "В рейтинге",
+      "position": "{{ratingPosition}}-й"
+    },
+    "notRanked": "Не участвует",
+    "location": "Откуда",
+    "worksAt": "Работает в",
+    "detailsEmpty": "Здесь так тихо...",
+    "registered": "Зарегистрирован",
+    "activity": "Активность",
+    "role": "Пользователь",
+    "points": "Очки",
+    "badges": "Значки",
+    "invited": "Приглашен",
+    "about": "О себе",
+    "bookmarks": {
+      "fetchFailed": "Не удалось получить закладки",
+      "types": {
+        "articles": "Статьи",
+        "posts": "Посты",
+        "news": "Новости",
+        "comments": "Комментарии"
+      }
+    },
+    "publications": {
+      "types": {
+        "articles": "Статьи",
+        "posts": "Посты",
+        "news": "Новости"
+      }
+    },
+    "profile": {
+      "cardFetchFailed": "Не удалось получить карточку пользователя",
+      "loadFailed": "Не удалось загрузить ваш профиль",
+      "votes": "{{votesCount}} голосов"
+    },
+    "comments": {
+      "loadFailed": "Не удалось получить комментарии пользователя"
+    }
+  },
+  "shortcut": {
+    "bookmarks": "Закладки",
+    "articles": "Статьи",
+    "posts": "Посты",
+    "news": "Новости",
+    "search": "Поиск"
+  },
+  "error": {
+    "somethingWentWrong": "Что-то пошло не так",
+    "operationFailed": "Не удалось выполнить",
+    "requestFailed": "Не удалось выполнить запрос",
+    "notFound": "Не найдено",
+    "valueError": "Ошибка значения"
+  },
+  "comment": {
+    "title": "Комментарии",
+    "fetchFailed": "Не удалось получить список комментариев",
+    "publication": {
+      "inDrafts": "Публикация в черновиках"
+    },
+    "disabled": "Комментарии к этой публикации отключены",
+    "empty": "Нет комментариев",
+    "repliedTo": "ответил на ",
+    "messageFrom": "сообщение от ",
+    "showFull": "Показать полностью"
+  },
+  "filter": {
+    "all": "Все",
+    "period": {
+      "day": "Сутки",
+      "week": "Неделя",
+      "month": "Месяц",
+      "year": "Год",
+      "allTime": "Все время"
+    },
+    "apply": "Применить"
+  },
+  "sort": {
+    "newest": "Новые",
+    "best": "Лучшие",
+    "unknownValue": "Неизвестное значение сортировки"
+  },
+  "language": {
+    "unknown": "Неизвестный язык",
+    "russian": "Русский",
+    "english": "Английский"
+  },
+  "search": {
+    "notImplemented": "Не реализовано",
+    "hint": "Поиск",
+    "noResults": "Поиск не дал результатов",
+    "order": {
+      "relevance": "По релевантности",
+      "date": "По времени",
+      "rating": "По рейтингу"
+    },
+    "target": {
+      "articles": "Статьи",
+      "hubs": "Хабы",
+      "companies": "Компании",
+      "users": "Пользователи",
+      "comments": "Комментарии"
+    }
+  },
+  "image": {
+    "missingMimeType": "В заголовках не указан mime/type",
+    "download": "Скачать",
+    "share": "Поделиться"
+  },
+  "mostRead": {
+    "readingNow": "Читают сейчас"
+  },
+  "profile": {
+    "title": "Профиль",
+    "publications": "Публикации",
+    "bookmarks": "Закладки",
+    "comments": "Комментарии",
+    "subscribed": "Подписан",
+    "subscribe": "Подписаться"
+  },
+  "pagination": {
+    "previousPage": "Предыдущая страница",
+    "nextPage": "Следующая страница"
+  },
+  "common": {
+    "warning": "Внимание",
+    "learnMore": "Подробнее",
+    "loading": "Загрузка...",
+    "retry": "Повторить",
+    "clear": "Очистить",
+    "save": "Сохранить",
+    "copiedToClipboard": "Скопировано в буфер обмена",
+    "copy": "Скопировать",
+    "genericError": "Произошла ошибка",
+    "tryAgain": "Попробовать снова"
+  },
+  "auth": {
+    "error": "Ошибка авторизации",
+    "signOut": "Выйти из аккаунта",
+    "login": {
+      "action": "Вход",
+      "fallbackHint": "Если не удается войти через форму логина",
+      "required": "Необходимо войти в аккаунт"
+    },
+    "authorization": "Авторизация",
+    "logout": "Выход",
+    "token": {
+      "label": "Токен {{sidToken}}",
+      "cookieHint": "Можно найти в cookies",
+      "dialogMessage": "Возникли проблемы с полученным токеном\n\nПопробуйте перезайти в аккаунт или игнорируйте это назойливое окно\n\nМожет, само пройдёт? 🤔"
+    }
+  },
+  "settings": {
+    "account": "Аккаунт",
+    "integrations": "Интеграции",
+    "profileAndIntegrations": "Профиль и интеграции",
+    "interfaceDescription": "Внешний вид, скролл и языки",
+    "fontsDescription": "Масштаб и типографика публикаций",
+    "feedDescription": "Карточки и навигация",
+    "elementVisibility": "Видимость элементов"
+  },
+  "summary": {
+    "generationPurpose": "Для генерации пересказов статей",
+    "brief": {
+      "fetchError": "Не удалось получить краткий пересказ"
+    },
+    "link": {
+      "label": "Ссылка на пересказ",
+      "fetchError": "Не удалось получить ссылку на пересказ"
+    },
+    "fetchError": "Не удалось получить пересказ",
+    "authorizationRequired": "Необходим токен YandexGPT",
+    "aiDescription": "краткий пересказ статьи от нейросети",
+    "token": {
+      "label": "Токен",
+      "locationHint": "Можно найти на 300.ya.ru"
+    }
+  },
+  "fonts": {
+    "settingsTitle": "Шрифты",
+    "publicationsSection": "Публикации",
+    "generalSection": "Общие",
+    "textScale": "Масштаб текста"
+  },
+  "interface": {
+    "settingsTitle": "Интерфейс",
+    "appearance": "Внешний вид",
+    "languages": "Языки",
+    "colorTheme": "Цветовая тема",
+    "language": "Язык интерфейса",
+    "scroll": "Скролл",
+    "publication": {
+      "language": {
+        "label": "Язык публикаций",
+        "required": "должен быть выбран хотя бы один"
+      }
+    }
+  },
+  "theme": {
+    "system": "Системная",
+    "light": "Светлая",
+    "dark": "Темная"
+  },
+  "alignment": {
+    "start": "В начале",
+    "center": "В центре",
+    "end": "В конце"
+  },
+  "typography": {
+    "resetDefaults": "Вернуть значения по умолчанию",
+    "font": {
+      "label": "Шрифт",
+      "size": "Размер шрифта"
+    },
+    "headings": "Заголовки",
+    "headingExample": "Пример заголовка публикации",
+    "text": {
+      "label": "Текст",
+      "example": "Пример текста публикации.\\n"
+    },
+    "line": {
+      "height": "Межстрочный интервал",
+      "rhythmHint": "Так проще оценить размер и ритм строки"
+    }
+  },
+  "app": {
+    "initializationError": "Ошибка инициализации приложения",
+    "requiredDataLoadError": "Не удалось загрузить необходимые данные"
+  },
+  "html": {
+    "copyToClipboard": "Копировать в буфер",
+    "showFull": "Показать полностью...",
+    "open": {
+      "link": "Перейти",
+      "inBrowser": "Показать в браузере"
+    },
+    "display": {
+      "image": "Отобразить изображение",
+      "webView": "Отобразить WebView"
+    }
+  },
+  "navigation": {
+    "publications": "Публикации",
+    "services": "Сервисы",
+    "settings": "Настройки"
+  },
+  "services": {
+    "hubs": "Хабы",
+    "authors": "Авторы",
+    "companies": "Компании"
+  },
+  "account": {
+    "profile": "Профиль",
+    "notLoggedIn": "Вы не вошли"
+  }
+}

@@ -1,24 +1,23 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 part of 'summary_cubit.dart';
 
 enum SummaryStatus { initial, loading, failure, success }
 
 class SummaryState with Equatable {
   const SummaryState({
-    this.status = SummaryStatus.initial,
+    this.status = .initial,
     this.error = '',
     required this.url,
     this.model = SummaryModel.empty,
   });
 
   final SummaryStatus status;
-  final String error;
+  final Object error;
   final String url;
   final SummaryModel model;
 
   SummaryState copyWith({
     SummaryStatus? status,
-    String? error,
+    Object? error,
     SummaryModel? model,
   }) {
     return SummaryState(

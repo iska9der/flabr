@@ -5,8 +5,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_file_dialog/flutter_file_dialog.dart';
 
+import '../../../bloc/error/app_failure.dart';
 import '../../../core/component/html_asset/html_asset.dart';
-import '../../../data/exception/exception.dart';
 import '../model/publication_download_format.dart';
 import '../service/publication_text_converter.dart';
 
@@ -100,7 +100,12 @@ class PublicationDownloadCubit extends Cubit<PublicationDownloadState> {
 
       emit(state.copyWith(status: .success));
     } catch (error, stackTrace) {
-      emit(state.copyWith(status: .failure, error: error.parseException()));
+      emit(
+        state.copyWith(
+          status: .failure,
+          error: AppFailure(.operationFailed, error),
+        ),
+      );
 
       super.onError(error, stackTrace);
     }

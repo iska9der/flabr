@@ -31,6 +31,7 @@ class PublicationDetailPage extends StatelessWidget {
           id,
           source: .fromType(type),
           repository: getIt(),
+          languageRepository: getIt(),
         ),
         child: const PublicationDetailRemoteBuilder(),
       ),

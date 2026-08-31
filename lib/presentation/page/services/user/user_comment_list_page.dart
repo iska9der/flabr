@@ -20,7 +20,6 @@ class UserCommentListPage extends StatelessWidget {
 
   final String alias;
 
-  static const String title = 'Комментарии';
   static const String routePath = 'comments';
   static const String routeName = 'UserCommentListRoute';
 

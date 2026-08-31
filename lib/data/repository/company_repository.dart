@@ -25,13 +25,7 @@ class CompanyRepositoryApi implements CompanyRepository {
   }
 
   @override
-  Future<CompanyCard> fetchCard(String alias) async {
-    final raw = await _service.fetchCard(alias);
-
-    final model = CompanyCard.fromMap(raw);
-
-    return model;
-  }
+  Future<CompanyCard> fetchCard(String alias) => _service.fetchCard(alias);
 }
 
 @test

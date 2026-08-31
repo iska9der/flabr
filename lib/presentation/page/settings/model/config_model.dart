@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import '../../../../i18n/i18n.dart';
 
 part 'config_model.freezed.dart';
 part 'config_model.g.dart';

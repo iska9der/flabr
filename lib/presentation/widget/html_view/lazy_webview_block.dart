@@ -3,6 +3,7 @@ import 'package:skeletonizer/skeletonizer.dart';
 
 import '../../../core/component/router/router.dart';
 import '../../../di/di.dart';
+import '../../../i18n/i18n.dart';
 import '../../extension/context.dart';
 import 'lazy_visibility_widget.dart';
 
@@ -78,10 +79,10 @@ class _LazyWebViewBlockState extends State<LazyWebViewBlock> {
                       children: [
                         const Icon(Icons.play_arrow, size: 48),
                         const SizedBox(height: 8),
-                        const Text(
-                          'Отобразить WebView',
+                        Text(
+                          context.t.html.display.webView,
                           textAlign: TextAlign.center,
-                          style: TextStyle(fontWeight: FontWeight.w500),
+                          style: const TextStyle(fontWeight: FontWeight.w500),
                         ),
                         Text(
                           host,
@@ -99,7 +100,7 @@ class _LazyWebViewBlockState extends State<LazyWebViewBlock> {
               onPressed: () {
                 getIt<AppRouter>().launchUrl(widget.src);
               },
-              child: const Text('Показать в браузере'),
+              child: Text(context.t.html.open.inBrowser),
             ),
           ],
         ),

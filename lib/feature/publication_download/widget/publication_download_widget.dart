@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../di/di.dart';
+import '../../../i18n/i18n.dart';
 import '../../../presentation/extension/extension.dart';
 import '../../../presentation/widget/enhancement/enhancement.dart';
 import '../cubit/publication_download_cubit.dart';
@@ -71,9 +72,7 @@ class _SaveButton extends StatelessWidget {
           previous.status != current.status && current.status == .failure,
       listener: (context, state) {
         context.showSnack(
-          content: Text(
-            state.error.isEmpty ? 'Не удалось сохранить файл' : state.error,
-          ),
+          content: Text(context.t.errorMessage(state.error)),
         );
       },
       builder: (context, state) {

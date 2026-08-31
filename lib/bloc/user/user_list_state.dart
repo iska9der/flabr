@@ -10,14 +10,14 @@ class UserListState with Equatable {
   });
 
   final LoadingStatus status;
-  final String error;
+  final Object error;
   final int page;
   final int pagesCount;
   final List<User> users;
 
   UserListState copyWith({
     LoadingStatus? status,
-    String? error,
+    Object? error,
     int? page,
     int? pagesCount,
     List<User>? users,

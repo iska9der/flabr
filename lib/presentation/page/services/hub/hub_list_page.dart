@@ -8,6 +8,7 @@ import '../../../../bloc/hub/hub_list_cubit.dart';
 import '../../../../data/model/hub/hub.dart';
 import '../../../../di/di.dart';
 import '../../../../feature/scroll/scroll.dart';
+import '../../../../i18n/i18n.dart';
 import '../../../extension/extension.dart';
 import '../../../theme/theme.dart';
 import '../../../widget/enhancement/progress_indicator.dart';
@@ -19,7 +20,6 @@ import 'widget/hub_list_card_widget.dart';
 class HubListPage extends StatelessWidget {
   const HubListPage({super.key});
 
-  static const name = 'Хабы';
   static const routePath = 'hubs';
   static const routeName = 'HubListRoute';
 
@@ -55,7 +55,7 @@ class HubListPageView extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           leading: const AutoLeadingButton(),
-          title: const Text(HubListPage.name),
+          title: Text(context.t.hub.list.title),
         ),
         floatingActionButton: const FloatingContainer(
           children: [FloatingScrollToTopButton()],
@@ -64,7 +64,9 @@ class HubListPageView extends StatelessWidget {
           child: BlocConsumer<HubListCubit, HubListState>(
             listenWhen: (p, c) => p.page != 1 && c.status == .failure,
             listener: (c, state) {
-              context.showSnack(content: Text(state.error));
+              context.showSnack(
+                content: Text(context.t.errorMessage(state.error)),
+              );
             },
             builder: (context, state) {
               if (state.status == .initial) {
@@ -81,7 +83,7 @@ class HubListPageView extends StatelessWidget {
                 if (state.status == .failure) {
                   return Center(
                     child: AppError(
-                      message: state.error,
+                      error: state.error,
                       onRetry: () => cubit.fetch(),
                     ),
                   );

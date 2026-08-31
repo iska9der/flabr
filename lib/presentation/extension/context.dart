@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../core/component/router/router.dart';
 import '../../di/di.dart';
+import '../../i18n/i18n.dart';
 import '../theme/theme.dart';
 
 extension ContextExtension on BuildContext {
@@ -60,7 +61,7 @@ extension ContextExtension on BuildContext {
             actionsPadding: actionsPadding,
             title: Row(
               children: [
-                Expanded(child: title ?? const Text('Внимание')),
+                Expanded(child: title ?? Text(t.common.warning)),
                 if (isDismissible)
                   IconButton(
                     onPressed: () => Navigator.of(alertContext).pop(),

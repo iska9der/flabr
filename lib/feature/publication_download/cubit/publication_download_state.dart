@@ -21,12 +21,12 @@ class PublicationDownloadState with Equatable {
   final String htmlText;
   final PublicationDownloadFormat format;
   final PublicationDownloadStatus status;
-  final String error;
+  final Object error;
 
   String get fileName => '$id.${format.ext}';
 
   PublicationDownloadState copyWith({
-    String? error,
+    Object? error,
     PublicationDownloadStatus? status,
   }) {
     return PublicationDownloadState(

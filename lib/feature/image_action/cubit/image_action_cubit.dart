@@ -1,24 +1,22 @@
-import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_file_dialog/flutter_file_dialog.dart';
-import 'package:path/path.dart' as path;
 import 'package:share_plus/share_plus.dart';
 
-import '../../../core/component/http/http.dart';
-import '../../../data/exception/exception.dart';
+import '../../../bloc/error/app_failure.dart';
+import '../service/image_loader.dart';
 
 part 'image_action_state.dart';
 
 class ImageActionCubit extends Cubit<ImageActionState> {
-  ImageActionCubit({required HttpClient client, required String url})
-    : _client = client,
+  ImageActionCubit({required ImageLoader loader, required String url})
+    : _loader = loader,
       super(ImageActionState(url: url)) {
     _init();
   }
 
-  final HttpClient _client;
+  final ImageLoader _loader;
 
   Future<void> _init() async {
     if (state.url.isEmpty) {
@@ -30,39 +28,34 @@ class ImageActionCubit extends Cubit<ImageActionState> {
     }
   }
 
-  Future<void> _parseImage() async {
+  Future<void> _loadImage() async {
     if (state.bytes != null) return;
 
-    final response = await _client.get(
-      state.url,
-      options: Options(responseType: ResponseType.bytes),
+    final image = await _loader.load(state.url);
+
+    emit(
+      state.copyWith(
+        name: image.name,
+        mimeType: image.mimeType,
+        bytes: image.bytes,
+      ),
     );
-
-    if (!response.headers.map.containsKey('content-type')) {
-      throw const FetchException('В заголовках не указан mime/type');
-    }
-
-    final name = path.basename(state.url);
-    final mimeType = response.headers.map['content-type']!.first;
-    final bytes = Uint8List.fromList(response.data as List<int>);
-
-    emit(state.copyWith(name: name, mimeType: mimeType, bytes: bytes));
   }
 
   Future<void> pickAndSave() async {
-    if (state.status == ImageActionStatus.loading || !state.isSaveEnabled) {
+    if (state.status == .loading || !state.isSaveEnabled) {
       return;
     }
 
     try {
-      emit(state.copyWith(status: ImageActionStatus.loading));
+      emit(state.copyWith(status: .loading));
 
       final pickedDirectory = await FlutterFileDialog.pickDirectory();
       if (pickedDirectory == null) {
-        return emit(state.copyWith(status: ImageActionStatus.initial));
+        return emit(state.copyWith(status: .initial));
       }
 
-      await _parseImage();
+      await _loadImage();
 
       await FlutterFileDialog.saveFileToDirectory(
         directory: pickedDirectory,
@@ -72,12 +65,12 @@ class ImageActionCubit extends Cubit<ImageActionState> {
         replace: true,
       );
 
-      emit(state.copyWith(status: ImageActionStatus.success));
+      emit(state.copyWith(status: .success));
     } catch (error, stackTrace) {
       emit(
         state.copyWith(
-          status: ImageActionStatus.failure,
-          error: error.parseException(),
+          status: .failure,
+          error: AppFailure(.operationFailed, error),
         ),
       );
 
@@ -86,33 +79,29 @@ class ImageActionCubit extends Cubit<ImageActionState> {
   }
 
   Future<void> share() async {
-    if (state.status == ImageActionStatus.loading || !state.isShareEnabled) {
+    if (state.status == .loading || !state.isShareEnabled) {
       return;
     }
 
     try {
-      emit(state.copyWith(status: ImageActionStatus.loading));
+      emit(state.copyWith(status: .loading));
 
-      await _parseImage();
+      await _loadImage();
 
       await SharePlus.instance.share(
         ShareParams(
           files: [
-            XFile.fromData(
-              state.bytes!,
-              name: state.name,
-              mimeType: state.mimeType,
-            ),
+            .fromData(state.bytes!, name: state.name, mimeType: state.mimeType),
           ],
         ),
       );
 
-      emit(state.copyWith(status: ImageActionStatus.success));
+      emit(state.copyWith(status: .success));
     } catch (error, stackTrace) {
       emit(
         state.copyWith(
-          status: ImageActionStatus.failure,
-          error: error.parseException(),
+          status: .failure,
+          error: AppFailure(.operationFailed, error),
         ),
       );
 

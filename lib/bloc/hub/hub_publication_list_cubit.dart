@@ -2,12 +2,12 @@ import 'dart:async';
 
 import 'package:equatable/equatable.dart';
 
-import '../../data/exception/exception.dart';
 import '../../data/model/filter/filter.dart';
 import '../../data/model/list_response_model.dart';
 import '../../data/model/loading_status_enum.dart';
 import '../../data/model/publication/publication.dart';
 import '../../feature/publication_list/publication_list.dart';
+import '../error/app_failure.dart';
 
 part 'hub_publication_list_state.dart';
 
@@ -15,9 +15,11 @@ class HubPublicationListCubit
     extends PublicationListCubit<HubPublicationListState> {
   HubPublicationListCubit({
     required super.repository,
-    required super.langRepository,
+    required super.languageRepository,
+    required super.settingsRepository,
     String hub = '',
-  }) : super(HubPublicationListState(hub: hub));
+    PublicationType type = PublicationType.article,
+  }) : super(HubPublicationListState(hub: hub, type: type));
 
   @override
   Future<void> fetch() async {
@@ -44,7 +46,7 @@ class HubPublicationListCubit
     } catch (e) {
       emit(
         state.copyWith(
-          error: e.parseException('Не удалось получить статьи'),
+          error: AppFailure(.hubArticlesFetchFailed, e),
           status: .failure,
         ),
       );
@@ -54,11 +56,20 @@ class HubPublicationListCubit
   }
 
   @override
-  void reset() {
-    emit(.new(hub: state.hub, filter: state.filter));
+  void reset({int page = 1}) {
+    emit(
+      HubPublicationListState(
+        hub: state.hub,
+        type: state.type,
+        filter: state.filter,
+        page: page,
+      ),
+    );
   }
 
   void applyFilter(FlowFilter filter) {
-    emit(.new(hub: state.hub, filter: filter));
+    emit(
+      HubPublicationListState(hub: state.hub, type: state.type, filter: filter),
+    );
   }
 }

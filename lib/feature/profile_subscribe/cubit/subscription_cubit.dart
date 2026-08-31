@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../data/exception/exception.dart';
+import '../../../bloc/error/app_failure.dart';
 import '../../../data/model/loading_status_enum.dart';
 import '../../../data/repository/repository.dart';
 
@@ -37,7 +37,7 @@ class SubscriptionCubit extends Cubit<SubscriptionState> {
       emit(
         state.copyWith(
           status: .failure,
-          error: error.parseException(),
+          error: AppFailure(.operationFailed, error),
         ),
       );
 

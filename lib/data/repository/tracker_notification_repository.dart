@@ -46,10 +46,11 @@ class TrackerNotificationRepositoryImpl
     String page = '1',
     required TrackerNotificationCategory category,
   }) async {
-    final raw = await _service.fetchNotifications(
-      page: page,
-      category: category.name,
-    );
+    ListResponse<TrackerNotification> response = await _service
+        .fetchNotifications(
+          page: page,
+          category: category.name,
+        );
 
     final categoryController = _notificationsControllers[category]!;
 
@@ -60,9 +61,6 @@ class TrackerNotificationRepositoryImpl
 
     /// TODO: реализовать стрим для счетчиков
     // final unread = TrackerUnreadCounters.fromJson(raw['unreadCounters']);
-
-    ListResponse<TrackerNotification> response =
-        TrackerNotificationListResponse.fromMap(raw);
 
     /// при загрузки новых данных, объединяем их со старыми, чтобы не терять уже загруженные страницы
     response = (categoryController.valueOrNull ?? const ListResponse()).merge(
@@ -85,13 +83,12 @@ class TrackerNotificationRepositoryImpl
     required TrackerNotificationCategory category,
     List<String> ids = const [],
   }) async {
-    // ignore: unused_local_variable
-    final raw = await _service.readNotifications(ids);
-
-    final categoryController = _notificationsControllers[category]!;
+    await _service.readNotifications(ids);
 
     /// TODO: реализовать стрим для счетчиков
     // final unread = TrackerUnreadCounters.fromJson(raw['unreadCounters']);
+
+    final categoryController = _notificationsControllers[category]!;
 
     /// отмечаем уведомления как прочитанные и обновляем стрим
     final last = categoryController.value;

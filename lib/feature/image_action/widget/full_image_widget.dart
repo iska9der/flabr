@@ -7,7 +7,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:photo_view/photo_view.dart';
 
 import '../../../di/di.dart';
+import '../../../i18n/i18n.dart';
+import '../../../presentation/extension/extension.dart';
 import '../cubit/image_action_cubit.dart';
+import '../service/image_loader.dart';
 
 class FullImageAsset extends StatelessWidget {
   const FullImageAsset({super.key, required this.assetPath});
@@ -168,7 +171,7 @@ class FullImageNetworkModal extends StatelessWidget {
     return Scaffold(
       bottomNavigationBar: BlocProvider(
         create: (_) => ImageActionCubit(
-          client: getIt(instanceName: 'siteClient'),
+          loader: getIt<ImageLoader>(),
           url: imageUrl,
         ),
         child: const FullImageBottomBar(),
@@ -186,51 +189,59 @@ class FullImageBottomBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BottomAppBar(
-      child: Stack(
-        children: [
-          Row(
-            children: [
-              BlocBuilder<ImageActionCubit, ImageActionState>(
-                buildWhen: (previous, current) =>
-                    previous.canSave != current.canSave,
-                builder: (context, state) {
-                  return IconButton(
-                    icon: const Icon(Icons.download),
-                    tooltip: 'Скачать',
-                    onPressed: switch (state.canSave) {
-                      true =>
-                        () => context.read<ImageActionCubit>().pickAndSave(),
-                      false => null,
-                    },
-                  );
-                },
-              ),
-              BlocBuilder<ImageActionCubit, ImageActionState>(
-                buildWhen: (previous, current) =>
-                    previous.canShare != current.canShare,
-                builder: (context, state) {
-                  return IconButton(
-                    icon: const Icon(Icons.share),
-                    tooltip: 'Поделиться',
-                    onPressed: switch (state.canShare) {
-                      true => () => context.read<ImageActionCubit>().share(),
-                      false => null,
-                    },
-                  );
-                },
-              ),
-            ],
-          ),
-          Align(
-            alignment: Alignment.topCenter,
-            child: FloatingActionButton(
-              mini: true,
-              onPressed: () => Navigator.of(context).pop(),
-              child: const Icon(Icons.close_rounded, size: 32),
+    return BlocListener<ImageActionCubit, ImageActionState>(
+      listenWhen: (previous, current) =>
+          previous.status != current.status &&
+          current.status == ImageActionStatus.failure,
+      listener: (context, state) {
+        context.showSnack(content: Text(context.t.errorMessage(state.error)));
+      },
+      child: BottomAppBar(
+        child: Stack(
+          children: [
+            Row(
+              children: [
+                BlocBuilder<ImageActionCubit, ImageActionState>(
+                  buildWhen: (previous, current) =>
+                      previous.canSave != current.canSave,
+                  builder: (context, state) {
+                    return IconButton(
+                      icon: const Icon(Icons.download),
+                      tooltip: context.t.image.download,
+                      onPressed: switch (state.canSave) {
+                        true =>
+                          () => context.read<ImageActionCubit>().pickAndSave(),
+                        false => null,
+                      },
+                    );
+                  },
+                ),
+                BlocBuilder<ImageActionCubit, ImageActionState>(
+                  buildWhen: (previous, current) =>
+                      previous.canShare != current.canShare,
+                  builder: (context, state) {
+                    return IconButton(
+                      icon: const Icon(Icons.share),
+                      tooltip: context.t.image.share,
+                      onPressed: switch (state.canShare) {
+                        true => () => context.read<ImageActionCubit>().share(),
+                        false => null,
+                      },
+                    );
+                  },
+                ),
+              ],
             ),
-          ),
-        ],
+            Align(
+              alignment: Alignment.topCenter,
+              child: FloatingActionButton(
+                mini: true,
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Icon(Icons.close_rounded, size: 32),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

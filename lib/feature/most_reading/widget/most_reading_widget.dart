@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../bloc/publication/publication_bookmarks_bloc.dart';
 import '../../../core/component/router/router.dart';
 import '../../../di/di.dart';
+import '../../../i18n/i18n.dart';
 import '../../../presentation/extension/extension.dart';
 import '../../../presentation/page/publications/publication_detail_page.dart';
 import '../../../presentation/page/publications/widget/stats/stats.dart';

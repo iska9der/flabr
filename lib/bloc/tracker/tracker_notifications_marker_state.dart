@@ -15,6 +15,6 @@ abstract class TrackerNotificationsMarkerState
     /// чтобы в ui отобразить только у них индикатор загрузки,
     /// а не у всех уведомлений
     @Default([]) List<String> handledIds,
-    @Default('') String error,
+    Object? error,
   }) = _TrackerNotificationsMarkerState;
 }

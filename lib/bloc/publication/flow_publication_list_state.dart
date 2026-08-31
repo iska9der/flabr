@@ -17,7 +17,7 @@ class FlowPublicationListState extends PublicationListState with Equatable {
 
   FlowPublicationListState copyWith({
     LoadingStatus? status,
-    String? error,
+    Object? error,
     int? page,
     ListResponse<Publication>? response,
     PublicationFlow? flow,

@@ -10,6 +10,7 @@ import '../../../../../data/model/comment/comment.dart';
 import '../../../../../data/model/publication/publication.dart';
 import '../../../../../di/di.dart';
 import '../../../../../feature/scroll/scroll.dart';
+import '../../../../../i18n/i18n.dart';
 import '../../../../extension/extension.dart';
 import '../../../../widget/comment/comment.dart';
 import '../../../../widget/enhancement/card.dart';
@@ -32,7 +33,7 @@ class CommentSliverList extends StatelessWidget {
     return BlocConsumer<UserCommentListCubit, UserCommentListState>(
       listenWhen: (p, c) => p.page != 1 && c.status == .failure,
       listener: (c, state) {
-        context.showSnack(content: Text(state.error));
+        context.showSnack(content: Text(context.t.errorMessage(state.error)));
       },
       builder: (context, state) {
         /// Инициализация
@@ -51,15 +52,15 @@ class CommentSliverList extends StatelessWidget {
           /// Ошибка при попытке получить статьи
           if (state.status == .failure) {
             return SliverFillRemaining(
-              child: AppError(message: state.error, onRetry: fetch),
+              child: AppError(error: state.error, onRetry: fetch),
             );
           }
         }
 
         var comments = state.response.refs;
         if (comments.isEmpty) {
-          return const SliverFillRemaining(
-            child: Center(child: Text('Ничего нет')),
+          return SliverFillRemaining(
+            child: Center(child: Text(context.t.comment.empty)),
           );
         }
 

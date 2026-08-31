@@ -44,10 +44,11 @@ class TrackerPublicationRepositoryImpl implements TrackerPublicationRepository {
     String page = '1',
     bool byAuthor = false,
   }) async {
-    final map = await _service.fetchPublications(
-      page: page,
-      byAuthor: byAuthor,
-    );
+    ListResponse<TrackerPublication> response = await _service
+        .fetchPublications(
+          page: page,
+          byAuthor: byAuthor,
+        );
 
     if (page == '1') {
       /// при загрузки первой страницы очищаем стрим, чтобы не показывать старые данные
@@ -56,9 +57,6 @@ class TrackerPublicationRepositoryImpl implements TrackerPublicationRepository {
 
     /// TODO: реализовать стрим для счетчиков
     // final unread = TrackerUnreadCounters.fromJson(map['unreadCounters']);
-
-    ListResponse<TrackerPublication> response =
-        TrackerPublicationListResponse.fromMap(map);
 
     /// при загрузки новых данных объединяем их со старыми, чтобы не терять уже загруженные страницы
     response = (_publicationsController.valueOrNull ?? const ListResponse())
@@ -76,8 +74,7 @@ class TrackerPublicationRepositoryImpl implements TrackerPublicationRepository {
 
   @override
   Future<void> markAsReadPublications(List<String> ids) async {
-    // ignore: unused_local_variable
-    final raw = await _service.readPublications(ids);
+    await _service.readPublications(ids);
 
     /// TODO: реализовать стрим для счетчиков
     // final unread = TrackerUnreadCounters.fromJson(raw['unreadCounters']);

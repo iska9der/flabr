@@ -22,21 +22,11 @@ class UserRepository {
     return response;
   }
 
-  Future<User> fetchCard({required String login}) async {
-    final raw = await _service.fetchCard(alias: login);
+  Future<User> fetchCard({required String login}) =>
+      _service.fetchCard(alias: login);
 
-    final model = User.fromMap(raw);
-
-    return model;
-  }
-
-  Future<UserWhois> fetchWhois({required String login}) async {
-    final raw = await _service.fetchWhois(alias: login);
-
-    final model = UserWhois.fromMap(raw);
-
-    return model;
-  }
+  Future<UserWhois> fetchWhois({required String login}) =>
+      _service.fetchWhois(alias: login);
 
   Future<ListResponse<UserComment>> fetchComments({
     required String alias,

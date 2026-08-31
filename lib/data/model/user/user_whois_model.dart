@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:equatable/equatable.dart';
 import 'package:intl/intl.dart';
 
+import '../../../i18n/i18n.dart';
 import 'user_badget_model.dart';
 
 class UserWhois with Equatable {
@@ -70,7 +71,7 @@ class UserInvitedByModel with Equatable {
   final String timeCreated;
   DateTime get createdAt => DateTime.parse(timeCreated).toLocal();
 
-  const UserInvitedByModel({this.issuerLogin = 'НЛО', this.timeCreated = ''});
+  const UserInvitedByModel({this.issuerLogin = '', this.timeCreated = ''});
 
   UserInvitedByModel copyWith({String? issuerLogin, String? timeCreated}) {
     return UserInvitedByModel(
@@ -81,7 +82,7 @@ class UserInvitedByModel with Equatable {
 
   factory UserInvitedByModel.fromMap(Map<String, dynamic> map) {
     return UserInvitedByModel(
-      issuerLogin: map['issuerLogin'] ?? 'НЛО',
+      issuerLogin: map['issuerLogin'] ?? '',
       timeCreated: map['timeCreated'],
     );
   }
@@ -99,6 +100,9 @@ class UserInvitedByModel with Equatable {
   List<Object> get props => [issuerLogin, timeCreated];
 
   String get fullText {
-    return '${DateFormat.yMMMd().format(createdAt)} по приглашению $issuerLogin';
+    return t.user.joinedByInvitation(
+      createdAtDate: DateFormat.yMMMd().format(createdAt),
+      issuerLogin: issuerLogin.isEmpty ? t.user.ufo : issuerLogin,
+    );
   }
 }

@@ -12,6 +12,7 @@ import '../../data/model/loading_status_enum.dart';
 import '../../data/model/publication/publication.dart';
 import '../../data/model/section_enum.dart';
 import '../../feature/publication_list/publication_list.dart';
+import '../error/app_failure.dart';
 
 part 'flow_publication_list_state.dart';
 
@@ -19,7 +20,8 @@ class FlowPublicationListCubit
     extends PublicationListCubit<FlowPublicationListState> {
   FlowPublicationListCubit({
     required super.repository,
-    required super.langRepository,
+    required super.languageRepository,
+    required super.settingsRepository,
     required CacheStorage storage,
     PublicationFlow flow = .all,
     Section section = .article,
@@ -77,7 +79,7 @@ class FlowPublicationListCubit
     } catch (e) {
       emit(
         state.copyWith(
-          error: e.parseException('Не удалось получить статьи'),
+          error: AppFailure(.hubArticlesFetchFailed, e),
           status: .failure,
         ),
       );
@@ -87,8 +89,15 @@ class FlowPublicationListCubit
   }
 
   @override
-  void reset() {
-    emit(.new(flow: state.flow, section: state.section, filter: state.filter));
+  void reset({int page = 1}) {
+    emit(
+      FlowPublicationListState(
+        flow: state.flow,
+        section: state.section,
+        filter: state.filter,
+        page: page,
+      ),
+    );
   }
 
   void applyFilter(PublicationFlow newFlow, FlowFilter newFilter) {

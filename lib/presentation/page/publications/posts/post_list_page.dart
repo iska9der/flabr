@@ -17,7 +17,6 @@ class PostListPage extends StatelessWidget {
 
   final String flow;
 
-  static const String name = 'Посты';
   static const String routePath = 'flows/:flow';
   static const String routeName = 'PostListRoute';
 
@@ -29,7 +28,8 @@ class PostListPage extends StatelessWidget {
         BlocProvider(
           create: (_) => FlowPublicationListCubit(
             repository: getIt(),
-            langRepository: getIt(),
+            languageRepository: getIt(),
+            settingsRepository: getIt(),
             storage: getIt(instanceName: 'sharedStorage'),
             section: Section.post,
             flow: PublicationFlow.fromString(flow),

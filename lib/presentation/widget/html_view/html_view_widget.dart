@@ -14,6 +14,7 @@ import 'package:fwfh_webview/fwfh_webview.dart';
 import '../../../core/component/router/router.dart';
 import '../../../core/constants/constants.dart';
 import '../../../di/di.dart';
+import '../../../i18n/i18n.dart';
 import '../../extension/extension.dart';
 import '../../theme/theme.dart';
 import '../enhancement/progress_indicator.dart';
@@ -197,17 +198,17 @@ abstract class CustomBuildOp {
           onPressed: () {
             Clipboard.setData(ClipboardData(text: href));
             context.showSnack(
-              content: const Text('Скопировано в буфер обмена'),
+              content: Text(context.t.common.copiedToClipboard),
             );
           },
-          child: const Text('Копировать в буфер'),
+          child: Text(context.t.html.copyToClipboard),
         ),
         TextButton(
           onPressed: () {
             Navigator.of(context).pop();
             go();
           },
-          child: const Text('Перейти'),
+          child: Text(context.t.html.open.link),
         ),
       ],
     );
@@ -404,7 +405,7 @@ abstract class CustomBuildOp {
                     child: Padding(
                       padding: const .only(left: 12, bottom: 6),
                       child: Text(
-                        'Показать полностью...',
+                        context.t.html.showFull,
 
                         /// Если убрать стиль, то во время hero-анимации
                         /// стиль не подцепится, и будет отображаться debug стиль

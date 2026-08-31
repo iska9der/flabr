@@ -10,6 +10,7 @@ import '../../../../core/component/router/router.dart';
 import '../../../../core/constants/constants.dart';
 import '../../../../data/model/tracker/tracker.dart';
 import '../../../../di/di.dart';
+import '../../../../i18n/i18n.dart';
 import '../../../extension/extension.dart';
 import '../../../widget/enhancement/enhancement.dart';
 import '../../../widget/error_widget.dart';
@@ -50,9 +51,11 @@ class TrackerSubscriptionPage extends StatelessWidget {
             listenWhen: (previous, current) =>
                 previous.status != current.status &&
                 current.status == .failure &&
-                current.error.isNotEmpty,
+                current.error != null,
             listener: (context, state) {
-              context.showSnack(content: Text(state.error));
+              context.showSnack(
+                content: Text(context.t.errorMessage(state.error)),
+              );
             },
             child: const TrackerSubscriptionView(),
           ),
@@ -70,7 +73,7 @@ class TrackerSubscriptionView extends StatelessWidget {
         builder: (context, state) => switch (state.status) {
           .failure when state.isFirstFetch => Center(
             child: AppError(
-              message: state.error,
+              error: state.error,
               onRetry: () =>
                   context.read<TrackerNotificationsBloc>().add(const .load()),
             ),
@@ -183,7 +186,8 @@ class _NotificationWidget extends StatelessWidget {
                             }
 
                             return Tooltip(
-                              message: 'Отметить как прочитанное',
+                              message:
+                                  context.t.tracker.subscription.markAsRead,
                               child: GestureDetector(
                                 child: Icon(
                                   Icons.circle,
@@ -226,24 +230,19 @@ class _UnknownWidget extends StatelessWidget {
             'ALLO?! KTO ETA???',
             style: theme.textTheme.titleSmall,
           ),
-          const Text('Этот тип уведомления разыскивается разработчиком!'),
+          Text(context.t.tracker.unknownNotification.wanted),
           Row(
             children: [
               FilledButton.icon(
                 style: const ButtonStyle(visualDensity: .compact),
                 icon: const Icon(Icons.question_mark_outlined),
-                label: const Text('Подробнее'),
+                label: Text(context.t.common.learnMore),
                 onPressed: () {
                   showDialog(
                     context: context,
-                    builder: (context) => const AlertDialog(
+                    builder: (context) => AlertDialog(
                       content: Text(
-                        'Чтобы отобразить данные - нужно знать, как они выглядят.\n'
-                        'Уведомления такого типа ко мне не приходили, поэтому '
-                        'мне нужна твоя небольшая помощь:\n'
-                        'по нажатию на иконку почты или телеги скопируется структура '
-                        'этого уведомления и тебя перенаправит в приложение.\n'
-                        'Отправь сообщение, и никто не пострадает. Спасибо!',
+                        context.t.tracker.unknownNotification.help,
                       ),
                     ),
                   );

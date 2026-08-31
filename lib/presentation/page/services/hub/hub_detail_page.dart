@@ -27,7 +27,6 @@ class HubDetailPage extends StatelessWidget {
 
   final String alias;
 
-  static const name = 'Профиль';
   static const routePath = 'profile';
   static const routeName = 'HubDetailRoute';
 
@@ -41,7 +40,8 @@ class HubDetailPage extends StatelessWidget {
         BlocProvider(
           create: (_) => HubPublicationListCubit(
             repository: getIt(),
-            langRepository: getIt(),
+            languageRepository: getIt(),
+            settingsRepository: getIt(),
             hub: alias,
           ),
         ),
@@ -96,7 +96,7 @@ class HubDetailPageView extends StatelessWidget {
           if (state.status == .failure) {
             return Center(
               child: AppError(
-                message: state.error,
+                error: state.error,
                 onRetry: () => listCubit.fetch(),
               ),
             );
@@ -108,7 +108,7 @@ class HubDetailPageView extends StatelessWidget {
               controller: scrollCtrl,
               physics: scrollPhysics,
               slivers: [
-                FlabrSliverRefreshIndicator(onRefresh: listCubit.reset),
+                FlabrSliverRefreshIndicator(onRefresh: listCubit.refresh),
                 SliverPadding(
                   padding: AppInsets.screenPaddingExtended,
                   sliver: SliverMainAxisGroup(
@@ -139,8 +139,13 @@ class _HubArticleListView extends StatelessWidget {
     return MultiBlocListener(
       listeners: [
         BlocListener<ScrollCubit, ScrollState>(
-          listenWhen: (_, current) => current.isBottomEdge,
-          listener: (_, _) => listCubit.fetch(),
+          listenWhen: (previous, current) => current.isBottomEdge,
+          listener: (context, _) {
+            if (context.read<SettingsCubit>().state.feed.navigationMode ==
+                .infiniteScroll) {
+              listCubit.fetch();
+            }
+          },
         ),
         BlocListener<SettingsCubit, SettingsState>(
           listenWhen: (previous, current) =>

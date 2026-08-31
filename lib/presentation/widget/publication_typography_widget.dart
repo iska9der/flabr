@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../bloc/settings/settings_cubit.dart';
+import '../../i18n/i18n.dart';
 import '../extension/extension.dart';
 import '../page/settings/widget/text_style_typography_widget.dart';
 import '../theme/theme.dart';
@@ -12,8 +13,8 @@ class PublicationTitleTypographyWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextStyleTypographyWidget(
-      title: 'Заголовки',
-      previewText: 'Пример заголовка публикации',
+      title: context.t.typography.headings,
+      previewText: context.t.typography.headingExample,
       styleSelector: (state) => state.typography.publicationTitleStyle,
       defaultStyleBuilder: (context) =>
           _defaultTypography(context).publicationTitle,
@@ -35,10 +36,10 @@ class PublicationTextTypographyWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextStyleTypographyWidget(
-      title: 'Текст',
+      title: context.t.typography.text.label,
       previewText:
-          'Пример текста публикации.\n'
-          'Так проще оценить размер и ритм строки',
+          context.t.typography.text.example +
+          context.t.typography.line.rhythmHint,
       styleSelector: (state) => state.typography.publicationTextStyle,
       defaultStyleBuilder: (context) =>
           _defaultTypography(context).publicationText,

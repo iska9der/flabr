@@ -9,9 +9,9 @@ import '../model/user/user.dart';
 abstract interface class UserService {
   Future<UserListResponse> fetchAll({required String page});
 
-  Future<Map<String, dynamic>> fetchCard({required String alias});
+  Future<User> fetchCard({required String alias});
 
-  Future<Map<String, dynamic>> fetchWhois({required String alias});
+  Future<UserWhois> fetchWhois({required String alias});
 
   Future<void> toggleSubscription({required String alias});
 
@@ -39,48 +39,29 @@ class UserServiceImpl implements UserService {
 
   @override
   Future<UserListResponse> fetchAll({required String page}) async {
-    try {
-      final params = QueryParams(page: page).toMap();
+    final params = QueryParams(page: page).toMap();
+    final response = await _mobileClient.get('/users', queryParams: params);
 
-      final response = await _mobileClient.get('/users', queryParams: params);
-
-      return .fromMap(response.data);
-    } on AppException {
-      rethrow;
-    }
+    return UserListResponse.fromMap(response.data);
   }
 
   @override
-  Future<Map<String, dynamic>> fetchCard({required String alias}) async {
-    try {
-      final response = await _mobileClient.get('/users/$alias/card');
+  Future<User> fetchCard({required String alias}) async {
+    final response = await _mobileClient.get('/users/$alias/card');
 
-      return response.data;
-    } on AppException {
-      rethrow;
-    }
+    return User.fromMap(response.data);
   }
 
   @override
-  Future<Map<String, dynamic>> fetchWhois({required String alias}) async {
-    try {
-      final response = await _mobileClient.get('/users/$alias/whois');
+  Future<UserWhois> fetchWhois({required String alias}) async {
+    final response = await _mobileClient.get('/users/$alias/whois');
 
-      return response.data;
-    } on AppException {
-      rethrow;
-    }
+    return UserWhois.fromMap(response.data);
   }
 
   @override
   Future<void> toggleSubscription({required String alias}) async {
-    try {
-      await _siteClient.post('/v2/users/$alias/following/toggle', body: {});
-    } on AppException {
-      rethrow;
-    } catch (_, stackTrace) {
-      Error.throwWithStackTrace(const FetchException(), stackTrace);
-    }
+    await _siteClient.post('/v2/users/$alias/following/toggle', body: {});
   }
 
   @override
@@ -93,13 +74,11 @@ class UserServiceImpl implements UserService {
         '/v2/users/$alias/bookmarks/comments?page=$page',
       );
 
-      return .fromMap(response.data);
-    } on AppException {
-      rethrow;
-    } catch (_, trace) {
+      return UserCommentListResponse.fromMap(response.data);
+    } on FetchException catch (error, stackTrace) {
       Error.throwWithStackTrace(
-        const FetchException('Не удалось получить комментарии в закладках'),
-        trace,
+        error.withType(.bookmarkCommentsLoadFailed),
+        stackTrace,
       );
     }
   }
@@ -115,12 +94,10 @@ class UserServiceImpl implements UserService {
       );
 
       return UserCommentListResponse.fromMap(response.data);
-    } on AppException {
-      rethrow;
-    } catch (e, trace) {
+    } on FetchException catch (error, stackTrace) {
       Error.throwWithStackTrace(
-        const FetchException('Не удалось получить комментарии пользователя'),
-        trace,
+        error.withType(.userCommentsLoadFailed),
+        stackTrace,
       );
     }
   }

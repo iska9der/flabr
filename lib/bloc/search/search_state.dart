@@ -12,7 +12,7 @@ class SearchState with Equatable {
   });
 
   final LoadingStatus status;
-  final String error;
+  final Object error;
 
   final String query;
   final SearchOrder order;
@@ -25,7 +25,7 @@ class SearchState with Equatable {
 
   SearchState copyWith({
     LoadingStatus? status,
-    String? error,
+    Object? error,
     String? query,
     SearchOrder? order,
     SearchTarget? target,

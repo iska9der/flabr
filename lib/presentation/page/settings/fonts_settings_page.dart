@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../bloc/settings/settings_cubit.dart';
+import '../../../i18n/i18n.dart';
 import '../../widget/publication_typography_widget.dart';
 import 'model/config_model.dart';
 import 'widget/settings_card_widget.dart';
@@ -27,20 +28,20 @@ class FontsSettingsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const SettingsNestedScaffold(
-      title: 'Шрифты',
+    return SettingsNestedScaffold(
+      title: context.t.fonts.settingsTitle,
       children: [
         SettingsSectionWidget(
-          title: 'Общие',
+          title: context.t.fonts.generalSection,
           children: [
-            TextScaleFactorWidget(),
+            const TextScaleFactorWidget(),
           ],
         ),
         SettingsSectionWidget(
-          title: 'Публикации',
+          title: context.t.fonts.publicationsSection,
           children: [
-            PublicationTitleTypographyWidget(),
-            PublicationTextTypographyWidget(),
+            const PublicationTitleTypographyWidget(),
+            const PublicationTextTypographyWidget(),
           ],
         ),
       ],
@@ -106,7 +107,7 @@ class _TextScaleFactorCardState extends State<_TextScaleFactorCard> {
 
     return SettingsCardWidget(
       child: SettingsSliderWidget(
-        label: 'Масштаб текста',
+        label: context.t.fonts.textScale,
         value: _value,
         min: TypographyConfigModel.minTextScaleFactor,
         max: TypographyConfigModel.maxTextScaleFactor,

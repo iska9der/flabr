@@ -7,25 +7,22 @@ enum PublicationFlow {
   design,
   management,
   marketing,
-  popsci
-  ;
+  popsci;
 
   String get label => switch (this) {
-    .all => 'Все',
-    .develop => 'Разработка',
-    .admin => 'Администрирование',
-    .design => 'Дизайн',
-    .management => 'Менеджмент',
-    .marketing => 'Маркетинг',
-    .popsci => 'Научпоп',
+    PublicationFlow.all => t.filter.all,
+    PublicationFlow.develop => t.publication.flow.development,
+    PublicationFlow.admin => t.publication.flow.administration,
+    PublicationFlow.design => t.publication.flow.design,
+    PublicationFlow.management => t.publication.flow.management,
+    PublicationFlow.marketing => t.publication.flow.marketing,
+    PublicationFlow.popsci => t.publication.flow.popularScience,
   };
 
   static PublicationFlow fromString(String value) {
-    return .values.firstWhere(
+    return PublicationFlow.values.firstWhere(
       (e) => e.name == value,
-      orElse: () {
-        throw ValueException('Неизвестное значение PublicationFlow: $value');
-      },
+      orElse: () => throw const ValueException(.unknownPublicationFlow),
     );
   }
 }

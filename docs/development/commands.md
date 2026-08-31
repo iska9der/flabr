@@ -11,13 +11,8 @@
 ### Install Dependencies
 
 ```bash
-# Get all dependencies
+# Resolve the app and all workspace packages
 .fvm/flutter_sdk/bin/flutter pub get
-
-# Get dependencies for workspace packages
-cd packages/ya_summary && .fvm/flutter_sdk/bin/flutter pub get
-cd packages/quick_shortcuts && .fvm/flutter_sdk/bin/flutter pub get
-cd packages/flutter_highlight && .fvm/flutter_sdk/bin/flutter pub get
 ```
 
 ### Initial Setup
@@ -370,17 +365,17 @@ rm pubspec.lock
 ### Working with Packages
 
 ```bash
-# Generate code for specific package
-cd packages/ya_summary
-.fvm/flutter_sdk/bin/flutter pub run build_runner build --delete-conflicting-outputs
+# Test the pure Dart ya_summary package
+.fvm/flutter_sdk/bin/dart test packages/ya_summary
 
-# Test specific package
-cd packages/quick_shortcuts
-.fvm/flutter_sdk/bin/flutter test
+# Analyze the pure Dart ya_summary package
+.fvm/flutter_sdk/bin/dart analyze packages/ya_summary
 
-# Analyze specific package
-cd packages/flutter_highlight
-.fvm/flutter_sdk/bin/flutter analyze
+# Test a Flutter package
+.fvm/flutter_sdk/bin/flutter test packages/quick_shortcuts
+
+# Analyze a Flutter package
+.fvm/flutter_sdk/bin/flutter analyze packages/flutter_highlight
 ```
 
 ## Common Workflows

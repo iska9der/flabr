@@ -25,7 +25,6 @@ class UserPublicationListPage extends StatelessWidget {
   final String alias;
   final String type;
 
-  static const String title = 'Публикации';
   static const String routePath = 'publications/:type';
   static const String routeName = 'UserPublicationListRoute';
 
@@ -37,7 +36,8 @@ class UserPublicationListPage extends StatelessWidget {
         BlocProvider(
           create: (_) => UserPublicationListCubit(
             repository: getIt(),
-            langRepository: getIt(),
+            languageRepository: getIt(),
+            settingsRepository: getIt(),
             user: alias,
             type: UserPublicationType.fromString(type),
           ),
@@ -63,7 +63,12 @@ class UserPublicationListView extends StatelessWidget {
 
     return BlocListener<ScrollCubit, ScrollState>(
       listenWhen: (p, c) => c.isBottomEdge,
-      listener: (c, state) => listCubit.fetch(),
+      listener: (context, state) {
+        if (context.read<SettingsCubit>().state.feed.navigationMode ==
+            .infiniteScroll) {
+          listCubit.fetch();
+        }
+      },
       child: Scaffold(
         floatingActionButton: const FloatingContainer(
           children: [FloatingScrollToTopButton()],
@@ -75,7 +80,7 @@ class UserPublicationListView extends StatelessWidget {
             scrollCacheExtent: const .pixels(2000),
             physics: scrollPhysics,
             slivers: [
-              FlabrSliverRefreshIndicator(onRefresh: listCubit.reset),
+              FlabrSliverRefreshIndicator(onRefresh: listCubit.refresh),
               SliverPadding(
                 padding: AppInsets.screenPaddingExtended,
                 sliver: SliverMainAxisGroup(

@@ -45,6 +45,9 @@ abstract class Bootstrap {
 
   static Future<void> loadIntl([String defaultLocale = 'ru_RU']) async {
     Intl.defaultLocale = defaultLocale;
-    await initializeDateFormatting(defaultLocale);
+    await Future.wait([
+      initializeDateFormatting('ru_RU'),
+      initializeDateFormatting('en_US'),
+    ]);
   }
 }

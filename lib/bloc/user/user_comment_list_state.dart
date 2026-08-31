@@ -11,7 +11,7 @@ class UserCommentListState with Equatable {
   });
 
   final LoadingStatus status;
-  final String error;
+  final Object error;
   final String user;
   final int page;
   final ListResponse<UserComment> response;
@@ -21,7 +21,7 @@ class UserCommentListState with Equatable {
 
   UserCommentListState copyWith({
     LoadingStatus? status,
-    String? error,
+    Object? error,
     String? user,
     int? page,
     ListResponse<UserComment>? response,

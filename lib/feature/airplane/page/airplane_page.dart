@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../data/model/loading_status_enum.dart';
 import '../../../data/model/publication/publication.dart';
+import '../../../i18n/i18n.dart';
 import '../../../presentation/extension/extension.dart';
 import '../../../presentation/page/publications/widget/publication_detail_view.dart';
 import '../../../presentation/widget/enhancement/enhancement.dart';
@@ -28,7 +29,9 @@ class AirplanePage extends StatelessWidget {
             previous.operationError != current.operationError &&
             current.operationError != null,
         listener: (context, state) {
-          context.showSnack(content: Text(state.operationError!));
+          context.showSnack(
+            content: Text(context.t.errorMessage(state.operationError)),
+          );
         },
         child: BlocBuilder<OfflinePublicationBloc, OfflinePublicationState>(
           buildWhen: (previous, current) =>
@@ -42,8 +45,7 @@ class AirplanePage extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.all(24),
                 child: AppError(
-                  message:
-                      state.error ?? 'Не удалось открыть сохранённые статьи',
+                  error: state.error,
                   onRetry: () => context.read<OfflinePublicationBloc>().add(
                     const OfflinePublicationEvent.load(),
                   ),

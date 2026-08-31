@@ -3,9 +3,10 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../../../data/model/loading_status_enum.dart';
-import '../../../../data/model/publication/publication.dart';
-import '../../../../data/repository/repository.dart';
+import '../../data/model/loading_status_enum.dart';
+import '../../data/model/publication/publication.dart';
+import '../../data/repository/repository.dart';
+import '../error/app_failure.dart';
 
 part 'publication_vote_bloc.freezed.dart';
 part 'publication_vote_event.dart';
@@ -16,7 +17,8 @@ class PublicationVoteBloc
   PublicationVoteBloc({
     required Publication publication,
     required PublicationVoteRepository repository,
-  }) : _repository = repository, super(
+  }) : _repository = repository,
+       super(
          PublicationVoteState(
            id: publication.id,
            score: publication.statistics.score,
@@ -38,15 +40,15 @@ class PublicationVoteBloc
 
   final PublicationVoteRepository _repository;
 
-  String? _commonValidation(PublicationVoteAction action) {
+  AppFailure? _commonValidation(PublicationVoteAction action) {
     if (action.isVotingOver) {
-      return 'Голосование уже закончено';
+      return const AppFailure(.publicationVotingEnded);
     } else if (!action.isChargeEnough) {
-      return 'Лимит голосов на сегодня исчерпан';
+      return const AppFailure(.publicationDailyVoteLimitReached);
     } else if (!action.isKarmaEnough) {
-      return 'Вам не хватает рейтинга для голосования';
+      return const AppFailure(.publicationInsufficientRatingToVote);
     } else if (!action.canVote) {
-      return 'Вы больше не можете голосовать';
+      return const AppFailure(.publicationVotingNoLongerAllowed);
     }
 
     return null;
@@ -83,7 +85,7 @@ class PublicationVoteBloc
       emit(
         state.copyWith(
           status: LoadingStatus.failure,
-          error: 'Не удалось повысить рейтинг',
+          error: const AppFailure(.publicationUpvoteFailed),
         ),
       );
 
@@ -101,9 +103,7 @@ class PublicationVoteBloc
     return emit(
       state.copyWith(
         status: LoadingStatus.failure,
-        error:
-            'У разработчика не хватает сил ставить минусы на публикации, '
-            'поэтому пока неизвестно, как работает понижение голосов',
+        error: const AppFailure(.publicationDownvoteUnavailable),
       ),
     );
 

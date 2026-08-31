@@ -11,13 +11,13 @@ class UserState with Equatable {
 
   final String login;
   final LoadingStatus status;
-  final String error;
+  final Object error;
   final User model;
   final UserWhois whoisModel;
 
   UserState copyWith({
     LoadingStatus? status,
-    String? error,
+    Object? error,
     User? model,
     UserWhois? whoisModel,
   }) {

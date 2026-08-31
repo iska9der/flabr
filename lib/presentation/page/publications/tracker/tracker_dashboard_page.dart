@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/component/router/router.dart';
+import '../../../../i18n/i18n.dart';
 import '../../../theme/theme.dart';
 import '../../../widget/dashboard_drawer_link_widget.dart';
 
@@ -23,7 +24,7 @@ class TrackerDashboardPage extends StatelessWidget {
         return Scaffold(
           appBar: AppBar(
             leading: const AutoLeadingButton(),
-            title: const Text('Трекер'),
+            title: Text(context.t.tracker.title),
             toolbarHeight: AppDimensions.toolBarHeight,
             bottom: PreferredSize(
               preferredSize: const .fromHeight(AppDimensions.tabBarHeight),
@@ -33,9 +34,13 @@ class TrackerDashboardPage extends StatelessWidget {
                 padding: .zero,
                 labelPadding: const .symmetric(horizontal: 12),
                 dividerColor: Colors.transparent,
-                tabs: const [
-                  DashboardDrawerLinkWidget(title: 'Публикации'),
-                  DashboardDrawerLinkWidget(title: 'Подписки'),
+                tabs: [
+                  DashboardDrawerLinkWidget(
+                    title: context.t.tracker.publications.title,
+                  ),
+                  DashboardDrawerLinkWidget(
+                    title: context.t.tracker.subscriptions,
+                  ),
                   // DashboardDrawerLinkWidget(title: 'Уведомления'),
                 ],
               ),

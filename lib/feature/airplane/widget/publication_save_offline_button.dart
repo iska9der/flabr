@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../data/model/publication/publication.dart';
+import '../../../i18n/i18n.dart';
 import '../../../presentation/extension/extension.dart';
 import '../../../presentation/widget/enhancement/enhancement.dart';
 import '../bloc/bloc.dart';
@@ -22,7 +23,9 @@ class PublicationSaveOfflineButton extends StatelessWidget {
           current.operationErrorId == publication.id &&
           current.operationError != null,
       listener: (context, state) {
-        context.showSnack(content: Text(state.operationError!));
+        context.showSnack(
+          content: Text(context.t.errorMessage(state.operationError)),
+        );
       },
       child:
           BlocSelector<

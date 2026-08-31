@@ -3,7 +3,7 @@ description: mobile client for habr.com
 repository: https://github.com/iska9der/flabr
 
 publish_to: "none"
-version: 1.2.8+10712
+version: 1.2.8+10713
 
 environment:
   flutter: 3.44.6
@@ -17,9 +17,13 @@ workspace:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
   collection: any
   meta: any
   intl: any
+  slang: 4.19.0
+  slang_flutter: 4.19.0
 
   cupertino_icons: ^1.0.9
 
@@ -89,6 +93,7 @@ dev_dependencies:
   dart_code_metrics_presets: ^2.32.0
   flutter_launcher_icons: ^0.14.4
   build_runner: ^2.15.1
+  slang_build_runner: 4.19.0
   injectable_generator: ^3.0.2
   freezed: ^3.2.5
   json_serializable: ^6.14.0

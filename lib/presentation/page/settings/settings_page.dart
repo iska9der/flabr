@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/component/router/router.dart';
+import '../../../i18n/i18n.dart';
 import '../../extension/extension.dart';
 import '../../theme/theme.dart';
 import '../../widget/enhancement/enhancement.dart';
@@ -22,48 +23,48 @@ class SettingsPage extends StatelessWidget {
 class SettingsView extends StatelessWidget {
   const SettingsView({super.key});
 
-  static const _menuItems = [
-    SettingsMenuItem(
-      title: 'Аккаунт',
-      subtitle: 'Профиль и интеграции',
-      icon: Icons.person_outline_rounded,
-      route: AccountSettingsRoute(),
-    ),
-    SettingsMenuItem(
-      title: 'Интерфейс',
-      subtitle: 'Внешний вид, скролл и языки',
-      icon: Icons.tune_rounded,
-      route: InterfaceSettingsRoute(),
-    ),
-    SettingsMenuItem(
-      title: 'Шрифты',
-      subtitle: 'Масштаб и типографика публикаций',
-      icon: Icons.text_fields_rounded,
-      route: FontsSettingsRoute(),
-    ),
-    SettingsMenuItem(
-      title: 'Лента',
-      subtitle: 'Карточки и навигация',
-      icon: Icons.view_agenda_outlined,
-      route: FeedSettingsRoute(),
-    ),
-    SettingsMenuItem(
-      title: 'Публикации',
-      subtitle: 'Видимость элементов',
-      icon: Icons.article_outlined,
-      route: PublicationSettingsRoute(),
-    ),
-  ];
-
   @override
   Widget build(BuildContext context) {
+    final menuItems = [
+      SettingsMenuItem(
+        title: context.t.settings.account,
+        subtitle: context.t.settings.profileAndIntegrations,
+        icon: Icons.person_outline_rounded,
+        route: const AccountSettingsRoute(),
+      ),
+      SettingsMenuItem(
+        title: context.t.interface.settingsTitle,
+        subtitle: context.t.settings.interfaceDescription,
+        icon: Icons.tune_rounded,
+        route: const InterfaceSettingsRoute(),
+      ),
+      SettingsMenuItem(
+        title: context.t.fonts.settingsTitle,
+        subtitle: context.t.settings.fontsDescription,
+        icon: Icons.text_fields_rounded,
+        route: const FontsSettingsRoute(),
+      ),
+      SettingsMenuItem(
+        title: context.t.feed.settingsTitle,
+        subtitle: context.t.settings.feedDescription,
+        icon: Icons.view_agenda_outlined,
+        route: const FeedSettingsRoute(),
+      ),
+      SettingsMenuItem(
+        title: context.t.publication.settingsTitle,
+        subtitle: context.t.settings.elementVisibility,
+        icon: Icons.article_outlined,
+        route: const PublicationSettingsRoute(),
+      ),
+    ];
+
     return Scaffold(
       body: SafeArea(
         child: ListView(
           padding: AppInsets.screenPaddingExtended,
           children: [
             SettingsSectionWidget(
-              children: _menuItems
+              children: menuItems
                   .map(
                     (item) => SettingsMenuTile(
                       item: item,

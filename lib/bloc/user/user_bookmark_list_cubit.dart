@@ -2,12 +2,12 @@ import 'dart:async';
 
 import 'package:equatable/equatable.dart';
 
-import '../../data/exception/exception.dart';
 import '../../data/model/list_response_model.dart';
 import '../../data/model/loading_status_enum.dart';
 import '../../data/model/publication/publication.dart';
 import '../../data/model/user/user.dart';
 import '../../feature/publication_list/publication_list.dart';
+import '../error/app_failure.dart';
 
 part 'user_bookmark_list_state.dart';
 
@@ -15,9 +15,10 @@ class UserBookmarkListCubit
     extends PublicationListCubit<UserBookmarkListState> {
   UserBookmarkListCubit({
     required super.repository,
-    required super.langRepository,
+    required super.languageRepository,
+    required super.settingsRepository,
     String user = '',
-    UserBookmarksType type = .articles,
+    UserBookmarksType type = UserBookmarksType.articles,
   }) : super(UserBookmarkListState(user: user, type: type));
 
   @override
@@ -45,8 +46,8 @@ class UserBookmarkListCubit
     } catch (e) {
       emit(
         state.copyWith(
+          error: AppFailure(.userBookmarksFetchFailed, e),
           status: .failure,
-          error: e.parseException('Не удалось получить закладки'),
         ),
       );
 
@@ -55,14 +56,18 @@ class UserBookmarkListCubit
   }
 
   @override
-  void reset() {
-    emit(.new(user: state.user, type: state.type));
+  void reset({int page = 1}) {
+    emit(
+      UserBookmarkListState(
+        user: state.user,
+        type: state.type,
+        page: page,
+      ),
+    );
   }
 
   void changeType(UserBookmarksType type) {
-    if (type == state.type) {
-      return;
-    }
+    if (type == state.type) return;
 
     emit(.new(user: state.user, type: type));
   }

@@ -1,11 +1,11 @@
 import 'package:equatable/equatable.dart';
 
-import '../../data/exception/exception.dart';
 import '../../data/model/list_response_model.dart';
 import '../../data/model/loading_status_enum.dart';
 import '../../data/model/publication/publication.dart';
 import '../../data/model/user/user.dart';
 import '../../feature/publication_list/publication_list.dart';
+import '../error/app_failure.dart';
 
 part 'user_publication_list_state.dart';
 
@@ -13,7 +13,8 @@ class UserPublicationListCubit
     extends PublicationListCubit<UserPublicationListState> {
   UserPublicationListCubit({
     required super.repository,
-    required super.langRepository,
+    required super.languageRepository,
+    required super.settingsRepository,
     String user = '',
     UserPublicationType type = UserPublicationType.articles,
   }) : super(UserPublicationListState(alias: user, type: type));
@@ -43,8 +44,8 @@ class UserPublicationListCubit
     } catch (e) {
       emit(
         state.copyWith(
+          error: AppFailure(.hubArticlesFetchFailed, e),
           status: .failure,
-          error: e.parseException('Не удалось получить статьи'),
         ),
       );
 
@@ -53,8 +54,14 @@ class UserPublicationListCubit
   }
 
   @override
-  void reset() {
-    emit(.new(alias: state.alias, type: state.type));
+  void reset({int page = 1}) {
+    emit(
+      UserPublicationListState(
+        alias: state.alias,
+        type: state.type,
+        page: page,
+      ),
+    );
   }
 
   void changeType(UserPublicationType type) {

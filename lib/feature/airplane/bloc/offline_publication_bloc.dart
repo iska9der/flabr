@@ -4,7 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../../data/exception/exception.dart';
+import '../../../bloc/error/app_failure.dart';
 import '../../../data/model/loading_status_enum.dart';
 import '../../../data/model/publication/publication.dart';
 import '../model/publication_offline.dart';
@@ -73,7 +73,7 @@ class OfflinePublicationBloc
       emit(
         state.copyWith(
           loadingIds: {...state.loadingIds}..remove(id),
-          operationError: error.parseException(),
+          operationError: AppFailure(.operationFailed, error),
           operationErrorId: id,
         ),
       );
@@ -98,7 +98,7 @@ class OfflinePublicationBloc
     emit(
       state.copyWith(
         status: LoadingStatus.failure,
-        error: event.error.parseException(),
+        error: AppFailure(.operationFailed, event.error),
       ),
     );
     super.onError(event.error, event.stackTrace);

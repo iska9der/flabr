@@ -8,6 +8,7 @@ import '../../../../bloc/company/company_list_cubit.dart';
 import '../../../../bloc/settings/settings_cubit.dart';
 import '../../../../di/di.dart';
 import '../../../../feature/scroll/scroll.dart';
+import '../../../../i18n/i18n.dart';
 import '../../../extension/extension.dart';
 import '../../../theme/theme.dart';
 import '../../../widget/enhancement/progress_indicator.dart';
@@ -19,7 +20,6 @@ import 'widget/company_list_card_widget.dart';
 class CompanyListPage extends StatelessWidget {
   const CompanyListPage({super.key});
 
-  static const name = 'Компании';
   static const routePath = 'companies';
   static const routeName = 'CompanyListRoute';
 
@@ -67,7 +67,7 @@ class CompanyListPageView extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           leading: const AutoLeadingButton(),
-          title: const Text(CompanyListPage.name),
+          title: Text(context.t.company.list.title),
         ),
         floatingActionButton: const FloatingContainer(
           children: [FloatingScrollToTopButton()],
@@ -76,7 +76,9 @@ class CompanyListPageView extends StatelessWidget {
           child: BlocConsumer<CompanyListCubit, CompanyListState>(
             listenWhen: (p, c) => p.page != 1 && c.status == .failure,
             listener: (c, state) {
-              context.showSnack(content: Text(state.error));
+              context.showSnack(
+                content: Text(context.t.errorMessage(state.error)),
+              );
             },
             builder: (context, state) {
               if (state.status == .initial) {
@@ -93,7 +95,7 @@ class CompanyListPageView extends StatelessWidget {
                 if (state.status == .failure) {
                   return Center(
                     child: AppError(
-                      message: state.error,
+                      error: state.error,
                       onRetry: () => fetch(context),
                     ),
                   );

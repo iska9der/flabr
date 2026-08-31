@@ -2,6 +2,7 @@ import 'dart:collection';
 
 import 'package:equatable/equatable.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import '../../../i18n/i18n.dart';
 
 import '../list_response_model.dart';
 import '../publication/publication.dart';

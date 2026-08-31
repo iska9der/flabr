@@ -1,6 +1,5 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ya_summary/ya_summary.dart';
 
 import '../../../bloc/auth/auth_cubit.dart';
 import '../../../bloc/profile/profile_bloc.dart';
@@ -8,6 +7,7 @@ import '../../../bloc/publication/publication_bookmarks_bloc.dart';
 import '../../../bloc/settings/settings_cubit.dart';
 import '../../../di/di.dart';
 import '../../../feature/airplane/airplane.dart';
+import '../../../feature/summary/summary.dart';
 import '../../widget/navigation/navigation.dart';
 
 /// Предоставляет глобальные BLoC провайдеры для всего приложения.

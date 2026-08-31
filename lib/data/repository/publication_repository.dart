@@ -24,13 +24,7 @@ class PublicationRepository {
   final PublicationService service;
   final CacheStorage _storage;
 
-  Future<PublicationCounters> fetchCounters() async {
-    final rawData = await service.fetchCounters();
-
-    final counters = PublicationCounters.fromJson(rawData);
-
-    return counters;
-  }
+  Future<PublicationCounters> fetchCounters() => service.fetchCounters();
 
   Future<Publication> fetchPublicationById(
     String id, {
@@ -42,21 +36,11 @@ class PublicationRepository {
     };
   }
 
-  Future<PublicationCommon> _fetchCommonById(String id) async {
-    final rawData = await service.fetchArticleById(id);
+  Future<PublicationCommon> _fetchCommonById(String id) =>
+      service.fetchArticleById(id);
 
-    final publication = PublicationCommon.fromJson(rawData);
-
-    return publication;
-  }
-
-  Future<PublicationPost> _fetchPostById(String id) async {
-    final rawData = await service.fetchPostById(id);
-
-    final post = PublicationPost.fromJson(rawData);
-
-    return post;
-  }
+  Future<PublicationPost> _fetchPostById(String id) =>
+      service.fetchPostById(id);
 
   /// Сортируем статьи в полученном списке
   List<Publication> _sortListResponse(

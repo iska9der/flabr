@@ -26,7 +26,6 @@ class UserBookmarkListPage extends StatelessWidget {
   final String alias;
   final String type;
 
-  static const String title = 'Закладки';
   static const String routePath = 'bookmarks/:type';
   static const String routeName = 'UserBookmarkListRoute';
 
@@ -38,9 +37,10 @@ class UserBookmarkListPage extends StatelessWidget {
         BlocProvider(
           create: (_) => UserBookmarkListCubit(
             repository: getIt(),
-            langRepository: getIt(),
+            languageRepository: getIt(),
+            settingsRepository: getIt(),
             user: alias,
-            type: .fromString(type),
+            type: UserBookmarksType.fromString(type),
           ),
         ),
         BlocProvider(
@@ -80,8 +80,9 @@ class UserBookmarkListView extends StatelessWidget {
               builder: (context, state) {
                 return FlabrSliverRefreshIndicator(
                   onRefresh: switch (state.type) {
-                    .comments => context.read<UserCommentListCubit>().reset,
-                    _ => listCubit.reset,
+                    UserBookmarksType.comments =>
+                      context.read<UserCommentListCubit>().reset,
+                    _ => listCubit.refresh,
                   },
                 );
               },
@@ -94,11 +95,12 @@ class UserBookmarkListView extends StatelessWidget {
                     builder: (context, state) {
                       return SliverToBoxAdapter(
                         child: Padding(
-                          padding: const .symmetric(horizontal: 16),
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
                           child: TypeDropdownMenu(
                             type: state.type.name,
-                            onChanged: (t) =>
-                                listCubit.changeType(.fromString(t)),
+                            onChanged: (type) => listCubit.changeType(
+                              UserBookmarksType.fromString(type),
+                            ),
                             entries: UserBookmarksType.values
                                 .map(
                                   (type) => DropdownMenuItem(
@@ -115,20 +117,30 @@ class UserBookmarkListView extends StatelessWidget {
                   BlocBuilder<UserBookmarkListCubit, UserBookmarkListState>(
                     builder: (context, state) {
                       return switch (state.type) {
-                        .comments => BlocListener<ScrollCubit, ScrollState>(
-                          listenWhen: (_, c) => c.isBottomEdge,
-                          listener: (_, state) => context
-                              .read<UserCommentListCubit>()
-                              .fetchBookmarks(),
-                          child: CommentSliverList(
-                            fetch: context
+                        UserBookmarksType.comments =>
+                          BlocListener<ScrollCubit, ScrollState>(
+                            listenWhen: (p, c) => c.isBottomEdge,
+                            listener: (c, state) => context
                                 .read<UserCommentListCubit>()
-                                .fetchBookmarks,
+                                .fetchBookmarks(),
+                            child: CommentSliverList(
+                              fetch: context
+                                  .read<UserCommentListCubit>()
+                                  .fetchBookmarks,
+                            ),
                           ),
-                        ),
                         _ => BlocListener<ScrollCubit, ScrollState>(
                           listenWhen: (p, c) => c.isBottomEdge,
-                          listener: (c, state) => listCubit.fetch(),
+                          listener: (context, state) {
+                            if (context
+                                    .read<SettingsCubit>()
+                                    .state
+                                    .feed
+                                    .navigationMode ==
+                                .infiniteScroll) {
+                              listCubit.fetch();
+                            }
+                          },
                           child: PublicationSliverList(bloc: listCubit),
                         ),
                       };
