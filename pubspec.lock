@@ -277,10 +277,10 @@ packages:
     dependency: "direct dev"
     description:
       name: dart_code_metrics_presets
-      sha256: c2b890695e732329c79085194c6fc815a20acf44e553fad6c72f75bf3ae203cf
+      sha256: "9029dac0e2c62af8b8361f8d240e10cb023c11d7b9caaac2be85c77e4e63c486"
       url: "https://pub.dev"
     source: hosted
-    version: "2.32.0"
+    version: "2.33.0"
   dart_style:
     dependency: transitive
     description:
@@ -309,18 +309,18 @@ packages:
     dependency: "direct main"
     description:
       name: dio
-      sha256: ea2bad3c89a27635ce2d85cce4d6b199da49a5a48ec77b03e45b65a3b90922b0
+      sha256: "0df44ebba85e503958eb75d07eedd3c86275a58c1d3eda2f2ce8f0a2c3abbb3c"
       url: "https://pub.dev"
     source: hosted
-    version: "5.10.0"
+    version: "5.11.0"
   dio_cookie_manager:
     dependency: "direct main"
     description:
       name: dio_cookie_manager
-      sha256: "0db1a7b997a0455e488ac35744c68eed3f2a4280d3ab531835a65641b0a08744"
+      sha256: "4ed4669cacb11931517c1158876a2189f19386674b9dab498abcca063dbe4c61"
       url: "https://pub.dev"
     source: hosted
-    version: "3.4.0"
+    version: "3.5.0"
   dio_web_adapter:
     dependency: transitive
     description:
@@ -514,10 +514,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_widget_from_html_core
-      sha256: "7ff010b116f6abc16429923e616fbc727f3f65ef4cee12ffdb280aeecbc21e7f"
+      sha256: "388f81dd21c2de547abf7071433297f8a3f2a308bc1eb12f099a93f4d71e5155"
       url: "https://pub.dev"
     source: hosted
-    version: "0.17.2"
+    version: "0.17.3"
   freezed:
     dependency: "direct dev"
     description:
@@ -1018,18 +1018,18 @@ packages:
     dependency: "direct main"
     description:
       name: share_plus
-      sha256: "9eee8283462d91a7a1c8bdb67d08874abd75a2f8fae3bc0ca033035e375fb3d8"
+      sha256: "34f00f9becd2743c1fb05363d624f9f70d37f7ccdcdda47450bc0b8c9d327b8c"
       url: "https://pub.dev"
     source: hosted
-    version: "13.2.0"
+    version: "13.3.0"
   share_plus_platform_interface:
     dependency: transitive
     description:
       name: share_plus_platform_interface
-      sha256: "7f7ae28cf400d13f811e297ff37742dba83b79e0a6f5dce14eec0248274e6ce9"
+      sha256: "365ef7379fc22507256adda3385152942ffce08935452bc972c2e52a0bebae41"
       url: "https://pub.dev"
     source: hosted
-    version: "7.1.0"
+    version: "7.2.0"
   shared_preferences:
     dependency: "direct main"
     description:
