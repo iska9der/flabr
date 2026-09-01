@@ -9,11 +9,10 @@ part 'subscription_state.dart';
 
 class SubscriptionCubit extends Cubit<SubscriptionState> {
   SubscriptionCubit({
-    required SubscriptionRepository repository,
+    required this._repository,
     required String alias,
     required bool isSubscribed,
-  }) : _repository = repository,
-       super(SubscriptionState(alias: alias, isSubscribed: isSubscribed));
+  }) : super(SubscriptionState(alias: alias, isSubscribed: isSubscribed));
 
   final SubscriptionRepository _repository;
 

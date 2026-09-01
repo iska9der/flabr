@@ -11,10 +11,9 @@ part 'company_list_state.dart';
 
 class CompanyListCubit extends Cubit<CompanyListState> {
   CompanyListCubit({
-    required CompanyRepository repository,
+    required this._repository,
     required LanguageRepository languageRepository,
-  }) : _repository = repository,
-       super(const CompanyListState());
+  }) : super(const CompanyListState());
 
   final CompanyRepository _repository;
 

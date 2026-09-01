@@ -14,10 +14,9 @@ abstract interface class CompanyService {
 @LazySingleton(as: CompanyService)
 class CompanyServiceImpl implements CompanyService {
   const CompanyServiceImpl({
-    @Named('mobileClient') required HttpClient mobileClient,
-    @Named('siteClient') required HttpClient siteClient,
-  }) : _mobileClient = mobileClient,
-       _siteClient = siteClient;
+    @Named('mobileClient') required this._mobileClient,
+    @Named('siteClient') required this._siteClient,
+  });
 
   final HttpClient _mobileClient;
   final HttpClient _siteClient;

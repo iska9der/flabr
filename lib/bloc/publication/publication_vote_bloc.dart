@@ -16,9 +16,8 @@ class PublicationVoteBloc
     extends Bloc<PublicationVoteEvent, PublicationVoteState> {
   PublicationVoteBloc({
     required Publication publication,
-    required PublicationVoteRepository repository,
-  }) : _repository = repository,
-       super(
+    required this._repository,
+  }) : super(
          PublicationVoteState(
            id: publication.id,
            score: publication.statistics.score,

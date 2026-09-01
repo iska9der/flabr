@@ -18,8 +18,8 @@ import '../service/service.dart';
 class PublicationRepository {
   PublicationRepository(
     this.service, {
-    @Named('sharedStorage') required CacheStorage storage,
-  }) : _storage = storage;
+    @Named('sharedStorage') required this._storage,
+  });
 
   final PublicationService service;
   final CacheStorage _storage;

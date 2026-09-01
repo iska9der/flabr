@@ -10,9 +10,8 @@ part 'summary_state.dart';
 class SummaryCubit extends Cubit<SummaryState> {
   SummaryCubit({
     required String url,
-    required SummaryRepository repository,
-  }) : _repository = repository,
-       super(SummaryState(url: url));
+    required this._repository,
+  }) : super(SummaryState(url: url));
 
   final SummaryRepository _repository;
 

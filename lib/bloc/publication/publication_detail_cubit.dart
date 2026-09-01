@@ -12,10 +12,9 @@ class PublicationDetailCubit extends Cubit<PublicationDetailState> {
   PublicationDetailCubit(
     String id, {
     required PublicationSource source,
-    required PublicationRepository repository,
+    required this._repository,
     required LanguageRepository languageRepository,
-  }) : _repository = repository,
-       super(
+  }) : super(
          PublicationDetailState(
            id: id,
            source: source,

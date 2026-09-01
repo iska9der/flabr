@@ -16,10 +16,9 @@ class TrackerNotificationsMarkerBloc
     extends
         Bloc<TrackerNotificationsMarkerEvent, TrackerNotificationsMarkerState> {
   TrackerNotificationsMarkerBloc({
-    required TrackerNotificationRepository repository,
+    required this._repository,
     required TrackerNotificationCategory category,
-  }) : _repository = repository,
-       super(TrackerNotificationsMarkerState(category: category)) {
+  }) : super(TrackerNotificationsMarkerState(category: category)) {
     on<TrackerNotificationsMarkerEvent>(
       (event, emit) => switch (event) {
         MarkAsReadEvent event => _read(event, emit),

@@ -6,9 +6,8 @@ import '../../../data/repository/summary_token_repository.dart';
 part 'summary_auth_state.dart';
 
 class SummaryAuthCubit extends Cubit<SummaryAuthState> {
-  SummaryAuthCubit({required SummaryTokenRepository tokenRepository})
-    : _tokenRepository = tokenRepository,
-      super(const SummaryAuthState());
+  SummaryAuthCubit({required this._tokenRepository})
+    : super(const SummaryAuthState());
 
   final SummaryTokenRepository _tokenRepository;
 

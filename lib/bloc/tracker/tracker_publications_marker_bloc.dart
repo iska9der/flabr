@@ -15,9 +15,8 @@ class TrackerPublicationsMarkerBloc
     extends
         Bloc<TrackerPublicationsMarkerEvent, TrackerPublicationsMarkerState> {
   TrackerPublicationsMarkerBloc({
-    required TrackerPublicationRepository repository,
-  }) : _repository = repository,
-       super(const TrackerPublicationsMarkerState()) {
+    required this._repository,
+  }) : super(const TrackerPublicationsMarkerState()) {
     on<TrackerPublicationsMarkerEvent>(
       (event, emit) => switch (event) {
         MarkEvent event => _mark(event, emit),

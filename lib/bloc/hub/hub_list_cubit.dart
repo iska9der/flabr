@@ -10,9 +10,8 @@ import '../error/app_failure.dart';
 part 'hub_list_state.dart';
 
 class HubListCubit extends Cubit<HubListState> {
-  HubListCubit({required HubRepository repository})
-    : _repository = repository,
-      super(const HubListState());
+  HubListCubit({required this._repository})
+    : super(const HubListState());
 
   final HubRepository _repository;
 

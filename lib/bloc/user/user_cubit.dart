@@ -9,9 +9,8 @@ import '../error/app_failure.dart';
 part 'user_state.dart';
 
 class UserCubit extends Cubit<UserState> {
-  UserCubit(String login, {required UserRepository repository})
-    : _repository = repository,
-      super(UserState(login: login, model: .empty));
+  UserCubit(String login, {required this._repository})
+    : super(UserState(login: login, model: .empty));
 
   final UserRepository _repository;
 

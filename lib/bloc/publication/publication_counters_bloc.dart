@@ -14,9 +14,8 @@ part 'publication_counters_state.dart';
 
 class PublicationCountersBloc
     extends Bloc<PublicationCountersEvent, PublicationCountersState> {
-  PublicationCountersBloc({required PublicationRepository repository})
-    : _repository = repository,
-      super(const PublicationCountersState()) {
+  PublicationCountersBloc({required this._repository})
+    : super(const PublicationCountersState()) {
     on<PublicationCountersEvent>(
       (event, emit) => switch (event) {
         LoadEvent event => _fetch(event, emit),

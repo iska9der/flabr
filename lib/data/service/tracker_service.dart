@@ -29,8 +29,8 @@ abstract interface class TrackerService {
 @LazySingleton(as: TrackerService)
 class TrackerServiceImpl implements TrackerService {
   const TrackerServiceImpl({
-    @Named('siteClient') required HttpClient siteClient,
-  }) : _siteClient = siteClient;
+    @Named('siteClient') required this._siteClient,
+  });
 
   final HttpClient _siteClient;
 

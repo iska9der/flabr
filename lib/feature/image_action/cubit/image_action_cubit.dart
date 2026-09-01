@@ -10,9 +10,8 @@ import '../service/image_loader.dart';
 part 'image_action_state.dart';
 
 class ImageActionCubit extends Cubit<ImageActionState> {
-  ImageActionCubit({required ImageLoader loader, required String url})
-    : _loader = loader,
-      super(ImageActionState(url: url)) {
+  ImageActionCubit({required this._loader, required String url})
+    : super(ImageActionState(url: url)) {
     _init();
   }
 

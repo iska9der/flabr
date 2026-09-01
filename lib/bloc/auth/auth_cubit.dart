@@ -9,9 +9,8 @@ part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
   AuthCubit({
-    required TokenRepository tokenRepository,
-  }) : _tokenRepository = tokenRepository,
-       super(const AuthState());
+    required this._tokenRepository,
+  }) : super(const AuthState());
 
   final TokenRepository _tokenRepository;
 

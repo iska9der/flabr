@@ -12,8 +12,8 @@ abstract interface class ProfileService {
 @Singleton(as: ProfileService)
 class ProfileServiceImpl implements ProfileService {
   const ProfileServiceImpl({
-    @Named('siteClient') required HttpClient siteClient,
-  }) : _siteClient = siteClient;
+    @Named('siteClient') required this._siteClient,
+  });
 
   final HttpClient _siteClient;
 

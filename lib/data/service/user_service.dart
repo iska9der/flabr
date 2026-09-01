@@ -29,10 +29,9 @@ abstract interface class UserService {
 @LazySingleton(as: UserService)
 class UserServiceImpl implements UserService {
   const UserServiceImpl({
-    @Named('mobileClient') required HttpClient mobileClient,
-    @Named('siteClient') required HttpClient siteClient,
-  }) : _mobileClient = mobileClient,
-       _siteClient = siteClient;
+    @Named('mobileClient') required this._mobileClient,
+    @Named('siteClient') required this._siteClient,
+  });
 
   final HttpClient _mobileClient;
   final HttpClient _siteClient;

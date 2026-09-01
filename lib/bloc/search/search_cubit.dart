@@ -12,11 +12,10 @@ part 'search_state.dart';
 
 class SearchCubit extends Cubit<SearchState> {
   SearchCubit({
-    required SearchRepository repository,
+    required this._repository,
     SearchTarget target = SearchTarget.posts,
     SearchOrder order = SearchOrder.relevance,
-  }) : _repository = repository,
-       super(SearchState(target: target, order: order));
+  }) : super(SearchState(target: target, order: order));
 
   final SearchRepository _repository;
 

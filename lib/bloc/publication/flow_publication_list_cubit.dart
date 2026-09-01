@@ -22,11 +22,10 @@ class FlowPublicationListCubit
     required super.repository,
     required super.languageRepository,
     required super.settingsRepository,
-    required CacheStorage storage,
+    required this._storage,
     PublicationFlow flow = .all,
     Section section = .article,
-  }) : _storage = storage,
-       super(FlowPublicationListState(flow: flow, section: section)) {
+  }) : super(FlowPublicationListState(flow: flow, section: section)) {
     _restoreFilter();
   }
 

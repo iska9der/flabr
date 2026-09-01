@@ -15,10 +15,9 @@ part 'settings_state.dart';
 @Singleton()
 class SettingsCubit extends Cubit<SettingsState> {
   SettingsCubit({
-    required SettingsRepository repository,
+    required this._repository,
     required LanguageRepository languageRepository,
-  }) : _repository = repository,
-       _langRepository = languageRepository,
+  }) : _langRepository = languageRepository,
        super(const SettingsState()) {
     _uiLangSub = _langRepository.onUIChange.listen((lang) {
       emit(state.copyWith(langUI: lang));

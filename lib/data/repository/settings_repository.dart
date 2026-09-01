@@ -13,8 +13,8 @@ import '../../presentation/page/settings/model/config_model.dart';
 @Singleton()
 class SettingsRepository {
   SettingsRepository({
-    @Named('sharedStorage') required CacheStorage storage,
-  }) : _storage = storage;
+    @Named('sharedStorage') required this._storage,
+  });
 
   final CacheStorage _storage;
 

@@ -16,10 +16,9 @@ part 'tracker_notifications_state.dart';
 class TrackerNotificationsBloc
     extends Bloc<TrackerNotificationsEvent, TrackerNotificationsState> {
   TrackerNotificationsBloc({
-    required TrackerNotificationRepository repository,
+    required this._repository,
     required TrackerNotificationCategory category,
-  }) : _repository = repository,
-       super(TrackerNotificationsState(category: category)) {
+  }) : super(TrackerNotificationsState(category: category)) {
     on<TrackerNotificationsEvent>(
       (event, emit) => switch (event) {
         _LoadEvent event => _onLoad(event, emit),

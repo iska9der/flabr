@@ -10,9 +10,8 @@ import '../../../data/repository/repository.dart';
 part 'most_reading_state.dart';
 
 class MostReadingCubit extends Cubit<MostReadingState> {
-  MostReadingCubit({required PublicationRepository repository})
-    : _repository = repository,
-      super(const MostReadingState());
+  MostReadingCubit({required this._repository})
+    : super(const MostReadingState());
 
   final PublicationRepository _repository;
 

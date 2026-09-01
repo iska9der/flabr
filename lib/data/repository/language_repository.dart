@@ -10,8 +10,7 @@ import '../model/language/language.dart';
 
 @Singleton()
 class LanguageRepository {
-  LanguageRepository({@Named('sharedStorage') required CacheStorage storage})
-    : _storage = storage {
+  LanguageRepository({@Named('sharedStorage') required this._storage}) {
     _init();
   }
 

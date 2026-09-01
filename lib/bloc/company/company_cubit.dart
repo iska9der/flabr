@@ -10,9 +10,8 @@ import '../error/app_failure.dart';
 part 'company_state.dart';
 
 class CompanyCubit extends Cubit<CompanyState> {
-  CompanyCubit(String alias, {required CompanyRepository repository})
-    : _repository = repository,
-      super(CompanyState(alias: alias));
+  CompanyCubit(String alias, {required this._repository})
+    : super(CompanyState(alias: alias));
 
   final CompanyRepository _repository;
 

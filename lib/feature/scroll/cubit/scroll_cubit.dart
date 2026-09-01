@@ -6,13 +6,10 @@ part 'scroll_state.dart';
 
 class ScrollCubit extends Cubit<ScrollState> {
   ScrollCubit({
-    Duration duration = const Duration(milliseconds: 200),
-    Curve curve = Curves.linear,
-    double edgeTolerance = 20.0,
-  }) : _edgeTolerance = edgeTolerance,
-       _curve = curve,
-       _duration = duration,
-       super(const ScrollState()) {
+    this._duration = const Duration(milliseconds: 200),
+    this._curve = Curves.linear,
+    this._edgeTolerance = 20.0,
+  }) : super(const ScrollState()) {
     _initListeners();
   }
 

@@ -11,10 +11,9 @@ part 'user_comment_list_state.dart';
 
 class UserCommentListCubit extends Cubit<UserCommentListState> {
   UserCommentListCubit({
-    required UserRepository repository,
+    required this._repository,
     required String user,
-  }) : _repository = repository,
-       super(UserCommentListState(user: user));
+  }) : super(UserCommentListState(user: user));
 
   final UserRepository _repository;
 

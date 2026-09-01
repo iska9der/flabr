@@ -14,10 +14,9 @@ class CommentListCubit extends Cubit<CommentListState> {
   CommentListCubit(
     String publicationId, {
     required PublicationSource source,
-    required PublicationRepository repository,
+    required this._repository,
     required LanguageRepository languageRepository,
-  }) : _repository = repository,
-       super(CommentListState(publicationId: publicationId, source: source));
+  }) : super(CommentListState(publicationId: publicationId, source: source));
 
   final PublicationRepository _repository;
 

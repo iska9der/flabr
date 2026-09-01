@@ -15,9 +15,8 @@ part 'tracker_publications_state.dart';
 
 class TrackerPublicationsBloc
     extends Bloc<TrackerPublicationsEvent, TrackerPublicationsState> {
-  TrackerPublicationsBloc({required TrackerPublicationRepository repository})
-    : _repository = repository,
-      super(const TrackerPublicationsState()) {
+  TrackerPublicationsBloc({required this._repository})
+    : super(const TrackerPublicationsState()) {
     on<TrackerPublicationsEvent>(
       (event, emit) => switch (event) {
         _SubscribeEvent event => _onSubscribe(event, emit),

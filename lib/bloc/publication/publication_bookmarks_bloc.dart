@@ -22,11 +22,9 @@ part 'publication_bookmarks_state.dart';
 class PublicationBookmarksBloc
     extends Bloc<PublicationBookmarksEvent, PublicationBookmarksState> {
   PublicationBookmarksBloc({
-    required Logger logger,
-    required PublicationRepository repository,
-  }) : _logger = logger,
-       _repository = repository,
-       super(const PublicationBookmarksState()) {
+    required this._logger,
+    required this._repository,
+  }) : super(const PublicationBookmarksState()) {
     on<PublicationBookmarksUpdated>(_onUpdated, transformer: sequential());
     on<PublicationBookmarkToggled>(_onToggled, transformer: concurrent());
   }

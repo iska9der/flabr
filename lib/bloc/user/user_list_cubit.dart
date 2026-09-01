@@ -9,9 +9,8 @@ import '../error/app_failure.dart';
 part 'user_list_state.dart';
 
 class UserListCubit extends Cubit<UserListState> {
-  UserListCubit({required UserRepository repository})
-    : _repository = repository,
-      super(const UserListState());
+  UserListCubit({required this._repository})
+    : super(const UserListState());
 
   final UserRepository _repository;
 
