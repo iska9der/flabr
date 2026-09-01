@@ -6,6 +6,7 @@ import '../../../bloc/profile/profile_bloc.dart';
 import '../../../bloc/publication/publication_bookmarks_bloc.dart';
 import '../../../bloc/settings/settings_cubit.dart';
 import '../../../di/di.dart';
+import '../../../feature/airplane/airplane.dart';
 import '../../../feature/summary/summary.dart';
 import '../../widget/navigation/navigation.dart';
 
@@ -19,8 +20,8 @@ import '../../widget/navigation/navigation.dart';
 /// - [PublicationBookmarksBloc] - закладки публикаций (lazy loaded)
 class GlobalBlocProvider extends StatelessWidget {
   const GlobalBlocProvider({
-    required this.child,
     super.key,
+    required this.child,
   });
 
   final Widget child;
@@ -52,8 +53,16 @@ class GlobalBlocProvider extends StatelessWidget {
 
         /// Функции публикаций (загружаются по требованию)
         BlocProvider(
+          create: (_) => PublicationBookmarksBloc(
+            logger: getIt(),
+            repository: getIt(),
+          ),
+        ),
+
+        /// Оффлайн режим
+        BlocProvider(
           create: (_) =>
-              PublicationBookmarksBloc(logger: getIt(), repository: getIt()),
+              OfflinePublicationBloc(repository: getIt())..add(const .load()),
         ),
       ],
       child: NavigationProvider(child: child),

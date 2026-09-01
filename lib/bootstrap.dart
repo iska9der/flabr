@@ -11,6 +11,7 @@ import 'package:intl/intl.dart';
 import 'bloc/observer.dart';
 import 'core/component/logger/logger.dart';
 import 'core/constants/constants.dart';
+import 'core/database/database.dart';
 import 'di/di.dart';
 import 'presentation/constants/constants.dart';
 import 'presentation/helper/helper.dart';
@@ -20,6 +21,8 @@ abstract class Bootstrap {
     await configureDependencies(env: AppEnvironment.env, logger: logger);
 
     await loadIntl();
+
+    getIt<AppDatabase>();
 
     AssetHelper.loadLicense();
 

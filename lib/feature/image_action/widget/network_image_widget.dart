@@ -1,8 +1,12 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
+import '../../../core/component/html_asset/html_asset.dart';
+import '../../../di/di.dart';
 import '../../../presentation/extension/context.dart';
 import '../../../presentation/theme/theme.dart';
 import 'full_image_widget.dart';
@@ -25,16 +29,31 @@ class NetworkImageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = context.theme;
+    final uri = Uri.tryParse(imageUrl);
+
     int? cacheHeight = height != null
         ? (height! * MediaQuery.devicePixelRatioOf(context)).round()
         : null;
 
-    final barrierColor = context.theme.colorScheme.surface.withValues(
-      alpha: .9,
-    );
+    final barrierColor = theme.colorScheme.surface.withValues(alpha: .9);
+
+    bool canOpenInModal = isTapable && !imageUrl.contains('.svg');
+
+    final errorBuilderResolved =
+        errorBuilder ?? (_, _, _) => _ImageError(height: height);
+
+    if (uri?.scheme == HtmlAssetService.cacheScheme) {
+      return _CachedAssetImage(
+        source: imageUrl,
+        height: height,
+        cacheHeight: cacheHeight,
+        errorBuilder: errorBuilderResolved,
+      );
+    }
 
     return GestureDetector(
-      onTap: switch (isTapable) {
+      onTap: switch (canOpenInModal) {
         true => () => showDialog(
           context: context,
           barrierColor: barrierColor,
@@ -43,17 +62,25 @@ class NetworkImageWidget extends StatelessWidget {
         false => null,
       },
       child: switch (imageUrl.contains('.svg')) {
-        true => SvgPicture.network(imageUrl, height: height),
+        true => SvgPicture.network(
+          imageUrl,
+          height: height,
+          errorBuilder: errorBuilderResolved,
+        ),
         false => SizedBox(
           height: height,
           child: Image(
             height: height,
-            errorBuilder: errorBuilder ?? (_, _, _) => const _ImageError(),
+            errorBuilder: errorBuilderResolved,
             frameBuilder: (_, child, frame, wasSyncLoaded) {
               final isLoading = frame == null && !wasSyncLoaded;
-              if (!isLoading) return child;
+              if (!isLoading) {
+                return child;
+              }
 
-              if (loadingPlaceholder != null) return loadingPlaceholder!;
+              if (loadingPlaceholder != null) {
+                return loadingPlaceholder!;
+              }
 
               return SizedBox(
                 height: height,
@@ -61,7 +88,7 @@ class NetworkImageWidget extends StatelessWidget {
                 child: Skeletonizer(
                   enabled: isLoading,
                   child: ColoredBox(
-                    color: context.theme.colorScheme.surfaceContainer,
+                    color: theme.colorScheme.surfaceContainer,
                   ),
                 ),
               );
@@ -78,15 +105,72 @@ class NetworkImageWidget extends StatelessWidget {
   }
 }
 
-class _ImageError extends StatelessWidget {
-  // ignore: unused_element_parameter
-  const _ImageError({super.key});
+class _CachedAssetImage extends StatelessWidget {
+  const _CachedAssetImage({
+    required this.source,
+    required this.height,
+    required this.cacheHeight,
+    required this.errorBuilder,
+  });
+
+  final String source;
+  final double? height;
+  final int? cacheHeight;
+  final ImageErrorWidgetBuilder errorBuilder;
 
   @override
   Widget build(BuildContext context) {
-    return const SizedBox(
-      height: AppDimensions.imageHeight,
-      child: Icon(Icons.image_not_supported_outlined, color: Colors.red),
+    return FutureBuilder<Uri?>(
+      future: getIt<HtmlAssetService>().resolveUri(source),
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return errorBuilder(
+            context,
+            snapshot.error!,
+            snapshot.stackTrace,
+          );
+        }
+        final uri = snapshot.data;
+        if (uri == null) return SizedBox(height: height);
+        final file = File.fromUri(uri);
+
+        if (uri.path.toLowerCase().endsWith('.svg')) {
+          return SvgPicture.file(
+            file,
+            height: height,
+            errorBuilder: errorBuilder,
+          );
+        }
+
+        return SizedBox(
+          height: height,
+          child: Image(
+            height: height,
+            errorBuilder: errorBuilder,
+            image: ResizeImage.resizeIfNeeded(
+              null,
+              cacheHeight,
+              FileImage(file),
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _ImageError extends StatelessWidget {
+  // ignore: unused_element_parameter
+  const _ImageError({super.key, double? height})
+    : height = height ?? AppDimensions.imageHeight;
+
+  final double height;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: height,
+      child: const Icon(Icons.image_not_supported_outlined, color: Colors.red),
     );
   }
 }

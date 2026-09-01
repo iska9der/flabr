@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../bloc/publication/publication_detail_cubit.dart';
 import '../../../data/model/publication/publication.dart';
 import '../../../di/di.dart';
-import '../../../feature/scroll/cubit/scroll_cubit.dart';
 import '../../widget/navigation/navigation.dart';
 import 'widget/publication_detail_view.dart';
 
@@ -27,26 +26,14 @@ class PublicationDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return NavigationProvider(
       key: ValueKey('publication-$id-detail'),
-      child: MultiBlocProvider(
-        providers: [
-          BlocProvider(
-            create: (_) => PublicationDetailCubit(
-              id,
-              source: .fromType(type),
-              repository: getIt(),
-              languageRepository: getIt(),
-            ),
-          ),
-          BlocProvider(create: (_) => ScrollCubit()..listenProgress()),
-        ],
-        child: BlocListener<ScrollCubit, ScrollState>(
-          listenWhen: (previous, current) =>
-              !previous.isBottomEdge && current.isBottomEdge,
-          listener: (context, state) {
-            context.read<NavigationCubit>().show();
-          },
-          child: const PublicationDetailView(),
+      child: BlocProvider(
+        create: (_) => PublicationDetailCubit(
+          id,
+          source: .fromType(type),
+          repository: getIt(),
+          languageRepository: getIt(),
         ),
+        child: const PublicationDetailRemoteBuilder(),
       ),
     );
   }

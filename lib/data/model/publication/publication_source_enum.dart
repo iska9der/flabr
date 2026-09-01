@@ -3,12 +3,13 @@ part of 'publication.dart';
 enum PublicationSource {
   article,
   post,
-  news;
+  news
+  ;
 
   factory PublicationSource.fromType(PublicationType type) {
-    return PublicationSource.values.firstWhere(
+    return .values.firstWhere(
       (source) => source.name == type.name,
-      orElse: () => PublicationSource.article,
+      orElse: () => .article,
     );
   }
 }

@@ -2,31 +2,33 @@ import 'package:html2md/html2md.dart' as html2md;
 
 import '../model/publication_download_format.dart';
 
-class PublicationTextConverter {
-  PublicationTextConverter({
-    required this.text,
-    required this.desiredFormat,
-  });
-
-  final String text;
-  final PublicationDownloadFormat desiredFormat;
-
-  String convert() {
-    switch (desiredFormat) {
-      case PublicationDownloadFormat.html:
-        return _foldHtml(text);
-      case PublicationDownloadFormat.markdown:
-        return html2md.convert(text);
-    }
+/// Преобразует HTML публикации в формат, выбранный для экспорта
+abstract final class PublicationTextConverter {
+  /// Возвращает полноценный HTML-документ или Markdown-текст
+  static String convert({
+    required String text,
+    required PublicationDownloadFormat format,
+  }) {
+    return switch (format) {
+      .html => _foldHtml(text),
+      .markdown => html2md.convert(text),
+    };
   }
 
-  String _foldHtml(String body) {
+  static String _foldHtml(String body) {
     final String html =
         '''
       <html>
         <head>
           <meta charset="utf-8">
           <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover,maximum-scale=1,user-scalable=0">
+          <style>
+            img {
+              display: block;
+              max-width: 100%;
+              height: auto;
+            }
+          </style>
         </head>
         <body>$body</body>
       </html>

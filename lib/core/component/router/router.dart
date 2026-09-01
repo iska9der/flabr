@@ -8,6 +8,7 @@ import 'package:url_launcher/url_launcher_string.dart';
 
 import '../../../data/model/publication/publication.dart';
 import '../../../di/di.dart';
+import '../../../feature/airplane/page/airplane_page.dart';
 import '../../../presentation/app/config/config.dart';
 import '../../../presentation/page/dashboard_page.dart';
 import '../../../presentation/page/publications/articles/article_flow.dart';

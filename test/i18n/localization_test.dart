@@ -112,6 +112,15 @@ void main() {
     expect(app_localizations.t.publication.flow.development, 'Разработка');
     expect(app_localizations.t.publication.format.caseStudy, 'Кейс');
     expect(app_localizations.t.publication.type.article, 'Статья');
+    expect(app_localizations.t.offline.title, 'Сохранённые статьи');
+    expect(
+      app_localizations.t.publication.download.markdown.title,
+      'Сохранить как Markdown',
+    );
+    expect(
+      app_localizations.t.offline.metadata.savedAt(date: '01.01.2026'),
+      'сохранено 01.01.2026',
+    );
     expect(app_localizations.t.search.order.relevance, 'По релевантности');
     expect(app_localizations.t.tracker.publications.title, 'Публикации');
     expect(app_localizations.t.navigation.publications, 'Публикации');
@@ -131,6 +140,15 @@ void main() {
     expect(app_localizations.t.publication.flow.development, 'Development');
     expect(app_localizations.t.publication.format.caseStudy, 'Case study');
     expect(app_localizations.t.publication.type.article, 'Article');
+    expect(app_localizations.t.offline.title, 'Saved articles');
+    expect(
+      app_localizations.t.publication.download.markdown.title,
+      'Save as Markdown',
+    );
+    expect(
+      app_localizations.t.offline.metadata.savedAt(date: '01/01/2026'),
+      'saved 01/01/2026',
+    );
     expect(app_localizations.t.search.order.relevance, 'By relevance');
     expect(app_localizations.t.tracker.publications.title, 'Publications');
     expect(app_localizations.t.navigation.publications, 'Publications');

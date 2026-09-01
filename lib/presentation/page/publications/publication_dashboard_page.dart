@@ -154,6 +154,11 @@ class _DashboardAppBar extends StatelessWidget {
             mainAxisSize: .min,
             children: [
               IconButton(
+                icon: const Icon(Icons.airplanemode_active_outlined),
+                tooltip: context.t.offline.navigationLabel,
+                onPressed: () => getIt<AppRouter>().push(const AirplaneRoute()),
+              ),
+              IconButton(
                 icon: const Icon(Icons.search_rounded),
                 tooltip: context.t.publication.dashboard.search,
                 onPressed: () =>
