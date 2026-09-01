@@ -398,7 +398,9 @@
   "theme": {
     "system": "System",
     "light": "Light",
-    "dark": "Dark"
+    "dark": "Dark",
+    "amoled": "AMOLED mode",
+    "amoledDescription": "Pure black background for the dark theme"
   },
   "alignment": {
     "start": "At the start",

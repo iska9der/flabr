@@ -72,42 +72,72 @@ class _UIThemeWidgetState extends State<UIThemeWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkTheme = switch (themeMode) {
+      .system => MediaQuery.platformBrightnessOf(context) == .dark,
+      .light => false,
+      .dark => true,
+    };
+
     return SettingsCardWidget(
       title: context.t.interface.colorTheme,
       child: Padding(
         padding: const .only(top: 8.0),
-        child: FilterChipList(
-          options: ThemeMode.values
-              .map(
-                (e) => FilterOption(
-                  label: switch (e) {
-                    .system => context.t.theme.system,
-                    .light => context.t.theme.light,
-                    .dark => context.t.theme.dark,
-                  },
-                  value: e.name,
-                ),
-              )
-              .toList(),
-          isSelected: (option) => option.value == themeMode.name,
-          onSelected: (isSelected, option) {
-            if (isLoading) {
-              return;
-            }
-            final settingsCubit = context.read<SettingsCubit>();
+        child: Column(
+          crossAxisAlignment: .stretch,
+          children: [
+            FilterChipList(
+              options: ThemeMode.values
+                  .map(
+                    (e) => FilterOption(
+                      label: switch (e) {
+                        .system => context.t.theme.system,
+                        .light => context.t.theme.light,
+                        .dark => context.t.theme.dark,
+                      },
+                      value: e.name,
+                    ),
+                  )
+                  .toList(),
+              isSelected: (option) => option.value == themeMode.name,
+              onSelected: (isSelected, option) {
+                if (isLoading) {
+                  return;
+                }
+                final settingsCubit = context.read<SettingsCubit>();
 
-            setState(() {
-              themeMode = .values.firstWhere((e) => e.name == option.value);
-              isLoading = true;
-            });
+                setState(() {
+                  themeMode = .values.firstWhere(
+                    (e) => e.name == option.value,
+                  );
+                  isLoading = true;
+                });
 
-            Future.delayed(const Duration(milliseconds: 600), () {
-              settingsCubit.changeTheme(themeMode);
-              setState(() {
-                isLoading = false;
-              });
-            });
-          },
+                Future.delayed(const Duration(milliseconds: 600), () {
+                  settingsCubit.changeTheme(themeMode);
+                  setState(() {
+                    isLoading = false;
+                  });
+                });
+              },
+            ),
+            if (isDarkTheme) ...[
+              const SizedBox(height: 8),
+              SettingsCheckboxWidget(
+                initialValue: context
+                    .read<SettingsCubit>()
+                    .state
+                    .theme
+                    .isAmoledTheme,
+                title: Text(context.t.theme.amoled),
+                subtitle: Text(context.t.theme.amoledDescription),
+                onChanged: (isEnabled) {
+                  context.read<SettingsCubit>().changeAmoledTheme(
+                    isEnabled: isEnabled,
+                  );
+                },
+              ),
+            ],
+          ],
         ),
       ),
     );
