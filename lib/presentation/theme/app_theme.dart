@@ -24,6 +24,21 @@ abstract class AppTheme {
     typographyConfig: typographyConfig,
   );
 
+  static ThemeData amoled({
+    TypographyConfigModel typographyConfig = TypographyConfigModel.empty,
+  }) {
+    final scheme = AppSchemeAmoled.scheme;
+
+    return createThemeData(
+      appScheme: scheme,
+      appColors: AppSchemeAmoled.colors,
+      typographyConfig: typographyConfig,
+    ).copyWith(
+      splashColor: scheme.onSurface.withValues(alpha: .1),
+      highlightColor: scheme.onSurface.withValues(alpha: .08),
+    );
+  }
+
   static ThemeData createThemeData({
     required ColorScheme appScheme,
     required AppColorsExtension appColors,

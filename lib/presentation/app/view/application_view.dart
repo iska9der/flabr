@@ -33,9 +33,10 @@ class ApplicationView extends StatelessWidget {
       context,
     ).flutterLocale;
 
-    final themeMode = context.select<SettingsCubit, ThemeMode>(
-      (cubit) => cubit.state.theme.modeByBool ?? cubit.state.theme.mode,
+    final themeConfig = context.select<SettingsCubit, ThemeConfigModel>(
+      (cubit) => cubit.state.theme,
     );
+    final themeMode = themeConfig.modeByBool ?? themeConfig.mode;
 
     final scrollBehavior = context
         .select((SettingsCubit cubit) => cubit.state.misc.scrollVariant)
@@ -60,9 +61,9 @@ class ApplicationView extends StatelessWidget {
       theme: AppTheme.light(
         typographyConfig: typographyConfig,
       ),
-      darkTheme: AppTheme.dark(
-        typographyConfig: typographyConfig,
-      ),
+      darkTheme: themeConfig.isAmoledTheme
+          ? AppTheme.amoled(typographyConfig: typographyConfig)
+          : AppTheme.dark(typographyConfig: typographyConfig),
       scrollBehavior: scrollBehavior,
       routerConfig: router.config(
         deepLinkTransformer: (uri) {

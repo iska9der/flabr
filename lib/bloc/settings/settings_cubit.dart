@@ -123,6 +123,16 @@ class SettingsCubit extends Cubit<SettingsState> {
     emit(state.copyWith(theme: newConfig));
   }
 
+  void changeAmoledTheme({required bool isEnabled}) {
+    if (state.theme.isAmoledTheme == isEnabled) {
+      return;
+    }
+
+    final newConfig = state.theme.copyWith(isAmoledTheme: isEnabled);
+    _repository.saveTheme(newConfig);
+    emit(state.copyWith(theme: newConfig));
+  }
+
   void changeFeedImageVisibility({bool? isVisible}) {
     if (isVisible == null || state.feed.isImageVisible == isVisible) {
       return;

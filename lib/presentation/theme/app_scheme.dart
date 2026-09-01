@@ -138,3 +138,22 @@ class AppSchemeDark {
     accentDanger: const .new(0xFFff7575),
   );
 }
+
+class AppSchemeAmoled {
+  static ColorScheme get scheme => AppSchemeDark.scheme.copyWith(
+    background: colors.background,
+    surface: colors.background,
+    surfaceContainerLowest: colors.background,
+    surfaceContainerLow: colors.card,
+    surfaceContainer: colors.background,
+    surfaceContainerHigh: colors.card,
+    surfaceContainerHighest: colors.cardHighlight,
+  );
+
+  static final AppColorsExtension colors = AppSchemeDark.colors.copyWith(
+    background: const .new(0xFF000000),
+    backgroundSecondary: const .new(0xFF101010),
+    card: const .new(0xFF0D0D0D),
+    cardHighlight: const .new(0xFF102A43),
+  );
+}

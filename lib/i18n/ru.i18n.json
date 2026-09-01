@@ -398,7 +398,9 @@
   "theme": {
     "system": "Системная",
     "light": "Светлая",
-    "dark": "Темная"
+    "dark": "Темная",
+    "amoled": "AMOLED-режим",
+    "amoledDescription": "Чёрный фон для тёмной темы"
   },
   "alignment": {
     "start": "В начале",

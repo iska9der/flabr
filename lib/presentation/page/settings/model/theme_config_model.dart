@@ -7,6 +7,7 @@ abstract class ThemeConfigModel with _$ThemeConfigModel {
   const factory ThemeConfigModel({
     @Deprecated('теперь используется mode. Удалить в 1.3.0') bool? isDarkTheme,
     @Default(ThemeMode.system) ThemeMode mode,
+    @Default(false) bool isAmoledTheme,
   }) = _ThemeConfigModel;
 
   static const empty = ThemeConfigModel();
