@@ -48,6 +48,7 @@ class PublicationSettingsWidget extends StatelessWidget {
                 builder: (context, state) {
                   return SettingsCheckboxWidget(
                     initialValue: state.publication.webViewEnabled,
+                    icon: Icons.open_in_browser_rounded,
                     title: Text(
                       context.t.settings.publication.visibility.webView,
                     ),

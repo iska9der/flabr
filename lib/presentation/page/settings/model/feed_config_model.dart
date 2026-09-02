@@ -6,8 +6,9 @@ enum FeedNavigationMode {
 
   String get label => switch (this) {
     FeedNavigationMode.infiniteScroll =>
-      t.settings.feed.navigation.mode.infiniteScroll,
-    FeedNavigationMode.pagination => t.settings.feed.navigation.mode.pagination,
+      t.settings.feed.pageLoading.mode.infiniteScroll,
+    FeedNavigationMode.pagination =>
+      t.settings.feed.pageLoading.mode.pagination,
   };
 }
 

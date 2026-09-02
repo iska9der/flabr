@@ -349,9 +349,10 @@
     },
     "interface": {
       "title": "Interface",
-      "description": "Appearance, scrolling, and languages",
+      "description": "Appearance, navigation, and languages",
       "sections": {
         "appearance": "Appearance",
+        "navigation": "Navigation",
         "languages": "Languages"
       },
       "theme": {
@@ -371,7 +372,17 @@
           "required": "at least one must be selected"
         }
       },
-      "scroll": "Scrolling"
+      "scroll": "Scrolling",
+      "navigation": {
+        "title": "Navigation bar",
+        "alignment": {
+          "label": "Bar position",
+          "start": "At the start",
+          "center": "In the center",
+          "end": "At the end"
+        },
+        "showOnScroll": "Show while scrolling"
+      }
     },
     "fonts": {
       "title": "Fonts",
@@ -401,29 +412,24 @@
     },
     "feed": {
       "title": "Feed",
-      "description": "Cards and navigation",
+      "description": "Cards and page loading",
       "sections": {
         "cards": "Cards",
         "behavior": "Behavior"
       },
       "cards": {
+        "title": "Element visibility",
         "images": {
           "label": "Images",
           "performanceNote": "affects performance"
         },
         "shortDescription": "Short description"
       },
-      "navigation": {
-        "title": "Navigation",
-        "showOnScroll": "Show while scrolling",
+      "pageLoading": {
+        "title": "Page loading",
         "mode": {
           "infiniteScroll": "Infinite scroll",
           "pagination": "Pagination"
-        },
-        "alignment": {
-          "start": "At the start",
-          "center": "In the center",
-          "end": "At the end"
         }
       }
     },

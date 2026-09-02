@@ -130,8 +130,16 @@ void main() {
       'Размер шрифта',
     );
     expect(
-      app_localizations.t.settings.feed.navigation.alignment.center,
+      app_localizations.t.settings.interface.navigation.alignment.center,
       'В центре',
+    );
+    expect(
+      app_localizations.t.settings.feed.pageLoading.title,
+      'Загрузка страниц',
+    );
+    expect(
+      app_localizations.t.settings.feed.cards.title,
+      'Видимость элементов',
     );
     expect(
       app_localizations.t.settings.publication.visibility.images,
@@ -170,8 +178,16 @@ void main() {
       'Font size',
     );
     expect(
-      app_localizations.t.settings.feed.navigation.alignment.center,
+      app_localizations.t.settings.interface.navigation.alignment.center,
       'In the center',
+    );
+    expect(
+      app_localizations.t.settings.feed.pageLoading.title,
+      'Page loading',
+    );
+    expect(
+      app_localizations.t.settings.feed.cards.title,
+      'Element visibility',
     );
     expect(
       app_localizations.t.settings.publication.visibility.images,

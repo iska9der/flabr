@@ -349,9 +349,10 @@
     },
     "interface": {
       "title": "Интерфейс",
-      "description": "Внешний вид, скролл и языки",
+      "description": "Внешний вид, навигация и языки",
       "sections": {
         "appearance": "Внешний вид",
+        "navigation": "Навигация",
         "languages": "Языки"
       },
       "theme": {
@@ -371,7 +372,17 @@
           "required": "должен быть выбран хотя бы один"
         }
       },
-      "scroll": "Скролл"
+      "scroll": "Скролл",
+      "navigation": {
+        "title": "Панель навигации",
+        "alignment": {
+          "label": "Положение панели",
+          "start": "В начале",
+          "center": "В центре",
+          "end": "В конце"
+        },
+        "showOnScroll": "Показывать при скролле"
+      }
     },
     "fonts": {
       "title": "Шрифты",
@@ -401,29 +412,24 @@
     },
     "feed": {
       "title": "Лента",
-      "description": "Карточки и навигация",
+      "description": "Карточки и загрузка страниц",
       "sections": {
         "cards": "Карточки",
         "behavior": "Поведение"
       },
       "cards": {
+        "title": "Видимость элементов",
         "images": {
           "label": "Изображения",
           "performanceNote": "влияет на производительность"
         },
         "shortDescription": "Короткое описание"
       },
-      "navigation": {
-        "title": "Навигация",
-        "showOnScroll": "Показывать при скролле",
+      "pageLoading": {
+        "title": "Загрузка страниц",
         "mode": {
           "infiniteScroll": "Бесконечная прокрутка",
           "pagination": "По страницам"
-        },
-        "alignment": {
-          "start": "В начале",
-          "center": "В центре",
-          "end": "В конце"
         }
       }
     },

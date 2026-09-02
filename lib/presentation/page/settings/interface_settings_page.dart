@@ -41,6 +41,10 @@ class InterfaceSettingsView extends StatelessWidget {
           ],
         ),
         SettingsSectionWidget(
+          title: context.t.settings.interface.sections.navigation,
+          children: [const InterfaceNavigationWidget()],
+        ),
+        SettingsSectionWidget(
           title: context.t.settings.interface.sections.languages,
           children: [
             const UILangWidget(),
@@ -130,6 +134,72 @@ class _UIThemeWidgetState extends State<UIThemeWidget> {
               },
             ),
           ],
+        ],
+      ),
+    );
+  }
+}
+
+class InterfaceNavigationWidget extends StatelessWidget {
+  const InterfaceNavigationWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final translation = context.t.settings.interface.navigation;
+
+    return SettingsCardWidget(
+      icon: Icons.dock_outlined,
+      title: translation.title,
+      child: Column(
+        crossAxisAlignment: .stretch,
+        children: [
+          Text(
+            translation.alignment.label,
+            style: Theme.of(context).textTheme.labelLarge,
+          ),
+          const SizedBox(height: 8),
+          BlocBuilder<SettingsCubit, SettingsState>(
+            buildWhen: (previous, current) =>
+                previous.misc.navigationAlignment !=
+                current.misc.navigationAlignment,
+            builder: (context, state) {
+              return SettingsSegmentedButton<NavigationAlignment>(
+                segments: NavigationAlignment.values
+                    .map(
+                      (alignment) => ButtonSegment(
+                        value: alignment,
+                        label: Text(alignment.label),
+                      ),
+                    )
+                    .toList(),
+                value: state.misc.navigationAlignment,
+                onChanged: context
+                    .read<SettingsCubit>()
+                    .changeNavigationAlignment,
+              );
+            },
+          ),
+          const Padding(
+            padding: .symmetric(vertical: 12),
+            child: Divider(height: 1),
+          ),
+          BlocBuilder<SettingsCubit, SettingsState>(
+            buildWhen: (previous, current) =>
+                previous.misc.navigationOnScrollVisible !=
+                current.misc.navigationOnScrollVisible,
+            builder: (context, state) {
+              return SettingsCheckboxWidget(
+                initialValue: state.misc.navigationOnScrollVisible,
+                icon: Icons.swipe_vertical_outlined,
+                title: Text(translation.showOnScroll),
+                onChanged: (isVisible) {
+                  context
+                      .read<SettingsCubit>()
+                      .changeNavigationOnScrollVisibility(isVisible: isVisible);
+                },
+              );
+            },
+          ),
         ],
       ),
     );

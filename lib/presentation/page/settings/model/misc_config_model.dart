@@ -6,9 +6,11 @@ enum NavigationAlignment {
   end;
 
   String get label => switch (this) {
-    NavigationAlignment.start => t.settings.feed.navigation.alignment.start,
-    NavigationAlignment.center => t.settings.feed.navigation.alignment.center,
-    NavigationAlignment.end => t.settings.feed.navigation.alignment.end,
+    NavigationAlignment.start =>
+      t.settings.interface.navigation.alignment.start,
+    NavigationAlignment.center =>
+      t.settings.interface.navigation.alignment.center,
+    NavigationAlignment.end => t.settings.interface.navigation.alignment.end,
   };
 }
 
