@@ -50,14 +50,14 @@ class PublicationStatIconButton extends StatelessWidget {
 
     final paddingResolved = switch (onTap == null) {
       true => EdgeInsets.zero,
-      false => AppInsets.iconPadding,
+      false => AppInsets.md,
     };
 
     return Material(
       type: .transparency,
       child: InkWell(
         onTap: onTap,
-        borderRadius: AppStyles.buttonBorderRadius,
+        borderRadius: AppRadius.sm,
         child: Padding(
           padding: paddingResolved,
           child: Row(

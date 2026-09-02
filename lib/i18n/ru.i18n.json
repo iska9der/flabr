@@ -52,7 +52,6 @@
       "search": "Поиск",
       "tracker": "Трекер"
     },
-    "settingsTitle": "Публикации",
     "wrongDestination": "Вы не туда попали...",
     "failed": "Не удалось!",
     "saveArticle": "Сохранить статью",
@@ -126,18 +125,6 @@
   },
   "feed": {
     "ratingThreshold": "Порог рейтинга",
-    "settingsTitle": "Лента",
-    "cardsSection": "Карточки",
-    "behaviorSection": "Поведение",
-    "images": {
-      "label": "Изображения",
-      "performanceNote": "влияет на производительность"
-    },
-    "shortDescription": "Короткое описание",
-    "navigation": "Навигация",
-    "showOnScroll": "Показывать при скролле",
-    "infiniteScroll": "Бесконечная прокрутка",
-    "pagination": "По страницам",
     "publications": {
       "fetchFailed": "Не удалось получить публикации"
     },
@@ -350,13 +337,104 @@
     }
   },
   "settings": {
-    "account": "Аккаунт",
-    "integrations": "Интеграции",
-    "profileAndIntegrations": "Профиль и интеграции",
-    "interfaceDescription": "Внешний вид, скролл и языки",
-    "fontsDescription": "Масштаб и типографика публикаций",
-    "feedDescription": "Карточки и навигация",
-    "elementVisibility": "Видимость элементов"
+    "title": "Настройки",
+    "account": {
+      "title": "Аккаунт",
+      "description": "Профиль и интеграции",
+      "notLoggedIn": "Вы не вошли",
+      "sections": {
+        "profile": "Профиль",
+        "integrations": "Интеграции"
+      }
+    },
+    "interface": {
+      "title": "Интерфейс",
+      "description": "Внешний вид, скролл и языки",
+      "sections": {
+        "appearance": "Внешний вид",
+        "languages": "Языки"
+      },
+      "theme": {
+        "title": "Цветовая тема",
+        "system": "Системная",
+        "light": "Светлая",
+        "dark": "Темная",
+        "amoled": {
+          "label": "AMOLED-режим",
+          "description": "Чёрный фон для тёмной темы"
+        }
+      },
+      "language": {
+        "ui": "Язык интерфейса",
+        "publications": {
+          "label": "Язык публикаций",
+          "required": "должен быть выбран хотя бы один"
+        }
+      },
+      "scroll": "Скролл"
+    },
+    "fonts": {
+      "title": "Шрифты",
+      "description": "Масштаб и типографика публикаций",
+      "sections": {
+        "general": "Общие",
+        "publications": "Публикации"
+      },
+      "textScale": "Масштаб текста",
+      "typography": {
+        "resetDefaults": "Вернуть значения по умолчанию",
+        "font": {
+          "label": "Шрифт",
+          "size": "Размер шрифта"
+        },
+        "headings": "Заголовки",
+        "headingExample": "Пример заголовка публикации",
+        "text": {
+          "label": "Текст",
+          "example": "Пример текста публикации.\\n"
+        },
+        "line": {
+          "height": "Межстрочный интервал",
+          "rhythmHint": "Так проще оценить размер и ритм строки"
+        }
+      }
+    },
+    "feed": {
+      "title": "Лента",
+      "description": "Карточки и навигация",
+      "sections": {
+        "cards": "Карточки",
+        "behavior": "Поведение"
+      },
+      "cards": {
+        "images": {
+          "label": "Изображения",
+          "performanceNote": "влияет на производительность"
+        },
+        "shortDescription": "Короткое описание"
+      },
+      "navigation": {
+        "title": "Навигация",
+        "showOnScroll": "Показывать при скролле",
+        "mode": {
+          "infiniteScroll": "Бесконечная прокрутка",
+          "pagination": "По страницам"
+        },
+        "alignment": {
+          "start": "В начале",
+          "center": "В центре",
+          "end": "В конце"
+        }
+      }
+    },
+    "publication": {
+      "title": "Публикации",
+      "visibility": {
+        "title": "Видимость элементов",
+        "images": "Изображения",
+        "webView": "WebView"
+      }
+    }
   },
   "summary": {
     "generationPurpose": "Для генерации пересказов статей",
@@ -373,55 +451,6 @@
     "token": {
       "label": "Токен",
       "locationHint": "Можно найти на 300.ya.ru"
-    }
-  },
-  "fonts": {
-    "settingsTitle": "Шрифты",
-    "publicationsSection": "Публикации",
-    "generalSection": "Общие",
-    "textScale": "Масштаб текста"
-  },
-  "interface": {
-    "settingsTitle": "Интерфейс",
-    "appearance": "Внешний вид",
-    "languages": "Языки",
-    "colorTheme": "Цветовая тема",
-    "language": "Язык интерфейса",
-    "scroll": "Скролл",
-    "publication": {
-      "language": {
-        "label": "Язык публикаций",
-        "required": "должен быть выбран хотя бы один"
-      }
-    }
-  },
-  "theme": {
-    "system": "Системная",
-    "light": "Светлая",
-    "dark": "Темная",
-    "amoled": "AMOLED-режим",
-    "amoledDescription": "Чёрный фон для тёмной темы"
-  },
-  "alignment": {
-    "start": "В начале",
-    "center": "В центре",
-    "end": "В конце"
-  },
-  "typography": {
-    "resetDefaults": "Вернуть значения по умолчанию",
-    "font": {
-      "label": "Шрифт",
-      "size": "Размер шрифта"
-    },
-    "headings": "Заголовки",
-    "headingExample": "Пример заголовка публикации",
-    "text": {
-      "label": "Текст",
-      "example": "Пример текста публикации.\\n"
-    },
-    "line": {
-      "height": "Межстрочный интервал",
-      "rhythmHint": "Так проще оценить размер и ритм строки"
     }
   },
   "app": {
@@ -449,9 +478,5 @@
     "hubs": "Хабы",
     "authors": "Авторы",
     "companies": "Компании"
-  },
-  "account": {
-    "profile": "Профиль",
-    "notLoggedIn": "Вы не вошли"
   }
 }

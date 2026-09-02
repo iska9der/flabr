@@ -54,7 +54,7 @@ class _CompanyProfileCardWidgetState extends State<CompanyProfileCardWidget> {
     var stats = card.statistics;
 
     return FlabrCard(
-      padding: AppInsets.profileCardPadding,
+      padding: AppInsets.profileCard,
       child: Column(
         crossAxisAlignment: .stretch,
         children: [

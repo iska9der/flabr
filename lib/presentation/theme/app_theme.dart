@@ -76,6 +76,7 @@ abstract class AppTheme {
       pageTransitionsTheme: appPageTransitionsTheme,
       scrollbarTheme: appScrollBarThemeData,
       progressIndicatorTheme: proggressIndicatorThemeData,
+      inputDecorationTheme: inputDecorationThemeData,
       textButtonTheme: appTextButtonThemeData,
       iconButtonTheme: IconButtonThemeData(
         style: appIconButtonThemeData,

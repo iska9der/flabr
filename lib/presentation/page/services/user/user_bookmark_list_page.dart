@@ -88,7 +88,7 @@ class UserBookmarkListView extends StatelessWidget {
               },
             ),
             SliverPadding(
-              padding: AppInsets.screenPaddingExtended,
+              padding: AppInsets.screenExtended,
               sliver: SliverMainAxisGroup(
                 slivers: [
                   BlocBuilder<UserBookmarkListCubit, UserBookmarkListState>(

@@ -17,6 +17,8 @@ class PublicationSettingsWidget extends StatelessWidget {
       spacing: 4,
       children: [
         SettingsCardWidget(
+          title: context.t.settings.publication.visibility.title,
+          icon: Icons.visibility_outlined,
           child: Column(
             crossAxisAlignment: .start,
             mainAxisSize: .min,
@@ -28,13 +30,17 @@ class PublicationSettingsWidget extends StatelessWidget {
                 builder: (context, state) {
                   return SettingsCheckboxWidget(
                     initialValue: state.publication.isImagesVisible,
-                    title: Text(context.t.feed.images.label),
+                    icon: Icons.image_outlined,
+                    title: Text(
+                      context.t.settings.publication.visibility.images,
+                    ),
                     onChanged: (bool value) => context
                         .read<SettingsCubit>()
                         .changeArticleImageVisibility(isVisible: value),
                   );
                 },
               ),
+              const Divider(height: 1),
               BlocBuilder<SettingsCubit, SettingsState>(
                 buildWhen: (previous, current) =>
                     previous.publication.webViewEnabled !=
@@ -42,7 +48,9 @@ class PublicationSettingsWidget extends StatelessWidget {
                 builder: (context, state) {
                   return SettingsCheckboxWidget(
                     initialValue: state.publication.webViewEnabled,
-                    title: const Text('WebView'),
+                    title: Text(
+                      context.t.settings.publication.visibility.webView,
+                    ),
                     onChanged: (bool value) => context
                         .read<SettingsCubit>()
                         .changeWebViewVisibility(isVisible: value),

@@ -80,7 +80,7 @@ class _PublicationDashboardViewState extends State<PublicationDashboardView> {
               BlocBuilder<NavigationCubit, NavigationState>(
                 builder: (context, state) {
                   return AnimatedContainer(
-                    duration: AppStyles.hideDuration,
+                    duration: AppDuration.hide,
                     height: state.isNavigationVisible
                         ? AppDimensions.tabBarHeight
                         : 0,

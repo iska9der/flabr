@@ -23,7 +23,7 @@ class CardTitleWidget extends StatelessWidget {
     final textStyle = theme.textTheme.titleLarge;
 
     return InkWell(
-      borderRadius: AppStyles.cardBorderRadius,
+      borderRadius: AppRadius.zero,
       onTap: onPressed,
       child: switch (renderType == .plain) {
         true => Text(title, style: textStyle),

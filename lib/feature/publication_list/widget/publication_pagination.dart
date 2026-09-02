@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../i18n/i18n.dart';
 import '../../../presentation/extension/extension.dart';
+import '../../../presentation/theme/theme.dart';
 
 /// Переключатель страниц с сокращением недоступных диапазонов
 class PublicationPagination extends StatefulWidget {
@@ -145,7 +146,7 @@ class _PublicationPaginationState extends State<PublicationPagination> {
             onPressed: widget.currentPage < widget.pagesCount
                 ? () => widget.onPageSelected(widget.currentPage + 1)
                 : null,
-            icon: const Icon(Icons.chevron_right_rounded),
+            icon: const Icon(AppIcons.chevronRight),
           ),
         ],
       ),

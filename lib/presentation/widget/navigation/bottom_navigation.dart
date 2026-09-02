@@ -34,7 +34,7 @@ class BottomNavigation extends StatelessWidget {
       child: BlocBuilder<NavigationCubit, NavigationState>(
         builder: (context, state) {
           return AnimatedContainer(
-            duration: AppStyles.hideDuration,
+            duration: AppDuration.hide,
             height: state.isNavigationVisible ? AppDimensions.navBarHeight : 0,
             width: Device.getWidth(context) * .75,
             clipBehavior: .hardEdge,

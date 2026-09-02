@@ -8,8 +8,8 @@ import 'responsive.dart';
 
 const appCardThemeData = CardThemeData(
   elevation: 1,
-  margin: AppInsets.cardMargin,
-  shape: LinearBorder(),
+  margin: AppInsets.sm,
+  shape: RoundedRectangleBorder(borderRadius: AppRadius.zero),
 );
 
 const appAppBarThemeData = AppBarThemeData(
@@ -35,35 +35,42 @@ final appScrollBarThemeData = ScrollbarThemeData(
   minThumbLength: AppDimensions.toolBarHeightOnScroll,
 );
 
+final inputDecorationThemeData = const InputDecorationThemeData(
+  border: OutlineInputBorder(
+    borderRadius: AppRadius.xl,
+    borderSide: .new(width: 1),
+  ),
+);
+
 final appTextButtonThemeData = TextButtonThemeData(
   style: TextButton.styleFrom(
     shape: const RoundedRectangleBorder(
-      borderRadius: AppStyles.buttonBorderRadius,
+      borderRadius: AppRadius.sm,
     ),
   ),
 );
 
 final appIconButtonThemeData = IconButton.styleFrom(
   shape: const RoundedRectangleBorder(
-    borderRadius: AppStyles.buttonBorderRadius,
+    borderRadius: AppRadius.sm,
   ),
 );
 
 final appFilledButtonStyle = FilledButton.styleFrom(
   shape: const RoundedRectangleBorder(
-    borderRadius: AppStyles.buttonBorderRadius,
+    borderRadius: AppRadius.sm,
   ),
 );
 
 final appOutlinedButtonStyle = OutlinedButton.styleFrom(
   shape: const RoundedRectangleBorder(
-    borderRadius: AppStyles.buttonBorderRadius,
+    borderRadius: AppRadius.sm,
   ),
 );
 
 final appElevatedButtonStyle = ElevatedButton.styleFrom(
   shape: const RoundedRectangleBorder(
-    borderRadius: AppStyles.buttonBorderRadius,
+    borderRadius: AppRadius.sm,
   ),
 );
 
@@ -73,13 +80,13 @@ final ListTileThemeData listTileThemeData = ListTileThemeData(
   shape: const LinearBorder(),
   visualDensity: .compact,
   minVerticalPadding: 0,
-  contentPadding: AppInsets.tileContentPadding,
+  contentPadding: AppInsets.listTile,
   controlAffinity: !Device.isMobile ? .leading : null,
 );
 
 const appCheckboxThemeData = CheckboxThemeData(
   visualDensity: .compact,
-  shape: RoundedRectangleBorder(borderRadius: AppStyles.checkboxBorderRadius),
+  shape: RoundedRectangleBorder(borderRadius: AppRadius.xs),
 );
 
 const appSwitchThemeData = SwitchThemeData(
@@ -95,11 +102,11 @@ const appSliderThemeData = SliderThemeData(
 );
 
 const appChipThemeData = ChipThemeData(
-  shape: RoundedRectangleBorder(borderRadius: AppStyles.buttonBorderRadius),
+  shape: RoundedRectangleBorder(borderRadius: AppRadius.sm),
 );
 
 const dialogThemeData = DialogThemeData(
-  shape: RoundedRectangleBorder(borderRadius: AppStyles.dialogBorderRadius),
+  shape: RoundedRectangleBorder(borderRadius: AppRadius.sm),
 );
 
 const navigationBarThemeData = NavigationBarThemeData(

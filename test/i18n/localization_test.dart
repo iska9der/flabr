@@ -116,6 +116,27 @@ void main() {
     expect(app_localizations.t.tracker.publications.title, 'Публикации');
     expect(app_localizations.t.navigation.publications, 'Публикации');
     expect(app_localizations.t.profile.bookmarks, 'Закладки');
+    expect(app_localizations.t.settings.title, 'Настройки');
+    expect(
+      app_localizations.t.settings.account.description,
+      'Профиль и интеграции',
+    );
+    expect(
+      app_localizations.t.settings.interface.theme.amoled.label,
+      'AMOLED-режим',
+    );
+    expect(
+      app_localizations.t.settings.fonts.typography.font.size,
+      'Размер шрифта',
+    );
+    expect(
+      app_localizations.t.settings.feed.navigation.alignment.center,
+      'В центре',
+    );
+    expect(
+      app_localizations.t.settings.publication.visibility.images,
+      'Изображения',
+    );
 
     app_localizations.LocaleSettings.setLocaleSync(
       app_localizations.AppLocale.en,
@@ -135,6 +156,27 @@ void main() {
     expect(app_localizations.t.tracker.publications.title, 'Publications');
     expect(app_localizations.t.navigation.publications, 'Publications');
     expect(app_localizations.t.profile.bookmarks, 'Bookmarks');
+    expect(app_localizations.t.settings.title, 'Settings');
+    expect(
+      app_localizations.t.settings.account.description,
+      'Profile and integrations',
+    );
+    expect(
+      app_localizations.t.settings.interface.theme.amoled.label,
+      'AMOLED mode',
+    );
+    expect(
+      app_localizations.t.settings.fonts.typography.font.size,
+      'Font size',
+    );
+    expect(
+      app_localizations.t.settings.feed.navigation.alignment.center,
+      'In the center',
+    );
+    expect(
+      app_localizations.t.settings.publication.visibility.images,
+      'Images',
+    );
   });
 
   testWidgets('provider rebuilds the app catalog after locale change', (

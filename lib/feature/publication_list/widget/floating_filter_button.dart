@@ -26,7 +26,7 @@ class FloatingFilterButton<
     );
 
     return AnimatedOpacity(
-      duration: AppStyles.hideDuration,
+      duration: AppDuration.hide,
       opacity: isVisible ? 1 : 0,
       child: IgnorePointer(
         ignoring: !isVisible,
@@ -39,7 +39,7 @@ class FloatingFilterButton<
             useRootNavigator: true,
             constraints: const BoxConstraints(minWidth: 600),
             builder: (_) => Padding(
-              padding: AppInsets.filterSheetPadding,
+              padding: AppInsets.filterSheet,
               child: BlocProvider.value(
                 value: context.read<ListCubit>(),
                 child: filter,

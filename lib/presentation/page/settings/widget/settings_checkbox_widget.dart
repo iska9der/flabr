@@ -8,6 +8,7 @@ class SettingsCheckboxWidget extends StatefulWidget {
     required this.initialValue,
     required this.title,
     this.subtitle,
+    this.icon,
     this.type = .switchTile,
     this.validate,
     required this.onChanged,
@@ -16,6 +17,7 @@ class SettingsCheckboxWidget extends StatefulWidget {
   final bool initialValue;
   final Widget title;
   final Widget? subtitle;
+  final IconData? icon;
   final SettingsCheckboxType type;
   final bool Function(bool value)? validate;
   final void Function(bool value) onChanged;
@@ -25,7 +27,7 @@ class SettingsCheckboxWidget extends StatefulWidget {
 }
 
 class _SettingsCheckboxWidgetState extends State<SettingsCheckboxWidget> {
-  bool isChecked = false;
+  late bool isChecked;
 
   @override
   void initState() {
@@ -34,39 +36,75 @@ class _SettingsCheckboxWidgetState extends State<SettingsCheckboxWidget> {
     isChecked = widget.initialValue;
   }
 
+  @override
+  void didUpdateWidget(covariant SettingsCheckboxWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (oldWidget.initialValue != widget.initialValue) {
+      isChecked = widget.initialValue;
+    }
+  }
+
   void onChanged(bool? value) {
-    if (value == null) return;
-
-    bool isValidated = true;
-
-    if (widget.validate != null) {
-      isValidated = widget.validate!(value);
+    if (value == null || widget.validate?.call(value) == false) {
+      return;
     }
 
-    if (isValidated) {
-      setState(() => isChecked = value);
-
-      Future.delayed(const Duration(milliseconds: 300), () {
-        widget.onChanged(value);
-      });
-    }
+    setState(() => isChecked = value);
+    widget.onChanged(value);
   }
 
   @override
   Widget build(BuildContext context) {
-    return switch (widget.type) {
-      .checkboxTile => CheckboxListTile(
-        title: widget.title,
-        subtitle: widget.subtitle,
-        value: isChecked,
-        onChanged: onChanged,
-      ),
-      .switchTile => SwitchListTile(
-        title: widget.title,
-        subtitle: widget.subtitle,
-        value: isChecked,
-        onChanged: onChanged,
-      ),
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final control = switch (widget.type) {
+      .checkboxTile => Checkbox(value: isChecked, onChanged: onChanged),
+      .switchTile => Switch(value: isChecked, onChanged: onChanged),
     };
+
+    return Semantics(
+      toggled: isChecked,
+      child: MergeSemantics(
+        child: ListTile(
+          minTileHeight: 64,
+          contentPadding: const .symmetric(horizontal: 4, vertical: 2),
+          visualDensity: VisualDensity.standard,
+          shape: RoundedRectangleBorder(borderRadius: .circular(16)),
+          leading: widget.icon == null
+              ? null
+              : DecoratedBox(
+                  decoration: BoxDecoration(
+                    color: colorScheme.surfaceContainerHighest,
+                    borderRadius: .circular(12),
+                  ),
+                  child: SizedBox.square(
+                    dimension: 40,
+                    child: Icon(
+                      widget.icon,
+                      size: 21,
+                      color: colorScheme.primary,
+                    ),
+                  ),
+                ),
+          title: DefaultTextStyle.merge(
+            style: theme.textTheme.bodyLarge?.copyWith(
+              fontWeight: .w500,
+            ),
+            child: widget.title,
+          ),
+          subtitle: widget.subtitle == null
+              ? null
+              : DefaultTextStyle.merge(
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: colorScheme.onSurfaceVariant,
+                  ),
+                  child: widget.subtitle!,
+                ),
+          trailing: ExcludeSemantics(child: control),
+          onTap: () => onChanged(!isChecked),
+        ),
+      ),
+    );
   }
 }

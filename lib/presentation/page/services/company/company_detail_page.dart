@@ -43,11 +43,11 @@ class CompanyDetailPage extends StatelessWidget {
         }
 
         return ListView(
-          padding: AppInsets.screenPaddingExtended,
+          padding: AppInsets.screenExtended,
           children: [
             CompanyProfileCardWidget(card: state.card),
             Padding(
-              padding: .symmetric(horizontal: AppInsets.cardPadding.left),
+              padding: .symmetric(horizontal: AppInsets.md.left),
               child: CompanyDetailsWidget(card: state.card),
             ),
           ],

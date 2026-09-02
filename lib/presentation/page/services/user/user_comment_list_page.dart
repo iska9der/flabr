@@ -68,7 +68,7 @@ class _UserCommentListView extends StatelessWidget {
                 onRefresh: context.read<UserCommentListCubit>().reset,
               ),
               SliverPadding(
-                padding: AppInsets.screenPaddingExtended,
+                padding: AppInsets.screenExtended,
                 sliver: SliverMainAxisGroup(
                   slivers: [
                     CommentSliverList(

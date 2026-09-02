@@ -103,7 +103,7 @@ class CompanyListCardWidget extends StatelessWidget {
 
                               return InkWell(
                                 onTap: () => getIt<AppRouter>().navigate(route),
-                                borderRadius: AppStyles.cardBorderRadius,
+                                borderRadius: AppRadius.zero,
                                 child: Padding(
                                   padding: const .symmetric(
                                     horizontal: 4,

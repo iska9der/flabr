@@ -48,7 +48,6 @@ class _SummaryTokenWidgetState extends State<SummaryTokenWidget> {
                 floatingLabelBehavior: .always,
                 labelText: context.t.summary.token.label,
                 hintText: context.t.summary.token.locationHint,
-                border: const OutlineInputBorder(),
               ),
             ),
             const SizedBox(height: 8),

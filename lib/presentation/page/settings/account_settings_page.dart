@@ -28,19 +28,24 @@ class AccountSettingsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SettingsNestedScaffold(
-      title: context.t.settings.account,
+      title: context.t.settings.account.title,
+      description: context.t.settings.account.description,
       children: [
         SettingsSectionWidget(
-          title: context.t.account.profile,
+          title: context.t.settings.account.sections.profile,
           children: [
-            const AccountTile(),
+            const SettingsCardWidget(
+              padding: .zero,
+              child: AccountTile(),
+            ),
           ],
         ),
         SettingsSectionWidget(
-          title: context.t.settings.integrations,
+          title: context.t.settings.account.sections.integrations,
           children: [
             SettingsCardWidget(
               title: Keys.sidToken,
+              icon: Icons.key_rounded,
               subtitle: context.t.auth.login.fallbackHint,
               child: const Padding(
                 padding: .only(top: 12.0),
@@ -49,6 +54,7 @@ class AccountSettingsView extends StatelessWidget {
             ),
             SettingsCardWidget(
               title: 'YandexGPT',
+              icon: Icons.auto_awesome_rounded,
               subtitle: context.t.summary.generationPurpose,
               child: const Padding(
                 padding: .only(top: 12.0),

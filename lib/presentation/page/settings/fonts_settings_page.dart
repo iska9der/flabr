@@ -29,16 +29,17 @@ class FontsSettingsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SettingsNestedScaffold(
-      title: context.t.fonts.settingsTitle,
+      title: context.t.settings.fonts.title,
+      description: context.t.settings.fonts.description,
       children: [
         SettingsSectionWidget(
-          title: context.t.fonts.generalSection,
+          title: context.t.settings.fonts.sections.general,
           children: [
             const TextScaleFactorWidget(),
           ],
         ),
         SettingsSectionWidget(
-          title: context.t.fonts.publicationsSection,
+          title: context.t.settings.fonts.sections.publications,
           children: [
             const PublicationTitleTypographyWidget(),
             const PublicationTextTypographyWidget(),
@@ -107,7 +108,8 @@ class _TextScaleFactorCardState extends State<_TextScaleFactorCard> {
 
     return SettingsCardWidget(
       child: SettingsSliderWidget(
-        label: context.t.fonts.textScale,
+        label: context.t.settings.fonts.textScale,
+        icon: Icons.text_fields_rounded,
         value: _value,
         min: TypographyConfigModel.minTextScaleFactor,
         max: TypographyConfigModel.maxTextScaleFactor,

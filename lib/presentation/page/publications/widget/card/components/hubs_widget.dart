@@ -60,7 +60,7 @@ class _PublicationHub extends StatelessWidget {
 
     return InkWell(
       onTap: () => getIt<AppRouter>().navigate(route),
-      borderRadius: AppStyles.buttonBorderRadius,
+      borderRadius: AppRadius.sm,
       child: Padding(
         padding: const .symmetric(vertical: 4.0, horizontal: 8.0),
         child: Text(title, style: textStyle, softWrap: true),

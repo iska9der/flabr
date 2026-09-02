@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import '../../../i18n/i18n.dart';
 import '../../widget/publication_settings_widget.dart';
 import 'widget/settings_nested_scaffold.dart';
-import 'widget/settings_section_widget.dart';
 
 @RoutePage()
 class PublicationSettingsPage extends StatelessWidget {
@@ -24,13 +23,9 @@ class PublicationSettingsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SettingsNestedScaffold(
-      title: context.t.publication.settingsTitle,
+      title: context.t.settings.publication.title,
       children: [
-        const SettingsSectionWidget(
-          children: [
-            PublicationSettingsWidget(),
-          ],
-        ),
+        const PublicationSettingsWidget(),
       ],
     );
   }

@@ -82,7 +82,7 @@ class UserPublicationListView extends StatelessWidget {
             slivers: [
               FlabrSliverRefreshIndicator(onRefresh: listCubit.refresh),
               SliverPadding(
-                padding: AppInsets.screenPaddingExtended,
+                padding: AppInsets.screenExtended,
                 sliver: SliverMainAxisGroup(
                   slivers: [
                     BlocBuilder<

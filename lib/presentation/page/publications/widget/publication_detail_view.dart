@@ -19,6 +19,7 @@ import '../../../widget/html_view/html_view_widget.dart';
 import '../../../widget/navigation/navigation.dart';
 import '../../../widget/publication_settings_widget.dart';
 import '../../../widget/publication_typography_widget.dart';
+import '../../settings/widget/settings_section_widget.dart';
 import 'card/card.dart';
 import 'publication_more_button.dart';
 import 'stats/stats.dart';
@@ -432,12 +433,14 @@ class _SettingsButton extends StatelessWidget {
   void _showSettingsSheet(BuildContext context) {
     showModalBottomSheet(
       context: context,
-      builder: (_) => ListView(
-        children: [
-          const PublicationSettingsWidget(),
-          const PublicationTitleTypographyWidget(),
-          const PublicationTextTypographyWidget(),
-        ],
+      builder: (_) => const SingleChildScrollView(
+        child: SettingsSectionWidget(
+          children: [
+            PublicationSettingsWidget(),
+            PublicationTitleTypographyWidget(),
+            PublicationTextTypographyWidget(),
+          ],
+        ),
       ),
     );
   }

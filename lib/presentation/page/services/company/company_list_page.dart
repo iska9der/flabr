@@ -106,7 +106,7 @@ class CompanyListPageView extends StatelessWidget {
                 controller: scrollCtrl,
                 child: ListView.builder(
                   controller: scrollCtrl,
-                  padding: AppInsets.screenPaddingExtended,
+                  padding: AppInsets.screenExtended,
                   itemCount:
                       state.response.refs.length +
                       (state.status == .loading ? 1 : 0),

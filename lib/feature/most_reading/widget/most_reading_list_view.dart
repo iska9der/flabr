@@ -39,7 +39,7 @@ class _ListViewState extends State<_ListView> {
           }
 
           return Padding(
-            padding: AppInsets.cardPadding,
+            padding: AppInsets.md,
             child: Scrollbar(
               controller: controller,
               thumbVisibility: true,
@@ -56,7 +56,7 @@ class _ListViewState extends State<_ListView> {
                   return FlabrCard(
                     margin: .zero,
                     padding: .symmetric(
-                      horizontal: AppInsets.cardPadding.left,
+                      horizontal: AppInsets.md.left,
                     ),
                     color: Colors.transparent,
                     elevation: 0,

@@ -1,20 +1,23 @@
 import 'package:flutter/material.dart';
 
 import '../../../extension/context.dart';
-import '../../../widget/enhancement/card.dart';
+import '../../../extension/theme.dart';
+import '../../../theme/theme.dart';
 
 class SettingsCardWidget extends StatelessWidget {
   const SettingsCardWidget({
     super.key,
     this.title,
     this.subtitle,
+    this.icon,
     this.actions = const [],
-    this.padding = const .all(12),
+    this.padding = const .all(16),
     required this.child,
   });
 
   final String? title;
   final String? subtitle;
+  final IconData? icon;
   final List<Widget> actions;
   final EdgeInsets padding;
   final Widget child;
@@ -22,36 +25,75 @@ class SettingsCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = context.theme;
-    final needFirstRow = title != null || actions.isNotEmpty;
+    final colorScheme = theme.colorScheme;
+    final hasHeader = title != null || subtitle != null || icon != null;
 
-    return FlabrCard(
-      margin: .zero,
-      padding: padding,
-      child: Column(
-        crossAxisAlignment: .stretch,
-        mainAxisSize: .min,
-        children: [
-          if (needFirstRow)
-            Row(
-              children: [
-                if (title != null)
-                  Expanded(
-                    child: Text(
-                      title!,
-                      style: theme.textTheme.titleLarge!.copyWith(
-                        fontWeight: .w400,
+    return Material(
+      color: colorScheme.surfaceContainerLow,
+      shape: RoundedRectangleBorder(
+        borderRadius: AppRadius.xxl,
+        side: BorderSide(
+          color: colorScheme.outlineVariant.withValues(alpha: .55),
+        ),
+      ),
+      clipBehavior: .antiAlias,
+      child: Padding(
+        padding: padding,
+        child: Column(
+          crossAxisAlignment: .stretch,
+          mainAxisSize: .min,
+          children: [
+            if (hasHeader || actions.isNotEmpty)
+              Row(
+                children: [
+                  if (icon != null) ...[
+                    DecoratedBox(
+                      decoration: BoxDecoration(
+                        color: colorScheme.primaryContainer,
+                        borderRadius: AppRadius.md,
+                      ),
+                      child: SizedBox.square(
+                        dimension: 44,
+                        child: Icon(
+                          icon,
+                          color: colorScheme.onPrimaryContainer,
+                          size: 22,
+                        ),
                       ),
                     ),
-                  )
-                else
-                  const Spacer(),
-                ...actions,
-              ],
-            ),
-          if (subtitle != null)
-            Text(subtitle!, style: theme.textTheme.bodyMedium),
-          child,
-        ],
+                    const SizedBox(width: 12),
+                  ],
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: .start,
+                      mainAxisSize: .min,
+                      children: [
+                        if (title != null)
+                          Text(
+                            title!,
+                            style: theme.textTheme.titleMedium?.copyWith(
+                              fontWeight: .w600,
+                            ),
+                          ),
+                        if (subtitle != null) ...[
+                          const SizedBox(height: 3),
+                          Text(
+                            subtitle!,
+                            style: theme.textTheme.bodySmall?.copyWith(
+                              color: theme.colors.textSecondary,
+                            ),
+                          ),
+                        ],
+                      ],
+                    ),
+                  ),
+                  ...actions,
+                ],
+              ),
+            if (hasHeader || actions.isNotEmpty) const SizedBox(height: 16),
+            child,
+          ],
+        ),
       ),
     );
   }

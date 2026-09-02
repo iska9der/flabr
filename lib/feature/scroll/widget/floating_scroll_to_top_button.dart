@@ -16,7 +16,7 @@ class FloatingScrollToTopButton extends StatelessWidget {
     );
 
     return AnimatedOpacity(
-      duration: AppStyles.hideDuration,
+      duration: AppDuration.hide,
       opacity: visible ? 1 : 0,
       child: IgnorePointer(
         ignoring: !visible,

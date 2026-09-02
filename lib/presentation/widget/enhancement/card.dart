@@ -12,12 +12,14 @@ class FlabrCard extends StatelessWidget {
     this.elevation,
     this.margin,
     this.padding,
+    this.radius,
   });
 
   final Color? color;
   final double? elevation;
   final EdgeInsetsGeometry? margin;
   final EdgeInsetsGeometry? padding;
+  final BorderRadius? radius;
   final Widget child;
   final void Function()? onTap;
 
@@ -25,8 +27,15 @@ class FlabrCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = context.theme;
     final cardTheme = context.cardTheme;
+    final cardRadius = switch (cardTheme.shape) {
+      _ when radius != null => radius!,
+      RoundedRectangleBorder(:final borderRadius) => borderRadius.resolve(
+        Directionality.of(context),
+      ),
+      _ => AppRadius.zero,
+    };
     final cardMargin = margin ?? cardTheme.margin ?? const EdgeInsets.all(4.0);
-    final cardPadding = padding ?? AppInsets.cardPadding;
+    final cardPadding = padding ?? AppInsets.md;
     final cardElevation = elevation ?? cardTheme.elevation ?? 1.0;
     final cardColor = color ?? theme.colors.card;
 
@@ -37,10 +46,11 @@ class FlabrCard extends StatelessWidget {
         color: cardColor,
         shadowColor: theme.colorScheme.shadow,
         surfaceTintColor: cardColor,
-        shape: cardTheme.shape,
+        borderRadius: cardRadius,
         clipBehavior: .hardEdge,
         child: InkWell(
           onTap: onTap,
+          borderRadius: cardRadius,
           child: Padding(padding: cardPadding, child: child),
         ),
       ),

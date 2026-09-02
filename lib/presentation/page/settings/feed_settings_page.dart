@@ -3,14 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../bloc/settings/settings_cubit.dart';
-import '../../../data/model/filter/filter.dart';
 import '../../../i18n/i18n.dart';
-import '../../widget/filter/filter_chip_list.dart';
 import 'model/config_model.dart';
 import 'widget/settings_card_widget.dart';
 import 'widget/settings_checkbox_widget.dart';
 import 'widget/settings_nested_scaffold.dart';
 import 'widget/settings_section_widget.dart';
+import 'widget/settings_segmented_button.dart';
 
 @RoutePage()
 class FeedSettingsPage extends StatelessWidget {
@@ -30,16 +29,17 @@ class FeedSettingsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SettingsNestedScaffold(
-      title: context.t.feed.settingsTitle,
+      title: context.t.settings.feed.title,
+      description: context.t.settings.feed.description,
       children: [
         SettingsSectionWidget(
-          title: context.t.feed.cardsSection,
+          title: context.t.settings.feed.sections.cards,
           children: [
             const SettingsFeedWidget(),
           ],
         ),
         SettingsSectionWidget(
-          title: context.t.feed.behaviorSection,
+          title: context.t.settings.feed.sections.behavior,
           children: [
             const SettingNavVisibilityWidget(),
           ],
@@ -58,20 +58,25 @@ class SettingsFeedWidget extends StatelessWidget {
 
     return SettingsCardWidget(
       child: Column(
-        crossAxisAlignment: .start,
+        crossAxisAlignment: .stretch,
         mainAxisSize: .min,
         children: [
           SettingsCheckboxWidget(
             initialValue: settingsCubit.state.feed.isImageVisible,
-            title: Text(context.t.feed.images.label),
-            subtitle: Text(context.t.feed.images.performanceNote),
-            onChanged: (bool value) =>
+            icon: Icons.image_outlined,
+            title: Text(context.t.settings.feed.cards.images.label),
+            subtitle: Text(
+              context.t.settings.feed.cards.images.performanceNote,
+            ),
+            onChanged: (value) =>
                 settingsCubit.changeFeedImageVisibility(isVisible: value),
           ),
+          const Divider(height: 1),
           SettingsCheckboxWidget(
             initialValue: settingsCubit.state.feed.isDescriptionVisible,
-            title: Text(context.t.feed.shortDescription),
-            onChanged: (bool value) =>
+            icon: Icons.notes_rounded,
+            title: Text(context.t.settings.feed.cards.shortDescription),
+            onChanged: (value) =>
                 settingsCubit.changeFeedDescVisibility(isVisible: value),
           ),
         ],
@@ -86,59 +91,55 @@ class SettingNavVisibilityWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SettingsCardWidget(
-      title: context.t.feed.navigation,
+      icon: Icons.alt_route_rounded,
+      title: context.t.settings.feed.navigation.title,
       child: Column(
-        crossAxisAlignment: .start,
-        spacing: 12,
+        crossAxisAlignment: .stretch,
+        spacing: 16,
         children: [
           BlocBuilder<SettingsCubit, SettingsState>(
             buildWhen: (previous, current) =>
                 previous.feed.navigationMode != current.feed.navigationMode,
             builder: (context, state) {
-              return FilterChipList(
-                options: FeedNavigationMode.values
+              return SettingsSegmentedButton<FeedNavigationMode>(
+                segments: FeedNavigationMode.values
                     .map(
-                      (mode) => FilterOption(
-                        label: mode.label,
-                        value: mode.name,
+                      (mode) => ButtonSegment(
+                        value: mode,
+                        label: Text(mode.label),
                       ),
                     )
                     .toList(),
-                isSelected: (option) =>
-                    state.feed.navigationMode.name == option.value,
-                onSelected: (_, option) {
-                  final mode = FeedNavigationMode.values.byName(option.value);
-                  context.read<SettingsCubit>().changeFeedNavigationMode(mode);
-                },
+                value: state.feed.navigationMode,
+                onChanged: context
+                    .read<SettingsCubit>()
+                    .changeFeedNavigationMode,
               );
             },
           ),
+          const Divider(height: 1),
           BlocBuilder<SettingsCubit, SettingsState>(
             buildWhen: (previous, current) =>
                 previous.misc.navigationAlignment !=
                 current.misc.navigationAlignment,
             builder: (context, state) {
-              return Padding(
-                padding: const .only(top: 8.0),
-                child: FilterChipList(
-                  options: NavigationAlignment.values
-                      .map((e) => FilterOption(label: e.label, value: e.label))
-                      .toList(),
-                  isSelected: (option) =>
-                      state.misc.navigationAlignment.label == option.label,
-                  onSelected: (isSelected, option) {
-                    final resolved = NavigationAlignment.values.firstWhere(
-                      (element) => element.label == option.value,
-                    );
-
-                    context.read<SettingsCubit>().changeNavigationAlignment(
-                      resolved,
-                    );
-                  },
-                ),
+              return SettingsSegmentedButton<NavigationAlignment>(
+                segments: NavigationAlignment.values
+                    .map(
+                      (alignment) => ButtonSegment(
+                        value: alignment,
+                        label: Text(alignment.label),
+                      ),
+                    )
+                    .toList(),
+                value: state.misc.navigationAlignment,
+                onChanged: context
+                    .read<SettingsCubit>()
+                    .changeNavigationAlignment,
               );
             },
           ),
+          const Divider(height: 1),
           BlocBuilder<SettingsCubit, SettingsState>(
             buildWhen: (previous, current) =>
                 previous.misc.navigationOnScrollVisible !=
@@ -146,8 +147,9 @@ class SettingNavVisibilityWidget extends StatelessWidget {
             builder: (context, state) {
               return SettingsCheckboxWidget(
                 initialValue: state.misc.navigationOnScrollVisible,
-                title: Text(context.t.feed.showOnScroll),
-                onChanged: (bool value) => context
+                icon: Icons.vertical_align_center_rounded,
+                title: Text(context.t.settings.feed.navigation.showOnScroll),
+                onChanged: (value) => context
                     .read<SettingsCubit>()
                     .changeNavigationOnScrollVisibility(isVisible: value),
               );

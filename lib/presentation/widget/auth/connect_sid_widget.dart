@@ -53,7 +53,6 @@ class _ConnectSidWidgetState extends State<ConnectSidWidget> {
                     sidToken: Keys.sidToken,
                   ),
                   hintText: context.t.auth.token.cookieHint,
-                  border: const OutlineInputBorder(),
                 ),
               ),
               const SizedBox(height: 8),

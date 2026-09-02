@@ -23,10 +23,10 @@ class AccountTile extends StatelessWidget {
         final profile = state.me;
 
         final titleText = profile.isEmpty
-            ? context.t.settings.account
+            ? context.t.settings.account.title
             : profile.alias;
         final subtitleText = profile.isEmpty
-            ? context.t.account.notLoggedIn
+            ? context.t.settings.account.notLoggedIn
             : profile.fullname;
 
         return Skeletonizer(

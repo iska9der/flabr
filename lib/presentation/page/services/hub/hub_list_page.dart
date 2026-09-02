@@ -94,7 +94,7 @@ class HubListPageView extends StatelessWidget {
                 controller: scrollCtrl,
                 child: ListView.builder(
                   controller: scrollCtrl,
-                  padding: AppInsets.screenPaddingExtended,
+                  padding: AppInsets.screenExtended,
                   itemCount:
                       state.list.refs.length +
                       (state.status == .loading ? 1 : 0),

@@ -17,7 +17,7 @@ class PublicationLabelWidget extends StatelessWidget {
     return DecoratedBox(
       decoration: BoxDecoration(
         border: Border.all(color: color),
-        borderRadius: AppStyles.buttonBorderRadius,
+        borderRadius: AppRadius.sm,
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),

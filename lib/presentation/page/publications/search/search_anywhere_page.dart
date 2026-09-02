@@ -199,7 +199,7 @@ class _SearchAnywhereViewState extends State<_SearchAnywhereView> {
                         models.length + (state.status == .loading ? 1 : 0);
 
                     return SliverPadding(
-                      padding: AppInsets.screenPadding,
+                      padding: AppInsets.screen,
                       sliver: SliverList.builder(
                         itemCount: itemCount,
                         itemBuilder: (context, index) {

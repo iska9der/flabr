@@ -48,7 +48,7 @@ class _CommentParentState extends State<CommentParent> {
 
     final theme = context.theme;
     final decoration = BoxDecoration(
-      borderRadius: AppStyles.cardBorderRadius,
+      borderRadius: AppRadius.zero,
       color: bgColor,
     );
 

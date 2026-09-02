@@ -98,7 +98,7 @@ class UserListPageView extends StatelessWidget {
               controller: scrollCtrl,
               child: ListView.builder(
                 controller: scrollCtrl,
-                padding: AppInsets.screenPaddingExtended,
+                padding: AppInsets.screenExtended,
                 itemCount: users.length + (state.status == .loading ? 1 : 0),
                 itemBuilder: (context, i) {
                   if (i < users.length) {

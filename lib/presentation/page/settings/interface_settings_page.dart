@@ -3,15 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../bloc/settings/settings_cubit.dart';
-import '../../../data/model/filter/filter.dart';
 import '../../../data/model/language/language.dart';
 import '../../../i18n/i18n.dart';
-import '../../widget/filter/filter_chip_list.dart';
 import 'model/config_model.dart';
 import 'widget/settings_card_widget.dart';
 import 'widget/settings_checkbox_widget.dart';
 import 'widget/settings_nested_scaffold.dart';
 import 'widget/settings_section_widget.dart';
+import 'widget/settings_segmented_button.dart';
 
 @RoutePage()
 class InterfaceSettingsPage extends StatelessWidget {
@@ -31,17 +30,18 @@ class InterfaceSettingsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SettingsNestedScaffold(
-      title: context.t.interface.settingsTitle,
+      title: context.t.settings.interface.title,
+      description: context.t.settings.interface.description,
       children: [
         SettingsSectionWidget(
-          title: context.t.interface.appearance,
+          title: context.t.settings.interface.sections.appearance,
           children: [
             const UIThemeWidget(),
             const SettingScrollVariantWidget(),
           ],
         ),
         SettingsSectionWidget(
-          title: context.t.interface.languages,
+          title: context.t.settings.interface.sections.languages,
           children: [
             const UILangWidget(),
             const ArticlesLangWidget(),
@@ -61,7 +61,6 @@ class UIThemeWidget extends StatefulWidget {
 
 class _UIThemeWidgetState extends State<UIThemeWidget> {
   late ThemeMode themeMode;
-  bool isLoading = false;
 
   @override
   void initState() {
@@ -79,66 +78,59 @@ class _UIThemeWidgetState extends State<UIThemeWidget> {
     };
 
     return SettingsCardWidget(
-      title: context.t.interface.colorTheme,
-      child: Padding(
-        padding: const .only(top: 8.0),
-        child: Column(
-          crossAxisAlignment: .stretch,
-          children: [
-            FilterChipList(
-              options: ThemeMode.values
-                  .map(
-                    (e) => FilterOption(
-                      label: switch (e) {
-                        .system => context.t.theme.system,
-                        .light => context.t.theme.light,
-                        .dark => context.t.theme.dark,
-                      },
-                      value: e.name,
-                    ),
-                  )
-                  .toList(),
-              isSelected: (option) => option.value == themeMode.name,
-              onSelected: (isSelected, option) {
-                if (isLoading) {
-                  return;
-                }
-                final settingsCubit = context.read<SettingsCubit>();
-
-                setState(() {
-                  themeMode = .values.firstWhere(
-                    (e) => e.name == option.value,
-                  );
-                  isLoading = true;
-                });
-
-                Future.delayed(const Duration(milliseconds: 600), () {
-                  settingsCubit.changeTheme(themeMode);
-                  setState(() {
-                    isLoading = false;
-                  });
-                });
-              },
-            ),
-            if (isDarkTheme) ...[
-              const SizedBox(height: 8),
-              SettingsCheckboxWidget(
-                initialValue: context
-                    .read<SettingsCubit>()
-                    .state
-                    .theme
-                    .isAmoledTheme,
-                title: Text(context.t.theme.amoled),
-                subtitle: Text(context.t.theme.amoledDescription),
-                onChanged: (isEnabled) {
-                  context.read<SettingsCubit>().changeAmoledTheme(
-                    isEnabled: isEnabled,
-                  );
-                },
+      icon: Icons.palette_outlined,
+      title: context.t.settings.interface.theme.title,
+      child: Column(
+        crossAxisAlignment: .stretch,
+        children: [
+          SettingsSegmentedButton<ThemeMode>(
+            segments: [
+              ButtonSegment(
+                value: .system,
+                icon: const Icon(Icons.brightness_auto_rounded),
+                label: Text(context.t.settings.interface.theme.system),
+              ),
+              ButtonSegment(
+                value: .light,
+                icon: const Icon(Icons.light_mode_outlined),
+                label: Text(context.t.settings.interface.theme.light),
+              ),
+              ButtonSegment(
+                value: .dark,
+                icon: const Icon(Icons.dark_mode_outlined),
+                label: Text(context.t.settings.interface.theme.dark),
               ),
             ],
+            value: themeMode,
+            onChanged: (mode) {
+              setState(() => themeMode = mode);
+              context.read<SettingsCubit>().changeTheme(mode);
+            },
+          ),
+          if (isDarkTheme) ...[
+            const Padding(
+              padding: .symmetric(vertical: 12),
+              child: Divider(height: 1),
+            ),
+            SettingsCheckboxWidget(
+              initialValue: context
+                  .read<SettingsCubit>()
+                  .state
+                  .theme
+                  .isAmoledTheme,
+              icon: Icons.contrast_rounded,
+              title: Text(context.t.settings.interface.theme.amoled.label),
+              subtitle: Text(
+                context.t.settings.interface.theme.amoled.description,
+              ),
+              onChanged: (isEnabled) {
+                context.read<SettingsCubit>().changeAmoledTheme(
+                  isEnabled: isEnabled,
+                );
+              },
+            ),
           ],
-        ),
+        ],
       ),
     );
   }
@@ -150,32 +142,29 @@ class UILangWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SettingsCardWidget(
-      title: context.t.interface.language,
-      child: Padding(
-        padding: const .only(top: 8.0),
-        child: BlocBuilder<SettingsCubit, SettingsState>(
-          buildWhen: (previous, current) => previous.langUI != current.langUI,
-          builder: (context, state) {
-            return FilterChipList(
-              options: Language.values
-                  .map(
-                    (lang) => FilterOption(
-                      value: lang.name,
-                      label: switch (lang) {
+      icon: Icons.translate_rounded,
+      title: context.t.settings.interface.language.ui,
+      child: BlocBuilder<SettingsCubit, SettingsState>(
+        buildWhen: (previous, current) => previous.langUI != current.langUI,
+        builder: (context, state) {
+          return SettingsSegmentedButton<Language>(
+            segments: Language.values
+                .map(
+                  (lang) => ButtonSegment(
+                    value: lang,
+                    label: Text(
+                      switch (lang) {
                         .ru => context.t.language.russian,
                         .en => context.t.language.english,
                       },
                     ),
-                  )
-                  .toList(),
-              isSelected: (option) => option.value == state.langUI.name,
-              onSelected: (isSelected, option) {
-                final newLang = Language.fromString(option.value);
-                context.read<SettingsCubit>().changeUILang(newLang);
-              },
-            );
-          },
-        ),
+                  ),
+                )
+                .toList(),
+            value: state.langUI,
+            onChanged: context.read<SettingsCubit>().changeUILang,
+          );
+        },
       ),
     );
   }
@@ -189,26 +178,29 @@ class ArticlesLangWidget extends StatelessWidget {
     final settingsCubit = context.read<SettingsCubit>();
 
     return SettingsCardWidget(
-      title: context.t.interface.publication.language.label,
-      subtitle: context.t.interface.publication.language.required,
+      icon: Icons.language_rounded,
+      title: context.t.settings.interface.language.publications.label,
+      subtitle: context.t.settings.interface.language.publications.required,
       child: BlocBuilder<SettingsCubit, SettingsState>(
-        buildWhen: (p, c) => p.langArticles != c.langArticles,
+        buildWhen: (previous, current) =>
+            previous.langArticles != current.langArticles,
         builder: (context, state) {
           return Column(
             mainAxisSize: .min,
-            children: Language.values
-                .map(
-                  (lang) => SettingsCheckboxWidget(
-                    type: .checkboxTile,
-                    title: Text(lang.label),
-                    initialValue: state.langArticles.contains(lang),
-                    validate: (bool val) =>
-                        settingsCubit.validateLang(lang, isEnabled: val).$1,
-                    onChanged: (bool? val) =>
-                        settingsCubit.changeArticleLang(lang, isEnabled: val),
-                  ),
-                )
-                .toList(),
+            children: [
+              for (final (index, lang) in Language.values.indexed) ...[
+                if (index > 0) const Divider(height: 1),
+                SettingsCheckboxWidget(
+                  type: .checkboxTile,
+                  title: Text(lang.label),
+                  initialValue: state.langArticles.contains(lang),
+                  validate: (value) =>
+                      settingsCubit.validateLang(lang, isEnabled: value).$1,
+                  onChanged: (value) =>
+                      settingsCubit.changeArticleLang(lang, isEnabled: value),
+                ),
+              ],
+            ],
           );
         },
       ),
@@ -222,27 +214,23 @@ class SettingScrollVariantWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SettingsCardWidget(
-      title: context.t.interface.scroll,
+      icon: Icons.swipe_vertical_rounded,
+      title: context.t.settings.interface.scroll,
       child: BlocBuilder<SettingsCubit, SettingsState>(
         buildWhen: (previous, current) =>
             previous.misc.scrollVariant != current.misc.scrollVariant,
         builder: (context, state) {
-          return Padding(
-            padding: const .only(top: 8.0),
-            child: FilterChipList(
-              options: ScrollVariant.values
-                  .map((e) => FilterOption(label: e.label, value: e.label))
-                  .toList(),
-              isSelected: (option) =>
-                  state.misc.scrollVariant.label == option.label,
-              onSelected: (isSelected, option) {
-                final newVariant = ScrollVariant.values.firstWhere(
-                  (element) => element.label == option.value,
-                );
-
-                context.read<SettingsCubit>().changeScrollVariant(newVariant);
-              },
-            ),
+          return SettingsSegmentedButton<ScrollVariant>(
+            segments: ScrollVariant.values
+                .map(
+                  (variant) => ButtonSegment(
+                    value: variant,
+                    label: Text(variant.label),
+                  ),
+                )
+                .toList(),
+            value: state.misc.scrollVariant,
+            onChanged: context.read<SettingsCubit>().changeScrollVariant,
           );
         },
       ),

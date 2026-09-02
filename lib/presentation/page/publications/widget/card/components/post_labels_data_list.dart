@@ -40,7 +40,7 @@ class _TranslationLabelWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = context.theme;
-    final radius = AppStyles.buttonBorderRadius;
+    final radius = AppRadius.sm;
     final text = label.data.originalAuthorName != null
         ? context.t.publication.original.author(
             originalAuthorName: label.data.originalAuthorName!,

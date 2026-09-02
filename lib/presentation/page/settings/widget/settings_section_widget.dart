@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 
 import '../../../extension/extension.dart';
-import '../../../theme/constants.dart';
 
 class SettingsSectionWidget extends StatelessWidget {
   const SettingsSectionWidget({
     super.key,
     this.title,
-    this.titleTopPadding = 28,
+    this.titleTopPadding = 32,
     this.children = const [],
   });
 
@@ -17,7 +16,7 @@ class SettingsSectionWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = context.theme.textTheme;
+    final theme = context.theme;
 
     return Column(
       crossAxisAlignment: .stretch,
@@ -25,13 +24,20 @@ class SettingsSectionWidget extends StatelessWidget {
         if (title != null)
           Padding(
             padding: .only(
-              left: AppInsets.cardPadding.left,
+              left: 4,
               top: titleTopPadding,
-              bottom: AppInsets.cardPadding.bottom,
+              bottom: 12,
             ),
-            child: Text(title!, style: textTheme.headlineMedium),
+            child: Text(
+              title!,
+              style: theme.textTheme.labelLarge?.copyWith(
+                color: theme.colorScheme.primary,
+                fontWeight: .w600,
+                letterSpacing: .2,
+              ),
+            ),
           ),
-        Wrap(runSpacing: 4, children: children),
+        Column(spacing: 12, children: children),
       ],
     );
   }

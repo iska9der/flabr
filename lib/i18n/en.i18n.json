@@ -52,7 +52,6 @@
       "search": "Search",
       "tracker": "Tracker"
     },
-    "settingsTitle": "Publications",
     "wrongDestination": "You've ended up in the wrong place...",
     "failed": "Failed!",
     "saveArticle": "Save article",
@@ -126,18 +125,6 @@
   },
   "feed": {
     "ratingThreshold": "Rating threshold",
-    "settingsTitle": "Feed",
-    "cardsSection": "Cards",
-    "behaviorSection": "Behavior",
-    "images": {
-      "label": "Images",
-      "performanceNote": "affects performance"
-    },
-    "shortDescription": "Short description",
-    "navigation": "Navigation",
-    "showOnScroll": "Show while scrolling",
-    "infiniteScroll": "Infinite scroll",
-    "pagination": "Pagination",
     "publications": {
       "fetchFailed": "Failed to load publications"
     },
@@ -350,13 +337,104 @@
     }
   },
   "settings": {
-    "account": "Account",
-    "integrations": "Integrations",
-    "profileAndIntegrations": "Profile and integrations",
-    "interfaceDescription": "Appearance, scrolling, and languages",
-    "fontsDescription": "Publication scale and typography",
-    "feedDescription": "Cards and navigation",
-    "elementVisibility": "Element visibility"
+    "title": "Settings",
+    "account": {
+      "title": "Account",
+      "description": "Profile and integrations",
+      "notLoggedIn": "You are not signed in",
+      "sections": {
+        "profile": "Profile",
+        "integrations": "Integrations"
+      }
+    },
+    "interface": {
+      "title": "Interface",
+      "description": "Appearance, scrolling, and languages",
+      "sections": {
+        "appearance": "Appearance",
+        "languages": "Languages"
+      },
+      "theme": {
+        "title": "Color theme",
+        "system": "System",
+        "light": "Light",
+        "dark": "Dark",
+        "amoled": {
+          "label": "AMOLED mode",
+          "description": "Pure black background for the dark theme"
+        }
+      },
+      "language": {
+        "ui": "Interface language",
+        "publications": {
+          "label": "Publication language",
+          "required": "at least one must be selected"
+        }
+      },
+      "scroll": "Scrolling"
+    },
+    "fonts": {
+      "title": "Fonts",
+      "description": "Publication scale and typography",
+      "sections": {
+        "general": "General",
+        "publications": "Publications"
+      },
+      "textScale": "Text scale",
+      "typography": {
+        "resetDefaults": "Restore defaults",
+        "font": {
+          "label": "Font",
+          "size": "Font size"
+        },
+        "headings": "Headings",
+        "headingExample": "Example publication heading",
+        "text": {
+          "label": "Text",
+          "example": "Example publication text.\\n"
+        },
+        "line": {
+          "height": "Line height",
+          "rhythmHint": "This makes it easier to assess the line size and rhythm"
+        }
+      }
+    },
+    "feed": {
+      "title": "Feed",
+      "description": "Cards and navigation",
+      "sections": {
+        "cards": "Cards",
+        "behavior": "Behavior"
+      },
+      "cards": {
+        "images": {
+          "label": "Images",
+          "performanceNote": "affects performance"
+        },
+        "shortDescription": "Short description"
+      },
+      "navigation": {
+        "title": "Navigation",
+        "showOnScroll": "Show while scrolling",
+        "mode": {
+          "infiniteScroll": "Infinite scroll",
+          "pagination": "Pagination"
+        },
+        "alignment": {
+          "start": "At the start",
+          "center": "In the center",
+          "end": "At the end"
+        }
+      }
+    },
+    "publication": {
+      "title": "Publications",
+      "visibility": {
+        "title": "Element visibility",
+        "images": "Images",
+        "webView": "WebView"
+      }
+    }
   },
   "summary": {
     "generationPurpose": "For generating article summaries",
@@ -373,55 +451,6 @@
     "token": {
       "label": "Token",
       "locationHint": "Can be found at 300.ya.ru"
-    }
-  },
-  "fonts": {
-    "settingsTitle": "Fonts",
-    "publicationsSection": "Publications",
-    "generalSection": "General",
-    "textScale": "Text scale"
-  },
-  "interface": {
-    "settingsTitle": "Interface",
-    "appearance": "Appearance",
-    "languages": "Languages",
-    "colorTheme": "Color theme",
-    "language": "Interface language",
-    "scroll": "Scrolling",
-    "publication": {
-      "language": {
-        "label": "Publication language",
-        "required": "at least one must be selected"
-      }
-    }
-  },
-  "theme": {
-    "system": "System",
-    "light": "Light",
-    "dark": "Dark",
-    "amoled": "AMOLED mode",
-    "amoledDescription": "Pure black background for the dark theme"
-  },
-  "alignment": {
-    "start": "At the start",
-    "center": "In the center",
-    "end": "At the end"
-  },
-  "typography": {
-    "resetDefaults": "Restore defaults",
-    "font": {
-      "label": "Font",
-      "size": "Font size"
-    },
-    "headings": "Headings",
-    "headingExample": "Example publication heading",
-    "text": {
-      "label": "Text",
-      "example": "Example publication text.\\n"
-    },
-    "line": {
-      "height": "Line height",
-      "rhythmHint": "This makes it easier to assess the line size and rhythm"
     }
   },
   "app": {
@@ -449,9 +478,5 @@
     "hubs": "Hubs",
     "authors": "Authors",
     "companies": "Companies"
-  },
-  "account": {
-    "profile": "Profile",
-    "notLoggedIn": "You are not signed in"
   }
 }

@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../bloc/settings/settings_cubit.dart';
 import '../../../../i18n/i18n.dart';
 import '../../../extension/extension.dart';
+import '../../../theme/constants.dart';
 import '../model/config_model.dart';
 import 'settings_card_widget.dart';
 import 'settings_slider_widget.dart';
@@ -12,6 +13,7 @@ class TextStyleTypographyWidget extends StatelessWidget {
   const TextStyleTypographyWidget({
     super.key,
     required this.title,
+    required this.icon,
     required this.previewText,
     required this.styleSelector,
     required this.defaultStyleBuilder,
@@ -24,6 +26,7 @@ class TextStyleTypographyWidget extends StatelessWidget {
   });
 
   final String title;
+  final IconData icon;
   final String previewText;
 
   /// Достает сохраненные настройки стиля из состояния
@@ -61,6 +64,7 @@ class TextStyleTypographyWidget extends StatelessWidget {
       builder: (context, state) {
         return _TextStyleTypographyCard(
           title: title,
+          icon: icon,
           previewText: previewText,
           textStyle: styleSelector(state),
           defaultStyle: defaultStyle,
@@ -79,6 +83,7 @@ class TextStyleTypographyWidget extends StatelessWidget {
 class _TextStyleTypographyCard extends StatefulWidget {
   const _TextStyleTypographyCard({
     required this.title,
+    required this.icon,
     required this.previewText,
     required this.textStyle,
     required this.defaultStyle,
@@ -91,6 +96,7 @@ class _TextStyleTypographyCard extends StatefulWidget {
   });
 
   final String title;
+  final IconData icon;
   final String previewText;
 
   /// Сохраненные пользовательские настройки; null означает значения темы
@@ -201,11 +207,15 @@ class _TextStyleTypographyCardState extends State<_TextStyleTypographyCard> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = context.theme;
+    final typography = context.t.settings.fonts.typography;
+
     return SettingsCardWidget(
       title: widget.title,
+      icon: widget.icon,
       actions: [
         IconButton(
-          tooltip: context.t.typography.resetDefaults,
+          tooltip: typography.resetDefaults,
           onPressed: () => _reset(context),
           icon: const Icon(Icons.restart_alt_rounded),
         ),
@@ -213,38 +223,42 @@ class _TextStyleTypographyCardState extends State<_TextStyleTypographyCard> {
       child: Column(
         crossAxisAlignment: .stretch,
         mainAxisSize: .min,
+        spacing: 20,
         children: [
-          Padding(
-            padding: const .symmetric(horizontal: 16),
-            child: DropdownButtonFormField<String>(
-              key: ValueKey(_fontFamily),
-              initialValue: _fontFamily,
-              decoration: InputDecoration(
-                labelText: context.t.typography.font.label,
+          DropdownButtonFormField<String>(
+            key: ValueKey(_fontFamily),
+            initialValue: _fontFamily,
+            decoration: InputDecoration(
+              labelText: typography.font.label,
+              filled: true,
+              fillColor: theme.colorScheme.surfaceContainerHighest,
+              border: theme.inputDecorationTheme.border?.copyWith(
+                borderSide: .none,
               ),
-              items: widget.fontFamilies
-                  .map(
-                    (family) => DropdownMenuItem(
-                      value: family,
-                      child: Text(family, style: TextStyle(fontFamily: family)),
-                    ),
-                  )
-                  .toList(),
-              onChanged: (family) {
-                if (family == null) {
-                  return;
-                }
-
-                setState(() => _fontFamily = family);
-                widget.onStyleChange(
-                  context,
-                  _mergeStyle(AppTextStyle(family: family)),
-                );
-              },
             ),
+            items: widget.fontFamilies
+                .map(
+                  (family) => DropdownMenuItem(
+                    value: family,
+                    child: Text(family, style: TextStyle(fontFamily: family)),
+                  ),
+                )
+                .toList(),
+            onChanged: (family) {
+              if (family == null) {
+                return;
+              }
+
+              setState(() => _fontFamily = family);
+              widget.onStyleChange(
+                context,
+                _mergeStyle(AppTextStyle(family: family)),
+              );
+            },
           ),
           SettingsSliderWidget(
-            label: context.t.typography.font.size,
+            label: typography.font.size,
+            icon: Icons.format_size_rounded,
             value: _fontSize,
             min: widget.fontSizeMin,
             max: widget.fontSizeMax,
@@ -257,7 +271,8 @@ class _TextStyleTypographyCardState extends State<_TextStyleTypographyCard> {
             ),
           ),
           SettingsSliderWidget(
-            label: context.t.typography.line.height,
+            label: typography.line.height,
+            icon: Icons.format_line_spacing_rounded,
             value: _fontHeight,
             min: _fontHeightMin,
             max: widget.fontHeightMax,
@@ -269,27 +284,23 @@ class _TextStyleTypographyCardState extends State<_TextStyleTypographyCard> {
               _mergeStyle(AppTextStyle(height: value)),
             ),
           ),
-          Padding(
-            padding: const .symmetric(horizontal: 16.0),
-            child: DecoratedBox(
-              decoration: BoxDecoration(
-                color: context.theme.colorScheme.surfaceContainer,
-                borderRadius: .circular(8),
-              ),
-              child: Padding(
-                padding: const .all(12.0),
-                child: Text(
-                  widget.previewText,
-                  style: widget.previewStyle.copyWith(
-                    fontFamily: _fontFamily,
-                    fontSize: _fontSize,
-                    height: _fontHeight,
-                  ),
+          DecoratedBox(
+            decoration: BoxDecoration(
+              color: theme.colorScheme.surfaceContainerHighest,
+              borderRadius: AppRadius.xl,
+            ),
+            child: Padding(
+              padding: const .all(16),
+              child: Text(
+                widget.previewText,
+                style: widget.previewStyle.copyWith(
+                  fontFamily: _fontFamily,
+                  fontSize: _fontSize,
+                  height: _fontHeight,
                 ),
               ),
             ),
           ),
-          const SizedBox(height: 8),
         ],
       ),
     );

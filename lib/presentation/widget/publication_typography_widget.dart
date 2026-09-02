@@ -13,8 +13,9 @@ class PublicationTitleTypographyWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextStyleTypographyWidget(
-      title: context.t.typography.headings,
-      previewText: context.t.typography.headingExample,
+      title: context.t.settings.fonts.typography.headings,
+      icon: Icons.title_rounded,
+      previewText: context.t.settings.fonts.typography.headingExample,
       styleSelector: (state) => state.typography.publicationTitleStyle,
       defaultStyleBuilder: (context) =>
           _defaultTypography(context).publicationTitle,
@@ -36,10 +37,11 @@ class PublicationTextTypographyWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextStyleTypographyWidget(
-      title: context.t.typography.text.label,
+      title: context.t.settings.fonts.typography.text.label,
+      icon: Icons.notes_rounded,
       previewText:
-          context.t.typography.text.example +
-          context.t.typography.line.rhythmHint,
+          context.t.settings.fonts.typography.text.example +
+          context.t.settings.fonts.typography.line.rhythmHint,
       styleSelector: (state) => state.typography.publicationTextStyle,
       defaultStyleBuilder: (context) =>
           _defaultTypography(context).publicationText,

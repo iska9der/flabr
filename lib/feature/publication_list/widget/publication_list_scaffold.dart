@@ -247,7 +247,7 @@ class _PublicationListView<
               ],
             ),
             SliverPadding(
-              padding: .only(bottom: AppInsets.screenPaddingExtended.bottom),
+              padding: .only(bottom: AppInsets.screenExtended.bottom),
             ),
           ],
         ),
@@ -288,7 +288,7 @@ class _SideWidgetListState extends State<_SideWidgetList> {
             children: [
               ListTile(
                 enabled: isEnabled,
-                contentPadding: AppInsets.cardPadding.copyWith(
+                contentPadding: AppInsets.md.copyWith(
                   top: 0,
                   bottom: 0,
                 ),
