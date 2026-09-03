@@ -52,20 +52,6 @@ abstract class RegisterModule {
     return cookieJar;
   }
 
-  @Named('mobileClient')
-  @Singleton()
-  HttpClient mobileClient(
-    Dio dio,
-    Logger logger,
-    TokenRepository repository,
-    LanguageRepository languageRepository,
-  ) => HabraClient(
-    dio..options = dio.options.copyWith(baseUrl: Urls.mobileApiUrl),
-    logger: logger,
-    tokenRepository: repository,
-    languageRepository: languageRepository,
-  )..init();
-
   @Named('siteClient')
   @Singleton()
   HttpClient siteClient(

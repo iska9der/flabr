@@ -19,6 +19,7 @@ abstract class AppEnvironment {
   static bool isHostSafe(Uri uri) => [
     'habr.com',
     'm.habr.com',
+    'm.habr.ru',
     'habrahabr.ru',
   ].any((safeHost) => safeHost == uri.host);
 }

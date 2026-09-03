@@ -29,31 +29,29 @@ abstract interface class UserService {
 @LazySingleton(as: UserService)
 class UserServiceImpl implements UserService {
   const UserServiceImpl({
-    @Named('mobileClient') required this._mobileClient,
     @Named('siteClient') required this._siteClient,
   });
 
-  final HttpClient _mobileClient;
   final HttpClient _siteClient;
 
   @override
   Future<UserListResponse> fetchAll({required String page}) async {
     final params = QueryParams(page: page).toMap();
-    final response = await _mobileClient.get('/users', queryParams: params);
+    final response = await _siteClient.get('/v2/users', queryParams: params);
 
     return UserListResponse.fromMap(response.data);
   }
 
   @override
   Future<User> fetchCard({required String alias}) async {
-    final response = await _mobileClient.get('/users/$alias/card');
+    final response = await _siteClient.get('/v2/users/$alias/card');
 
     return User.fromMap(response.data);
   }
 
   @override
   Future<UserWhois> fetchWhois({required String alias}) async {
-    final response = await _mobileClient.get('/users/$alias/whois');
+    final response = await _siteClient.get('/v2/users/$alias/whois');
 
     return UserWhois.fromMap(response.data);
   }

@@ -12,7 +12,6 @@ void main() {
   test('service parses a raw company card response', () async {
     const client = _StubHttpClient({'alias': 'acme'});
     const service = CompanyServiceImpl(
-      mobileClient: client,
       siteClient: client,
     );
 
@@ -25,7 +24,6 @@ void main() {
   test('service does not mask parsing errors as FetchException', () async {
     const client = _StubHttpClient({'alias': 1});
     const service = CompanyServiceImpl(
-      mobileClient: client,
       siteClient: client,
     );
 

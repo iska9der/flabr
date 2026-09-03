@@ -20,19 +20,10 @@ class TokenRepository {
   String? get csrf => _csrf;
 
   Future<void> init() async {
-    final siteCookies = await cookieJar.loadForRequest(
+    final cookies = await cookieJar.loadForRequest(
       Uri.parse(Urls.baseUrl),
     );
-    final mobileCookies = await cookieJar.loadForRequest(
-      Uri.parse(Urls.mobileBaseUrl),
-    );
-    final siteToken = _readToken(siteCookies);
-    final mobileToken = _readToken(mobileCookies);
-    final token = siteToken ?? mobileToken ?? '';
-
-    if (token.isNotEmpty && (siteToken != token || mobileToken != token)) {
-      await _persistToken(token);
-    }
+    final token = _readToken(cookies) ?? '';
 
     _emitToken(token);
   }
@@ -62,13 +53,8 @@ class TokenRepository {
   }
 
   Future<void> _persistToken(String token) async {
-    final siteCookie = Cookie(Keys.sidToken, token)..path = '/';
-    await cookieJar.saveFromResponse(Uri.parse(Urls.baseUrl), [siteCookie]);
-
-    final mobileCookie = Cookie(Keys.sidToken, token)..path = '/';
-    await cookieJar.saveFromResponse(Uri.parse(Urls.mobileBaseUrl), [
-      mobileCookie,
-    ]);
+    final cookie = Cookie(Keys.sidToken, token)..path = '/';
+    await cookieJar.saveFromResponse(Uri.parse(Urls.baseUrl), [cookie]);
   }
 
   void _emitToken(String token) {

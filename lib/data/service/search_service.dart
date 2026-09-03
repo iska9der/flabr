@@ -20,10 +20,10 @@ abstract interface class SearchService {
 
 @LazySingleton(as: SearchService)
 class SearchServiceImpl implements SearchService {
-  const SearchServiceImpl(@Named('mobileClient') HttpClient client)
-    : _mobileClient = client;
+  const SearchServiceImpl(@Named('siteClient') HttpClient client)
+    : _siteClient = client;
 
-  final HttpClient _mobileClient;
+  final HttpClient _siteClient;
 
   @override
   Future<ListResponse<dynamic>> fetch({
@@ -39,8 +39,8 @@ class SearchServiceImpl implements SearchService {
       page: page,
     );
 
-    final queryString = params.toQueryString();
-    final response = await _mobileClient.get(queryString);
+    final queryString = '/v2/${params.toQueryString()}';
+    final response = await _siteClient.get(queryString);
 
     return switch (target) {
       SearchTarget.posts => PublicationCommonListResponse.fromMap(

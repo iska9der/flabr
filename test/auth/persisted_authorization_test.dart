@@ -13,7 +13,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('TokenRepository persisted authorization', () {
-    test('restores a site SID to both cookie hosts', () async {
+    test('restores a persisted site SID', () async {
       final storage = MemoryCookieStorage();
       final initialJar = PersistCookieJar(storage: storage);
       await initialJar.saveFromResponse(Uri.parse(Urls.baseUrl), [
@@ -26,26 +26,6 @@ void main() {
 
       expect(repository.token, 'site-sid');
       await expectSid(restartedJar, Urls.baseUrl, 'site-sid');
-      await expectSid(restartedJar, Urls.mobileBaseUrl, 'site-sid');
-    });
-
-    test('site SID replaces a conflicting mobile SID on restart', () async {
-      final storage = MemoryCookieStorage();
-      final initialJar = PersistCookieJar(storage: storage);
-      await initialJar.saveFromResponse(Uri.parse(Urls.baseUrl), [
-        Cookie(Keys.sidToken, 'site-sid')..path = '/',
-      ]);
-      await initialJar.saveFromResponse(Uri.parse(Urls.mobileBaseUrl), [
-        Cookie(Keys.sidToken, 'mobile-sid')..path = '/',
-      ]);
-
-      final restartedJar = PersistCookieJar(storage: storage);
-      final repository = TokenRepository(cookieJar: restartedJar);
-      await repository.init();
-
-      expect(repository.token, 'site-sid');
-      await expectSid(restartedJar, Urls.baseUrl, 'site-sid');
-      await expectSid(restartedJar, Urls.mobileBaseUrl, 'site-sid');
     });
 
     test('sends a restored SID through CSRF and site interceptors', () async {

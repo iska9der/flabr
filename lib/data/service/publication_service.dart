@@ -76,30 +76,28 @@ abstract interface class PublicationService {
 @LazySingleton(as: PublicationService)
 class PublicationServiceImpl implements PublicationService {
   const PublicationServiceImpl({
-    @Named('mobileClient') required this._mobileClient,
     @Named('siteClient') required this._siteClient,
   });
 
-  final HttpClient _mobileClient;
   final HttpClient _siteClient;
 
   @override
   Future<PublicationCounters> fetchCounters() async {
-    final response = await _mobileClient.get('/feed/counters');
+    final response = await _siteClient.get('/v2/feed/counters');
 
     return PublicationCounters.fromJson(response.data);
   }
 
   @override
   Future<PublicationCommon> fetchArticleById(String id) async {
-    final response = await _mobileClient.get('/articles/$id/');
+    final response = await _siteClient.get('/v2/articles/$id/');
 
     return PublicationCommon.fromJson(response.data);
   }
 
   @override
   Future<PublicationPost> fetchPostById(String id) async {
-    final response = await _mobileClient.get('/threads/$id/');
+    final response = await _siteClient.get('/v2/threads/$id/');
 
     return PublicationPost.fromJson(response.data);
   }
@@ -184,8 +182,8 @@ class PublicationServiceImpl implements PublicationService {
 
     params.addAll({'hub': hub});
 
-    final response = await _mobileClient.get(
-      '/articles/',
+    final response = await _siteClient.get(
+      '/v2/articles/',
       queryParams: params,
     );
 
@@ -211,8 +209,8 @@ class PublicationServiceImpl implements PublicationService {
       params.addAll(typeQuery);
     }
 
-    final response = await _mobileClient.get(
-      '/articles/',
+    final response = await _siteClient.get(
+      '/v2/articles/',
       queryParams: params,
     );
 
@@ -243,8 +241,8 @@ class PublicationServiceImpl implements PublicationService {
 
     params.addAll({'user': user, ...typeQuery});
 
-    final response = await _mobileClient.get(
-      '/articles/',
+    final response = await _siteClient.get(
+      '/v2/articles/',
       queryParams: params,
     );
 
@@ -267,8 +265,8 @@ class PublicationServiceImpl implements PublicationService {
         _ => 'articles',
       };
 
-      final response = await _mobileClient.get(
-        '/$firstPathPart/$articleId/comments/',
+      final response = await _siteClient.get(
+        '/v2/$firstPathPart/$articleId/comments/',
       );
 
       return CommentListResponse.fromMap(response.data);
@@ -343,7 +341,7 @@ class PublicationServiceImpl implements PublicationService {
 
   @override
   Future<MostReadingResponse> fetchMostReading() async {
-    final response = await _mobileClient.get('/articles/most-reading');
+    final response = await _siteClient.get('/v2/articles/most-reading');
 
     return MostReadingResponse.fromMap(response.data);
   }

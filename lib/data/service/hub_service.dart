@@ -15,24 +15,22 @@ abstract interface class HubService {
 @LazySingleton(as: HubService)
 class HubServiceImpl implements HubService {
   const HubServiceImpl({
-    @Named('mobileClient') required this._mobileClient,
     @Named('siteClient') required this._siteClient,
   });
 
-  final HttpClient _mobileClient;
   final HttpClient _siteClient;
 
   @override
   Future<HubListResponse> fetchAll({required int page}) async {
     final params = QueryParams(page: page.toString()).toMap();
-    final response = await _mobileClient.get('/hubs', queryParams: params);
+    final response = await _siteClient.get('/v2/hubs', queryParams: params);
 
     return HubListResponse.fromMap(response.data);
   }
 
   @override
   Future<HubProfile> fetchProfile(String alias) async {
-    final response = await _mobileClient.get('/hubs/$alias/profile');
+    final response = await _siteClient.get('/v2/hubs/$alias/profile');
 
     return HubProfile.fromMap(response.data);
   }

@@ -14,18 +14,16 @@ abstract interface class CompanyService {
 @LazySingleton(as: CompanyService)
 class CompanyServiceImpl implements CompanyService {
   const CompanyServiceImpl({
-    @Named('mobileClient') required this._mobileClient,
     @Named('siteClient') required this._siteClient,
   });
 
-  final HttpClient _mobileClient;
   final HttpClient _siteClient;
 
   @override
   Future<CompanyListResponse> fetchAll({required int page}) async {
     final params = CompanyListParams(page: page.toString()).toMap();
-    final response = await _mobileClient.get(
-      '/companies/',
+    final response = await _siteClient.get(
+      '/v2/companies/',
       queryParams: params,
     );
 
@@ -34,7 +32,7 @@ class CompanyServiceImpl implements CompanyService {
 
   @override
   Future<CompanyCard> fetchCard(String alias) async {
-    final response = await _mobileClient.get('/companies/$alias/card');
+    final response = await _siteClient.get('/v2/companies/$alias/card');
 
     return CompanyCard.fromMap(response.data);
   }

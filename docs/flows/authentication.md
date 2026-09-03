@@ -146,8 +146,7 @@ NavigationDecision _navigationDelegate(NavigationRequest request) {
 ### Cookie Security
 
 **Cookie Storage:**
-- Cookies saved to both `Urls.baseUrl` and `Urls.mobileBaseUrl`
-- Ensures API compatibility across different endpoints
+- Cookies are saved for `Urls.baseUrl`
 
 **Token Extraction:**
 - Extracts `sid` (session ID) token from cookies
@@ -221,9 +220,8 @@ final controller = WebViewController()
 final cookieManager = WebviewCookieManager();
 final cookies = await cookieManager.getCookies(url);
 
-// Save to both base URLs
+// Save cookies for the site URL
 await tokenRepository.saveCookies(Urls.baseUrl, cookies);
-await tokenRepository.saveCookies(Urls.mobileBaseUrl, cookies);
 
 // Extract sid token
 final sidToken = cookies.firstWhere(
@@ -244,7 +242,7 @@ final sidToken = cookies.firstWhere(
 
 **Symptom:** Login appears successful but user is not authenticated
 
-**Solution:** Ensure cookies are saved to both `baseUrl` and `mobileBaseUrl`
+**Solution:** Ensure cookies are saved for `baseUrl`
 
 ### Issue: Domain Blocked
 

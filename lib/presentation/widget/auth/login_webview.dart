@@ -156,7 +156,6 @@ class _WebViewLoginState extends State<_WebViewLogin> {
 
     final cookieJar = getIt<TokenRepository>().cookieJar;
     await cookieJar.saveFromResponse(Uri.parse(Urls.baseUrl), cookies);
-    await cookieJar.saveFromResponse(Uri.parse(Urls.mobileBaseUrl), cookies);
     return token;
   }
 
