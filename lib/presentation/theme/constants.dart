@@ -53,4 +53,6 @@ abstract class AppIcons {
   static const IconData companyPlaceholder = Icons.schedule_rounded;
 
   static const IconData chevronRight = Icons.chevron_right_rounded;
+  static const IconData chevronDown = Icons.keyboard_arrow_down_rounded;
+  static const IconData chevronUp = Icons.keyboard_arrow_up_rounded;
 }

@@ -86,12 +86,36 @@
       "hard": "Hard"
     },
     "flow": {
-      "development": "Development",
+      "title": "Flow",
+      "expand": "Show all flows",
+      "collapse": "Hide all flows",
+      "backend": "Backend",
+      "frontend": "Frontend",
+      "mobileDevelopment": "Mobile development",
+      "gameDevelopment": "Game development",
+      "qualityAssurance": "Quality assurance",
+      "aiAndMl": "AI and ML",
+      "industrialEngineering": "Industrial engineering",
       "administration": "Administration",
-      "design": "Design",
+      "informationSecurity": "Information security",
+      "analytics": "Systems and business analysis",
+      "support": "Technical support",
       "management": "Management",
-      "marketing": "Marketing",
+      "topManagement": "Top management",
+      "humanResources": "HR",
+      "design": "Design",
+      "marketing": "Marketing and content",
+      "hardwareAndGadgets": "Hardware and gadgets",
+      "diy": "DIY",
       "popularScience": "Popular science",
+      "healthcare": "Healthcare",
+      "group": {
+        "developmentAndEngineering": "Development and engineering",
+        "infrastructureAndData": "Infrastructure and data",
+        "management": "Management",
+        "creativeAndPromotion": "Creative and promotion",
+        "scienceAndLife": "Science and life"
+      },
       "unknown": "Unknown publication flow"
     },
     "format": {
@@ -252,7 +276,10 @@
   },
   "filter": {
     "all": "All",
+    "showFirst": "Show first",
+    "ratingThreshold": "Rating threshold",
     "period": {
+      "title": "Period",
       "day": "Day",
       "week": "Week",
       "month": "Month",

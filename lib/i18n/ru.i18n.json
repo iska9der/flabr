@@ -86,12 +86,36 @@
       "hard": "Сложный"
     },
     "flow": {
-      "development": "Разработка",
+      "title": "Поток",
+      "expand": "Показать все потоки",
+      "collapse": "Скрыть все потоки",
+      "backend": "Бэкенд",
+      "frontend": "Фронтенд",
+      "mobileDevelopment": "Мобильная разработка",
+      "gameDevelopment": "Геймдев",
+      "qualityAssurance": "Тестирование",
+      "aiAndMl": "AI и ML",
+      "industrialEngineering": "Промышленная инженерия",
       "administration": "Администрирование",
-      "design": "Дизайн",
+      "informationSecurity": "Информационная безопасность",
+      "analytics": "Системный и бизнес-анализ",
+      "support": "Техническая поддержка",
       "management": "Менеджмент",
-      "marketing": "Маркетинг",
+      "topManagement": "Топ-менеджмент",
+      "humanResources": "HR",
+      "design": "Дизайн",
+      "marketing": "Маркетинг и контент",
+      "hardwareAndGadgets": "Железо и гаджеты",
+      "diy": "DIY",
       "popularScience": "Научпоп",
+      "healthcare": "Здоровье",
+      "group": {
+        "developmentAndEngineering": "Разработка и инженерия",
+        "infrastructureAndData": "Инфраструктура и данные",
+        "management": "Управление",
+        "creativeAndPromotion": "Креатив и продвижение",
+        "scienceAndLife": "Наука и жизнь"
+      },
       "unknown": "Неизвестный поток публикации"
     },
     "format": {
@@ -252,7 +276,10 @@
   },
   "filter": {
     "all": "Все",
+    "showFirst": "Сначала показывать",
+    "ratingThreshold": "Порог рейтинга",
     "period": {
+      "title": "Период",
       "day": "Сутки",
       "week": "Неделя",
       "month": "Месяц",

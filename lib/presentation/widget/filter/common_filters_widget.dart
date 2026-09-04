@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../../../data/model/filter/filter.dart';
+import '../../../i18n/i18n.dart';
+import '../../extension/context.dart';
 import 'filter_chip_list.dart';
 import 'publication_filter_submit_button.dart';
 
@@ -39,32 +41,55 @@ class _CommonFiltersWidgetState extends State<CommonFiltersWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final headerStyle = context.theme.textTheme.titleMedium;
+
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
+      spacing: 12,
+      crossAxisAlignment: .start,
+      mainAxisSize: .min,
       children: [
-        FilterChipList(
-          isEnabled: !widget.isLoading,
-          options: Sort.values
-              .map((e) => FilterOption(label: e.label, value: e.name))
-              .toList(),
-          isSelected: (option) => option.value == sortValue.name,
-          onSelected: (isSelected, option) => setState(() {
-            sortValue = Sort.fromString(option.value);
-            optionValue = sortValue.filters.first;
-          }),
+        Column(
+          spacing: 8,
+          crossAxisAlignment: .start,
+          children: [
+            Text(context.t.filter.showFirst, style: headerStyle),
+            FilterChipList(
+              isEnabled: !widget.isLoading,
+              options: Sort.values
+                  .map((e) => FilterOption(label: e.label, value: e.name))
+                  .toList(),
+              isSelected: (option) => option.value == sortValue.name,
+              onSelected: (isSelected, option) => setState(() {
+                sortValue = Sort.fromString(option.value);
+                optionValue = sortValue.filters.first;
+              }),
+            ),
+          ],
         ),
-        FilterChipList(
-          isEnabled: !widget.isLoading,
-          options: sortValue.filters,
-          isSelected: (option) => option == optionValue,
-          onSelected: (isSelected, option) => setState(() {
-            optionValue = option;
-          }),
+        Column(
+          spacing: 8,
+          crossAxisAlignment: .start,
+          children: [
+            Text(
+              switch (sortValue) {
+                Sort.byNew => context.t.filter.ratingThreshold,
+                Sort.byBest => context.t.filter.period.title,
+              },
+              style: headerStyle,
+            ),
+            FilterChipList(
+              isEnabled: !widget.isLoading,
+              options: sortValue.filters,
+              isSelected: (option) => option == optionValue,
+              onSelected: (isSelected, option) => setState(() {
+                optionValue = option;
+              }),
+            ),
+          ],
         ),
         if (widget.onSubmit != null)
           Padding(
-            padding: const EdgeInsets.only(top: 8.0),
+            padding: const .only(top: 8),
             child: PublicationFilterSubmitButton(
               isEnabled: !widget.isLoading,
               onSubmit: () {

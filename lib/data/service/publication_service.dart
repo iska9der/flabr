@@ -131,7 +131,7 @@ class PublicationServiceImpl implements PublicationService {
     required FilterOption score,
     required String page,
   }) async {
-    final flowStr = (flow == PublicationFlow.all) ? null : flow.name;
+    final flowStr = (flow == PublicationFlow.all) ? null : flow.alias;
 
     final params = switch (section) {
       Section.post => PublicationPostListParams(

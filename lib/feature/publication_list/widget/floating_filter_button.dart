@@ -37,12 +37,17 @@ class FloatingFilterButton<
             context: context,
             isScrollControlled: true,
             useRootNavigator: true,
-            constraints: const BoxConstraints(minWidth: 600),
-            builder: (_) => Padding(
-              padding: AppInsets.filterSheet,
-              child: BlocProvider.value(
-                value: context.read<ListCubit>(),
-                child: filter,
+            constraints: const BoxConstraints(maxWidth: 600),
+            builder: (sheetContext) => ConstrainedBox(
+              constraints: BoxConstraints(
+                maxHeight: Device.getHeight(context, safe: true) * .7,
+              ),
+              child: SingleChildScrollView(
+                padding: AppInsets.filterSheet,
+                child: BlocProvider.value(
+                  value: context.read<ListCubit>(),
+                  child: filter,
+                ),
               ),
             ),
           ),

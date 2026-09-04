@@ -1,8 +1,8 @@
-# Архитектура обработки ошибок
+# Error Handling Architecture
 
-## Общая схема
+## Overview
 
-Основной путь распространения ошибки:
+The primary error propagation path is:
 
 ```text
 HTTP client
@@ -12,68 +12,68 @@ HTTP client
   → presentation
 ```
 
-Для feature-local операций отдельные слои могут отсутствовать, но ответственность между получением данных, управлением состоянием и отображением сохраняется.
+Feature-local operations may omit individual layers, but the responsibility boundaries between data retrieval, state management, and presentation remain intact.
 
-## Категории ошибок
+## Error categories
 
 ### Transport errors
 
-Ошибки выполнения HTTP-запроса преобразуются в исключение приложения на границе HTTP client. Исключение может содержать transport metadata, необходимые следующим слоям для интерпретации ответа.
+HTTP request execution errors are converted to application exceptions at the HTTP client boundary. An exception may contain transport metadata required by downstream layers to interpret the response.
 
 ### Data and semantic errors
 
-Ошибки parsing сохраняют исходный тип. Известные ошибки формата данных, отсутствующих значений и семантики API представлены отдельными исключениями приложения.
+Parsing errors retain their original type. Known data format, missing value, and API semantic errors are represented by dedicated application exceptions.
 
 ### Operation failures
 
-`AppFailure` добавляет к исходной ошибке контекст пользовательской операции. Он используется в состоянии BLoC/Cubit и не заменяет исходное исключение.
+`AppFailure` adds user-operation context to the original error. It is used in BLoC/Cubit state and does not replace the original exception.
 
-## Ответственность слоёв
+## Layer responsibilities
 
 ### HTTP infrastructure
 
-Interceptors выполняют инфраструктурные задачи и продолжают цепочку ошибок transport-библиотеки.
+Interceptors perform infrastructure tasks and continue the transport library’s error chain.
 
-HTTP client преобразует только ошибки выполнения запроса. Ошибки, возникшие после получения ответа, не должны классифицироваться как transport errors.
+The HTTP client converts request execution errors only. Errors raised after a response is received must not be classified as transport errors.
 
-При преобразовании сохраняются исходный stack trace и transport metadata, необходимые для дальнейшей обработки.
+Conversions preserve the original stack trace and any transport metadata required for further processing.
 
 ### Service
 
-Service задаёт параметры запроса и преобразует transport response в типизированную модель.
+A service defines request parameters and converts a transport response into a typed model.
 
-Service может преобразовать transport exception в более конкретное исключение, если для этого необходимы знания endpoint или error payload. При повторном выбрасывании сохраняется stack trace пойманного исключения.
+A service may convert a transport exception into a more specific exception when endpoint knowledge or the error payload is required. Rethrowing must preserve the caught exception’s stack trace.
 
-Service не перехватывает все ошибки общим `catch`: ошибки parsing и программные ошибки распространяются с исходным типом.
+A service does not wrap every error in a broad `catch`; parsing errors and programming errors propagate with their original types.
 
 ### Repository
 
-Repository получает от service типизированные данные и объединяет источники, cache и storage. Он не зависит от transport exceptions и не дублирует их преобразование.
+A repository receives typed data from a service and combines data sources, cache, and storage. It does not depend on transport exceptions or duplicate their conversion.
 
-Восстановимые ошибки локальных источников могут обрабатываться внутри repository, если повреждённые данные можно безопасно удалить или получить повторно.
+Recoverable local-source errors may be handled inside the repository when corrupted data can be safely removed or fetched again.
 
 ### BLoC/Cubit
 
-BLoC/Cubit преобразует результат операции в состояние. Контекст ошибок, отображаемых пользователю, представляется через `AppFailure`, который может сохранять исходное исключение как причину.
+A BLoC/Cubit converts an operation result into state. User-facing operation context is represented by `AppFailure`, which may retain the original exception as its cause.
 
-Ошибка и stack trace передаются в `onError`, когда обработчик выполняет локальное перехватывание.
+When a handler catches an error locally, it passes both the error and stack trace to `onError`.
 
 ### Presentation
 
-Presentation преобразует ошибку из состояния в локализованное сообщение во время отображения.
+The presentation layer converts an error from state into a localized message when rendering it.
 
-Приоритет сообщения:
+Message priority:
 
-1. известное исключение с конкретной семантикой;
-2. контекст операции из `AppFailure`;
-3. общее сообщение о неизвестной ошибке.
+1. a known exception with specific semantics;
+2. operation context from `AppFailure`;
+3. a generic unknown-error message.
 
-Такой порядок сохраняет точное сообщение, когда причина известна, и предоставляет корректный fallback для остальных случаев.
+This order preserves a precise message when the cause is known and provides a correct fallback in all other cases.
 
-## Правила преобразования
+## Conversion rules
 
-1. Ошибка преобразуется только на слое, располагающем необходимым контекстом.
-2. Ошибки parsing и программные ошибки не маскируются как transport errors.
-3. Повторное выбрасывание не заменяет исходный stack trace.
-4. Repository не получает raw transport response.
-5. Локализация не выполняется в data layer или BLoC/Cubit.
+1. An error is converted only by a layer that has the required context.
+2. Parsing errors and programming errors are not disguised as transport errors.
+3. Rethrowing does not replace the original stack trace.
+4. A repository does not receive a raw transport response.
+5. Localization does not occur in the data layer or BLoC/Cubit.

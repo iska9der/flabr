@@ -14,8 +14,15 @@ class Device {
   static bool get isDesktop =>
       Platform.isMacOS || Platform.isWindows || Platform.isLinux;
 
-  static double getHeight(BuildContext context) {
-    return MediaQuery.sizeOf(context).height;
+  static double getHeight(BuildContext context, {bool safe = false}) {
+    double height = MediaQuery.sizeOf(context).height;
+
+    if (safe) {
+      final viewPadding = MediaQuery.viewPaddingOf(context);
+      height -= (viewPadding.top + viewPadding.bottom);
+    }
+
+    return height;
   }
 
   static double getWidth(BuildContext context) {

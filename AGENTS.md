@@ -15,6 +15,7 @@ Flabr is an unofficial mobile client for habr.com built with Flutter. It support
 - **Development Commands**: [docs/development/commands.md](docs/development/commands.md)
 - **Code Style**: [docs/development/code-style.md](docs/development/code-style.md)
 - **Common Tasks**: [docs/development/common-tasks.md](docs/development/common-tasks.md)
+- **External API Contracts**: [docs/api/](docs/api/)
 
 ## Mandatory Workflow
 
@@ -28,6 +29,7 @@ For non-trivial code changes, do not rely only on this AGENTS.md summary. Before
 - Read [docs/development/code-style.md](docs/development/code-style.md) before making Dart style, naming, decomposition, comment, import, or formatting decisions.
 - Read [docs/development/common-tasks.md](docs/development/common-tasks.md) before adding features, screens, routes, repositories, models, DI entries, or generated-code-backed types.
 - Read [docs/development/commands.md](docs/development/commands.md) before running project commands.
+- Read the relevant file in [docs/api/](docs/api/) before changing external API integrations, response parsing, source-specific identifiers, or mappings based on upstream behavior.
 - Read the relevant file in [docs/flows/](docs/flows/) before changing authentication, app initialization, or adjacent flows.
 - Read [docs/packages/README.md](docs/packages/README.md) before changing workspace packages or package boundaries.
 
@@ -153,7 +155,10 @@ packages/
 
 ## Documentation
 
+Documentation under `docs/` must be written in English. Keep user-facing localization and source-language examples unchanged when their exact wording is part of the documented contract.
+
 For detailed information, see:
+- **API**: [docs/api/](docs/api/) - External API contracts and observed upstream behavior only; keep Flabr implementation details in architecture, development, or flow documentation
 - **Architecture**: [docs/architecture/](docs/architecture/) - Clean architecture, layers, components
 - **Flows**: [docs/flows/](docs/flows/) - Authentication, app initialization
 - **Development**: [docs/development/](docs/development/) - Commands, code style, tasks
