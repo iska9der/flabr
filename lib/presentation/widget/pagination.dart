@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-import '../../../i18n/i18n.dart';
-import '../../../presentation/extension/extension.dart';
-import '../../../presentation/theme/theme.dart';
+import '../../i18n/i18n.dart';
+import '../extension/extension.dart';
+import '../theme/theme.dart';
 
 /// Переключатель страниц с сокращением недоступных диапазонов
-class PublicationPagination extends StatefulWidget {
-  const PublicationPagination({
+class Pagination extends StatefulWidget {
+  const Pagination({
     super.key,
     required this.currentPage,
     required this.pagesCount,
@@ -18,10 +18,10 @@ class PublicationPagination extends StatefulWidget {
   final ValueChanged<int> onPageSelected;
 
   @override
-  State<PublicationPagination> createState() => _PublicationPaginationState();
+  State<Pagination> createState() => _PaginationState();
 }
 
-class _PublicationPaginationState extends State<PublicationPagination> {
+class _PaginationState extends State<Pagination> {
   static const double _itemExtent = 48;
   static const double _itemSpacing = 4;
 
@@ -170,7 +170,7 @@ class _PaginationPageButton extends StatelessWidget {
     final child = Text('$page');
 
     return SizedBox.square(
-      dimension: _PublicationPaginationState._itemExtent,
+      dimension: _PaginationState._itemExtent,
       child: Semantics(
         selected: isSelected,
         child: isSelected

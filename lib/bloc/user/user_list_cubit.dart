@@ -9,27 +9,32 @@ import '../error/app_failure.dart';
 part 'user_list_state.dart';
 
 class UserListCubit extends Cubit<UserListState> {
-  UserListCubit({required this._repository}) : super(const UserListState());
+  UserListCubit({
+    required this._repository,
+    required this._settingsRepository,
+  }) : super(const UserListState());
 
   final UserRepository _repository;
-
-  bool get isFirstFetch => state.page == 1;
-  bool get isLastPage => state.page >= state.pagesCount;
+  final SettingsRepository _settingsRepository;
 
   void fetchAll() async {
-    if (state.status == .loading || !isFirstFetch && isLastPage) {
+    if (state.status == .loading || state.isLastPage) {
       return;
     }
 
     emit(state.copyWith(status: .loading));
 
     try {
-      var response = await _repository.fetchAll(page: state.page.toString());
+      final response = await _repository.fetchAll(page: state.page.toString());
+      final paginationEnabled =
+          _settingsRepository.lastConfig.feed.navigationMode == .pagination;
 
       emit(
         state.copyWith(
           status: .success,
-          users: [...state.users, ...response.refs],
+          users: paginationEnabled
+              ? response.refs
+              : [...state.users, ...response.refs],
           page: state.page + 1,
           pagesCount: response.pagesCount,
         ),
@@ -42,5 +47,20 @@ class UserListCubit extends Cubit<UserListState> {
         ),
       );
     }
+  }
+
+  /// Переводит Cubit в пустое состояние указанной страницы
+  void reset({int page = 1}) => emit(UserListState(page: page));
+
+  /// Загружает выбранную страницу без элементов с других страниц
+  void changePage(int page) {
+    final isOutOfRange =
+        page < 1 || state.pagesCount > 0 && page > state.pagesCount;
+
+    if (state.status == .loading || isOutOfRange || page == state.currentPage) {
+      return;
+    }
+
+    reset(page: page);
   }
 }

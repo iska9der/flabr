@@ -12,13 +12,15 @@ part 'company_list_state.dart';
 class CompanyListCubit extends Cubit<CompanyListState> {
   CompanyListCubit({
     required this._repository,
+    required this._settingsRepository,
     required LanguageRepository languageRepository,
   }) : super(const CompanyListState());
 
   final CompanyRepository _repository;
+  final SettingsRepository _settingsRepository;
 
   void fetch() async {
-    if (state.status == .loading || !state.isFirstFetch && state.isLastPage) {
+    if (state.status == .loading || state.isLastPage) {
       return;
     }
 
@@ -26,13 +28,16 @@ class CompanyListCubit extends Cubit<CompanyListState> {
 
     try {
       final response = await _repository.fetchAll(page: state.page);
-
-      var newList = state.response.merge(response, getId: (ref) => ref.alias);
+      final paginationEnabled =
+          _settingsRepository.lastConfig.feed.navigationMode == .pagination;
+      final list = paginationEnabled
+          ? response
+          : state.response.merge(response, getId: (ref) => ref.alias);
 
       emit(
         state.copyWith(
           status: .success,
-          response: newList,
+          response: list,
           page: state.page + 1,
         ),
       );
@@ -46,5 +51,20 @@ class CompanyListCubit extends Cubit<CompanyListState> {
 
       super.onError(error, stackTrace);
     }
+  }
+
+  /// Переводит Cubit в пустое состояние указанной страницы
+  void reset({int page = 1}) => emit(CompanyListState(page: page));
+
+  /// Загружает выбранную страницу без элементов с других страниц
+  void changePage(int page) {
+    final pagesCount = state.response.pagesCount;
+    final isOutOfRange = page < 1 || pagesCount > 0 && page > pagesCount;
+
+    if (state.status == .loading || isOutOfRange || page == state.currentPage) {
+      return;
+    }
+
+    reset(page: page);
   }
 }

@@ -14,6 +14,8 @@ class UserListState with Equatable {
   final int page;
   final int pagesCount;
   final List<User> users;
+  int get currentPage => status == .success && page > 1 ? page - 1 : page;
+  bool get isLastPage => pagesCount > 0 && currentPage >= pagesCount;
 
   UserListState copyWith({
     LoadingStatus? status,

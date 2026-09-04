@@ -13,8 +13,8 @@ class HubListState with Equatable {
   final ListResponse<Hub> list;
   final int page;
 
-  bool get isFirstFetch => page == 1;
-  bool get isLastPage => page >= list.pagesCount;
+  int get currentPage => status == .success && page > 1 ? page - 1 : page;
+  bool get isLastPage => list.pagesCount > 0 && currentPage >= list.pagesCount;
 
   HubListState copyWith({
     LoadingStatus? status,

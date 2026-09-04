@@ -13,8 +13,9 @@ class CompanyListState with Equatable {
   final ListResponse<Company> response;
   final int page;
 
-  bool get isFirstFetch => page == 1;
-  bool get isLastPage => page >= response.pagesCount;
+  int get currentPage => status == .success && page > 1 ? page - 1 : page;
+  bool get isLastPage =>
+      response.pagesCount > 0 && currentPage >= response.pagesCount;
 
   CompanyListState copyWith({
     LoadingStatus? status,

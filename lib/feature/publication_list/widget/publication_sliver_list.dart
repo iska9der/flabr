@@ -12,9 +12,9 @@ import '../../../presentation/extension/extension.dart';
 import '../../../presentation/page/publications/widget/card/card.dart';
 import '../../../presentation/widget/enhancement/progress_indicator.dart';
 import '../../../presentation/widget/error_widget.dart';
+import '../../../presentation/widget/pagination.dart';
 import '../../scroll/scroll.dart';
 import '../cubit/publication_list_cubit.dart';
-import 'publication_pagination.dart';
 
 class PublicationSliverList<
   ListCubit extends PublicationListCubit<ListState>,
@@ -122,7 +122,7 @@ class PublicationSliverList<
                 final publication = publications[index];
 
                 return PublicationCardWidget(
-                  key: Key('publication_card_//${publication.id}'),
+                  key: Key('publication_card_${publication.id}'),
                   publication,
                   showType: showType,
                 );
@@ -148,7 +148,7 @@ class PublicationSliverList<
             slivers: [
               list,
               SliverToBoxAdapter(
-                child: PublicationPagination(
+                child: Pagination(
                   currentPage: state.currentPage,
                   pagesCount: state.response.pagesCount,
                   onPageSelected: (page) {

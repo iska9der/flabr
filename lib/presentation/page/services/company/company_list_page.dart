@@ -14,6 +14,7 @@ import '../../../theme/theme.dart';
 import '../../../widget/enhancement/progress_indicator.dart';
 import '../../../widget/error_widget.dart';
 import '../../../widget/navigation/navigation.dart';
+import '../../../widget/pagination.dart';
 import 'widget/company_list_card_widget.dart';
 
 @RoutePage(name: CompanyListPage.routeName)
@@ -32,6 +33,7 @@ class CompanyListPage extends StatelessWidget {
           create: (_) => CompanyListCubit(
             repository: getIt(),
             languageRepository: getIt(),
+            settingsRepository: getIt(),
           ),
         ),
         BlocProvider(create: (_) => ScrollCubit()),
@@ -50,12 +52,24 @@ class CompanyListPageView extends StatelessWidget {
   Widget build(BuildContext context) {
     final scrollCubit = context.read<ScrollCubit>();
     final scrollCtrl = scrollCubit.controller;
+    final paginationEnabled = context.select<SettingsCubit, bool>(
+      (cubit) => cubit.state.feed.navigationMode == .pagination,
+    );
 
     return MultiBlocListener(
       listeners: [
         BlocListener<ScrollCubit, ScrollState>(
-          listenWhen: (previous, current) => current.isBottomEdge,
+          listenWhen: (previous, current) =>
+              !paginationEnabled && current.isBottomEdge,
           listener: (context, state) => fetch(context),
+        ),
+        BlocListener<SettingsCubit, SettingsState>(
+          listenWhen: (previous, current) =>
+              previous.feed.navigationMode != current.feed.navigationMode,
+          listener: (_, _) {
+            context.read<CompanyListCubit>().reset();
+            scrollCubit.animateToTop();
+          },
         ),
         BlocListener<SettingsCubit, SettingsState>(
           listenWhen: (previous, current) =>
@@ -74,47 +88,64 @@ class CompanyListPageView extends StatelessWidget {
         ),
         body: SafeArea(
           child: BlocConsumer<CompanyListCubit, CompanyListState>(
-            listenWhen: (p, c) => p.page != 1 && c.status == .failure,
+            listenWhen: (previous, current) =>
+                previous.response.refs.isNotEmpty && current.status == .failure,
             listener: (c, state) {
               context.showSnack(
                 content: Text(context.t.errorMessage(state.error)),
               );
             },
             builder: (context, state) {
+              final companies = state.response.refs;
+
               if (state.status == .initial) {
                 fetch(context);
 
                 return const CircleIndicator();
               }
 
-              if (state.isFirstFetch) {
-                if (state.status == .loading) {
-                  return const CircleIndicator();
-                }
-
-                if (state.status == .failure) {
-                  return Center(
-                    child: AppError(
-                      error: state.error,
-                      onRetry: () => fetch(context),
-                    ),
-                  );
-                }
+              if (companies.isEmpty && state.status == .loading) {
+                return const CircleIndicator();
               }
+
+              if (companies.isEmpty && state.status == .failure) {
+                return Center(
+                  child: AppError(
+                    error: state.error,
+                    onRetry: () => fetch(context),
+                  ),
+                );
+              }
+
+              final paginationShown =
+                  paginationEnabled && state.response.pagesCount > 1;
+              final loadingShown =
+                  !paginationEnabled && state.status == .loading;
+              final itemCount =
+                  companies.length + (paginationShown || loadingShown ? 1 : 0);
 
               return Scrollbar(
                 controller: scrollCtrl,
                 child: ListView.builder(
                   controller: scrollCtrl,
                   padding: AppInsets.screenExtended,
-                  itemCount:
-                      state.response.refs.length +
-                      (state.status == .loading ? 1 : 0),
+                  itemCount: itemCount,
                   itemBuilder: (context, index) {
-                    if (index < state.response.refs.length) {
-                      final company = state.response.refs[index];
+                    if (index < companies.length) {
+                      final company = companies[index];
 
                       return CompanyListCardWidget(company: company);
+                    }
+
+                    if (paginationShown) {
+                      return Pagination(
+                        currentPage: state.currentPage,
+                        pagesCount: state.response.pagesCount,
+                        onPageSelected: (page) {
+                          context.read<CompanyListCubit>().changePage(page);
+                          scrollCubit.animateToTop();
+                        },
+                      );
                     }
 
                     Timer(

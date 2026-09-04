@@ -10,12 +10,16 @@ import '../error/app_failure.dart';
 part 'hub_list_state.dart';
 
 class HubListCubit extends Cubit<HubListState> {
-  HubListCubit({required this._repository}) : super(const HubListState());
+  HubListCubit({
+    required this._repository,
+    required this._settingsRepository,
+  }) : super(const HubListState());
 
   final HubRepository _repository;
+  final SettingsRepository _settingsRepository;
 
   void fetch() async {
-    if (state.status == .loading || !state.isFirstFetch && state.isLastPage) {
+    if (state.status == .loading || state.isLastPage) {
       return;
     }
 
@@ -23,11 +27,16 @@ class HubListCubit extends Cubit<HubListState> {
 
     try {
       final response = await _repository.fetchAll(page: state.page);
+      final paginationEnabled =
+          _settingsRepository.lastConfig.feed.navigationMode == .pagination;
+      final list = paginationEnabled
+          ? response
+          : state.list.merge(response, getId: (ref) => ref.alias);
 
       emit(
         state.copyWith(
           status: .success,
-          list: state.list.merge(response, getId: (ref) => ref.alias),
+          list: list,
           page: state.page + 1,
         ),
       );
@@ -41,5 +50,20 @@ class HubListCubit extends Cubit<HubListState> {
 
       super.onError(error, stackTrace);
     }
+  }
+
+  /// Переводит Cubit в пустое состояние указанной страницы
+  void reset({int page = 1}) => emit(HubListState(page: page));
+
+  /// Загружает выбранную страницу без элементов с других страниц
+  void changePage(int page) {
+    final pagesCount = state.list.pagesCount;
+    final isOutOfRange = page < 1 || pagesCount > 0 && page > pagesCount;
+
+    if (state.status == .loading || isOutOfRange || page == state.currentPage) {
+      return;
+    }
+
+    reset(page: page);
   }
 }

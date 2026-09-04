@@ -4,6 +4,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../bloc/settings/settings_cubit.dart';
 import '../../../../bloc/user/user_list_cubit.dart';
 import '../../../../di/di.dart';
 import '../../../../feature/scroll/scroll.dart';
@@ -13,6 +14,7 @@ import '../../../theme/theme.dart';
 import '../../../widget/enhancement/progress_indicator.dart';
 import '../../../widget/error_widget.dart';
 import '../../../widget/navigation/navigation.dart';
+import '../../../widget/pagination.dart';
 import 'widget/user_list_card_widget.dart';
 
 @RoutePage(name: UserListPage.routeName)
@@ -26,18 +28,35 @@ class UserListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (_) => UserListCubit(repository: getIt())),
+        BlocProvider(
+          create: (_) => UserListCubit(
+            repository: getIt(),
+            settingsRepository: getIt(),
+          ),
+        ),
         BlocProvider(create: (_) => ScrollCubit()),
       ],
       child: Builder(
         builder: (context) {
-          var usersCubit = context.read<UserListCubit>();
-
+          final usersCubit = context.read<UserListCubit>();
+          final scrollCubit = context.read<ScrollCubit>();
+          final paginationEnabled = context.select<SettingsCubit, bool>(
+            (cubit) => cubit.state.feed.navigationMode == .pagination,
+          );
           return MultiBlocListener(
             listeners: [
               BlocListener<ScrollCubit, ScrollState>(
-                listenWhen: (_, current) => current.isBottomEdge,
+                listenWhen: (_, current) =>
+                    !paginationEnabled && current.isBottomEdge,
                 listener: (_, _) => usersCubit.fetchAll(),
+              ),
+              BlocListener<SettingsCubit, SettingsState>(
+                listenWhen: (previous, current) =>
+                    previous.feed.navigationMode != current.feed.navigationMode,
+                listener: (_, _) {
+                  usersCubit.reset();
+                  scrollCubit.animateToTop();
+                },
               ),
             ],
             child: const UserListPageView(),
@@ -53,9 +72,12 @@ class UserListPageView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var usersCubit = context.read<UserListCubit>();
-    var scrollCubit = context.read<ScrollCubit>();
-    var scrollCtrl = scrollCubit.controller;
+    final usersCubit = context.read<UserListCubit>();
+    final scrollCubit = context.read<ScrollCubit>();
+    final scrollCtrl = scrollCubit.controller;
+    final paginationEnabled = context.select<SettingsCubit, bool>(
+      (cubit) => cubit.state.feed.navigationMode == .pagination,
+    );
 
     return Scaffold(
       appBar: AppBar(
@@ -67,42 +89,58 @@ class UserListPageView extends StatelessWidget {
       ),
       body: SafeArea(
         child: BlocConsumer<UserListCubit, UserListState>(
-          listenWhen: (p, c) => p.page != 1 && c.status == .failure,
+          listenWhen: (previous, current) =>
+              previous.users.isNotEmpty && current.status == .failure,
           listener: (context, state) => context.showSnack(
             content: Text(context.t.errorMessage(state.error)),
           ),
           builder: (context, state) {
+            final users = state.users;
+
             if (state.status == .initial) {
               usersCubit.fetchAll();
 
               return const CircleIndicator();
             }
 
-            if (usersCubit.isFirstFetch) {
-              if (state.status == .loading) {
-                return const CircleIndicator();
-              }
-              if (state.status == .failure) {
-                return Center(
-                  child: AppError(
-                    error: state.error,
-                    onRetry: () => usersCubit.fetchAll(),
-                  ),
-                );
-              }
+            if (users.isEmpty && state.status == .loading) {
+              return const CircleIndicator();
             }
 
-            var users = state.users;
+            if (users.isEmpty && state.status == .failure) {
+              return Center(
+                child: AppError(
+                  error: state.error,
+                  onRetry: () => usersCubit.fetchAll(),
+                ),
+              );
+            }
+
+            final paginationShown = paginationEnabled && state.pagesCount > 1;
+            final loadingShown = !paginationEnabled && state.status == .loading;
+            final itemCount =
+                users.length + (paginationShown || loadingShown ? 1 : 0);
 
             return Scrollbar(
               controller: scrollCtrl,
               child: ListView.builder(
                 controller: scrollCtrl,
                 padding: AppInsets.screenExtended,
-                itemCount: users.length + (state.status == .loading ? 1 : 0),
-                itemBuilder: (context, i) {
-                  if (i < users.length) {
-                    return UserListCardWidget(model: state.users[i]);
+                itemCount: itemCount,
+                itemBuilder: (context, index) {
+                  if (index < users.length) {
+                    return UserListCardWidget(model: users[index]);
+                  }
+
+                  if (paginationShown) {
+                    return Pagination(
+                      currentPage: state.currentPage,
+                      pagesCount: state.pagesCount,
+                      onPageSelected: (page) {
+                        usersCubit.changePage(page);
+                        scrollCubit.animateToTop();
+                      },
+                    );
                   }
 
                   Timer(
