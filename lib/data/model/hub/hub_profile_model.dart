@@ -56,7 +56,7 @@ class HubProfile extends HubBase with Equatable {
       titleHtml: map['titleHtml'] as String,
       descriptionHtml: map['descriptionHtml'] as String,
       fullDescriptionHtml: map['fullDescriptionHtml'] as String,
-      imageUrl: map['imageUrl'] as String,
+      imageUrl: map['imageUrl'] ?? '',
       relatedData: map['relatedData'] != null
           ? HubRelatedData.fromJson(map['relatedData'])
           : HubRelatedData.empty,

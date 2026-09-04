@@ -48,7 +48,7 @@ class Hub extends HubBase with Equatable {
     return Hub(
       alias: map['alias'] as String,
       titleHtml: map['titleHtml'] as String,
-      imageUrl: map['imageUrl'] as String,
+      imageUrl: map['imageUrl'] ?? '',
       descriptionHtml: map['descriptionHtml'] as String,
       isProfiled: map['isProfiled'] as bool,
       isOfftop: map['isOfftop'] as bool,
