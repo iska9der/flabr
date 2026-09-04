@@ -33,9 +33,6 @@ class CompanyListCardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = context.theme;
 
-    final baseHubsStyle = theme.textTheme.bodySmall!;
-    final hubLinkStyle = baseHubsStyle.copyWith(color: theme.colors.primary);
-
     final stats = company.statistics;
 
     return FlabrCard(
@@ -67,55 +64,8 @@ class CompanyListCardWidget extends StatelessWidget {
                       ),
                     ],
                     if (company.commonHubs.isNotEmpty) ...[
-                      const SizedBox(height: 14),
-                      Transform.translate(
-                        offset: const Offset(-4, -6),
-                        child: Wrap(
-                          spacing: 2,
-                          crossAxisAlignment: .center,
-                          children: [
-                            Padding(
-                              padding: const .symmetric(
-                                horizontal: 4,
-                                vertical: 6,
-                              ),
-                              child: Text(
-                                context.t.company.postsInHubs,
-                                style: baseHubsStyle,
-                              ),
-                            ),
-                            ...company.commonHubs.map((hub) {
-                              var title = hub.title;
-                              if (hub.isProfiled) {
-                                title += '*';
-                              }
-
-                              final route =
-                                  switch (hub.type.isCorporative) {
-                                        true => CompanyDashboardRoute(
-                                          alias: hub.alias,
-                                        ),
-                                        false => HubDashboardRoute(
-                                          alias: hub.alias,
-                                        ),
-                                      }
-                                      as PageRouteInfo;
-
-                              return InkWell(
-                                onTap: () => getIt<AppRouter>().navigate(route),
-                                borderRadius: AppRadius.zero,
-                                child: Padding(
-                                  padding: const .symmetric(
-                                    horizontal: 4,
-                                    vertical: 6,
-                                  ),
-                                  child: Text(title, style: hubLinkStyle),
-                                ),
-                              );
-                            }),
-                          ].toList(),
-                        ),
-                      ),
+                      const SizedBox(height: 8),
+                      _CompanyHubs(hubs: company.commonHubs),
                     ],
                   ],
                 ),
@@ -146,6 +96,101 @@ class CompanyListCardWidget extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class _CompanyHubs extends StatefulWidget {
+  const _CompanyHubs({required this.hubs});
+
+  final List<CompanyHub> hubs;
+
+  @override
+  State<_CompanyHubs> createState() => _CompanyHubsState();
+}
+
+class _CompanyHubsState extends State<_CompanyHubs> {
+  bool isExpanded = false;
+
+  void toggle() {
+    setState(() => isExpanded = !isExpanded);
+  }
+
+  PageRouteInfo routeFor(CompanyHub hub) => switch (hub.type.isCorporative) {
+    true => CompanyDashboardRoute(alias: hub.alias),
+    false => HubDashboardRoute(alias: hub.alias),
+  };
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = context.theme;
+    final textStyle = theme.textTheme.bodySmall!;
+    final linkStyle = textStyle.copyWith(color: theme.colors.primary);
+
+    return Column(
+      crossAxisAlignment: .start,
+      children: [
+        InkWell(
+          onTap: toggle,
+          borderRadius: AppRadius.sm,
+          child: Padding(
+            padding: const .symmetric(vertical: 4),
+            child: Row(
+              mainAxisSize: .min,
+              children: [
+                Flexible(
+                  child: Text(
+                    context.t.company.postsInHubs,
+                    style: textStyle,
+                  ),
+                ),
+                const SizedBox(width: 6),
+                AnimatedRotation(
+                  turns: isExpanded ? .5 : 0,
+                  duration: AppDuration.hide,
+                  child: Icon(
+                    AppIcons.chevronDown,
+                    size: 18,
+                    color: theme.colors.textSecondary,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        AnimatedSize(
+          duration: AppDuration.hide,
+          curve: Curves.easeOut,
+          alignment: .topCenter,
+          child: isExpanded
+              ? Padding(
+                  padding: const .only(top: 2),
+                  child: Wrap(
+                    spacing: 2,
+                    children: [
+                      for (final hub in widget.hubs)
+                        InkWell(
+                          onTap: () => getIt<AppRouter>().navigate(
+                            routeFor(hub),
+                          ),
+                          borderRadius: AppRadius.sm,
+                          child: Padding(
+                            padding: const .symmetric(
+                              horizontal: 4,
+                              vertical: 4,
+                            ),
+                            child: Text(
+                              hub.isProfiled ? '${hub.title}*' : hub.title,
+                              style: linkStyle,
+                            ),
+                          ),
+                        ),
+                    ],
+                  ),
+                )
+              : const SizedBox.shrink(),
+        ),
+      ],
     );
   }
 }
