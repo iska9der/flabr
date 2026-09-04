@@ -70,6 +70,7 @@ A change is not done until it is consistent with local project patterns, not jus
 
 - Permanent tests must defend an observable project contract and fail on a plausible regression.
 - Use `test/ai/` for temporary checks that help an agent validate an implementation but provide no lasting project value. This directory is intentionally ignored by Git and excluded from the analyzer.
+- Do not run `dart format` on temporary checks in `test/ai/`; formatting requirements still apply to production code and permanent tests.
 - Name agent-only checks `*_check.dart` rather than `*_test.dart` so project-wide `flutter test` discovery does not run them. Execute them only by explicit path.
 - Remove a one-off agent check immediately after its verification is complete.
 - If an agent check may be useful again during the current session, keep it in `test/ai/` and remove it only after an explicit user request.

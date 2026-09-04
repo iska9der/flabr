@@ -46,13 +46,14 @@ class PostCardWidget extends StatelessWidget {
             crossAxisAlignment: .start,
             spacing: 12,
             children: [
-              if (showType) PublicationTypeWidget(type: post.type),
               if (kDebugMode) DbgInfoWidget(post),
-              Row(
-                spacing: 12,
-                crossAxisAlignment: .end,
+              PublicationHeaderWidget(post),
+              Wrap(
+                spacing: 16,
+                runSpacing: 8,
+                crossAxisAlignment: .center,
                 children: [
-                  PublicationHeaderWidget(post),
+                  if (showType) PublicationTypeWidget(type: post.type),
                   PublicationStat(
                     icon: Icons.remove_red_eye_rounded,
                     text: post.statistics.readingCount.compact(),

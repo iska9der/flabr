@@ -3,17 +3,24 @@ import 'package:flutter/material.dart';
 import '../../../../../data/model/publication/publication.dart';
 import '../../../../../i18n/i18n.dart';
 import '../../../../extension/extension.dart';
+import '../card/components/publication_type_widget.dart';
 import 'publication_stat_widget.dart';
 
 class PublicationStatsWidget extends StatelessWidget {
-  const PublicationStatsWidget(this.publication, {super.key});
+  const PublicationStatsWidget(
+    this.publication, {
+    super.key,
+    this.showType = false,
+  });
 
   final Publication publication;
+  final bool showType;
 
   @override
   Widget build(BuildContext context) {
     return switch (publication.type) {
       PublicationType.article || PublicationType.news => CommonStatsWidget(
+        type: showType ? publication.type : null,
         complexity: (publication as PublicationCommon).complexity,
         readingTime: (publication as PublicationCommon).readingTime,
         readingCount: publication.statistics.readingCount,
@@ -29,11 +36,13 @@ class PublicationStatsWidget extends StatelessWidget {
 class CommonStatsWidget extends StatelessWidget {
   const CommonStatsWidget({
     super.key,
+    this.type,
     this.complexity,
     this.readingCount = 0,
     this.readingTime = 0,
   });
 
+  final PublicationType? type;
   final PublicationComplexity? complexity;
   final int readingTime;
   final int readingCount;
@@ -43,7 +52,9 @@ class CommonStatsWidget extends StatelessWidget {
     return Wrap(
       spacing: 16,
       runSpacing: 8,
+      crossAxisAlignment: .center,
       children: [
+        if (type != null) PublicationTypeWidget(type: type!),
         if (complexity != null) _ComplexityStat(complexity!),
         if (readingTime > 0)
           PublicationStat(

@@ -19,7 +19,6 @@ import 'components/footer_widget.dart';
 import 'components/header_widget.dart';
 import 'components/hubs_widget.dart';
 import 'components/publication_label_list.dart';
-import 'components/publication_type_widget.dart';
 
 class CommonCardWidget extends StatelessWidget {
   const CommonCardWidget({
@@ -50,14 +49,13 @@ class CommonCardWidget extends StatelessWidget {
             crossAxisAlignment: .start,
             spacing: 12,
             children: [
-              if (showType) PublicationTypeWidget(type: publication.type),
               if (kDebugMode) DbgInfoWidget(publication),
               PublicationHeaderWidget(publication),
               _TitleWidget(
                 title: publication.titleHtml,
                 renderType: renderType,
               ),
-              PublicationStatsWidget(publication),
+              PublicationStatsWidget(publication, showType: showType),
               PublicationHubsWidget(hubs: publication.hubs),
               if (publication.postLabels.isNotEmpty ||
                   publication.format != null)

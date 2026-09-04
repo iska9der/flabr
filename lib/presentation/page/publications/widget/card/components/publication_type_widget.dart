@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../../../data/model/publication/publication.dart';
 import '../../../../../extension/extension.dart';
+import '../../stats/publication_stat_widget.dart';
 
 class PublicationTypeWidget extends StatelessWidget {
   const PublicationTypeWidget({super.key, required this.type, this.color});
@@ -22,9 +23,11 @@ class PublicationTypeWidget extends StatelessWidget {
           _ => null,
         };
 
-    return Text(
-      type.label.toUpperCase(),
-      style: theme.textTheme.labelMedium?.copyWith(color: finalColor),
+    return PublicationStat(
+      text: type.label,
+      textColor: finalColor,
+      icon: Icons.article_rounded,
+      iconColor: finalColor,
     );
   }
 }
