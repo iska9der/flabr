@@ -13,20 +13,20 @@ class CommentRatingWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = context.theme;
+
     const type = StatType.score;
+    final value = comment.score;
+    final foregroundColor = type.getColorByScore(value, theme.colors);
 
     return Row(
       children: [
-        Icon(
-          Icons.insert_chart_rounded,
-          color: type.getColorByScore(comment.score, theme.colors),
-        ),
+        Icon(Icons.insert_chart_rounded, color: foregroundColor),
         const SizedBox(width: 6),
         StatTextWidget(
-          type: type,
-          value: comment.score,
+          value: value.compact(),
           style: theme.textTheme.bodySmall?.copyWith(
             fontWeight: FontWeight.w700,
+            color: foregroundColor,
           ),
         ),
       ],

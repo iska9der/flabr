@@ -20,6 +20,7 @@ class User with Equatable {
     this.votesCount = 0,
     this.rating = 0,
     this.ratingPosition = 0,
+    this.reach,
     this.relatedData = UserRelatedData.empty,
     this.location = UserLocation.empty,
     this.workplace = const [],
@@ -43,55 +44,22 @@ class User with Equatable {
   /// "карма" -> очки
   final int score;
 
-  /// количество голосов
+  /// Количество голосов
   final int votesCount;
 
-  /// рейтинг
+  /// Рейтинг
   final double rating;
 
-  /// позиция в рейтинге
+  /// Позиция в рейтинге
   final int ratingPosition;
+
+  /// Охват за 30 дней
+  final String? reach;
 
   final UserRelatedData relatedData;
   final UserLocation location;
   final List<UserWorkplace> workplace;
   final PublicationCommon lastPost;
-
-  User copyWith({
-    String? id,
-    String? alias,
-    String? registerDateTime,
-    String? lastActivityDateTime,
-    String? avatarUrl,
-    String? fullname,
-    String? speciality,
-    int? score,
-    int? votesCount,
-    double? rating,
-    int? ratingPosition,
-    UserRelatedData? relatedData,
-    UserLocation? location,
-    List<UserWorkplace>? workplace,
-    PublicationCommon? lastPost,
-  }) {
-    return User(
-      id: id ?? this.id,
-      alias: alias ?? this.alias,
-      registerDateTime: registerDateTime ?? this.registerDateTime,
-      lastActivityDateTime: lastActivityDateTime ?? this.lastActivityDateTime,
-      avatarUrl: avatarUrl ?? this.avatarUrl,
-      fullname: fullname ?? this.fullname,
-      speciality: speciality ?? this.speciality,
-      score: score ?? this.score,
-      votesCount: votesCount ?? this.votesCount,
-      rating: rating ?? this.rating,
-      ratingPosition: ratingPosition ?? this.ratingPosition,
-      relatedData: relatedData ?? this.relatedData,
-      location: location ?? this.location,
-      workplace: UnmodifiableListView(workplace ?? this.workplace),
-      lastPost: lastPost ?? this.lastPost,
-    );
-  }
 
   factory User.fromMap(Map<String, dynamic> map) {
     final workplacesList = List<Map<String, dynamic>>.from(
@@ -110,10 +78,11 @@ class User with Equatable {
       votesCount: map['scoreStats']['votesCount'],
       rating: map['rating'] != null
           ? double.parse(map['rating'].toString())
-          : 0.00,
+          : 0.0,
       ratingPosition: map['ratingPos'] != null
           ? int.parse(map['ratingPos'].toString())
           : 0,
+      reach: map['reach'] as String?,
       relatedData: map['relatedData'] != null
           ? UserRelatedData.fromJson(map['relatedData'])
           : UserRelatedData.empty,
@@ -136,7 +105,7 @@ class User with Equatable {
   bool get stringify => true;
 
   @override
-  List<Object> get props {
+  List<Object?> get props {
     return [
       id,
       alias,
@@ -149,6 +118,7 @@ class User with Equatable {
       votesCount,
       rating,
       ratingPosition,
+      reach,
       relatedData,
       location,
       workplace,

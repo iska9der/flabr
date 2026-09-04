@@ -9,9 +9,10 @@ import '../../../../../di/di.dart';
 import '../../../../../feature/profile_subscribe/profile_subscribe.dart';
 import '../../../../../i18n/i18n.dart';
 import '../../../../extension/extension.dart';
+import '../../../../theme/theme.dart';
 import '../../../../widget/card_avatar_widget.dart';
 import '../../../../widget/enhancement/card.dart';
-import '../../../../widget/profile_stat_detail_widget.dart';
+import '../../../../widget/profile_stat_card_widget.dart';
 
 class UserProfileCardWidget extends StatefulWidget {
   const UserProfileCardWidget({super.key, required this.user});
@@ -23,8 +24,6 @@ class UserProfileCardWidget extends StatefulWidget {
 }
 
 class _UserProfileCardWidgetState extends State<UserProfileCardWidget> {
-  late final user = widget.user;
-
   @override
   void initState() {
     super.initState();
@@ -50,53 +49,84 @@ class _UserProfileCardWidgetState extends State<UserProfileCardWidget> {
   @override
   Widget build(BuildContext context) {
     final theme = context.theme;
+    final translation = context.t;
+    final user = widget.user;
 
     return FlabrCard(
+      padding: AppInsets.md,
       child: Column(
         crossAxisAlignment: .stretch,
         children: [
           Row(
-            spacing: 20,
+            crossAxisAlignment: .start,
+            spacing: 8,
             children: [
               CardAvatarWidget(imageUrl: user.avatarUrl),
-              Row(
-                children: [
-                  ProfileStatDetailWidget(
-                    type: StatType.rating,
-                    title: context.t.user.rating,
-                    value: user.rating,
-                  ),
-                  const SizedBox(width: 40),
-                  Tooltip(
-                    message: context.t.user.profile.votes(
-                      votesCount: user.votesCount.compact(),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: .start,
+                  mainAxisSize: .min,
+                  spacing: 2,
+                  children: [
+                    if (user.fullname.isNotEmpty)
+                      FittedBox(
+                        fit: .scaleDown,
+                        alignment: .topLeft,
+                        child: Text(
+                          user.fullname,
+                          style: theme.textTheme.headlineSmall,
+                        ),
+                      ),
+                    Text(
+                      '@${user.alias}',
+                      style: theme.textTheme.titleSmall,
                     ),
-                    triggerMode: .tap,
-                    child: ProfileStatDetailWidget(
-                      type: StatType.score,
-                      title: context.t.user.points,
-                      value: user.score,
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ],
           ),
-          const SizedBox(height: 16),
-          if (user.fullname.isNotEmpty)
-            FittedBox(
-              fit: .scaleDown,
-              alignment: .topLeft,
-              child: Text(
-                user.fullname,
-                style: theme.textTheme.headlineSmall,
-              ),
-            ),
-          Text(
-            '@${user.alias}',
-            style: theme.textTheme.titleSmall,
-          ),
           const SizedBox(height: 12),
+          Row(
+            spacing: 6,
+            children: [
+              if (user.reach case final reach? when reach.isNotEmpty)
+                Expanded(
+                  child: ProfileStatCardWidget(
+                    title: translation.common.reach,
+                    value: reach,
+                    valueColor: theme.colors.accentPrimary,
+                  ),
+                ),
+              Expanded(
+                child: ProfileStatCardWidget(
+                  title: translation.user.rating,
+                  value: user.rating.toString(),
+                  valueColor: StatType.rating.getColorByScore(
+                    user.rating,
+                    theme.colors,
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Tooltip(
+                  message: translation.user.profile.votes(
+                    votesCount: user.votesCount.compact(),
+                  ),
+                  triggerMode: .tap,
+                  child: ProfileStatCardWidget(
+                    title: translation.user.points,
+                    value: user.score.compact(),
+                    valueColor: StatType.score.getColorByScore(
+                      user.score,
+                      theme.colors,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
           Text(
             user.speciality.isNotEmpty ? user.speciality : context.t.user.role,
             style: theme.textTheme.labelLarge,
@@ -108,7 +138,7 @@ class _UserProfileCardWidgetState extends State<UserProfileCardWidget> {
               }
 
               return Padding(
-                padding: const .only(top: 16),
+                padding: const .only(top: 12),
                 child: SubscribeButton(
                   alias: user.alias,
                   isSubscribed: user.relatedData.isSubscribed,

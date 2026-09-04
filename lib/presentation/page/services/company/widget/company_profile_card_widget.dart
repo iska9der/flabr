@@ -11,7 +11,7 @@ import '../../../../extension/extension.dart';
 import '../../../../theme/theme.dart';
 import '../../../../widget/card_avatar_widget.dart';
 import '../../../../widget/enhancement/card.dart';
-import '../../../../widget/profile_stat_detail_widget.dart';
+import '../../../../widget/profile_stat_card_widget.dart';
 
 class CompanyProfileCardWidget extends StatefulWidget {
   const CompanyProfileCardWidget({super.key, required this.card});
@@ -49,49 +49,77 @@ class _CompanyProfileCardWidgetState extends State<CompanyProfileCardWidget> {
   @override
   Widget build(BuildContext context) {
     final theme = context.theme;
+    final translation = context.t;
 
-    var card = widget.card;
-    var stats = card.statistics;
+    final card = widget.card;
+    final stats = card.statistics;
 
     return FlabrCard(
-      padding: AppInsets.profileCard,
+      padding: AppInsets.md,
       child: Column(
         crossAxisAlignment: .stretch,
         children: [
           Row(
+            crossAxisAlignment: .start,
+            spacing: 8,
             children: [
               CardAvatarWidget(
                 imageUrl: card.imageUrl,
                 placeholderIcon: AppIcons.companyPlaceholder,
               ),
-              const SizedBox(width: 20),
               Expanded(
-                child: Row(
-                  mainAxisAlignment: .spaceEvenly,
+                child: Column(
+                  crossAxisAlignment: .start,
+                  mainAxisSize: .min,
+                  spacing: 2,
                   children: [
-                    ProfileStatDetailWidget(
-                      type: StatType.rating,
-                      title: context.t.company.rating,
-                      value: stats.rating,
+                    Text(
+                      card.titleHtml,
+                      style: theme.textTheme.headlineSmall,
+                      maxLines: 2,
+                      overflow: .ellipsis,
                     ),
-                    ProfileStatDetailWidget(
-                      title: context.t.company.followerCount,
-                      value: stats.subscribersCount,
-                    ),
+                    if (card.descriptionHtml.isNotEmpty)
+                      HtmlWidget(
+                        card.descriptionHtml,
+                        textStyle: theme.textTheme.titleSmall,
+                      ),
                   ],
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 16),
-          Text(
-            card.titleHtml,
-            textAlign: .left,
-            style: theme.textTheme.headlineSmall,
+          const SizedBox(height: 12),
+          Row(
+            spacing: 6,
+            children: [
+              if (stats.reach case final reach? when reach.isNotEmpty)
+                Expanded(
+                  child: ProfileStatCardWidget(
+                    title: translation.common.reach,
+                    value: reach,
+                    valueColor: theme.colors.accentPrimary,
+                  ),
+                ),
+              Expanded(
+                child: ProfileStatCardWidget(
+                  title: translation.company.rating,
+                  value: stats.rating.toString(),
+                  valueColor: StatType.rating.getColorByScore(
+                    stats.rating,
+                    theme.colors,
+                  ),
+                ),
+              ),
+              Expanded(
+                child: ProfileStatCardWidget(
+                  title: translation.company.followerCount,
+                  value: stats.subscribersCount.compact(),
+                ),
+              ),
+            ],
           ),
-          const SizedBox(height: 4),
-          HtmlWidget(card.descriptionHtml),
-          const SizedBox(height: 16),
+          const SizedBox(height: 12),
           SubscribeButton(
             alias: card.alias,
             isSubscribed: (card.relatedData as CompanyRelatedData).isSubscribed,

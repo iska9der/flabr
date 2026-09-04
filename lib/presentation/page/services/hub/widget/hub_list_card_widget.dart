@@ -80,19 +80,23 @@ class HubListCardWidget extends StatelessWidget {
           ),
           const SizedBox(height: 14),
           Row(
+            spacing: 8,
             mainAxisAlignment: .center,
             children: [
               Expanded(
                 child: ProfileStatCardWidget(
-                  type: StatType.rating,
                   title: context.t.hub.rating,
-                  value: stats.rating,
+                  value: stats.rating.toString(),
+                  valueColor: StatType.rating.getColorByScore(
+                    stats.rating,
+                    theme.colors,
+                  ),
                 ),
               ),
               Expanded(
                 child: ProfileStatCardWidget(
                   title: context.t.hub.followers,
-                  value: stats.subscribersCount,
+                  value: stats.subscribersCount.compact(),
                 ),
               ),
             ],

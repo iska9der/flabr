@@ -113,30 +113,40 @@ class _UserScore extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = context.theme;
+    final translation = context.t;
+
     final model =
         context.findAncestorWidgetOfExactType<UserListCardWidget>()?.model ??
         User.empty;
 
     return Row(
+      spacing: 8,
       mainAxisAlignment: .center,
       children: [
         Expanded(
           child: ProfileStatCardWidget(
-            type: StatType.rating,
-            title: context.t.user.rating,
-            value: model.rating,
+            title: translation.user.rating,
+            value: model.rating.toString(),
+            valueColor: StatType.rating.getColorByScore(
+              model.rating,
+              theme.colors,
+            ),
           ),
         ),
         Expanded(
           child: Tooltip(
-            message: context.t.user.list.votes(
+            message: translation.user.list.votes(
               votesCount: model.votesCount.compact(),
             ),
             triggerMode: .tap,
             child: ProfileStatCardWidget(
-              type: StatType.score,
-              title: context.t.user.points,
-              value: model.score,
+              title: translation.user.points,
+              value: model.score.compact(),
+              valueColor: StatType.score.getColorByScore(
+                model.score,
+                theme.colors,
+              ),
             ),
           ),
         ),

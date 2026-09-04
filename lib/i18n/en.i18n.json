@@ -337,6 +337,7 @@
   },
   "common": {
     "warning": "Warning",
+    "reach": "30-day reach",
     "learnMore": "Learn more",
     "loading": "Loading...",
     "retry": "Retry",

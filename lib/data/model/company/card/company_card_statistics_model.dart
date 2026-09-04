@@ -10,6 +10,7 @@ class CompanyCardStatistics with Equatable {
     this.vacanciesCount = 0,
     this.employeesCount = 0,
     this.careerRating = 0.00,
+    this.reach,
   });
 
   final int subscribersCount;
@@ -21,6 +22,9 @@ class CompanyCardStatistics with Equatable {
   final int employeesCount;
   final double careerRating;
 
+  /// Охват за 30 дней
+  final String? reach;
+
   factory CompanyCardStatistics.fromMap(Map<String, dynamic> map) {
     return CompanyCardStatistics(
       subscribersCount: map['subscribersCount'] as int,
@@ -31,6 +35,7 @@ class CompanyCardStatistics with Equatable {
       vacanciesCount: map['vacanciesCount'] as int? ?? 0,
       employeesCount: map['employeesCount'] as int? ?? 0,
       careerRating: map['careerRating'] as double? ?? 0.00,
+      reach: map['reach'] as String?,
     );
   }
 
@@ -50,5 +55,6 @@ class CompanyCardStatistics with Equatable {
     vacanciesCount,
     employeesCount,
     careerRating,
+    reach,
   ];
 }

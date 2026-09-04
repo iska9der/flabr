@@ -124,18 +124,22 @@ class CompanyListCardWidget extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Row(
+            spacing: 8,
             children: [
               Expanded(
                 child: ProfileStatCardWidget(
-                  type: StatType.rating,
                   title: context.t.company.rating,
-                  value: stats.rating,
+                  value: stats.rating.toString(),
+                  valueColor: StatType.rating.getColorByScore(
+                    stats.rating,
+                    theme.colors,
+                  ),
                 ),
               ),
               Expanded(
                 child: ProfileStatCardWidget(
                   title: context.t.company.followers,
-                  value: stats.subscribersCount,
+                  value: stats.subscribersCount.compact(),
                 ),
               ),
             ],
