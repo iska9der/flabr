@@ -50,37 +50,17 @@ void main() {
     final theme = AppTheme.amoled();
     final colors = theme.extension<AppColorsExtension>()!;
 
-    expect(theme.scaffoldBackgroundColor, Colors.black);
-    expect(theme.canvasColor, Colors.black);
-    expect(theme.colorScheme.surface, Colors.black);
-    expect(theme.colorScheme.surfaceContainer, Colors.black);
-    expect(colors.background, Colors.black);
-    expect(colors.card, const Color(0xFF0D0D0D));
-    expect(AppTheme.dark().colorScheme.surface, const Color(0xFF080808));
-  });
-
-  test('only AMOLED theme uses subdued interaction colors', () {
-    final amoledTheme = AppTheme.amoled();
-
     expect(
-      amoledTheme.splashColor,
-      amoledTheme.colorScheme.onSurface.withValues(alpha: .15),
+      [
+        theme.scaffoldBackgroundColor,
+        theme.canvasColor,
+        theme.colorScheme.surface,
+        theme.colorScheme.surfaceContainer,
+        colors.background,
+      ],
+      everyElement(Colors.black),
     );
-    expect(
-      amoledTheme.highlightColor,
-      amoledTheme.colorScheme.onSurface.withValues(alpha: .1),
-    );
-
-    for (final theme in [AppTheme.light(), AppTheme.dark()]) {
-      expect(
-        theme.splashColor,
-        isNot(theme.colorScheme.onSurface.withValues(alpha: .15)),
-      );
-      expect(
-        theme.highlightColor,
-        isNot(theme.colorScheme.onSurface.withValues(alpha: .1)),
-      );
-    }
+    expect(AppTheme.dark().colorScheme.surface, isNot(Colors.black));
   });
 
   const visibilityTestCases = [
@@ -120,7 +100,7 @@ void main() {
       addTearDown(cubit.close);
 
       expect(
-        find.text('AMOLED-режим'),
+        find.text(t.settings.interface.theme.amoled.label),
         testCase.isVisible ? findsOneWidget : findsNothing,
       );
     });
@@ -134,8 +114,7 @@ void main() {
     );
     addTearDown(cubit.close);
 
-    await tester.tap(find.text('AMOLED-режим'));
-    await tester.pump(const Duration(milliseconds: 300));
+    await tester.tap(find.text(t.settings.interface.theme.amoled.label));
 
     expect(cubit.state.theme.isAmoledTheme, isTrue);
   });

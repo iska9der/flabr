@@ -44,10 +44,10 @@ void main() {
     await tester.tap(find.text('8'));
     expect(selectedPage, 8);
 
-    await tester.tap(find.byTooltip('Предыдущая страница'));
+    await tester.tap(find.byTooltip(t.pagination.previousPage));
     expect(selectedPage, 6);
 
-    await tester.tap(find.byTooltip('Следующая страница'));
+    await tester.tap(find.byTooltip(t.pagination.nextPage));
     expect(selectedPage, 8);
   });
 }
@@ -61,13 +61,10 @@ Future<void> _pumpPagination(
     TranslationProvider(
       child: MaterialApp(
         home: Scaffold(
-          body: SizedBox(
-            width: 633,
-            child: PublicationPagination(
-              currentPage: currentPage,
-              pagesCount: 50,
-              onPageSelected: onPageSelected ?? (_) {},
-            ),
+          body: PublicationPagination(
+            currentPage: currentPage,
+            pagesCount: 50,
+            onPageSelected: onPageSelected ?? (_) {},
           ),
         ),
       ),

@@ -66,6 +66,15 @@ A change is not done until it is consistent with local project patterns, not jus
 - Generated files must be updated only through the appropriate generator command.
 - For non-trivial Dart changes, run formatter and analyzer through FVM before finishing, unless the user explicitly asks not to.
 
+### Tests
+
+- Permanent tests must defend an observable project contract and fail on a plausible regression.
+- Use `test/ai/` for temporary checks that help an agent validate an implementation but provide no lasting project value. This directory is intentionally ignored by Git and excluded from the analyzer.
+- Name agent-only checks `*_check.dart` rather than `*_test.dart` so project-wide `flutter test` discovery does not run them. Execute them only by explicit path.
+- Remove a one-off agent check immediately after its verification is complete.
+- If an agent check may be useful again during the current session, keep it in `test/ai/` and remove it only after an explicit user request.
+- Compile-time accessor existence, duplicated localization literals, exact pixel values, and incidental widget types do not justify permanent tests by themselves.
+
 ## Critical Instructions
 
 **IMPORTANT**: This project uses FVM (Flutter Version Manager). All `flutter` and `dart` commands must be executed through `.fvm/flutter_sdk/bin/` path. Current Flutter version is defined in `.fvmrc` and `pubspec.yaml`.

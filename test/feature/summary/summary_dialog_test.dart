@@ -45,11 +45,11 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('YandexGPT'), findsOneWidget);
-    expect(find.text('Токен'), findsOneWidget);
+    expect(find.text(t.summary.token.label), findsOneWidget);
     expect(summaryRepository.callCount, 0);
 
     await tester.enterText(find.byType(TextFormField), 'secret');
-    await tester.tap(find.text('Сохранить'));
+    await tester.tap(find.text(t.common.save));
     await tester.pumpAndSettle();
 
     expect(summaryRepository.callCount, 1);

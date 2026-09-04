@@ -43,7 +43,7 @@ void main() {
     cubit.fail(const MissingMimeTypeException());
     await tester.pumpAndSettle();
 
-    expect(find.text('В заголовках не указан mime/type'), findsOneWidget);
+    expect(find.text(t.image.missingMimeType), findsOneWidget);
   });
 }
 

@@ -70,3 +70,4 @@ release
 .claude/
 .clinerules/
 /.ai/
+/test/ai/

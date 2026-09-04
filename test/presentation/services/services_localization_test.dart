@@ -9,6 +9,11 @@ void main() {
     tester,
   ) async {
     LocaleSettings.setLocaleSync(AppLocale.ru);
+    final russianLabels = [
+      t.services.hubs,
+      t.services.authors,
+      t.services.companies,
+    ];
 
     await tester.pumpWidget(
       TranslationProvider(
@@ -19,15 +24,24 @@ void main() {
       ),
     );
 
-    expect(find.text('Хабы'), findsOneWidget);
-    expect(find.text('Авторы'), findsOneWidget);
-    expect(find.text('Компании'), findsOneWidget);
+    for (final label in russianLabels) {
+      expect(find.text(label), findsOneWidget);
+    }
 
     LocaleSettings.setLocaleSync(AppLocale.en);
     await tester.pumpAndSettle();
 
-    expect(find.text('Hubs'), findsOneWidget);
-    expect(find.text('Authors'), findsOneWidget);
-    expect(find.text('Companies'), findsOneWidget);
+    final englishLabels = [
+      t.services.hubs,
+      t.services.authors,
+      t.services.companies,
+    ];
+    expect(englishLabels, isNot(equals(russianLabels)));
+    for (final label in russianLabels) {
+      expect(find.text(label), findsNothing);
+    }
+    for (final label in englishLabels) {
+      expect(find.text(label), findsOneWidget);
+    }
   });
 }
