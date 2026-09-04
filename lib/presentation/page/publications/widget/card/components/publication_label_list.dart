@@ -28,8 +28,8 @@ class PublicationLabelList extends StatelessWidget {
       children: [
         if (format != null) ...[
           PublicationLabelWidget(
-            color: format!.getColor(context.theme.colors),
             title: format!.label,
+            color: format!.getColor(context.theme.colors),
           ),
         ],
         ...postLabels.map(
