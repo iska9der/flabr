@@ -3,14 +3,12 @@ import 'dart:collection';
 import 'package:equatable/equatable.dart';
 
 import '../hub_base.dart';
-import '../publication/publication.dart';
 import 'hub_related_data_model.dart';
 import 'hub_statistics_model.dart';
 
 class HubProfile extends HubBase with Equatable {
   const HubProfile({
     required super.alias,
-    required this.flow,
     super.titleHtml = '',
     super.descriptionHtml = '',
     this.fullDescriptionHtml = '',
@@ -23,7 +21,6 @@ class HubProfile extends HubBase with Equatable {
 
   final String fullDescriptionHtml;
   final List<String> keywords;
-  final PublicationFlow flow;
 
   @override
   HubStatistics get statistics => super.statistics as HubStatistics;
@@ -31,7 +28,6 @@ class HubProfile extends HubBase with Equatable {
   @override
   HubProfile copyWith({
     String? alias,
-    PublicationFlow? flow,
     String? titleHtml,
     String? descriptionHtml,
     String? fullDescriptionHtml,
@@ -43,7 +39,6 @@ class HubProfile extends HubBase with Equatable {
   }) {
     return HubProfile(
       alias: alias ?? this.alias,
-      flow: flow ?? this.flow,
       titleHtml: titleHtml ?? this.titleHtml,
       descriptionHtml: descriptionHtml ?? this.descriptionHtml,
       fullDescriptionHtml: fullDescriptionHtml ?? this.fullDescriptionHtml,
@@ -58,7 +53,6 @@ class HubProfile extends HubBase with Equatable {
   factory HubProfile.fromMap(Map<String, dynamic> map) {
     return HubProfile(
       alias: map['alias'] as String,
-      flow: PublicationFlow.fromString(map['flow']['alias']),
       titleHtml: map['titleHtml'] as String,
       descriptionHtml: map['descriptionHtml'] as String,
       fullDescriptionHtml: map['fullDescriptionHtml'] as String,
@@ -74,7 +68,7 @@ class HubProfile extends HubBase with Equatable {
     );
   }
 
-  static const empty = HubProfile(alias: '-', flow: PublicationFlow.all);
+  static const empty = HubProfile(alias: '-');
   bool get isEmpty => this == empty;
 
   @override
@@ -83,7 +77,6 @@ class HubProfile extends HubBase with Equatable {
   @override
   List<Object> get props => [
     alias,
-    flow,
     titleHtml,
     descriptionHtml,
     fullDescriptionHtml,
