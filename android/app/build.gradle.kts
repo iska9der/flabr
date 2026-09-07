@@ -29,7 +29,12 @@ val dartEnvironmentVariables: Map<String, String> = if (project.hasProperty("dar
 
 val appName = dartEnvironmentVariables["APP_NAME"] ?: "Flabr"
 val isDev = dartEnvironmentVariables["ENV"]?.equals("dev", ignoreCase = true) == true
-val appIdSuffix = if (isDev) ".dev" else ""
+val isDemo = dartEnvironmentVariables["ENV"]?.equals("demo", ignoreCase = true) == true
+val appIdSuffix = when {
+    isDemo -> ".demo"
+    isDev -> ".dev"
+    else -> ""
+}
 
 val abiCodes = mapOf(
     "x86_64" to 1,
@@ -40,7 +45,7 @@ val abiCodes = mapOf(
 android {
     namespace = "ru.iska9der.flabr"
     compileSdk = 36
-    ndkVersion = "27.0.12077973"
+    ndkVersion = "28.2.13676358"
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17

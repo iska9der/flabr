@@ -73,6 +73,9 @@ abstract interface class PublicationService {
   Future<PublicationVoteResponse> voteDown(String articleId);
 }
 
+@prod
+@dev
+@test
 @LazySingleton(as: PublicationService)
 class PublicationServiceImpl implements PublicationService {
   const PublicationServiceImpl({

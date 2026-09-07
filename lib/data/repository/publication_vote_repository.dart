@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:injectable/injectable.dart';
 
+import '../../core/constants/environment.dart';
 import '../model/publication/publication.dart';
 import '../service/service.dart';
 
@@ -13,6 +14,7 @@ abstract class PublicationVoteRepository {
 
 @prod
 @dev
+@demo
 @LazySingleton(as: PublicationVoteRepository)
 class PublicationVoteRepositoryApi implements PublicationVoteRepository {
   PublicationVoteRepositoryApi(this.service);

@@ -10,6 +10,7 @@ import '../../presentation/page/settings/model/config_model.dart';
 
 @prod
 @dev
+@demo
 @Singleton()
 class SettingsRepository {
   SettingsRepository({

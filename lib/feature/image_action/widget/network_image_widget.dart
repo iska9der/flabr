@@ -25,6 +25,7 @@ class NetworkImageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isAsset = imageUrl.startsWith('assets/');
     int? cacheHeight = height != null
         ? (height! * MediaQuery.devicePixelRatioOf(context)).round()
         : null;
@@ -38,7 +39,9 @@ class NetworkImageWidget extends StatelessWidget {
         true => () => showDialog(
           context: context,
           barrierColor: barrierColor,
-          builder: (_) => FullImageNetworkModal(imageUrl: imageUrl),
+          builder: (_) => isAsset
+              ? FullImageAsset(assetPath: imageUrl)
+              : FullImageNetworkModal(imageUrl: imageUrl),
         ),
         false => null,
       },
@@ -69,7 +72,9 @@ class NetworkImageWidget extends StatelessWidget {
             image: ResizeImage.resizeIfNeeded(
               null,
               cacheHeight,
-              CachedNetworkImageProvider(imageUrl, cacheKey: imageUrl),
+              isAsset
+                  ? AssetImage(imageUrl)
+                  : CachedNetworkImageProvider(imageUrl, cacheKey: imageUrl),
             ),
           ),
         ),
