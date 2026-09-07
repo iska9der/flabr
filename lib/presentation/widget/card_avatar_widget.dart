@@ -33,7 +33,7 @@ class CardAvatarWidget extends StatelessWidget {
       clipBehavior: .hardEdge,
       borderRadius: AppRadius.sm,
       child: NetworkImageWidget(
-        imageUrl: 'https:$imageUrl',
+        imageUrl: imageUrl.startsWith('assets/') ? imageUrl : 'https:$imageUrl',
         height: height,
         loadingPlaceholder: placeholder,
         errorBuilder: (_, _, _) => placeholder,

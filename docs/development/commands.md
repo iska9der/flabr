@@ -219,6 +219,86 @@ version: 1.2.5+10705
 genhtml coverage/lcov.info -o coverage/html
 ```
 
+### F-Droid Screenshots
+
+Start an Android emulator or connect a device with USB debugging. The device ID
+is required; obtain it from `adb devices`.
+
+```bash
+# Capture every configured source locale and scenario
+sh scripts/update_screenshots.sh <device-id>
+
+# Capture selected source locale/scenario combinations in the given order
+sh scripts/update_screenshots.sh <device-id> \
+  --locales <language-a>,<language-b> \
+  --scenarios <number-a>,<number-b>
+
+# Current selection example
+sh scripts/update_screenshots.sh emulator-5554 \
+  --locales en,ru \
+  --scenarios 1,3
+```
+
+Both selection options are optional. Locale values are source language keys
+from `integration_test/screenshots/screenshot_config.dart`. Each key can expand
+to one or more configured output locales. Currently `en` writes `en-US`, while
+`ru` writes `ru`; add output locale IDs to either list if another metadata
+variant needs the same screenshots. Unknown, empty, or duplicate values fail
+the run. Omitting an option selects every configured value.
+`en-US` remains the complete baseline because F-Droid uses it as the fallback
+language when localized metadata is unavailable.
+
+Requires the FVM SDK, Android SDK/NDK 28.2.13676358, and `adb` on `PATH`.
+On Windows, run the script from Git Bash or another POSIX-compatible shell.
+
+The command builds a profile APK with `ENV=demo`, then passes that APK to
+`flutter drive`. Using the APK makes Flutter read the actual demo application ID
+instead of inferring the regular ID without the Dart environment. Every requested
+source-locale/scenario pair is captured in one application launch and one
+integration scenario, then written to every output locale mapped from that
+source.
+
+For each requested source locale, the scenario selects the dark theme and UI
+language through Settings. The demo source follows only the UI language;
+publication-language preferences are left untouched. My Feed and News are
+refreshed through pull-to-refresh after each locale selection. Profile mode
+avoids the DEBUG banner, Device Preview, and debug card information. No account
+is required. The scenario also enables short descriptions through publication
+settings and checks that the article excerpt and illustration are visible.
+
+| File | Screen |
+|------|--------|
+| `1.png` | My Feed |
+| `2.png` | News with compact filters |
+| `3.png` | Publication reader |
+| `4.png` | Settings → Interface |
+
+Output:
+`fastlane/metadata/android/<locale>/images/phoneScreenshots/<scenario>.png`.
+The driver stages and validates the selected matrix. Only after the capture
+succeeds does the script replace the corresponding PNG files; unselected
+screenshots and other metadata remain untouched. The isolated
+`ru.iska9der.flabr.demo.debug` installation is reset before capture if present
+and removed by the driver afterward. Regular Flabr installations and their
+settings or sessions are not cleared.
+
+`ENV=demo` registers `DemoPublicationService` through the shared `@demo`
+annotation from `lib/core/constants/environment.dart`. It supplies
+locale-specific Dart models from `lib/data/demo/demo_publications.dart` and
+bundled images from `assets/demo/`; the configured screenshot surfaces work
+offline. Cards use short leads, while the reader uses longer excerpts sized for
+the opening screenshot viewport. The reader stays at the start instead of
+scrolling to an offscreen illustration. No full article body or API response is
+stored. Demo articles retain their source authors and metadata while sharing
+`assets/demo/avatar.png`. One authored news snippet per locale remains for the
+News filter background.
+
+Normal repositories, BLoCs, and screens remain in use. This is a publication
+demo source, not an offline replacement for unrelated services; voting and
+bookmark mutations are unavailable. There is no API fixture server or response
+JSON. Screen order and locales are defined in
+`integration_test/screenshots/screenshot_config.dart`.
+
 ## Deeplink Testing
 
 ### Android

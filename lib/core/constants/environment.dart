@@ -1,6 +1,12 @@
+import 'package:injectable/injectable.dart';
+
+const demo = Environment('demo');
+
 abstract class AppEnvironment {
-  /// варианты: prod, dev, test
+  /// варианты: prod, dev, demo, test
   static const env = String.fromEnvironment('ENV', defaultValue: 'prod');
+
+  static const isDemo = env == 'demo';
 
   static const appName = String.fromEnvironment(
     'APP_NAME',

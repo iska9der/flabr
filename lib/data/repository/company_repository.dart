@@ -1,5 +1,6 @@
 import 'package:injectable/injectable.dart';
 
+import '../../core/constants/environment.dart';
 import '../model/company/company.dart';
 import '../service/service.dart';
 
@@ -11,6 +12,7 @@ abstract interface class CompanyRepository {
 
 @prod
 @dev
+@demo
 @LazySingleton(as: CompanyRepository)
 class CompanyRepositoryApi implements CompanyRepository {
   const CompanyRepositoryApi(CompanyService service) : _service = service;

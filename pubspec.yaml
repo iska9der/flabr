@@ -84,6 +84,8 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  integration_test:
+    sdk: flutter
   analyzer: ^10.2.0
   flutter_lints: ^6.0.0
   dart_code_metrics_presets: ^2.33.0
@@ -102,6 +104,7 @@ flutter:
   assets:
     - assets/
     - assets/fonts/
+    - assets/demo/
 
   fonts:
     - family: Google
