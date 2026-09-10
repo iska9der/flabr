@@ -40,7 +40,7 @@ if [ "$SKIP_RUNNER" = false ]; then
 echo
 echo "Build dependencies"
 echo '---'
-flutter pub run build_runner build --delete-conflicting-outputs
+flutter pub run build_runner build
 fi
 
 echo

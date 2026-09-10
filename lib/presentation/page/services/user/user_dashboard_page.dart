@@ -1,7 +1,8 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' as legacy;
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../../../../bloc/profile/profile_bloc.dart';
 import '../../../../bloc/user/user_cubit.dart';
@@ -117,7 +118,7 @@ class UserDashboardView extends StatelessWidget {
           appBar: AppBar(
             leading: const AutoLeadingButton(),
             titleSpacing: 0,
-            title: TabBar(
+            title: legacy.TabBar(
               controller: controller,
               tabAlignment: .start,
               isScrollable: true,

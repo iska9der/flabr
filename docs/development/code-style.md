@@ -34,7 +34,7 @@ import '../data/model/user.dart';
 import 'package:flabr/bloc/auth/auth_cubit.dart';
 
 // ✅ Good: Absolute imports for packages
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 ```
 
@@ -357,7 +357,7 @@ After modifying:
 
 ```bash
 # Generate code
-.fvm/flutter_sdk/bin/flutter pub run build_runner build --delete-conflicting-outputs
+.fvm/flutter_sdk/bin/flutter pub run build_runner build
 ```
 
 ### Generated Files
@@ -490,7 +490,7 @@ import 'dart:async';
 import 'dart:io';
 
 // 2. Flutter imports
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter/services.dart';
 
 // 3. Package imports (alphabetically)

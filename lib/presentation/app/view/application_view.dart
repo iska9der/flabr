@@ -1,9 +1,8 @@
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
 import '../../../bloc/settings/settings_cubit.dart';
@@ -110,11 +109,16 @@ class ApplicationView extends StatelessWidget {
       result = DevicePreview.appBuilder(context, result);
     }
 
-    return MediaQuery(
-      data: MediaQuery.of(context).copyWith(
-        textScaler: .linear(textScaleFactor),
+    /// Bridge нужен, пока AutoTabsRouter.tabBar возвращает legacy TabController
+    /// TODO: удалить после миграции auto_route на material_ui
+    /// ignore: deprecated_member_use
+    return MaterialUiCompatibilityBridge(
+      child: MediaQuery(
+        data: MediaQuery.of(context).copyWith(
+          textScaler: .linear(textScaleFactor),
+        ),
+        child: result,
       ),
-      child: result,
     );
   }
 }

@@ -65,7 +65,7 @@ lib/i18n/en.i18n.json
 Flow labels belong to `publication.flow`; group labels belong to `publication.flow.group`. After changing these catalogs, regenerate the Slang API:
 
 ```bash
-.fvm/flutter_sdk/bin/flutter pub run build_runner build --delete-conflicting-outputs
+.fvm/flutter_sdk/bin/flutter pub run build_runner build
 ```
 
 ## Filter UI

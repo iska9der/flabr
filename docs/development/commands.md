@@ -22,7 +22,7 @@
 .fvm/flutter_sdk/bin/flutter pub get
 
 # 2. Generate code
-.fvm/flutter_sdk/bin/flutter pub run build_runner build --delete-conflicting-outputs
+.fvm/flutter_sdk/bin/flutter pub run build_runner build
 
 # 3. Create environment file
 cp .env.example .env.prod
@@ -37,14 +37,14 @@ Code generation for models, DI, and routing.
 
 ```bash
 # Generate code once
-.fvm/flutter_sdk/bin/flutter pub run build_runner build --delete-conflicting-outputs
+.fvm/flutter_sdk/bin/flutter pub run build_runner build
 
 # Watch mode (recommended for development)
-.fvm/flutter_sdk/bin/flutter pub run build_runner watch --delete-conflicting-outputs
+.fvm/flutter_sdk/bin/flutter pub run build_runner watch
 
 # Clean generated files and rebuild
 .fvm/flutter_sdk/bin/flutter pub run build_runner clean
-.fvm/flutter_sdk/bin/flutter pub run build_runner build --delete-conflicting-outputs
+.fvm/flutter_sdk/bin/flutter pub run build_runner build
 ```
 
 **When to Run:**
@@ -165,7 +165,7 @@ sh scripts/version.sh --build
 # 1. Installs Flutter version via fvm install
 # 2. Updates .fvmrc
 # 3. Updates pubspec.yaml environment.flutter field
-sh scripts/version.sh flutter=3.35.6
+sh scripts/version.sh flutter=3.47.3
 ```
 
 ### Manual Version Update
@@ -408,7 +408,7 @@ rm pubspec.lock
 .fvm/flutter_sdk/bin/flutter pub run build_runner clean
 
 # Rebuild everything
-.fvm/flutter_sdk/bin/flutter pub run build_runner build --delete-conflicting-outputs
+.fvm/flutter_sdk/bin/flutter pub run build_runner build
 ```
 
 ## Performance & Debugging
@@ -467,7 +467,7 @@ rm pubspec.lock
 .fvm/flutter_sdk/bin/flutter pub get
 
 # 2. Generate code in watch mode
-.fvm/flutter_sdk/bin/flutter pub run build_runner watch --delete-conflicting-outputs
+.fvm/flutter_sdk/bin/flutter pub run build_runner watch
 
 # 3. In another terminal, run the app
 .fvm/flutter_sdk/bin/flutter run
@@ -486,7 +486,7 @@ rm pubspec.lock
 .fvm/flutter_sdk/bin/flutter test
 
 # 4. Generate code (ensure up to date)
-.fvm/flutter_sdk/bin/flutter pub run build_runner build --delete-conflicting-outputs
+.fvm/flutter_sdk/bin/flutter pub run build_runner build
 ```
 
 ### Release Build
@@ -496,7 +496,7 @@ rm pubspec.lock
 sh scripts/version.sh --up
 
 # 2. Generate code
-.fvm/flutter_sdk/bin/flutter pub run build_runner build --delete-conflicting-outputs
+.fvm/flutter_sdk/bin/flutter pub run build_runner build
 
 # 3. Build release
 sh scripts/build.sh env=prod
@@ -517,13 +517,14 @@ sh scripts/build.sh env=prod
 # Solution: Clean and regenerate
 .fvm/flutter_sdk/bin/flutter clean
 .fvm/flutter_sdk/bin/flutter pub get
-.fvm/flutter_sdk/bin/flutter pub run build_runner build --delete-conflicting-outputs
+.fvm/flutter_sdk/bin/flutter pub run build_runner build
 ```
 
 **Issue:** "Conflicts" during build_runner
 ```bash
-# Solution: Use --delete-conflicting-outputs flag
-.fvm/flutter_sdk/bin/flutter pub run build_runner build --delete-conflicting-outputs
+# Solution: Clean the generator cache and rebuild
+.fvm/flutter_sdk/bin/flutter pub run build_runner clean
+.fvm/flutter_sdk/bin/flutter pub run build_runner build
 ```
 
 ## Related Documentation

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 const double _kPanelHeaderCollapsedHeight = kMinInteractiveDimension;
 
@@ -321,11 +321,10 @@ class _AppExpansionPanelListState extends State<AppExpansionPanelList> {
   }
 }
 
-typedef ExpansionPanelIconBuilder =
-    Widget? Function(
-      Widget child,
-      bool isExpanded,
-    );
+typedef ExpansionPanelIconBuilder = Widget? Function(
+  Widget child,
+  bool isExpanded,
+);
 
 class AppExpansionPanel {
   /// Creates an expansion panel to be used as a child for [ExpansionPanelList].

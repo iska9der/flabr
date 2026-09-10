@@ -23,11 +23,11 @@ import 'package:flabr/presentation/page/settings/feed_settings_page.dart';
 import 'package:flabr/presentation/page/settings/interface_settings_page.dart';
 import 'package:flabr/presentation/page/settings/settings_page.dart';
 import 'package:flabr/presentation/widget/html_view/lazy_image_widget.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:html/parser.dart' as html;
 import 'package:integration_test/integration_test.dart';
+import 'package:material_ui/material_ui.dart';
 
 import 'screenshot_config.dart';
 

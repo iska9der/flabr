@@ -167,7 +167,7 @@ Publication languages are persisted separately under `CacheKeys.langPublications
 4. Run code generation:
 
 ```bash
-.fvm/flutter_sdk/bin/flutter pub run build_runner build --delete-conflicting-outputs
+.fvm/flutter_sdk/bin/flutter pub run build_runner build
 ```
 
 5. Use the generated typed accessor instead of a string key.
