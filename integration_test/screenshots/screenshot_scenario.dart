@@ -1,4 +1,3 @@
-import 'package:device_preview/device_preview.dart';
 import 'package:flabr/bloc/auth/auth_cubit.dart';
 import 'package:flabr/bloc/publication/feed_publication_list_cubit.dart';
 import 'package:flabr/bloc/publication/flow_publication_list_cubit.dart';
@@ -56,7 +55,6 @@ class ScreenshotCapture {
       isTrue,
       reason: 'The dedicated demo installation must start without an account',
     );
-    expect(find.byType(DevicePreview), findsNothing);
     expect(find.byType(DbgInfoWidget), findsNothing);
   }
 
@@ -158,7 +156,6 @@ class ScreenshotCapture {
     expect(configuredScreenshotNames, contains(name));
     expect(names.add(name), isTrue, reason: 'Each screen is captured once');
     _assertSettings();
-    expect(find.byType(DevicePreview), findsNothing);
     expect(find.byType(DbgInfoWidget), findsNothing);
     expect(find.byType(ErrorWidget), findsNothing);
     expect(find.byIcon(Icons.image_not_supported_outlined), findsNothing);

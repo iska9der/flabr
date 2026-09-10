@@ -1,4 +1,3 @@
-import 'package:device_preview/device_preview.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,7 +20,6 @@ import '../config/config.dart';
 /// - Настройку темы и локализации
 /// - Конфигурацию роутера
 /// - Настройку responsive дизайна
-/// - Интеграцию с DevicePreview (только для dev окружения)
 class ApplicationView extends StatelessWidget {
   const ApplicationView({super.key});
 
@@ -51,8 +49,6 @@ class ApplicationView extends StatelessWidget {
 
     return MaterialApp.router(
       title: AppEnvironment.appName,
-      // ignore: deprecated_member_use
-      useInheritedMediaQuery: true,
       locale: locale,
       supportedLocales: app_localizations.AppLocaleUtils.supportedLocales,
       localizationsDelegates: GlobalMaterialLocalizations.delegates,
@@ -104,10 +100,6 @@ class ApplicationView extends StatelessWidget {
       child: result,
       breakpoints: config.responsiveBreakpoints,
     );
-
-    if (config.enableDevicePreview) {
-      result = DevicePreview.appBuilder(context, result);
-    }
 
     /// Bridge нужен, пока AutoTabsRouter.tabBar возвращает legacy TabController
     /// TODO: удалить после миграции auto_route на material_ui

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:device_preview/device_preview.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:material_ui/material_ui.dart';
@@ -22,14 +23,16 @@ void main() {
 
   runZonedGuarded(
     () async {
-      final binding = WidgetsFlutterBinding.ensureInitialized();
+      const AppConfig config = kDebugMode ? .dev : .prod;
+
+      final binding = DevicePreview.enable(enabled: config.enableDevicePreview);
+
       FlutterNativeSplash.preserve(widgetsBinding: binding);
 
       await Bootstrap.init(logger: logger);
 
       FlutterNativeSplash.remove();
 
-      const AppConfig config = kDebugMode ? .dev : .prod;
       runApp(const Application(config: config));
     },
     (error, stack) {

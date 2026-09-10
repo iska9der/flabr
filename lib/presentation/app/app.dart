@@ -1,4 +1,3 @@
-import 'package:device_preview/device_preview.dart';
 import 'package:flutter_highlight/flutter_highlight.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -15,7 +14,6 @@ export 'view/application_view.dart';
 /// Точка входа в приложение.
 ///
 /// Выстраивает иерархию виджетов в следующем порядке:
-/// [DevicePreview] - инструмент для тестирования на разных устройствах (только dev)
 /// [AppConfigProvider] - предоставляет конфигурацию приложения
 /// [GlobalBlocProvider] - создает глобальные BLoC провайдеры
 /// [GlobalBlocListener] - глобальные BLoC listeners для координации
@@ -31,7 +29,7 @@ class Application extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final app = app_localizations.TranslationProvider(
+    return app_localizations.TranslationProvider(
       child: AppConfigProvider(
         config: config,
         repository: getIt<AppConfigRepository>(),
@@ -44,12 +42,5 @@ class Application extends StatelessWidget {
         ),
       ),
     );
-
-    // Оборачиваем в DevicePreview только для dev окружения
-    if (config.enableDevicePreview) {
-      return DevicePreview(builder: (_) => app);
-    }
-
-    return app;
   }
 }
