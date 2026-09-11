@@ -28,7 +28,7 @@ void main() {
       await expectSid(restartedJar, Urls.baseUrl, 'site-sid');
     });
 
-    test('sends a restored SID through CSRF and site interceptors', () async {
+    test('renews CSRF for a profile request with a restored SID', () async {
       final storage = MemoryCookieStorage();
       final initialJar = PersistCookieJar(storage: storage);
       await initialJar.saveFromResponse(Uri.parse(Urls.baseUrl), [
@@ -38,6 +38,7 @@ void main() {
       final restartedJar = PersistCookieJar(storage: storage);
       final repository = TokenRepository(cookieJar: restartedJar);
       await repository.init();
+      repository.setCsrf('stale-csrf');
 
       final dio = Dio(BaseOptions(baseUrl: Urls.siteApiUrl));
       final client = HabraClient(
