@@ -5,7 +5,7 @@
 #   ./scripts/version.sh                 - показать справку
 #   ./scripts/version.sh --up            - увеличить версию (patch) и build
 #   ./scripts/version.sh --build         - увеличить только build
-#   ./scripts/version.sh flutter=3.35.6  - установить и обновить Flutter версию
+#   ./scripts/version.sh flutter=3.47.3  - установить и обновить Flutter версию
 
 # Проверяем параметры
 UP_VERSION=false
@@ -40,7 +40,7 @@ if [ "$UP_VERSION" = false ] && [ "$BUILD_ONLY" = false ] && [ -z "$FLUTTER_VERS
   echo "Примеры:"
   echo "  sh scripts/version.sh --up"
   echo "  sh scripts/version.sh --build"
-  echo "  sh scripts/version.sh flutter=3.35.6"
+  echo "  sh scripts/version.sh flutter=3.47.3"
   echo
   exit 0
 fi

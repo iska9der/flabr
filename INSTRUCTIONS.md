@@ -4,7 +4,7 @@
 2. Сгенерировать код:
 
 ```bash
-flutter pub run build_runner build --delete-conflicting-outputs
+flutter pub run build_runner build
 # или
 sh scripts/runner.sh --build
 ```
@@ -38,7 +38,7 @@ sh scripts/version.sh --build
 # 1. fvm install <версия>
 # 2. Обновляет .fvmrc
 # 3. Обновляет pubspec.yaml (environment.flutter)
-sh scripts/version.sh flutter=3.44.6
+sh scripts/version.sh flutter=3.47.3
 ```
 
 ##### Тестирование deeplink через терминал

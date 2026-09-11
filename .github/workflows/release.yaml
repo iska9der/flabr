@@ -45,8 +45,8 @@ jobs:
       with:
         log-accepted-android-sdk-licenses: false
 
-    - name: Install NDK
-      run: sdkmanager --install "ndk;26.3.11579264"
+    - name: Install Android SDK dependencies
+      run: sdkmanager --install "platforms;android-37.0" "build-tools;36.0.0" "ndk;28.2.13676358"
 
     - name: Gradle cache
       uses: actions/cache@v4

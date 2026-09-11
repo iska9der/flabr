@@ -51,7 +51,7 @@ The `LoginWebView` widget uses `WebViewController` with `NavigationDelegate` to 
 **Pattern:** `/ru/all` (no parameters)
 
 **Behavior:**
-1. Extract cookies via `WebviewCookieManager`
+1. Extract cookies via `WebViewCookieManager`
 2. Save cookies to `TokenRepository.cookieJar`
 3. Extract `sid` token from cookies
 4. Pass token to `LoginCubit.handle()`
@@ -95,7 +95,7 @@ if (url.path == '/ru/all' &&
 
 **Behavior:**
 1. Both `code` and `state` parameters present
-2. Extract cookies via `WebviewCookieManager`
+2. Extract cookies via `WebViewCookieManager`
 3. Save cookies to `TokenRepository.cookieJar`
 4. Extract `sid` token
 5. Pass token to `LoginCubit.handle()`
@@ -217,8 +217,8 @@ final controller = WebViewController()
 ### Cookie Extraction
 
 ```dart
-final cookieManager = WebviewCookieManager();
-final cookies = await cookieManager.getCookies(url);
+final cookieManager = WebViewCookieManager();
+final cookies = await cookieManager.getCookies(domain: Uri.parse(url));
 
 // Save cookies for the site URL
 await tokenRepository.saveCookies(Urls.baseUrl, cookies);

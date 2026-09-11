@@ -1,11 +1,12 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'package:cupertino_ui/cupertino_ui.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:material_ui/material_ui.dart';
+
 import '../../../../i18n/i18n.dart';
 
+part 'app_text_style_model.dart';
 part 'config_model.freezed.dart';
 part 'config_model.g.dart';
-part 'app_text_style_model.dart';
 part 'feed_config_model.dart';
 part 'misc_config_model.dart';
 part 'publication_config_model.dart';

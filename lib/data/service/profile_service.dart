@@ -1,6 +1,7 @@
 import 'package:injectable/injectable.dart';
 
 import '../../core/component/http/http.dart';
+import '../../core/constants/constants.dart';
 import '../model/user/user.dart';
 
 abstract interface class ProfileService {
@@ -19,7 +20,10 @@ class ProfileServiceImpl implements ProfileService {
 
   @override
   Future<UserMe?> fetchMe() async {
-    final response = await _siteClient.get('/v2/me');
+    final response = await _siteClient.get(
+      '/v2/me',
+      options: .new(headers: {Keys.renewCsrf: true}),
+    );
     if (response.data == null) {
       return null;
     }

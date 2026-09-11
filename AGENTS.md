@@ -7,7 +7,7 @@ This file provides guidance to Agents when working with this repository.
 Flabr is an unofficial mobile client for habr.com built with Flutter. It supports Android, iOS, and Web platforms with features including dark/light themes, authorization, feed customization, and AI-powered article summaries using YandexGPT.
 
 **Architecture**: Clean Architecture with BLoC pattern
-**Key Technologies**: Flutter 3.41.0, Dart 3.11, auto_route, injectable/get_it, freezed
+**Key Technologies**: Flutter 3.47.3, Dart 3.13, auto_route, injectable/get_it, freezed
 
 ## Quick Reference
 
@@ -84,7 +84,7 @@ A change is not done until it is consistent with local project patterns, not jus
 
 After modifying models, DI annotations, or routes, always run:
 ```bash
-.fvm/flutter_sdk/bin/flutter pub run build_runner build --delete-conflicting-outputs
+.fvm/flutter_sdk/bin/flutter pub run build_runner build
 ```
 
 Do not edit generated files manually:
