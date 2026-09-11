@@ -248,7 +248,8 @@ the run. Omitting an option selects every configured value.
 `en-US` remains the complete baseline because F-Droid uses it as the fallback
 language when localized metadata is unavailable.
 
-Requires the FVM SDK, Android SDK/NDK 28.2.13676358, and `adb` on `PATH`.
+Requires the FVM SDK, Android SDK Platform 37.0, NDK 28.2.13676358, and
+`adb` on `PATH`.
 On Windows, run the script from Git Bash or another POSIX-compatible shell.
 
 The command builds a profile APK with `ENV=demo`, then passes that APK to
