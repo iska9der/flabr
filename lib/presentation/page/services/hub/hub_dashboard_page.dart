@@ -1,5 +1,4 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/material.dart' as legacy;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -50,7 +49,7 @@ class HubDashboardPageView extends StatelessWidget {
             titleSpacing: 0,
             title: Align(
               alignment: .centerLeft,
-              child: legacy.TabBar(
+              child: TabBar(
                 controller: controller,
                 tabAlignment: .start,
                 isScrollable: true,

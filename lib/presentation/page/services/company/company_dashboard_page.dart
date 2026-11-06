@@ -1,5 +1,4 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/material.dart' as legacy;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -48,7 +47,7 @@ class CompanyDashboardPageView extends StatelessWidget {
           appBar: AppBar(
             leading: const AutoLeadingButton(),
             titleSpacing: 0,
-            title: legacy.TabBar(
+            title: TabBar(
               controller: controller,
               tabAlignment: .start,
               isScrollable: true,

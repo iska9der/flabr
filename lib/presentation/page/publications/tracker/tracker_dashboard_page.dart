@@ -1,5 +1,4 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/material.dart' as legacy;
 import 'package:material_ui/material_ui.dart';
 
 import '../../../../core/component/router/router.dart';
@@ -29,7 +28,7 @@ class TrackerDashboardPage extends StatelessWidget {
             toolbarHeight: AppDimensions.toolBarHeight,
             bottom: PreferredSize(
               preferredSize: const .fromHeight(AppDimensions.tabBarHeight),
-              child: legacy.TabBar(
+              child: TabBar(
                 controller: controller,
                 isScrollable: true,
                 padding: .zero,

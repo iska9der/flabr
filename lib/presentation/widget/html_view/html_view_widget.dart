@@ -123,16 +123,40 @@ class CustomFactory extends WidgetFactory with SvgFactory, WebViewFactory {
     return widget;
   }
 
+  /// Legacy Tooltip из HTML-рендерера не наследует тему material_ui,
+  /// поэтому подсказки создаются из material_ui
+  ///
+  /// TODO: удалить override после перехода flutter_widget_from_html_core на material_ui
+  @override
+  Widget buildTooltip(BuildTree tree, Widget child, String message) {
+    return Tooltip(message: message, child: child);
+  }
+
   @override
   void parse(BuildTree meta) {
     final element = meta.element;
     final attributes = element.attributes;
 
     switch (element.localName) {
-      case 'a':
+      case 'a' when attributes.containsKey('href'):
         final op = CustomBuildOp.buildLinkOp(context, this, attributes);
         meta.register(op);
-        break;
+
+        /// HTML-рендерер читает цвет ссылки из legacy Theme, поэтому цвет
+        /// material_ui задаётся после super.parse(meta), сохраняя приоритет
+        /// TODO: удалить переопределение цвета после перехода flutter_widget_from_html_core на material_ui
+        super.parse(meta);
+
+        meta.inherit<BuildContext?>(
+          (resolving, context) => context == null
+              ? resolving
+              : resolving.copyWith(
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                ),
+        );
+        return;
       case 'div':
         if (!element.className.contains('tm-iframe_temp')) break;
 
@@ -161,7 +185,7 @@ class CustomFactory extends WidgetFactory with SvgFactory, WebViewFactory {
         break;
     }
 
-    return super.parse(meta);
+    super.parse(meta);
   }
 }
 

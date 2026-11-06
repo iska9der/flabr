@@ -101,16 +101,11 @@ class ApplicationView extends StatelessWidget {
       breakpoints: config.responsiveBreakpoints,
     );
 
-    /// Bridge нужен, пока AutoTabsRouter.tabBar возвращает legacy TabController
-    /// TODO: удалить после миграции auto_route на material_ui
-    /// ignore: deprecated_member_use
-    return MaterialUiCompatibilityBridge(
-      child: MediaQuery(
-        data: MediaQuery.of(context).copyWith(
-          textScaler: .linear(textScaleFactor),
-        ),
-        child: result,
+    return MediaQuery(
+      data: MediaQuery.of(context).copyWith(
+        textScaler: .linear(textScaleFactor),
       ),
+      child: result,
     );
   }
 }

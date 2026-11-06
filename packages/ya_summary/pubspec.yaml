@@ -9,7 +9,7 @@ environment:
 
 dependencies:
   dio: ^5.11.1
-  equatable: ^2.1.0
+  equatable: ^3.0.0
 
 dev_dependencies:
   test: ^1.30.0
