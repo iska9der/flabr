@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../../../../../bloc/profile/profile_bloc.dart';
 import '../../../../../data/model/stat_type_enum.dart';

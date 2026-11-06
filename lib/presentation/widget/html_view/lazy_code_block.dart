@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_highlight/flutter_highlight.dart';
+import 'package:material_ui/material_ui.dart';
 
 import 'lazy_visibility_widget.dart';
 

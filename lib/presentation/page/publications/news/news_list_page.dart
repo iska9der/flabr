@@ -1,6 +1,6 @@
 import 'package:auto_route/annotations.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../../../../bloc/publication/flow_publication_list_cubit.dart';
 import '../../../../data/model/publication/publication.dart';

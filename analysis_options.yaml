@@ -29,6 +29,10 @@ analyzer:
     # - "**/*.gr.dart"
     - "**/*.freezed.dart"
     - "**/*.config.dart"
+    - build/**
+    - android/**
+    - ios/**
+    - web/**
   errors:
     avoid_relative_lib_imports: error
     invalid_annotation_target: ignore

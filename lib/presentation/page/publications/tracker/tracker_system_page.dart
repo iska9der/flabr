@@ -1,5 +1,5 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 @RoutePage(name: TrackerSystemPage.routeName)
 class TrackerSystemPage extends StatelessWidget {

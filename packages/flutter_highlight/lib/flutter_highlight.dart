@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
 import 'package:highlight/highlight.dart' show highlight, Node;
+import 'package:material_ui/material_ui.dart';
 
 import 'flutter_highlight_background.dart';
 

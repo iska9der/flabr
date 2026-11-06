@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:photo_view/photo_view.dart';
 
 import '../../../di/di.dart';
@@ -77,6 +77,26 @@ class _FullImageProviderState extends State<FullImageProvider> {
         backgroundDecoration: const BoxDecoration(color: Colors.transparent),
         onTapUp: _handleTapUp,
         imageProvider: widget.provider,
+
+        /// TODO: удалить loadingBuilder после миграции photo_view на material_ui
+        loadingBuilder: (_, event) {
+          final loadedBytes = event?.cumulativeBytesLoaded;
+          final expectedBytes = event?.expectedTotalBytes;
+
+          return Center(
+            child: SizedBox.square(
+              dimension: 20,
+              child: CircularProgressIndicator(
+                value:
+                    loadedBytes != null &&
+                        expectedBytes != null &&
+                        expectedBytes > 0
+                    ? loadedBytes / expectedBytes
+                    : null,
+              ),
+            ),
+          );
+        },
       ),
     );
   }

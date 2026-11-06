@@ -1,8 +1,8 @@
 import 'dart:async';
+import 'dart:io';
 
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:webview_cookie_manager/webview_cookie_manager.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../../bloc/auth/login_cubit.dart';
@@ -47,7 +47,7 @@ class _WebViewLogin extends StatefulWidget {
 
 class _WebViewLoginState extends State<_WebViewLogin> {
   late final WebViewController wvController;
-  late final WebviewCookieManager cookieManager;
+  late final WebViewCookieManager cookieManager;
 
   final Uri _authUri = Uri.parse(
     '${Urls.siteApiUrl}/v1/auth/habrahabr/?back=/ru/all',
@@ -92,7 +92,7 @@ class _WebViewLoginState extends State<_WebViewLogin> {
 
     final logger = getIt<Logger>();
 
-    cookieManager = WebviewCookieManager();
+    cookieManager = WebViewCookieManager();
     wvController = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setNavigationDelegate(
@@ -146,12 +146,11 @@ class _WebViewLoginState extends State<_WebViewLogin> {
   }
 
   Future<String> handleCookies(String url) async {
-    final list = await cookieManager.getCookies(url);
-    final token = list
-        .firstWhere((cookie) => cookie.name == Keys.sidToken)
-        .value;
+    final list = await cookieManager.getCookies(domain: Uri.parse(url));
+    final token = list.firstWhere((c) => c.name == Keys.sidToken).value;
     final cookies = list
-        .where((cookie) => cookie.name != Keys.sidToken)
+        .where((c) => c.name != Keys.sidToken && c.value.isNotEmpty)
+        .map((c) => Cookie(c.name, c.value))
         .toList();
 
     final cookieJar = getIt<TokenRepository>().cookieJar;

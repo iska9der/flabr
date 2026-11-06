@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../../data/model/render_type_enum.dart';
 import '../extension/extension.dart';

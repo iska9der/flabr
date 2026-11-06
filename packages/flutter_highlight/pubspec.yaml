@@ -1,8 +1,9 @@
 name: flutter_highlight
+resolution: workspace
 description: Syntax highlighting widget for Flutter with lots of languages and themes support.
+publish_to: none
 version: 0.7.1
 homepage: https://github.com/git-touch/highlight
-resolution: workspace
 
 environment:
   flutter: ">=3.22.0"
@@ -11,6 +12,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  material_ui: ^1.2.0
   highlight: ^0.7.0
 
 dev_dependencies:

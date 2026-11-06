@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:html/dom.dart' as dom;
+import 'package:material_ui/material_ui.dart';
 
 import '../../extension/extension.dart';
 import 'html_config.dart';

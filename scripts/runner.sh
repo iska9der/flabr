@@ -16,7 +16,7 @@ show_help() {
 
 case "$1" in
   --build)
-    dart run build_runner build --delete-conflicting-outputs
+    dart run build_runner build
     ;;
   --icons)
     dart run flutter_launcher_icons -f flutter_launcher_icons.yaml
