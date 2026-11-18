@@ -14,8 +14,6 @@ import 'shortcut_action.dart';
 /// Предоставляет ярлыки для быстрого доступа к основным разделам:
 /// - Закладки (только для авторизованных пользователей)
 /// - Статьи
-/// - Новости
-/// - Посты
 @singleton
 class ShortcutsManager {
   ShortcutsManager(this._logger, this._router);
@@ -64,12 +62,6 @@ class ShortcutsManager {
       .articles => const PublicationDashboardRoute(
         children: [ArticlesFlowRoute()],
       ),
-      .news => const PublicationDashboardRoute(
-        children: [NewsFlowRoute()],
-      ),
-      .posts => const PublicationDashboardRoute(
-        children: [PostsFlowRoute()],
-      ),
       .search => const SearchAnywhereRoute(),
     };
   }
@@ -94,8 +86,6 @@ class ShortcutsManager {
             title: switch (action) {
               .bookmarks => t.shortcut.bookmarks,
               .articles => t.shortcut.articles,
-              .posts => t.shortcut.posts,
-              .news => t.shortcut.news,
               .search => t.shortcut.search,
             },
             icon: icon,

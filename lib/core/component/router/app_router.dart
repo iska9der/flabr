@@ -55,32 +55,6 @@ class AppRouter extends RootStackRouter {
                 ),
               ],
             ),
-
-            /// Таб "Посты"
-            AutoRoute(
-              page: PostsFlowRoute.page,
-              path: PostsFlowPage.routePath,
-              children: [
-                RedirectRoute(path: '', redirectTo: 'flows/all'),
-                AutoRoute(
-                  path: PostListPage.routePath,
-                  page: PostListRoute.page,
-                ),
-              ],
-            ),
-
-            /// Таб "Новости"
-            AutoRoute(
-              page: NewsFlowRoute.page,
-              path: NewsFlowPage.routePath,
-              children: [
-                RedirectRoute(path: '', redirectTo: 'flows/all'),
-                AutoRoute(
-                  page: NewsListRoute.page,
-                  path: NewsListPage.routePath,
-                ),
-              ],
-            ),
           ],
         ),
 
@@ -334,10 +308,10 @@ List<RedirectRoute> _newsRedirects() {
 
   return [
     /// Флоу в новостях
-    RedirectRoute(path: '/flows/:flow/news', redirectTo: '/news/flows/:flow'),
+    RedirectRoute(path: '/flows/:flow/news', redirectTo: '/articles/flows/:flow'),
 
     /// Новости
-    RedirectRoute(path: '/news/', redirectTo: '/news'),
+    RedirectRoute(path: '/news/', redirectTo: '/articles'),
 
     /// Полная новость и комментарии
     ...internalRedirectList,
@@ -417,10 +391,10 @@ List<RedirectRoute> _postsRedirects() {
 
   return [
     /// Флоу в постах
-    RedirectRoute(path: '/flows/:flow/posts', redirectTo: '/posts/flows/:flow'),
+    RedirectRoute(path: '/flows/:flow/posts', redirectTo: '/articles/flows/:flow'),
 
     /// Посты
-    RedirectRoute(path: '/posts/', redirectTo: '/posts'),
+    RedirectRoute(path: '/posts/', redirectTo: '/articles'),
 
     /// Полная версия и комментарии
     ...internalRedirectList,

@@ -12,8 +12,8 @@ import 'package:flabr/di/di.dart';
 import 'package:flabr/feature/image_action/widget/network_image_widget.dart';
 import 'package:flabr/i18n/i18n.dart';
 import 'package:flabr/presentation/app.dart';
+import 'package:flabr/presentation/page/publications/articles/article_list_page.dart';
 import 'package:flabr/presentation/page/publications/feed/feed_list_page.dart';
-import 'package:flabr/presentation/page/publications/news/news_list_page.dart';
 import 'package:flabr/presentation/page/publications/widget/card/card_html_widget.dart';
 import 'package:flabr/presentation/page/publications/widget/card/common_card_widget.dart';
 import 'package:flabr/presentation/page/publications/widget/card/components/dbg_info_widget.dart';
@@ -90,9 +90,9 @@ class ScreenshotCapture {
         await _prepareFeed();
         await _waitForFeedDescription();
         await _waitForImages();
-      case ScreenshotScreen.newsFilters:
+      case ScreenshotScreen.articleFilters:
         await _tapBottomTab(Icons.article_rounded);
-        await _tapPublicationTab(t.publication.dashboard.news);
+        await _tapPublicationTab(t.publication.dashboard.articles);
         await _refreshList(feed: false);
         await _waitForList(feed: false);
         await _waitForImages();
@@ -310,7 +310,7 @@ class ScreenshotCapture {
   Future<void> _refreshList({required bool feed}) async {
     final scroll = find
         .descendant(
-          of: find.byType(feed ? FeedListPage : NewsListPage),
+          of: find.byType(feed ? FeedListPage : ArticleListPage),
           matching: find.byType(Scrollable),
         )
         .first;
@@ -337,7 +337,7 @@ class ScreenshotCapture {
   }
 
   Future<void> _waitForList({required bool feed}) async {
-    final page = find.byType(feed ? FeedListPage : NewsListPage);
+    final page = find.byType(feed ? FeedListPage : ArticleListPage);
     final cards = find.descendant(
       of: page,
       matching: find.byType(CommonCardWidget),
@@ -348,7 +348,7 @@ class ScreenshotCapture {
       return feed
           ? context.read<FeedPublicationListCubit>().state.status == .success
           : context.read<FlowPublicationListCubit>().state.status == .success;
-    }, feed ? 'Loaded My Feed' : 'Loaded News');
+    }, feed ? 'Loaded My Feed' : 'Loaded Articles');
     final context = tester.element(cards.first);
     final publications = feed
         ? context.read<FeedPublicationListCubit>().state.response.refs

@@ -1,4 +1,4 @@
-enum ScreenshotScreen { feed, newsFilters, reader, interfaceSettings }
+enum ScreenshotScreen { feed, articleFilters, reader, interfaceSettings }
 
 class ScreenshotScenario {
   const ScreenshotScenario(this.id, this.screen);
@@ -9,7 +9,7 @@ class ScreenshotScenario {
 
 const screenshotScenarios = [
   ScreenshotScenario(1, ScreenshotScreen.feed),
-  ScreenshotScenario(2, ScreenshotScreen.newsFilters),
+  ScreenshotScenario(2, ScreenshotScreen.articleFilters),
   ScreenshotScenario(3, ScreenshotScreen.reader),
   ScreenshotScenario(4, ScreenshotScreen.interfaceSettings),
 ];
