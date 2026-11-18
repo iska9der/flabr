@@ -2,6 +2,8 @@ part of 'publication.dart';
 
 @JsonEnum()
 enum PublicationFormat {
+  common,
+  post,
   @JsonValue('case')
   example,
   tutorial,
@@ -15,7 +17,11 @@ enum PublicationFormat {
   interview,
   retrospective;
 
+  String get apiValue => this == example ? 'case' : name;
+
   String get label => switch (this) {
+    common => t.publication.format.common,
+    post => t.publication.type.post,
     example => t.publication.format.caseStudy,
     tutorial => t.publication.format.tutorial,
     faq => 'FAQ',

@@ -10,7 +10,6 @@ import '../model/comment/comment.dart';
 import '../model/filter/filter.dart';
 import '../model/list_response_model.dart';
 import '../model/publication/publication.dart';
-import '../model/section_enum.dart';
 import '../model/user/user.dart';
 import '../service/service.dart';
 
@@ -64,8 +63,7 @@ class PublicationRepository {
   }) async {
     var response = await service.fetchFeed(
       page: page,
-      score: filter.score.value.isEmpty ? 'all' : filter.score.value,
-      types: filter.types.map((t) => t.name).toList(),
+      filter: filter,
     );
 
     final sortedList = _sortListResponse(Sort.byNew, response);
@@ -93,24 +91,14 @@ class PublicationRepository {
     _storage.write(CacheKeys.feedFilter, jsonEncode(filter));
   }
 
-  /// Получение статей/новостей/постов
-  ///
-  /// Сортировка полученных статей происходит как на сайте:
-  /// если сортировка по лучшим [Sort.byBest], то надо сортировать по рейтингу;
-  /// если по новым [Sort.byNew], сортируем по дате публикации
-  ///
   Future<ListResponse<Publication>> fetchFlowArticles({
-    required Section section,
     required PublicationFlow flow,
     required FlowFilter filter,
     required String page,
   }) async {
     var response = await service.fetchFlowArticles(
-      section: section,
       flow: flow,
-      sort: filter.sort,
-      period: filter.period,
-      score: filter.score,
+      filter: filter,
       page: page,
     );
 
@@ -127,9 +115,7 @@ class PublicationRepository {
   }) async {
     var response = await service.fetchHubArticles(
       hub: hub,
-      sort: filter.sort,
-      period: filter.period,
-      score: filter.score,
+      filter: filter,
       page: page,
     );
 

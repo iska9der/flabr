@@ -7,12 +7,10 @@ class FlowPublicationListState extends PublicationListState with Equatable {
     super.page = 1,
     super.response = const ListResponse<Publication>(),
     this.flow = PublicationFlow.all,
-    this.section = Section.article,
     this.filter = const FlowFilter(),
   });
 
   final PublicationFlow flow;
-  final Section section;
   final FlowFilter filter;
 
   FlowPublicationListState copyWith({
@@ -21,7 +19,6 @@ class FlowPublicationListState extends PublicationListState with Equatable {
     int? page,
     ListResponse<Publication>? response,
     PublicationFlow? flow,
-    Section? section,
     FlowFilter? filter,
   }) {
     return FlowPublicationListState(
@@ -30,7 +27,6 @@ class FlowPublicationListState extends PublicationListState with Equatable {
       page: page ?? this.page,
       response: response ?? this.response,
       flow: flow ?? this.flow,
-      section: section ?? this.section,
       filter: filter ?? this.filter,
     );
   }
@@ -43,7 +39,6 @@ class FlowPublicationListState extends PublicationListState with Equatable {
     status,
     error,
     flow,
-    section,
     filter,
     page,
     response,

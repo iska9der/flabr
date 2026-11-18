@@ -290,8 +290,7 @@ offline. Cards use short leads, while the reader uses longer excerpts sized for
 the opening screenshot viewport. The reader stays at the start instead of
 scrolling to an offscreen illustration. No full article body or API response is
 stored. Demo articles retain their source authors and metadata while sharing
-`assets/demo/avatar.png`. One authored news snippet per locale remains in the
-demo library.
+`assets/demo/avatar.png`. The demo library also includes a short article in post format for each locale.
 
 Normal repositories, BLoCs, and screens remain in use. This is a publication
 demo source, not an offline replacement for unrelated services; voting and

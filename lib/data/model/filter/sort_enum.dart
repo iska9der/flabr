@@ -4,17 +4,16 @@ import 'filter_list.dart';
 import 'filter_option_model.dart';
 
 enum Sort {
-  byNew('rating', 'all'),
-  byBest('date', 'top');
+  byNew('rating'),
+  byBest('date');
 
-  const Sort(this.value, this.postValue);
+  const Sort(this.value);
 
   String get label => switch (this) {
     Sort.byNew => t.sort.newest,
     Sort.byBest => t.sort.best,
   };
   final String value;
-  final String postValue;
 
   List<FilterOption> get filters => switch (this) {
     Sort.byNew => FilterList.scoreOptions,

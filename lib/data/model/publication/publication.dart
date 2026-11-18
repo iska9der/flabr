@@ -14,7 +14,6 @@ import '../query_params_model.dart';
 import '../related_data_base.dart';
 import '../user_base.dart';
 
-part 'feed_list_params.dart';
 part 'feed_list_response.dart';
 part 'most_reading_response.dart';
 part 'post_label_model.dart';
@@ -32,7 +31,6 @@ part 'publication_lead_data_model.dart';
 part 'publication_lead_image_model.dart';
 part 'publication_list_params.dart';
 part 'publication_model.dart';
-part 'publication_post_list_params.dart';
 part 'publication_post_list_response.dart';
 part 'publication_related_data_model.dart';
 part 'publication_source_enum.dart';

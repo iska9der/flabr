@@ -20,13 +20,13 @@ final List<DemoPublication> demoPublications = List.unmodifiable([
     flow: PublicationFlow.admin,
     publication: _englishArticle(),
   ),
-  _news(Language.en),
+  _post(Language.en),
   (
     language: Language.ru,
     flow: PublicationFlow.mobileDevelopment,
     publication: _russianArticle(),
   ),
-  _news(Language.ru),
+  _post(Language.ru),
 ]);
 
 PublicationCommon _englishArticle() {
@@ -167,7 +167,7 @@ PublicationCommon _russianArticle() {
   );
 }
 
-DemoPublication _news(Language language) {
+DemoPublication _post(Language language) {
   final ru = language == Language.ru;
   final prefix = ru ? '92' : '91';
   final excerpt = ru
@@ -178,7 +178,8 @@ DemoPublication _news(Language language) {
     flow: PublicationFlow.mobileDevelopment,
     publication: PublicationCommon(
       id: '${prefix}0011',
-      type: PublicationType.news,
+      type: PublicationType.article,
+      format: PublicationFormat.post,
       timePublished: '2017-08-10T09:00:00+00:00',
       author: PublicationAuthor(
         id: '${prefix}0000',

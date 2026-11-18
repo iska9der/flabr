@@ -4,6 +4,7 @@ import '../../../data/model/filter/filter.dart';
 import '../../../i18n/i18n.dart';
 import '../../extension/context.dart';
 import 'filter_chip_list.dart';
+import 'publication_criteria_widget.dart';
 import 'publication_filter_submit_button.dart';
 
 class CommonFiltersWidget extends StatefulWidget {
@@ -12,10 +13,12 @@ class CommonFiltersWidget extends StatefulWidget {
     this.isLoading = false,
     required this.sort,
     required this.filterOption,
+    required this.criteria,
     this.onSubmit,
   });
 
   final bool isLoading;
+  final PublicationCriteria criteria;
   final Sort sort;
   final FilterOption filterOption;
   final void Function(FlowFilter filter)? onSubmit;
@@ -25,6 +28,7 @@ class CommonFiltersWidget extends StatefulWidget {
 }
 
 class _CommonFiltersWidgetState extends State<CommonFiltersWidget> {
+  late PublicationCriteria criteria = widget.criteria;
   late Sort sortValue = widget.sort;
   late FilterOption optionValue = widget.filterOption;
 
@@ -36,6 +40,7 @@ class _CommonFiltersWidgetState extends State<CommonFiltersWidget> {
       optionValue = widget.filterOption;
     }
 
+    if (oldWidget.criteria != widget.criteria) criteria = widget.criteria;
     super.didUpdateWidget(oldWidget);
   }
 
@@ -80,20 +85,28 @@ class _CommonFiltersWidgetState extends State<CommonFiltersWidget> {
             FilterChipList(
               isEnabled: !widget.isLoading,
               options: sortValue.filters,
-              isSelected: (option) => option == optionValue,
+              isSelected: (option) => option.value == optionValue.value,
               onSelected: (isSelected, option) => setState(() {
                 optionValue = option;
               }),
             ),
           ],
         ),
+        PublicationCriteriaWidget(
+          criteria: criteria,
+          isEnabled: !widget.isLoading,
+          onChanged: (value) => setState(() => criteria = value),
+        ),
         if (widget.onSubmit != null)
           Padding(
             padding: const .only(top: 8),
             child: PublicationFilterSubmitButton(
-              isEnabled: !widget.isLoading,
+              isEnabled: !widget.isLoading && criteria.formats.isNotEmpty,
               onSubmit: () {
-                FlowFilter newFilter = FlowFilter(sort: sortValue);
+                FlowFilter newFilter = FlowFilter(
+                  sort: sortValue,
+                  criteria: criteria,
+                );
 
                 switch (sortValue) {
                   case Sort.byBest:

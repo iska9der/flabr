@@ -6,7 +6,6 @@ import '../model/comment/comment.dart';
 import '../model/filter/filter.dart';
 import '../model/list_response_model.dart';
 import '../model/publication/publication.dart';
-import '../model/section_enum.dart';
 import '../model/user/user.dart';
 
 abstract interface class PublicationService {
@@ -18,24 +17,18 @@ abstract interface class PublicationService {
 
   Future<ListResponse<Publication>> fetchFeed({
     required String page,
-    required String score,
-    required List<String> types,
+    required FeedFilter filter,
   });
 
   Future<ListResponse<Publication>> fetchFlowArticles({
-    required Section section,
     required PublicationFlow flow,
-    required Sort sort,
+    required FlowFilter filter,
     required String page,
-    required FilterOption period,
-    required FilterOption score,
   });
 
   Future<ListResponse<Publication>> fetchHubArticles({
     required String hub,
-    required Sort sort,
-    required FilterOption period,
-    required FilterOption score,
+    required FlowFilter filter,
     required String page,
   });
 
@@ -108,18 +101,16 @@ class PublicationServiceImpl implements PublicationService {
   @override
   Future<ListResponse<Publication>> fetchFeed({
     required String page,
-    required String score,
-    required List<String> types,
+    required FeedFilter filter,
   }) async {
-    final params = FeedListParams(
-      page: page,
-      score: score,
-      types: types,
-    ).toMap();
-
     final response = await _siteClient.get(
       '/v2/articles/',
-      queryParams: params,
+      queryParams: {
+        'queryType': 'feed',
+        'page': page,
+        'score': filter.score.value.isEmpty ? 'all' : filter.score.value,
+        ...filter.criteria.toQuery(personal: true),
+      },
     );
 
     return FeedListResponse.fromMap(response.data);
@@ -127,69 +118,44 @@ class PublicationServiceImpl implements PublicationService {
 
   @override
   Future<ListResponse<Publication>> fetchFlowArticles({
-    required Section section,
     required PublicationFlow flow,
-    required Sort sort,
-    required FilterOption period,
-    required FilterOption score,
+    required FlowFilter filter,
     required String page,
   }) async {
-    final flowStr = (flow == PublicationFlow.all) ? null : flow.alias;
-
-    final params = switch (section) {
-      Section.post => PublicationPostListParams(
-        page: page,
-        flow: flowStr,
-        sort: sort.postValue,
-        period: sort == Sort.byBest ? period.value : null,
-        score: score.value,
-      ),
-      _ => PublicationListParams(
-        page: page,
-        flow: flowStr,
-        news: section == Section.news,
-
-        /// если мы находимся не во "Все потоки", в значение sort, по завету
-        /// костыльного api хабра, нужно передавать значение 'all'
-        sort: flow == PublicationFlow.all ? sort.value : 'all',
-        period: sort == Sort.byBest ? period.value : null,
-        score: score.value,
-      ),
-    }.toMap();
-
-    final response = await _siteClient.get(
-      '/v2/articles/',
-      queryParams: params,
-    );
-
-    return switch (section) {
-      Section.post => PublicationPostListResponse.fromMap(response.data),
-      _ => PublicationCommonListResponse.fromMap(response.data),
-    };
+    return _fetchArticles(page, filter, {
+      'queryType': flow == PublicationFlow.all ? 'articles' : 'flows_new',
+      if (flow != PublicationFlow.all) 'flow': flow.alias,
+      'sort': flow == PublicationFlow.all ? filter.sort.value : 'all',
+    });
   }
 
   @override
   Future<ListResponse<Publication>> fetchHubArticles({
     required String hub,
-    required Sort sort,
-    required FilterOption period,
-    required FilterOption score,
+    required FlowFilter filter,
     required String page,
-  }) async {
-    final params = PublicationListParams(
-      page: page,
-      sort: 'all',
-      period: sort == Sort.byBest ? period.value : null,
-      score: score.value,
-    ).toMap();
+  }) => _fetchArticles(page, filter, {
+    'queryType': 'hubs',
+    'hub': hub,
+    'sort': 'all',
+  });
 
-    params.addAll({'hub': hub});
-
+  Future<ListResponse<Publication>> _fetchArticles(
+    String page,
+    FlowFilter filter,
+    Map<String, String> source,
+  ) async {
     final response = await _siteClient.get(
       '/v2/articles/',
-      queryParams: params,
+      queryParams: {
+        ...source,
+        'page': page,
+        if (filter.sort == Sort.byBest) 'period': filter.period.value,
+        if (filter.sort == Sort.byNew && filter.score.value.isNotEmpty)
+          'score': filter.score.value,
+        ...filter.criteria.toQuery(),
+      },
     );
-
     return PublicationCommonListResponse.fromMap(response.data);
   }
 
