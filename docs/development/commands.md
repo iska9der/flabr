@@ -260,7 +260,7 @@ source.
 
 For each requested source locale, the scenario selects the dark theme and UI
 language through Settings. The demo source follows only the UI language;
-publication-language preferences are left untouched. My Feed and News are
+publication-language preferences are left untouched. My Feed and Articles are
 refreshed through pull-to-refresh after each locale selection. Profile mode
 avoids the DEBUG banner, Device Preview, and debug card information. No account
 is required. The scenario also enables short descriptions through publication
@@ -269,7 +269,7 @@ settings and checks that the article excerpt and illustration are visible.
 | File | Screen |
 |------|--------|
 | `1.png` | My Feed |
-| `2.png` | News with compact filters |
+| `2.png` | Articles with compact filters |
 | `3.png` | Publication reader |
 | `4.png` | Settings → Interface |
 
@@ -290,8 +290,7 @@ offline. Cards use short leads, while the reader uses longer excerpts sized for
 the opening screenshot viewport. The reader stays at the start instead of
 scrolling to an offscreen illustration. No full article body or API response is
 stored. Demo articles retain their source authors and metadata while sharing
-`assets/demo/avatar.png`. One authored news snippet per locale remains for the
-News filter background.
+`assets/demo/avatar.png`. The demo library also includes a short article in post format for each locale.
 
 Normal repositories, BLoCs, and screens remain in use. This is a publication
 demo source, not an offline replacement for unrelated services; voting and
