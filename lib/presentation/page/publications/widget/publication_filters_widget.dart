@@ -52,6 +52,7 @@ class _PublicationFiltersWidgetState extends State<PublicationFiltersWidget> {
             const SizedBox(height: 16),
             CommonFiltersWidget(
               isLoading: !isEnabled,
+              criteria: state.filter.criteria,
               sort: state.filter.sort,
               filterOption: switch (state.filter.sort) {
                 Sort.byBest => state.filter.period,

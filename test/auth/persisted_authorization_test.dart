@@ -17,7 +17,7 @@ void main() {
       final storage = MemoryCookieStorage();
       final initialJar = PersistCookieJar(storage: storage);
       await initialJar.saveFromResponse(Uri.parse(Urls.baseUrl), [
-        Cookie(Keys.sidToken, 'site-sid')..path = '/',
+        Cookie('habr_web_sid', 'site-sid')..path = '/',
       ]);
 
       final restartedJar = PersistCookieJar(storage: storage);
@@ -28,11 +28,40 @@ void main() {
       await expectSid(restartedJar, Urls.baseUrl, 'site-sid');
     });
 
-    test('renews CSRF for a profile request with a restored SID', () async {
+    test('prefers the current SID when both cookies are stored', () async {
+      final storage = MemoryCookieStorage();
+      final uri = Uri.parse(Urls.baseUrl);
+      await PersistCookieJar(storage: storage).saveFromResponse(uri, [
+        Cookie('connect_sid', 'old-sid')..path = '/',
+        Cookie('habr_web_sid', 'current-sid')
+          ..domain = uri.host
+          ..path = '/',
+        Cookie('preference', 'keep'),
+      ]);
+
+      final repository = TokenRepository(
+        cookieJar: PersistCookieJar(storage: storage),
+      );
+      await repository.init();
+      expect(repository.token, 'current-sid');
+
+      final cookies = await PersistCookieJar(
+        storage: storage,
+      ).loadForRequest(uri);
+      expect(
+        {for (final cookie in cookies) cookie.name: cookie.value},
+        {
+          'habr_web_sid': 'current-sid',
+          'preference': 'keep',
+        },
+      );
+    });
+
+    test('migrates a legacy SID before the first profile request', () async {
       final storage = MemoryCookieStorage();
       final initialJar = PersistCookieJar(storage: storage);
       await initialJar.saveFromResponse(Uri.parse(Urls.baseUrl), [
-        Cookie(Keys.sidToken, 'site-sid')..path = '/',
+        Cookie('connect_sid', 'site-sid')..path = '/',
       ]);
 
       final restartedJar = PersistCookieJar(storage: storage);
@@ -81,6 +110,18 @@ void main() {
       expect(meRequest.headers['cookie'], contains('hl=ru'));
       expect(meRequest.queryParameters['fl'], 'ru');
       expect(meRequest.queryParameters['hl'], 'ru');
+
+      final nextLaunch = TokenRepository(
+        cookieJar: PersistCookieJar(storage: storage),
+      );
+      await nextLaunch.init();
+      expect(nextLaunch.token, 'site-sid');
+      await nextLaunch.clearAll();
+      final afterLogout = TokenRepository(
+        cookieJar: PersistCookieJar(storage: storage),
+      );
+      await afterLogout.init();
+      expect(afterLogout.token, isEmpty);
     });
   });
 }
@@ -104,10 +145,14 @@ void expectSingleSid(RequestOptions request, String expectedValue) {
   final sidCookies = cookieHeader
       .split(';')
       .map((cookie) => cookie.trim())
-      .where((cookie) => cookie.startsWith('${Keys.sidToken}='))
+      .where(
+        (cookie) =>
+            cookie.startsWith('habr_web_sid=') ||
+            cookie.startsWith('connect_sid='),
+      )
       .toList();
 
-  expect(sidCookies, ['${Keys.sidToken}=$expectedValue']);
+  expect(sidCookies, ['habr_web_sid=$expectedValue']);
 }
 
 final class MemoryCookieStorage extends Storage {

@@ -75,6 +75,7 @@ class HubDetailPageView extends StatelessWidget {
                   builder: (context, state) {
                     return CommonFiltersWidget(
                       isLoading: state.status == .loading,
+                      criteria: state.filter.criteria,
                       sort: state.filter.sort,
                       filterOption: switch (state.filter.sort) {
                         Sort.byBest => state.filter.period,

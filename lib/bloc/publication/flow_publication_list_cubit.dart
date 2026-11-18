@@ -10,7 +10,6 @@ import '../../data/model/filter/filter.dart';
 import '../../data/model/list_response_model.dart';
 import '../../data/model/loading_status_enum.dart';
 import '../../data/model/publication/publication.dart';
-import '../../data/model/section_enum.dart';
 import '../../feature/publication_list/publication_list.dart';
 import '../error/app_failure.dart';
 
@@ -24,8 +23,7 @@ class FlowPublicationListCubit
     required super.settingsRepository,
     required this._storage,
     PublicationFlow flow = .all,
-    Section section = .article,
-  }) : super(FlowPublicationListState(flow: flow, section: section)) {
+  }) : super(FlowPublicationListState(flow: flow)) {
     _restoreFilter();
   }
 
@@ -34,7 +32,7 @@ class FlowPublicationListCubit
   Future<void> _restoreFilter() async {
     emit(state.copyWith(status: .loading));
 
-    final key = CacheKeys.flowFilter(state.section.name);
+    final key = CacheKeys.flowFilter;
     FlowPublicationListState newState = state;
     try {
       /// вспоминаем последний примененный фильтр во флоу
@@ -62,7 +60,6 @@ class FlowPublicationListCubit
 
     try {
       final response = await repository.fetchFlowArticles(
-        section: state.section,
         flow: state.flow,
         filter: state.filter,
         page: state.page.toString(),
@@ -92,7 +89,6 @@ class FlowPublicationListCubit
     emit(
       FlowPublicationListState(
         flow: state.flow,
-        section: state.section,
         filter: state.filter,
         page: page,
       ),
@@ -101,10 +97,10 @@ class FlowPublicationListCubit
 
   void applyFilter(PublicationFlow newFlow, FlowFilter newFilter) {
     _storage.write(
-      CacheKeys.flowFilter(state.section.name),
+      CacheKeys.flowFilter,
       jsonEncode(newFilter),
     );
 
-    emit(.new(flow: newFlow, section: state.section, filter: newFilter));
+    emit(.new(flow: newFlow, filter: newFilter));
   }
 }

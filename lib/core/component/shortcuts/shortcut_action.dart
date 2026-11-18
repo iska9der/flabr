@@ -4,8 +4,6 @@ import 'package:collection/collection.dart';
 enum ShortcutAction {
   bookmarks('action_bookmarks'),
   articles('action_articles'),
-  posts('action_posts'),
-  news('action_news'),
   search('action_search');
 
   const ShortcutAction(this.id);

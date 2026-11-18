@@ -19,6 +19,12 @@ enum PublicationComplexity {
     return result;
   }
 
+  String get filterValue => switch (this) {
+    low => 'easy',
+    medium => 'medium',
+    high => 'hard',
+  };
+
   String get label => switch (this) {
     PublicationComplexity.low => t.publication.complexity.easy,
     PublicationComplexity.medium => t.publication.complexity.medium,

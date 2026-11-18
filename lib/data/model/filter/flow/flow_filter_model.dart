@@ -2,6 +2,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../filter_list.dart';
 import '../filter_option_model.dart';
+import '../publication_criteria.dart';
 import '../sort_enum.dart';
 
 part 'flow_filter_model.freezed.dart';
@@ -12,6 +13,7 @@ abstract class FlowFilter with _$FlowFilter {
   const factory FlowFilter({
     @Default(Sort.byNew) Sort sort,
     @Default(FilterList.dateDefault) FilterOption period,
+    @Default(PublicationCriteria()) PublicationCriteria criteria,
     @Default(FilterList.scoreDefault) FilterOption score,
   }) = _FlowFilter;
 

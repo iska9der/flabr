@@ -6,7 +6,6 @@ import '../model/comment/comment.dart';
 import '../model/filter/filter.dart';
 import '../model/list_response_model.dart';
 import '../model/publication/publication.dart';
-import '../model/section_enum.dart';
 import '../model/user/user.dart';
 import '../repository/language_repository.dart';
 import 'publication_service.dart';
@@ -105,15 +104,8 @@ class DemoPublicationService implements PublicationService {
   }
 
   @override
-  Future<PublicationCounters> fetchCounters() async {
-    var articles = 0;
-    var news = 0;
-    for (final entry in _selected) {
-      if (entry.publication.type == PublicationType.article) articles++;
-      if (entry.publication.type == PublicationType.news) news++;
-    }
-    return PublicationCounters(articles: articles, news: news);
-  }
+  Future<PublicationCounters> fetchCounters() async =>
+      PublicationCounters(articles: _selected.length);
 
   @override
   Future<PublicationCommon> fetchArticleById(String id) async => _article(id);
@@ -125,58 +117,30 @@ class DemoPublicationService implements PublicationService {
   @override
   Future<ListResponse<Publication>> fetchFeed({
     required String page,
-    required String score,
-    required List<String> types,
+    required FeedFilter filter,
   }) async {
-    final selectedTypes = types
-        .map(
-          (type) => switch (type) {
-            'articles' => PublicationType.article,
-            'news' => PublicationType.news,
-            'posts' => PublicationType.post,
-            _ => throw ArgumentError.value(
-              type,
-              'types',
-              'Unknown demo publication type',
-            ),
-          },
-        )
-        .toSet();
-    final publications = _selected
+    final articles = _selected
         .map((entry) => entry.publication)
-        .where(
-          (publication) =>
-              types.isEmpty || selectedTypes.contains(publication.type),
-        );
-    return _page(_ranked(publications, score: score), page);
+        .where(filter.criteria.matches);
+    return _page(_ranked(articles, score: filter.score.value), page);
   }
 
   @override
   Future<ListResponse<Publication>> fetchFlowArticles({
-    required Section section,
     required PublicationFlow flow,
-    required Sort sort,
     required String page,
-    required FilterOption period,
-    required FilterOption score,
+    required FlowFilter filter,
   }) async {
-    final type = switch (section) {
-      Section.article => PublicationType.article,
-      Section.news => PublicationType.news,
-      Section.post => PublicationType.post,
-    };
-    final publications = _selected
-        .where((entry) {
-          return entry.publication.type == type &&
-              (flow == PublicationFlow.all || entry.flow == flow);
-        })
-        .map((entry) => entry.publication);
+    final articles = _selected
+        .where((entry) => flow == PublicationFlow.all || entry.flow == flow)
+        .map((entry) => entry.publication)
+        .where(filter.criteria.matches);
     return _page(
       _ranked(
-        publications,
-        score: score.value,
-        sort: sort,
-        period: period.value,
+        articles,
+        score: filter.score.value,
+        sort: filter.sort,
+        period: filter.period.value,
       ),
       page,
     );
@@ -185,9 +149,7 @@ class DemoPublicationService implements PublicationService {
   @override
   Future<ListResponse<Publication>> fetchHubArticles({
     required String hub,
-    required Sort sort,
-    required FilterOption period,
-    required FilterOption score,
+    required FlowFilter filter,
     required String page,
   }) async {
     final publications = _selected
@@ -197,10 +159,10 @@ class DemoPublicationService implements PublicationService {
         );
     return _page(
       _ranked(
-        publications,
-        score: score.value,
-        sort: sort,
-        period: period.value,
+        publications.where(filter.criteria.matches),
+        score: filter.score.value,
+        sort: filter.sort,
+        period: filter.period.value,
       ),
       page,
     );
@@ -210,19 +172,11 @@ class DemoPublicationService implements PublicationService {
   Future<ListResponse<Publication>> fetchUserPublications({
     required String user,
     required String page,
-    required UserPublicationType type,
   }) async {
-    final publicationType = switch (type) {
-      UserPublicationType.articles => PublicationType.article,
-      UserPublicationType.news => PublicationType.news,
-      UserPublicationType.posts => PublicationType.post,
-    };
     final publications = _selected
         .map((entry) => entry.publication)
         .where(
-          (publication) =>
-              publication.author.alias == user &&
-              publication.type == publicationType,
+          (publication) => publication.author.alias == user,
         );
     return _page(_ranked(publications, score: ''), page);
   }

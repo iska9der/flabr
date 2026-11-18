@@ -69,8 +69,6 @@ class _PublicationDashboardViewState extends State<PublicationDashboardView> {
         routes: const [
           FeedFlowRoute(),
           ArticlesFlowRoute(),
-          PostsFlowRoute(),
-          NewsFlowRoute(),
         ],
         builder: (context, child, controller) {
           return Stack(
@@ -137,14 +135,6 @@ class _DashboardAppBar extends StatelessWidget {
                   DashboardDrawerLinkWidget(
                     title: context.t.publication.dashboard.articles,
                     count: counters.articles,
-                  ),
-                  DashboardDrawerLinkWidget(
-                    title: context.t.publication.dashboard.posts,
-                    count: counters.posts,
-                  ),
-                  DashboardDrawerLinkWidget(
-                    title: context.t.publication.dashboard.news,
-                    count: counters.news,
                   ),
                 ],
               ),

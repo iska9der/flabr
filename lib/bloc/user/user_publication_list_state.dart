@@ -7,11 +7,9 @@ class UserPublicationListState extends PublicationListState with Equatable {
     super.page = 1,
     super.response = const ListResponse<Publication>(),
     required this.alias,
-    this.type = UserPublicationType.articles,
   });
 
   final String alias;
-  final UserPublicationType type;
 
   UserPublicationListState copyWith({
     LoadingStatus? status,
@@ -19,7 +17,6 @@ class UserPublicationListState extends PublicationListState with Equatable {
     int? page,
     ListResponse<Publication>? response,
     String? alias,
-    UserPublicationType? type,
   }) {
     return UserPublicationListState(
       status: status ?? this.status,
@@ -27,7 +24,6 @@ class UserPublicationListState extends PublicationListState with Equatable {
       page: page ?? this.page,
       response: response ?? this.response,
       alias: alias ?? this.alias,
-      type: type ?? this.type,
     );
   }
 
@@ -41,6 +37,5 @@ class UserPublicationListState extends PublicationListState with Equatable {
     page,
     response,
     alias,
-    type,
   ];
 }

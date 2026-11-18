@@ -119,6 +119,7 @@
       "unknown": "Unknown publication flow"
     },
     "format": {
+      "common": "No format",
       "caseStudy": "Case study",
       "tutorial": "Tutorial",
       "review": "Review",
@@ -275,6 +276,8 @@
     "showFull": "Show in full"
   },
   "filter": {
+    "format": "Publication format",
+    "complexity": "Difficulty",
     "all": "All",
     "showFirst": "Show first",
     "ratingThreshold": "Rating threshold",

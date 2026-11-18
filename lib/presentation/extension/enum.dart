@@ -29,7 +29,12 @@ extension StatTypeExtension on StatType {
 
 extension PublicationFormatExtension on PublicationFormat {
   Color getColor(AppColorsExtension colors) => switch (this) {
-    .example || .digest || .opinion || .review => colors.deluge,
+    .post ||
+    .common ||
+    .example ||
+    .digest ||
+    .opinion ||
+    .review => colors.deluge,
     .faq || .roadmap || .tutorial => colors.sorbus,
     .interview || .reportage => colors.apple,
     .analytics || .retrospective => colors.mulberry,

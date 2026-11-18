@@ -76,7 +76,7 @@ collapsed by default to keep the filter sheet compact and can be expanded when
 the complete catalog is needed. If the active flow belongs to a hidden group,
 the selector opens expanded so the current selection remains visible.
 
-`CommonFiltersWidget` provides the sorting and secondary filter options. Applying
+`CommonFiltersWidget` provides sorting, rating or period, difficulty and publication format filters. Request parameters follow the [publication feed contract](../api/publication-feeds.md). Applying
 the form updates `FlowPublicationListCubit` and closes the sheet.
 
 Relevant implementation:

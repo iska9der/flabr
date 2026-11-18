@@ -20,12 +20,26 @@ class TokenRepository {
   String? get csrf => _csrf;
 
   Future<void> init() async {
-    final cookies = await cookieJar.loadForRequest(
-      Uri.parse(Urls.baseUrl),
-    );
-    final token = _readToken(cookies) ?? '';
+    final uri = Uri.parse(Urls.baseUrl);
+    final cookies = await cookieJar.loadForRequest(uri);
+    final current = _readSid(cookies.where((c) => c.name == Keys.sidToken));
 
-    _emitToken(token);
+    /// TODO: в 1.5.0 удалить миграцию с `connect_sid` и восстановление сессии по её значению
+    final legacyCookies = cookies.where((c) => c.name == Keys.legacySidToken);
+    final legacy = _readSid(legacyCookies);
+    if (legacyCookies.isNotEmpty) {
+      await cookieJar.saveFromResponse(uri, [
+        if (current == null && legacy != null)
+          Cookie.fromSetCookieValue(legacy.toString())..name = Keys.sidToken,
+        for (final cookie in legacyCookies)
+          Cookie(cookie.name, '')
+            ..domain = cookie.domain
+            ..path = cookie.path
+            ..maxAge = 0,
+      ]);
+    }
+
+    _emitToken(current?.value ?? legacy?.value ?? '');
   }
 
   Future<void> saveToken(String newToken) async {
@@ -36,16 +50,16 @@ class TokenRepository {
     _emitToken(newToken);
   }
 
-  String? _readToken(List<Cookie> cookies) {
-    String? fallback;
+  Cookie? _readSid(Iterable<Cookie> cookies) {
+    Cookie? fallback;
     for (final cookie in cookies) {
-      if (cookie.name != Keys.sidToken) {
+      if (cookie.value.isEmpty) {
         continue;
       }
 
-      fallback ??= cookie.value;
+      fallback ??= cookie;
       if (cookie.path == null || cookie.path == '/') {
-        return cookie.value;
+        return cookie;
       }
     }
 

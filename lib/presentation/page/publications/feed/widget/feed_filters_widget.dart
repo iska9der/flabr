@@ -7,6 +7,7 @@ import '../../../../../data/model/filter/filter.dart';
 import '../../../../../i18n/i18n.dart';
 import '../../../../widget/dialog/dialog.dart';
 import '../../../../widget/filter/filter_chip_list.dart';
+import '../../../../widget/filter/publication_criteria_widget.dart';
 import '../../../../widget/filter/publication_filter_submit_button.dart';
 
 class FeedFiltersWidget extends StatelessWidget {
@@ -21,9 +22,10 @@ class FeedFiltersWidget extends StatelessWidget {
         BlocBuilder<FeedPublicationListCubit, FeedPublicationListState>(
           builder: (context, state) {
             return _FilterView(
+              key: ValueKey(state.filter),
               isLoading: state.status == .loading,
               currentScore: state.filter.score,
-              currentTypes: state.filter.types,
+              currentCriteria: state.filter.criteria,
               onSubmit: (newFilter) {
                 if (context.read<AuthCubit>().state.isAuthorized) {
                   context.read<FeedPublicationListCubit>().applyFilter(
@@ -44,11 +46,10 @@ class FeedFiltersWidget extends StatelessWidget {
 
 class _FilterView extends StatefulWidget {
   const _FilterView({
-    // ignore: unused_element_parameter
     super.key,
     this.isLoading = false,
     required this.currentScore,
-    required this.currentTypes,
+    required this.currentCriteria,
     required this.onSubmit,
   });
 
@@ -56,7 +57,7 @@ class _FilterView extends StatefulWidget {
 
   final FilterOption currentScore;
 
-  final List<FeedFilterPublication> currentTypes;
+  final PublicationCriteria currentCriteria;
   final void Function(FeedFilter filter) onSubmit;
 
   @override
@@ -65,7 +66,7 @@ class _FilterView extends StatefulWidget {
 
 class _FilterViewState extends State<_FilterView> {
   late FilterOption scoreValue = widget.currentScore;
-  late List<FeedFilterPublication> typesValue = widget.currentTypes;
+  late PublicationCriteria criteria = widget.currentCriteria;
 
   @override
   Widget build(BuildContext context) {
@@ -76,44 +77,18 @@ class _FilterViewState extends State<_FilterView> {
       crossAxisAlignment: .start,
       mainAxisSize: .min,
       children: [
-        ...[
-          Text(context.t.feed.publication.type, style: headerStyle),
-          FilterChipList(
-            isEnabled: !widget.isLoading,
-            options: FeedFilterPublication.values
-                .map((e) => FilterOption(label: e.label, value: e.name))
-                .toList(),
-            isSelected: (option) => typesValue.contains(
-              FeedFilterPublication.fromString(option.value),
-            ),
-            onSelected: (isSelected, newOption) {
-              final newType = FeedFilterPublication.fromString(newOption.value);
-
-              List<FeedFilterPublication> newTypes;
-              if (isSelected) {
-                newTypes = [...typesValue, newType];
-              } else {
-                newTypes = [...typesValue]
-                  ..removeWhere((element) => element == newType);
-              }
-
-              if (newTypes.isEmpty) {
-                return;
-              }
-
-              setState(() {
-                typesValue = newTypes;
-              });
-            },
-          ),
-        ],
+        PublicationCriteriaWidget(
+          criteria: criteria,
+          isEnabled: !widget.isLoading,
+          onChanged: (value) => setState(() => criteria = value),
+        ),
         const SizedBox(height: 8),
         ...[
           Text(context.t.feed.ratingThreshold, style: headerStyle),
           FilterChipList(
             isEnabled: !widget.isLoading,
             options: FilterList.scoreOptions,
-            isSelected: (option) => option == scoreValue,
+            isSelected: (option) => option.value == scoreValue.value,
             onSelected: (isSelected, option) => setState(() {
               scoreValue = option;
             }),
@@ -121,9 +96,9 @@ class _FilterViewState extends State<_FilterView> {
         ],
         const SizedBox(height: 10),
         PublicationFilterSubmitButton(
-          isEnabled: !widget.isLoading,
+          isEnabled: !widget.isLoading && criteria.formats.isNotEmpty,
           onSubmit: () => widget.onSubmit(
-            FeedFilter(score: scoreValue, types: typesValue),
+            FeedFilter(score: scoreValue, criteria: criteria),
           ),
         ),
       ],
