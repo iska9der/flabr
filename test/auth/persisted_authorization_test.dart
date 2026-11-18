@@ -69,20 +69,8 @@ void main() {
       await repository.init();
       repository.setCsrf('stale-csrf');
 
-      final dio = Dio(BaseOptions(baseUrl: Urls.siteApiUrl));
-      final client = HabraClient(
-        dio,
-        logger: NoOpLogger(),
-        tokenRepository: repository,
-        languageRepository: LanguageRepository(storage: MemoryCacheStorage()),
-      );
-      await client.init();
       final adapter = RecordingHttpClientAdapter();
-      dio.httpClientAdapter = adapter;
-
-      final service = ProfileServiceImpl(
-        siteClient: client,
-      );
+      final service = await createProfileService(repository, adapter);
       final profile = await service.fetchMe();
 
       expect(profile?.id, isEmpty);
@@ -123,7 +111,39 @@ void main() {
       await afterLogout.init();
       expect(afterLogout.token, isEmpty);
     });
+
+    test('sends the profile request without stale CSRF when refresh returns no token', () async {
+      final repository = TokenRepository(cookieJar: CookieJar());
+      await repository.saveToken('site-sid');
+      repository.setCsrf('stale-csrf');
+      final adapter = RecordingHttpClientAdapter(csrfHtml: '<html></html>');
+      final service = await createProfileService(repository, adapter);
+
+      await service.fetchMe();
+
+      expect(adapter.requests.map((request) => request.uri.path), [
+        '/ru/conversations/',
+        '/kek/v2/me',
+      ]);
+      expect(adapter.requests.last.headers, isNot(contains(Keys.csrfToken)));
+    });
   });
+}
+
+Future<ProfileService> createProfileService(
+  TokenRepository repository,
+  RecordingHttpClientAdapter adapter,
+) async {
+  final dio = Dio(BaseOptions(baseUrl: Urls.siteApiUrl));
+  final client = HabraClient(
+    dio,
+    logger: NoOpLogger(),
+    tokenRepository: repository,
+    languageRepository: LanguageRepository(storage: MemoryCacheStorage()),
+  );
+  await client.init();
+  dio.httpClientAdapter = adapter;
+  return ProfileServiceImpl(siteClient: client);
 }
 
 Future<void> expectSid(
@@ -183,6 +203,11 @@ final class MemoryCookieStorage extends Storage {
 }
 
 final class RecordingHttpClientAdapter implements HttpClientAdapter {
+  RecordingHttpClientAdapter({
+    this.csrfHtml = '<meta name="csrf-token" content="test-csrf">',
+  });
+
+  final String csrfHtml;
   final List<RequestOptions> requests = [];
 
   @override
@@ -196,7 +221,7 @@ final class RecordingHttpClientAdapter implements HttpClientAdapter {
     if (options.uri.host == 'habr.com' &&
         options.uri.path == '/ru/conversations/') {
       return ResponseBody.fromString(
-        '<meta name="csrf-token" content="test-csrf">',
+        csrfHtml,
         200,
         headers: {
           Headers.contentTypeHeader: ['text/html; charset=utf-8'],

@@ -24,7 +24,7 @@ class HabraClient extends DioClient {
   final TokenRepository tokenRepository;
   final LanguageRepository languageRepository;
 
-  Completer<void>? _csrfCompleter;
+  Completer<String?>? _csrfCompleter;
 
   Future<void> init() async {
     dio.httpClientAdapter = makeHttpClientAdapter();
@@ -40,16 +40,17 @@ class HabraClient extends DioClient {
     dio.interceptors.add(_languageInterceptor());
   }
 
-  Future<void> _fetchCsrf({
+  /// Параллельные обновления CSRF получают результат одного запроса
+  Future<String?> _fetchCsrf({
     required String cookies,
     String url = 'https://habr.com/ru/conversations/',
   }) async {
-    // Уже запущен — возвращаем текущий future
     if (_csrfCompleter != null) {
       return _csrfCompleter!.future;
     }
 
-    _csrfCompleter = Completer<void>();
+    _csrfCompleter = Completer<String?>();
+    String? refreshedToken;
 
     try {
       final options = Options(
@@ -60,21 +61,25 @@ class HabraClient extends DioClient {
 
       final indexOfCsrf = rawHtml.indexOf(Keys.csrfToken);
       if (indexOfCsrf == -1) {
-        return;
+        return null;
       }
 
-      final indexOfStart = rawHtml.indexOf(Keys.csrfToken) + 11;
+      final indexOfStart = indexOfCsrf + Keys.csrfToken.length + 1;
       final indexOfFirstQuote = rawHtml.indexOf('"', indexOfStart) + 1;
       final indexOfLastQuote = rawHtml.indexOf('"', indexOfFirstQuote);
 
       final csrf = rawHtml.substring(indexOfFirstQuote, indexOfLastQuote);
-      tokenRepository.setCsrf(csrf);
+      if (csrf.isNotEmpty) {
+        tokenRepository.setCsrf(csrf);
+        refreshedToken = csrf;
+      }
     } catch (e, stack) {
       logger.error('Не удалось обновить csrf', e, stack);
     } finally {
-      _csrfCompleter?.complete();
+      _csrfCompleter!.complete(refreshedToken);
       _csrfCompleter = null;
     }
+    return refreshedToken;
   }
 
   Interceptor _csrfInterceptor() {
@@ -89,7 +94,7 @@ class HabraClient extends DioClient {
           return handler.next(request);
         }
 
-        /// Если нет токена - нет смысла получать csrf
+        final renewCsrf = request.headers.remove(Keys.renewCsrf) == true;
         final cookies = await tokenRepository.cookieJar.loadForRequest(
           request.uri,
         );
@@ -98,27 +103,13 @@ class HabraClient extends DioClient {
           return handler.next(request);
         }
 
-        /// Обновляем csrf токен, если пришел заголовок
-        final csrfUpdate =
-            request.headers.containsKey(Keys.renewCsrf) &&
-            request.headers[Keys.renewCsrf] == true;
-        if (csrfUpdate) {
-          request.headers.remove(Keys.renewCsrf);
-          final cookiesResolved = CookieManager.getCookies(cookies);
-          await _fetchCsrf(cookies: cookiesResolved);
-          return handler.next(request);
+        var csrfToken = tokenRepository.csrf;
+        if (renewCsrf || csrfToken == null) {
+          csrfToken = await _fetchCsrf(
+            cookies: CookieManager.getCookies(cookies),
+          );
         }
 
-        /// Берем csrf токен из хранилища.
-        /// Если в хранилище его нет - парсим
-        String? csrfToken = tokenRepository.csrf;
-        if (csrfToken == null) {
-          final cookiesResolved = CookieManager.getCookies(cookies);
-          await _fetchCsrf(cookies: cookiesResolved);
-          csrfToken = tokenRepository.csrf;
-        }
-
-        /// Добавляем csrf токен в заголовки
         if (csrfToken != null) {
           request.headers[Keys.csrfToken] = csrfToken;
         }
