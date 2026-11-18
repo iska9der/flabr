@@ -150,8 +150,14 @@ class _WebViewLoginState extends State<_WebViewLogin> {
     final token = list
         .firstWhere((cookie) => cookie.name == Keys.sidToken)
         .value;
+
+    /// TODO: в 1.5.0 удалить проверку на устаревшую cookie `connect_sid`
     final cookies = list
-        .where((cookie) => cookie.name != Keys.sidToken)
+        .where(
+          (cookie) =>
+              cookie.name != Keys.sidToken &&
+              cookie.name != Keys.legacySidToken,
+        )
         .toList();
 
     final cookieJar = getIt<TokenRepository>().cookieJar;

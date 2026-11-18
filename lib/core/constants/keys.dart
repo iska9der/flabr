@@ -16,7 +16,10 @@ abstract class CacheKeys {
 
 abstract class Keys {
   static const csrfToken = 'csrf-token';
-  static const sidToken = 'connect_sid';
+  static const sidToken = 'habr_web_sid';
+
+  /// TODO: в 1.5.0 удалить ключ устаревшей cookie `connect_sid`
+  static const legacySidToken = 'connect_sid';
 
   static const skipCsrf = 'X-Skip-Csrf';
   static const renewCsrf = 'X-Renew-Csrf';

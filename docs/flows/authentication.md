@@ -149,8 +149,12 @@ NavigationDecision _navigationDelegate(NavigationRequest request) {
 - Cookies are saved for `Urls.baseUrl`
 
 **Token Extraction:**
-- Extracts `sid` (session ID) token from cookies
+- Extracts the `habr_web_sid` session cookie
 - Securely stored via `TokenRepository`
+
+On startup, Flabr prefers the saved `habr_web_sid`. If only the legacy
+`connect_sid` is available, Flabr saves its value under the new name before
+requesting the profile. It removes the legacy cookie in both cases.
 
 ## State Management
 
@@ -220,13 +224,8 @@ final controller = WebViewController()
 final cookieManager = WebviewCookieManager();
 final cookies = await cookieManager.getCookies(url);
 
-// Save cookies for the site URL
-await tokenRepository.saveCookies(Urls.baseUrl, cookies);
-
-// Extract sid token
 final sidToken = cookies.firstWhere(
-  (c) => c.name == 'sid',
-  orElse: () => throw Exception('No sid token found'),
+  (cookie) => cookie.name == Keys.sidToken,
 ).value;
 ```
 
