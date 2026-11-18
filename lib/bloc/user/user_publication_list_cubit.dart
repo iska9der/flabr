@@ -3,7 +3,6 @@ import 'package:equatable/equatable.dart';
 import '../../data/model/list_response_model.dart';
 import '../../data/model/loading_status_enum.dart';
 import '../../data/model/publication/publication.dart';
-import '../../data/model/user/user.dart';
 import '../../feature/publication_list/publication_list.dart';
 import '../error/app_failure.dart';
 
@@ -16,8 +15,7 @@ class UserPublicationListCubit
     required super.languageRepository,
     required super.settingsRepository,
     String user = '',
-    UserPublicationType type = UserPublicationType.articles,
-  }) : super(UserPublicationListState(alias: user, type: type));
+  }) : super(UserPublicationListState(alias: user));
 
   @override
   Future<void> fetch() async {
@@ -31,7 +29,6 @@ class UserPublicationListCubit
       final response = await repository.fetchUserPublications(
         user: state.alias,
         page: state.page.toString(),
-        type: state.type,
       );
 
       emit(
@@ -58,15 +55,8 @@ class UserPublicationListCubit
     emit(
       UserPublicationListState(
         alias: state.alias,
-        type: state.type,
         page: page,
       ),
     );
-  }
-
-  void changeType(UserPublicationType type) {
-    if (state.type == type) return;
-
-    emit(.new(alias: state.alias, type: type));
   }
 }

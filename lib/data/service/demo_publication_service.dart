@@ -172,19 +172,11 @@ class DemoPublicationService implements PublicationService {
   Future<ListResponse<Publication>> fetchUserPublications({
     required String user,
     required String page,
-    required UserPublicationType type,
   }) async {
-    final publicationType = switch (type) {
-      UserPublicationType.articles => PublicationType.article,
-      UserPublicationType.news => PublicationType.news,
-      UserPublicationType.posts => PublicationType.post,
-    };
     final publications = _selected
         .map((entry) => entry.publication)
         .where(
-          (publication) =>
-              publication.author.alias == user &&
-              publication.type == publicationType,
+          (publication) => publication.author.alias == user,
         );
     return _page(_ranked(publications, score: ''), page);
   }

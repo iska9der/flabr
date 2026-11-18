@@ -39,7 +39,7 @@ class SearchServiceImpl implements SearchService {
       page: page,
     );
 
-    final queryString = '/v2/${params.toQueryString()}';
+    final queryString = '/v2${params.toQueryString()}';
     final response = await _siteClient.get(queryString);
 
     return switch (target) {

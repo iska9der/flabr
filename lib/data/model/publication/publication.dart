@@ -10,7 +10,6 @@ import '../hub/hub_related_data_model.dart';
 import '../hub_base.dart';
 import '../hub_type_enum.dart';
 import '../list_response_model.dart';
-import '../query_params_model.dart';
 import '../related_data_base.dart';
 import '../user_base.dart';
 
@@ -29,9 +28,7 @@ part 'publication_format_enum.dart';
 part 'publication_hub_model.dart';
 part 'publication_lead_data_model.dart';
 part 'publication_lead_image_model.dart';
-part 'publication_list_params.dart';
 part 'publication_model.dart';
-part 'publication_post_list_response.dart';
 part 'publication_related_data_model.dart';
 part 'publication_source_enum.dart';
 part 'publication_statistics_model.dart';

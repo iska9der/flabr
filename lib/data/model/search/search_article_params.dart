@@ -13,7 +13,15 @@ class SearchArticleParams extends QueryParams implements SearchParamsFactory {
 
   @override
   String toQueryString() {
-    return '/articles/?query=$query&order=$order&page=$page';
+    return Uri(
+      path: '/articles/',
+      queryParameters: {
+        'queryType': 'search',
+        'query': query,
+        'order': order,
+        'page': page,
+      },
+    ).toString();
   }
 
   @override

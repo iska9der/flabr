@@ -308,7 +308,10 @@ List<RedirectRoute> _newsRedirects() {
 
   return [
     /// Флоу в новостях
-    RedirectRoute(path: '/flows/:flow/news', redirectTo: '/articles/flows/:flow'),
+    RedirectRoute(
+      path: '/flows/:flow/news',
+      redirectTo: '/articles/flows/:flow',
+    ),
 
     /// Новости
     RedirectRoute(path: '/news/', redirectTo: '/articles'),
@@ -391,7 +394,10 @@ List<RedirectRoute> _postsRedirects() {
 
   return [
     /// Флоу в постах
-    RedirectRoute(path: '/flows/:flow/posts', redirectTo: '/articles/flows/:flow'),
+    RedirectRoute(
+      path: '/flows/:flow/posts',
+      redirectTo: '/articles/flows/:flow',
+    ),
 
     /// Посты
     RedirectRoute(path: '/posts/', redirectTo: '/articles'),
@@ -422,7 +428,11 @@ List<RedirectRoute> _usersRedirects() {
     ),
     RedirectRoute(
       path: '/users/:login/publications/:type',
-      redirectTo: '$basePath/:login/$publications/:type',
+      redirectTo: '$basePath/:login/$publications',
+    ),
+    RedirectRoute(
+      path: '/users/:login/articles',
+      redirectTo: '$basePath/:login/$publications',
     ),
     RedirectRoute(
       path: '/users/:login/posts', // Старый роут публикаций

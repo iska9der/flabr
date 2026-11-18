@@ -35,7 +35,6 @@ abstract interface class PublicationService {
   Future<ListResponse<Publication>> fetchUserPublications({
     required String user,
     required String page,
-    required UserPublicationType type,
   });
 
   Future<ListResponse<Publication>> fetchUserBookmarks({
@@ -163,32 +162,16 @@ class PublicationServiceImpl implements PublicationService {
   Future<ListResponse<Publication>> fetchUserPublications({
     required String user,
     required String page,
-    required UserPublicationType type,
   }) async {
-    final params = PublicationListParams(page: page).toMap();
-
-    final typeQuery = switch (type) {
-      UserPublicationType.articles => null,
-      UserPublicationType.posts => {'posts': 'true'},
-      UserPublicationType.news => {'news': 'true'},
-    };
-
-    params.addAll({'user': user});
-    if (typeQuery != null) {
-      params.addAll(typeQuery);
-    }
-
     final response = await _siteClient.get(
       '/v2/articles/',
-      queryParams: params,
+      queryParams: {
+        'queryType': 'users',
+        'user': user,
+        'page': page,
+      },
     );
-
-    return switch (type) {
-      UserPublicationType.posts => PublicationPostListResponse.fromMap(
-        response.data,
-      ),
-      _ => PublicationCommonListResponse.fromMap(response.data),
-    };
+    return PublicationCommonListResponse.fromMap(response.data);
   }
 
   @override
@@ -197,30 +180,19 @@ class PublicationServiceImpl implements PublicationService {
     required String page,
     required UserBookmarksType type,
   }) async {
-    final params = PublicationListParams(page: page).toMap();
-
-    final typeQuery = switch (type) {
-      UserBookmarksType.articles => {'user_bookmarks': 'true'},
-      UserBookmarksType.posts => {'user_bookmarks_posts': 'true'},
-      UserBookmarksType.news => {'user_bookmarks_news': 'true'},
-      UserBookmarksType.comments => throw const ValueException(
-        .wrongPublicationDestination,
-      ),
-    };
-
-    params.addAll({'user': user, ...typeQuery});
-
+    if (type == UserBookmarksType.comments) {
+      throw const ValueException(.wrongPublicationDestination);
+    }
     final response = await _siteClient.get(
       '/v2/articles/',
-      queryParams: params,
+      queryParams: {
+        'queryType': 'bookmarks',
+        'user_bookmarks': 'true',
+        'user': user,
+        'page': page,
+      },
     );
-
-    return switch (type) {
-      UserBookmarksType.posts => PublicationPostListResponse.fromMap(
-        response.data,
-      ),
-      _ => PublicationCommonListResponse.fromMap(response.data),
-    };
+    return PublicationCommonListResponse.fromMap(response.data);
   }
 
   @override

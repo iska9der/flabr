@@ -9,6 +9,9 @@ Habr [merged its publication feeds](https://habr.com/ru/companies/habr/articles/
 | All articles, best | `queryType=articles&sort=date`, `period` |
 | Thematic flow | `queryType=flows_new&sort=all`, `flow` alias, optional `score` or `period` |
 | Hub | `queryType=hubs&sort=all`, `hub` alias, optional `score` or `period` |
+| Author articles | `queryType=users`, `user` alias |
+| Bookmarked articles | `queryType=bookmarks&user_bookmarks=true`, `user` alias |
+| Article search | `queryType=search`, `query`, `order` |
 
 The web client includes `page` (starting at 1), `perPage` (20), `fl` and `hl`. Public lists omit the difficulty for the unrestricted selection. Difficulty values in requests are `easy`, `medium` and `hard`. The response uses `low`, `medium` and `high`.
 

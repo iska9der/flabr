@@ -128,12 +128,10 @@ class PublicationRepository {
   Future<ListResponse<Publication>> fetchUserPublications({
     required String user,
     required String page,
-    required UserPublicationType type,
   }) async {
     var response = await service.fetchUserPublications(
       user: user,
       page: page,
-      type: type,
     );
 
     final sortedList = _sortListResponse(Sort.byNew, response);

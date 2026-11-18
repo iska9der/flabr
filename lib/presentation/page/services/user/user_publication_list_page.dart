@@ -5,33 +5,29 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../bloc/settings/settings_cubit.dart';
 import '../../../../bloc/user/user_publication_list_cubit.dart';
-import '../../../../data/model/user/user.dart';
 import '../../../../di/di.dart';
 import '../../../../feature/publication_list/publication_list.dart';
 import '../../../../feature/scroll/scroll.dart';
 import '../../../theme/theme.dart';
 import '../../../widget/enhancement/refresh_indicator.dart';
 import '../../../widget/navigation/navigation.dart';
-import 'widget/type_dropdown_widget.dart';
 
 @RoutePage(name: UserPublicationListPage.routeName)
 class UserPublicationListPage extends StatelessWidget {
   const UserPublicationListPage({
     super.key,
     @PathParam.inherit('alias') required this.alias,
-    @PathParam() this.type = '',
   });
 
   final String alias;
-  final String type;
 
-  static const String routePath = 'publications/:type';
+  static const String routePath = 'publications';
   static const String routeName = 'UserPublicationListRoute';
 
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      key: ValueKey('user-$alias-publications-$type'),
+      key: ValueKey('user-$alias-publications'),
       providers: [
         BlocProvider(
           create: (_) => UserPublicationListCubit(
@@ -39,7 +35,6 @@ class UserPublicationListPage extends StatelessWidget {
             languageRepository: getIt(),
             settingsRepository: getIt(),
             user: alias,
-            type: UserPublicationType.fromString(type),
           ),
         ),
         BlocProvider(create: (_) => ScrollCubit()),
@@ -83,37 +78,7 @@ class UserPublicationListView extends StatelessWidget {
               FlabrSliverRefreshIndicator(onRefresh: listCubit.refresh),
               SliverPadding(
                 padding: AppInsets.screenExtended,
-                sliver: SliverMainAxisGroup(
-                  slivers: [
-                    BlocBuilder<
-                      UserPublicationListCubit,
-                      UserPublicationListState
-                    >(
-                      builder: (context, state) {
-                        return SliverToBoxAdapter(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16),
-                            child: TypeDropdownMenu(
-                              type: state.type.name,
-                              onChanged: (type) => listCubit.changeType(
-                                UserPublicationType.fromString(type),
-                              ),
-                              entries: UserPublicationType.values
-                                  .map(
-                                    (type) => DropdownMenuItem(
-                                      value: type.name,
-                                      child: Text(type.label),
-                                    ),
-                                  )
-                                  .toList(),
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                    PublicationSliverList(bloc: listCubit),
-                  ],
-                ),
+                sliver: PublicationSliverList(bloc: listCubit),
               ),
             ],
           ),
