@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:math';
 
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 import '../../../bloc/publication/publication_bookmarks_bloc.dart';
@@ -36,7 +36,6 @@ class PublicationSliverList<
   Widget build(BuildContext context) {
     final listCubit = bloc ?? context.read<ListCubit>();
     final scrollCubit = context.read<ScrollCubit?>();
-    const skeletonLoader = _SkeletonLoader();
     final paginationEnabled = context.select<SettingsCubit, bool>(
       (cubit) => cubit.state.feed.navigationMode == .pagination,
     );
@@ -88,7 +87,7 @@ class PublicationSliverList<
               (state.status == .initial || state.status == .loading);
 
           if (isLoaderShown) {
-            return skeletonLoader;
+            return const _SkeletonLoader();
           }
 
           /// Ошибку показываем вместо карточек, если текущая страница пуста

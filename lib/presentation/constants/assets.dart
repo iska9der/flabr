@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 abstract class LicenseAssets {
   static const String ofl = 'assets/fonts/OFL.txt';

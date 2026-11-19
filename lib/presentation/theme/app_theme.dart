@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../page/settings/model/config_model.dart';
 import 'app_scheme.dart';

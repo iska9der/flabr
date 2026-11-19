@@ -1,5 +1,5 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../../../../../../core/component/router/router.dart';
 import '../../../../../../data/model/hub/hub.dart';
@@ -51,12 +51,10 @@ class _PublicationHub extends StatelessWidget {
       title += '*';
     }
 
-    final route =
-        switch (hub.type.isCorporative) {
-              true => CompanyDashboardRoute(alias: hub.alias),
-              false => HubDashboardRoute(alias: hub.alias),
-            }
-            as PageRouteInfo;
+    final route = switch (hub.type.isCorporative) {
+      true => CompanyDashboardRoute(alias: hub.alias),
+      false => HubDashboardRoute(alias: hub.alias),
+    } as PageRouteInfo;
 
     return InkWell(
       onTap: () => getIt<AppRouter>().navigate(route),

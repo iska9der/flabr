@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../../data/model/language/language.dart';
 import '../../data/model/loading_status_enum.dart';

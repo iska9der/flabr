@@ -1,4 +1,4 @@
-import com.android.build.gradle.internal.api.ApkVariantOutputImpl
+import com.android.build.api.variant.FilterConfiguration.FilterType.ABI
 import java.util.Properties
 import java.util.Base64
 
@@ -44,18 +44,16 @@ val abiCodes = mapOf(
 
 android {
     namespace = "ru.iska9der.flabr"
-    compileSdk = 36
+    compileSdk = 37
     ndkVersion = "28.2.13676358"
+
+    buildFeatures {
+        resValues = true
+    }
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
-    }
-
-    kotlin {
-        compilerOptions {
-            jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17
-        }
     }
 
     // F-droid
@@ -76,7 +74,7 @@ android {
         applicationId = "ru.iska9der.flabr"
         applicationIdSuffix = appIdSuffix
         minSdk = flutter.minSdkVersion.coerceAtLeast(21)
-        targetSdk = 36
+        targetSdk = 37
         versionCode = flutter.versionCode
         versionName = flutter.versionName
         resValue("string", "app_name", appName)
@@ -135,6 +133,12 @@ android {
     }
 }
 
+kotlin {
+    compilerOptions {
+        jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17
+    }
+}
+
 flutter {
     source = "../.."
 }
@@ -144,11 +148,13 @@ flutter {
 // See:
 // * https://developer.android.com/build/gradle-tips
 // * https://developer.android.com/studio/build/configure-apk-splits
-android.applicationVariants.configureEach {
-    val variant = this
-    variant.outputs.forEach { output ->
-        val name = output.filters.find { it.filterType == "ABI" }?.identifier
-        val abiVersionCode = abiCodes[name] ?: 0
-        (output as ApkVariantOutputImpl).versionCodeOverride = variant.versionCode * 10 + abiVersionCode
+androidComponents {
+    onVariants { variant ->
+        variant.outputs.forEach { output ->
+            val name = output.filters.find { it.filterType == ABI }?.identifier
+            val abiVersionCode = abiCodes[name] ?: 0
+            val baseVersionCode = output.versionCode.get() ?: 0
+            output.versionCode.set(baseVersionCode * 10 + abiVersionCode)
+        }
     }
 }

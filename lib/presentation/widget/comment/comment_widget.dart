@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../../../data/model/comment_base.dart';
 import '../html_view/html_view_widget.dart';

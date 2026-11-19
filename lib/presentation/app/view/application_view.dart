@@ -1,10 +1,9 @@
-import 'package:device_preview/device_preview.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:responsive_framework/responsive_framework.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 import '../../../bloc/settings/settings_cubit.dart';
 import '../../../core/component/router/router.dart';
@@ -22,7 +21,6 @@ import '../config/config.dart';
 /// - Настройку темы и локализации
 /// - Конфигурацию роутера
 /// - Настройку responsive дизайна
-/// - Интеграцию с DevicePreview (только для dev окружения)
 class ApplicationView extends StatelessWidget {
   const ApplicationView({super.key});
 
@@ -52,15 +50,11 @@ class ApplicationView extends StatelessWidget {
 
     return MaterialApp.router(
       title: AppEnvironment.appName,
-      // ignore: deprecated_member_use
-      useInheritedMediaQuery: true,
       locale: locale,
       supportedLocales: app_localizations.AppLocaleUtils.supportedLocales,
       localizationsDelegates: GlobalMaterialLocalizations.delegates,
       themeMode: themeMode,
-      theme: AppTheme.light(
-        typographyConfig: typographyConfig,
-      ),
+      theme: AppTheme.light(typographyConfig: typographyConfig),
       darkTheme: themeConfig.isAmoledTheme
           ? AppTheme.amoled(typographyConfig: typographyConfig)
           : AppTheme.dark(typographyConfig: typographyConfig),
@@ -86,35 +80,31 @@ class ApplicationView extends StatelessWidget {
     Widget? child,
   ) {
     final theme = context.theme;
-
-    Widget result = ColoredBox(
-      color: theme.colors.background,
-      child: MaxWidthBox(
-        maxWidth: config.maxWidth,
-        child: AnnotatedRegion(
-          value: switch (theme.colorScheme.brightness) {
-            .light => SystemUiOverlayStyle.dark,
-            .dark => SystemUiOverlayStyle.light,
-          },
-          child: child ?? const SizedBox.shrink(),
-        ),
-      ),
-    );
-
-    result = ResponsiveBreakpoints.builder(
-      child: result,
-      breakpoints: config.responsiveBreakpoints,
-    );
-
-    if (config.enableDevicePreview) {
-      result = DevicePreview.appBuilder(context, result);
-    }
+    final brightness = theme.colorScheme.brightness;
 
     return MediaQuery(
       data: MediaQuery.of(context).copyWith(
         textScaler: .linear(textScaleFactor),
       ),
-      child: result,
+      child: ResponsiveBreakpoints.builder(
+        breakpoints: config.responsiveBreakpoints,
+        child: ColoredBox(
+          color: theme.colors.background,
+          child: MaxWidthBox(
+            maxWidth: config.maxWidth,
+            child: AnnotatedRegion<SystemUiOverlayStyle>(
+              value: switch (brightness) {
+                .light => .dark,
+                .dark => .light,
+              },
+              child: SkeletonizerConfig(
+                data: .new(brightness: brightness),
+                child: child ?? const SizedBox.shrink(),
+              ),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

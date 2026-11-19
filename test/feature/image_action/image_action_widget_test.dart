@@ -7,9 +7,9 @@ import 'package:flabr/feature/image_action/model/image_data.dart';
 import 'package:flabr/feature/image_action/service/image_loader.dart';
 import 'package:flabr/feature/image_action/widget/full_image_widget.dart';
 import 'package:flabr/i18n/i18n.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:material_ui/material_ui.dart';
 
 void main() {
   setUp(() {

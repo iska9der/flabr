@@ -1,7 +1,7 @@
 import 'package:flabr/i18n/i18n.dart';
 import 'package:flabr/presentation/widget/pagination.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:material_ui/material_ui.dart';
 
 void main() {
   setUp(() => LocaleSettings.setLocaleSync(AppLocale.ru));

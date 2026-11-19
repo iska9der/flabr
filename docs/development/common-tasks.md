@@ -159,7 +159,7 @@ Dependencies are automatically registered via `@injectable` annotation.
 
 ```bash
 # Run code generation to register
-.fvm/flutter_sdk/bin/flutter pub run build_runner build --delete-conflicting-outputs
+.fvm/flutter_sdk/bin/flutter pub run build_runner build
 ```
 
 ### 7. Add Pages/Widgets
@@ -167,7 +167,7 @@ Dependencies are automatically registered via `@injectable` annotation.
 ```dart
 // lib/presentation/page/my_feature/my_feature_page.dart
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../bloc/my_feature/my_feature_cubit.dart';
@@ -238,7 +238,7 @@ class AppRouter extends _$AppRouter {
 
 ```bash
 # Generate all code (models, DI, routes)
-.fvm/flutter_sdk/bin/flutter pub run build_runner build --delete-conflicting-outputs
+.fvm/flutter_sdk/bin/flutter pub run build_runner build
 ```
 
 ### 10. Test Feature
@@ -348,7 +348,7 @@ class MyFeatureRepository {
 ### 4. Generate Code
 
 ```bash
-.fvm/flutter_sdk/bin/flutter pub run build_runner build --delete-conflicting-outputs
+.fvm/flutter_sdk/bin/flutter pub run build_runner build
 ```
 
 ### 5. Use in BLoC
@@ -400,7 +400,7 @@ class MyFeatureState with _$MyFeatureState {
 ### 2. Regenerate Code
 
 ```bash
-.fvm/flutter_sdk/bin/flutter pub run build_runner build --delete-conflicting-outputs
+.fvm/flutter_sdk/bin/flutter pub run build_runner build
 ```
 
 ### 3. Update BLoC Methods
