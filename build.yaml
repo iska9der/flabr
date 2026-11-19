@@ -4,8 +4,12 @@ targets:
       json_serializable:
         options:
           explicit_to_json: true
+      # TODO: вернуть стандартный генератор после исправления конфликта «Asset already exists»
+      # https://github.com/slang-i18n/slang/issues/351
       slang_build_runner:
-        options:
+        enabled: false
+        # CLI Slang читает настройки из секции стандартного генератора
+        options: &slang_options
           base_locale: ru
           fallback_strategy: base_locale
           input_directory: lib/i18n
@@ -22,3 +26,6 @@ targets:
           key_map_case: camel
           string_interpolation: double_braces
           timestamp: false
+      slang_build_runner:legacy:
+        enabled: true
+        options: *slang_options
